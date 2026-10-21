@@ -29,6 +29,18 @@
       "title": "Brain Games",
       "description": "Memory, attention and pattern games that train while you play.",
       "accent": "#3DFFA9"
+    },
+    {
+      "id": "strategy",
+      "title": "Strategy Games",
+      "description": "Games about decisions, trust and systems. Think it through before you play.",
+      "accent": "#FF9F6B"
+    },
+    {
+      "id": "sandbox",
+      "title": "Sandbox & Tools",
+      "description": "Open-ended toys for playing with ideas. No score, no timer, just make something.",
+      "accent": "#5AD8FF"
     }
   ],
   "games": [
@@ -187,6 +199,178 @@
         }
       ],
       "related": ["snake", "merge"]
+    },
+    {
+      "id": "tetris",
+      "title": "Tetris",
+      "tagline": "The block-stacking classic, in your browser.",
+      "description": "Free Tetris. Stack falling blocks, clear four lines at a time and chase a high score. The original Javascript Tetris by Jake Gordon, running in your browser with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "#B388FF",
+      "daily": false,
+      "embed": { "src": "/third-party/tetris/index.html" },
+      "credit": {
+        "author": "Jake Gordon",
+        "license": "MIT",
+        "source": "https://github.com/jakesgordon/javascript-tetris"
+      },
+      "keywords": [
+        "tetris",
+        "tetris game",
+        "play tetris online",
+        "free tetris",
+        "block stacking game"
+      ],
+      "howToPlay": [
+        "Use the arrow keys to move and rotate the falling block.",
+        "Fill a row completely to clear it and score points.",
+        "Stacked blocks that reach the top end the game.",
+        "Play with the on-screen controls on a touch screen."
+      ],
+      "faq": [
+        {
+          "q": "How do I play Tetris?",
+          "a": "Left and right arrows move the falling block, up arrow rotates it and down arrow drops it faster. Complete a horizontal row of blocks to clear it."
+        },
+        {
+          "q": "Is this Tetris free?",
+          "a": "Yes. It runs entirely in your browser with no download, no account and no payment."
+        },
+        {
+          "q": "Who made this version of Tetris?",
+          "a": "Javascript Tetris by Jake Gordon, open sourced under the MIT licence. See the credits page for details."
+        }
+      ],
+      "related": ["pacman", "merge"]
+    },
+    {
+      "id": "pacman",
+      "title": "Pacman",
+      "tagline": "Maze, pellets, ghosts. The chase is on.",
+      "description": "Free Pacman in your browser. Eat the pellets, dodge the ghosts and clear the maze. An open-source Pacman by mumuy, playable instantly with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "#FFE066",
+      "daily": false,
+      "embed": { "src": "/third-party/pacman/index.html" },
+      "credit": {
+        "author": "mumuy",
+        "license": "MIT",
+        "source": "https://github.com/mumuy/pacman"
+      },
+      "keywords": [
+        "pacman",
+        "pac man game",
+        "play pacman online",
+        "free pacman",
+        "arcade maze game"
+      ],
+      "howToPlay": [
+        "Use the arrow keys or WASD to steer Pacman around the maze.",
+        "Eat the pellets to clear the level.",
+        "The ghosts get faster as you go - power pellets let you eat them.",
+        "Three lives. Keep them as long as you can."
+      ],
+      "faq": [
+        {
+          "q": "How do I play Pacman?",
+          "a": "Steer with the arrow keys or WASD, and on mobile with the on-screen controls. Eat the small pellets to clear the maze and avoid the ghosts."
+        },
+        {
+          "q": "Is Pacman free to play?",
+          "a": "Yes, free in the browser with no download or sign-up. It is an open-source Pacman by mumuy, MIT licensed."
+        },
+        {
+          "q": "Does this work on a phone?",
+          "a": "Yes. The game scales to the screen and includes touch controls."
+        }
+      ],
+      "related": ["tetris", "snake"]
+    },
+    {
+      "id": "trust",
+      "title": "The Evolution of Trust",
+      "tagline": "A game about trust, betrayal and copycats.",
+      "description": "Free online game about trust. Play as the copycat, the always-cooperator or the cheater and learn how repeated interactions create cooperation, grudges and karma. No download, no sign-up.",
+      "category": "strategy",
+      "accent": "#FF9F6B",
+      "daily": false,
+      "embed": { "src": "/third-party/trust/index.html" },
+      "credit": {
+        "author": "Nicky Case",
+        "license": "CC0-1.0",
+        "source": "https://github.com/ncase/trust"
+      },
+      "keywords": [
+        "evolution of trust game",
+        "trust game",
+        "nicky case games",
+        "strategy browser game",
+        "free educational game"
+      ],
+      "howToPlay": [
+        "Pick a character - copycat, always-cooperate, always-cheat, grudger, detective or copykitten.",
+        "Play a round against the other players and try to score the most.",
+        "Change one rule at a time and watch how the whole system reacts.",
+        "The point of the game is the experiment, not the score."
+      ],
+      "faq": [
+        {
+          "q": "What is The Evolution of Trust?",
+          "a": "An interactive explanation of how trust and cooperation emerge in repeated games. You play rounds against different strategies and change the rules to see what changes."
+        },
+        {
+          "q": "Is it free?",
+          "a": "Yes. It is public domain (CC0) by Nicky Case and runs in your browser with no download, no sign-up and no ads."
+        },
+        {
+          "q": "Who created it?",
+          "a": "Nicky Case, the creator of We Become What We Behold and Loopy. See the credits page."
+        }
+      ],
+      "related": ["loopy", "merge"]
+    },
+    {
+      "id": "loopy",
+      "title": "Loopy",
+      "tagline": "A tiny tool for thinking in systems.",
+      "description": "Free interactive tool for thinking in systems. Draw a loop, set how it behaves and see what it does over time. By Nicky Case, public domain, runs in your browser with no download.",
+      "category": "sandbox",
+      "accent": "#5AD8FF",
+      "daily": false,
+      "embed": { "src": "/third-party/loopy/index.html" },
+      "credit": {
+        "author": "Nicky Case",
+        "license": "CC0-1.0",
+        "source": "https://github.com/ncase/loopy"
+      },
+      "keywords": [
+        "loopy game",
+        "nicky case loopy",
+        "system dynamics game",
+        "feedback loop simulator",
+        "interactive systems tool"
+      ],
+      "howToPlay": [
+        "Drag on the grid to draw a loop.",
+        "Place nodes on the loop and set what each one does - grow, shrink or split.",
+        "Press play and watch the system evolve.",
+        "Change one variable at a time to build intuition for feedback loops."
+      ],
+      "faq": [
+        {
+          "q": "What is Loopy?",
+          "a": "A minimal interactive tool for building intuition about feedback loops and system dynamics. You draw a loop, assign behaviour to each node, and run it."
+        },
+        {
+          "q": "Is Loopy free?",
+          "a": "Yes. It is public domain (CC0) by Nicky Case and runs in your browser with no download or sign-up."
+        },
+        {
+          "q": "Does it work on a phone?",
+          "a": "Yes, though a larger screen makes drawing loops much easier."
+        }
+      ],
+      "related": ["trust", "memory"]
     }
   ]
 }

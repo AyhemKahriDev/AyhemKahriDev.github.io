@@ -77,6 +77,45 @@ game's SEO copy and its runtime can never disagree.
 
 ---
 
+## The games
+
+**Original** — built on the arcadefork engine:
+
+| Game | Category | What it is |
+|---|---|---|
+| Daily Word Search | Word | Date-seeded 10x10 grid, 100 seconds, answer archive for every date |
+| 2048 Merge | Puzzle | Slide and merge tiles toward 2048 |
+| Neon Snake | Arcade | Classic snake, edges wrap so runs stay long |
+| Memory Match | Brain | Find all the pairs in as few moves as possible |
+
+**Open source** — vendored verbatim with their original licences, credited on
+[/credits/](https://ayhemkahridev.github.io/credits/):
+
+| Game | By | Licence |
+|---|---|---|
+| The Evolution of Trust | Nicky Case | CC0-1.0 |
+| Loopy | Nicky Case | CC0-1.0 |
+| Javascript Tetris | Jake Gordon | MIT |
+| Pacman | mumuy | MIT |
+
+### Adding an open-source game
+
+```bash
+npm run vendor:games
+```
+
+`scripts/vendor-games.mjs` downloads the repositories, copies them into
+`third-party/<id>/`, keeps the original `LICENSE`, writes a
+`ARCADEFORK-NOTICE.md` with the author, licence and source link, re-encodes
+oversized audio, and **localises any external resource the game hotlinks** so
+the vendored copy makes no third-party requests. The build copies
+`third-party/` into `dist/` automatically.
+
+The smoke test loads every vendored game in a real browser, inside its iframe,
+and fails if it does not paint.
+
+---
+
 ## Adding a game
 
 The whole point is that this is cheap. Budget: **under two hours per game**.
@@ -146,6 +185,25 @@ requests** (no bandwidth cap). A million visits costs $0.
 
 - Netlify / Vercel free tier
 - Cloudflare R2 (10 GB, no egress fees) for the reel files
+
+---
+
+## Interface
+
+The layout is built mobile-first and adapts up:
+
+- **Phone** — full-bleed play area, 44px minimum touch targets, safe-area
+  insets for notches, horizontal-scroll nav, game cards stacked one per row.
+- **Tablet** — two-column card grids, wider play area, the side rail moves
+  below the game.
+- **Desktop** — a two-column shell: the game on the left, a side rail on the
+  right with the game name, category links, "keep playing" links and the
+  sponsor slot. The play area is capped at 760px so the board is not lost in a
+  wide column.
+- **Motion** — every transition is under 320ms on a shared easing curve, cards
+  lift and glow on hover, and `prefers-reduced-motion` turns all of it off.
+- **Keyboard** — visible focus rings, `R` restarts, `M` mutes, arrows and WASD
+  move.
 
 ---
 
@@ -295,3 +353,4 @@ into the spec, and post.
 | `npm run package:itch` | Standalone zip per game for itch.io / Poki / CrazyGames |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run daily` | Print today's puzzle + answers |
+| `npm run vendor:games` | Download and refresh the vendored open-source games |

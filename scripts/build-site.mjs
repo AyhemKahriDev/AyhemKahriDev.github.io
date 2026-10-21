@@ -5,12 +5,12 @@
  * Everything is deterministic: same inputs -> same output, so the nightly
  * rebuild only adds new pages instead of churning URLs.
  */
-import { mkdirSync, writeFileSync, rmSync, existsSync } from 'node:fs';
+import { mkdirSync, writeFileSync, rmSync, existsSync, cpSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import content from '../content/games.json' with { type: 'json' };
 import sponsors from '../content/sponsors.json' with { type: 'json' };
-import { gameShell } from './shell.mjs';
+import { gameShell, embedShell } from './shell.mjs';
 import {
   generateWordBoard,
   boardAnswers,
@@ -91,19 +91,19 @@ function gameIcon(id, accent) {
   const wrap = (inner) =>
     `<svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true">${inner}</svg>`;
   if (id === 'wordsearch') {
-    const letters = 'ARCADE';
+    // A 4x4 grid of letters with one word highlighted horizontally.
+    const letters = 'CATSDOGSSUNSRAYS';
     let cells = '';
-    let k = 0;
     for (let r = 0; r < 4; r++) {
       for (let c = 0; c < 4; c++) {
-        const on = r === c; // the hidden word runs down the diagonal
+        const on = r === 0;
+        const ch = letters[r * 4 + c];
         cells += `<rect x="${8 + c * 20}" y="${8 + r * 20}" width="18" height="18" rx="4" fill="${
           on ? a : '#1b2440'
         }"/>`;
         cells += `<text x="${17 + c * 20}" y="${22 + r * 20}" font-size="11" font-family="Outfit, sans-serif" font-weight="700" fill="${
           on ? '#080c16' : '#8c96bc'
-        }" text-anchor="middle">${letters[k % letters.length]}</text>`;
-        k++;
+        }" text-anchor="middle">${ch}</text>`;
       }
     }
     return wrap(cells);
@@ -174,21 +174,37 @@ function siteHeader(active = '') {
 }
 
 function siteFooter() {
+  const year = new Date().getUTCFullYear();
+  const thirdParty = GAMES.filter((g) => g.credit);
   return `<footer class="site-footer"><div class="wrap">
   <p>${esc(SITE.name)} — free browser games. No download, no sign-up.</p>
-  <p><a href="/sitemap.xml">Sitemap</a> · <a href="/daily/">Daily puzzle archive</a> · <a href="/categories/word/">Word games</a></p>
+  <nav class="foot-nav">
+    <a href="/sitemap.xml">Sitemap</a>
+    <a href="/daily/">Daily puzzle archive</a>
+    <a href="/categories/word/">Word games</a>
+    <a href="/categories/arcade/">Arcade games</a>
+    <a href="/credits/">Credits</a>
+  </nav>
+  ${
+    thirdParty.length
+      ? `<p class="foot-note">Includes ${thirdParty.length} open-source games, credited on the <a href="/credits/">credits page</a>.</p>`
+      : ''
+  }
+  <p class="copyright">&copy; ${year} Ayhem Kahri. ${esc(SITE.name)} — free to play, forever.</p>
 </div></footer>`;
 }
 
-function gameTiles(ids) {
-  return `<div class="grid">${ids
+function gameTiles(ids, opts = {}) {
+  const gridClass = opts.featured ? 'grid grid-featured' : 'grid';
+  return `<div class="${gridClass}">${ids
     .map((g) => {
       const cat = CATEGORIES.find((c) => c.id === g.category);
-      return `<a class="tile" href="/games/${g.id}/">
+      return `<a class="tile" href="/games/${g.id}/" style="--tile-accent:${esc(g.accent)};--glow:${esc(g.accent)}">
       <div class="thumb">${gameIcon(g.id, g.accent)}</div>
+      ${g.credit ? '<span class="badge">Open source</span>' : ''}
       <h3>${esc(g.title)}</h3>
       <p>${esc(g.tagline)}</p>
-      ${cat ? `<p class="pill" style="margin-top:10px">${esc(cat.title)}</p>` : ''}
+      ${cat ? `<span class="tag">${esc(cat.title)}</span>` : ''}
     </a>`;
     })
     .join('')}</div>`;
@@ -230,16 +246,18 @@ function buildHome() {
 
   <section class="section">
     <h2>Today's puzzle</h2>
-    <div class="grid">
-      <a class="tile" href="/daily/${today}/">
+    <div class="grid grid-featured">
+      <a class="tile" href="/daily/${today}/" style="--tile-accent:${esc(theme.accent)};--glow:${esc(theme.accent)}">
         <div class="thumb">${gameIcon('wordsearch', theme.accent)}</div>
         <h3>Daily Word Search</h3>
         <p>${esc(theme.title)} theme — ${today}. Everyone plays the same grid.</p>
+        <span class="tag">New every day</span>
       </a>
-      <a class="tile" href="/daily/${today}/answers/">
-        <div class="thumb" style="font-size:30px;font-weight:800;color:${theme.accent}">?</div>
+      <a class="tile" href="/daily/${today}/answers/" style="--tile-accent:${esc(theme.accent)};--glow:${esc(theme.accent)}">
+        <div class="thumb" style="font-size:38px;font-weight:800;color:${theme.accent}">?</div>
         <h3>Today's answers</h3>
         <p>The full solved grid with every word and where it starts.</p>
+        <span class="tag">Answers</span>
       </a>
     </div>
   </section>
@@ -340,11 +358,17 @@ function buildGamePage(game) {
       })),
     },
   ];
-  const body = `${gameShell(game)}
+  const isEmbed = Boolean(game.embed);
+  const shellOpts = { related, sponsor: sponsorBanner(game.category) };
+  const body = `${isEmbed ? embedShell(game, shellOpts) : gameShell(game, shellOpts)}
 <section class="wrap prose" style="padding-bottom:40px">
   <h1>${esc(game.title)} — play free online</h1>
   <p>${esc(game.description)}</p>
-  ${sponsorBanner(game.category)}
+  ${
+    game.credit
+      ? `<p class="credit-line">Originally by ${esc(game.credit.author)} · ${esc(game.credit.license)} licence · <a href="${esc(game.credit.source)}" rel="noopener nofollow" target="_blank">source</a></p>`
+      : ''
+  }
   <h2>How to play ${esc(game.title)}</h2>
   <ul>${game.howToPlay.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
   <h2>Frequently asked questions</h2>
@@ -354,7 +378,7 @@ function buildGamePage(game) {
   <h2>More free games</h2>
   <div class="linklist">${related.map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`).join('')}</div>
 </section>
-<script type="module" src="/assets/host.js"></script>`;
+${isEmbed ? '' : '<script type="module" src="/assets/host.js"></script>'}`;
   write(
     `games/${game.id}/index.html`,
     layout({
@@ -546,8 +570,73 @@ Sitemap: ${SITE.baseUrl}/sitemap.xml
   );
 }
 
-function buildNotFound() {
-  const body = `${siteHeader('/')}
+/** Copy the vendored third-party games into the build output. */
+function copyThirdParty() {
+  const src = join(root, 'third-party');
+  if (!existsSync(src)) return 0;
+  rmSync(join(dist, 'third-party'), { recursive: true, force: true });
+  cpSync(src, join(dist, 'third-party'), { recursive: true });
+  return GAMES.filter((g) => g.embed).length;
+}
+
+function buildCredits() {
+  const thirdParty = GAMES.filter((g) => g.credit);
+  const original = GAMES.filter((g) => !g.credit);
+  const year = new Date().getUTCFullYear();
+
+  const body = `${siteHeader('/credits/')}
+<main class="wrap">
+  <section class="hero">
+    <span class="pill">${GAMES.length} games</span>
+    <h1>Credits</h1>
+    <p>arcadefork is built by Ayhem Kahri. Some games are original; the rest are open-source projects by other people, vendored here with their original licences and a link back to the source.</p>
+  </section>
+
+  <section class="section prose">
+    <h2>Original games</h2>
+    <p>Written for arcadefork, running on a custom TypeScript engine with no third-party runtime dependencies.</p>
+    <div class="linklist">${original
+      .map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`)
+      .join('')}</div>
+  </section>
+
+  <section class="section prose">
+    <h2>Open-source games</h2>
+    <p>Each of these is the author's original work, vendored under its own licence. The full licence text ships inside each game's folder.</p>
+    <table class="answer-table credits-table">
+      <thead><tr><th>Game</th><th>By</th><th>Licence</th><th>Source</th></tr></thead>
+      <tbody>${thirdParty
+        .map(
+          (g) =>
+            `<tr><td><a href="/games/${g.id}/">${esc(g.title)}</a></td><td>${esc(
+              g.credit.author,
+            )}</td><td>${esc(g.credit.license)}</td><td><a href="${esc(
+              g.credit.source,
+            )}" rel="noopener nofollow" target="_blank">github</a></td></tr>`,
+        )
+        .join('')}</tbody>
+    </table>
+  </section>
+
+  <section class="section prose">
+    <h2>Thanks</h2>
+    <p>Nicky Case for Trust and Loopy, Jake Gordon for Javascript Tetris, and mumuy for Pacman. Their work made this collection what it is.</p>
+  </section>
+</main>
+${siteFooter()}`;
+
+  write(
+    'credits/index.html',
+    layout({
+      title: `Credits — the games and people behind arcadefork`,
+      description: `Credits for arcadefork: original games by Ayhem Kahri plus open-source games by Nicky Case, Jake Gordon and mumuy, with licences and source links.`,
+      canonical: abs('/credits/'),
+      body,
+    }),
+  );
+}
+
+function buildNotFound() {  const body = `${siteHeader('/')}
 <main class="wrap">
   <section class="hero"><h1>Page not found</h1><p>That page does not exist. Try one of the games instead.</p></section>
   <section class="section">${gameTiles(GAMES)}</section>
@@ -590,6 +679,8 @@ function main() {
     urls.push({ loc: abs(`/games/${g.id}/`), lastmod: today });
   }
 
+  urls.push({ loc: abs('/credits/'), lastmod: today });
+
   buildDailyPages();
   urls.push({ loc: abs('/daily/'), lastmod: today });
   for (let i = -PAST_DAYS; i <= FUTURE_DAYS; i++) {
@@ -600,10 +691,14 @@ function main() {
 
   buildSitemap(urls);
   buildRobots();
+  buildCredits();
   buildNotFound();
 
+  const vendored = copyThirdParty();
   const total = urls.length;
-  console.log(`arcadefork: built ${total} URLs (${GAMES.length} games, ${CATEGORIES.length} categories)`);
+  console.log(
+    `arcadefork: built ${total} URLs (${GAMES.length} games, ${CATEGORIES.length} categories, ${vendored} vendored third-party)`,
+  );
 }
 
 main();

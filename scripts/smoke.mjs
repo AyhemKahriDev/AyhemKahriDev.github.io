@@ -60,7 +60,9 @@ const TODAY = todayISO();
 
 const PAGES = [
   { path: '/', name: 'home', expectCanvas: false },
+  { path: '/credits/', name: 'credits', expectCanvas: false },
   { path: '/categories/puzzle/', name: 'category-puzzle', expectCanvas: false },
+  { path: '/categories/arcade/', name: 'category-arcade', expectCanvas: false },
   { path: '/daily/', name: 'daily-archive', expectCanvas: false },
   { path: `/daily/${TODAY}/`, name: 'daily-puzzle', expectCanvas: false },
   { path: `/daily/${TODAY}/answers/`, name: 'daily-answers', expectCanvas: false },
@@ -68,6 +70,10 @@ const PAGES = [
   { path: '/games/merge/', name: 'game-merge', expectCanvas: true },
   { path: '/games/snake/', name: 'game-snake', expectCanvas: true },
   { path: '/games/memory/', name: 'game-memory', expectCanvas: true },
+  { path: '/games/tetris/', name: 'game-tetris', expectCanvas: false, expectIframe: true },
+  { path: '/games/pacman/', name: 'game-pacman', expectCanvas: false, expectIframe: true },
+  { path: '/games/trust/', name: 'game-trust', expectCanvas: false, expectIframe: true },
+  { path: '/games/loopy/', name: 'game-loopy', expectCanvas: false, expectIframe: true },
 ];
 
 async function main() {
@@ -94,8 +100,46 @@ async function main() {
     page.on('requestfailed', (r) => errors.push(`requestfailed: ${r.url()}`));
 
     const url = `http://localhost:${port}${target.path}`;
-    const res = await page.goto(url, { waitUntil: 'networkidle2', timeout: 20000 });
-    if (!res || res.status() >= 400) errors.push(`status ${res?.status()}`);
+    try {
+      const res = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
+      if (!res || res.status() >= 400) errors.push(`status ${res?.status()}`);
+    } catch (err) {
+      errors.push(`navigation failed: ${err.message}`);
+    }
+    await sleep(400);
+
+    if (target.expectIframe) {
+      // The vendored game must load inside the frame and actually paint.
+      const frame = page.frames().find((f) => f.url().includes('/third-party/'));
+      if (!frame) {
+        errors.push('third-party iframe never loaded');
+      } else {
+        await sleep(1200);
+        const painted = await frame.evaluate(() => {
+          const canvas = document.querySelector('canvas');
+          if (canvas) {
+            const ctx = canvas.getContext('2d');
+            if (ctx) {
+              try {
+                const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                let n = 0;
+                for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++;
+                return n;
+              } catch {
+                return -1;
+              }
+            }
+          }
+          return document.body ? document.body.innerText.length : 0;
+        });
+        if (!painted || painted === 0) {
+          errors.push(`third-party frame looks blank (${painted})`);
+        }
+        const frameErrors = [];
+        frame.on('pageerror', (e) => frameErrors.push(e.message));
+        if (frameErrors.length) errors.push(...frameErrors);
+      }
+    }
 
     if (target.path.includes('/answers/') || target.path.match(/\/daily\/\d{4}-\d{2}-\d{2}\/$/)) {
       // The puzzle board must be a square grid, not a single tall column.

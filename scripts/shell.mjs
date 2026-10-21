@@ -2,17 +2,105 @@
  * The in-game shell. Shared by the site builder and the itch.io packager so
  * both produce the same markup.
  */
-export function gameShell(game) {
-  return `<div class="game-body">
-  <div class="topbar">
-    <a class="brand" href="/">arcade<span>fork</span></a>
-    <div class="hud" id="hud"></div>
-    <button class="icon-btn" id="mute" aria-label="Toggle sound">🔊</button>
+export function gameShell(game, opts = {}) {
+  const related = opts.related ?? [];
+  const side = `
+    <aside class="game-side">
+      <div class="side-head">
+        <div class="side-title">${game.title}</div>
+        <p class="side-tag">${game.tagline}</p>
+      </div>
+      <div class="side-actions">
+        <a class="btn btn-ghost" href="/">All games</a>
+        <a class="btn btn-ghost" href="/categories/${game.category}/">More in this category</a>
+      </div>
+      ${
+        related.length
+          ? `<div class="side-block">
+        <div class="side-label">Keep playing</div>
+        <div class="side-links">${related
+          .map((g) => `<a href="/games/${g.id}/">${g.title}</a>`)
+          .join('')}</div>
+      </div>`
+          : ''
+      }
+      ${
+        opts.sponsor
+          ? `<div class="side-block"><div class="side-label">Sponsored</div>${opts.sponsor}</div>`
+          : ''
+      }
+      <p class="side-foot">Free to play · no sign-up · works on any device</p>
+    </aside>`;
+
+  return `<div class="game-layout">
+  <div class="game-main">
+    <div class="topbar">
+      <a class="brand" href="/">arcade<span>fork</span></a>
+      <div class="hud" id="hud"></div>
+      <button class="icon-btn" id="mute" aria-label="Toggle sound">🔊</button>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="game" aria-label="${game.title}"></canvas>
+      <div class="overlay" id="overlay"></div>
+    </div>
   </div>
-  <div class="stage" id="stage">
-    <canvas id="game" aria-label="${game.title}"></canvas>
-    <div class="overlay" id="overlay"></div>
+  ${side}
+</div>`;
+}
+
+/** Third-party games keep their own UI, so they get an iframe stage instead. */
+export function embedShell(game, opts = {}) {
+  const related = opts.related ?? [];
+  const side = `
+    <aside class="game-side">
+      <div class="side-head">
+        <div class="side-title">${game.title}</div>
+        <p class="side-tag">${game.tagline}</p>
+      </div>
+      <div class="side-actions">
+        <a class="btn btn-ghost" href="/">All games</a>
+        <a class="btn btn-ghost" href="${game.embed.src}" target="_blank" rel="noopener">Open full &#8599;</a>
+      </div>
+      ${
+        game.credit
+          ? `<div class="side-block">
+        <div class="side-label">Original</div>
+        <p class="side-credit">${game.credit.author} · ${game.credit.license}<br>
+        <a href="${game.credit.source}" target="_blank" rel="noopener nofollow">View source</a></p>
+      </div>`
+          : ''
+      }
+      ${
+        related.length
+          ? `<div class="side-block">
+        <div class="side-label">Keep playing</div>
+        <div class="side-links">${related
+          .map((g) => `<a href="/games/${g.id}/">${g.title}</a>`)
+          .join('')}</div>
+      </div>`
+          : ''
+      }
+      ${
+        opts.sponsor
+          ? `<div class="side-block"><div class="side-label">Sponsored</div>${opts.sponsor}</div>`
+          : ''
+      }
+      <p class="side-foot">Free to play · no sign-up · works on any device</p>
+    </aside>`;
+
+  return `<div class="game-layout">
+  <div class="game-main embed-main">
+    <div class="embed-bar">
+      <a class="brand" href="/">arcade<span>fork</span></a>
+      <span class="embed-title">${game.title}</span>
+      <a class="embed-open" href="${game.embed.src}" target="_blank" rel="noopener">Open full &#8599;</a>
+    </div>
+    <div class="embed-stage">
+      <iframe src="${game.embed.src}" title="${game.title}" loading="lazy"
+              allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+    </div>
   </div>
+  ${side}
 </div>`;
 }
 
