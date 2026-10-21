@@ -9,6 +9,7 @@ import { mkdirSync, writeFileSync, rmSync, existsSync, cpSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import content from '../content/games.json' with { type: 'json' };
+import generated from '../content/games.generated.json' with { type: 'json' };
 import sponsors from '../content/sponsors.json' with { type: 'json' };
 import { gameShell, embedShell } from './shell.mjs';
 import {
@@ -24,7 +25,8 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 
 const SITE = content.site;
-const GAMES = content.games;
+/** Curated games first, then the harvested catalogue. */
+const GAMES = [...content.games, ...(generated.games ?? [])];
 const CATEGORIES = content.categories.filter((c) => GAMES.some((g) => g.category === c.id));
 
 const PAST_DAYS = 30;
@@ -263,8 +265,11 @@ function buildHome() {
   </section>
 
   <section class="section">
-    <h2>All games</h2>
-    ${gameTiles(GAMES)}
+    <div class="section-head">
+      <h2>All games</h2>
+      <a class="section-more" href="/games/">See all ${GAMES.length} games →</a>
+    </div>
+    ${gameTiles(GAMES.slice(0, 12))}
   </section>
 
   <section class="section prose">
@@ -312,6 +317,7 @@ function buildCategory(cat) {
     ${sponsorBanner(cat.id)}
     <h2>More arcadefork games</h2>
     <div class="linklist">${GAMES.filter((g) => g.category !== cat.id)
+      .slice(0, 24)
       .map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`)
       .join('')}</div>
   </section>
@@ -331,9 +337,11 @@ ${siteFooter()}`;
 
 function buildGamePage(game) {
   const cat = CATEGORIES.find((c) => c.id === game.category);
-  const related = GAMES.filter((g) => game.related?.includes(g.id) || g.category === game.category).filter(
-    (g) => g.id !== game.id,
-  );
+  const related = GAMES.filter(
+    (g) => (game.related ?? []).includes(g.id) || g.category === game.category,
+  )
+    .filter((g) => g.id !== game.id)
+    .slice(0, 6);
   const jsonLd = [
     {
       '@context': 'https://schema.org',
@@ -636,6 +644,80 @@ ${siteFooter()}`;
   );
 }
 
+function buildGamesIndex() {
+  const total = GAMES.length;
+  const byCategory = CATEGORIES.map((c) => ({
+    ...c,
+    games: GAMES.filter((g) => g.category === c.id),
+  })).filter((c) => c.games.length);
+
+  const sections = byCategory
+    .map(
+      (c) => `<section class="section cat-block" data-category="${esc(c.id)}" data-name="${esc(
+        c.title.toLowerCase(),
+      )}">
+    <div class="section-head">
+      <h2>${esc(c.title)}</h2>
+      <span class="pill">${c.games.length}</span>
+    </div>
+    ${gameTiles(c.games)}
+  </section>`,
+    )
+    .join('');
+
+  const body = `${siteHeader('/games/')}
+<main class="wrap">
+  <section class="hero">
+    <span class="pill">${total} free games</span>
+    <h1>Every game</h1>
+    <p>${total} free browser games across ${byCategory.length} categories. No download, no sign-up, no paywall. Filter by name or category.</p>
+    <input id="game-filter" class="filter-input" type="search" placeholder="Search ${total} games…"
+           autocomplete="off" aria-label="Search games">
+    <p id="filter-status" class="filter-status"></p>
+  </section>
+  <div id="game-sections">${sections}</div>
+</main>
+${siteFooter()}
+<script>
+(function () {
+  var input = document.getElementById('game-filter');
+  var status = document.getElementById('filter-status');
+  var blocks = Array.prototype.slice.call(document.querySelectorAll('.cat-block'));
+  if (!input) return;
+  function apply() {
+    var q = input.value.trim().toLowerCase();
+    var shown = 0;
+    blocks.forEach(function (block) {
+      var tiles = Array.prototype.slice.call(block.querySelectorAll('.tile'));
+      var visible = 0;
+      tiles.forEach(function (tile) {
+        var hit = !q || tile.textContent.toLowerCase().indexOf(q) !== -1;
+        tile.style.display = hit ? '' : 'none';
+        if (hit) visible++;
+      });
+      block.style.display = visible ? '' : 'none';
+      shown += visible;
+    });
+    status.textContent = q ? shown + ' game' + (shown === 1 ? '' : 's') + ' match "' + input.value + '"' : '';
+  }
+  input.addEventListener('input', apply);
+  input.addEventListener('search', apply);
+})();
+</script>`;
+
+  write(
+    'games/index.html',
+    layout({
+      title: `All ${total} free browser games — the full arcade | ${SITE.name}`,
+      description: `Browse all ${total} free browser games on ${SITE.name}: ${byCategory
+        .map((c) => c.title.toLowerCase())
+        .join(', ')}. Instant play, no download, no sign-up.`,
+      canonical: abs('/games/'),
+      body,
+    }),
+  );
+}
+
 function buildNotFound() {  const body = `${siteHeader('/')}
 <main class="wrap">
   <section class="hero"><h1>Page not found</h1><p>That page does not exist. Try one of the games instead.</p></section>
@@ -680,6 +762,7 @@ function main() {
   }
 
   urls.push({ loc: abs('/credits/'), lastmod: today });
+  urls.push({ loc: abs('/games/'), lastmod: today });
 
   buildDailyPages();
   urls.push({ loc: abs('/daily/'), lastmod: today });
@@ -692,6 +775,7 @@ function main() {
   buildSitemap(urls);
   buildRobots();
   buildCredits();
+  buildGamesIndex();
   buildNotFound();
 
   const vendored = copyThirdParty();

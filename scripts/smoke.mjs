@@ -5,7 +5,7 @@
  *   node scripts/smoke.mjs
  */
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, readdirSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
 import { homedir } from 'node:os';
 import { join } from 'node:path';
 import { dirname } from 'node:path';
@@ -58,8 +58,19 @@ async function waitForServer() {
 
 const TODAY = todayISO();
 
+/** Every embedded (third-party) game gets checked in a real browser. */
+const contentMain = JSON.parse(
+  readFileSync(new URL('../content/games.json', import.meta.url), 'utf8'),
+);
+const contentGen = existsSync(new URL('../content/games.generated.json', import.meta.url))
+  ? JSON.parse(readFileSync(new URL('../content/games.generated.json', import.meta.url), 'utf8'))
+  : { games: [] };
+
+const embedGames = [...contentMain.games, ...contentGen.games].filter((g) => g.embed);
+
 const PAGES = [
   { path: '/', name: 'home', expectCanvas: false },
+  { path: '/games/', name: 'games-index', expectCanvas: false },
   { path: '/credits/', name: 'credits', expectCanvas: false },
   { path: '/categories/puzzle/', name: 'category-puzzle', expectCanvas: false },
   { path: '/categories/arcade/', name: 'category-arcade', expectCanvas: false },
@@ -70,10 +81,12 @@ const PAGES = [
   { path: '/games/merge/', name: 'game-merge', expectCanvas: true },
   { path: '/games/snake/', name: 'game-snake', expectCanvas: true },
   { path: '/games/memory/', name: 'game-memory', expectCanvas: true },
-  { path: '/games/tetris/', name: 'game-tetris', expectCanvas: false, expectIframe: true },
-  { path: '/games/pacman/', name: 'game-pacman', expectCanvas: false, expectIframe: true },
-  { path: '/games/trust/', name: 'game-trust', expectCanvas: false, expectIframe: true },
-  { path: '/games/loopy/', name: 'game-loopy', expectCanvas: false, expectIframe: true },
+  ...embedGames.map((g) => ({
+    path: `/games/${g.id}/`,
+    name: `embed-${g.id}`,
+    expectCanvas: false,
+    expectIframe: true,
+  })),
 ];
 
 async function main() {
@@ -93,11 +106,24 @@ async function main() {
     await page.setViewport({ width: 412, height: 860, deviceScaleFactor: 2 });
 
     const errors = [];
+    const origin = `http://localhost:${port}`;
+    // Only failures on our own origin are build failures. Vendored games
+    // loading their own analytics, ribbons or CDNs is their business.
     page.on('console', (m) => {
-      if (m.type() === 'error') errors.push(`console: ${m.text()}`);
+      const text = m.text();
+      if (m.type() !== 'error') return;
+      if (/Failed to load resource/i.test(text)) return;
+      errors.push(`console: ${text}`);
     });
     page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
-    page.on('requestfailed', (r) => errors.push(`requestfailed: ${r.url()}`));
+    page.on('requestfailed', (r) => {
+      if (r.url().startsWith(origin)) errors.push(`requestfailed: ${r.url()}`);
+    });
+    page.on('response', (r) => {
+      if (r.status() >= 400 && r.url().startsWith(origin)) {
+        errors.push(`${r.status()} ${r.url()}`);
+      }
+    });
 
     const url = `http://localhost:${port}${target.path}`;
     try {

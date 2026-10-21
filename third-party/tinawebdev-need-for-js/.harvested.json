@@ -1,0 +1,15 @@
+{
+  "repo": "tinawebdev/need-for-js",
+  "stars": 10,
+  "licence": "MIT",
+  "sizeKB": 2974,
+  "pushedAt": "2022-05-27T20:56:48Z",
+  "description": "Car Racing Game using JavaScript and Electron.js",
+  "defaultBranch": "master",
+  "owner": "tinawebdev",
+  "slug": "tinawebdev-need-for-js",
+  "dest": "third-party/tinawebdev-need-for-js",
+  "readme": "# Need For JS\nCar Racing Game written in HTML, CCS and JavaScript.\n\n## Gameplay\n### Move using:\n- `Up arrow ↑` or `W`\n- `Left arrow ←` or `A`\n- `Down arrow ↓` or `S`\n- `Right arrow →` or `D`\n\n## Demo\nYou can view a live version [here](https://tinawebdev.github.io/need-for-js/).\n\n## How to use\n* Open Terminal and change the current working directory to the location where you want the cloned directory to be made.\n* Download the repository using the [instruction](https://help.github.com/en/github/creating-cloning-and-archiving-repositories/cloning-a-repository).\n* Open the directory with the files downloaded, go to the project folder and open the `index.html` file. All done.\n\n## Contributing\nPull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.\n\n## License\nLicensed under the [MIT license](./LICENSE).\n\n## Special Thanks\nThanks to [Glo Academy](https://glo.academy/) for a free JavaScript Workshop and the game idea.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

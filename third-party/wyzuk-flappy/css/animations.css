@@ -1,0 +1,148 @@
+   FLAPPY WYZUK - DYNAMIC KEYFRAME ANIMATIONS & GLOW EFFECTS
+
+/* Neon Text Glow & Gradients */
+.gradient-neon-text {
+    background: linear-gradient(135deg, #00f2fe 0%, #4facfe 40%, #ff2a7a 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 16px rgba(0, 242, 254, 0.45));
+}
+
+.neon-text-glow {
+    text-shadow: 0 0 10px rgba(0, 242, 254, 0.8), 0 0 20px rgba(0, 242, 254, 0.4);
+}
+
+/* Ambient Floating Keyframes */
+@keyframes orbFloat1 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(80px, 60px) scale(1.15); }
+    100% { transform: translate(-40px, 100px) scale(0.95); }
+}
+
+@keyframes orbFloat2 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(-90px, -70px) scale(1.2); }
+    100% { transform: translate(50px, -40px) scale(0.9); }
+}
+
+@keyframes orbFloat3 {
+    0% { transform: translate(0, 0) scale(1); }
+    50% { transform: translate(50px, -60px) scale(1.1); }
+    100% { transform: translate(-60px, 30px) scale(1); }
+}
+
+.animate-float-slow {
+    animation: floatGentle 4s infinite ease-in-out;
+}
+
+@keyframes floatGentle {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+}
+
+.animate-pulse-gentle {
+    animation: pulseGentle 2s infinite ease-in-out;
+}
+
+@keyframes pulseGentle {
+    0%, 100% { opacity: 0.85; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.03); }
+}
+
+.animate-bounce-gentle {
+    animation: bounceGentle 1.8s infinite ease-in-out;
+}
+
+@keyframes bounceGentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* Shine Sweep Effect */
+@keyframes btnGlowShine {
+    0% { left: -100%; }
+    20%, 100% { left: 200%; }
+}
+
+/* Modal Transitions */
+.animate-scale-up {
+    animation: scaleUp 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes scaleUp {
+    from {
+        opacity: 0;
+        transform: scale(0.88);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-slide-in-up {
+    animation: slideInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Toast Animation */
+@keyframes toastIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Score Pop FX on HUD */
+.score-pop {
+    animation: scorePopKey 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes scorePopKey {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.4); color: var(--neon-gold); text-shadow: 0 0 20px var(--neon-gold); }
+    100% { transform: scale(1); }
+}
+
+/* Screen Shake Effect */
+.shake-impact {
+    animation: screenShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes screenShake {
+    10%, 90% { transform: translate3d(-3px, 2px, 0); }
+    20%, 80% { transform: translate3d(4px, -3px, 0); }
+    30%, 50%, 70% { transform: translate3d(-6px, 5px, 0); }
+    40%, 60% { transform: translate3d(6px, -4px, 0); }
+}
+
+/* Touch Ripple on Jump Button */
+.jump-ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    animation: rippleWave 0.6s linear;
+    background-color: rgba(255, 255, 255, 0.5);
+    pointer-events: none;
+}
+
+@keyframes rippleWave {
+    to {
+        transform: scale(3.5);
+        opacity: 0;
+    }
+}

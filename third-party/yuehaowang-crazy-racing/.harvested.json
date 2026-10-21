@@ -1,0 +1,15 @@
+{
+  "repo": "yuehaowang/crazy_racing",
+  "stars": 29,
+  "licence": "MIT",
+  "sizeKB": 905,
+  "pushedAt": "2019-04-24T15:07:58Z",
+  "description": "An html5 car-racing game",
+  "defaultBranch": "master",
+  "owner": "yuehaowang",
+  "slug": "yuehaowang-crazy-racing",
+  "dest": "third-party/yuehaowang-crazy-racing",
+  "readme": "# Crazy Racing\nAn html5 car-racing game.\n\n- **Author:** Yuehao Wang\n- **Game Engine:** [lufylegend.js](http://lufylegend.com/lufylegend)\n- Materials come from the Internet and I am here to say thanks to those contributors.\n- Support main-stream web browsers, iOS and Android.\n\n## Play Online\nURL: http://yuehaowang.github.io/games/crazy_racing/index.html\n\n## Screenshot\n**Game Page:**\n\n![Screenshot](http://yuehaowang.github.io/images/demo/crazy_racing1.png)\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "parzibyte/hangman-javascript",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 135,
+  "pushedAt": "2020-09-24T20:08:34Z",
+  "description": "Hangman game with JavaScript, Vue.js and Bootstrap",
+  "defaultBranch": "master",
+  "owner": "parzibyte",
+  "slug": "parzibyte-hangman-javascript",
+  "dest": "third-party/parzibyte-hangman-javascript",
+  "readme": "# hangman-javascript\n Hangman game with JavaScript, Vue.js and Bootstrap\n\n# Hangman ported in JavaScript\n\n**El ahorcado o hangman, en su versión web**  programado con JavaScript; totalmente gratuito y open source.\n\n[![](https://parzibyte.me/blog/wp-content/uploads/2020/09/El-ahorcado-en-JavaScript-Programacion-de-juego.png)](https://parzibyte.me/blog/wp-content/uploads/2020/09/El-ahorcado-en-JavaScript-Programacion-de-juego.png)\n\nEl ahorcado en JavaScript – Programación de juego\n\nEl juego está escrito con el lenguaje JavaScript, usando Vue.js y Bootstrap. Cuenta con:\n\n-   Gestión de palabras. Puedes agregar y eliminar palabras para jugar al ahorcado\n-   Elección de palabra aleatoria: cada vez que juegas se selecciona una palabra aleatoria del banco de palabras que el usuario ha registrado\n-   Botones con letras para adivinar la palabra, mismos que se deshabilitan una vez que se ha intentado esa letra\n-   Imagen del ahorcado, misma que cambia con el número de intentos\n-   Juego totalmente responsivo (adaptable a teléfonos, tabletas, etcétera)\n\n## Tutorial\nAquí: https://parzibyte.me/blog/2020/09/24/ahorcado-juego-javascript/\n\n## Demo\nhttps://parzibyte.github.io/hangman-javascript/index.html",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

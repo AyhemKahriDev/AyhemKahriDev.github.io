@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JavaScript Breakout</title>
+    <meta property="og:title" content="JavaScript Breakout" />
+    <meta name="description" content="Breakout game made with JavaScript." />
+    <meta name="twitter:description" content="Breakout game made with Javascript." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@melcor76" />
+    <meta name="keywords" content="JavaScript, Breakout, Game" />
+    <meta name="author" content="Michael Karén" />
+    <meta
+        property="og:image"
+        content="https://affectionate-shockley-c3f5d7.netlify.app/assets/share-image-large.png"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="./favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicons/favicon-16x16.png">
+    <link rel="manifest" href="./favicons/site.webmanifest">
+    <link rel="shortcut icon" href="./favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-config" content="./favicons/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+    <link href="https://fonts.googleapis.com/css?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    </head>
+<body>
+    <div style="display: flex; justify-content: space-between;">
+        <h1 class="title">Breakout</h1>
+        <div class="controls">
+            <p class="controls">Play with Arrow keys or Mouse</p>
+            <p>Music: M</p>
+            <p>SFX: S</p>
+            <p>Volume: ↑ ↓</p>
+            <p>Start: Space</p>
+        </div>
+
+        <a href="https://github.com/melcor76/js-breakout" target="_blank">
+            <img src="assets/github-32px.png" alt="github logo" />
+        </a>    
+    </div>
+    
+    <canvas id="breakout" width="800" height="600"></canvas>
+    <br/>
+    <button id="play-button" onclick="play()">START</button>
+
+    <script type="text/javascript" src="breakout.js"></script>
+</body>
+</html>

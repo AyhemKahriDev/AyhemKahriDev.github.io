@@ -1,0 +1,15 @@
+{
+  "repo": "softgandhi/image-puzzle-js",
+  "stars": 22,
+  "licence": "MIT",
+  "sizeKB": 796,
+  "pushedAt": "2020-07-30T21:33:37Z",
+  "description": "Image Puzzle game in pure JavaScript",
+  "defaultBranch": "master",
+  "owner": "softgandhi",
+  "slug": "softgandhi-image-puzzle-js",
+  "dest": "third-party/softgandhi-image-puzzle-js",
+  "readme": "# image-puzzle-js\nImage Puzzle game in pure JavaScript.\nDetailed description and documentation available at: https://www.codeproject.com/Articles/810978/Image-Puzzle-A-Html-Game\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

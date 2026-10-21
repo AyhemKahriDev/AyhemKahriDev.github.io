@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Flappy Wyzuk – Premium Browser Game</title>
+    <meta name="description" content="Flappy Wyzuk - A modern, high-octane indie browser game featuring neon glassmorphism UI, 12 unique birds, 11 parallax worlds, procedural synth audio, and progressive difficulty.">
+    <meta name="author" content="Wyzuk">
+    <meta name="theme-color" content="#0a0c16">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Flappy Wyzuk – Premium Browser Game">
+    <meta property="og:description" content="Experience modern arcade gaming with neon visuals, dynamic parallax worlds, customizable birds, and butter-smooth 60+ FPS gameplay.">
+    <meta property="og:url" content="https://github.com/wyzuk/flappy">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/glassmorphism.css">
+    <link rel="stylesheet" href="css/animations.css">
+</head>
+<body>
+    <div class="ambient-glow-wrapper">
+        <div class="ambient-orb orb-1"></div>
+        <div class="ambient-orb orb-2"></div>
+        <div class="ambient-orb orb-3"></div>
+        <div class="light-ray ray-1"></div>
+        <div class="light-ray ray-2"></div>
+    </div>
+
+    <main id="app-container" class="app-container">
+        
+        <div id="game-stage" class="game-stage">
+            <canvas id="game-canvas"></canvas>
+            <div id="screen-shake-layer" class="screen-shake-layer"></div>
+        </div>
+
+        <header id="game-hud" class="game-hud hidden" aria-label="Game HUD">
+            <div class="hud-top-bar">
+                <div class="hud-left">
+                    <div class="hud-badge hud-score-badge">
+                        <span class="hud-label">SCORE</span>
+                        <span id="hud-current-score" class="hud-value neon-text-glow">0</span>
+                    </div>
+                    <div class="hud-badge hud-best-badge">
+                        <span class="hud-label">BEST</span>
+                        <span id="hud-best-score" class="hud-value">0</span>
+                    </div>
+                </div>
+
+                <div class="hud-center">
+                    <div id="hud-difficulty-bar" class="hud-difficulty-indicator" title="Difficulty Flow">
+                        <div id="hud-diff-progress" class="hud-diff-progress"></div>
+                    </div>
+                </div>
+
+                <div class="hud-right">
+                    <button id="btn-quick-mute" class="hud-icon-btn glass-btn-icon" title="Toggle Sound (M)" aria-label="Toggle Sound">
+                        <svg class="icon-svg sound-on-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                        </svg>
+                        <svg class="icon-svg sound-off-icon hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                            <line x1="23" y1="9" x2="17" y2="15"></line>
+                            <line x1="17" y1="9" x2="23" y2="15"></line>
+                        </svg>
+                    </button>
+                    <button id="btn-quick-pause" class="hud-icon-btn glass-btn-icon" title="Pause Game (ESC / P)" aria-label="Pause Game">
+                        <svg class="icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <rect x="6" y="4" width="4" height="16" rx="1"></rect>
+                            <rect x="14" y="4" width="4" height="16" rx="1"></rect>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <div id="hud-ready-hint" class="hud-ready-hint animate-pulse-gentle">
+                <div class="hint-icon-wrapper">
+                    <svg class="hint-tap-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+                        <circle cx="12" cy="12" r="4"></circle>
+                    </svg>
+                </div>
+                <span id="hint-text" class="hint-text">TAP, CLICK OR PRESS SPACE TO FLAP</span>
+            </div>
+        </header>
+
+        <div id="mobile-jump-controls" class="mobile-jump-controls hidden" aria-label="Mobile Jump Control">
+            <button id="mobile-jump-btn" class="mobile-jump-btn glass-touch-button" aria-label="Jump Flap">
+                <span class="jump-ripple-container"></span>
+                <div class="jump-btn-inner">
+                    <svg class="jump-wing-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M12 19V5M5 12l7-7 7 7"/>
+                    </svg>
+                    <span class="jump-btn-text">FLAP</span>
+                </div>
+            </button>
+        </div>
+
+        <section id="screen-main-menu" class="ui-screen active" aria-label="Main Menu">
+            <div class="menu-content-wrapper">
+                <div class="menu-branding">
+                    <div class="creator-badge animate-float-slow">
+                        <span class="badge-dot"></span>
+                        <span>Made by <strong class="glow-author">Wyzuk</strong></span>
+                    </div>
+                    <h1 class="game-logo">
+                        <span class="logo-text-top">FLAPPY</span>
+                        <span class="logo-text-bottom gradient-neon-text">WYZUK</span>
+                    </h1>
+                    <p class="game-tagline">Next-Gen Neon Arcade Flapper</p>
+                </div>
+
+                <div class="menu-hero-card glass-panel" id="hero-preview-card">
+                    <div class="hero-preview-stage">
+                        <canvas id="menu-bird-preview-canvas" width="160" height="130"></canvas>
+                    </div>
+                    <div class="hero-character-info">
+                        <span class="character-pill" id="menu-selected-bird-name">Classic Gold</span>
+                        <span class="world-pill" id="menu-selected-theme-name">Sunny Sky</span>
+                    </div>
+                </div>
+
+                <div class="menu-action-buttons">
+                    <button id="btn-play" class="btn btn-primary btn-glow btn-large">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor">
+                            <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <span>PLAY GAME</span>
+                    </button>
+
+                    <div class="menu-grid-buttons">
+                        <button id="btn-open-birds" class="btn btn-glass">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="m4.93 4.93 4.24 4.24M14.83 9.17l4.24-4.24M14.83 14.83l4.24 4.24M9.17 14.83l-4.24 4.24"></path>
+                            </svg>
+                            <span>Bird Skins</span>
+                        </button>
+                        <button id="btn-open-themes" class="btn btn-glass">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+                                <circle cx="9" cy="9" r="2"></circle>
+                                <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+                            </svg>
+                            <span>Worlds</span>
+                        </button>
+                        <button id="btn-open-leaderboard" class="btn btn-glass">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H7a1 1 0 0 1-1-1v-4.34a8 8 0 0 1 12 0V17c0 .55-.45 1-1 1h-2a1 1 0 0 1-1-1v-2.34M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/>
+                            </svg>
+                            <span>High Score</span>
+                        </button>
+                        <button id="btn-open-settings" class="btn btn-glass">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="3"></circle>
+                                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                            </svg>
+                            <span>Settings</span>
+                        </button>
+                    </div>
+                </div>
+
+                <footer class="menu-footer">
+                    <a href="https://github.com/wyzuk/flappy" target="_blank" rel="noopener noreferrer" class="footer-link glass-pill-btn" title="View Repository on GitHub">
+                        <svg class="github-icon-svg" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+                        </svg>
+                        <span>wyzuk/flappy</span>
+                    </a>
+                    <button id="btn-open-credits" class="footer-link glass-pill-btn" title="View Credits & Info">
+                        <svg class="btn-icon-tiny" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="16" x2="12" y2="12"></line>
+                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                        </svg>
+                        <span>Credits</span>
+                    </button>
+                </footer>
+            </div>
+        </section>
+
+        <section id="modal-birds" class="ui-modal" aria-hidden="true" role="dialog" aria-label="Select Bird Character">
+            <div class="modal-backdrop"></div>
+            <div class="modal-container glass-modal-card">
+                <header class="modal-header">
+                    <div class="modal-title-group">
+                        <span class="modal-subtitle">CHOOSE YOUR AVIATOR</span>
+                        <h2 class="modal-title">Select Bird</h2>
+                    </div>
+                    <button class="modal-close-btn glass-btn-icon" data-close-modal="modal-birds" aria-label="Close Bird Selection">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </header>
+
+                <div class="bird-selection-body">
+                    <div id="birds-grid-container" class="birds-grid"></div>
+                </div>
+
+                <footer class="modal-footer">
+                    <div class="selected-bird-preview-info">
+                        <span id="bird-detail-desc" class="bird-detail-desc">Master the skies with unique energy trails and flight agility.</span>
+                    </div>
+                    <button class="btn btn-primary" data-close-modal="modal-birds">Equip & Confirm</button>
+                </footer>
+            </div>
+        </section>
+
+        <section id="modal-themes" class="ui-modal" aria-hidden="true" role="dialog" aria-label="Select World Theme">
+            <div class="modal-backdrop"></div>
+            <div class="modal-container glass-modal-card">
+                <header class="modal-header">
+                    <div class="modal-title-group">
+                        <span class="modal-subtitle">PARALLAX ATMOSPHERES</span>
+                        <h2 class="modal-title">Select World</h2>
+                    </div>
+                    <button class="modal-close-btn glass-btn-icon" data-close-modal="modal-themes" aria-label="Close World Selection">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </header>
+
+                <div class="themes-selection-body">
+                    <div id="themes-grid-container" class="themes-grid"></div>
+                </div>
+
+                <footer class="modal-footer">
+                    <div class="selected-theme-preview-info">
+                        <span id="theme-detail-desc" class="theme-detail-desc">Explore multi-layer parallax scrolling with live dynamic weather.</span>
+                    </div>
+                    <button class="btn btn-primary" data-close-modal="modal-themes">Explore World</button>
+                </footer>
+            </div>
+        </section>
+
+        <section id="modal-leaderboard" class="ui-modal" aria-hidden="true" role="dialog" aria-label="High Score and Stats">
+            <div class="modal-backdrop"></div>
+            <div class="modal-container glass-modal-card">
+                <header class="modal-header">
+                    <div class="modal-title-group">
+                        <span class="modal-subtitle">LOCAL RECORDS</span>
+                        <h2 class="modal-title">Flight Statistics</h2>
+                    </div>
+                    <button class="modal-close-btn glass-btn-icon" data-close-modal="modal-leaderboard" aria-label="Close Stats">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </header>
+
+                <div class="stats-body">
+                    <div class="stats-hero-banner glass-panel">
+                        <div class="stats-trophy-glow">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="trophy-icon">
+                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6M18 9h1.5a2.5 2.5 0 0 0 0-5H18M4 22h16M10 14.66V17c0 .55-.45 1-1 1H7a1 1 0 0 1-1-1v-4.34a8 8 0 0 1 12 0V17c0 .55-.45 1-1 1h-2a1 1 0 0 1-1-1v-2.34M12 2a4 4 0 0 1 4 4v2a4 4 0 0 1-8 0V6a4 4 0 0 1 4-4z"/>
+                            </svg>
+                        </div>
+                        <div class="stats-hero-text">
+                            <span class="stat-banner-label">ALL-TIME BEST SCORE</span>
+                            <span id="stats-best-score-display" class="stat-banner-value gradient-neon-text">0</span>
+                        </div>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card glass-panel">
+                            <span class="stat-card-title">Games Played</span>
+                            <span id="stat-total-games" class="stat-card-num">0</span>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <span class="stat-card-title">Total Wing Flaps</span>
+                            <span id="stat-total-flaps" class="stat-card-num">0</span>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <span class="stat-card-title">Pipes Cleared</span>
+                            <span id="stat-total-pipes" class="stat-card-num">0</span>
+                        </div>
+                        <div class="stat-card glass-panel">
+                            <span class="stat-card-title">Rank / Tier</span>
+                            <span id="stat-rank-tier" class="stat-card-badge">Rookie Flapper</span>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="modal-footer">
+                    <button class="btn btn-glass" id="btn-reset-stats">Reset Records</button>
+                    <button class="btn btn-primary" data-close-modal="modal-leaderboard">Back to Menu</button>
+                </footer>
+            </div>
+        </section>
+
+        <section id="modal-settings" class="ui-modal" aria-hidden="true" role="dialog" aria-label="Game Settings">
+            <div class="modal-backdrop"></div>
+            <div class="modal-container glass-modal-card">
+                <header class="modal-header">
+                    <div class="modal-title-group">
+                        <span class="modal-subtitle">CUSTOMIZE EXPERIENCE</span>
+                        <h2 class="modal-title">Settings</h2>
+                    </div>
+                    <button class="modal-close-btn glass-btn-icon" data-close-modal="modal-settings" aria-label="Close Settings">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </header>
+
+                <div class="settings-body">
+                    <div class="setting-group glass-panel">
+                        <h3 class="setting-group-title">Audio & Sound Synthesizer</h3>
+                        
+                        <div class="setting-row">
+                            <label for="setting-master-sound" class="setting-label">
+                                <span>Master Sound</span>
+                                <small>Toggle all game sound effects</small>
+                            </label>
+                            <input type="checkbox" id="setting-master-sound" class="toggle-switch" checked>
+                        </div>
+
+                        <div class="setting-row">
+                            <label for="setting-sfx-volume" class="setting-label">
+                                <span>SFX Volume</span>
+                                <small>Flap, Point chime, Impact sounds</small>
+                            </label>
+                            <div class="range-slider-wrap">
+                                <input type="range" id="setting-sfx-volume" min="0" max="100" value="80" class="neon-slider">
+                                <span id="val-sfx-vol" class="slider-val">80%</span>
+                            </div>
+                        </div>
+
+                        <div class="setting-row">
+                            <label for="setting-ambient-music" class="setting-label">
+                                <span>Procedural Synth Music</span>
+                                <small>Real-time harmonic chill synthesizer</small>
+                            </label>
+                            <input type="checkbox" id="setting-ambient-music" class="toggle-switch" checked>
+                        </div>
+                    </div>
+
+                    <div class="setting-group glass-panel">
+                        <h3 class="setting-group-title">Visual Polish & FX</h3>
+
+                        <div class="setting-row">
+                            <label for="setting-screen-shake" class="setting-label">
+                                <span>Screen Shake on Crash</span>
+                                <small>Dynamic kinetic impact feedback</small>
+                            </label>
+                            <input type="checkbox" id="setting-screen-shake" class="toggle-switch" checked>
+                        </div>
+
+                        <div class="setting-row">
+                            <label for="setting-particle-density" class="setting-label">
+                                <span>Particle Density</span>
+                                <small>Trail sparks, score bursts, weather</small>
+                            </label>
+                            <select id="setting-particle-density" class="neon-select">
+                                <option value="ultra">Ultra (Max Glow)</option>
+                                <option value="high" selected>High (Balanced)</option>
+                                <option value="medium">Medium</option>
+                                <option value="low">Low (Performance)</option>
+                            </select>
+                        </div>
+
+                        <div class="setting-row">
+                            <label for="setting-reduced-motion" class="setting-label">
+                                <span>Reduced Motion</span>
+                                <small>Minimize intense camera motions</small>
+                            </label>
+                            <input type="checkbox" id="setting-reduced-motion" class="toggle-switch">
+                        </div>
+                    </div>
+
+                    <div class="setting-group glass-panel">
+                        <h3 class="setting-group-title">Control Mapping</h3>
+                        <div class="control-key-list">
+                            <div class="control-key-item"><kbd>SPACE</kbd> / <kbd>↑</kbd> / <kbd>CLICK</kbd> <span>Flap & Jump</span></div>
+                            <div class="control-key-item"><kbd>ESC</kbd> / <kbd>P</kbd> <span>Pause / Resume</span></div>
+                            <div class="control-key-item"><kbd>M</kbd> <span>Mute / Unmute Audio</span></div>
+                            <div class="control-key-item"><span class="badge-tag">MOBILE</span> <span>Glow Touch Button</span></div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="modal-footer">
+                    <button class="btn btn-primary" data-close-modal="modal-settings">Save & Close</button>
+                </footer>
+            </div>
+        </section>
+
+        <section id="modal-credits" class="ui-modal" aria-hidden="true" role="dialog" aria-label="Game Credits and Repository">
+            <div class="modal-backdrop"></div>
+            <div class="modal-container glass-modal-card">
+                <header class="modal-header">
+                    <div class="modal-title-group">
+                        <span class="modal-subtitle">ABOUT THE GAME</span>
+                        <h2 class="modal-title">Credits & Info</h2>
+                    </div>
+                    <button class="modal-close-btn glass-btn-icon" data-close-modal="modal-credits" aria-label="Close Credits">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                </header>
+
+                <div class="credits-body">
+                    <div class="creator-card glass-panel">
+                        <div class="creator-avatar-glow">
+                            <span class="creator-initial">W</span>
+                        </div>
+                        <div class="creator-info">
+                            <span class="credit-role">CREATOR & DEVELOPER</span>
+                            <h3 class="creator-name">Made by Wyzuk</h3>
+                            <p class="creator-bio">Crafting modern, high-performance web experiences and indie games.</p>
+                            <div class="creator-links">
+                                <a href="https://github.com/wyzuk" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-glass">
+                                    <svg class="github-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                                    <span>Follow @wyzuk</span>
+                                </a>
+                                <a href="https://github.com/wyzuk/flappy" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-primary">
+                                    <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line></svg>
+                                    <span>Repository</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tech-stack-section glass-panel">
+                        <span class="tech-title">Engine & Technologies</span>
+                        <div class="tech-badges">
+                            <span class="tech-badge">HTML5 Canvas 2D</span>
+                            <span class="tech-badge">Web Audio API Synth</span>
+                            <span class="tech-badge">Vanilla ES6+ Modules</span>
+                            <span class="tech-badge">Glassmorphism UI</span>
+                            <span class="tech-badge">High-DPI Retina Ready</span>
+                            <span class="tech-badge">Responsive Physics</span>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="modal-footer">
+                    <button class="btn btn-primary" data-close-modal="modal-credits">Close</button>
+                </footer>
+            </div>
+        </section>
+
+        <section id="screen-pause-menu" class="ui-screen" aria-label="Pause Menu">
+            <div class="pause-card glass-modal-card animate-scale-up">
+                <div class="pause-header">
+                    <span class="pause-tag">GAME PAUSED</span>
+                    <h2 class="pause-title">Take a Breath</h2>
+                </div>
+
+                <div class="pause-score-summary glass-panel">
+                    <div class="pause-score-item">
+                        <span class="pause-lbl">CURRENT SCORE</span>
+                        <span id="pause-score-val" class="pause-val neon-text-glow">0</span>
+                    </div>
+                    <div class="pause-score-item">
+                        <span class="pause-lbl">BEST SCORE</span>
+                        <span id="pause-best-val" class="pause-val">0</span>
+                    </div>
+                </div>
+
+                <div class="pause-actions">
+                    <button id="btn-resume-game" class="btn btn-primary btn-large btn-glow">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                        <span>Resume Game</span>
+                    </button>
+                    <button id="btn-restart-from-pause" class="btn btn-glass">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                        <span>Restart Run</span>
+                    </button>
+                    <button id="btn-pause-to-settings" class="btn btn-glass">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                        <span>Settings</span>
+                    </button>
+                    <button id="btn-pause-to-menu" class="btn btn-glass">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                        <span>Back to Main Menu</span>
+                    </button>
+                </div>
+
+                <div class="pause-footer-credits">
+                    <a href="https://github.com/wyzuk/flappy" target="_blank" rel="noopener noreferrer" class="link-subtle">
+                        <span>flappy / Wyzuk</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <section id="screen-game-over" class="ui-screen" aria-label="Game Over Screen">
+            <div class="game-over-card glass-modal-card animate-slide-in-up">
+                <div id="game-over-new-best-badge" class="new-best-ribbon hidden animate-bounce-gentle">
+                    <span class="ribbon-sparkle">✨</span>
+                    <span>NEW PERSONAL BEST!</span>
+                    <span class="ribbon-sparkle">✨</span>
+                </div>
+
+                <header class="game-over-header">
+                    <span class="game-over-tag">RUN TERMINATED</span>
+                    <h2 class="game-over-title">Flight Summary</h2>
+                </header>
+
+                <div class="game-over-scoreboard glass-panel">
+                    <div class="score-display-item">
+                        <span class="score-lbl">FINAL SCORE</span>
+                        <span id="game-over-final-score" class="score-num-huge gradient-neon-text count-up-target">0</span>
+                    </div>
+
+                    <div class="score-meta-row">
+                        <div class="score-meta-col">
+                            <span class="meta-lbl">HIGH SCORE</span>
+                            <span id="game-over-high-score" class="meta-val">0</span>
+                        </div>
+                        <div class="score-meta-col">
+                            <span class="meta-lbl">MEDAL TIER</span>
+                            <div id="game-over-medal" class="medal-badge medal-bronze">
+                                <span id="medal-icon">🥉</span>
+                                <span id="medal-name">Bronze Aviator</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-over-actions">
+                    <button id="btn-play-again" class="btn btn-primary btn-large btn-glow">
+                        <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path><path d="M3 3v5h5"></path></svg>
+                        <span>Play Again</span>
+                    </button>
+
+                    <div class="game-over-sub-actions">
+                        <button id="btn-share-score" class="btn btn-glass">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
+                            <span>Share Score</span>
+                        </button>
+                        <button id="btn-game-over-menu" class="btn btn-glass">
+                            <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                            <span>Return to Menu</span>
+                        </button>
+                    </div>
+                </div>
+
+                <footer class="game-over-footer">
+                    <div class="footer-brand-item">
+                        <span>Made by <strong>Wyzuk</strong></span>
+                    </div>
+                    <a href="https://github.com/wyzuk/flappy" target="_blank" rel="noopener noreferrer" class="footer-repo-link" title="GitHub Repository">
+                        <svg class="github-icon-svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                        <span>github.com/wyzuk/flappy</span>
+                    </a>
+                </footer>
+            </div>
+        </section>
+
+        <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+    </main>
+
+    <script src="js/storage.js"></script>
+    <script src="js/audio.js"></script>
+    <script src="js/particles.js"></script>
+    <script src="js/birds.js"></script>
+    <script src="js/backgrounds.js"></script>
+    <script src="js/physics.js"></script>
+    <script src="js/renderer.js"></script>
+    <script src="js/ui.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
