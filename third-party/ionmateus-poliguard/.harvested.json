@@ -1,0 +1,14 @@
+{
+  "repo": "IonMateus/poliguard",
+  "stars": 13,
+  "licence": "MIT",
+  "sizeKB": 199,
+  "pushedAt": "2025-09-19T23:24:47Z",
+  "description": "PoliGuard is an RTS tower defense browser game. Fully open to contributions! 🏰🟧",
+  "defaultBranch": "main",
+  "owner": "IonMateus",
+  "slug": "ionmateus-poliguard",
+  "dest": "third-party/ionmateus-poliguard",
+  "readme": "",
+  "licenceFile": "LICENSE"
+}

@@ -1,0 +1,14 @@
+{
+  "repo": "creatorrr/browser-bricks",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 632,
+  "pushedAt": "2015-03-30T06:21:27Z",
+  "description": "Browser pong inspired bricks game",
+  "defaultBranch": "master",
+  "owner": "creatorrr",
+  "slug": "creatorrr-browser-bricks",
+  "dest": "third-party/creatorrr-browser-bricks",
+  "readme": "browser-bricks\n==============\n\n[Browser pong](http://stewd.io/pong/) inspired breakout game.\n\nGoals\n-----\n\n * No library, plain old DOM APIs\n * As simple and readble as possible\n\n",
+  "licenceFile": "LICENSE.md"
+}

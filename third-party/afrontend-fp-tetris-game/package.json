@@ -1,0 +1,59 @@
+{
+  "name": "fp-tetris-game",
+  "version": "0.1.3",
+  "description": "자바스크립트로 만든 tetris 게임",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/afrontend/fp-tetris-game.git"
+  },
+  "homepage": "https://afrontend.github.io/fp-tetris-game",
+  "keywords": [
+    "game",
+    "javascript",
+    "tetris"
+  ],
+  "author": "<autoscripts@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/afrontend/fp-tetris-game/issues"
+  },
+  "private": true,
+  "dependencies": {
+    "fp-tetris": "^0.0.23",
+    "keyboard-handler": "^3.0.7",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.2",
+    "@vitejs/plugin-react": "^6.0.2",
+    "gh-pages": "^6.3.0",
+    "jsdom": "^29.1.1",
+    "playwright": "^1.61.1",
+    "vite": "^8.0.14",
+    "vitest": "^4.1.7"
+  },
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "vitest run",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
+    "screenshot": "node scripts/screenshot.js",
+    "demo": "node scripts/demo.js"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
+}

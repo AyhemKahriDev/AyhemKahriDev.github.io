@@ -1,0 +1,14 @@
+{
+  "repo": "sahilatahar/Car-Game",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 962,
+  "pushedAt": "2023-03-28T13:06:32Z",
+  "description": "Car game using pure HTML, CSS, Vannila JavaScript.",
+  "defaultBranch": "main",
+  "owner": "sahilatahar",
+  "slug": "sahilatahar-car-game",
+  "dest": "third-party/sahilatahar-car-game",
+  "readme": "# Car Game\n\n### Car Game is a simple web-based game created using HTML, CSS, and JavaScript. The goal of the game is to control a car and avoid obstacles on the road. The game is designed to be fun and addictive, and it's suitable for players of all ages.\n\n## How To Play\n#### To play the game, simply use the arrow keys on your keyboard to control the car. You need to avoid other cars on the road. If you hit an car, the game will be over, and you'll need to restart.\n\n## Technologies used\n#### The game was created using the following technologies:\n[![My Skills](https://skillicons.dev/icons?i=html,css,javascript&perline=3)](https://github.com/SahilAtahar/Car-Game)\n\n## Click here to play: [Play Now](https://sahilatahar.github.io/Car-Game/)\n\n## :camera: Image Preview\n<img src=\"./images/preview1.png\" alt=\"preview1\">\n<img src=\"./images/preview2.png\" alt=\"preview2\">\n\n## Other Projects\n### Here are some other projects that you might be interested in:\n### (1) [New Portfolio](https://github.com/SahilAtahar/newportfolio)\n### (2) [18+ HTML,CSS,JavaScript Projects](https://github.com/SahilAtahar/HTML-CSS-JavaScript)\n### (3) [Random Joke Generator](https://github.com/SahilAtahar/Random-Joke-Generator)\n### [more](https://github.com/SahilAtahar)\n",
+  "licenceFile": "LICENSE"
+}

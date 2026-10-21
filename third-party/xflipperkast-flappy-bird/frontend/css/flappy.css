@@ -1,0 +1,240 @@
+@charset "utf-8";
+
+#gameBox {
+    position: relative;
+    height: 480px;
+    width: 640px;
+    border: 1px solid black;
+    border-bottom: 0px solid black;
+    margin: 0 auto;
+    overflow: hidden;
+    background-image: url(../images/background.png);
+}
+
+#scoreContainer {
+    z-index: 4;
+    width: calc(100% - 2px);
+    height: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	font-size: 2px;
+}
+
+#score {
+    color: white;
+    --borderColor: black;
+    font-size: 50px;
+    text-shadow: 3px 0 var(--borderColor), -3px 0 var(--borderColor), 0 3px var(--borderColor), 0 -3px var(--borderColor),
+             2px 2px var(--borderColor), -2px -2px var(--borderColor), 2px -2px var(--borderColor), -2px 2px var(--borderColor);
+    z-index: 4;
+}
+
+#background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+#bird {
+    position: absolute;
+    width: 31px;
+    height: 26px;
+    z-index: 2;
+}
+
+#gameOver{
+    position: inherit;
+    left: 40%;
+    top: 46%;
+    text-align: center;
+    font-size: 18px;
+}
+
+#getReady {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: none;
+}
+
+.obstacleTop, .obstacleBottom {
+    position: absolute;
+    background: #00000000;
+    background-size: 50px 290px;
+    width: 50px;
+    z-index: 3;
+}
+
+.obstacleTop {
+    background-image: url(../images/Pipes/top.png);
+    transform: rotate(180deg);
+}
+
+.obstacleBottom {
+    background-image: url(../images/Pipes/bottom.png);
+}
+
+#medalBox {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent black */
+    z-index: 1000; /* this should be higher than the z-index of any other element on the page */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#medalContainer {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    margin-top: 30%;
+    width: 40%;
+    margin-left: 24%;
+}
+
+#goldMedal, #silverMedal, #bronzeMedal {
+    display: none;
+    width: 50px; /* You can adjust this value to change the size of the medals */
+    height: 50px; /* You can adjust this value to change the size of the medals */
+}
+
+#goldMedal {
+    background-image: url(../images/medals/gold.png);
+}
+
+#silverMedal {
+    background-image: url(../images/medals/silver.png);
+}
+
+#bronzeMedal {
+    background-image: url(../images/medals/bronze.png);
+}
+
+.coin {
+    position: absolute;
+    background-image: url(../images/coin.gif);
+    height: 40px;
+    width: 40px;
+    background-size: 80px 80px;
+    background-position: center center;
+    z-index: 1;
+}
+
+#groundBox {
+    position: relative;
+    top: 0;
+    width: 640px;
+    height: 48px;
+    margin: 0 auto;
+    overflow: hidden;
+    border: 1px solid black;
+    border-top: 0px solid black;
+}
+
+.ground {
+    position: absolute;
+    top: 0px;
+    background-image: url(../images/floor.png);
+    background-size: 655px 48px;
+    width: 650px;
+    height: 48px;
+    z-index: 10;
+}
+
+#groundShadow {
+    position: absolute;
+    top: 0px;
+    height: 48px;
+    width: 640px;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+}
+
+#touchBox {
+    background-color: lightgray;
+    width: 640px;
+    height: 300px;
+    position: relative;
+    top: 0;
+    margin: 0 auto;
+    border: 1px solid black;
+    text-align: center;
+    display: none;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+input:checked + .slider {
+    background-color: #2196F3;
+}
+  
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+  
+.slider.round:before {
+    border-radius: 50%;
+}
+
+#toggleContainer {
+    width: 100vw;
+    text-align: center;
+    margin: 10px auto 16px auto;
+}
+
+#toggleContainer p {
+    padding-bottom: 6px;
+}

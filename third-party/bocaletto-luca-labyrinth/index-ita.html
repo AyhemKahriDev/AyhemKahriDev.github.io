@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maze Explorer</title>
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Maze Explorer</h1>
+  </header>
+  <div class="container">
+    <div class="controls">
+      <button onclick="newMaze()">Genera Nuovo Labirinto</button>
+      <button onclick="resetPath()">Resetta Percorso</button>
+      <p>
+        Usa i tasti W, A, S, D per tracciare il percorso (la linea blu).<br>
+        Il punto di <strong>Inizio</strong> è evidenziato in <span style="color:green; font-weight:bold;">verde</span> e il punto di <strong>Fine</strong> in <span style="color:red; font-weight:bold;">rosso</span>.
+      </p>
+    </div>
+    <canvas id="mazeCanvas" width="600" height="600"></canvas>
+    <div id="message"></div>
+  </div>
+  <footer>
+    Bocaletto Luca
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>

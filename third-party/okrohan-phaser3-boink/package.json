@@ -1,0 +1,24 @@
+{
+  "name": "PhasedCross",
+  "version": "1.0.0",
+  "description": "Road crossing game built on Phaser3/Typescript",
+  "main": "index.js",
+  "author": "okrohan",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "phaser": "^3.22.0"
+  },
+  "scripts": {
+    "build": "rm -rf dist && webpack --config webpack.config.prod.js --progress",
+    "dev": "rm -rf dist && webpack-dev-server --config webpack.config.js --progress"
+  },
+  "devDependencies": {
+    "copy-webpack-plugin": "^5.1.1",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}

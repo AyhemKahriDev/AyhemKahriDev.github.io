@@ -1,0 +1,14 @@
+{
+  "repo": "Jatin-8898/FruitNinjaGame",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 225,
+  "pushedAt": "2020-06-07T12:17:03Z",
+  "description": "A resemblance of the Fruit Ninja Game using JavaScript :pineapple: :grapes: :watermelon:",
+  "defaultBranch": "master",
+  "owner": "Jatin-8898",
+  "slug": "jatin-8898-fruitninjagame",
+  "dest": "third-party/jatin-8898-fruitninjagame",
+  "readme": "# FruitNinjaGame\nA resemblance of the Fruit Ninja Game using JavaScript\n\n\n# Check it Out here\nhttps://jatin-8898.github.io/FruitNinjaGame/\n",
+  "licenceFile": "LICENSE"
+}

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Larvs Panic!</title>
+<script type="text/javascript" src="lib/fpsmeter.min.js"></script>
+<script type="text/javascript" src="lib/stateful.js"></script>
+<script type="text/javascript" src="engine/behaviors.js"></script>
+<script type="text/javascript" src="engine/input.js"></script>
+<script type="text/javascript" src="engine/helpers.js"></script>
+<script type="text/javascript" src="engine/math.js"></script>
+<script type="text/javascript" src="engine/engine.js"></script>
+<script type="text/javascript" src="engine/audioEngine.js"></script>
+<script type="text/javascript" src="actors/gameObject.js"></script>
+<script type="text/javascript" src="actors/enemy.js"></script>
+<script type="text/javascript" src="actors/player.js"></script>
+<script type="text/javascript" src="actors/bullet.js"></script>
+<script type="text/javascript" src="actors/circleEnemy.js"></script>
+<script type="text/javascript" src="actors/circleBumper.js"></script>
+
+<style type="text/css">
+#canvas {
+  border: 2px solid #000;
+  position: absolute;
+  left: 25%;
+  margin-left: 10px;
+}
+</style>
+</head>
+
+<body onload="LP.engine.init('canvas','stats','fpsMeter','messages');">
+  <div id='header'>
+    <div id="fpsMeter" style="width:10%"></div>
+    <div id="messages" style="margin-left:15%;float:left;"></div>
+    <div id="stats" style='float:right;'></div>
+  </div>
+  <div id="options" style="margin-top: 50px; float:left;">
+    <input type="checkbox" onclick="LP.audioEngine.setMusic(this.checked);" id="playMusic" checked>Play Music
+  </div>
+  <br/>
+   
+  <canvas id="canvas" width="1024" height="768"></canvas>
+  <!--<canvas id="canvas" width="50" height="50"></canvas>-->
+
+</body>
+</html>

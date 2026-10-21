@@ -1,0 +1,14 @@
+{
+  "repo": "tadashi6x6/fantastic-potato",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 14,
+  "pushedAt": "2025-07-24T14:23:06Z",
+  "description": "A simple Flappy Bird game built with HTML5 Canvas and JavaScript",
+  "defaultBranch": "main",
+  "owner": "tadashi6x6",
+  "slug": "tadashi6x6-fantastic-potato",
+  "dest": "third-party/tadashi6x6-fantastic-potato",
+  "readme": "# fantastic-potato\nFlappy Bird Game\nA simple Flappy Bird game built with HTML5 Canvas and JavaScript.\n\nDescription\nThis project is a basic implementation of the classic Flappy Bird game. The player controls a bird that must navigate through a series of pipes by flapping to avoid collisions. The score increases as the bird passes each pipe. The game ends if the bird hits a pipe or the ground/ceiling. Press the spacebar to flap, and press 'R' to restart after a game over.\n\nGetting Started\nPrerequisites\nA modern web browser (e.g., Chrome, Firefox, Edge)\nA text editor (e.g., VS Code) for modifying the code\nGit installed to clone the repository\nInstallation\nClone the repository:\ngit clone https://github.com/username/flappy-bird-game.git\nNavigate to the project directory:\ncd flappy-bird-game\nOpen index.html in a web browser to play the game.\nAlternatively, you can serve the project using a local server:\n\nUsing Python:\npython -m http.server 8000\nThen open http://localhost:8000 in your browser.\nHow to Play\nFlap: Press the Spacebar to make the bird flap and rise.\nAvoid: Navigate through the gaps between the green pipes.\nScore: Earn points by passing through each pipe.\nGame Over: The game ends if the bird hits a pipe or goes out of bounds.\nRestart: Press R to restart the game after a game over.\nFile Structure\nindex.html: The main game file containing HTML, CSS, and JavaScript.\nREADME.md: This file, providing project information.\n.gitignore: Ignores unnecessary files (e.g., node_modules, .DS_Store).\nContributing\nContributions are welcome! Please fork the repository and submit a pull request with your changes.\n\nFork the repository.\nCreate a new branch:\ngit checkout -b feature/your-feature-name\nCommit your changes:\ngit commit -m \"Add your feature\"\nPush to the branch:\ngit push origin feature/your-feature-name\nOpen a pull request.\nLicense\nThis project is licensed under the MIT License. See the LICENSE file for details.\n\nAcknowledgments\nInspired by the original Flappy Bird game by Dong Nguyen.\nBuilt with vanilla JavaScript and HTML5 Canvas.\n",
+  "licenceFile": "LICENSE"
+}

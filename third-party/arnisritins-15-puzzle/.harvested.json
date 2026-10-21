@@ -1,0 +1,14 @@
+{
+  "repo": "arnisritins/15-Puzzle",
+  "stars": 18,
+  "licence": "MIT",
+  "sizeKB": 6,
+  "pushedAt": "2022-08-28T12:03:39Z",
+  "description": "JavaScript game: 15 Puzzle",
+  "defaultBranch": "master",
+  "owner": "arnisritins",
+  "slug": "arnisritins-15-puzzle",
+  "dest": "third-party/arnisritins-15-puzzle",
+  "readme": "# 15 Puzzle\n\nJavaScript game: 15 Puzzle - [click here](https://arnisritins.github.io/15-Puzzle/) to play it online!\n",
+  "licenceFile": "LICENSE"
+}

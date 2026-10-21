@@ -1,0 +1,15 @@
+# SPDX-FileCopyrightText: Copyright (c) 2019-2026 Yegor Bugayenko
+# SPDX-License-Identifier: MIT
+---
+# yamllint disable rule:line-length
+docker:
+  image: yegor256/ruby
+install: |-
+  sudo /usr/bin/install-node.sh
+  sudo npm install -g grunt
+  sudo apt-get -y update
+  sudo apt-get -y install firefox-esr
+merge:
+  script: |-
+    npm ci
+    grunt --port=4000 --monochrome

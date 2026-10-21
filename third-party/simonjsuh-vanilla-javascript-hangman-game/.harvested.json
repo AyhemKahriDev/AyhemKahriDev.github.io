@@ -1,0 +1,14 @@
+{
+  "repo": "simonjsuh/Vanilla-Javascript-Hangman-Game",
+  "stars": 34,
+  "licence": "MIT",
+  "sizeKB": 27,
+  "pushedAt": "2019-12-16T01:30:46Z",
+  "description": "Pure Javavascript Hangman Game",
+  "defaultBranch": "master",
+  "owner": "simonjsuh",
+  "slug": "simonjsuh-vanilla-javascript-hangman-game",
+  "dest": "third-party/simonjsuh-vanilla-javascript-hangman-game",
+  "readme": "",
+  "licenceFile": "LICENSE"
+}

@@ -1,0 +1,14 @@
+{
+  "repo": "chin123/dodge-asteroids",
+  "stars": 3,
+  "licence": "GPL-3.0",
+  "sizeKB": 1621,
+  "pushedAt": "2020-08-08T23:14:27Z",
+  "description": "A phonegap html5 game controlled by device orientation.",
+  "defaultBranch": "master",
+  "owner": "chin123",
+  "slug": "chin123-dodge-asteroids",
+  "dest": "third-party/chin123-dodge-asteroids",
+  "readme": "# Dodge asteroids\nThis uses the device orientation api to control the main player.\n\n# LICENSE\nGPL v3\n",
+  "licenceFile": "LICENSE"
+}

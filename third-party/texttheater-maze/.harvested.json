@@ -1,0 +1,14 @@
+{
+  "repo": "texttheater/maze",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 217,
+  "pushedAt": "2024-07-30T07:59:35Z",
+  "description": "A challenging browser game – navigate the multi-storey maze",
+  "defaultBranch": "master",
+  "owner": "texttheater",
+  "slug": "texttheater-maze",
+  "dest": "third-party/texttheater-maze",
+  "readme": "Maze\n====\n\nPlay Maze at https://texttheater.net/maze/\n\nMaze is a browser game in which you move a pawn through a maze in order to\nreach the target. The catch is that the maze has multiple floors and you only\never see one at a time – a challenge to your memory and spatial thinking.\n\nMaze was developed for fun by [Kilian Evang](http://kilian.evang.name/) and\nowes much to the great blog posts and book on mazes by Jamis Buck, who also\nmade [Mazoo](http://mazoo.jamisbuck.org/). Check it out!\n",
+  "licenceFile": "LICENSE"
+}

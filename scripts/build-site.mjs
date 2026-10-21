@@ -160,8 +160,8 @@ function sponsorBanner(category) {
 
 function siteHeader(active = '') {
   const links = [
-    { href: '/', label: 'Home' },
-    ...CATEGORIES.map((c) => ({ href: `/categories/${c.id}/`, label: c.title })),
+    { href: '/games/', label: 'All games' },
+    ...CATEGORIES.slice(0, 5).map((c) => ({ href: `/categories/${c.id}/`, label: c.title })),
     { href: '/daily/', label: 'Daily puzzle' },
   ];
   return `<header class="site-header"><div class="wrap bar">
@@ -578,13 +578,35 @@ Sitemap: ${SITE.baseUrl}/sitemap.xml
   );
 }
 
-/** Copy the vendored third-party games into the build output. */
+/**
+ * Copy the vendored third-party games into the build output.
+ *
+ * Only games that are listed in the catalogue are copied, so a harvest run in
+ * progress can never publish a game that has not passed the browser gate.
+ */
 function copyThirdParty() {
   const src = join(root, 'third-party');
   if (!existsSync(src)) return 0;
-  rmSync(join(dist, 'third-party'), { recursive: true, force: true });
-  cpSync(src, join(dist, 'third-party'), { recursive: true });
-  return GAMES.filter((g) => g.embed).length;
+
+  const wanted = new Set();
+  for (const g of GAMES) {
+    if (!g.embed) continue;
+    const m = g.embed.src.match(/^\/third-party\/([^/]+)\//);
+    if (m) wanted.add(m[1]);
+  }
+
+  const destRoot = join(dist, 'third-party');
+  rmSync(destRoot, { recursive: true, force: true });
+  mkdirSync(destRoot, { recursive: true });
+
+  let copied = 0;
+  for (const name of wanted) {
+    const from = join(src, name);
+    if (!existsSync(from)) continue;
+    cpSync(from, join(destRoot, name), { recursive: true });
+    copied++;
+  }
+  return copied;
 }
 
 function buildCredits() {

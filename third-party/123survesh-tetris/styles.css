@@ -1,0 +1,57 @@
+*{
+    box-sizing: border-box;
+}
+html, body{
+    height: 100%;
+    width: 100%;
+    padding: 0px;
+    margin: 0px;
+}
+.game-canvas-wrapper{
+    display: inline-block;
+    position: relative;
+}
+
+.game-canvas-wrapper .game-board:first-child {
+    position: relative;
+}
+
+.game-board {
+    display: inline-block;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+
+.game-control-wrapper div {
+    display: inline-block;
+    font-size: 18px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    line-height: 50px;
+    text-align: center;
+    border: 2px solid;
+    margin: 5px;
+}
+
+.game-title-board{
+}
+
+.meta-wrapper{
+    font-size: 18px;
+    display: inline-block;
+    float: left;
+    padding: 20px;
+    max-width: 40%;
+}
+
+.canvas-wrapper{
+    display: inline-block;
+}
+
+#target{
+    display: inline-block;
+    position: relative;
+    padding: 10px 0;
+}

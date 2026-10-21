@@ -1,0 +1,14 @@
+{
+  "repo": "noiron/tower-defense-js",
+  "stars": 17,
+  "licence": "MIT",
+  "sizeKB": 1396,
+  "pushedAt": "2024-06-22T11:09:48Z",
+  "description": "A tower defense game using javascript in development.",
+  "defaultBranch": "master",
+  "owner": "noiron",
+  "slug": "noiron-tower-defense-js",
+  "dest": "third-party/noiron-tower-defense-js",
+  "readme": "",
+  "licenceFile": "LICENSE"
+}

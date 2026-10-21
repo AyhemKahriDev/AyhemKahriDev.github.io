@@ -1,0 +1,213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<shipmod name="testmod" version="1.0">
+    <spriteTemplates>
+        <spriteTemplate name="bigstar">
+            <images>
+                <image seq="1">bigstar-1.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="smallstar">
+            <images>
+                <image seq="1">smallstar-1.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="blue_player">
+            <images>
+                <image seq="1">blue_player-1.png</image>
+                <image seq="2">blue_player-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="plasma">
+            <images>
+                <image seq="1">plasma-1.png</image>
+                <image seq="2">plasma-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="plasma_dead">
+            <images>
+                <image seq="1">plasma_dead-1.png</image>
+                <image seq="2">plasma_dead-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="missile">
+            <images>
+                <image seq="1">missile-1.png</image>
+                <image seq="2">missile-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="missile_dead">
+            <images>
+                <image seq="1">missile_dead-1.png</image>
+                <image seq="2">missile_dead-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="fireball">
+            <images>
+                <image seq="1">fireball-1.png</image>
+                <image seq="2">fireball-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="fireball_dead">
+            <images>
+                <image seq="1">fireball_dead-1.png</image>
+                <image seq="2">fireball_dead-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="grey_enemy">
+            <images>
+                <image seq="1">grey_enemy-1.png</image>
+                <image seq="2">grey_enemy-2.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="rust_enemy">
+            <images>
+                <image seq="1">rust_enemy-1.png</image>
+                <image seq="2">rust_enemy-2.png</image>
+                <image seq="3">rust_enemy-3.png</image>
+                <image seq="4">rust_enemy-4.png</image>
+                <image seq="5">rust_enemy-5.png</image>
+                <image seq="6">rust_enemy-6.png</image>
+            </images>
+        </spriteTemplate>
+        <spriteTemplate name="explosion">
+            <images>
+                <image seq="1">explosion-1.png</image>
+                <image seq="2">explosion-2.png</image>
+            </images>
+        </spriteTemplate>
+    </spriteTemplates>
+
+    <soundTemplates>
+        <soundTemplate name="enemy_collission">
+            <filename>enemy_collission.ogg</filename>
+        </soundTemplate>
+        <soundTemplate name="plasma_fire">
+            <filename>plasma_fire.ogg</filename>
+        </soundTemplate>
+        <soundTemplate name="player_collission">
+            <filename>player_collission.ogg</filename>
+        </soundTemplate>
+        <soundTemplate name="explosion">
+            <filename>explosion.ogg</filename>
+        </soundTemplate>
+    </soundTemplates>
+    
+    <decorationTemplates>
+        <decorationTemplate name="bigstar">
+            <spriteTemplate src="bigstar" />
+            <speed>130</speed>
+            <turningSpeed>0</turningSpeed>
+        </decorationTemplate>
+        <decorationTemplate name="smallstar">
+            <spriteTemplate src="smallstar" />
+            <speed>160</speed>
+            <turningSpeed>0</turningSpeed>
+        </decorationTemplate>
+    </decorationTemplates>
+    
+    <enemyTemplates>
+        <enemyTemplate name="grey_enemy">
+            <spriteTemplate src="grey_enemy" />
+            <spriteTemplateDead src="explosion" />
+            <weaponTemplate src="missile" />
+            <speed>50</speed>
+            <hitPoints>40</hitPoints>
+            <cash>100</cash>
+            <deadSound src="explosion" />
+            <collissionSound src="enemy_collission" />
+        </enemyTemplate>
+        <enemyTemplate name="rust_enemy">
+            <spriteTemplate src="rust_enemy" />
+            <spriteTemplateDead src="explosion" />
+            <weaponTemplate src="fireball">
+                <xPositionPrc>-0.3</xPositionPrc>
+                <yPositionPrc>1</yPositionPrc>
+                <offsetAngle>0.7</offsetAngle>
+            </weaponTemplate>
+            <weaponTemplate src="fireball">
+                <xPositionPrc>0.3</xPositionPrc>
+                <yPositionPrc>1</yPositionPrc>
+                <offsetAngle>-0.7</offsetAngle>
+            </weaponTemplate>
+            <speed>70</speed>
+            <hitPoints>20</hitPoints>
+            <cash>75</cash>
+            <deadSound src="explosion" />
+            <collissionSound src="enemy_collission" />
+        </enemyTemplate>
+    </enemyTemplates>
+    
+    <weaponTemplates>
+        <weaponTemplate name="plasma">
+            <spriteTemplate src="plasma" />
+            <spriteTemplateDead src="plasma_dead" />
+            <reloadTime>120</reloadTime>
+            <speed>400</speed>
+            <damage>10</damage>
+            <xPositionPrc>0</xPositionPrc>
+            <yPositionPrc>1</yPositionPrc>
+            <offsetAngle>0</offsetAngle>
+            <fireSound src="plasma_fire" />
+        </weaponTemplate>
+        <weaponTemplate name="missile">
+            <spriteTemplate src="missile" />
+            <spriteTemplateDead src="missile_dead" />
+            <reloadTime>2000</reloadTime>
+            <speed>210</speed>
+            <damage>20</damage>
+            <xPositionPrc>0</xPositionPrc>
+            <yPositionPrc>1</yPositionPrc>
+            <offsetAngle>0</offsetAngle>
+        </weaponTemplate>
+        <weaponTemplate name="fireball">
+            <spriteTemplate src="fireball" />
+            <spriteTemplateDead src="fireball_dead" />
+            <reloadTime>1000</reloadTime>
+            <speed>300</speed>
+            <damage>10</damage>
+        </weaponTemplate>
+    </weaponTemplates>
+
+    <playerTemplate>
+        <spriteTemplate src="blue_player" />
+        <spriteTemplateDead src="explosion" />
+        <weaponTemplate src="plasma" />
+        <speed>250</speed>
+        <hitPoints>100</hitPoints>
+        <deadSound src="explosion" />
+        <collissionSound src="player_collission" />
+    </playerTemplate>
+    
+    <levelTemplates>
+        <levelTemplate name="test_level">
+            <duration>60</duration>
+            <entityFactories>
+                <entityFactory>
+                    <decorationTemplate src="bigstar" />
+                    <avgNumPerSecond>1.5</avgNumPerSecond>
+                    <spawnFrom>top</spawnFrom>
+                    <initialAngle src="down" />
+                </entityFactory>
+                <entityFactory>
+                    <decorationTemplate src="smallstar" />
+                    <avgNumPerSecond>3</avgNumPerSecond>
+                    <spawnFrom>top</spawnFrom>
+                    <initialAngle src="down" />
+                </entityFactory>
+                <entityFactory>
+                    <enemyTemplate src="grey_enemy" />
+                    <avgNumPerSecond>0.3</avgNumPerSecond>
+                    <spawnFrom>top</spawnFrom>
+                    <initialAngle src="down" />
+                </entityFactory>
+                <entityFactory>
+                    <enemyTemplate src="rust_enemy" />
+                    <avgNumPerSecond>0.3</avgNumPerSecond>
+                    <spawnFrom>top</spawnFrom>
+                    <initialAngle src="down" />
+                </entityFactory>
+            </entityFactories>
+        </levelTemplate>
+    </levelTemplates>
+</shipmod>
+

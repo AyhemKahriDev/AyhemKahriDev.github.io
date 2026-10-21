@@ -1,0 +1,287 @@
+		pre {
+			display: inline-block;
+		}
+		@font-face
+		{
+			font-family: GeoSans;
+			src: url(geosans.ttf);
+			font-weight:bold;
+		} 
+		*{
+			list-style: none;
+			font-family: GeoSans;
+			margin: 0 auto;
+			touch-action: manipulation;
+		}
+		
+		#canvas, #peca {
+			width: 100%;
+			height: 90%;
+		}
+		
+		#peca {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 2;
+		}
+		
+		#jogo {
+			position: absolute;
+			top: 10%;
+			left: 0;
+			display: none;
+			font: 2vw monospace;
+			z-index: 3;
+		}
+		
+		.topo {
+			color: red;
+			font-family: monospace;
+		}
+		
+		body {
+			background-color: #efefef;
+			margin: 0;
+		}
+		#canvas {
+			position: relative;
+			margin: 0 auto;
+			display: block;
+			background: #efefef;
+			z-index: 1;
+		}
+		
+		#touch {
+			margin: 0 auto;
+			display: block;
+		}
+
+		#pontos
+		{
+			top: 2%;
+			right: 4%;
+			position: absolute;
+			font-family: GeoSans;
+			font-size: 7vw;
+			z-index: 2;		
+		}
+		#fps
+		{
+			top: 2%;
+			left: 4%;
+			position: absolute;
+			font-family: GeoSans;
+			font-size: 7vw;
+			z-index: 2;
+
+		}
+		
+		#pause-botao {
+			position: absolute;
+			top: 0;
+			left: 0;
+			z-index: 3;
+			width: 15%;
+			height: 8%;
+			background: url('../img/pause_azul.png') no-repeat center center / auto 50%;
+		}
+		
+		#pause-botao:active {
+			background-color: #ddd;
+		}
+		
+		#gameover, #pause
+		{
+			display: none;
+			top:0;
+			left: 0;
+			position: absolute;
+			background-color: rgba(100,100,100,0.5);
+			width:100%;
+			height: 100%;
+			z-index: 3;
+		}
+		
+		#gameover ul {
+			padding: 0;
+		}
+		.gameover-container
+		{
+			color: #efefef;
+			position: absolute;
+			top: 30%;
+			left: 15%;
+			height: 30%;
+			width: 70%;
+		}
+		
+		#gameover-title, #pause-title 
+		{
+			font-size: 150%;
+			font-size: 8vw;
+			background-color: #5a5858;
+			text-align: center;
+			line-height: 200%;
+		}
+		#gameover-score
+		{
+			font-size: 150%;
+			font-size: 7.5vw;
+			line-height: 200%;
+			background-color: #526e82;
+			text-align: right;
+			padding-right: 5%;
+		}
+		#highscore-name
+		{
+			font-size: 7.5vw;
+			line-height: 200%;
+			background-color: #41c0a9;
+			text-align: right;
+			padding-right: 5%;
+		}
+		#menu-gameover
+		{
+			font-size: 7.5vw;
+			text-align: right;
+			height: 30%;
+			height: 12vw;
+		}
+		.pause-container
+		{
+			color: #efefef;
+			position: absolute;
+			top: 40%;
+			left: 15%;
+			height: 20%;
+			width: 70%;
+			
+		}
+		#pause-menu
+		{
+			font-size: 7.5vw;
+			width: 100%;
+			height: 30%;
+			height: 12vw;
+			
+		}
+		#quit-pause, #resume, #restart
+		{
+			height: 120%;
+			width: 33%;
+			display: inline-block;
+			background-color: #ec747d;
+				
+		}
+		
+		#resume {
+			width: 34%;
+		}
+		
+		#quit-pause a:active, #resume span:active, #restart a:active
+		{
+			background-color: white !important;
+		}
+		#quit, #play-again
+		{
+			height: 120%;
+			width: 50%;
+			display: inline-block;
+			background: #FFA1A9;
+		}
+		#quit a, #play-again a, #resume span, #restart a, #quit-pause a{
+			display: block;
+			width: 100%;
+			height: 100%;
+			min-height: 45px;
+			background: url('../img/quit.png') no-repeat center center / auto 60%;
+		}
+		#quit a:active, #play-again a:active
+		{
+			background-color: white;
+		}
+		
+		#quit a, #quit-pause a {
+			background-image: url('../img/gameover-menu.png');
+			background-color: #ec747d;
+		}
+		#play-again a {
+			background-image: url('../img/play-again.png');
+			background-color: #ec747d;
+		}
+		#resume span {
+			background-image: url('../img/play.png');
+			background-color: #ec747d;
+		}
+		#restart a {
+			background-image: url('../img/play-again.png');
+			background-color: #ec747d;
+		}
+
+		}
+		nav
+		{
+		    margin-top:40%;
+		}
+
+		.menu-button
+		{
+		    color: #efefef ;
+		    text-align: center;
+		    font-size: 200%;
+		    font-size: 8vw;
+		    line-height: 200%;
+		    background-color:#526e82;
+		    margin-bottom: 5%;
+		    width: 50%;
+		    height: 12%;
+		}
+		.menu-button:active
+		{
+		    background-color:#ff8989;
+		}
+
+		#esq, #dir, #meio {
+			width: 33%;
+			height: 10%;
+			position: absolute;
+			bottom: 0;
+			z-index: 2;
+		}
+		#esq:active, #dir:active, #meio:active {
+			background-color: #ddd !important;
+		}
+		#esq span, #dir span, #meio span {
+			width: 100%;
+			height: 100%;
+			display: block;
+			opacity: 1;
+			transition: opacity 1s ease-in-out;
+			background-size: auto 40%;
+			background-repeat: no-repeat;
+			
+		}
+		#esq {
+			left: 0;
+		}
+		
+		#esq span {
+			background-image: url('../img/seta_esq.png');
+			background-position: 30% center;
+		}
+		
+		#dir {
+			right: 0;
+		}
+		
+		#dir span {
+			background-image: url('../img/seta_dir.png');
+			background-position: 70% center;
+		}
+		
+		#meio {
+			left: 33%;
+			width: 34%;
+			background: url('../img/mid-button.png') no-repeat center center / auto 70%;
+		}

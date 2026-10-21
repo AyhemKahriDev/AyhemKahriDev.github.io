@@ -1,0 +1,14 @@
+{
+  "repo": "AdsGames/solitaire-js",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 4427,
+  "pushedAt": "2026-10-11T05:56:38Z",
+  "description": "A Phaser 3 implementation of solitarire",
+  "defaultBranch": "main",
+  "owner": "AdsGames",
+  "slug": "adsgames-solitaire-js",
+  "dest": "third-party/adsgames-solitaire-js",
+  "readme": "# SolitaireJS\n\n![Build Game](https://github.com/AdsGames/SolitaireJS/workflows/Build%20Game/badge.svg)\n[![Maintainability](https://api.codeclimate.com/v1/badges/f92c2150cce596dfb443/maintainability)](https://codeclimate.com/github/AdsGames/SolitaireJS/maintainability)\n\nKlondike Solitaire JS using Phaser 4\n\n## Demo\n\n[https://adsgames.net/games/solitaire](https://adsgames.net/games/solitaire)\n\n## Running\n\nSimply run\n\n- `pnpm install`\n- `pnpm dev`\n\n## Building\n\nSimply run\n\n- `pnpm build`\n- `pnpm serve`\n",
+  "licenceFile": "LICENSE.md"
+}

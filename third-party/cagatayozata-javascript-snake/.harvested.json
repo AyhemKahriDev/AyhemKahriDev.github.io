@@ -1,0 +1,14 @@
+{
+  "repo": "cagatayozata/javascript_snake",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 137,
+  "pushedAt": "2020-01-31T20:52:08Z",
+  "description": "Snake Game - JavaScript",
+  "defaultBranch": "master",
+  "owner": "cagatayozata",
+  "slug": "cagatayozata-javascript-snake",
+  "dest": "third-party/cagatayozata-javascript-snake",
+  "readme": "# JavaScript Snake Game\n\nSnake Game built with JavaScript, jQuery, HTML, CSS.\n\n![alt text](https://raw.githubusercontent.com/cagatayozata/javascript_snake/master/screenshot.png)\n\n## Usage\n\n```http\nrun index.html\n```\n\n## Authors\n\n**Çağatay Özata** - [cagatayozata](https://github.com/cagatayozata)\n\n## License\nThis project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details\n\n",
+  "licenceFile": "LICENSE"
+}

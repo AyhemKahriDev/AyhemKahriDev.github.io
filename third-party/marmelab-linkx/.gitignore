@@ -1,0 +1,36 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Supabase : état local de la CLI. config.toml et functions/ restent versionnés.
+supabase/.temp/
+supabase/.branches/
+
+# Secrets : variables du front et secrets des fonctions edge. Jamais versionnés.
+.env
+.env.*
+supabase/functions/.env
+
+# Exports de la base du tournoi : ils nomment les IA des auteurs. Jamais versionnés.
+Supabase Snippet *.csv

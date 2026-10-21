@@ -1,0 +1,227 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Henpen</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha256-2FMn2Zx6PuH5tdBQDRNwrOo60ts5wWPC9R8jK67b3t4=" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.min.js" integrity="sha256-ew8UiV1pJH/YjpOEBInP1HxVvT/SfrCmwSoUzF9JIgc=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.10/lodash.min.js" integrity="sha256-VKITM616rVzV+MI3kZMNUDoY5uTsuSl1ZvEeZhNoJVk=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.slim.min.js" integrity="sha512-sNylduh9fqpYUK5OYXWcBleGzbZInWj8yCJAU57r1dpSK9tP2ghf/SRYCMj+KsslFkCOt3TvJrX2AV/Gc3wOqA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js" integrity="sha512-2rNj2KJ+D8s1ceNasTIex6z4HWyOnEYLVC3FigGOmyQCZc2eBXKgOxQmo3oKLHyfcj53uz4QMsRCWNbLd32Q1g==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+        <script src="https://kit.fontawesome.com/9828d053b5.js" crossorigin="anonymous"></script>
+
+        <style>
+            .worm-piece {
+                padding: 1em;
+                border: 1px solid gray;
+                width: 100px;
+                text-align: center;
+                display: inline-block;
+            }
+            .grub {
+                min-width: 30px; min-height: 30px;
+                max-width: 30px; max-height: 30px;
+            }
+            .hidden { visibility: hidden }
+            .disabled {
+                opacity: 0.3;
+            }
+        </style>
+
+        <script type="text/x-template" id="die-template">
+            <img :src="'images/die-'+value+'.png'" @click="$emit('click')">
+        </script>
+
+        <script type="text/x-template" id="grubs-template">
+            <span>
+                <img src="images/grub.jpg" v-if="piece.value >= 1" class="grub">
+                <img class="grub hidden" v-else>
+                <img src="images/grub.jpg" v-if="piece.value >= 2" class="grub">
+                <img class="grub hidden" v-else>
+                <img src="images/grub.jpg" v-if="piece.value >= 3" class="grub">
+                <img class="grub hidden" v-else>
+                <img src="images/grub.jpg" v-if="piece.value >= 4" class="grub">
+                <img class="grub hidden" v-else>
+            </span>
+        </script>
+
+        <script type="text/x-template" id="worm-piece-template">
+            <div class="worm-piece">
+                <h3>{{ piece.number }}</h3>
+                <grubs v-bind:piece="piece"></grubs>
+            </div>
+        </script>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <span class="navbar-brand">Henpen</span>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#rulesModal">Rules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://github.com/Eckankar/henpen-vue">GitHub</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="app" class="container-fluid">
+            <div class="row">
+                <div class="col-md-8">
+                    <div id="input-players" v-if="state == 'input_players'">
+                        <h2>Input player</h2>
+
+                        <div class="input-group">
+                            <input id="playerName" v-model="playerName" class="form-control" @keyup.enter="addPlayer">
+                            <button type="button" class="btn btn-outline-secondary" @click="addPlayer">Add player</button>
+                        </div>
+
+                        <button type="button" class="btn btn-secondary mt-2" @click="addAI">Add AI</button>
+
+                        <div class="btn btn-primary w-100" v-if="players.length >= 2" @click="startGame">
+                            Start game
+                        </div>
+                    </div>
+                    <div id="game" v-else-if="state == 'game'">
+                        <!-- panel -> card -->
+                        <div class="card mb-3">
+                            <div class="card-header"><h3 class="card-title m-0">Grill</h3></div>
+                            <div class="card-body">
+                                <worm-piece v-for="piece in grill" :piece="piece"></worm-piece>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header"><h3 class="card-title m-0">Rolled dice</h3></div>
+                            <div class="card-body">
+                                <die v-for="die in rolledDice" :value="die"
+                                     @click="playerPickDie(die)"
+                                     :class="{ disabled: ! canTake(die) }"
+                                ></die>
+                            </div>
+                        </div>
+
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h3 class="card-title m-0">
+                                    Taken dice (value = {{ currentValue }}; {{ wormTaken ? "" : "no " }} worm taken)
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                <die v-for="die in takenDice" :value="die"></die>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-secondary" v-if="canRoll" @click="roll">
+                            Roll
+                        </button>
+                        <button class="btn btn-secondary" v-if="canStop" @click="stopTurn">
+                            Stop
+                        </button>
+                        <button class="btn btn-secondary" v-if="failedTurn" @click="failTurn">
+                            Fail
+                        </button>
+                    </div>
+                    <div v-else-if="state == 'game_over'">
+                        <h2>Game over</h2>
+
+                        <div class="card mb-3" v-for="player in players">
+                            <div class="card-header"><h3 class="card-title m-0">{{ player.name }} ({{ getPoints(player) }} point)</h3></div>
+                            <div class="card-body">
+                                <worm-piece v-for="piece in player.tiles" :piece="piece"></worm-piece>
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary w-100" @click="startAgain">
+                            New game
+                        </button>
+                    </div>
+                    <div v-else>
+                        Unknown game state "{{state}}".
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <h2>Players</h2>
+                    <div class="list-group">
+                        <span class="list-group-item" v-for="player in players"
+                              :class="{ active: player.id == activePlayer }"
+                        >
+                            <h4 class="list-group-item-heading">{{ player.name }} <i class="fas fa-robot" v-if="player.type == 'ai'"></i></h4>
+                            <p class="list-group-item-text">
+                                <p>Number of pieces: {{ player.tiles.length }}</p>
+                                <p>Topmost piece:
+                                    <span v-if="player.tiles.length > 0">
+                                        {{ player.tiles[0].number }}
+                                        (<grubs :piece="player.tiles[0]"></grubs>)
+                                    </span>
+                                    <span v-else>-</span>
+                                </p>
+                            </p>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="rulesModal" tabindex="-1" role="dialog" aria-labelledby="rulesModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="rulesModalLabel">Henpen Rules</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <h1>Henpen – Rules</h1>
+
+                        <p>Henpen is a push your luck dice game, where players are hens, looking to cash in on some tasty roasted worms. Gather the most worms to win!</p>
+
+                        <h2>Game Layout</h2>
+                        <p>At the center of the table lies the <em>grill</em>: 16 face-up worm <strong>servings</strong>, numbered 21 through 36. Each serving shows a point value and displays one or more worms (each worm is worth 1 point). Players build personal stacks of servings, but only the <em>topmost</em> serving in each stack is visible and vulnerable to theft.</p>
+
+                        <h2>Gameplay</h2>
+                        <p>On your turn, roll all 8 dice. Each die shows a number (1–5) or a worm symbol.</p>
+
+                        <ul>
+                            <li><strong>Choose one symbol</strong> from your roll that you haven’t yet taken this turn.</li>
+                            <li>Set aside <em>all</em> dice showing that symbol.</li>
+                            <li>Add its value to your running total (worms count as 5 points each).</li>
+                            <li>You may roll the remaining dice again - but beware:</li>
+                            <li>If you do choose to roll, and you're unable to use any of the new dice, you go bust and end your turn without scoring.</li>
+                        </ul>
+
+                        <p>You may stop rolling at any time—but only if your set of taken dice includes <strong>at least one worm</strong>, and matches one of the following 3 cases:</p>
+
+                        <ul>
+                            <li>If your total matches a serving on the <strong>grill</strong>, take it and place it face-up on your stack.</li>
+                            <li>If it matches a visible serving on <strong>another player’s stack</strong>, you may steal it instead.</li>
+                            <li>If your total matches your <em>own</em> visible serving (or a missing number on the grill), take the <strong>highest available serving on the grill with a lower value</strong>.</li>
+                        </ul>
+
+                        <h2>Failed Turns</h2>
+                        <p>Your turn fails if any of these happen:</p>
+                        <ul>
+                            <li>You roll only symbols you’ve already taken this turn.</li>
+                            <li>You end your turn with no worms in your total.</li>
+                            <li>Your total doesn’t match any visible serving.</li>
+                        </ul>
+
+                        <p>If you fail and have at least one serving in your stack, you must return your <em>topmost</em> serving to the grill. Then, the highest-numbered serving still on the grill is removed from play.</p>
+
+                        <h2>End of Game</h2>
+                        <p>The game ends when no face-up servings remain on the grill.</p>
+                        <p>Each player counts the total worms on all their servings. The player with the <strong>most worms wins</strong>. If tied, the player with the <strong>single highest-numbered serving</strong> wins.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <script src='ai-player.js'></script>
+        <script src='henpen.js'></script>
+    </body>
+</html>

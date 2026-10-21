@@ -1,0 +1,14 @@
+{
+  "repo": "marciofelicioo/Geography-Quiz",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 4114,
+  "pushedAt": "2025-01-04T18:09:44Z",
+  "description": "Test your geography knowledge by identifying the capitals of the world 🌍 through their flags in this interactive quiz game! Powered by a REST API and built using HTML, CSS, and JavaScript.",
+  "defaultBranch": "main",
+  "owner": "marciofelicioo",
+  "slug": "marciofelicioo-geography-quiz",
+  "dest": "third-party/marciofelicioo-geography-quiz",
+  "readme": "# Capital Explorer 🌏\n\n![Quiz Game Image](Capitals.png)\n\nEmbark on a journey across the globe by guessing the capitals through their flags in this dynamic and interactive quiz, powered by a REST API and crafted with HTML, CSS, and JavaScript.\n\nPlay now: [Capitals Quiz](https://marciofelicioo.github.io/Geography-Quiz/) 🌏\n",
+  "licenceFile": "LICENSE"
+}

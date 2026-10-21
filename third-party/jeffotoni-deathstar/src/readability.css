@@ -1,0 +1,2685 @@
+/* Readability pass shared by the flight HUD. */
+.eyebrow { font-size: 11px; }
+.build { font-size: 10px; }
+.brand-sub { font-size: 10px; }
+.lead { font-size: 16px; }
+.mission-meta { font-size: 9px; }
+.test-option { font-size: 11px; }
+.tiny-label { font-size: 9px; }
+.centered p { font-size: 14px; }
+.audio-settings label { font-size: 9px; }
+.text-button { font-size: 10px; }
+.mission-block .eyebrow { font-size: 9px; }
+.mission-block h3 { font-size: 23px; }
+.mission-block p { font-size: 11px; }
+.panel-heading strong { font-size: 11px; }
+.panel-heading div span { font-size: 8px; }
+.meter-row label { font-size: 8px; }
+.meter-row b { font-size: 10px; }
+.shield-toggle { display: flex; align-items: center; gap: 9px; margin-top: 13px; color: #8fa9ad; font-size: 8px; letter-spacing: 1px; }
+.shield-toggle kbd { min-width: 22px; padding: 3px 5px; }
+.unit { font-size: 11px; }
+.flight-caption { font-size: 7px; }
+.weapon { font-size: 9px; }
+.radar-panel > span { font-size: 8px; }
+.control-strip { font-size: 9px; }
+.control-strip kbd { font-size: 8px; min-width: 26px; padding: 5px 6px; }
+.target-marker span { font-size: 10px; }
+#target-arrow span { font-size: 8px; }
+#target-info { font-size: 9px; }
+#toast p { font-size: 14px; }
+#boss-info .eyebrow { font-size: 10px; }
+#impact-flash { position: absolute; inset: 0; pointer-events: none; background: radial-gradient(circle at center, rgba(255, 248, 214, .42), rgba(255, 183, 104, .08) 22%, transparent 58%); mix-blend-mode: screen; opacity: 0; transition: opacity .04s; }
+#threat-flash { position: absolute; inset: 0; pointer-events: none; box-shadow: inset 0 0 105px rgba(255, 82, 67, .8); opacity: 0; transition: opacity .06s; }
+#threat-warning { position: absolute; left: 50%; top: 37%; transform: translateX(-50%); color: #ffb19a; opacity: 0; letter-spacing: 2px; text-shadow: 0 0 14px #ff574c; pointer-events: none; transition: opacity .1s; }
+#threat-warning.visible { opacity: 1; animation: threat-pulse .25s ease-in-out infinite alternate; }
+@keyframes threat-pulse { from { transform: translateX(-50%) scale(.96); } to { transform: translateX(-50%) scale(1.04); } }
+#solar-warning { position: absolute; left: 50%; top: 43%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 8px; color: #ffd68d; opacity: 0; letter-spacing: 2px; text-shadow: 0 0 16px #ff9f38; pointer-events: none; transition: opacity .15s; }
+#solar-warning.visible { opacity: 1; }
+#solar-warning i { display: block; width: 120px; height: 2px; background: linear-gradient(90deg, #ff8a2b, #fff1a8); transform-origin: left; transform: scaleX(var(--solar-heat, 0)); box-shadow: 0 0 12px #ffad4c; }
+#hitmarker { transition: opacity .06s, transform .06s; }
+#hitmarker.heavy { color: #ffe3a8; transform: translate(-50%, -50%) scale(1.18); }
+#speed { transition: color .12s, text-shadow .12s; }
+#speed.accelerating { color: #d9fff0; text-shadow: 0 0 16px #9fffe0; }
+#speed.braking { color: #c0d3db; text-shadow: 0 0 10px #a9c7d488; }
+#speed.boosting { color: #fff0b8; text-shadow: 0 0 20px #ffd78a; }
+.target-marker[data-kind="scout"] { border-color: #edac87aa; }
+.target-marker[data-kind="assault"] { border-color: #ffc87dcc; box-shadow: 0 0 10px #ff9d6455; }
+.target-marker[data-kind="elite"] { border-color: #e3a4ff; box-shadow: 0 0 14px #d09dff66; }
+.target-marker[data-kind="boss"] { border-color: #d6a3ff; box-shadow: 0 0 16px #d6a3ff77; }
+.target-marker[data-kind="elite"].selected,
+.target-marker[data-kind="boss"].selected { border-color: #f0c6ff; box-shadow: 0 0 20px #d6a3ff99; }
+.locale-toggle,
+.locale-toggle button { font-size: 10px; }
+.brand-icon i { font-style: normal; }
+
+/* Keep the paper treatment readable while flying. */
+#ui.in-flight.draft-visual .topbar { border-color: rgba(38, 59, 85, .28); }
+#ui.in-flight.draft-visual .wordmark,
+#ui.in-flight.draft-visual .build,
+#ui.in-flight.draft-visual .locale-toggle,
+#ui.in-flight.draft-visual .locale-toggle button { color: #263b55; }
+#ui.in-flight.draft-visual .brand-icon { border-color: rgba(38, 59, 85, .48); color: #263b55; text-shadow: none; box-shadow: inset 0 0 11px rgba(38, 59, 85, .08); }
+#ui.in-flight.draft-visual .status-dot { background: #2b71b1; box-shadow: 0 0 8px rgba(43, 113, 177, .35); }
+#ui.in-flight.draft-visual .mission-block,
+#ui.in-flight.draft-visual .combat-stats,
+#ui.in-flight.draft-visual .bottom-hud,
+#ui.in-flight.draft-visual .control-strip,
+#ui.in-flight.draft-visual #target-info { color: #263b55; text-shadow: 0 1px 1px rgba(251, 252, 251, .8); }
+#ui.in-flight.draft-visual .tiny-label,
+#ui.in-flight.draft-visual .mission-block p,
+#ui.in-flight.draft-visual .panel-heading div span,
+#ui.in-flight.draft-visual .meter-row label,
+#ui.in-flight.draft-visual .flight-caption,
+#ui.in-flight.draft-visual .weapon,
+#ui.in-flight.draft-visual .control-strip { color: #456b82; }
+#ui.in-flight.draft-visual .stage-track i { background: rgba(38, 59, 85, .22); }
+#ui.in-flight.draft-visual .stage-track i.active,
+#ui.in-flight.draft-visual .meter i,
+#ui.in-flight.draft-visual .boost-track i { background: #2b71b1; }
+#ui.in-flight.draft-visual .meter-row.hull .meter i { background: #b87524; }
+#ui.in-flight.draft-visual .flight-status strong { color: #263b55; }
+#ui.in-flight.draft-visual .unit,
+#ui.in-flight.draft-visual .meter-row b { color: #263b55; }
+#ui.in-flight.draft-visual #crosshair { border-color: rgba(38, 59, 85, .35); }
+#ui.in-flight.draft-visual #crosshair::before,
+#ui.in-flight.draft-visual #crosshair::after,
+#ui.in-flight.draft-visual #crosshair span::before,
+#ui.in-flight.draft-visual #crosshair span::after { background: #263b55; }
+#ui.in-flight.draft-visual #aim-cursor { border-color: rgba(38, 59, 85, .8); }
+#ui.in-flight.draft-visual .ship-symbol { color: #2b71b1; }
+#ui.in-flight.draft-visual kbd { border-color: rgba(38, 59, 85, .3); color: #263b55; }
+#ui.in-flight.draft-visual .bottom-hud > div { padding: 10px; border: 1px solid rgba(38, 59, 85, .18); background: rgba(251, 252, 251, .68); }
+#ui.in-flight.draft-visual .vignette {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(75, 111, 138, .07) 31px 32px),
+    linear-gradient(90deg, rgba(251, 252, 251, .18), rgba(251, 252, 251, .04) 58%, rgba(251, 252, 251, .18)),
+    linear-gradient(0deg, rgba(251, 252, 251, .16), transparent 35%);
+}
+
+/* Graphite notes: UI belongs to the paper, not to the neon HUD. */
+#ui.draft-visual {
+  --pencil: #686d73;
+  --pencil-soft: #85898d;
+  --pencil-line: rgba(120, 125, 132, .32);
+  --pencil-font: 'Bradley Hand', 'Segoe Print', 'Comic Sans MS', cursive;
+}
+
+#ui.draft-visual .wordmark,
+#ui.draft-visual .build,
+#ui.draft-visual .locale-toggle,
+#ui.draft-visual .locale-toggle button,
+#ui.draft-visual .mission-block,
+#ui.draft-visual .combat-stats,
+#ui.draft-visual .bottom-hud,
+#ui.draft-visual .control-strip,
+#ui.draft-visual #target-info,
+#ui.draft-visual #toast,
+#ui.draft-visual #boss-info,
+#ui.draft-visual .menu-copy,
+#ui.draft-visual .launch-console {
+  font-family: var(--pencil-font);
+  font-weight: 400;
+  letter-spacing: .45px;
+  text-shadow: none;
+}
+
+#ui.in-flight.draft-visual .mission-block,
+#ui.in-flight.draft-visual .combat-stats,
+#ui.in-flight.draft-visual .bottom-hud,
+#ui.in-flight.draft-visual .control-strip,
+#ui.in-flight.draft-visual #target-info,
+#ui.in-flight.draft-visual #toast,
+#ui.in-flight.draft-visual #boss-info { color: var(--pencil); text-shadow: none; }
+
+#ui.in-flight.draft-visual .mission-block .eyebrow,
+#ui.in-flight.draft-visual .tiny-label,
+#ui.in-flight.draft-visual .mission-block p,
+#ui.in-flight.draft-visual .panel-heading div span,
+#ui.in-flight.draft-visual .meter-row label,
+#ui.in-flight.draft-visual .flight-caption,
+#ui.in-flight.draft-visual .weapon,
+#ui.in-flight.draft-visual .control-strip,
+#ui.in-flight.draft-visual .unit,
+#ui.in-flight.draft-visual .meter-row b { color: var(--pencil-soft); }
+
+#ui.in-flight.draft-visual .bottom-hud > div {
+  padding: 10px;
+  border: 1px dashed var(--pencil-line);
+  background: rgba(255, 255, 255, .52);
+  box-shadow: none;
+}
+
+#ui.in-flight.draft-visual .stage-track i,
+#ui.in-flight.draft-visual .stage-track i.active,
+#ui.in-flight.draft-visual .meter i,
+#ui.in-flight.draft-visual .boost-track i,
+#ui.in-flight.draft-visual .meter-row.hull .meter i { background: #74787c; }
+#ui.in-flight.draft-visual .meter,
+#ui.in-flight.draft-visual .boost-track { background: rgba(81, 85, 89, .16); }
+#ui.in-flight.draft-visual .flight-status strong,
+#ui.in-flight.draft-visual .combat-stats strong,
+#ui.in-flight.draft-visual .ship-symbol {
+  color: var(--pencil);
+  font-family: var(--pencil-font);
+  font-weight: 400;
+  letter-spacing: .2px;
+}
+#ui.in-flight.draft-visual #crosshair,
+#ui.in-flight.draft-visual #aim-cursor,
+#ui.in-flight.draft-visual .target-marker { border-color: var(--pencil-line); box-shadow: none; }
+#ui.in-flight.draft-visual #crosshair::before,
+#ui.in-flight.draft-visual #crosshair::after,
+#ui.in-flight.draft-visual #crosshair span::before,
+#ui.in-flight.draft-visual #crosshair span::after { background: var(--pencil); }
+#ui.in-flight.draft-visual kbd { border: 1px dashed var(--pencil-line); color: var(--pencil); background: transparent; }
+#ui.in-flight.draft-visual .radar-panel canvas { filter: grayscale(1) contrast(.72); opacity: .78; }
+#ui.in-flight.draft-visual #toast,
+#ui.in-flight.draft-visual #boss-info { background: rgba(255, 255, 255, .7); border: 1px dashed var(--pencil-line); }
+#ui.in-flight.draft-visual #debug { color: var(--pencil); font-family: var(--pencil-font); background: rgba(255, 255, 255, .72); border: 1px dashed var(--pencil-line); }
+
+#ui.is-menu.draft-visual .launch-console {
+  background: rgba(255, 255, 255, .76);
+  border-color: var(--pencil-line);
+  box-shadow: none;
+  backdrop-filter: none;
+}
+#ui.is-menu.draft-visual .ship-picker-heading,
+#ui.is-menu.draft-visual .ship-option small { border-color: var(--pencil-line); }
+#ui.is-menu.draft-visual .ship-picker-heading,
+#ui.is-menu.draft-visual .ship-picker-heading .tiny-label,
+#ui.is-menu.draft-visual .launch-ready,
+#ui.is-menu.draft-visual .launch-panel .mission-meta,
+#ui.is-menu.draft-visual .visual-style-heading,
+#ui.is-menu.draft-visual .mission-options,
+#ui.is-menu.draft-visual .console-footer { color: var(--pencil-soft); }
+#ui.is-menu.draft-visual .ship-option,
+#ui.is-menu.draft-visual .visual-option,
+#ui.is-menu.draft-visual .launch-panel .mission-meta span,
+#ui.is-menu.draft-visual .launch-panel .test-option {
+  color: var(--pencil);
+  background: rgba(255, 255, 255, .5);
+  border-color: var(--pencil-line);
+  box-shadow: none;
+}
+#ui.is-menu.draft-visual .ship-option::before,
+#ui.is-menu.draft-visual .ship-option::after { display: none; }
+#ui.is-menu.draft-visual .ship-option strong,
+#ui.is-menu.draft-visual .ship-option .ship-role,
+#ui.is-menu.draft-visual .ship-option-head,
+#ui.is-menu.draft-visual .ship-option-head i,
+#ui.is-menu.draft-visual .ship-option small span,
+#ui.is-menu.draft-visual .ship-option small b,
+#ui.is-menu.draft-visual .visual-option b,
+#ui.is-menu.draft-visual .visual-option small,
+#ui.is-menu.draft-visual .launch-panel .test-option b,
+#ui.is-menu.draft-visual .launch-panel .test-option small { color: var(--pencil); font-family: var(--pencil-font); font-weight: 400; text-shadow: none; }
+#ui.is-menu.draft-visual .ship-option.active,
+#ui.is-menu.draft-visual .visual-option.active { border-color: #155ca8; background: rgba(225, 238, 248, .58); box-shadow: inset 3px 0 #155ca8; }
+#ui.is-menu.draft-visual .launch-panel { border-color: var(--pencil-line); background: rgba(255, 255, 255, .3); }
+#ui.is-menu.draft-visual .menu .launch-primary {
+  color: #41464a;
+  background: rgba(255, 255, 255, .82);
+  border: 2px solid #55595d;
+  box-shadow: none;
+  animation: none;
+  font-family: var(--pencil-font);
+}
+#ui.is-menu.draft-visual .menu .launch-primary::before,
+#ui.is-menu.draft-visual .menu .launch-primary::after { display: none; }
+#ui.is-menu.draft-visual .menu .launch-primary:hover { background: #eef5fa; box-shadow: 3px 3px 0 rgba(21, 92, 168, .22); filter: none; }
+#ui.is-menu.draft-visual .menu h1,
+#ui.is-menu.draft-visual .menu h1 em {
+  font-family: var(--pencil-font);
+  font-weight: 400;
+  letter-spacing: .4px;
+  line-height: 1;
+}
+
+/* The recovered transmission is also a page from the same sketchbook. */
+#ui.draft-visual #intro.centered {
+  color: var(--pencil);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 30px, rgba(86, 102, 114, .075) 31px 32px),
+    rgba(255, 255, 255, .96);
+  backdrop-filter: none;
+}
+#ui.draft-visual #intro.centered::before {
+  content: '';
+  position: absolute;
+  inset: clamp(28px, 7vw, 96px);
+  border: 1px dashed rgba(74, 78, 82, .38);
+  pointer-events: none;
+}
+#ui.draft-visual #intro .eyebrow,
+#ui.draft-visual #intro h2,
+#ui.draft-visual #intro p,
+#ui.draft-visual #intro .tiny-label,
+#ui.draft-visual #intro #countdown {
+  position: relative;
+  z-index: 1;
+  font-family: var(--pencil-font);
+  font-weight: 400;
+  text-shadow: none;
+}
+#ui.draft-visual #intro .eyebrow { color: #155ca8; letter-spacing: 1.1px; }
+#ui.draft-visual #intro h2 { color: #45494d; letter-spacing: .4px; }
+#ui.draft-visual #intro p { color: #6b7074; line-height: 1.85; }
+#ui.draft-visual #intro #countdown { color: #4f5357; font-size: clamp(74px, 8vw, 108px); }
+#ui.draft-visual #intro .tiny-label { color: #777c80; }
+
+/* Pause and results use the same notebook page as the recovered transmission. */
+#ui.draft-visual #pause.centered,
+#ui.draft-visual #result.centered {
+  color: var(--pencil);
+  background:
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(86, 102, 114, .075) 31px 32px),
+    rgba(255, 255, 255, .96);
+  backdrop-filter: none;
+}
+#ui.draft-visual #pause.centered::before,
+#ui.draft-visual #result.centered::before {
+  content: '';
+  position: absolute;
+  inset: clamp(28px, 7vw, 96px);
+  border: 1px dashed rgba(74, 78, 82, .38);
+  pointer-events: none;
+}
+#ui.draft-visual #pause .eyebrow,
+#ui.draft-visual #pause h2,
+#ui.draft-visual #pause p,
+#ui.draft-visual #pause .audio-settings,
+#ui.draft-visual #pause .text-button,
+#ui.draft-visual #result .eyebrow,
+#ui.draft-visual #result h2,
+#ui.draft-visual #result p,
+#ui.draft-visual #result #result-stats {
+  position: relative;
+  z-index: 1;
+  color: var(--pencil);
+  font-family: var(--pencil-font);
+  font-weight: 400;
+  text-shadow: none;
+}
+#ui.draft-visual #pause .eyebrow,
+#ui.draft-visual #result .eyebrow { color: #155ca8; }
+#ui.draft-visual #pause .primary,
+#ui.draft-visual #result .primary {
+  position: relative;
+  z-index: 1;
+  color: #41464a;
+  background: rgba(255, 255, 255, .82);
+  border: 2px solid #55595d;
+  box-shadow: none;
+  font-family: var(--pencil-font);
+  font-weight: 400;
+}
+#ui.draft-visual #pause .primary:hover,
+#ui.draft-visual #result .primary:hover { background: #eef5fa; box-shadow: 3px 3px 0 rgba(21, 92, 168, .22); }
+#ui.draft-visual #pause .locale-toggle,
+#ui.draft-visual #pause .locale-toggle button,
+#ui.draft-visual #pause .audio-settings label,
+#ui.draft-visual #pause .text-button { color: var(--pencil); font-family: var(--pencil-font); }
+#ui.draft-visual #pause .audio-settings input { accent-color: #6d7276; }
+
+/* Main menu: a responsive launch hangar over the live Babylon.js scene. */
+#ui.is-menu .vignette {
+  background:
+    radial-gradient(ellipse at 75% 42%, transparent 10%, rgba(1, 7, 16, .12) 44%, rgba(1, 6, 14, .46) 100%),
+    linear-gradient(90deg, rgba(2, 8, 18, .9) 0%, rgba(2, 9, 19, .65) 38%, rgba(2, 8, 17, .08) 71%, rgba(2, 7, 15, .34) 100%),
+    linear-gradient(0deg, rgba(1, 6, 14, .68), transparent 38%);
+}
+
+#ui.is-menu .topbar {
+  top: clamp(18px, 3.2vh, 32px);
+  left: clamp(20px, 4.2vw, 64px);
+  right: clamp(20px, 4.2vw, 64px);
+  padding-bottom: clamp(13px, 2vh, 21px);
+  z-index: 3;
+}
+
+#ui.is-menu .wordmark {
+  font-size: clamp(16px, 1.65vw, 24px);
+  letter-spacing: clamp(4px, .55vw, 8px);
+}
+
+#ui.is-menu .brand-icon {
+  width: 31px;
+  height: 31px;
+  display: grid;
+  place-items: center;
+  margin-right: 5px;
+  border: 1px solid rgba(128, 231, 255, .56);
+  color: #e8ffff;
+  font-size: 30px;
+  line-height: 1;
+  transform: rotate(45deg);
+  text-shadow: 0 0 12px #79eaff;
+  box-shadow: inset 0 0 11px rgba(77, 211, 255, .19), 0 0 22px rgba(71, 200, 255, .13);
+}
+
+#ui.is-menu .brand-icon i { font-style: normal; transform: rotate(-45deg); }
+#ui.is-menu .brand-name { white-space: nowrap; }
+
+#ui.is-menu.draft-visual .vignette {
+  background:
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(75, 111, 138, .07) 31px 32px),
+    linear-gradient(90deg, rgba(251, 252, 251, .18), rgba(251, 252, 251, .04) 58%, rgba(251, 252, 251, .18)),
+    linear-gradient(0deg, rgba(251, 252, 251, .16), transparent 35%);
+}
+
+#ui.is-menu.draft-visual .topbar { border-color: rgba(38, 59, 85, .24); }
+#ui.is-menu.draft-visual .wordmark,
+#ui.is-menu.draft-visual .build,
+#ui.is-menu.draft-visual .locale-toggle,
+#ui.is-menu.draft-visual .locale-toggle button { color: #263b55; }
+#ui.is-menu.draft-visual .brand-icon { border-color: rgba(38, 59, 85, .48); color: #263b55; text-shadow: none; box-shadow: inset 0 0 11px rgba(38, 59, 85, .08); }
+#ui.is-menu.draft-visual .menu .eyebrow { color: #2b71b1; }
+#ui.is-menu.draft-visual .menu .line { background: #2b71b1; }
+#ui.is-menu.draft-visual .menu h1 { color: #263b55; text-shadow: 0 4px 18px rgba(255, 255, 255, .8); }
+#ui.is-menu.draft-visual .menu h1 em { color: #2b71b1; text-shadow: none; }
+#ui.is-menu.draft-visual .menu .lead { color: #405a6c; text-shadow: none; }
+#ui.is-menu.draft-visual .preview-head,
+#ui.is-menu.draft-visual .preview-head > span,
+#ui.is-menu.draft-visual .preview-head b,
+#ui.is-menu.draft-visual .preview-signal,
+#ui.is-menu.draft-visual .preview-ship-data > span,
+#ui.is-menu.draft-visual .preview-ship-data strong,
+#ui.is-menu.draft-visual .preview-ship-data small,
+#ui.is-menu.draft-visual .preview-orbit { color: #2b5578; text-shadow: 0 1px 2px rgba(255, 255, 255, .8); }
+#ui.is-menu.draft-visual .preview-signal::before { background: #b43b48; box-shadow: 0 0 8px rgba(180, 59, 72, .35); }
+#ui.is-menu.draft-visual .preview-signal i { background: rgba(43, 85, 120, .5); }
+
+.menu {
+  position: absolute;
+  inset: clamp(88px, 12vh, 116px) clamp(20px, 4.2vw, 64px) clamp(15px, 2.5vh, 28px);
+  max-width: none;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(285px, 1fr) auto;
+  gap: clamp(13px, 2.2vh, 24px);
+  overflow: hidden;
+}
+
+.menu-hero {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(340px, .82fr) minmax(420px, 1.18fr);
+  gap: clamp(24px, 5vw, 82px);
+  align-items: stretch;
+}
+
+.menu-copy {
+  max-width: 650px;
+  align-self: center;
+  padding-left: clamp(6px, 3.2vw, 50px);
+}
+
+.menu .eyebrow {
+  font-size: clamp(9px, .75vw, 11px);
+  font-weight: 600;
+  letter-spacing: clamp(1.8px, .2vw, 3px);
+  text-transform: uppercase;
+}
+
+.menu h1 {
+  max-width: 680px;
+  margin: clamp(14px, 2vh, 24px) 0 clamp(12px, 1.8vh, 20px);
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: clamp(52px, 5.4vw, 88px);
+  font-weight: 500;
+  line-height: .91;
+  letter-spacing: clamp(-3px, -.22vw, -1.5px);
+  text-transform: uppercase;
+  text-wrap: balance;
+  text-shadow: 0 9px 38px rgba(0, 0, 0, .62);
+}
+
+.menu h1 em {
+  display: inline;
+  color: #b6fbf2;
+  font-style: italic;
+  text-shadow: 0 0 32px rgba(74, 225, 221, .18);
+}
+
+.menu .lead {
+  margin: 0;
+  color: #a9c0c8;
+  font-size: clamp(13px, 1.05vw, 16px);
+  line-height: 1.7;
+  text-shadow: 0 4px 18px #020812;
+}
+
+.ship-preview {
+  min-width: 0;
+  min-height: 275px;
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+  filter: drop-shadow(0 18px 40px rgba(0, 0, 0, .22));
+}
+
+.preview-frame {
+  position: absolute;
+  inset: 2px;
+  border: 1px solid rgba(114, 216, 234, .13);
+  background:
+    radial-gradient(circle at 55% 53%, rgba(72, 209, 238, .055), transparent 42%),
+    linear-gradient(90deg, rgba(123, 230, 244, .035) 1px, transparent 1px),
+    linear-gradient(rgba(123, 230, 244, .035) 1px, transparent 1px);
+  background-size: auto, 62px 62px, 62px 62px;
+  clip-path: polygon(0 22px, 22px 0, calc(100% - 22px) 0, 100% 22px, 100% calc(100% - 22px), calc(100% - 22px) 100%, 22px 100%, 0 calc(100% - 22px));
+}
+
+.preview-frame > i {
+  position: absolute;
+  width: 46px;
+  height: 46px;
+  border-color: rgba(131, 236, 247, .67);
+  border-style: solid;
+}
+
+.preview-frame > i:nth-child(1) { top: 10px; left: 10px; border-width: 1px 0 0 1px; }
+.preview-frame > i:nth-child(2) { top: 10px; right: 10px; border-width: 1px 1px 0 0; }
+.preview-frame > i:nth-child(3) { bottom: 10px; right: 10px; border-width: 0 1px 1px 0; }
+.preview-frame > i:nth-child(4) { bottom: 10px; left: 10px; border-width: 0 0 1px 1px; }
+
+.preview-axis { position: absolute; display: block; opacity: .18; }
+.preview-axis.axis-x { left: 11%; right: 11%; top: 54%; height: 1px; background: linear-gradient(90deg, transparent, #9cecf4, transparent); }
+.preview-axis.axis-y { top: 13%; bottom: 13%; left: 56%; width: 1px; background: linear-gradient(transparent, #9cecf4, transparent); }
+
+.preview-head,
+.preview-signal,
+.preview-ship-data,
+.preview-orbit { position: absolute; z-index: 1; text-transform: uppercase; }
+
+.preview-head {
+  top: 18px;
+  left: 25px;
+  right: 25px;
+  display: flex;
+  justify-content: space-between;
+  color: #88aeb8;
+  font-size: 8px;
+  letter-spacing: 1.7px;
+}
+
+.preview-head > span { display: flex; align-items: center; gap: 9px; color: #bce6e8; }
+.preview-head b { color: #7f9ca6; font-weight: 500; }
+
+.preview-signal {
+  right: 23px;
+  top: 48%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #b9d4d8;
+  font-size: 8px;
+  letter-spacing: 1.6px;
+}
+
+.preview-signal::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: #8cffe1; box-shadow: 0 0 14px #65ffda; }
+.preview-signal i { width: 54px; height: 1px; background: rgba(157, 222, 229, .4); }
+
+.preview-ship-data {
+  left: 25px;
+  bottom: 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 12px;
+  border-left: 2px solid #6fe6ee;
+  text-shadow: 0 3px 12px #020711;
+}
+
+.preview-ship-data > span { color: #76bcc5; font-size: 7px; letter-spacing: 1.5px; }
+.preview-ship-data strong { color: #f2ffff; font: 600 clamp(13px, 1.15vw, 17px)/1.1 'Barlow Condensed', sans-serif; letter-spacing: 1.3px; }
+.preview-ship-data small { color: #9ab5bd; font-size: 8px; letter-spacing: .8px; text-transform: none; }
+.preview-orbit { right: 25px; bottom: 22px; color: #70919c; font-size: 7px; letter-spacing: 1.5px; }
+
+.launch-console {
+  min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(520px, 1.45fr) minmax(285px, .55fr);
+  background: linear-gradient(112deg, rgba(4, 17, 31, .94), rgba(4, 13, 25, .88) 58%, rgba(5, 18, 30, .94));
+  border: 1px solid rgba(138, 225, 235, .27);
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .43), inset 0 1px rgba(226, 255, 255, .05), 0 0 38px rgba(41, 180, 214, .055);
+  clip-path: polygon(0 16px, 16px 0, calc(100% - 16px) 0, 100% 16px, 100% 100%, 0 100%);
+  backdrop-filter: blur(14px);
+}
+
+.ship-picker {
+  max-width: none;
+  position: relative;
+  margin: 0;
+  padding: clamp(13px, 1.5vw, 20px);
+  border: 0;
+  background: none;
+  box-shadow: none;
+  backdrop-filter: none;
+}
+
+.ship-picker::before { display: none; }
+
+.ship-picker-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 0 2px 10px;
+  border-bottom: 1px solid rgba(145, 221, 230, .13);
+  color: #7897a2;
+  font-size: 7px;
+  letter-spacing: 1.35px;
+  text-transform: uppercase;
+}
+
+.ship-picker-heading .tiny-label { color: #d3f3f1; font-weight: 600; }
+
+.ship-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(8px, 1vw, 13px);
+  margin-top: 11px;
+}
+
+.ship-option {
+  --ship-glow: #83e9e5;
+  min-width: 0;
+  min-height: 112px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  overflow: hidden;
+  padding: 12px 14px;
+  border: 1px solid rgba(148, 211, 220, .22);
+  color: #d7e9ea;
+  background: linear-gradient(135deg, rgba(12, 35, 53, .78), rgba(5, 18, 31, .87));
+  text-align: left;
+  clip-path: polygon(0 9px, 9px 0, 100% 0, 100% calc(100% - 9px), calc(100% - 9px) 100%, 0 100%);
+  transition: transform .2s ease, border-color .2s ease, background .2s ease, box-shadow .2s ease;
+}
+
+.ship-option[data-ship="lego"] { --ship-glow: #3ed4ff; }
+.ship-option[data-ship="classic"] { --ship-glow: #a4f5e4; }
+
+.ship-option::before {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 150px;
+  right: -62px;
+  top: -70px;
+  border-radius: 50%;
+  background: var(--ship-glow);
+  opacity: .055;
+  filter: blur(22px);
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.ship-option::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border: 1px solid transparent;
+  pointer-events: none;
+  transition: border-color .2s ease;
+}
+
+.ship-option-head {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  color: #73949f;
+  font-size: 7px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.ship-option-head b { color: var(--ship-glow); font-weight: 600; }
+.ship-option-head i { color: #809da6; font-style: normal; }
+.ship-option strong { position: relative; z-index: 1; margin-top: 2px; color: #efffff; font: 600 clamp(14px, 1.2vw, 18px)/1.05 'Barlow Condensed', sans-serif; letter-spacing: 1.4px; }
+.ship-option .ship-role { position: relative; z-index: 1; color: #94aeb5; font-size: 9px; letter-spacing: .45px; }
+
+.ship-option small {
+  width: 100%;
+  position: relative;
+  z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  gap: 9px;
+  margin-top: auto;
+  padding-top: 8px;
+  border-top: 1px solid rgba(146, 211, 221, .13);
+  color: #7998a3;
+  font-size: 7px;
+  letter-spacing: .45px;
+  text-transform: uppercase;
+}
+
+.ship-option small span { color: #7998a3; white-space: nowrap; }
+.ship-option small b { color: #c6e7e8; font-weight: 500; }
+
+.ship-option.active {
+  transform: translateY(-2px);
+  border-color: var(--ship-glow);
+  background: linear-gradient(135deg, rgba(16, 61, 82, .91), rgba(7, 27, 43, .94));
+  box-shadow: inset 3px 0 var(--ship-glow), 0 10px 28px rgba(0, 0, 0, .35), 0 0 24px color-mix(in srgb, var(--ship-glow) 20%, transparent);
+}
+
+.ship-option.active::before { opacity: .22; transform: scale(1.25); }
+.ship-option.active::after { border-color: rgba(205, 255, 251, .15); }
+.ship-option.active .ship-option-head i { color: #dffefa; text-shadow: 0 0 11px var(--ship-glow); }
+
+.launch-panel {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(14px, 1.6vw, 21px);
+  border-left: 1px solid rgba(145, 221, 230, .16);
+  background: linear-gradient(145deg, rgba(18, 47, 63, .16), rgba(3, 12, 23, .2));
+}
+
+.launch-ready {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #95ffe2;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 1.55px;
+  text-transform: uppercase;
+}
+
+.launch-ready .status-dot { width: 7px; height: 7px; background: #6dffcf; box-shadow: 0 0 15px #61ffd1; }
+
+.launch-panel .mission-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin: 11px 0 9px;
+  color: #8aa5ae;
+  font-size: 7px;
+  letter-spacing: .9px;
+}
+
+.launch-panel .mission-meta span {
+  padding: 5px 7px;
+  border: 1px solid rgba(150, 221, 229, .15);
+  background: rgba(6, 21, 34, .55);
+}
+
+.launch-panel .mission-meta span + span::before { display: none; }
+
+.visual-style-picker { margin: 0 0 8px; }
+.visual-style-heading { display: flex; justify-content: space-between; gap: 10px; margin-bottom: 6px; color: #82a6af; font-size: 7px; letter-spacing: 1.1px; text-transform: uppercase; }
+.visual-style-heading span:first-child { color: #d3f3f1; font-weight: 600; }
+.visual-style-heading span:last-child { color: #6c8a96; }
+.visual-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.visual-option { min-width: 0; display: flex; align-items: center; gap: 7px; padding: 7px 7px; border: 1px solid rgba(145, 221, 230, .14); color: #8aa5ae; background: rgba(6, 21, 34, .48); text-align: left; transition: border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease; }
+.visual-option > span:not(.ink-swatch) { min-width: 0; display: flex; flex-direction: column; gap: 2px; }
+.visual-option b { overflow: hidden; color: #a9c6cb; font-size: 7px; font-weight: 600; letter-spacing: .65px; line-height: 1.1; text-overflow: ellipsis; white-space: nowrap; }
+.visual-option small { overflow: hidden; color: #6f8d97; font-size: 6px; line-height: 1.2; text-overflow: ellipsis; white-space: nowrap; }
+.visual-option > i { margin-left: auto; color: #547582; font-size: 9px; font-style: normal; }
+.visual-option.active { border-color: #83e9e5; background: rgba(16, 61, 82, .66); box-shadow: inset 2px 0 #83e9e5, 0 0 14px rgba(83, 218, 224, .1); }
+.visual-option.active b { color: #efffff; }
+.visual-option.active > i { color: #8dffe0; text-shadow: 0 0 9px #6dffcf; }
+.visual-option:focus-visible { outline: 2px solid #e2ffff; outline-offset: 2px; }
+.ink-swatch { flex: 0 0 auto; width: 22px; height: 22px; position: relative; border: 1px solid rgba(226, 255, 255, .35); border-radius: 50%; background: radial-gradient(circle at 30% 28%, #f5f0e4 0 22%, transparent 23%), linear-gradient(135deg, #246aa5 0 35%, #b83d48 36% 66%, #273747 67%); box-shadow: inset 0 0 7px rgba(0, 0, 0, .32); }
+.ink-swatch.draft { background: #fbfcfb; box-shadow: inset 0 0 0 2px #263b55, inset 7px 0 #2b71b1, inset -6px 0 #b43b48, 0 0 7px rgba(126, 172, 195, .25); }
+.ink-swatch.draft::after { content: ''; position: absolute; width: 9px; height: 2px; left: 6px; top: 10px; background: #b87524; transform: rotate(-17deg); }
+
+.mission-options {
+  margin: 0 0 9px;
+  color: #829ea8;
+  font-size: 8px;
+}
+
+.mission-options summary {
+  width: fit-content;
+  padding: 4px 0;
+  cursor: pointer;
+  list-style: none;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+}
+
+.mission-options summary::-webkit-details-marker { display: none; }
+.mission-options summary::before { content: '+ '; color: #75dce4; }
+.mission-options[open] summary::before { content: '− '; }
+
+.launch-panel .test-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+  margin: 4px 0 2px;
+  padding: 8px;
+  border: 1px solid rgba(145, 221, 230, .13);
+  background: rgba(7, 23, 36, .5);
+  cursor: pointer;
+}
+
+.launch-panel .test-option input { flex: 0 0 auto; margin-top: 3px; accent-color: #80e9df; }
+.launch-panel .test-option span { display: flex; flex-direction: column; gap: 2px; }
+.launch-panel .test-option b { color: #c5dedf; font-size: 8px; font-weight: 500; letter-spacing: .5px; }
+.launch-panel .test-option small { color: #718d98; font-size: 7px; line-height: 1.35; }
+
+.menu .launch-primary {
+  width: 100%;
+  min-width: 0;
+  min-height: 58px;
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: auto;
+  padding: 14px 18px;
+  border: 1px solid #d5ffff;
+  color: #06141e;
+  background: linear-gradient(100deg, #e6ffff, #8fe9e5 56%, #b7f5eb);
+  box-shadow: 0 0 28px rgba(94, 229, 225, .2);
+  clip-path: polygon(0 13px, 13px 0, 100% 0, 100% calc(100% - 13px), calc(100% - 13px) 100%, 0 100%);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.9px;
+  text-transform: uppercase;
+  transition: transform .18s ease, filter .18s ease, box-shadow .18s ease;
+  animation: launch-pulse 2.8s ease-in-out infinite;
+}
+
+.menu .launch-primary::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  inset: -70% auto -70% -42%;
+  width: 30%;
+  background: rgba(255, 255, 255, .72);
+  transform: skewX(-20deg);
+  transition: left .46s ease;
+}
+
+.menu .launch-primary::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #42e2ff, #fff, #5affcf);
+  box-shadow: 0 0 14px #73efff;
+}
+
+.launch-arrow { font-size: 25px; font-weight: 400; line-height: 1; transition: transform .2s ease; }
+.console-footer {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 7px clamp(13px, 1.5vw, 20px);
+  border-top: 1px solid rgba(145, 221, 230, .1);
+  color: #607e89;
+  font-size: 6px;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+}
+.console-footer b { margin-left: 8px; color: #95b7bd; font-weight: 500; }
+
+@keyframes launch-pulse {
+  0%, 100% { box-shadow: 0 0 23px rgba(94, 229, 225, .17); }
+  50% { box-shadow: 0 0 37px rgba(94, 229, 225, .32); }
+}
+
+@media (hover: hover) {
+  .ship-option:hover {
+    transform: translateY(-3px);
+    border-color: rgba(158, 242, 239, .72);
+    background: linear-gradient(135deg, rgba(17, 54, 73, .92), rgba(7, 25, 40, .95));
+    box-shadow: 0 12px 29px rgba(0, 0, 0, .36), 0 0 24px rgba(80, 215, 230, .12);
+  }
+  .ship-option:hover::before { opacity: .18; transform: scale(1.2); }
+  .menu .launch-primary:hover { transform: translateY(-3px) scale(1.012); filter: saturate(1.2) brightness(1.08); box-shadow: 0 12px 32px rgba(0, 0, 0, .42), 0 0 44px rgba(94, 229, 225, .44); animation-play-state: paused; }
+  .menu .launch-primary:hover::before { left: 120%; }
+  .menu .launch-primary:hover .launch-arrow { transform: translate(4px, -4px); }
+}
+
+.ship-option:focus-visible,
+.menu .launch-primary:focus-visible,
+.mission-options summary:focus-visible { outline: 2px solid #e2ffff; outline-offset: 3px; }
+
+@media (max-width: 1100px) {
+  #ui.is-menu .brand-sub { display: none; }
+  .menu { grid-template-rows: minmax(270px, 1fr) auto; }
+  .menu-hero { grid-template-columns: minmax(300px, .8fr) minmax(360px, 1.2fr); gap: 20px; }
+  .menu-copy { padding-left: 10px; }
+  .menu h1 { font-size: clamp(49px, 6vw, 68px); }
+  .launch-console { grid-template-columns: minmax(470px, 1.35fr) minmax(255px, .65fr); }
+  .ship-option { padding-inline: 11px; }
+  .ship-option small { gap: 5px; font-size: 6px; }
+}
+
+@media (max-width: 900px) {
+  #ui.is-menu .build { display: none; }
+  .menu {
+    inset: clamp(74px, 10vh, 92px) clamp(14px, 3vw, 28px) 14px;
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(123, 224, 231, .38) transparent;
+  }
+  .menu-hero { min-height: 560px; display: grid; grid-template-columns: 1fr; grid-template-rows: auto minmax(250px, 1fr); gap: 15px; }
+  .menu-copy { max-width: 580px; align-self: start; padding: 24px 18px 0; }
+  .menu h1 { max-width: 560px; font-size: clamp(50px, 9vw, 74px); }
+  .menu .lead br { display: none; }
+  .ship-preview { min-height: 250px; }
+  .launch-console { margin-top: 14px; grid-template-columns: 1fr; }
+  .launch-panel { border-top: 1px solid rgba(145, 221, 230, .16); border-left: 0; }
+  .menu .launch-primary { margin-top: 7px; }
+  .console-footer { margin-bottom: 1px; }
+}
+
+@media (max-width: 560px) {
+  #ui.is-menu .topbar { top: 13px; left: 14px; right: 14px; padding-bottom: 11px; }
+  #ui.is-menu .wordmark { gap: 7px; font-size: 12px; letter-spacing: 2.6px; }
+  #ui.is-menu .brand-icon { width: 25px; height: 25px; margin-right: 1px; font-size: 24px; }
+  #ui.is-menu .locale-toggle { margin-left: 8px; gap: 4px; }
+  #ui.is-menu .locale-toggle button { font-size: 8px; letter-spacing: .8px; }
+  .menu { inset: 61px 9px 8px; }
+  .menu-hero { min-height: 450px; grid-template-rows: auto minmax(205px, 1fr); gap: 5px; }
+  .menu-copy { padding: 20px 10px 0; }
+  .menu .eyebrow { font-size: 8px; letter-spacing: 1.3px; gap: 9px; }
+  .menu .eyebrow .line { width: 19px; }
+  .menu h1 { margin: 12px 0 10px; font-size: clamp(43px, 14vw, 62px); line-height: .91; letter-spacing: -1.3px; }
+  .menu .lead { font-size: 12px; line-height: 1.45; }
+  .ship-preview { min-height: 205px; }
+  .preview-frame { inset: 2px 0; }
+  .preview-head { top: 14px; left: 16px; right: 16px; }
+  .preview-head b { display: none; }
+  .preview-signal { right: 15px; font-size: 6px; }
+  .preview-signal i { width: 27px; }
+  .preview-ship-data { left: 16px; bottom: 16px; }
+  .preview-orbit { right: 15px; bottom: 16px; font-size: 6px; }
+  .launch-console { margin-top: 9px; }
+  .ship-picker { padding: 11px 9px; }
+  .ship-picker-heading { padding-inline: 3px; font-size: 6px; }
+  .ship-options { gap: 6px; margin-top: 9px; }
+  .ship-option { min-height: 102px; padding: 10px 9px; }
+  .ship-option-head { font-size: 6px; letter-spacing: .55px; }
+  .ship-option strong { font-size: 14px; letter-spacing: .8px; }
+  .ship-option .ship-role { display: none; }
+  .ship-option small { display: none; }
+  .launch-panel { padding: 12px 10px; }
+  .launch-panel .mission-meta { margin: 9px 0 7px; }
+  .visual-style-picker { margin-bottom: 7px; }
+  .visual-option { padding: 7px 6px; gap: 5px; }
+  .visual-option b { font-size: 6px; letter-spacing: .35px; }
+  .visual-option small { font-size: 5px; }
+  .ink-swatch { width: 19px; height: 19px; }
+  .mission-options { margin-bottom: 7px; }
+  .menu .launch-primary { min-height: 57px; font-size: 10px; }
+  .console-footer { padding: 7px 10px; font-size: 5px; letter-spacing: .65px; }
+  .console-footer span:first-child { max-width: 62%; }
+}
+
+@media (max-height: 720px) and (min-width: 901px) {
+  #ui.is-menu .topbar { top: 13px; padding-bottom: 12px; }
+  .menu { top: 72px; overflow-y: auto; }
+  .menu-hero { min-height: 310px; }
+  .menu h1 { margin-block: 10px; font-size: clamp(48px, 5vw, 65px); }
+  .menu .lead { font-size: 13px; line-height: 1.5; }
+  .launch-console { margin-top: 12px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu .launch-primary { animation: none; }
+  .ship-option,
+  .menu .launch-primary,
+  .menu .launch-primary::before,
+  .launch-arrow { transition-duration: .01ms; }
+}
+
+@media (max-width: 760px) {
+  .control-strip { font-size: 8px; }
+  .control-strip kbd { font-size: 7px; }
+  .weapon { font-size: 7px; }
+  .mission-block p { font-size: 10px; }
+  #target-info { font-size: 8px; }
+}
+
+/*
+ * Launch screen refinement
+ *
+ * The existing menu structure remains intact, but the launch screen now gives
+ * the title, live ship and primary action a clearer visual hierarchy. The
+ * canvas stays untouched; these rules only simplify its presentation layer.
+ */
+#ui.is-menu .menu {
+  left: 50%;
+  right: auto;
+  width: min(1320px, calc(100vw - 80px));
+  transform: translateX(-50%);
+}
+
+#ui.is-menu .menu-hero {
+  grid-template-columns: minmax(320px, .72fr) minmax(500px, 1.28fr);
+  gap: clamp(24px, 4vw, 70px);
+}
+
+#ui.is-menu .menu-copy { padding-left: clamp(4px, 1.6vw, 24px); }
+
+#ui.is-menu .preview-frame {
+  border-color: transparent;
+  background: radial-gradient(circle at 52% 52%, rgba(72, 209, 238, .07), transparent 48%);
+  clip-path: none;
+}
+
+#ui.is-menu .preview-frame > i,
+#ui.is-menu .preview-axis,
+#ui.is-menu .preview-signal,
+#ui.is-menu .preview-orbit { display: none; }
+
+#ui.is-menu .preview-head {
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  opacity: .62;
+}
+
+#ui.is-menu .preview-ship-data {
+  left: 12px;
+  bottom: 12px;
+  opacity: .78;
+}
+
+#ui.is-menu .launch-console {
+  grid-template-columns: minmax(450px, 1.2fr) minmax(280px, .8fr);
+  border-color: rgba(138, 225, 235, .2);
+  background: linear-gradient(112deg, rgba(4, 17, 31, .84), rgba(4, 13, 25, .76) 58%, rgba(5, 18, 30, .82));
+  box-shadow: 0 18px 54px rgba(0, 0, 0, .3), inset 0 1px rgba(226, 255, 255, .04);
+  backdrop-filter: blur(8px);
+}
+
+#ui.is-menu .ship-picker { padding: clamp(14px, 1.7vw, 22px); }
+#ui.is-menu .ship-option { min-height: 104px; }
+#ui.is-menu .launch-panel { padding: clamp(14px, 1.7vw, 22px); }
+
+#ui.is-menu .mission-config {
+  margin: 3px 0 10px;
+  border-top: 1px solid rgba(145, 221, 230, .1);
+  padding-top: 3px;
+}
+
+#ui.is-menu .mission-config summary {
+  color: #9bb7bd;
+  font-size: 8px;
+  letter-spacing: 1.35px;
+}
+
+#ui.is-menu .mission-config-body {
+  margin-top: 7px;
+  padding: 9px;
+  border: 1px solid rgba(145, 221, 230, .1);
+  background: rgba(4, 16, 28, .38);
+}
+
+#ui.is-menu .mission-config .visual-style-picker { margin-bottom: 8px; }
+#ui.is-menu .mission-config .test-option { margin-bottom: 0; }
+
+#ui.is-menu .launch-primary { min-height: 62px; }
+
+@media (max-width: 1024px) and (min-width: 701px) {
+  #ui.is-menu .menu { width: calc(100vw - 40px); }
+  #ui.is-menu .menu-hero { grid-template-columns: minmax(275px, .72fr) minmax(360px, 1.28fr); gap: 22px; }
+  #ui.is-menu .launch-console { grid-template-columns: minmax(350px, 1.15fr) minmax(245px, .85fr); }
+  #ui.is-menu .ship-option { padding-inline: 11px; }
+  #ui.is-menu .ship-option small { gap: 5px; font-size: 6px; }
+}
+
+@media (max-width: 700px) {
+  #ui.is-menu .menu {
+    left: 0;
+    right: 0;
+    width: 100%;
+    transform: none;
+    inset: 61px 0 7px;
+    padding: 0 10px;
+  }
+
+  #ui.is-menu .menu-hero {
+    min-height: 0;
+    grid-template-rows: auto minmax(175px, 28vh);
+    gap: 2px;
+  }
+
+  #ui.is-menu .menu-copy {
+    max-width: 520px;
+    padding: 18px 8px 0;
+  }
+
+  #ui.is-menu .menu h1 {
+    max-width: 470px;
+    margin: 11px 0 9px;
+    font-size: clamp(40px, 12.5vw, 58px);
+  }
+
+  #ui.is-menu .menu .lead {
+    max-width: 390px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
+  #ui.is-menu .ship-preview {
+    min-height: 175px;
+  }
+
+  #ui.is-menu .preview-head,
+  #ui.is-menu .preview-ship-data { display: none; }
+
+  #ui.is-menu .launch-console {
+    margin-top: 8px;
+    grid-template-columns: 1fr;
+    border-radius: 0;
+    clip-path: polygon(0 10px, 10px 0, 100% 0, 100% 100%, 0 100%);
+  }
+
+  #ui.is-menu .ship-picker { padding: 11px 10px 10px; }
+  #ui.is-menu .ship-picker-heading { padding-bottom: 7px; }
+  #ui.is-menu .ship-picker-heading > span:last-child { display: none; }
+  #ui.is-menu .ship-options { margin-top: 8px; gap: 6px; }
+  #ui.is-menu .ship-option { min-height: 86px; padding: 9px; }
+  #ui.is-menu .ship-option strong { font-size: 14px; }
+  #ui.is-menu .ship-option .ship-role,
+  #ui.is-menu .ship-option small { display: none; }
+
+  #ui.is-menu .launch-panel {
+    padding: 10px;
+    border-top: 1px solid rgba(145, 221, 230, .12);
+    border-left: 0;
+  }
+
+  #ui.is-menu .launch-ready,
+  #ui.is-menu .launch-panel .mission-meta,
+  #ui.is-menu .console-footer { display: none; }
+
+  #ui.is-menu .mission-config { margin: 0 0 6px; }
+  #ui.is-menu .mission-config-body { padding: 8px; }
+  #ui.is-menu .visual-options { gap: 4px; }
+  #ui.is-menu .visual-option { padding: 6px; }
+  #ui.is-menu .visual-option b { font-size: 6px; }
+  #ui.is-menu .visual-option small { font-size: 5px; }
+  #ui.is-menu .menu .launch-primary { min-height: 56px; margin-top: 4px; }
+}
+
+/* Cinematic home composition: the live scene is the stage, not a dashboard. */
+#ui.is-menu .vignette {
+  background:
+    linear-gradient(90deg, rgba(2, 8, 18, .72), rgba(2, 9, 19, .28) 42%, rgba(2, 8, 17, .02) 78%),
+    linear-gradient(0deg, rgba(1, 6, 14, .48), transparent 42%);
+}
+
+#ui.is-menu .menu {
+  inset: clamp(92px, 12vh, 128px) clamp(28px, 5vw, 80px) clamp(22px, 4vh, 42px);
+  left: 50%;
+  right: auto;
+  width: min(1380px, calc(100vw - 56px));
+  transform: translateX(-50%);
+  display: block;
+  overflow: visible;
+}
+
+#ui.is-menu .menu-hero {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(330px, .76fr) minmax(530px, 1.24fr);
+  grid-template-rows: 1fr;
+  align-items: stretch;
+  gap: clamp(26px, 5vw, 92px);
+}
+
+#ui.is-menu .menu-copy {
+  max-width: 610px;
+  align-self: center;
+  padding: 0 0 5vh clamp(4px, 1.7vw, 28px);
+}
+
+#ui.is-menu .menu h1 {
+  max-width: 560px;
+  margin-block: clamp(18px, 3vh, 32px) clamp(16px, 2vh, 24px);
+  font-size: clamp(58px, 6.2vw, 98px);
+  line-height: .9;
+}
+
+#ui.is-menu .menu .lead {
+  max-width: 360px;
+  color: #c0d1d5;
+  font-size: clamp(14px, 1.15vw, 17px);
+  line-height: 1.65;
+}
+
+#ui.is-menu .menu-stage {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: minmax(320px, 1fr) auto;
+  align-items: center;
+  gap: 5px;
+}
+
+#ui.is-menu .ship-preview {
+  min-height: 0;
+  height: 100%;
+  filter: none;
+}
+
+#ui.is-menu .preview-frame,
+#ui.is-menu .preview-head,
+#ui.is-menu .preview-signal,
+#ui.is-menu .preview-ship-data,
+#ui.is-menu .preview-orbit { display: none; }
+
+#ui.is-menu .launch-console {
+  width: min(580px, 100%);
+  justify-self: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  background: none;
+  border: 0;
+  box-shadow: none;
+  clip-path: none;
+  backdrop-filter: none;
+}
+
+#ui.is-menu .ship-picker {
+  padding: 0;
+  background: none;
+}
+
+#ui.is-menu .ship-picker-heading {
+  justify-content: center;
+  padding: 0 0 5px;
+  border: 0;
+  color: rgba(188, 220, 222, .68);
+  font-size: 9px;
+  letter-spacing: 2px;
+}
+
+#ui.is-menu .ship-picker-heading > span:last-child { display: none; }
+
+#ui.is-menu .ship-selector-row {
+  display: grid;
+  grid-template-columns: 34px minmax(0, 1fr) 34px;
+  align-items: center;
+  gap: 8px;
+}
+
+#ui.is-menu .ship-cycle {
+  width: 34px;
+  height: 50px;
+  padding: 0;
+  border: 0;
+  color: #b8e9e6;
+  background: transparent;
+  font-family: Georgia, serif;
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 1;
+  opacity: .75;
+  transition: color .18s ease, transform .18s ease, opacity .18s ease;
+}
+
+#ui.is-menu .ship-cycle:hover,
+#ui.is-menu .ship-cycle:focus-visible { color: #e2ffff; opacity: 1; transform: scale(1.13); }
+
+#ui.is-menu .ship-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin: 0;
+}
+
+#ui.is-menu .ship-option,
+#ui.is-menu .ship-option:hover,
+#ui.is-menu .ship-option.active {
+  min-height: 0;
+  align-items: center;
+  gap: 4px;
+  padding: 8px 6px;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  clip-path: none;
+  transform: none;
+}
+
+#ui.is-menu .ship-option::before,
+#ui.is-menu .ship-option::after,
+#ui.is-menu .ship-option-head { display: none; }
+
+#ui.is-menu .ship-option strong {
+  color: #9ab5bd;
+  font-size: clamp(14px, 1.35vw, 20px);
+  letter-spacing: 1.5px;
+  text-align: center;
+  transition: color .2s ease, font-size .2s ease, text-shadow .2s ease, opacity .2s ease;
+}
+
+#ui.is-menu .ship-option .ship-role,
+#ui.is-menu .ship-option small { display: none; }
+
+#ui.is-menu .ship-option:not(.active) { opacity: .42; }
+#ui.is-menu .ship-option:not(.active) strong { font-size: clamp(11px, 1vw, 15px); }
+#ui.is-menu .ship-option.active { opacity: 1; }
+#ui.is-menu .ship-option.active strong { color: #f2ffff; text-shadow: 0 0 20px rgba(136, 240, 232, .3); }
+#ui.is-menu .ship-option.active .ship-role { display: block; color: #b7ced2; font-size: 12px; line-height: 1.35; text-align: center; }
+
+#ui.is-menu .launch-panel {
+  position: relative;
+  align-items: center;
+  padding: 12px 0 0;
+  border: 0;
+  background: none;
+}
+
+#ui.is-menu .launch-ready {
+  order: 1;
+  margin-bottom: 10px;
+  color: #bfffee;
+  font-size: 10px;
+  letter-spacing: 2.2px;
+}
+
+#ui.is-menu .launch-panel .mission-meta { display: none; }
+
+#ui.is-menu .launch-primary {
+  order: 2;
+  width: min(360px, 100%);
+  min-height: 62px;
+  justify-content: center;
+  gap: 28px;
+  margin-top: 0;
+  font-size: 11px;
+  letter-spacing: 2.2px;
+}
+
+#ui.is-menu .mission-config {
+  order: 3;
+  position: relative;
+  margin: 9px 0 0;
+  border: 0;
+  padding: 0;
+  text-align: center;
+}
+
+#ui.is-menu .mission-config summary {
+  display: inline-block;
+  padding: 7px 4px;
+  color: #a9c4c8;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  text-decoration: underline;
+  text-decoration-color: rgba(169, 196, 200, .35);
+  text-underline-offset: 4px;
+}
+
+#ui.is-menu .mission-config summary::before { content: ''; }
+#ui.is-menu .mission-config[open] summary::before { content: ''; }
+
+#ui.is-menu .mission-config-body {
+  position: absolute;
+  z-index: 8;
+  right: 0;
+  bottom: calc(100% + 8px);
+  width: min(340px, calc(100vw - 32px));
+  margin: 0;
+  padding: 12px;
+  border: 1px solid rgba(145, 221, 230, .2);
+  background: rgba(4, 16, 28, .95);
+  box-shadow: 0 16px 42px rgba(0, 0, 0, .4);
+  text-align: left;
+}
+
+#ui.is-menu .mission-config .visual-style-heading { font-size: 8px; }
+#ui.is-menu .mission-config .test-option { margin-bottom: 0; }
+#ui.is-menu .console-footer { display: none; }
+
+@media (max-width: 1024px) and (min-width: 901px) {
+  #ui.is-menu .menu { width: calc(100vw - 40px); }
+  #ui.is-menu .menu-hero { grid-template-columns: minmax(285px, .72fr) minmax(430px, 1.28fr); gap: 26px; }
+  #ui.is-menu .menu h1 { font-size: clamp(54px, 6vw, 76px); }
+  #ui.is-menu .menu-stage { grid-template-rows: minmax(280px, 1fr) auto; }
+}
+
+@media (max-width: 900px) and (min-width: 701px) {
+  #ui.is-menu .menu {
+    inset: 82px 16px 16px;
+    width: auto;
+    transform: none;
+    overflow-y: auto;
+  }
+
+  #ui.is-menu .menu-hero {
+    height: auto;
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(270px, 42vh);
+    gap: 8px;
+  }
+
+  #ui.is-menu .menu-copy { padding: 16px 10px 0; }
+  #ui.is-menu .menu h1 { font-size: clamp(52px, 8vw, 72px); }
+  #ui.is-menu .menu-stage { grid-template-rows: 1fr auto; }
+  #ui.is-menu .launch-console { width: min(620px, 100%); }
+}
+
+@media (max-width: 700px) {
+  #ui.is-menu .menu {
+    inset: 61px 0 7px;
+    padding: 0 14px;
+    overflow-y: auto;
+  }
+
+  #ui.is-menu .menu-hero {
+    height: auto;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto minmax(155px, 27vh);
+    gap: 4px;
+  }
+
+  #ui.is-menu .menu-copy { padding: 16px 4px 0; }
+  #ui.is-menu .menu h1 { margin: 10px 0 8px; font-size: clamp(42px, 13vw, 58px); }
+  #ui.is-menu .menu .lead { max-width: 310px; font-size: 12px; line-height: 1.4; }
+  #ui.is-menu .menu-stage { grid-template-rows: 1fr auto; gap: 0; }
+  #ui.is-menu .ship-preview { min-height: 155px; }
+  #ui.is-menu .launch-console { width: 100%; }
+  #ui.is-menu .ship-selector-row { grid-template-columns: 29px minmax(0, 1fr) 29px; gap: 4px; }
+  #ui.is-menu .ship-cycle { width: 29px; height: 42px; font-size: 31px; }
+  #ui.is-menu .ship-options { gap: 4px; }
+  #ui.is-menu .ship-option strong { font-size: 15px; }
+  #ui.is-menu .ship-option:not(.active) strong { font-size: 10px; }
+  #ui.is-menu .ship-option.active .ship-role { font-size: 11px; }
+  #ui.is-menu .launch-ready { margin-bottom: 7px; font-size: 9px; letter-spacing: 1.7px; }
+  #ui.is-menu .launch-primary { width: 100%; min-height: 56px; font-size: 10px; }
+  #ui.is-menu .mission-config-body { position: fixed; left: 14px; right: 14px; bottom: 76px; width: auto; }
+}
+
+/* Action block scale pass: stronger controls without reintroducing a panel. */
+#ui.is-menu .launch-console {
+  width: min(500px, 100%);
+}
+
+#ui.is-menu .ship-picker-heading {
+  padding-bottom: 9px;
+  font-size: 11px;
+  letter-spacing: 2.4px;
+}
+
+#ui.is-menu .ship-selector-row {
+  grid-template-columns: 58px minmax(0, 1fr) 58px;
+  gap: 14px;
+}
+
+#ui.is-menu .ship-cycle {
+  width: 58px;
+  height: 68px;
+  border: 1px solid rgba(177, 235, 232, .16);
+  border-radius: 2px;
+  font-size: 52px;
+  opacity: .82;
+}
+
+#ui.is-menu .ship-options { gap: 20px; }
+#ui.is-menu .ship-option { padding: 10px 7px; }
+#ui.is-menu .ship-option strong { font-size: clamp(20px, 2vw, 28px); letter-spacing: 1.8px; }
+#ui.is-menu .ship-option:not(.active) strong { font-size: clamp(13px, 1.2vw, 17px); }
+#ui.is-menu .ship-option.active .ship-role { font-size: 15px; line-height: 1.45; }
+
+#ui.is-menu .launch-panel {
+  row-gap: 12px;
+  padding-top: 22px;
+}
+
+#ui.is-menu .launch-ready {
+  margin-bottom: 0;
+  font-size: 12px;
+  letter-spacing: 2.5px;
+}
+
+#ui.is-menu .launch-primary {
+  width: min(400px, 100%);
+  min-height: 74px;
+  font-size: 18px;
+  letter-spacing: 2.4px;
+}
+
+#ui.is-menu .launch-primary .launch-arrow { font-size: 31px; }
+
+#ui.is-menu .mission-config {
+  margin-top: 0;
+}
+
+#ui.is-menu .mission-config summary {
+  position: relative;
+  overflow: hidden;
+  min-height: 42px;
+  padding: 12px 16px;
+  font-size: 12px;
+  letter-spacing: 1.6px;
+  text-decoration: none;
+  border: 1px solid rgba(139, 224, 228, .28);
+  color: #b9dfe0;
+  background: linear-gradient(105deg, rgba(10, 34, 49, .86), rgba(7, 22, 36, .68));
+  clip-path: polygon(0 7px, 7px 0, calc(100% - 7px) 0, 100% 7px, 100% calc(100% - 7px), calc(100% - 7px) 100%, 7px 100%, 0 calc(100% - 7px));
+  transition: color .18s ease, border-color .18s ease, background .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+
+#ui.is-menu .mission-config summary:hover,
+#ui.is-menu .mission-config summary:focus-visible {
+  color: #f0ffff;
+  border-color: #c4fffb;
+  background: linear-gradient(105deg, rgba(25, 91, 106, .98), rgba(8, 36, 53, .96));
+  box-shadow: inset 4px 0 #a8fff4, 0 0 20px rgba(83, 218, 224, .62), 0 0 48px rgba(83, 218, 224, .3), 0 10px 26px rgba(0, 0, 0, .34);
+  text-shadow: 0 0 12px rgba(214, 255, 250, .8);
+  transform: translateY(-2px) scale(1.015);
+}
+
+#ui.is-menu .mission-config summary {
+  min-height: 48px;
+  padding: 14px 20px;
+  font-size: 14px;
+  letter-spacing: 1.8px;
+}
+
+#ui.is-menu .mission-config summary::after {
+  content: '';
+  position: absolute;
+  z-index: 1;
+  top: -60%;
+  bottom: -60%;
+  left: -28%;
+  width: 16%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .86), transparent);
+  opacity: 0;
+  transform: skewX(-18deg);
+  transition: left .55s ease, opacity .2s ease;
+  pointer-events: none;
+}
+
+#ui.is-menu .mission-config summary:hover::after,
+#ui.is-menu .mission-config summary:focus-visible::after {
+  left: 120%;
+  opacity: 1;
+}
+
+#ui.is-menu.draft-visual .mission-config summary {
+  color: #5f666c;
+  border-color: rgba(120, 125, 132, .36);
+  background: rgba(255, 255, 255, .58);
+  clip-path: none;
+  box-shadow: none;
+}
+
+#ui.is-menu.draft-visual .mission-config summary:hover,
+#ui.is-menu.draft-visual .mission-config summary:focus-visible {
+  color: #263b55;
+  border-color: #2b71b1;
+  background: rgba(238, 245, 250, .92);
+  box-shadow: 3px 3px 0 rgba(21, 92, 168, .2);
+}
+
+#ui.is-menu.draft-visual .mission-config summary::after { display: none; }
+
+#ui.is-menu .mission-config-body {
+  position: static;
+  top: auto;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  transform: none;
+  width: min(540px, calc(100vw - 48px));
+  max-height: min(440px, 46vh);
+  overflow: auto;
+  margin: 4px auto 0;
+  padding: 24px;
+}
+
+#ui.is-menu .mission-config .visual-style-heading { margin-bottom: 10px; font-size: 12px; }
+#ui.is-menu .mission-config .visual-options { gap: 8px; }
+#ui.is-menu .mission-config .visual-option { min-height: 58px; padding: 12px; gap: 11px; }
+#ui.is-menu .mission-config .visual-option b { font-size: 13px; }
+#ui.is-menu .mission-config .visual-option small { font-size: 11px; line-height: 1.3; }
+#ui.is-menu .mission-config .ink-swatch { width: 30px; height: 30px; }
+#ui.is-menu .mission-config .test-option { gap: 12px; padding: 12px; }
+#ui.is-menu .mission-config .test-option b { font-size: 13px; }
+#ui.is-menu .mission-config .test-option small { font-size: 11px; line-height: 1.45; }
+
+@media (max-width: 1024px) and (min-width: 701px) {
+  #ui.is-menu .launch-console { width: min(500px, 100%); }
+  #ui.is-menu .ship-option strong { font-size: 23px; }
+  #ui.is-menu .ship-option:not(.active) strong { font-size: 14px; }
+  #ui.is-menu .launch-primary { min-height: 68px; font-size: 16px; }
+}
+
+@media (max-width: 700px) {
+  #ui.is-menu .ship-picker-heading { padding-bottom: 5px; font-size: 10px; }
+  #ui.is-menu .ship-selector-row { grid-template-columns: 43px minmax(0, 1fr) 43px; gap: 6px; }
+  #ui.is-menu .ship-cycle { width: 43px; height: 55px; font-size: 40px; }
+  #ui.is-menu .ship-options { gap: 5px; }
+  #ui.is-menu .ship-option strong { font-size: 18px; }
+  #ui.is-menu .ship-option:not(.active) strong { font-size: 11px; }
+  #ui.is-menu .ship-option.active .ship-role { font-size: 12px; }
+  #ui.is-menu .launch-panel { padding-top: 16px; row-gap: 8px; }
+  #ui.is-menu .launch-ready { font-size: 10px; letter-spacing: 1.8px; }
+  #ui.is-menu .launch-primary { min-height: 64px; font-size: 15px; }
+  #ui.is-menu .launch-primary .launch-arrow { font-size: 27px; }
+  #ui.is-menu .mission-config summary { min-height: 44px; padding: 12px 16px; font-size: 12px; }
+  #ui.is-menu .mission-config-body { position: static; max-height: 300px; width: 100%; margin-top: 2px; padding: 16px; }
+  #ui.is-menu .mission-config .visual-style-heading { font-size: 11px; }
+  #ui.is-menu .mission-config .visual-options { gap: 6px; }
+  #ui.is-menu .mission-config .visual-option { min-height: 52px; padding: 9px; }
+  #ui.is-menu .mission-config .visual-option b { font-size: 11px; }
+  #ui.is-menu .mission-config .visual-option small { font-size: 10px; }
+  #ui.is-menu .mission-config .ink-swatch { width: 26px; height: 26px; }
+  #ui.is-menu .mission-config .test-option b { font-size: 12px; }
+  #ui.is-menu .mission-config .test-option small { font-size: 10px; }
+}
+
+/* Paper mode: keep the ship selector readable over the bright sketchbook scene. */
+#ui.is-menu.draft-visual .ship-picker-heading {
+  color: #263b55;
+  text-shadow: none;
+}
+
+#ui.is-menu.draft-visual .ship-selector-row {
+  padding: 8px 10px;
+  border: 1px solid rgba(38, 59, 85, .3);
+  background: rgba(247, 250, 252, .86);
+  box-shadow: 2px 3px 0 rgba(38, 59, 85, .12);
+}
+
+#ui.is-menu.draft-visual .ship-cycle {
+  color: #263b55;
+  border-color: rgba(38, 59, 85, .28);
+  text-shadow: none;
+}
+
+#ui.is-menu.draft-visual .ship-cycle:hover,
+#ui.is-menu.draft-visual .ship-cycle:focus-visible {
+  color: #155ca8;
+  border-color: #155ca8;
+  background: rgba(225, 238, 248, .9);
+  box-shadow: 2px 2px 0 rgba(21, 92, 168, .18);
+}
+
+#ui.is-menu.draft-visual .ship-option strong,
+#ui.is-menu.draft-visual .ship-option:not(.active) strong {
+  color: #263b55;
+  text-shadow: none;
+}
+
+#ui.is-menu.draft-visual .ship-option:not(.active) { opacity: .58; }
+#ui.is-menu.draft-visual .ship-option.active strong { color: #102d49; font-weight: 600; }
+#ui.is-menu.draft-visual .ship-option.active .ship-role { color: #405a6c; }
+
+/* Hero alignment: refine only the copy block, leaving the ship and action stage in place. */
+@media (min-width: 901px) {
+  #ui.is-menu .menu-copy {
+    transform: translateY(clamp(-78px, -7vh, -42px));
+  }
+}
+
+@media (min-width: 1500px) {
+  #ui.is-menu .menu-copy {
+    transform: translateX(clamp(-150px, calc(1500px - 100vw), -40px)) translateY(clamp(-78px, -7vh, -42px));
+  }
+}
+
+@media (max-width: 900px) and (min-width: 701px) {
+  #ui.is-menu .menu-copy { transform: translateY(-22px); }
+}
+
+@media (max-width: 700px) {
+  #ui.is-menu .menu-copy { transform: none; }
+}
+
+/* Final readability pass for the mission-settings drawer. */
+#ui.is-menu .mission-config-body {
+  width: min(580px, calc(100vw - 40px));
+  max-height: min(500px, 52vh);
+  padding: 28px;
+  border-color: rgba(145, 231, 235, .34);
+  background: rgba(3, 15, 27, .98);
+  box-shadow: 0 20px 56px rgba(0, 0, 0, .52), 0 0 28px rgba(65, 199, 213, .12), inset 0 1px rgba(218, 255, 255, .08);
+}
+
+#ui.is-menu .mission-config .visual-style-heading { margin-bottom: 12px; font-size: 13px; }
+#ui.is-menu .mission-config .visual-options { gap: 10px; }
+#ui.is-menu .mission-config .visual-option { min-height: 68px; padding: 14px; gap: 13px; }
+#ui.is-menu .mission-config .visual-option b { font-size: 14px; }
+#ui.is-menu .mission-config .visual-option small { font-size: 12px; line-height: 1.35; }
+#ui.is-menu .mission-config .ink-swatch { width: 34px; height: 34px; }
+#ui.is-menu .mission-config .test-option { gap: 13px; padding: 14px; }
+#ui.is-menu .mission-config .test-option b { font-size: 14px; }
+#ui.is-menu .mission-config .test-option small { font-size: 12px; line-height: 1.5; }
+
+#ui.is-menu.draft-visual .mission-config summary {
+  color: #e7f0f4;
+  border-color: rgba(139, 184, 211, .72);
+  background: linear-gradient(105deg, #263b55, #1d2f45);
+  box-shadow: 0 0 16px rgba(43, 113, 177, .22);
+}
+
+#ui.is-menu.draft-visual .mission-config summary:hover,
+#ui.is-menu.draft-visual .mission-config summary:focus-visible {
+  color: #ffffff;
+  border-color: #8bc6ed;
+  background: linear-gradient(105deg, #315d86, #203e5d);
+  box-shadow: 0 0 25px rgba(43, 113, 177, .52), 3px 3px 0 rgba(21, 92, 168, .28);
+  text-shadow: 0 0 10px rgba(220, 242, 255, .72);
+}
+
+#ui.is-menu.draft-visual .mission-config-body {
+  color: #e6edf2;
+  border-color: rgba(139, 184, 211, .5);
+  background: rgba(28, 41, 54, .98);
+  box-shadow: 0 20px 52px rgba(16, 31, 46, .42), 0 0 24px rgba(43, 113, 177, .16), inset 0 1px rgba(238, 247, 252, .12);
+}
+
+#ui.is-menu.draft-visual .mission-config .visual-style-heading,
+#ui.is-menu.draft-visual .mission-config .visual-style-heading span:first-child { color: #dbe8ef; }
+#ui.is-menu.draft-visual .mission-config .visual-style-heading span:last-child { color: #9eb6c7; }
+#ui.is-menu.draft-visual .mission-config .visual-option,
+#ui.is-menu.draft-visual .mission-config .test-option {
+  color: #e7eef2;
+  border-color: rgba(139, 184, 211, .42);
+  background: rgba(53, 70, 84, .92);
+  box-shadow: none;
+}
+
+#ui.is-menu.draft-visual .mission-config .visual-option:hover,
+#ui.is-menu.draft-visual .mission-config .visual-option:focus-visible,
+#ui.is-menu.draft-visual .mission-config .test-option:hover {
+  border-color: #79b7e2;
+  background: rgba(58, 87, 112, .98);
+  box-shadow: inset 3px 0 #68a9d8, 0 0 16px rgba(43, 113, 177, .2);
+}
+
+#ui.is-menu.draft-visual .mission-config .visual-option b,
+#ui.is-menu.draft-visual .mission-config .test-option b { color: #f2f7fa; }
+#ui.is-menu.draft-visual .mission-config .visual-option small,
+#ui.is-menu.draft-visual .mission-config .test-option small { color: #c8d7e0; }
+#ui.is-menu.draft-visual .mission-config .visual-option.active { border-color: #9acdf0; background: rgba(40, 91, 139, .98); box-shadow: inset 4px 0 #8bc6ed, 0 0 18px rgba(43, 113, 177, .28); }
+
+@media (max-width: 700px) {
+  #ui.is-menu .mission-config-body { width: 100%; max-height: 340px; padding: 18px; }
+  #ui.is-menu .mission-config .visual-style-heading { font-size: 11px; }
+  #ui.is-menu .mission-config .visual-option { min-height: 58px; padding: 10px; }
+  #ui.is-menu .mission-config .visual-option b { font-size: 12px; }
+  #ui.is-menu .mission-config .visual-option small { font-size: 10px; }
+  #ui.is-menu .mission-config .ink-swatch { width: 28px; height: 28px; }
+  #ui.is-menu .mission-config .test-option { padding: 10px; }
+  #ui.is-menu .mission-config .test-option b { font-size: 12px; }
+  #ui.is-menu .mission-config .test-option small { font-size: 10px; }
+}
+
+/* Final responsive audit: reduce the interface before reducing the experience. */
+html,
+body {
+  min-height: 100%;
+}
+
+#game {
+  height: 100vh;
+  height: 100dvh;
+  min-height: 100%;
+}
+
+#ui {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+#ui.is-menu button,
+#ui.is-menu summary {
+  touch-action: manipulation;
+}
+
+/* Tablet: keep the title, scene and launch actions; remove administration. */
+@media (max-width: 1024px) and (min-width: 701px) {
+  #ui.is-menu .brand-sub,
+  #ui.is-menu .build,
+  #ui.is-menu .locale-toggle,
+  #ui.is-menu .menu-chapter {
+    display: none;
+  }
+
+  #ui.is-menu .menu {
+    max-height: calc(100dvh - 98px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+  }
+
+  #ui.is-menu .menu-copy {
+    padding-top: clamp(12px, 2vh, 24px);
+  }
+
+  #ui.is-menu .menu .lead {
+    max-width: 300px;
+    font-size: clamp(13px, 1.55vw, 15px);
+    line-height: 1.5;
+  }
+
+  #ui.is-menu .mission-config-body {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    max-height: min(420px, 48dvh);
+    margin-top: 8px;
+    box-sizing: border-box;
+  }
+}
+
+/* Narrow tablet: use the same readable stacked layout as the mobile-first stage. */
+@media (max-width: 900px) and (min-width: 701px) {
+  #ui.is-menu .menu {
+    max-height: calc(100dvh - 98px);
+  }
+
+  #ui.is-menu .menu .lead {
+    display: none;
+  }
+
+  #ui.is-menu .mission-config-body {
+    max-height: min(420px, 44dvh);
+  }
+}
+
+/* Mobile: title, ship, selection and launch are the complete first screen. */
+@media (max-width: 700px) {
+  #ui.is-menu .brand-sub,
+  #ui.is-menu .build,
+  #ui.is-menu .locale-toggle,
+  #ui.is-menu .menu-chapter,
+  #ui.is-menu .menu .lead,
+  #ui.is-menu .launch-ready,
+  #ui.is-menu .mission-meta,
+  #ui.is-menu .console-footer {
+    display: none;
+  }
+
+  #ui.is-menu .menu {
+    max-height: calc(100dvh - 68px);
+    padding-inline: clamp(10px, 3.8vw, 16px);
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+
+  #ui.is-menu .menu-copy {
+    padding-top: clamp(12px, 3.5vh, 24px);
+  }
+
+  #ui.is-menu .menu h1 {
+    margin-top: 8px;
+    margin-bottom: 10px;
+    font-size: clamp(42px, 13vw, 58px);
+    line-height: .94;
+  }
+
+  #ui.is-menu .ship-preview {
+    min-height: clamp(155px, 27vh, 250px);
+  }
+
+  #ui.is-menu .launch-console {
+    margin-top: 8px;
+  }
+
+  #ui.is-menu .ship-cycle,
+  #ui.is-menu .launch-primary,
+  #ui.is-menu .mission-config summary {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  #ui.is-menu .ship-cycle:active,
+  #ui.is-menu .launch-primary:active,
+  #ui.is-menu .mission-config summary:active {
+    transform: translateY(1px) scale(.985);
+  }
+
+  #ui.is-menu .ship-cycle:focus-visible,
+  #ui.is-menu .launch-primary:focus-visible,
+  #ui.is-menu .mission-config summary:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 4px;
+  }
+
+  #ui.is-menu .launch-primary {
+    min-height: 60px;
+    font-size: clamp(14px, 4vw, 17px);
+  }
+
+  #ui.is-menu .mission-config summary {
+    min-height: 44px;
+    padding: 12px 16px;
+    font-size: clamp(12px, 3.3vw, 14px);
+  }
+
+  #ui.is-menu .mission-config-body {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    max-height: min(360px, 42dvh);
+    margin-top: 8px;
+    box-sizing: border-box;
+    overflow-y: auto;
+  }
+}
+
+/* Short screens: let the launch surface scroll instead of hiding the CTA. */
+@media (max-height: 760px) {
+  #ui.is-menu .menu {
+    overflow-y: auto;
+    overflow-x: hidden;
+    scrollbar-width: thin;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 1025px) {
+  #ui.is-menu .menu {
+    top: 78px;
+    bottom: 16px;
+    max-height: calc(100dvh - 94px);
+  }
+
+  #ui.is-menu .menu-copy {
+    padding-bottom: 2vh;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #ui.is-menu .ship-cycle,
+  #ui.is-menu .launch-primary,
+  #ui.is-menu .mission-config summary {
+    transition: none;
+  }
+}
+
+/* Gameplay HUD cleanup: the scene remains full-screen and the HUD becomes contextual. */
+#ui.in-flight .topbar {
+  display: none;
+}
+
+#ui.in-flight .mission-block {
+  top: clamp(28px, 5vh, 58px);
+  left: max(24px, env(safe-area-inset-left));
+  max-width: min(420px, 42vw);
+}
+
+#ui.in-flight .combat-stats {
+  top: clamp(28px, 5vh, 58px);
+  right: max(24px, env(safe-area-inset-right));
+}
+
+#ui.in-flight .mission-block .mission-label,
+#ui.in-flight .stage-track,
+#ui.in-flight .flight-caption,
+#ui.in-flight .weapon:not(.active),
+#ui.in-flight .control-strip {
+  display: none;
+}
+
+#ui.in-flight .mission-block h3 {
+  margin-top: 8px;
+}
+
+#ui.in-flight .panel-heading div span {
+  display: none;
+}
+
+#ui.in-flight #target-info {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .18s ease, visibility .18s ease;
+}
+
+#ui.in-flight #target-info.has-target {
+  opacity: 1;
+  visibility: visible;
+}
+
+#ui.in-flight .bottom-hud {
+  left: max(24px, env(safe-area-inset-left));
+  right: max(24px, env(safe-area-inset-right));
+  bottom: calc(clamp(34px, 6vh, 76px) + env(safe-area-inset-bottom));
+  grid-template-columns: minmax(210px, 1.05fr) minmax(170px, .9fr) minmax(145px, .72fr) minmax(112px, .55fr);
+  gap: clamp(16px, 2.4vw, 34px);
+}
+
+#ui.in-flight .weapons .weapon.active {
+  margin-top: 0;
+}
+
+#ui.in-flight .controls-help-toggle {
+  position: fixed;
+  right: max(24px, env(safe-area-inset-right));
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 13;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(178, 225, 220, .42);
+  border-radius: 50%;
+  color: #c9ece4;
+  background: rgba(4, 15, 26, .7);
+  box-shadow: 0 0 20px rgba(96, 213, 200, .12);
+  font-size: 16px;
+  line-height: 1;
+  pointer-events: auto;
+  transition: color .18s ease, border-color .18s ease, background .18s ease, transform .18s ease;
+}
+
+#ui.in-flight .controls-help-toggle:hover,
+#ui.in-flight .controls-help-toggle:focus-visible {
+  color: #f1fffb;
+  border-color: #b9fff0;
+  background: rgba(21, 67, 75, .86);
+  transform: scale(1.08);
+}
+
+#ui.in-flight .controls-help {
+  position: fixed;
+  inset: 0;
+  z-index: 12;
+  display: grid;
+  align-items: end;
+  justify-items: end;
+  padding: 24px max(24px, env(safe-area-inset-right)) calc(70px + env(safe-area-inset-bottom)) max(24px, env(safe-area-inset-left));
+  background: rgba(1, 8, 15, .24);
+  pointer-events: auto;
+}
+
+#ui.in-flight .controls-help-panel {
+  width: min(490px, calc(100vw - 48px));
+  padding: 18px 20px 20px;
+  border: 1px solid rgba(163, 222, 220, .3);
+  background: rgba(4, 17, 29, .96);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, .45), inset 0 1px rgba(224, 255, 250, .08);
+  pointer-events: auto;
+}
+
+#ui.in-flight .controls-help-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(163, 222, 220, .18);
+  color: #d7f5ed;
+  font-size: 11px;
+  letter-spacing: 2px;
+}
+
+#ui.in-flight .controls-help-heading > div {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#ui.in-flight .controls-help-heading small {
+  color: #8eadae;
+  font-size: 8px;
+  letter-spacing: 1px;
+}
+
+#ui.in-flight .controls-help-heading button {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 0;
+  color: #b9d8d4;
+  background: transparent;
+  font-size: 24px;
+  line-height: 1;
+  pointer-events: auto;
+}
+
+#ui.in-flight .controls-help-heading button:hover,
+#ui.in-flight .controls-help-heading button:focus-visible { color: #ffffff; }
+
+#ui.in-flight .controls-help-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 20px;
+  padding-top: 16px;
+  color: #a9c3c2;
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+
+#ui.in-flight .controls-help-grid span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+#ui.in-flight .controls-help-grid kbd {
+  flex: 0 0 auto;
+  min-width: 48px;
+  border-color: rgba(170, 203, 199, .35);
+}
+
+#ui.in-flight.draft-visual .controls-help-toggle {
+  color: var(--pencil);
+  border-color: var(--pencil-line);
+  background: rgba(255, 255, 255, .72);
+  box-shadow: none;
+}
+
+#ui.in-flight.draft-visual .controls-help {
+  background: rgba(255, 255, 255, .16);
+}
+
+#ui.in-flight.draft-visual .controls-help-panel {
+  border-color: var(--pencil-line);
+  background: rgba(255, 255, 255, .94);
+  box-shadow: 3px 4px 0 rgba(82, 88, 92, .12);
+}
+
+#ui.in-flight.draft-visual .controls-help-heading,
+#ui.in-flight.draft-visual .controls-help-heading button,
+#ui.in-flight.draft-visual .controls-help-grid { color: var(--pencil); }
+
+#ui.in-flight.draft-visual .controls-help-heading { border-color: var(--pencil-line); }
+#ui.in-flight.draft-visual .controls-help-heading small { color: var(--pencil-soft); }
+#ui.in-flight.draft-visual .controls-help-grid kbd { border-color: var(--pencil-line); color: var(--pencil); }
+
+@media (max-width: 1024px) {
+  #ui.in-flight .mission-block {
+    top: calc(20px + env(safe-area-inset-top));
+    left: max(20px, env(safe-area-inset-left));
+    max-width: min(340px, 42vw);
+  }
+
+  #ui.in-flight .combat-stats {
+    top: calc(20px + env(safe-area-inset-top));
+    right: max(20px, env(safe-area-inset-right));
+  }
+
+  #ui.in-flight .mission-block p,
+  #ui.in-flight .stage-track,
+  #ui.in-flight .shield-toggle { display: none; }
+
+  #ui.in-flight .bottom-hud {
+    left: max(20px, env(safe-area-inset-left));
+    right: max(20px, env(safe-area-inset-right));
+    bottom: calc(26px + env(safe-area-inset-bottom));
+    grid-template-columns: minmax(175px, 1.1fr) minmax(145px, .9fr) minmax(135px, .8fr) minmax(92px, .6fr);
+    gap: 16px;
+  }
+
+  #ui.in-flight .radar-panel canvas { width: 88px; height: 88px; }
+  #ui.in-flight .controls-help-toggle { right: max(20px, env(safe-area-inset-right)); }
+}
+
+@media (max-width: 700px) {
+  #ui.in-flight .mission-block {
+    top: calc(12px + env(safe-area-inset-top));
+    left: max(14px, env(safe-area-inset-left));
+    max-width: min(52vw, 220px);
+  }
+
+  #ui.in-flight .mission-block .eyebrow {
+    font-size: 8px;
+    letter-spacing: 1px;
+  }
+
+  #ui.in-flight .mission-block h3 {
+    margin: 6px 0 0;
+    font-size: clamp(16px, 4.8vw, 21px);
+  }
+
+  #ui.in-flight .mission-block p {
+    display: -webkit-box;
+    max-width: 190px;
+    margin-top: 5px;
+    overflow: hidden;
+    font-size: 9px;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  #ui.in-flight .combat-stats {
+    top: calc(13px + env(safe-area-inset-top));
+    right: max(14px, env(safe-area-inset-right));
+    flex-direction: row;
+    align-items: baseline;
+    gap: 5px;
+  }
+
+  #ui.in-flight .combat-stats .tiny-label { font-size: 7px; letter-spacing: .8px; }
+  #ui.in-flight .combat-stats strong { font-size: 29px; }
+  #ui.in-flight .combat-stats b { margin-left: 3px; }
+
+  #ui.in-flight .bottom-hud {
+    left: max(12px, env(safe-area-inset-left));
+    right: max(12px, env(safe-area-inset-right));
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    gap: 8px;
+    align-items: end;
+  }
+
+  #ui.in-flight .panel-heading,
+  #ui.in-flight .shield-toggle,
+  #ui.in-flight .flight-status .tiny-label,
+  #ui.in-flight .flight-status .boost-track,
+  #ui.in-flight .weapons > .tiny-label,
+  #ui.in-flight .weapons kbd,
+  #ui.in-flight .radar-panel,
+  #ui.in-flight #debug { display: none; }
+
+  #ui.in-flight .controls-help-toggle {
+    top: calc(54px + env(safe-area-inset-top));
+    right: max(14px, env(safe-area-inset-right));
+    bottom: auto;
+    display: grid;
+    width: 32px;
+    height: 32px;
+    font-size: 15px;
+  }
+
+  #ui.in-flight .ship-status { min-width: 0; }
+  #ui.in-flight .meter-row { gap: 5px; margin-top: 6px; }
+  #ui.in-flight .meter-row label { width: auto; font-size: 7px; letter-spacing: .5px; }
+  #ui.in-flight .meter-row b { width: 25px; font-size: 10px; }
+  #ui.in-flight .meter { min-width: 18px; }
+
+  #ui.in-flight .flight-status {
+    min-width: 0;
+    max-width: 86px;
+    padding: 0;
+  }
+
+  #ui.in-flight .flight-status strong { font-size: clamp(32px, 10vw, 42px); }
+  #ui.in-flight .unit { font-size: 9px; }
+
+  #ui.in-flight .weapons {
+    min-width: 0;
+    justify-self: end;
+  }
+
+  #ui.in-flight .weapon.active {
+    gap: 4px;
+    margin-top: 0;
+    font-size: 8px;
+    letter-spacing: .45px;
+    white-space: nowrap;
+  }
+
+  #ui.in-flight #target-info {
+    bottom: calc(92px + env(safe-area-inset-bottom));
+    max-width: calc(100vw - 28px);
+    overflow: hidden;
+    font-size: 7px;
+    letter-spacing: .8px;
+    text-overflow: ellipsis;
+  }
+
+  #ui.in-flight #boss-info {
+    top: calc(88px + env(safe-area-inset-top));
+    max-width: calc(100vw - 28px);
+    padding: 8px 14px;
+  }
+
+  #ui.in-flight .controls-help {
+    align-items: end;
+    justify-items: stretch;
+    padding: 14px max(12px, env(safe-area-inset-right)) calc(12px + env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+  }
+
+  #ui.in-flight .controls-help-panel {
+    width: 100%;
+    max-height: min(72dvh, 460px);
+    overflow-y: auto;
+    padding: 16px;
+  }
+
+  #ui.in-flight .controls-help-heading small { font-size: 7px; }
+  #ui.in-flight .controls-help-grid { gap: 8px 10px; padding-top: 13px; font-size: 8px; }
+  #ui.in-flight .controls-help-grid span { gap: 5px; }
+  #ui.in-flight .controls-help-grid kbd { min-width: 42px; padding-inline: 3px; font-size: 6px; }
+}
+
+@media (max-height: 620px) and (max-width: 700px) {
+  #ui.in-flight .mission-block p { display: none; }
+  #ui.in-flight .bottom-hud { bottom: calc(10px + env(safe-area-inset-bottom)); }
+  #ui.in-flight #target-info { bottom: calc(78px + env(safe-area-inset-bottom)); }
+}
+
+/* Help panel readability: larger text without sacrificing narrow-screen fit. */
+#ui.in-flight .controls-help-panel {
+  width: min(540px, calc(100vw - 40px));
+}
+
+#ui.in-flight .controls-help-heading {
+  font-size: clamp(12px, 1vw, 14px);
+}
+
+#ui.in-flight .controls-help-heading small {
+  font-size: clamp(9px, .75vw, 10px);
+}
+
+#ui.in-flight .controls-help-grid {
+  gap: 11px 22px;
+  font-size: clamp(10px, .78vw, 11px);
+  line-height: 1.3;
+  letter-spacing: .6px;
+}
+
+#ui.in-flight .controls-help-grid span {
+  gap: 9px;
+  overflow-wrap: anywhere;
+}
+
+#ui.in-flight .controls-help-grid kbd {
+  min-width: 52px;
+  padding: 5px 6px;
+  font-size: clamp(7px, .62vw, 9px);
+  white-space: nowrap;
+}
+
+@media (max-width: 700px) {
+  #ui.in-flight .controls-help-panel {
+    width: 100%;
+    max-height: min(78dvh, 480px);
+    padding: 18px;
+  }
+
+  #ui.in-flight .controls-help-heading { font-size: 13px; }
+  #ui.in-flight .controls-help-heading small { font-size: 8px; }
+  #ui.in-flight .controls-help-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 8px;
+    padding-top: 15px;
+    font-size: 10px;
+    line-height: 1.25;
+    letter-spacing: .35px;
+  }
+
+  #ui.in-flight .controls-help-grid span {
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  #ui.in-flight .controls-help-grid kbd {
+    min-width: 44px;
+    padding: 5px 3px;
+    font-size: 7px;
+  }
+}
+
+@media (max-width: 370px) {
+  #ui.in-flight .controls-help-panel { padding: 15px; }
+  #ui.in-flight .controls-help-grid {
+    gap: 9px 6px;
+    font-size: 9px;
+  }
+  #ui.in-flight .controls-help-grid kbd {
+    min-width: 40px;
+    font-size: 6px;
+  }
+}
+
+/* Gameplay audio control and compact mission readout. Audio remains a single
+   gameplay service; these rules only provide a small responsive affordance. */
+#ui.in-flight .audio-toggle {
+  position: fixed;
+  right: calc(max(24px, env(safe-area-inset-right)) + 44px);
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  z-index: 13;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(178, 225, 220, .42);
+  border-radius: 50%;
+  color: #c9ece4;
+  background: rgba(4, 15, 26, .7);
+  box-shadow: 0 0 20px rgba(96, 213, 200, .12);
+  font-family: inherit;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  pointer-events: auto;
+  transition: color .18s ease, border-color .18s ease, background .18s ease, transform .18s ease;
+}
+
+#ui.in-flight .audio-toggle:hover,
+#ui.in-flight .audio-toggle:focus-visible,
+#ui.in-flight .audio-toggle:active {
+  color: #f1fffb;
+  border-color: #b9fff0;
+  background: rgba(21, 67, 75, .86);
+  transform: scale(1.08);
+}
+
+#ui.in-flight.draft-visual .audio-toggle {
+  color: var(--pencil);
+  border-color: var(--pencil-line);
+  background: rgba(255, 255, 255, .72);
+  box-shadow: 0 2px 8px rgba(81, 85, 89, .1);
+}
+
+@media (max-width: 700px) {
+  #ui.in-flight .mission-block {
+    max-width: min(64vw, 240px);
+  }
+
+  #ui.in-flight .mission-block .eyebrow {
+    display: inline-flex;
+    align-items: baseline;
+    margin: 0;
+    font-size: 8px;
+    letter-spacing: .9px;
+    vertical-align: baseline;
+  }
+
+  #ui.in-flight .mission-block h3 {
+    display: inline;
+    margin: 0 0 0 5px;
+    font-size: clamp(15px, 4.5vw, 19px);
+    letter-spacing: .7px;
+    vertical-align: baseline;
+  }
+
+  #ui.in-flight .mission-block p {
+    display: -webkit-box;
+    max-width: min(62vw, 226px);
+    margin-top: 4px;
+    font-size: 9px;
+    line-height: 1.3;
+    -webkit-line-clamp: 2;
+  }
+
+  #ui.in-flight .audio-toggle {
+    top: calc(54px + env(safe-area-inset-top));
+    right: calc(max(14px, env(safe-area-inset-right)) + 40px);
+    bottom: auto;
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
+
+  #ui.in-flight .controls-help-toggle {
+    top: calc(54px + env(safe-area-inset-top));
+    right: max(14px, env(safe-area-inset-right));
+  }
+}
+
+@media (max-width: 700px) and (max-height: 620px) {
+  #ui.in-flight .mission-block p { display: none; }
+}
+
+/* Portrait home layout: replace inherited desktop positioning with a real flow. */
+@media (max-width: 700px) {
+  html,
+  body,
+  #ui {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  #game {
+    width: 100%;
+    max-width: 100%;
+    height: 100vh;
+    height: 100dvh;
+  }
+
+  #ui.is-menu {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  #ui.is-menu .topbar {
+    top: max(10px, env(safe-area-inset-top));
+    left: max(16px, env(safe-area-inset-left));
+    right: max(16px, env(safe-area-inset-right));
+    width: auto;
+    padding-bottom: 11px;
+  }
+
+  #ui.is-menu .wordmark {
+    max-width: 100%;
+    gap: 7px;
+    font-size: clamp(12px, 3.4vw, 15px);
+    letter-spacing: clamp(1.4px, .65vw, 2.8px);
+    white-space: nowrap;
+  }
+
+  #ui.is-menu .brand-icon {
+    flex: 0 0 auto;
+    width: 25px;
+    height: 25px;
+    margin-right: 1px;
+    font-size: 24px;
+  }
+
+  #ui.is-menu .menu {
+    inset: calc(62px + env(safe-area-inset-top)) 0 0;
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    padding-top: 0;
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: calc(28px + env(safe-area-inset-bottom));
+    padding-left: max(16px, env(safe-area-inset-left));
+    transform: none;
+    overflow-x: clip;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+  }
+
+  #ui.is-menu .menu-hero {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  #ui.is-menu .menu-copy {
+    width: 100%;
+    max-width: none;
+    min-width: 0;
+    flex: 0 0 auto;
+    align-self: stretch;
+    padding: clamp(16px, 4vh, 28px) 0 0;
+    transform: none;
+  }
+
+  #ui.is-menu .menu h1 {
+    width: 100%;
+    max-width: 100%;
+    margin: 10px 0 10px;
+    font-size: clamp(42px, 13vw, 58px);
+    line-height: .94;
+    letter-spacing: -1.3px;
+    overflow-wrap: normal;
+    word-break: normal;
+  }
+
+  #ui.is-menu .menu .lead {
+    display: block;
+    width: 100%;
+    max-width: 310px;
+    margin: 0;
+    font-size: clamp(12px, 3.4vw, 14px);
+    line-height: 1.45;
+  }
+
+  #ui.is-menu .menu-stage {
+    width: 100%;
+    min-width: 0;
+    min-height: 0;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+
+  #ui.is-menu .ship-preview {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 220px;
+    height: clamp(220px, 58vw, 280px);
+    flex: 0 0 auto;
+  }
+
+  #ui.is-menu .launch-console {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #ui.is-menu .ship-picker,
+  #ui.is-menu .launch-panel,
+  #ui.is-menu .ship-options,
+  #ui.is-menu .ship-selector-row {
+    width: 100%;
+    min-width: 0;
+  }
+
+  #ui.is-menu .ship-picker { padding: 12px 0 10px; }
+  #ui.is-menu .ship-picker-heading {
+    justify-content: center;
+    padding: 0 0 8px;
+    font-size: clamp(10px, 2.8vw, 12px);
+    text-align: center;
+  }
+
+  #ui.is-menu .ship-selector-row {
+    grid-template-columns: 44px minmax(0, 1fr) 44px;
+    gap: 7px;
+    align-items: stretch;
+  }
+
+  #ui.is-menu .ship-cycle {
+    width: 44px;
+    height: 58px;
+    min-width: 44px;
+    min-height: 52px;
+    font-size: 40px;
+  }
+
+  #ui.is-menu .ship-options {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 7px;
+    margin-top: 0;
+  }
+
+  #ui.is-menu .ship-option {
+    width: 100%;
+    min-width: 0;
+    min-height: 94px;
+    padding: 10px 7px;
+    align-items: center;
+    text-align: center;
+  }
+
+  #ui.is-menu .ship-option-head { display: none; }
+  #ui.is-menu .ship-option strong {
+    max-width: 100%;
+    font-size: clamp(15px, 4.2vw, 19px);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  #ui.is-menu .ship-option:not(.active) strong { font-size: clamp(11px, 3.2vw, 14px); }
+  #ui.is-menu .ship-option .ship-role {
+    display: block;
+    max-width: 100%;
+    font-size: clamp(10px, 2.8vw, 12px);
+    line-height: 1.25;
+  }
+
+  #ui.is-menu .ship-option small { display: none; }
+
+  #ui.is-menu .launch-panel {
+    width: 100%;
+    padding: 14px 0 0;
+    border-top: 1px solid rgba(145, 221, 230, .16);
+    border-left: 0;
+  }
+
+  #ui.is-menu .launch-primary {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 60px;
+    padding-inline: 16px;
+    font-size: clamp(14px, 4vw, 17px);
+  }
+
+  #ui.is-menu .mission-config {
+    width: 100%;
+    max-width: 100%;
+    text-align: center;
+  }
+
+  #ui.is-menu .mission-config summary {
+    width: 100%;
+    max-width: 100%;
+    min-height: 46px;
+    font-size: clamp(12px, 3.3vw, 14px);
+  }
+
+  #ui.is-menu .mission-config-body {
+    position: static;
+    width: 100%;
+    max-width: 100%;
+    max-height: min(62dvh, 400px);
+    margin: 8px 0 0;
+    padding: 14px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }
+
+  #ui.is-menu .mission-config .visual-options { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 370px) {
+  #ui.is-menu .menu {
+    padding-right: max(14px, env(safe-area-inset-right));
+    padding-left: max(14px, env(safe-area-inset-left));
+  }
+  #ui.is-menu .ship-selector-row { grid-template-columns: 40px minmax(0, 1fr) 40px; gap: 5px; }
+  #ui.is-menu .ship-cycle { width: 40px; min-width: 40px; font-size: 36px; }
+  #ui.is-menu .ship-option { min-height: 90px; padding-inline: 5px; }
+  #ui.is-menu .ship-option.active .ship-role { font-size: 10px; }
+}

@@ -1,0 +1,227 @@
+import { Position } from '../../types/position'
+import { TowerType, TowerId } from '../../types/towerType'
+import { TextProperties } from '../TextProperties'
+import { P5 } from '../../utils/P5'
+import { HudPanel } from '../HudPanel'
+import { Wallet } from '../../player/Wallet'
+import { PositionInsideRectangle } from '../../utils/PositionInsideRectangle'
+import { Button } from './Button'
+import { ButtonGreenTowerCreator } from './ButtonGreenTowerCreator'
+import { ButtonRedTowerCreator } from './ButtonRedTowerCreator'
+import { ButtonYellowTowerCreator } from './ButtonYellowTowerCreator'
+import { PANEL_STATE } from '../../constants/panel'
+import {
+  TOWER_GREEN_UPGRADE,
+  TOWER_ID,
+  TOWER_RED_UPGRADE,
+  TOWER_YELLOW_UPGRADE,
+} from '../../constants/tower'
+
+export class HudButtonsTowers {
+  static greenTowerButton: Button
+  static redTowerButton: Button
+  static yellowTowerButton: Button
+
+  #canBuyTowerGreen: boolean = false
+  #canBuyTowerRed: boolean = false
+  #canBuyTowerYellow: boolean = false
+
+  #wallet: Wallet
+
+  #upgradeCost: number | null = null
+  #sellProfit: number | null = null
+  #canUpgrade: boolean
+  #positionInsideRectangle: PositionInsideRectangle
+  #textProperties: TextProperties
+
+  constructor(wallet: Wallet) {
+    this.#wallet = wallet
+    this.#canUpgrade = false
+    this.#positionInsideRectangle = new PositionInsideRectangle()
+    this.#textProperties = new TextProperties()
+  }
+
+  #isInsideButtonsBar(position: Position) {
+    const ButtonsBarRectanglePosition = { x: 0, y: 28 }
+    const ButtonsBarRectangleSize = { w: 800, h: 50 }
+
+    return this.#positionInsideRectangle.isPositionInsideRectangle(
+      position,
+      ButtonsBarRectanglePosition,
+      ButtonsBarRectangleSize,
+    )
+  }
+
+  isInsideTowersButtonsBar(position: Position) {
+    return this.#isInsideButtonsBar(position) && position.x < 265
+  }
+  static initializeButtons() {
+    HudButtonsTowers._initializeTowerButtons()
+  }
+
+  static _initializeTowerButtons() {
+    ButtonGreenTowerCreator._initializeGreenTowerButton()
+    ButtonRedTowerCreator._initializeRedTowerButton()
+    ButtonYellowTowerCreator._initializeYellowTowerButton()
+
+    HudButtonsTowers.greenTowerButton.check()
+  }
+
+  uncheckAllTowerButtons() {
+    HudButtonsTowers.greenTowerButton.uncheck()
+    HudButtonsTowers.redTowerButton.uncheck()
+    HudButtonsTowers.yellowTowerButton.uncheck()
+  }
+
+  selectTower(towerId: TowerId) {
+    this.uncheckAllTowerButtons()
+    switch (towerId) {
+      case TOWER_ID.GREEN:
+        HudButtonsTowers.greenTowerButton.check()
+        break
+
+      case TOWER_ID.RED:
+        HudButtonsTowers.redTowerButton.check()
+        break
+
+      case TOWER_ID.YELLOW:
+        HudButtonsTowers.yellowTowerButton.check()
+        break
+    }
+  }
+
+  getSelectedTower(): TowerId {
+    if (HudButtonsTowers.greenTowerButton.isChecked) {
+      return TOWER_ID.GREEN
+    }
+    if (HudButtonsTowers.redTowerButton.isChecked) {
+      return TOWER_ID.RED
+    }
+    return TOWER_ID.YELLOW
+  }
+
+  draw() {
+    if (HudPanel.mode === PANEL_STATE.NORMAL) {
+      this.#setCanBuy()
+      this.#drawTowerButtons()
+    }
+
+    this.#textProperties.setForHudData()
+
+    if (HudPanel.mode != PANEL_STATE.UPGRADING_MAX) {
+      this.#drawUpgradeCost()
+    }
+    this.#drawSellProfit()
+
+    if (HudPanel.mode === PANEL_STATE.NORMAL) {
+      this.#drawNewTowerPrices()
+    }
+  }
+
+  #drawTowerButtons() {
+    HudButtonsTowers.greenTowerButton.on = this.#canBuyTowerGreen
+    HudButtonsTowers.redTowerButton.on = this.#canBuyTowerRed
+    HudButtonsTowers.yellowTowerButton.on = this.#canBuyTowerYellow
+
+    HudButtonsTowers.greenTowerButton.draw()
+    HudButtonsTowers.redTowerButton.draw()
+    HudButtonsTowers.yellowTowerButton.draw()
+  }
+
+  #drawUpgradeCost() {
+    if (this.#upgradeCost === null) {
+      return
+    }
+    if (!this.#canUpgrade) {
+      P5.p5.fill('gray')
+    }
+    P5.p5.text(this.#upgradeCost, 33, 72)
+    this.#restoreFill()
+  }
+
+  #drawSellProfit() {
+    if (this.#sellProfit !== null) {
+      P5.p5.text(this.#sellProfit, 182, 72)
+    }
+  }
+
+  #drawTowerGreenPrice() {
+    if (!this.#canBuyTowerGreen) {
+      P5.p5.fill('gray')
+    }
+    P5.p5.text(TOWER_GREEN_UPGRADE.COST[0], 40, 72)
+    this.#restoreFill()
+  }
+
+  #drawTowerRedPrice() {
+    if (!this.#canBuyTowerRed) {
+      P5.p5.fill('gray')
+    }
+    P5.p5.text(TOWER_RED_UPGRADE.COST[0], 118, 72)
+    this.#restoreFill()
+  }
+
+  #drawTowerYellowPrice() {
+    if (!this.#canBuyTowerYellow) {
+      P5.p5.fill('gray')
+    }
+    P5.p5.text(TOWER_YELLOW_UPGRADE.COST[0], 202, 72)
+    this.#restoreFill()
+  }
+
+  #restoreFill() {
+    P5.p5.fill('white')
+  }
+
+  #drawNewTowerPrices() {
+    this.#drawTowerGreenPrice()
+    this.#drawTowerRedPrice()
+    this.#drawTowerYellowPrice()
+  }
+
+  #setCanBuy() {
+    this.#canBuyTowerGreen = this.#wallet.haveMoneyToBuyNewTower(TOWER_ID.GREEN)
+    this.#canBuyTowerRed = this.#wallet.haveMoneyToBuyNewTower(TOWER_ID.RED)
+    this.#canBuyTowerYellow = this.#wallet.haveMoneyToBuyNewTower(
+      TOWER_ID.YELLOW,
+    )
+  }
+
+  viewUpgradeCost(tower: TowerType, canUpgrade: boolean) {
+    this.#upgradeCost = null
+    if (HudPanel.mode === PANEL_STATE.UPGRADING) {
+      this.#upgradeCost = tower.nextLevelUpgradeCost
+    }
+    this.#canUpgrade = canUpgrade
+  }
+
+  viewSellProfit(tower: TowerType) {
+    this.#sellProfit = null
+    if (
+      HudPanel.mode === PANEL_STATE.UPGRADING ||
+      HudPanel.mode === PANEL_STATE.UPGRADING_MAX
+    ) {
+      this.#sellProfit = tower.sellProfit
+    }
+  }
+
+  hideUpgradeCost() {
+    this.#upgradeCost = null
+  }
+
+  hideSellProfit() {
+    this.#sellProfit = null
+  }
+
+  handleTowerButtons(mousePosition: Position) {
+    if (HudButtonsTowers.greenTowerButton.isMouseOver(mousePosition)) {
+      this.selectTower(TOWER_ID.GREEN)
+    }
+    if (HudButtonsTowers.redTowerButton.isMouseOver(mousePosition)) {
+      this.selectTower(TOWER_ID.RED)
+    }
+    if (HudButtonsTowers.yellowTowerButton.isMouseOver(mousePosition)) {
+      this.selectTower(TOWER_ID.YELLOW)
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "repo": "RolandoAndrade/snake",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 34,
+  "pushedAt": "2021-11-01T18:21:34Z",
+  "description": "Snake HTML Canvas video game.",
+  "defaultBranch": "master",
+  "owner": "RolandoAndrade",
+  "slug": "rolandoandrade-snake",
+  "dest": "third-party/rolandoandrade-snake",
+  "readme": "# Snake\n\n> Snake HTML Canvas video game.\n\n![img.png](docs/img.png)\n\n## About\n\nSnake is a video game first released during the mid 1970s in arcades and has maintained popularity since then, becoming something of a classic.\n\n## Requirements\n\nFor development, you will only need Node.js and a node global package, npm or yarn, installed in your environment.\n\n## Install\n```shell\n$ git clone https://github.com/RolandoAndrade/snake.git\n$ cd snake\n$ npm install\n```\n\n## Running the project\n\n```shell\n$ npm run start\n```\n\n## Build for production\n\n```shell\n$ npm run build\n```\n\n## License\nThis project is [MIT License](https://github.com/RolandoAndrade/snake/blob/master/LICENSE)\nlicensed.\n",
+  "licenceFile": "LICENSE"
+}

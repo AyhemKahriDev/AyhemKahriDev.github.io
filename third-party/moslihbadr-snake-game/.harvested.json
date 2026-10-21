@@ -1,0 +1,14 @@
+{
+  "repo": "Moslihbadr/snake_game",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 758,
+  "pushedAt": "2023-05-25T22:31:16Z",
+  "description": "a simple snake game built with HTML CSS and Javascript",
+  "defaultBranch": "main",
+  "owner": "Moslihbadr",
+  "slug": "moslihbadr-snake-game",
+  "dest": "third-party/moslihbadr-snake-game",
+  "readme": "# snake_game\n",
+  "licenceFile": "LICENSE"
+}

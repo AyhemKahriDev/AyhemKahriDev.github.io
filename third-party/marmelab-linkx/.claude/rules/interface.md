@@ -1,0 +1,105 @@
+---
+paths:
+  - "src/components/**"
+  - "src/App.tsx"
+  - "src/App.css"
+  - "src/index.css"
+  - "index.html"
+---
+
+# src/components — affichage
+
+Ce que doit **montrer** l'interface est spécifié dans `plan.md` (histoires 7, 8, 9 et 11). Ce fichier ne consigne que les pièges techniques : les erreurs qui coûtent cher à rediagnostiquer. La mise en page vit dans `src/App.css` et `src/index.css`.
+
+## Silhouettes et matière
+
+- `pieceGeometry.ts` est la source unique des silhouettes : réserve, aperçu central, ghost et plateau appellent `getCellsOutlinePath` et partagent `OUTLINE_INSET`. Ne pas recréer une géométrie parallèle.
+- `PlexiDefs.tsx` est la source unique de la **matière**, comme `pieceGeometry.ts` l'est de la forme. Il rend une fois par document un jeu de `<defs>` que toutes les silhouettes référencent en `filter: url(#…)` depuis le CSS. Ne pas ajouter de fichier SVG par pièce ni par orientation : la géométrie y serait dupliquée et l'éclairage deviendrait solidaire de la pièce.
+- L'éclairage doit rester **invariant par rotation et par miroir** : la lumière vient toujours du haut à gauche de l'écran. Les liserés de tranche sont donc des `feOffset` d'espace utilisateur, et le reflet un `linearGradient` en `gradientUnits="userSpaceOnUse"` ancré sur la scène. Proscrire les dégradés en `objectBoundingBox`, qui s'étirent avec la boîte de la forme, et les `transform` SVG sur une silhouette : `getOrientation` cuit déjà l'orientation dans les coordonnées du chemin.
+- **L'unité utilisateur SVG vaut une case, jamais un pixel.** Le plateau et la réserve dessinent une case par unité, donc une longueur de filtre garde la même épaisseur relative à toutes les échelles. Même piège dans un `transform` CSS sur un élément SVG, où une longueur s'exprime aussi en unités de case.
+- **Aucune couche de matière ne doit avoir une portée proche de la case.** Une pièce est un polyomino : ses divisions internes tombent sur la grille, donc tout effet à cette échelle s'aligne dessus et découpe la dalle en carrés de teintes différentes. Les longueurs du filtre restent bien en deçà (~0,06 case), le reflet bien au-delà (la diagonale du plateau).
+- Ne pas employer `feSpecularLighting` ni `feDiffuseLighting`. Ces filtres dérivent une normale du canal alpha avec un pas d'échantillonnage que la spécification ne fixe pas : Gecko le prend à l'unité d'espace utilisateur, qui vaut ici une case, et chaque case reçoit sa propre lumière — une barre 1×3, pourtant un simple rectangle, se rend en trois bandes. Blink échantillonne en pixels de sortie et masque le défaut ; c'est Blink l'exception. Le reflet doit venir d'un dégradé, qui ne dérive rien du contour.
+- `PlexiDefs.test.tsx` verrouille ces points : dégradés tous en `userSpaceOnUse`, aucun filtre d'éclairage, aucune longueur de filtre à l'échelle de la case, et huit orientations d'une forme asymétrique qui ne diffèrent que par leur tracé.
+
+## Mouvement de la pièce sélectionnée
+
+`SelectedPiecePreview` anime le quart de tour et le retournement (plan.md, histoire 7). Quatre points s'y tiennent :
+
+- Le tracé rendu est **toujours** celui de l'orientation d'arrivée ; l'animation part de l'orientation qu'on quitte, en `transform` CSS sur un conteneur HTML, pour l'y amener. Ne pas inverser : peindre l'orientation de départ puis la faire tourner reviendrait à dériver une orientation d'un dessin, ce que `getOrientation` interdit.
+- Les deux images coïncident exactement parce que `rotateOnce` est un quart de tour horaire — d'où `rotate(-90deg)` en image de départ — et `reflect` un miroir d'axe vertical — d'où `rotateY(180deg)`. Changer une convention du domaine sans changer ces deux valeurs ferait sauter la pièce à la première image.
+- C'est l'unique dérogation à l'invariance de l'éclairage : le temps du mouvement, le reflet et le relief tournent avec la pièce. Elle est bornée à cet aperçu et à cette durée. Ne pas l'étendre à la réserve, au plateau ni à l'aperçu de chute, où elle deviendrait un état visible au repos.
+- L'animation se rejoue par **changement de clé** du conteneur, jamais par bascule de classe : deux quarts de tour de suite portent la même classe. Le type de mouvement se déduit de la différence entre deux sélections (`pieceTurn.ts`) et vit dans un état, non dans une variable de rendu : un rendu déclenché par autre chose — la colonne survolée, par exemple — effacerait la classe en cours d'animation. Le calcul est posé en effet de **mise en page**, avant la peinture, sans quoi l'orientation d'arrivée serait peinte une image à sa place avant de repartir en arrière.
+
+## Chute de la pièce posée
+
+`Board` fait descendre la pièce qui vient d'être posée depuis le haut du plateau (plan.md, histoire 2). Six points s'y tiennent :
+
+- **Une seule pièce tombe à la fois**, celle que désigne `lastPlacedPieceId`. L'animation étant portée par le montage de l'élément, la mettre sur `.board-piece` la ferait rejouer par toutes les pièces au chargement d'une position depuis un lien, et par n'importe quelle pièce que React déplacerait dans le DOM — déplacer un nœud le retire puis le réinsère, ce qui redémarre ses animations CSS. La classe reste posée après la chute sans rien rejouer : seul un changement de nom d'animation redémarre une animation en cours.
+- La hauteur et la durée dépendent de la ligne d'arrivée, donc de la pièce : elles sont **calculées dans le composant** et passées en variables CSS. `--fall-from` et `--fall-bounce` sont en **cases**, comme toute longueur de cette couche (voir plus haut). Un `-3px` y vaut trois cases, pas trois pixels.
+- La durée vaut `k × √hauteur`, **sans terme constant**. Le plancher ou le temps de départ qu'on est tenté d'ajouter donnent une gravité plus faible aux pièces qui s'arrêtent haut : elles flottent, et ça se voit tout de suite. Le rebond garde en revanche une part fixe de la durée, ce qui est cohérent — sa propre durée est en racine de sa hauteur, elle-même proportionnelle à la hauteur tombée.
+- Le calque des pièces déborde volontairement (`overflow: visible`) pour laisser passer les ombres portées des pièces de bord. La pièce qui tombe est donc découpée par un `clipPath` propre, qui **ne coupe qu'en haut** : sans lui elle se peindrait par-dessus la bordure et le cadre du plateau, ce qui a déjà été observé. Le ghost reste hors de ce groupe, son ombre de survol est bien plus large.
+- Le reflet suit la dalle, avec la même animation : le peindre à l'arrivée pendant que la dalle est en l'air les désolidariserait. La nappe de `plexi-sheen` défile donc sur la pièce le temps de la chute. Ce n'est pas la dérogation de l'aperçu de sélection : une translation ne fait pas tourner la lumière, sa direction reste celle de l'écran et l'état d'arrivée est exact.
+
+## Barre de lecture
+
+`PlaybackBar` déroule une partie ouverte depuis une notation (plan.md, histoire 13). Trois points s'y tiennent :
+
+- La barre n'existe **que** si `createGameStateFromSearch` a rendu une provenance `moves` ; c'est cette provenance, et non une relecture de la query string, qui décide. Elle est donc rendue dès le premier rendu et sa hauteur est fixe, comme celle de `play-head` et pour la même raison : le bord haut du plateau est en dessous.
+- Dès qu'une barre existe, `fallingPieceId` vient de `playback.falling` et **jamais** de `state.lastPlacedPieceId` : seuls `stepPlayback` et `extendPlayback` en désignent une. Un saut remonte les pièces sans la classe de chute — sans quoi tout le plateau retomberait à chaque déplacement du curseur.
+- Corollaire : `extendPlayback` s'applique **pendant le rendu** (`if (state !== seenState) …`), pas dans un `useEffect`. Un effet ne court qu'après le commit, si bien que la pièce qu'on vient de poser était peinte une fois à sa place d'arrivée avant de recevoir sa classe de chute — une partie ouverte par `?moves=` puis poursuivie n'avait pas la chute des autres. React reprend le rendu aussitôt, sans rien peindre entre les deux.
+- `App.tsx` rend `view` et dispatche sur `state`. Les deux sont le même objet au dernier rang ; ailleurs `view` est une position passée sans sélection, ce qui suffit à fermer la pose : le ghost, la bande de visée et les raccourcis clavier de coup en dépendent tous.
+- Les flèches pilotent le curseur **dès qu'aucune pièce n'est en main**, et non pendant la seule lecture. Conditionnées à la lecture, elles étaient mortes au chargement — curseur à la fin, rien de sélectionné — et n'ouvraient donc jamais ce qu'elles devaient parcourir. La visée de colonne garde la priorité quand une pièce est en main : les deux effets clavier s'excluent sur ce seul critère.
+
+## Bande de visée au doigt
+
+`DropZone` vise tant que le pointeur est enfoncé et ne pose qu'au relâchement (plan.md, histoire 2). Six points s'y tiennent :
+
+- La colonne se lit sur la **géométrie de la bande**, jamais sur la flèche qui reçoit l'événement. Pendant un glissé le pointeur est capturé, donc la cible reste celle de l'appui : suivre la cible ferait viser la même colonne du début à la fin. `dropAim.ts` est la source unique de cette conversion, et il retient le doigt sorti de la bande sur la colonne de bord.
+- La surface de visée est la bande **et le plateau**, dont `App.tsx` passe le cadre en `ref` : hors de cette surface l'aperçu s'éteint et le relâchement n'y pose rien. Le prolonger au plateau n'est pas un confort — la bande fait 44px de haut, un doigt qui cherche sa colonne en sort tout le temps, et s'arrêter à ses bords ferait échouer des gestes bien visés. L'extinction est ce qui rend l'abandon lisible ; supprimer l'un rend l'autre inintelligible.
+- La capture est posée **sur la bande** et non sur la flèche pressée. Au doigt elle serait sinon implicite et attachée à cette flèche ; à la souris, il n'y en aurait aucune et un relâchement hors de la bande laisserait le geste ouvert pour toujours.
+- **Un appui maintenu est aussi le geste de sélection du navigateur** : iOS ouvre sa bulle « Tout sélectionner / Copier », Chrome ses poignées. Elle interrompt le geste — l'appareil reprend le pointeur et envoie `pointercancel`, la pièce ne tombe pas. D'où `user-select` et `-webkit-touch-callout` à `none` sur toute la surface de jeu, `App.css`, réserves et plateau compris : le doigt y dérive pendant la visée. `touch-action` ne couvre pas ce cas, il n'arbitre que le défilement.
+- `touch-action: none` sur la bande est ce qui rend le geste possible : sans lui, le navigateur retient les événements le temps de décider s'il s'agit d'un défilement, et la bande ne répond qu'à la fin du geste. C'est le seul endroit de la page d'où l'on ne peut plus faire défiler.
+- Le clic est **conservé pour la seule activation sans pointeur**, reconnue à `detail === 0` : clavier et aides techniques. Un geste au pointeur pose déjà au relâchement, et le clic qui le suit poserait une seconde fois. Même raison côté `App.tsx`, dont le raccourci `Entrée`/`Espace` s'efface quand le focus est **sur une flèche de colonne** : elle produit son propre clic, et deux poses d'affilée jouent réellement deux pièces quand la sélection est conservée après un tour passé. Ne pas élargir ce garde à tous les boutons : la pièce de réserve garde le focus après sa sélection, et c'est de là qu'on vise aux flèches puis qu'on pose à `Entrée`.
+
+## Conseil et chemin gagnant
+
+- Le conseil est rattaché dans `App.tsx` à l'**état exact** pour lequel il a été demandé, jamais à un drapeau. Toute action produit un nouvel état, donc la demande en cours et le conseil affiché cessent d'y correspondre et disparaissent sans qu'aucun effet n'ait à les nettoyer, y compris si le joueur agit pendant la recherche. Une action refusée renvoie l'état inchangé et laisse le conseil en place, ce qui est le comportement voulu.
+- La mise en évidence du conseil est un mécanisme **distinct** du chemin gagnant : classes, calque et teinte propres. Le chemin gagnant est un contour transparent sur des pièces posées ; le conseil désigne des cases vides et porte un fond. Ne pas fondre les deux rendus.
+
+## Ordre des réserves
+
+`App.tsx` rend le plateau d'abord, puis les deux réserves **dans l'ordre du tour**, la réserve du joueur actif en tête. L'ordre du DOM est donc toujours l'ordre visuel, y compris pour un lecteur d'écran ou une tabulation.
+
+- Sur trois colonnes, cet ordre ne doit rien décider : `App.css` pose chaque réserve sur la colonne de sa couleur avec `grid-area`, la bleue à gauche comme l'annonce la flèche du bandeau. Ne pas revenir à un placement automatique, il suivrait le tour. Les réserves y sont donc ancrées par couleur et ne permutent jamais : le bandeau est alors le seul indicateur de tour et doit rester.
+- En une seule colonne, la permutation des deux réserves porte le tour à elle seule ; le bandeau visuel y est supprimé, il répétait cette information au prix de 88px de haut. Sa région `aria-live` est en revanche conservée : une permutation muette serait invisible pour un lecteur d'écran. Ne pas retirer cette région en même temps que le bandeau.
+- Les sélecteurs `.play-area + .piece-tray` et `.piece-tray + .piece-tray` désignent respectivement la réserve active et l'adverse. Ils tiennent de l'ordre du DOM, donc aucune classe d'état n'est à câbler côté React. Ce sont eux aussi qui **rejouent** l'animation de permutation : React ne déplace qu'un des deux nœuds à chaque tour, et c'est le passage d'un sélecteur à l'autre — donc d'un nom d'animation à l'autre — qui fait repartir celle de la réserve restée en place. D'où deux noms distincts, à ne pas fusionner.
+- La réserve empilée est une grille de sept colonnes, un groupe de forme par colonne, les deux exemplaires empilés. Les colonnes sont en `auto`, donc **calées sur la largeur de leur forme** ; `justify-content` reste à `normal`, ce qui répartit également l'espace restant entre elles et donne à chaque silhouette la même marge (plan.md, histoire 7). Ne pas fixer `justify-content` ni une gouttière de colonne : la répartition tomberait et c'est elle qui écarte les pièces.
+- `--piece-cell` s'en déduit à l'envers : les sept formes totalisent **17 cases** de large, auxquelles s'ajoutent les sept marges à prélever, d'où `(100cqw - 7 × marge) / 17`. `100cqw` est la largeur de contenu de la réserve, qui porte `container-type: inline-size` — préférer cette unité au viewport, dont il faudrait déduire à la main padding et gouttières. Changer `INITIAL_ROTATIONS` change ce total de 17 et donc cette formule.
+- La cible tactile garde ses 44px **en hauteur seulement** ; en largeur elle vaut la colonne, marge comprise, soit une trentaine de pixels pour le mono sur un téléphone de 375px. C'est le prix assumé de colonnes proportionnelles : sept cibles de 44px de large en demanderaient 308 à elles seules, et il ne resterait rien pour dessiner 17 cases. Ne pas réintroduire de défilement horizontal dans la réserve.
+
+## Mise en page du téléphone
+
+Le plateau est l'élément principal : **son bord haut ne bouge jamais**, ni à la sélection, ni à la rotation, ni à la victoire. Deux blocs de hauteur variable le menaçaient et sont traités séparément.
+
+- `play-head` — le bandeau et l'aperçu de la pièce sélectionnée — est regroupé dans un conteneur et reste **au-dessus** du plateau, comme au bureau : la pièce en main se montre du côté par lequel elle va tomber. Aucun `order` n'intervient, l'ordre visuel est celui du DOM, donc `Tourner`/`Retourner` précèdent aussi les flèches de colonne à la tabulation.
+- Sa hauteur est **fixe** (`height: var(--head-height)`), pièce sélectionnée ou non. Un `min-height` ne suffirait pas : le bord haut du plateau est juste en dessous, et le moindre débordement de contenu l'abaisserait. Ne pas la rendre escamotable pour gagner de la place : c'est un arbitrage explicite en faveur de la stabilité.
+- La valeur est calée sur le contenu réel — trois cases d'aperçu, soit 84px — et non sur les 150px du bureau. Le panneau de fin de partie s'affiche dans cette même zone déjà payée, sur toute la largeur : rien ne bouge non plus à la victoire. Il y tient jusqu'à 320px de large parce que sa phrase d'explication est tronquée à deux lignes, comme le message de jeu ; allonger ce texte ou ajouter une ligne au panneau demande de revérifier cette largeur.
+- La rangée se découpe en **trois colonnes symétriques** : message à gauche, aperçu centré sur la largeur du plateau, commandes contre le bord droit. Les deux commandes sont côte à côte et non empilées — c'est ce qui permet de tenir deux cibles de 44px dans une rangée de 84.
+- Le bouton de conseil vit dans la **colonne de gauche**, dans la même cellule que le message : calé en bas à gauche quand le message est calé en haut, si bien qu'aucun des deux ne recouvre l'autre. C'est la seule colonne au contenu variable ; les deux autres ont une géométrie fixe, donc ni l'aperçu ni les commandes de rotation ne bougent quand le conseil apparaît ou disparaît en cours de partie. Toute nouvelle commande de ce genre a sa place ici, pas ailleurs. **Ne pas le remonter en colonne 3 avec les rotations** : trois cibles de 44px y demanderaient 144px là où un téléphone de 375px n'en offre que 134, et l'aperçu se décentrerait.
+- Les quatre éléments de la rangée sont **placés de façon définie** (`grid-row: 1` et une colonne explicite chacun). Laisser le bandeau en placement automatique le renverrait sur une seconde rangée dès que le bouton de conseil occupe la colonne 1, ce qui doublerait la hauteur de l'en-tête.
+- Le message est tronqué à deux lignes dans cette colonne étroite, sinon il pousserait la rangée et donc le plateau. Le texte complet reste annoncé : la région `aria-live` ne dépend pas de ce qui est peint. Les libellés doivent donc porter leur sens dans leur premier membre de phrase.
+- Sans pièce en main, le bandeau reprend la rangée entière et le message s'y **centre** au lieu de rester calé sur une colonne de gauche devenue inutile — c'est le cas de « L'ordinateur réfléchit… ». Il ne se centre en hauteur que faute de bouton de conseil sous lui ; sinon il garde le haut de la cellule et lui laisse le bas, faute de quoi les deux se recouvriraient.
+- La rangée de flèches de dépôt ne réserve pas de hauteur : elle se **superpose** au haut du plateau, alignée sur ses colonnes par `--board-inset`, qui vaut la somme marge du cadre + bordure + marge intérieure. Modifier l'un de ces trois padding sans mettre `--board-inset` à jour désaligne les flèches.
+- Cette superposition est réservée au téléphone. Au-delà, le pointeur sait survoler et cette bande est le prolongement haut de la surface de visée : elle doit rester au-dessus du plateau pour qu'on puisse l'approcher par le haut.
+
+## Zone sûre iOS
+
+`index.html` déclare `viewport-fit=cover` et `apple-mobile-web-app-status-bar-style: black-translucent`. Les deux vont ensemble : sans les retraits, la barre d'état translucide recouvrirait le bandeau. `App.css` reprend `env(safe-area-inset-*)` sur le bandeau, la grille de jeu et les écrans plein écran. En une colonne le retrait bas est porté par la grille et **non** par la dernière réserve : les deux réserves permutent par un `translateY` de `100%` de leur propre hauteur, qui n'est le bon déplacement que si leurs deux boîtes restent égales. Repasser la barre d'état en `default` sans retirer ces retraits laisserait une bande vide en haut.
+
+## Vérification
+
+Toute modification visuelle se vérifie dans le navigateur, sur un viewport bureau et un viewport téléphone (375×812) : aucun débordement horizontal en portrait comme en paysage, aucune erreur console, et le bord haut du plateau immobile à la sélection, à la rotation et à la victoire.
+
+- Vérifier en **Chromium et en Firefox** : les deux moteurs divergent sur les filtres SVG et c'est Blink qui masque les défauts. Un rendu correct sous Chromium seul ne prouve rien.
+- Mesurer plutôt que constater : relever la position du haut du plateau et la hauteur de `play-head` avant et après, et les comparer. Une différence de quelques pixels ne se voit pas à l'œil mais saute au doigt.
+- `fixtures/urls.md` fournit des positions prêtes à coller, y compris des fins de partie.

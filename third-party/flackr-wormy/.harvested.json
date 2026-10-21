@@ -1,0 +1,14 @@
+{
+  "repo": "flackr/wormy",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 337,
+  "pushedAt": "2019-05-05T00:22:08Z",
+  "description": "An online multiplayer Javascript based snake game where you compete to become the longest snake.",
+  "defaultBranch": "gh-pages",
+  "owner": "flackr",
+  "slug": "flackr-wormy",
+  "dest": "third-party/flackr-wormy",
+  "readme": "wormy\n=====\n\nAn online multiplayer Javascript based snake game where you compete to become the longest snake.\n\nPlay online at https://flackr.github.io/wormy/\n",
+  "licenceFile": "LICENSE.md"
+}

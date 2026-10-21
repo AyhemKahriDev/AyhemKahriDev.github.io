@@ -1,0 +1,122 @@
+import { TILE_SIZE } from '../constants/tile'
+import { COLOR } from '../constants/color'
+import { Enemy } from '../enemies/Enemy'
+import { Position } from '../types/position'
+import { P5 } from '../utils/P5'
+import { Obj } from '../Obj'
+import {
+  MISSILE_INNER_DIAMETER,
+  MISSILE_OUTER_DIAMETER,
+  MISSILE_STATUS,
+  MISSILE_VELOCITY,
+} from '../constants/tower'
+
+export class Missile extends Obj {
+  static instances: Missile[] = []
+
+  #enemyTarget: Enemy | null = null
+  #status: number = 0
+  #damage: number = 0
+
+  constructor(position: Position, enemyTarget: Enemy, damage: number) {
+    super(position)
+
+    this.#enemyTarget = enemyTarget
+    this.#damage = damage
+  }
+
+  setTarget(enemy: Enemy) {
+    this.#enemyTarget = enemy
+  }
+
+  #moveToTarget() {
+    if (!this.#enemyTarget) {
+      return
+    }
+    this.#moveHorizontally(this.#enemyTarget.position)
+    this.#moveVertically(this.#enemyTarget.position)
+  }
+
+  #moveHorizontally(targetPosition: Position) {
+    if (this.position.x < targetPosition.x + TILE_SIZE / 2) {
+      this.position.x += MISSILE_VELOCITY
+      return
+    }
+    this.position.x -= MISSILE_VELOCITY
+  }
+
+  #moveVertically(targetPosition: Position) {
+    if (this.position.y < targetPosition.y + TILE_SIZE / 2) {
+      this.position.y += MISSILE_VELOCITY
+      return
+    }
+    this.position.y -= MISSILE_VELOCITY
+  }
+
+  update() {
+    if (!this.#enemyTarget) {
+      this.#status = MISSILE_STATUS.DEAD
+      return
+    }
+    this.#moveToTarget()
+    this.#addDamageEnemyWhenCollision(this.#enemyTarget)
+  }
+
+  #addDamageEnemyWhenCollision(enemyTarget: Enemy) {
+    if (this.#checkCollision()) {
+      this.#status = MISSILE_STATUS.DEAD
+      enemyTarget.addDamage(this.#damage)
+    }
+  }
+
+  #checkCollision() {
+    if (!this.#enemyTarget) {
+      return
+    }
+    return (
+      this.#isInsideX(this.#enemyTarget) && this.#isInsideY(this.#enemyTarget)
+    )
+  }
+
+  #isInsideX(enemyTarget: Enemy) {
+    return (
+      this.position.x > enemyTarget.position.x &&
+      this.position.x < enemyTarget.position.x + TILE_SIZE
+    )
+  }
+
+  #isInsideY(enemyTarget: Enemy) {
+    return (
+      this.position.y > enemyTarget.position.y &&
+      this.position.y < enemyTarget.position.y + TILE_SIZE
+    )
+  }
+
+  static updateInstances() {
+    Missile.instances.forEach((m) => {
+      m.update()
+    })
+  }
+
+  static drawInstances() {
+    Missile.instances.forEach((m) => {
+      m.draw()
+    })
+  }
+
+  static removeDeadInstances() {
+    Missile.instances = Missile.instances.filter((missile) => missile.isAlive)
+  }
+
+  get isAlive() {
+    return this.#status == MISSILE_STATUS.ALIVE
+  }
+
+  draw() {
+    P5.p5.noStroke()
+    P5.p5.fill(...COLOR.RED)
+    P5.p5.circle(this.position.x, this.position.y, MISSILE_OUTER_DIAMETER)
+    P5.p5.fill(...COLOR.YELLOW)
+    P5.p5.circle(this.position.x, this.position.y, MISSILE_INNER_DIAMETER)
+  }
+}

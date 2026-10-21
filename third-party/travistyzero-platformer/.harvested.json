@@ -1,0 +1,14 @@
+{
+  "repo": "travistyzero/platformer",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 27,
+  "pushedAt": "2016-03-20T04:26:51Z",
+  "description": "Simple platform game written in Javascript.",
+  "defaultBranch": "master",
+  "owner": "travistyzero",
+  "slug": "travistyzero-platformer",
+  "dest": "third-party/travistyzero-platformer",
+  "readme": "# Platformer\nA simple platform game developed from Chapter 15 of [Eloquent Javascript](http://eloquentjavascript.net).\n\n![alt text](https://raw.githubusercontent.com/travisty-github/platformer/master/platformer_screenshot.png \"Game screenshot.\")\n\n## Installation and running\n* Clone/download files from github and serve locally. For example, using [darkhttpd](https://unix4lyfe.org/darkhttpd/):\n```bash\ndarkhttpd /path/to/files --port 8000\n```\n* Using your browser open http://locahost:8000\n\n## Playing the game\n* To move use the arrow keys\n\n| Arrow Key | Movement   |\n|-----------|------------|\n| Up        | Jump       |\n| Left      | Move left  |\n| Right     | Move right |\n\n* Collect all the coins to complete the level\n* Avoid the lava!\n",
+  "licenceFile": "LICENSE"
+}

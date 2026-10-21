@@ -1,0 +1,74 @@
+import { assertEvent, enqueueActions } from 'xstate'
+
+import { moveFromHandToDiscardPile } from '../../../reducers/move-from-hand-to-discard-pile'
+import { MatchEvent, MatchState, ShellNotificationType } from '../../../types'
+import {
+  assertIsEventCardInstance,
+  assertIsNonNullable,
+} from '../../../types/assertions'
+import { lookup } from '../../Lookup'
+
+import { RulesMachineConfig } from './types'
+
+export const playingEventCard: RulesMachineConfig['states'] = {
+  [MatchState.PLAYING_EVENT]: {
+    on: {
+      [MatchEvent.PROMPT_PLAYER_FOR_TURN_ACTION]:
+        MatchState.WAITING_FOR_PLAYER_TURN_ACTION,
+
+      [MatchEvent.PROMPT_BOT_FOR_TURN_ACTION]:
+        MatchState.PERFORMING_BOT_TURN_ACTION,
+    },
+
+    entry: enqueueActions(
+      ({
+        event,
+        context,
+        context: {
+          match,
+          shell: { triggerNotification },
+        },
+        enqueue,
+      }) => {
+        assertEvent(event, MatchEvent.PLAY_EVENT)
+
+        const { currentPlayerId, sessionOwnerPlayerId } = match
+        const { playerId, cardIdxInHand } = event
+        const cardInstance = lookup.getCardInstanceFromHand(
+          match,
+          playerId,
+          cardIdxInHand
+        )
+
+        assertIsEventCardInstance(cardInstance)
+        assertIsNonNullable(currentPlayerId)
+
+        triggerNotification({
+          type: ShellNotificationType.EVENT_CARD_PLAYED,
+          payload: {
+            eventCard: cardInstance,
+          },
+        })
+
+        match = cardInstance.applyEffect(context).match
+        match = moveFromHandToDiscardPile(match, currentPlayerId, cardIdxInHand)
+
+        if (currentPlayerId === sessionOwnerPlayerId) {
+          enqueue.raise({ type: MatchEvent.PROMPT_PLAYER_FOR_TURN_ACTION })
+        } else {
+          enqueue.raise({ type: MatchEvent.PROMPT_BOT_FOR_TURN_ACTION })
+        }
+
+        match = {
+          ...match,
+          eventCardsThatCanBePlayed: match.eventCardsThatCanBePlayed - 1,
+        }
+
+        enqueue.assign({
+          ...context,
+          match,
+        })
+      }
+    ),
+  },
+}

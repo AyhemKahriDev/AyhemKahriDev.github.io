@@ -1,0 +1,14 @@
+{
+  "repo": "sidikfaha/snake-game",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 1229,
+  "pushedAt": "2023-04-25T07:39:20Z",
+  "description": "Snake game created with JavaScript just for fun",
+  "defaultBranch": "master",
+  "owner": "sidikfaha",
+  "slug": "sidikfaha-snake-game",
+  "dest": "third-party/sidikfaha-snake-game",
+  "readme": "# SNAKE GAME\nJust for fun... I just wanted to realise something but I want to do somethig different of the classic game that every body know.\n\n# Usage\n## HTML\nYou just need to import the javascript file and follow these steps :\n1. Import css and js files \n2. A div element with `id=\"table\"` and you give him both width and height. It'll be used to display the game\n3. A span or any other element with `id=\"score\"` to display score\n4. A span or any element with `id=\"level\"` to display level\n\n## JS\nJust create a new Snake object by giving the level in parameter\n\n```js\nconst game = new Snake( {level: 2} ) // For normal level\n\n// Overriding gameOver function\ngame.gameOver = () => {\n    alert('Custom game over function')\n    game.stop() // Do never forget this line\n}\n\n// When all is ok, just star de game\ngame.start()\n```\n\n## Code example\n\n```html\n<!doctyle html>\n<html>\n    <head>\n        <meta charset=\"UTF-8\">\n        <title>Snake Game</title>\n        <link rel=\"stylesheet\" href=\"css/style.css\">\n    </head>\n    <body>\n        <p>Level : <span id=\"level\"> </p>\n        <p>Score : <span id=\"score\"> </p>\n        <!-- width=100% and height=400px (very important) -->\n        <div style=\"height: 400px;\" id=\"table\"></div>\n\n        <script src=\"js/snake.ts\"></script>\n        <script>\n            const game = new Snake( {level: 3} ).start()\n        </script>\n    </body>\n</html>\n```\n",
+  "licenceFile": "LICENSE"
+}

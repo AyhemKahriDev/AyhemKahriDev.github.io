@@ -1,0 +1,14 @@
+{
+  "repo": "DIBAKU/SNAKE3d",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 1461,
+  "pushedAt": "2017-11-03T15:47:45Z",
+  "description": "A little 3d JavaScript game based on THREE.JS using WebGL",
+  "defaultBranch": "master",
+  "owner": "DIBAKU",
+  "slug": "dibaku-snake3d",
+  "dest": "third-party/dibaku-snake3d",
+  "readme": "# SNAKE3d\nA little 3d JavaScript game based on THREE.JS using WebGL.\nIt was created by four students during a Computer-Science-Camp at the University Trier.\nPlay it here: [snake3d.dibaku.de](http://snake3d.dibaku.de)\n",
+  "licenceFile": "LICENSE"
+}

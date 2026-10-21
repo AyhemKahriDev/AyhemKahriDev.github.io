@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bomberman Dynablaster – Single Player</title>
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- HUD: Lives, Score, Level -->
+  <div id="hud">
+    <span id="livesDisplay">Lives: 3</span>
+    <span id="scoreDisplay">Score: 0</span>
+    <span id="levelDisplay">Level: 1</span>
+  </div>
+  
+  <!-- Game Container with Canvas and Start Screen Overlay -->
+  <div id="gameContainer" style="position: relative;">
+    <!-- The canvas now has a tabindex so that it can be focused and receive key events -->
+    <canvas id="gameCanvas" width="480" height="416" tabindex="1"></canvas>
+    <!-- Start Screen Overlay -->
+    <div id="startScreen">
+      <h1>Bomberman Dynablaster</h1>
+      <button id="startButton">Start Game</button>
+    </div>
+  </div>
+  
+  <!-- Instructions -->
+  <div id="instructions">
+    <p><strong>Controls:</strong> Use the Arrow keys to move and Space to plant bombs.</p>
+  </div>
+  
+  <!-- ===== JAVASCRIPT ===== -->
+  <script src="main.js"></script>
+</body>
+</html>

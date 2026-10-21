@@ -1,0 +1,14 @@
+{
+  "repo": "bocaletto-luca/Monopoly-Multiplayer",
+  "stars": 11,
+  "licence": "GPL-3.0",
+  "sizeKB": 31,
+  "pushedAt": "2025-06-22T11:53:56Z",
+  "description": "Welcome to the Monopoly Web Game, an online adaptation of the legendary board game! Buy, trade, and build your empire while managing your fortune. Will you dominate the market or go bankrupt? By Bocaletto Luca",
+  "defaultBranch": "main",
+  "owner": "bocaletto-luca",
+  "slug": "bocaletto-luca-monopoly-multiplayer",
+  "dest": "third-party/bocaletto-luca-monopoly-multiplayer",
+  "readme": "# 🏠💰 Monopoly Web Game  \n\nWelcome to the **Monopoly Web Game**, an online adaptation of the **legendary board game**! Buy, trade, and build your empire while managing your fortune. Will you dominate the market or go bankrupt?  \n\n[![Test Online](https://img.shields.io/badge/Test%20Online-Click%20Here-brightgreen?style=for-the-badge)](https://bocaletto-luca.github.io/Monopoly-Multiplayer/)\n\n#### 👤 Author  \n**Bocaletto Luca**  \n\n## 🌐 Official Website  \n🔗 [Altervista](https://bocalettoluca.altervista.org)  \n🔗 [GitHub Pages](https://bocaletto-luca.github.io)  \n\n## ✨ Features  \n✅ **Multiplayer** – Compete against friends online.  \n✅ **Strategic Trading** – Buy, sell, and negotiate for properties.  \n✅ **Classic Gameplay** – Follows official **Monopoly** rules.  \n✅ **Intuitive UI** – Designed for a smooth gaming experience.  \n\n## 🛠️ Technologies Used  \n<p align=\"left\">\n  <img src=\"https://img.shields.io/badge/HTML5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white\" alt=\"HTML5\">\n  <img src=\"https://img.shields.io/badge/CSS3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white\" alt=\"CSS3\">\n  <img src=\"https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black\" alt=\"JavaScript\">\n</p>  \n\n## 🎮 How to Play  \n\n### **1️⃣ Game Setup**  \n🃏 Players select a **token** and start with an initial amount of money.  \n🎲 Roll the **dice** to move around the board.  \n\n### **2️⃣ Buying & Trading Properties**  \n🏡 Land on an **unowned property**? **Buy it** or **auction** it!  \n💰 Players can **trade** properties and negotiate deals.  \n\n### **3️⃣ Paying Rent & Building Houses**  \n💵 Land on an owned property? **Pay rent** to the owner!  \n🏗️ Own a full set? **Build houses/hotels** to increase rent.  \n\n### **4️⃣ Chance, Jail & Special Rules**  \n🎴 Draw **Chance/Community Chest** cards – surprises await!  \n🚔 Land in **Jail**? Pay bail or roll **doubles** to escape!  \n🏦 Bankrupt opponents and **be the last player standing** to win.  \n\n## 🚀 How to Start Playing  \n🔹 Open the **[official game website](https://bocaletto-luca.github.io)**  \n🔹 Choose your **token** and start rolling the dice!  \n🔹 Buy, trade, build, and **win the economy battle!**  \n\n🔥 Ready to **become a property tycoon**? Let’s play! 🏠💰  \n\n#### License: GPLv3\n",
+  "licenceFile": "LICENSE"
+}

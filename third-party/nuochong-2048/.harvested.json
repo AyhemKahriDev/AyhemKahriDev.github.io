@@ -1,0 +1,14 @@
+{
+  "repo": "nuochong/2048",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 2436,
+  "pushedAt": "2020-03-10T09:56:11Z",
+  "description": "Optimized 2048",
+  "defaultBranch": "master",
+  "owner": "nuochong",
+  "slug": "nuochong-2048",
+  "dest": "third-party/nuochong-2048",
+  "readme": "# 原生 JavaScript 游戏 2048 演示截图\n\n> 推荐使用火狐、谷歌、safri、opera 等浏览器查看，IE9 以下没有效果，完整版请使用 IE9+浏览器打开。\n\n为了确保最佳使用体验，请使用支持 CSS3 的浏览器打开\n有音效，要用耳机\n\n## 有关截图\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219214604.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219214704.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219214857.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219214924.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219214934.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219215005.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219215016.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219215202.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219215252.png)\n\n![An image](https://raw.githubusercontent.com/nuochong/2048/master/img/QQ截图20151219215616.png)\n",
+  "licenceFile": "LICENSE"
+}

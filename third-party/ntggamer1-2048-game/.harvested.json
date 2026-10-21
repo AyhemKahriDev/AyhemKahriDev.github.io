@@ -1,0 +1,14 @@
+{
+  "repo": "NTgGamer1/2048_Game",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 1991,
+  "pushedAt": "2026-03-02T12:40:45Z",
+  "description": "A responsive 2048 puzzle game built from scratch using vanilla HTML, CSS, and JavaScript, featuring custom grid logic and dynamic tile rendering.",
+  "defaultBranch": "main",
+  "owner": "NTgGamer1",
+  "slug": "ntggamer1-2048-game",
+  "dest": "third-party/ntggamer1-2048-game",
+  "readme": "# 2048 Clone (Vanilla JS)\n\nA portfolio-ready clone of the classic **2048** game built with plain **HTML, CSS, and JavaScript**.\n\nThis project includes:\n- 4x4 board rendering and tile updates\n- Arrow-key and swipe controls\n- Tile merge rules and score tracking\n- Random tile spawning (2/4)\n- Best score persistence with `localStorage`\n- Game-over detection and restart flow\n\n## Project Structure\n\n```text\n.\n├── index.html\n├── css/\n│   └── style.css\n├── js/\n│   └── script.js\n└── README.md\n```\n\n## Installation\n\n1. Clone the repository:\n\n```bash\ngit clone https://github.com/ntggamer1/2048_Game.git\ncd 2048_Game\n```\n\n2. Run locally (any one option):\n\n```bash\n# Option A: open directly\nopen index.html\n\n# Option B: serve with a local static server\npython3 -m http.server 5500\n# then visit http://localhost:5500\n```\n\n## Usage\n\n- Use `Arrow Up`, `Arrow Down`, `Arrow Left`, `Arrow Right` to move tiles.\n- On mobile, swipe in any direction.\n- Merge matching values to increase your score.\n- Click `New Game` or `Play Again` to restart.\n\n## Screenshots / Demo\n\nAdd your own captures before publishing:\n\n\n![Gameplay Screenshot](/Assets/Screenshot%202026-03-02%20at%2017.56.19.png)\n\n\n## Tech Stack / Why I Built This\n\n### Tech Stack\n- HTML5 (semantic structure)\n- CSS3 (responsive layout, modern styling, tile animations)\n- Vanilla JavaScript (game logic + DOM rendering)\n\n### Why I Built This\nI built this project to demonstrate strong fundamentals in front-end development without frameworks:\n- translating product behavior into data structures and algorithms\n- writing maintainable, testable JavaScript logic\n- designing clean UI and interaction states for desktop and mobile\n\n## Testing Notes\n\nPhase-wise checks performed:\n- file structure and resource link validation\n- JavaScript syntax validation (`node --check js/script.js`)\n- core logic assertions for merging, spawning, movement, and game-over detection\n\n## License\n\nThis project is available under the [MIT License](./LICENSE).\n",
+  "licenceFile": "LICENSE"
+}

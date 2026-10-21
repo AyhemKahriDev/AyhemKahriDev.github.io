@@ -1,0 +1,14 @@
+{
+  "repo": "okrohan/phaser3-boink",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 2298,
+  "pushedAt": "2023-03-04T17:15:52Z",
+  "description": "BOINK : 2d Platformer Powered by Phaser",
+  "defaultBranch": "master",
+  "owner": "okrohan",
+  "slug": "okrohan-phaser3-boink",
+  "dest": "third-party/okrohan-phaser3-boink",
+  "readme": "# BOINK : 2d Platformer Powered by Phaser\n### PLAY: https://oknagisa.github.io/boink\n### Level: Editor: https://oknagisa.github.io/boink?editor=true\n### Debug: https://oknagisa.github.io/boink?debug=true\n\n# Credits\n### MS-Paint :P\n## Assets:\n- Icons made by <a href=\"https://www.flaticon.com/authors/monkik\" title=\"monkik\">monkik</a> from <a href=\"https://www.flaticon.com/\" title=\"Flaticon\"> www.flaticon.com</a>\n",
+  "licenceFile": "LICENSE"
+}

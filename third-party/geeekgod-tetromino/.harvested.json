@@ -1,0 +1,14 @@
+{
+  "repo": "geeekgod/Tetromino",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 1414,
+  "pushedAt": "2025-05-29T17:43:21Z",
+  "description": "Tetris Game in React js for Computer Graphics mini-project.",
+  "defaultBranch": "main",
+  "owner": "geeekgod",
+  "slug": "geeekgod-tetromino",
+  "dest": "third-party/geeekgod-tetromino",
+  "readme": "# Tetromino Game\n\nThis project was developed with [Create React App](https://github.com/facebook/create-react-app).\n\n## Install\n\n```bash\ngit clone https://github.com/thisisrishabh22/Tetromino.git\n\ncd Tetromino\n```\n\n## Usage\n\n```bash\nyarn install\n\nyarn start\n```",
+  "licenceFile": "LICENSE"
+}

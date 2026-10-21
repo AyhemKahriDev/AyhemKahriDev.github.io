@@ -1,0 +1,120 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400&display=swap');
+
+
+*{
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    margin: 0;
+    background-image: linear-gradient(to top, #2b3b97 0%, #75b0dd 100%);
+    overflow-y: hidden;
+}
+
+h1{
+    position: absolute;
+    top: 1px;
+    left: 38%;
+    font-family: Poppins;
+    font-size: 2.2rem;
+    font-weight: 400;
+    color: beige;
+    text-transform: uppercase;
+    word-spacing: 5px;
+    letter-spacing: 2px;
+}
+
+.typing::after{
+    content: "";
+    position: absolute;
+    margin-top: .45rem;
+    width: 1px;
+    height: 2.3rem;
+    border-right: 2px solid white;
+    animation: blink 0.5s infinite ease;
+}
+
+h2{
+    font-family: Poppins;
+    font-size: 1rem;
+    padding: 5px;
+    margin-left: 1.5rem;
+    margin-top: .5rem;
+    font-weight: 300;
+    color: beige;
+}
+
+/* h3{
+    position: absolute;
+    color: beige;
+    left: auto;
+    right: auto;
+    font-size: 0.8rem;
+    font-weight: 300;
+    z-index: 1;
+} */
+
+/* Car and Scenery */
+
+.night {
+    height: 83vh;
+    width: 73vw;
+    margin: 6rem auto;
+    background: url(Scenery\ 1.jpg);
+    background-size: cover;
+    position: relative;
+    box-shadow: 1px 2px 60px rgba(0, 0, 0, 0.4);
+    overflow-x: hidden;
+}
+
+.surface{
+    height: 200px;
+    width: 500%;
+    background: url(Mountain\ 1.png);
+    display: block;
+    position: absolute; 
+    bottom: 0%;
+    left: 0%;
+    background-repeat: repeat-x;
+}
+
+.car{
+    position: absolute;
+    bottom: 2%;
+    left: 24%;
+}
+
+.moveRight {
+    animation: moveRight 6s linear infinite;
+}
+
+.suspension {
+    animation: suspension 1s linear infinite;
+}
+
+/* Keyframes */
+
+@keyframes moveRight{
+    100%{transform: translateX(-2950px)}
+}
+
+@keyframes suspension{
+    100%{
+        transform: translateY(-1px);
+    }
+    50%{
+        transform: translateY(2px);
+    }
+    0%{
+        transform: translateY(-1px);
+    }
+}
+
+@keyframes blink {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}

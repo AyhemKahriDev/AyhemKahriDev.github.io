@@ -1,0 +1,14 @@
+{
+  "repo": "shaoruu/cube-wars",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 347,
+  "pushedAt": "2019-11-18T07:27:07Z",
+  "description": ":octocat: A shooter game like Boxhead2",
+  "defaultBranch": "master",
+  "owner": "shaoruu",
+  "slug": "shaoruu-cube-wars",
+  "dest": "third-party/shaoruu-cube-wars",
+  "readme": "# Cube Wars :gun:\n\nThis is my attempt of creating the Boxhead 2D zombie game.\n\n## :mag_right: Installation\n\n```bash\n# clone the project\ngit clone https://github.com/ian13456/cube-wars.git\n\n# used to run server locally\nyarn global add serve\n\ncd cube-wars\n\n# run the website locally\nserve\n```\n\nVisit [`localhost:5000`](localhost:5000)\n\n## :camera: Screenshots\n\n![](https://i.imgur.com/HY54lH2.png)\n\n![](https://i.imgur.com/MrgtDNt.png)\n\n## :paperclip: Resources\n\n- [Boxhead2](https://www.crazymonkeygames.com/Boxhead-2Play-Rooms.html)\n",
+  "licenceFile": "LICENSE"
+}

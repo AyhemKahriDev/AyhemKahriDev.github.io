@@ -1,0 +1,14 @@
+{
+  "repo": "vmikhav/keepYourSheep",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 4706,
+  "pushedAt": "2023-01-01T13:42:25Z",
+  "description": "Arcadee with symbol recognition",
+  "defaultBranch": "master",
+  "owner": "vmikhav",
+  "slug": "vmikhav-keepyoursheep",
+  "dest": "third-party/vmikhav-keepyoursheep",
+  "readme": "# Keep your sheep\n#### An arcade game with symbol recognition\n[GitHub Game Off 2019](https://vmikhav.itch.io/keep-your-sheep) submission\n\n## License\nThis software is licensed under the [MIT](https://github.com/vmikhav/jager/blob/master/LICENSE) © [vmikhav](https://github.com/vmikhav)\n",
+  "licenceFile": "LICENSE.md"
+}

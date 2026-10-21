@@ -1,0 +1,14 @@
+{
+  "repo": "dizuncainiao/dz-greedysnake",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 12,
+  "pushedAt": "2022-06-27T03:09:19Z",
+  "description": "超 TM 好玩的原生 JavaScript 写的一个贪吃蛇游戏!",
+  "defaultBranch": "master",
+  "owner": "dizuncainiao",
+  "slug": "dizuncainiao-dz-greedysnake",
+  "dest": "third-party/dizuncainiao-dz-greedysnake",
+  "readme": "# dz-greedysnake\n\n#### 介绍\n原生 JavaScript 写的一个贪吃蛇游戏，比较独特的创意！\n\n",
+  "licenceFile": "LICENSE"
+}

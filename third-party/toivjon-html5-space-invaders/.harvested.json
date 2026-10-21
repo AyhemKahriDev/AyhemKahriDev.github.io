@@ -1,0 +1,15 @@
+{
+  "repo": "toivjon/html5-space-invaders",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 149,
+  "pushedAt": "2018-02-20T21:00:51Z",
+  "description": "A HTML5 implementation of the classic Space Invaders game.",
+  "defaultBranch": "master",
+  "owner": "toivjon",
+  "slug": "toivjon-html5-space-invaders",
+  "dest": "third-party/toivjon-html5-space-invaders",
+  "readme": "# html5-space-invaders\nA HTML5 implementation of the classic Space Invaders game.\n\nThis implementation supports one and two players.\n\nThe game is playable in the URL: https://toivjon.github.io/html5-space-invaders/\n\nDevelopment blog entry: https://toivjon.wordpress.com/2017/09/17/html5-space-invaders/\n\n## Scenes\nGame is split into following scenes:\n1. A welcome scene, which contains the main menu and score descriptions.\n2. A \"play player\" scene, which tells which player should prepare to play.\n3. An in-game scene, which contains the actual gameplay.\n\nThe list of scene transitions:\n* 1 to 2, when the number of players has been selected.\n* 2 to 3, after 150 ticks.\n* 3 to 2, after a level has been cleared i.e. all aliens has been destroyed.\n* 3 to 2, after player has been killed and other player has still lives left (multiplayer only).\n* 3 to 1, after pressing the enter key when game over text is being shown.\n\n## Features\nThis Space Invaders implementation contains the following features:\n* A support for one or two player (turn-based) games.\n* Each player has three lives.\n* Each level lasts until avatar or all aliens are destroyed or if any of the aliens invades.\n* Game ends after each player has lost their lives.\n* Player game state is stored when toggling between players in the two player mode.\n* Aliens may shoot three different kind of missiles (rolling, plunger and squiggly).\n* Plunger and squiggly alien shots follow predefined shoot patterns.\n* Rolling shot is always launched from the players nearest alien.\n* Game field contains four pixelwise destructable shields.\n* Players earn points based on the destructed alien type.\n* Alien movement speed is increased after the number of shown aliens decreases.\n* Alien missile fire rate depends on the player score.\n* Alien starting y-position depends on the level number.\n* Flying saucer will be shown about periodically after each ~1200 ticks.\n* Points received from the flying saucer is based on a lookup-table and player shot count.\n\n## Screenshots\n![alt text](https://github.com/toivjon/html5-space-invaders/blob/master/Screenshots/welcome-scene.png \"WelcomeScene\")\n![alt text](https://github.com/toivjon/html5-space-invaders/blob/master/Screenshots/playplayer-scene.png \"PlayerPlayerScene\")\n![alt text](https://github.com/toivjon/html5-space-invaders/blob/master/Screenshots/ingame-scene.png \"IngameScene\")\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,14 @@
+{
+  "repo": "dlulu/game-2048",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 23,
+  "pushedAt": "2016-12-22T18:06:35Z",
+  "description": "an 2048 game with Javascript",
+  "defaultBranch": "master",
+  "owner": "dlulu",
+  "slug": "dlulu-game-2048",
+  "dest": "third-party/dlulu-game-2048",
+  "readme": "# game-2048\nAn 2048 game with Javascript.\n\n### How to start game?\n1. Download or clone this project, and open command line window, enter root folder\nand type `npm install`, after that, you type `gulp` to start game.\n\n2. Enter root folder and view index.html in browser.\n\n### License\nMIT license.\n",
+  "licenceFile": "LICENSE"
+}

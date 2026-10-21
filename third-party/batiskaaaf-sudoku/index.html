@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width initial-scale=1.0 user-scalable=no">
+        <link rel="stylesheet" href="./style/main.css">
+        <title>Sudoku</title>
+    </head>
+    <body>
+        <div class="game-container">
+            <H1>Sudoku</H1>
+            <hr>          
+            <h2 class="timer">
+                <span class="minutes">00</span>
+                :
+                <span class="seconds">00</span>
+            </h2>  
+            <div class="game">
+                <div class="gameboard-container">
+                    <div class="gameboard">
+                    </div>
+                </div>
+                <div class="number-container">
+                    
+                </div>
+                <div class="buttons-container">
+                    <div class="box-3">
+                        <div class="btn btn-three">
+                        <span>Validate</span>
+                        </div>
+                    </div>
+                    <div class="box-2">
+                        <div class="btn btn-two">
+                        <span>Reset</span>
+                        </div>
+                    </div>
+                    <div class="box-1">
+                        <div class="btn btn-one">
+                        <span>New game</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script src="./scripts/constant.js"></script>
+            <script src="./scripts/sudokuGenerator.js"></script>
+            <script src="./scripts/main.js"></script>
+    </body>
+</html>

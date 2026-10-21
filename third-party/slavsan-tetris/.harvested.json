@@ -1,0 +1,14 @@
+{
+  "repo": "slavsan/tetris",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 39,
+  "pushedAt": "2016-04-04T00:22:44Z",
+  "description": "A simple tetris game written in JavaScript",
+  "defaultBranch": "master",
+  "owner": "slavsan",
+  "slug": "slavsan-tetris",
+  "dest": "third-party/slavsan-tetris",
+  "readme": "",
+  "licenceFile": "LICENSE"
+}

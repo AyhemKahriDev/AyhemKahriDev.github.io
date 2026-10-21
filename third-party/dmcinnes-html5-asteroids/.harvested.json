@@ -1,0 +1,14 @@
+{
+  "repo": "dmcinnes/HTML5-Asteroids",
+  "stars": 355,
+  "licence": "MIT",
+  "sizeKB": 281,
+  "pushedAt": "2024-04-19T03:43:38Z",
+  "description": "Pure Javascript Asteroids",
+  "defaultBranch": "master",
+  "owner": "dmcinnes",
+  "slug": "dmcinnes-html5-asteroids",
+  "dest": "third-party/dmcinnes-html5-asteroids",
+  "readme": "HTML5-Asteroids\n===============\n\nPure Javascript Asteroids, based on http://dougmcinnes.com/2010/05/12/html-5-asteroids/ \nSource https://github.com/dmcinnes/HTML5-Asteroids\n",
+  "licenceFile": "LICENSE"
+}

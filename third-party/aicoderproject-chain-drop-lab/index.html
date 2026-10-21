@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>chain-drop-lab | Custom Cascading Puzzle Game</title>
+    <meta name="description" content="A highly optimized, commercial-friendly cascading drop-match puzzle game written in pure TypeScript + Canvas." />
+    <!-- Modern Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Outfit:wght@700;800&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <div id="app">
+      <header class="app-header">
+        <h1 class="logo-text">🔬 chain-drop-lab</h1>
+        <div class="header-right">
+          <button id="btn-mute" class="mute-btn" aria-label="Mute Audio">🔊 Volume ON</button>
+          <div class="mode-selector">
+            <button id="btn-normal" class="mode-btn active">Normal</button>
+            <button id="btn-boost" class="mode-btn">Chain Boost</button>
+            <button id="btn-practice" class="mode-btn">Practice</button>
+            <button id="btn-demo" class="mode-btn">Demo Chain</button>
+          </div>
+        </div>
+      </header>
+
+      <main class="game-container">
+        <div class="canvas-wrapper">
+          <canvas id="game-canvas" tabindex="0"></canvas>
+        </div>
+        
+        <aside class="game-sidebar">
+          <div class="info-card">
+            <h3>🔬 モード説明</h3>
+            <p id="mode-desc-text">【Normal Mode】<br>5つの色付きジェムを落とし、同じ色を4つ以上つなげて消す標準モード。ハイスコアを目指しましょう！</p>
+          </div>
+          <div class="info-card">
+            <h3>🎮 操作方法</h3>
+            <ul class="control-list">
+              <li><strong>← / →</strong>: ジェムの左右移動</li>
+              <li><strong>↓ (ArrowDown)</strong>: 高速落下 (Soft Drop)</li>
+              <li><strong>Z / X</strong>: 左回転 / 右回転 (Rotate)</li>
+              <li><strong>Space / Enter / P</strong>: 開始 / リトライ / ポーズ (Start / Retry / Pause)</li>
+              <li><strong>↑ (ArrowUp)</strong>: 即時落下 (Quick Drop / Practice / Demoのみ)</li>
+            </ul>
+            <p class="touch-note">※スマホ・タブレットは画面の左右タップで移動、中央タップで回転、下部タップで高速落下します。</p>
+          </div>
+        </aside>
+      </main>
+
+      <footer class="app-footer">
+        <p>🔬 Experimental Cascading Laboratory | Fully Original Puzzle Mechanism | No Trademarked Assets</p>
+      </footer>
+    </div>
+
+    <!-- Floating / Responsive Control Instructions Panel -->
+    <div class="floating-controls-panel" aria-label="操作方法">
+      <div class="floating-controls-title">🎮 Controls</div>
+      <ul class="floating-controls-list">
+        <li><span class="key-badge">←</span> / <span class="key-badge">→</span> : Move</li>
+        <li><span class="key-badge">↓</span> : Soft Drop</li>
+        <li><span class="key-badge">Z</span> / <span class="key-badge">X</span> : Rotate</li>
+        <li><span class="key-badge">Space</span> / <span class="key-badge">Enter</span> / <span class="key-badge">P</span> : Start / Retry / Pause</li>
+        <li><span class="key-badge">↑</span> : Quick Drop (Practice / Demo only)</li>
+      </ul>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

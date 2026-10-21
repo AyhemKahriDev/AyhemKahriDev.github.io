@@ -1,0 +1,14 @@
+{
+  "repo": "ScriptRaccoon/mahjong-solitaire",
+  "stars": 13,
+  "licence": "MIT",
+  "sizeKB": 1546,
+  "pushedAt": "2024-01-26T01:33:43Z",
+  "description": "Mahjong solitaire as a browser game",
+  "defaultBranch": "master",
+  "owner": "ScriptRaccoon",
+  "slug": "scriptraccoon-mahjong-solitaire",
+  "dest": "third-party/scriptraccoon-mahjong-solitaire",
+  "readme": "# Mahjong Solitaire\n\nThis is [Mahjong solitaire](https://en.wikipedia.org/wiki/Mahjong_solitaire) as a browser game written with HTML, JavaScript, CSS.\n\nDemo: https://mahjong-solitaire.netlify.app/\n\nSelect pairs of open tiles with identical images to remove them from the board. The game is won when no tiles are left.\n\nResource for tile images: https://github.com/jimevins/smooth-tileset\n",
+  "licenceFile": "LICENSE"
+}

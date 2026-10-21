@@ -1,0 +1,14 @@
+{
+  "repo": "EleoXDA/Ace_Hunter_JS",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 789,
+  "pushedAt": "2023-06-27T21:49:44Z",
+  "description": "A JavaScript card game to find the Ace of Spades card among four cards",
+  "defaultBranch": "main",
+  "owner": "EleoXDA",
+  "slug": "eleoxda-ace-hunter-js",
+  "dest": "third-party/eleoxda-ace-hunter-js",
+  "readme": "# Ace Hunter - Card Game\n![image](https://github.com/EleoXDA/Ace_Hunter_JS/assets/27622683/f6b61c2d-3287-4b8d-96c3-dd84bb5ffec7)\n\nWelcome to Ace Hunter, a JavaScript card game. The objective of the game is to find the Ace of Spades card among four cards, which are randomly shuffled each round.\n\n## Description\nHigh-Tech Ace is a single-player card game developed using HTML, CSS, and JavaScript. The game consists of multiple rounds. In each round, the player chooses a card. If the player selects the Ace of Spades, their score increases, and they proceed to the next round. The game ends after a predetermined number of rounds or can be resumed later if left incomplete.\n\n## Setup\n1. Fork the repository\n2. Clone the repository.\n3. Open the `index.html` file in a web browser.\n\nOR\n\nJust [click on this link](https://eleoxda.github.io/Ace_Hunter_JS/) to play the game\n\n## How to Play\n1. Click the \"Play Game\" button to start a new game.\n2. Four cards will be displayed, shuffled, and placed face down.\n3. Click on the card that you think is the Ace of Spades.\n4. The positions of the cards are revealed, and the game moves to the next round.\n5. The game ends after four rounds. Your final score is based on the number of times you correctly identified the Ace of Spades.\n\n## Features\n- The game includes a scoring system, where points are added based on correct identification of the Ace of Spades.\n- The game maintains the state and offers an option to resume an incomplete game.\n- Cards are revealed and shuffled in a visually appealing manner.\n\n## Contributing\nPull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.\n\n## Reference\nThis game was developed using [this guide](https://www.freecodecamp.org/news/improve-your-javascript-skills-by-coding-a-card-game/) from FreeCodeCamp\n\n## License\nThis project is licensed under the MIT License. You can find the full text of the license in the [LICENSE.md](LICENSE.md) file.\n",
+  "licenceFile": "LICENSE.md"
+}

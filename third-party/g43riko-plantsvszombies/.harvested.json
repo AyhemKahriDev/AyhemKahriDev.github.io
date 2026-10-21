@@ -1,0 +1,14 @@
+{
+  "repo": "G43riko/PlantsVsZombies",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 1656,
+  "pushedAt": "2014-07-25T09:36:46Z",
+  "description": "Simpla Javascript Plants vs Zombies game",
+  "defaultBranch": "master",
+  "owner": "G43riko",
+  "slug": "g43riko-plantsvszombies",
+  "dest": "third-party/g43riko-plantsvszombies",
+  "readme": "PlantsVsZombies\n===============\n\nSimpla Javascript Plants vs Zombies game\n",
+  "licenceFile": "LICENSE"
+}

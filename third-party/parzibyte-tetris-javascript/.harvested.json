@@ -1,0 +1,14 @@
+{
+  "repo": "parzibyte/tetris-javascript",
+  "stars": 30,
+  "licence": "MIT",
+  "sizeKB": 4329,
+  "pushedAt": "2020-11-19T23:47:59Z",
+  "description": "Nearly perfect port of Tetris in pure JavaScript / Port casi perfecto del juego de tetris en JavaScript puro",
+  "defaultBranch": "main",
+  "owner": "parzibyte",
+  "slug": "parzibyte-tetris-javascript",
+  "dest": "third-party/parzibyte-tetris-javascript",
+  "readme": "# tetris-javascript\n Tetris escrito con JavaScript. Se usa canvas para dibujar el tablero.\n \n ![Parzibyte jugando Tetris programado con JavaScript](https://parzibyte.me/blog/wp-content/uploads/2020/11/Jugando-Tetris-en-JavaScript-juego-open-source.png)\n \n **By parzibyte**\n \n **Tutorial**: https://parzibyte.me/blog/2020/11/02/tetris-javascript-open-source/\n \n **Demo**: https://parzibyte.github.io/tetris-javascript/\n \n\n# Documentación del estilo de código\nPreferimos algo legible a algo \"optimizado\". Por ejemplo, en lugar de:\n```javascript\nreturn !tablero[y][x].ocupado;\n```\nSe prefiere:\n```javascript\nif (tablero[y][x].ocupado){\n    return false\n}else {\n    return true;\n}\n```\n\n# Docs\n\n**Absolute point**: A point with x and y that is absolute to the game board\n\n**Relative point**: A point with inner x and y; for example, a point that conforms a figure\n\n# Files\n**script.js**: just a legacy code file. It is not necessary at all,\nit's just to remember the early development of this port\n\n**tetris.js**: the main file. It contains 3 classes. If you want, you\ncan separate all of them; they are independent.\n\n# About\nProudly brought to you by parzibyte (https://parzibyte.me/blog)",
+  "licenceFile": "LICENSE"
+}

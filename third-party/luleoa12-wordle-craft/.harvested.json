@@ -1,0 +1,15 @@
+{
+  "repo": "luleoa12/wordle_craft",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 1281,
+  "pushedAt": "2026-06-13T22:00:59Z",
+  "description": "Pick a target word, paint a pattern of greens and yellows, and get the exact words to type into Wordle to make it happen.",
+  "defaultBranch": "main",
+  "owner": "luleoa12",
+  "slug": "luleoa12-wordle-craft",
+  "dest": "third-party/luleoa12-wordle-craft",
+  "readme": "\n<img src=\"images/logo.svg\" width=\"600\" alt=\"Wordle Craft\">\n\nMost Wordle grids are luck. This one is designed.\n\nPaint any pattern. Get the exact words to play it out.\n\n[![Try it](https://img.shields.io/badge/Try%20it-live-brightgreen?style=for-the-badge)](https://wordle-craft.vercel.app)\n\n<table>\n<tr>\n<td valign=\"top\" width=\"67%\">\n\n## How it works\n\nWordle Craft walks you through three steps:\n\n1. **Set a target** — fetch today's Wordle answer or enter a custom word\n2. **Paint a pattern** — click tiles to assign green, yellow, or gray colors\n3. **Get your words** — the app finds valid words that match your pattern\n\n**Example output** for target word `SANDY`: \n\n<img src=\"images/wordle.png\" width=\"170\" alt=\"Example result grid\">\n\n## Features\n\n- 🎨 **7 themes** — swap color palettes to match your style\n- 🔀 **Shuffle** — randomly repaint the grid for inspiration\n- 📋 **One-click copy** — copy each word individually to clipboard\n- 📖 **Real words only** — every suggestion is a valid Wordle guess\n- 📤 **Share emojis** — export your pattern as a shareable emoji grid\n- ⚡ **No backend** — runs entirely in the browser, zero latency\n\n## Stack\n\n![HTML](https://img.shields.io/badge/HTML-E34F26?style=for-the-badge&logo=html5&logoColor=white)\n![CSS](https://img.shields.io/badge/CSS-1572B6?style=for-the-badge&logo=css3&logoColor=white)\n![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)\n\n</td>\n<td valign=\"top\" width=\"33%\">\n\n<img src=\"images/graphic.svg\" width=\"440\" alt=\"Wordle Craft full flow\">\n\n\n</td>\n</tr>\n</table>\n\n--- \n\n## Contributing\n\nBug reports and pull requests are all welcome.\n\n**Reporting a bug** — open an [issue](https://github.com/luleoa12/wordle_craft/issues) and include steps to reproduce, your browser, and a screenshot if relevant.\n\n**Submitting a pull request:**\n```bash\ngit checkout -b my-feature\n# make your changes\ngit commit -m \"describe what changed\"\ngit push origin my-feature\n```\nThen open a PR with a short description of what you changed and why.\n\n\n\n \n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

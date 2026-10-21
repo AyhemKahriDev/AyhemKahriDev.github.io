@@ -31,6 +31,13 @@ const work = join(root, '.harvest');
 const thirdParty = join(root, 'third-party');
 mkdirSync(work, { recursive: true });
 
+/**
+ * Permissive licences are straightforward. Copyleft licences are also usable
+ * here because the vendored copy ships with its original licence and the
+ * corresponding source is published in this repository - which is exactly what
+ * those licences require. AGPL is excluded: it carries extra obligations for
+ * network-served modifications we do not want to take on.
+ */
 const ALLOWED_LICENCE = new Map([
   ['MIT', 'MIT'],
   ['CC0-1.0', 'CC0-1.0'],
@@ -39,6 +46,12 @@ const ALLOWED_LICENCE = new Map([
   ['BSD-2-Clause', 'BSD-2-Clause'],
   ['ISC', 'ISC'],
   ['Unlicense', 'Unlicense'],
+  ['0BSD', '0BSD'],
+  ['GPL-3.0', 'GPL-3.0'],
+  ['GPL-2.0', 'GPL-2.0'],
+  ['LGPL-3.0', 'LGPL-3.0'],
+  ['LGPL-2.1', 'LGPL-2.1'],
+  ['MPL-2.0', 'MPL-2.0'],
 ]);
 
 /** Words that suggest a repo is actually a game, not a library or a demo. */
@@ -171,8 +184,8 @@ function sweep() {
   let queries = 0;
 
   for (const q of QUERIES) {
-    for (const lic of ['mit', 'cc0-1.0', 'apache-2.0', 'bsd-3-clause', 'isc']) {
-      for (const page of [1, 2, 3, 4]) {
+    for (const lic of ['mit', 'cc0-1.0', 'apache-2.0', 'bsd-3-clause', 'isc', 'gpl-3.0', 'gpl-2.0', 'lgpl-3.0', 'mpl-2.0']) {
+      for (const page of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
         const raw = gh([
           'api',
           `search/repositories?q=${encodeURIComponent(`${q} license:${lic} stars:>2`)}&per_page=100&page=${page}&sort=stars`,
@@ -491,7 +504,7 @@ function titleFrom(repo, description) {
   const base = repo.split('/')[1] ?? repo;
   let t = base
     .replace(/[-_.]+/g, ' ')
-    .replace(/\b(html5|js|javascript|canvas|web|game|the)\b/gi, ' ')
+    .replace(/\b(html5|js|javascript|web|game|the|classic|simple)\b/gi, ' ')
     .replace(/\s+/g, ' ')
     .trim();
   if (!t) t = base;
@@ -523,16 +536,49 @@ function generate() {
   const used = new Set(
     readJson(join(root, 'content/games.json'), { games: [] }).games.map((g) => g.id),
   );
+  const titleCounts = new Map(
+    readJson(join(root, 'content/games.json'), { games: [] }).games.map((g) => [g.title, 1]),
+  );
 
   for (const v of passed) {
-    let slug = v.slug;
+    // Skip anything removed after validation (a second pass may have dropped it).
+    if (!existsSync(join(thirdParty, v.slug, 'index.html'))) continue;
+
+    // URL slug from the repo name only - no owner prefix, it reads better and
+    // ranks better. The owner is still credited on the page.
+    let slug = slugify(v.repo.split('/')[1] ?? v.repo);
+    if (used.has(slug)) slug = `${slug}-${slugify(v.owner)}`;
     let n = 2;
-    while (used.has(slug)) slug = `${v.slug}-${n++}`;
+    while (used.has(slug)) slug = `${slugify(v.repo.split('/')[1] ?? v.repo)}-${n++}`;
     used.add(slug);
 
     const sentences = readmeSentences(v.readme);
     const desc = v.description || sentences[0] || '';
-    const title = titleFrom(v.repo, v.description);
+    let title = titleFrom(v.repo, v.description);
+
+    // Two repos can produce the same title. Qualify the second one so every
+    // page in the catalogue has a distinct name.
+    if (titleCounts.has(title)) {
+      const titleWords = new Set(title.toLowerCase().split(/\s+/));
+      const qualifier = (v.description || '')
+        .replace(/[^\w\s]/g, ' ')
+        .split(/\s+/)
+        .filter(
+          (w) =>
+            w.length > 3 &&
+            !titleWords.has(w.toLowerCase()) &&
+            !/game|play|html|javascript|canvas|browser|version|modern|simple|classic|responsive|based|implementation|that|which|with|from|your|this|and|the|for/i.test(
+              w,
+            ),
+        )
+        .slice(0, 1)
+        .join(' ');
+      title = qualifier
+        ? `${title} ${qualifier}`
+        : `${title} ${(titleCounts.get(title) ?? 1) + 1}`;
+      if (title.length > 44) title = title.slice(0, 42).trim();
+    }
+    titleCounts.set(title, (titleCounts.get(title) ?? 0) + 1);
 
     const prose = sentences.filter((s) => !desc.toLowerCase().startsWith(s.slice(0, 20).toLowerCase()));
     const howToPlay = (prose.length ? prose : sentences).slice(0, 5).map((s) => ({

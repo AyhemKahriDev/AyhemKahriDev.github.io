@@ -1,0 +1,14 @@
+{
+  "repo": "bocaletto-luca/Pinball",
+  "stars": 8,
+  "licence": "GPL-3.0",
+  "sizeKB": 29,
+  "pushedAt": "2025-07-11T16:32:40Z",
+  "description": "Pinball WebGame",
+  "defaultBranch": "main",
+  "owner": "bocaletto-luca",
+  "slug": "bocaletto-luca-pinball",
+  "dest": "third-party/bocaletto-luca-pinball",
+  "readme": "# Pinball\nPinball WebGame\nno good\n",
+  "licenceFile": "LICENSE"
+}

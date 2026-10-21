@@ -1,0 +1,163 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<title>Wormy - A network multiplayer worm game</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<link rel="icon" href="favicon.ico">
+<link rel="stylesheet" href="css/wormy.css">
+<link rel="manifest" href="manifest.json">
+<script src="https://flackr.github.io/lobby/client/lobby.js"></script>
+<script type="text/javascript" src="js/wormy-levels.js"></script>
+<script type="text/javascript" src="js/wormy-common.js"></script>
+<script type="text/javascript" src="js/wormy-server.js"></script>
+<script type="text/javascript" src="js/wormy-client.js"></script>
+<script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+<div id="dpad-overlay">
+  <div id="dpad">
+    <div>
+      <div class="up"><div></div></div>
+      <div class="right"><div></div></div>
+    </div>
+    <div>
+      <div class="left"><div></div></div>
+      <div class="down"><div></div></div>
+    </div>
+  </div>
+  <div class="power"></div>
+</div>
+<div id="dialogs" hidden>
+  <div id="lobby" class="dialog" hidden>
+    <div class="tabs">
+      <div>Game list</div>
+      <div id="create-game-tab">Create game</div>
+    </div>
+    <div>
+      <table id="wormy-game-list">
+        <tr><td>Name</td><td>Speed</td><td></td></tr>
+      </table>
+    </div>
+    <div>
+      Name: <input type="text" id="game-name" value="A wormy game."><br>
+      Speed: <input type="range" id="game-speed" min="0" max="10" value="4"><br>
+      <button id="create-game">Create</button>
+    </div>
+  </div>
+  <div id="loading" class="dialog" hidden>
+    <p>Connecting, please wait...</p>
+  </div>
+  <div id="instructions" class="dialog" hidden>
+    <div class="tabs">
+      <div>Instructions</div>
+      <div>Powerups</div>
+      <div>Controls</div>
+    </div>
+    <div>
+      <h2>Wormy</h2>
+      <p>Wormy is a game of strategy and timing. Control your worm to try to eat the most food and grow longer than any of the other worms. Win the level by growing to 100 units long and 3 times longer than your competitors.</p>
+      <p>Press Enter to get started and respawn, see the controls tab for other keys.</p>
+    </div>
+    <div>
+      <h2>Powerups</h2>
+      <p>There are a variety of powerups in the game. Each powerup is obtained by picking up the food matching the color shown below. Powerups require energy to use. Your energy for a powerup will automatically replenish when not using the powerup.</p>
+      <ul>
+        <li><font color="yellow">Speed</font> makes your worm travel 50% faster.
+        <li><font color="#f33">Burrow</font> allows you to travel under walls and other worms.
+        <li><font color="#0f0">Reverse</font> allows you to reverse directions.
+        <li><font color="#55f">Freeze</font> allows you to stop moving and will automatically activate if you are about to crash.
+      </ul>
+    </div>
+    <div>
+      <h2>Controls</h2>
+      <div class="table controls">
+        <div class="header">
+          <div>Name:</div>
+          <div><input type="text" id="name0" size="10" value="Sammy"></div>
+          <div class="keyboard"><input type="text" id="name1" size="10" value="Tommy"></div>
+          <div class="keyboard"><input type="text" id="name2" size="10" value="Billy"></div>
+        </div>
+        <div class="keyboard">
+          <div>Change direction:</div>
+
+          <!-- Player 1 -->
+          <div>
+            <table class="directionkeys">
+              <tr><td class="empty"></td><td>Up</td><td class="empty"></td></tr>
+              <tr><td>Left</td><td>Down</td><td>Right</td></tr>
+            </table>
+          </div>
+
+          <!-- Player 2 -->
+          <div>
+            <table class="directionkeys">
+              <tr><td class="empty"></td><td>W</td><td class="empty"></td></tr>
+              <tr><td>A</td><td>S</td><td>D</td></tr>
+            </table>
+          </div>
+
+          <!-- Player 3 -->
+          <div>
+            <table class="directionkeys">
+              <tr><td class="empty"></td><td>I</td><td class="empty"></td></tr>
+              <tr><td>J</td><td>K</td><td>L</td></tr>
+            </table>
+          </div>
+        </div>
+        <div class="keyboard">
+          <div>Use power:</div>
+          <div>Right control / Numpad 0</div>
+          <div>Z / C</div>
+          <div>N / .</div>
+        </div>
+        <div class="keyboard">
+          <div>Enter game:</div>
+          <div>Enter</div>
+          <div>E</div>
+          <div>O</div>
+        </div>
+        <div class="keyboard">
+          <div>Leave game:</div>
+          <div>Backspace</div>
+          <div>Q</div>
+          <div>U</div>
+        </div>
+      </div>
+      <div class="touch">
+        <p>The touch controller at the bottom of the screen is used to
+        control your worm. The center button will enter the game or respawn
+        (if you are dead) or use a powerup if you are alive. The arrows
+        will turn your worm in that direction.</p>
+      </div>
+      <p>You can change your player names above and then press [Enter] or
+      click/tap outside this dialog to dismiss these instructions. Press Escape
+      at any time to return to the lobby.</p>
+    </div>
+  </div>
+</div>
+<div id="game">
+  <canvas id="gameCanvas" width="80" height="50"></canvas>
+  <div id="gameinfo">
+    <div class="dialog">
+      <table>
+        <tbody id="players"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<div id="templates">
+  <table>
+    <tr id="gameItem" class="game">
+      <td><span class="name"></span></td>
+      <td><span class="speed"></span></td>
+      <td><button class="join">Join</button></td>
+    </tr>
+    <tr id="player" class="player">
+      <td><span class="name"></span></td>
+      <td><span class="ping"></span></td>
+      <td class="fill progress"><div><div class="bar"></div><div class="energy-bar"></div></div></td>
+    </tr>
+  </table>
+</div>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "repo": "iwilare/solitaire",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 19,
+  "pushedAt": "2022-02-25T01:28:59Z",
+  "description": "A minimal golfed web version of the MOLEK-SYNTEZ solitaire by Zachtronics",
+  "defaultBranch": "main",
+  "owner": "iwilare",
+  "slug": "iwilare-solitaire",
+  "dest": "third-party/iwilare-solitaire",
+  "readme": "",
+  "licenceFile": "LICENSE"
+}

@@ -1,0 +1,14 @@
+{
+  "repo": "bocaletto-luca/Space-Invaders",
+  "stars": 10,
+  "licence": "GPL-3.0",
+  "sizeKB": 30,
+  "pushedAt": "2025-06-22T14:09:30Z",
+  "description": "Space Invaders Classic Web Game is a browser-based remake of the legendary arcade shooter. Enjoy authentic retro gameplay with smooth animations, responsive controls, and high score tracking—all built using HTML5, CSS3, and JavaScript. No installation is required. By Bocaletto Luca",
+  "defaultBranch": "main",
+  "owner": "bocaletto-luca",
+  "slug": "bocaletto-luca-space-invaders",
+  "dest": "third-party/bocaletto-luca-space-invaders",
+  "readme": "# Space Invaders Classic Web Game\n#### Author: Bocaletto Luca\n\n![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&style=for-the-badge)\n![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&style=for-the-badge)\n![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&style=for-the-badge)\n![WebGame](https://img.shields.io/badge/WebGame-Space%20Invaders-blue?style=for-the-badge)\n![Project Completed](https://img.shields.io/badge/Project-Completed-green?style=for-the-badge)\n![GPLv3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)\n\n## Overview\n\n**Space Invaders Classic Web Game** is a browser-based remake of the legendary arcade shooter. Enjoy authentic retro gameplay with smooth animations, responsive controls, and high score tracking—all built using HTML5, CSS3, and JavaScript. No installation is required.\n\n## Installation\n\nSimply serve the files via any HTTP/HTTPS server (for example, using Apache) and open `index.html` in your browser.\n\n## Usage\n\n- **Game Objective:**  \n  Defend your base by shooting down waves of descending aliens before they reach you.\n- **Controls:**  \n  Use the keyboard (e.g., arrow keys for movement and spacebar to shoot) or on-screen buttons to control your spaceship.\n- **Gameplay:**  \n  Enjoy continuous action, increasing difficulty with each wave, and track your high score as you battle the alien invasion.\n\n## Technologies Used\n\n- **HTML5** – Markup and structure.\n- **CSS3** – Styling, layout, and animations.\n- **JavaScript** – Game logic, animations, and interactivity.\n- **Custom Game Engine** – Implements the classic Space Invaders mechanics with AI-controlled alien waves.\n- **Bootstrap 5** – For responsive UI components.\n\n## License\n\nThis project is released under the [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).\n\n## Author\n\n**Bocaletto Luca**  \n[GitHub](https://bocaletto-luca.github.io) • [Official Site](https://bocalettoluca.altervista.org)\n\n---\n\nEnjoy defending the planet and relive the golden era of arcade games!\n",
+  "licenceFile": "LICENSE"
+}

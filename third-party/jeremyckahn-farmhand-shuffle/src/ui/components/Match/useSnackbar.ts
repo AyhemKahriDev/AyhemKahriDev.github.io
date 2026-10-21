@@ -1,0 +1,181 @@
+import { AlertColor } from '@mui/material'
+import { funAnimalName } from 'fun-animal-names'
+import { ReactNode, useCallback, useEffect } from 'react'
+import reactNodeToString from 'react-node-to-string'
+
+import { MatchEvent, IMatch, ShellNotificationType } from '../../../game/types'
+import { isDebugEnabled } from '../../config/constants'
+import { useNotification } from '../../context/NotificationContext'
+import { genericOpponentPlayerLabel } from '../constants'
+
+import { ActorContext } from './ActorContext'
+
+// NOTE: Centralized notification content management ensures consistent
+// messaging across the application and separates concern between game
+// logic and UI presentation.
+
+export const useSnackbar = ({
+  actorRef,
+  match,
+  useGenericPlayerLabels = false,
+}: {
+  actorRef: ReturnType<typeof ActorContext.useActorRef>
+  match: IMatch
+  useGenericPlayerLabels?: boolean
+}) => {
+  const { showNotification: triggerGlobalNotification } = useNotification()
+
+  const showNotification = useCallback(
+    (message: ReactNode, severity: AlertColor) => {
+      if (isDebugEnabled) {
+        console.debug(`Notification: ${reactNodeToString(message)}`)
+      }
+
+      triggerGlobalNotification(message, severity)
+    },
+    [triggerGlobalNotification]
+  )
+
+  const isSessionOwner = match.currentPlayerId === match.sessionOwnerPlayerId
+
+  useEffect(() => {
+    const currentPlayerName = useGenericPlayerLabels
+      ? genericOpponentPlayerLabel
+      : funAnimalName(match.currentPlayerId ?? '')
+
+    actorRef.send({
+      type: MatchEvent.SET_SHELL,
+      shell: {
+        triggerNotification: ({ type, payload }) => {
+          switch (type) {
+            case ShellNotificationType.CARDS_DRAWN: {
+              const { howMany, playerId } = payload
+
+              if (isSessionOwner) {
+                showNotification(
+                  howMany === 1
+                    ? 'You drew 1 card'
+                    : `You drew ${howMany} cards`,
+                  'success'
+                )
+              } else {
+                const playerName = useGenericPlayerLabels
+                  ? genericOpponentPlayerLabel
+                  : funAnimalName(playerId)
+
+                showNotification(
+                  howMany === 1
+                    ? `${playerName} drew 1 card`
+                    : `${playerName} drew ${howMany} cards`,
+                  'warning'
+                )
+              }
+
+              break
+            }
+
+            case ShellNotificationType.CROP_HARVESTED: {
+              const {
+                cropHarvested: { name: cropName },
+              } = payload
+
+              if (isSessionOwner) {
+                showNotification(
+                  `You harvested and sold a ${cropName}`,
+                  'success'
+                )
+              } else {
+                showNotification(
+                  `${currentPlayerName} harvested and sold a ${cropName}`,
+                  'warning'
+                )
+              }
+
+              break
+            }
+
+            case ShellNotificationType.CARD_DISCARDED: {
+              const {
+                cardDiscarded: { name: cardName },
+              } = payload
+
+              if (isSessionOwner) {
+                showNotification(`You discarded ${cardName}`, 'info')
+              } else {
+                showNotification(
+                  `${currentPlayerName} discarded ${cardName}`,
+                  'info'
+                )
+              }
+
+              break
+            }
+
+            case ShellNotificationType.CROP_WATERED: {
+              const {
+                cropWatered: { name: cropName },
+              } = payload
+
+              if (isSessionOwner) {
+                showNotification(`You watered your ${cropName}`, 'info')
+              } else {
+                showNotification(
+                  `${currentPlayerName} watered their ${cropName}`,
+                  'info'
+                )
+              }
+
+              break
+            }
+
+            case ShellNotificationType.EVENT_CARD_PLAYED: {
+              const { eventCard } = payload
+
+              if (isSessionOwner) {
+                showNotification(`You played ${eventCard.name}`, 'info')
+              } else {
+                showNotification(
+                  `${currentPlayerName} played ${eventCard.name}`,
+                  'info'
+                )
+              }
+
+              break
+            }
+
+            case ShellNotificationType.TOOL_CARD_PLAYED: {
+              const { toolCard } = payload
+
+              if (isSessionOwner) {
+                showNotification(`You played ${toolCard.name}`, 'info')
+              } else {
+                showNotification(
+                  `${currentPlayerName} played ${toolCard.name}`,
+                  'info'
+                )
+              }
+
+              break
+            }
+
+            case ShellNotificationType.ALL_CROPS_WATERED: {
+              showNotification('Watered all crops', 'info')
+
+              break
+            }
+
+            default:
+          }
+        },
+      },
+    })
+  }, [
+    actorRef,
+    match.currentPlayerId,
+    isSessionOwner,
+    showNotification,
+    useGenericPlayerLabels,
+  ])
+
+  return { showNotification }
+}

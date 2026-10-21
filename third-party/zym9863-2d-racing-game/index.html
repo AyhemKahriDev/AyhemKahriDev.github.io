@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2D赛车游戏</title>
+    <link rel="stylesheet" href="fonts.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="game-header">
+            <div class="score"><i class="fas fa-trophy"></i> 得分: <span id="score" class="font-digital">0</span></div>
+            <div class="speed"><i class="fas fa-tachometer-alt"></i> 速度: <span id="speed" class="font-digital">0</span> km/h</div>
+            <div class="lives"><i class="fas fa-heart"></i> 生命: <span id="lives" class="font-digital">3</span></div>
+        </div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="controls-info">
+            <p><i class="fas fa-gamepad"></i> 使用方向键控制赛车: <span class="key">↑</span>(加速) <span class="key">↓</span>(减速) <span class="key">←</span>(左转) <span class="key">→</span>(右转)</p>
+        </div>
+        <div id="gameOver" class="game-over">
+            <div class="modal-content">
+                <h2 class="font-racing"><i class="fas fa-flag-checkered"></i> 游戏结束!</h2>
+                <p>最终得分: <span id="finalScore" class="font-digital">0</span></p>
+                <button id="restartButton" class="btn-primary"><i class="fas fa-redo"></i> 重新开始</button>
+            </div>
+        </div>
+        <div id="startScreen" class="start-screen">
+            <div class="logo-container">
+                <h1 class="game-title font-title">2D<span class="highlight">赛车</span>游戏</h1>
+                <div class="car-icon"><i class="fas fa-car-side"></i></div>
+            </div>
+            <button id="startButton" class="btn-primary pulse-effect"><i class="fas fa-play"></i> 开始游戏</button>
+        </div>
+    </div>
+    <script src="visual-effects.js"></script>
+    <script src="game.js"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+@font-face{
+    font-family: myFont;
+    src: url(nokiafc22.ttf);
+}
+*{
+    padding: 0;
+    margin: 0;
+    color: #dfe3ee;
+    font-family: myFont;
+    background: #343645;
+    text-align: center;
+    margin-top: 20px;
+}
+h1{
+    font-size: 56px;
+} 
+p{
+    font-size: 28px;
+}    
+canvas{
+    background: #a0c607;
+    display: block;
+    margin: 20px auto;
+    margin-top: 20px;
+}

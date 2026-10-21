@@ -1,0 +1,72 @@
+import { EnemyAnimator } from '../../src/enemies/EnemyEyesAnimator'
+import { EnemyCreator } from '../../src/enemies/EnemyCreator'
+import { EnemyInstancesManager } from '../../src/enemies/EnemyInstancesManager'
+import { PathMovement } from '../../src/levels/path/PathMovement'
+import { getOrdersFromValidMap } from './orders'
+import { images } from './imagesResources'
+import { ENEMY_VELOCITY } from '../../src/constants/enemy'
+
+export const createNormalEnemy = (
+  enemyInstancesManager: EnemyInstancesManager,
+  orders?: number[] | null,
+  wave?: number | null,
+) => {
+  if (!orders) {
+    orders = getOrdersFromValidMap()
+  }
+  if (!wave) {
+    wave = 1
+  }
+  const enemyCreator = new EnemyCreator(enemyInstancesManager)
+
+  const waveEnemies = 3
+  const initialEnemiesPosition = { x: 100, y: 200 }
+  const enemyAnimator = new EnemyAnimator(images)
+  const pathMovement = new PathMovement(
+    initialEnemiesPosition,
+    orders,
+    ENEMY_VELOCITY.NORMAL,
+  )
+
+  enemyCreator.createNormal(
+    waveEnemies,
+    initialEnemiesPosition,
+    wave,
+    enemyAnimator,
+    pathMovement,
+  )
+}
+
+export const createBossEnemy = (
+  enemyInstancesManager: EnemyInstancesManager,
+  orders?: number[] | null,
+) => {
+  if (!orders) {
+    orders = getOrdersFromValidMap()
+  }
+
+  const enemyCreator = new EnemyCreator(enemyInstancesManager)
+  const wave = 1
+  const initialEnemiesPosition = { x: 100, y: 200 }
+  const enemyAnimator = new EnemyAnimator(images)
+  const pathMovement = new PathMovement(
+    initialEnemiesPosition,
+    orders,
+    ENEMY_VELOCITY.BOSS,
+  )
+
+  enemyCreator.createBoss(
+    initialEnemiesPosition,
+    wave,
+    enemyAnimator,
+    pathMovement,
+  )
+}
+export const updateEnemyInstancesTimes = (
+  enemyInstances: EnemyInstancesManager,
+  times: number,
+) => {
+  for (let i = 0; i < times; i++) {
+    enemyInstances.updateInstances()
+  }
+}

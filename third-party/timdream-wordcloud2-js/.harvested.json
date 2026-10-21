@@ -1,0 +1,15 @@
+{
+  "repo": "timdream/wordcloud2.js",
+  "stars": 2497,
+  "licence": "MIT",
+  "sizeKB": 398,
+  "pushedAt": "2024-11-14T17:42:23Z",
+  "description": "Tag cloud/Wordle presentation on 2D canvas or HTML",
+  "defaultBranch": "gh-pages",
+  "owner": "timdream",
+  "slug": "timdream-wordcloud2-js",
+  "dest": "third-party/timdream-wordcloud2-js",
+  "readme": "# wordcloud2.js [![npm version](https://badge.fury.io/js/wordcloud.svg)](http://badge.fury.io/js/wordcloud)\n\nCreate a tag cloud/[Wordle](http://www.wordle.net/) presentation on 2D canvas or HTML.\n\nThis library is a spin-off project from [HTML5 Word Cloud](https://github.com/timdream/wordcloud).\n\n**Visit the [demo page](https://timdream.org/wordcloud2.js/)**\n\n## Installation\n\n    npm install wordcloud\n\n## Simple usage\n\nDownload the latest `wordcloud2.js` file from the `src` folder in this repository.\n\nLoad `wordcloud2.js` script to the web page, and run:\n\n    WordCloud(document.getElementById('my_canvas'), { list: list } );\n\nwhere `list` is an array that look like this: `[['foo', 12], ['bar', 6]]`.\n\nOptions available, see [API documentation](./API.md) for detail.\n\n## Contact & help\n\nPlease read through the API documentation and [CONTRIBUTING.md](./CONTRIBUTING.md) before filing an issue or contact me via e-mail.\n\n## Algorithm\n\nBefore putting each word on the canvas, it is drawn on a separate canvas to read back the pixels to record is drawn spaces.\nWith the information, wordcloud.js will then try to find a place to fit the word that is closest to the start point.\n\n## Testing\n\nTests are available with [QUnit](https://qunitjs.com/) and `grunt`.\nTo setup environment for testing, run `npm install` and manually install [SlimerJS](https://slimerjs.org/) of your platform.\n\nUse `grunt test` to ensure all options can be set without JavaScript error.\n\nUse `grunt compare --base-commit=gh-pages` to compare your proposed fix with `gh-pages` branch.\n\n## Acknowledgement\n\nThe developer would like to thank [Chad Jensen](mailto:scubaaddiction@gmail.com) for sponsoring the work on image masking on the demo page.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

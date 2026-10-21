@@ -1,0 +1,14 @@
+{
+  "repo": "ZeyadTarekk/Roll-Dice",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 1712,
+  "pushedAt": "2022-03-05T13:09:33Z",
+  "description": "Simple game built using HTML, CSS, JavaScript",
+  "defaultBranch": "main",
+  "owner": "ZeyadTarekk",
+  "slug": "zeyadtarekk-roll-dice",
+  "dest": "third-party/zeyadtarekk-roll-dice",
+  "readme": "<div align=\"center\">\n\n[![GitHub issues](https://img.shields.io/github/issues/ZeyadTarekk/Roll-Dice)](https://github.com/ZeyadTarekk/Roll-Dice/issues)\n[![GitHub license](https://img.shields.io/github/license/ZeyadTarekk/Roll-Dice)](https://github.com/ZeyadTarekk/Roll-Dice/blob/master/LICENSE)\n[![GitHub forks](https://img.shields.io/github/forks/ZeyadTarekk/Roll-Dice)](https://github.com/ZeyadTarekk/Roll-Dice/network/members)\n[![GitHub stars](https://img.shields.io/github/stars/ZeyadTarekk/Roll-Dice)](https://github.com/ZeyadTarekk/Roll-Dice/stargazers)\n[![GitHub Language](https://img.shields.io/github/languages/top/ZeyadTarekk/Roll-Dice)](https://github.com/ZeyadTarekk/Roll-Dice)\n\n</div>\n\n## 📝 Table of Contents\n\n- [About](#about)\n- [Technology](#tech)\n- [Live Demo](#demo)\n- [Screenshots](#Screenshots)\n- [Contributors](#Contributors)\n- [License](#license)\n\n## 📙 About <a name = \"about\"></a>\n\n- The idea of the game is that the first player starts by rolling the dice, if the dice is any number rather than 1 then the number is added to the current score, but if the number is one the turn is switched to the other player and the current score become zero.\n- The player can hold the current score at any time to be added to the main score before he gets a number one on the dice and lose his current score.\n- The player who reaches to score of 100 first wins the game.\n\n## 💻 Built Using <a name = \"tech\"></a>\n\n- **HTML**\n- **CSS**\n- **JavaScript**\n\n## Live Demo <a name = \"demo\"></a>\n\n<a href=\"https://ZeyadTarekk.github.io/Roll-Dice/\" >Here</a>\n\n## 📷 Demo Screenshots <a name = \"Screenshots\"></a>\n\n<div align=\"center\">\n   <img src=\"Screenshots/initialScreen.png\"></a>\n   <img src=\"Screenshots/midGame.png\"></a>\n   <img src=\"Screenshots/midGame2.png\"></a>\n   <img src=\"Screenshots/winScreen.png\"></a>\n\n   <hr>\n</div>\n\n## Contributors <a name = \"Contributors\"></a>\n\n<table>\n  <tr>\n    <td align=\"center\">\n    <a href=\"https://github.com/ZeyadTarekk\" target=\"_black\">\n    <img src=\"https://avatars.githubusercontent.com/u/76125650?v=4\" width=\"150px;\" alt=\"Zeyad Tarek\"/>\n    <br />\n    <sub><b>Zeyad Tarek</b></sub></a>\n    </td>\n  </tr>\n </table>\n\n## License <a name = \"license\"></a>\n\n> This software is licensed under MIT License, See [License](https://github.com/ZeyadTarekk/Roll-Dice/blob/main/LICENSE) for more information ©ZeyadTarekk.\n",
+  "licenceFile": "LICENSE.md"
+}

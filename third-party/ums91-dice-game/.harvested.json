@@ -1,0 +1,14 @@
+{
+  "repo": "ums91/Dice-Game",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 80,
+  "pushedAt": "2023-07-10T16:06:32Z",
+  "description": "This is a simple web-based 2-Player dice game built using HTML, CSS, and JavaScript.",
+  "defaultBranch": "main",
+  "owner": "ums91",
+  "slug": "ums91-dice-game",
+  "dest": "third-party/ums91-dice-game",
+  "readme": "# Dice-Game\nThis is a simple web-based 2-Player dice game built using JavaScript, HTML, and CSS.\n<h1> Play it here ➡️ https://ums91.github.io/Dice-Game/ </h1>\n<h1> Introduction </h1>\n<p>This is a simple web-based dice game built using HTML, CSS, and JavaScript. The game allows two players to take turns rolling a pair of dice, and the player with the highest total wins the round. The game keeps track of the score and declares the winner at the end.\n</p>\n<img align=\"center\" src=\"diceSS.png\" alt=\"Screenshot of the dice-game\"/> \n\n<h2> Technologies Used: </h2>\n<ul> \n<li>JavaScript</li>\n<li>HTML</li>\n<li>CSS</li>\n</ul>\n<h2>How to Play:</h2>\n<ul> \n<li>Clone the repository or download the source code.</li>\n<li>Open the index.html file in a web browser or visit https://ums91.github.io/Dice-Game/ to Play.</li>\n<li>The game will start automatically.</li>\n<li>Edit names for Player1 & Player2 (optional).</li>\n<li>Roll the Dice.</li> \n<li>The dice will display random numbers between 1 and 6.</li>\n<li>Player 1's and 2's dice numbers will update accordingly.</li>\n<li>The game will declare the winner the for each Roll of the Dice.</li>\n<li>To play another round, simply refresh the page.</li>\n</ul>\n<h2> Features</h2>\n<ul>\n  \n<li>Random dice roll for each player.</li>\n<li>Score tracking for both players.</li>\n<li>Winner declaration at the end of the round.</li>\n<li>Simple and intuitive interface.</li>\n</ul>\n\n<h2>Contribution:</h2>\n<p> Contributions are welcome! If you have any suggestions, bug reports, or improvements, please open an issue or submit a pull request.</p>\n\n<h2>License:</h2>\n<p> This project is licensed under the MIT License.</p>\n\n<h2>Acknowledgements:</h2>\n<p> This project was inspired by online dice games and was created as a learning exercise for HTML, CSS, and JavaScript.</p>\n\n<h2>Author:</h2>\n<p> Ums91</p>\n",
+  "licenceFile": "LICENSE"
+}

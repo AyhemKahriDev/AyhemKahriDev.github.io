@@ -1,0 +1,40 @@
+{
+  "name": "solitaire-js",
+  "version": "1.0.0",
+  "description": "Solitaire game in JS using Phaser",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "serve": "vite preview",
+    "lint": "oxlint --type-aware",
+    "format": "oxfmt",
+    "format:check": "oxfmt --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AdsGames/SolitaireJS.git"
+  },
+  "author": "Allan Legemaate",
+  "license": "MIT",
+  "licenseUrl": "http://www.opensource.org/licenses/mit-license.php",
+  "bugs": {
+    "url": "https://github.com/AdsGames/SolitaireJS/issues"
+  },
+  "homepage": "https://github.com/AdsGames/SolitaireJS#readme",
+  "devDependencies": {
+    "oxfmt": "^0.72.0",
+    "oxlint": "^1.87.0",
+    "oxlint-tsgolint": "^7.0.2003",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.4",
+    "vite-plugin-static-copy": "^4.1.1"
+  },
+  "dependencies": {
+    "phaser": "^4.2.1"
+  },
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "type": "module",
+  "packageManager": "pnpm@12.11.2"
+}

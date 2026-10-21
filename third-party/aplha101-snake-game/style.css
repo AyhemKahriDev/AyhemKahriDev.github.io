@@ -1,0 +1,73 @@
+html{
+  margin:0;
+  padding : 0;
+  height:100%;
+  width:100%;
+}
+.cont{
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width:100%;
+  height:100%;
+}
+.header{
+  font-family: 'Shizuru', cursive;
+  font-size : 40px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  height:20%;
+  width:100%;
+  border-radius:5px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px -50px 36px -28px inset;
+  background:#acb8c9;
+}
+#area{
+  border-radius:5px;
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+body{
+  height:100%;
+  background-color: #d1d9e2;
+  margin:0;
+  padding:0;
+}
+/* Pretty Stuff? */
+
+.buttons{
+    min-width: 378px;
+}
+.up{
+    
+    display: block;
+    margin: auto;
+    width: 100px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+}
+.buttons-bottom{
+    text-align: center;
+
+}
+.left, .down, .right{
+    padding:10px;
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+}
+.btn{
+  padding-bottom:10px;
+  border:none;
+  height:100%;
+  outline:none;
+  width:100%;
+  background: transparent;
+}
+button{
+  box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px;
+}
+.down>button{
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}

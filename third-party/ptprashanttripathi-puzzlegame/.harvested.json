@@ -1,0 +1,14 @@
+{
+  "repo": "PtPrashantTripathi/PuzzleGame",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 1061,
+  "pushedAt": "2024-09-05T14:30:16Z",
+  "description": "PuzzleGame is a classic sliding puzzle game implemented using HTML, CSS, and JavaScript. Test your puzzle-solving skills by rearranging the numbered tiles to form the correct sequence. This game offers an entertaining and brain-teasing experience.",
+  "defaultBranch": "main",
+  "owner": "PtPrashantTripathi",
+  "slug": "ptprashanttripathi-puzzlegame",
+  "dest": "third-party/ptprashanttripathi-puzzlegame",
+  "readme": "# PuzzleGame\n\n![PuzzleGame Logo](icon/logo.png)\n\nPuzzleGame is a classic sliding puzzle game implemented using HTML, CSS, and JavaScript. Test your puzzle-solving skills by rearranging the numbered tiles to form the correct sequence. This game offers an entertaining and brain-teasing experience.\n\n## Play the Game\n\nYou can play the game online by visiting the following link:\n[Play PuzzleGame](https://ptprashanttripathi.github.io/PuzzleGame/)\n\n## How to Play\n\n1. Choose the puzzle grid size from the dropdown menu.\n2. Click the \"Submit\" button to start the game with the selected grid size.\n3. Rearrange the tiles by clicking on a tile adjacent to the empty space.\n4. Continue rearranging tiles until you successfully solve the puzzle.\n\n## Features\n\n- Clean and modern Material Design user interface.\n- Responsive layout that adapts to different screen sizes.\n- Interactive puzzle grid that challenges your logic and concentration.\n- Keeps track of the total moves you've made.\n- Provides feedback when you successfully solve the puzzle.\n\n## Contributing\n\nContributions to PuzzleGame are welcome! Feel free to open issues for bug reports, feature requests, or improvements. If you'd like to contribute directly, please follow these steps:\n\n1. Fork the repository.\n2. Create a new branch for your feature or bug fix.\n3. Make your changes and commit them.\n4. Push your changes to your fork.\n5. Submit a pull request to the main repository.\n\n## License\n\nThis project is licensed under the [MIT License](LICENSE).\n\n---\n\nCreated by [PtPrashantTripathi](https://github.com/PtPrashantTripathi)\n",
+  "licenceFile": "LICENSE"
+}

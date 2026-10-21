@@ -1,0 +1,14 @@
+{
+  "repo": "Melodie1/MotorCross",
+  "stars": 4,
+  "licence": "BSD-3-Clause",
+  "sizeKB": 23,
+  "pushedAt": "2026-05-09T04:33:20Z",
+  "description": "Hey! I created a Motorcyle hill racing game in javascript! Play it and tell me how it is! Output here =>",
+  "defaultBranch": "main",
+  "owner": "Melodie1",
+  "slug": "melodie1-motorcross",
+  "dest": "third-party/melodie1-motorcross",
+  "readme": "# MotorCross\nHey! I created a Motorcyle hill racing game in javascript! Play it and tell me how it is! \n\nPlay it here ==> https://melodie1.github.io/MotorCross/\n\nI hope you'll enjoy it.\n\nOther instructions in the game itself\n",
+  "licenceFile": "LICENSE"
+}

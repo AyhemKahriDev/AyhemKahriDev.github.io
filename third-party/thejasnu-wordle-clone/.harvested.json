@@ -1,0 +1,14 @@
+{
+  "repo": "ThejasNU/wordle-clone",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 42,
+  "pushedAt": "2022-03-13T15:30:11Z",
+  "description": "wordle game clone bulit using html,css and javascript",
+  "defaultBranch": "main",
+  "owner": "ThejasNU",
+  "slug": "thejasnu-wordle-clone",
+  "dest": "third-party/thejasnu-wordle-clone",
+  "readme": "# Wordle Clone\n\nBuilt using HTML,CSS and Javascript\n\nTo play this [click here](https://thejasnu.github.io/wordle-clone/)\n\n-   Used css grid for keyboard and word tiles\n-   Used transition and animation for adding shake and dance effect\n-   All words list has been taken from official newyorktimes website\n",
+  "licenceFile": "LICENSE"
+}

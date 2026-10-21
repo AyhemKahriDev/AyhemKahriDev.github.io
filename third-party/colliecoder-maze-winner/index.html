@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Maze Generator</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="stylesheet" href="mazestyle.css">
+    
+</head>
+<body>
+    <div class="info_text">
+        <h1>Maze Generator</h1>
+        <p>Select a search algorithm from the dropdown to generate a maze.</p>
+    </div>
+    <p>Select Search Algorithm: </p>
+    <p><input id = "reload" type="button" value="Reload" onClick="refresh(this)"></p>
+    <select id = "left_dropdown" onchange = "generateMaze(this.value)">
+        <option value = "default"></option>
+        <option value = "DFS">Depth First Search</option>
+        <option value = "Kruskal">Kruskal</option>
+        <option value = "AB">Aldous Broder</option>
+    </select>
+    <canvas id = "canvas" height = "500" width = "500" ></canvas>
+    <script src="maze_generator.js"></script>
+    <script src="maze_solver.js"></script>
+</body>
+</html>

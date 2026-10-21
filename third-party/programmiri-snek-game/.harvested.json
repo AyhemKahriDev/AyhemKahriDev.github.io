@@ -1,0 +1,14 @@
+{
+  "repo": "programmiri/snek-game",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 10,
+  "pushedAt": "2018-12-18T12:51:57Z",
+  "description": "A clone of the game Snake in Javascript with HTML5 Canvas 🐍",
+  "defaultBranch": "master",
+  "owner": "programmiri",
+  "slug": "programmiri-snek-game",
+  "dest": "third-party/programmiri-snek-game",
+  "readme": "# snek-game\nA clone of the game Snake in Javascript with HTML5 Canvas\n",
+  "licenceFile": "LICENSE"
+}

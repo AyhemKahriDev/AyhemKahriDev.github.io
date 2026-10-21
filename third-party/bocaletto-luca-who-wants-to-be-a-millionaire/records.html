@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Record - Chi Vuol Essere Milionario</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container mt-5">
+    <h2 class="text-center">Record di Gioco</h2>
+    <div id="recordsTable" class="mt-4"></div>
+    <div class="text-center mt-3">
+      <a href="index.html" class="btn btn-primary">Torna alla Home</a>
+    </div>
+  </div>
+  
+  <!-- jQuery per facilitare il fetching dei record -->
+  <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+  <script>
+    // Recupera il file record.json, ordina i record per punteggio decrescente e visualizza in tabella
+    fetch('record.json')
+      .then(response => response.json())
+      .then(data => {
+        if (!Array.isArray(data) || data.length === 0) {
+          document.getElementById('recordsTable').innerHTML = "<p class='text-center'>Nessun record trovato.</p>";
+          return;
+        }
+        // Ordina per punteggio decrescente
+        data.sort((a, b) => b.score - a.score);
+        let table = "<table class='table table-bordered table-striped'><thead><tr><th>Nome</th><th>Punteggio</th><th>Data</th></tr></thead><tbody>";
+        data.forEach(record => {
+          let date = new Date(record.timestamp * 1000);
+          table += `<tr><td>${record.name}</td><td>${record.score}</td><td>${date.toLocaleString()}</td></tr>`;
+        });
+        table += "</tbody></table>";
+        document.getElementById('recordsTable').innerHTML = table;
+      })
+      .catch(error => {
+        console.error("Errore nel caricamento dei record:", error);
+        document.getElementById('recordsTable').innerHTML = "<p class='text-center text-danger'>Errore nel caricamento dei record.</p>";
+      });
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "repo": "DanielSouza2005/SnakeGame_v2",
+  "stars": 3,
+  "licence": "GPL-3.0",
+  "sizeKB": 28,
+  "pushedAt": "2025-04-21T02:19:17Z",
+  "description": "Snake Game with styles and responsive design",
+  "defaultBranch": "main",
+  "owner": "DanielSouza2005",
+  "slug": "danielsouza2005-snakegame-v2",
+  "dest": "third-party/danielsouza2005-snakegame-v2",
+  "readme": "<h1>🐍 Snake Game v2</h1>\n<img loading=\"lazy\" src=\"https://img.shields.io/github/stars/DanielSouza2005/SnakeGame_v2?style=social\"/>\n\n<h2>💡 Sobre </h2>\n<p>Este é um jogo da cobrinha desenvolvido com HTML, CSS e JavaScript. A versão 2 apresenta melhorias em relação à versão anterior, incluindo uma interface mais moderna e responsiva, além de uma jogabilidade aprimorada.</p>\n\n<h2>🖥️ Tecnologias Utilizadas </h2>\n<div align=\"left\" dir=\"auto\">\n<a href=\"https://skillicons.dev\" rel=\"nofollow\">\n<img src=\"https://skillicons.dev/icons?i=html,css,javascript\" style=\"max-width: 100%;\">\n</a>\n<br>\n</div>\n\n<h2>🛠️ Funcionalidades do Projeto </h2>\n\n- 📱 <code>Layout Responsivo</code>: O jogo adapta-se perfeitamente a diferentes tamanhos de tela, proporcionando uma experiência consistente em dispositivos móveis e desktops.​\n- 🎯 <code>Controles Intuitivos</code>: Movimente a cobrinha utilizando as teclas direcionais do teclado, garantindo uma jogabilidade fluida e responsiva.​\n",
+  "licenceFile": "LICENSE"
+}

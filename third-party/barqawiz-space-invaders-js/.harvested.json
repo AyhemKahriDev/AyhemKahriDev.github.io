@@ -1,0 +1,14 @@
+{
+  "repo": "Barqawiz/space-invaders-js",
+  "stars": 3,
+  "licence": "Apache-2.0",
+  "sizeKB": 321,
+  "pushedAt": "2024-05-28T15:35:52Z",
+  "description": "Space Invaders classic arcade game using javascript and p5.",
+  "defaultBranch": "main",
+  "owner": "Barqawiz",
+  "slug": "barqawiz-space-invaders-js",
+  "dest": "third-party/barqawiz-space-invaders-js",
+  "readme": "# space-invaders\nSpace Invaders is a classic arcade game where the player controls a spaceship and shoots down enemy aliens. This simple game is developed using the p5.js library and is open source.\n\n<img src=\"assets/screenshot.png\" height=\"280px\">\n\n## Installation\nUse http-server or any other server to run the javascript game.\n\n1. Use npm to install the server.\n```\nnpm install -g http-server\n```\n2. Run the server.\n```\ncd directory/\nhttp-server\n```\n3. Access the game through your web browser at: `http://localhost:8080`.\n\n## Controls\n- Use the arrow keys to move the spaceship left and right.\n- Press the spacebar to shoot.\n\n## Examples\nThe following website used the open-source code to build a custom space invaders:\n\n- [Ahmadai Sapce Invaders](https://ahmadai.com/games/space/)\n\nYou can add your own game link to this section if you have used this code in your project.\n\n## Contribution\nThe game icons from Flaticon free resources.\n\n## License\n\n   Copyright 2023 barqawiz\n\n   Licensed under the Apache License, Version 2.0 (the \"License\");\n   you may not use this file except in compliance with the License.\n   You may obtain a copy of the License at\n\n       http://www.apache.org/licenses/LICENSE-2.0\n\n   Unless required by applicable law or agreed to in writing, software\n   distributed under the License is distributed on an \"AS IS\" BASIS,\n   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.\n   See the License for the specific language governing permissions and\n   limitations under the License.\n",
+  "licenceFile": "LICENSE"
+}

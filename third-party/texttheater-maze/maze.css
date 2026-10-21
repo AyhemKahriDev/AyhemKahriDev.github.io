@@ -1,0 +1,29 @@
+body {
+	font-family: 'Slabo 27px', sans-serif;
+}
+
+div#maze {
+	margin: auto;
+}
+
+div#messagebox {
+	margin: auto;
+	text-align: center;
+	font-size: 16pt;
+	display: none;
+}
+
+div.container{
+	display: none;
+}
+
+a.actionLink {
+	color: grey;
+	text-decoration: none;
+	font-variant: small-caps;
+	font-weight: bold;
+}
+
+span.shortcut {
+	color: red;
+}

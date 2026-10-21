@@ -1,0 +1,14 @@
+{
+  "repo": "Eckankar/henpen-vue",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 357,
+  "pushedAt": "2025-09-25T20:09:08Z",
+  "description": "A Vue.js implementation of a popular dice game about collecting worms.",
+  "defaultBranch": "main",
+  "owner": "Eckankar",
+  "slug": "eckankar-henpen-vue",
+  "dest": "third-party/eckankar-henpen-vue",
+  "readme": "# Henpen\n\nA Vue.js implementation of a popular dice game about collecting worms.\n\nPlayable version available at https://henpen.brohr.dk .",
+  "licenceFile": "LICENSE"
+}

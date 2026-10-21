@@ -1,0 +1,14 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // プレイデータ / スコア記録（誰でも読み書き可能。削除は不可）
+    match /play_sessions/{sessionId} {
+      allow read, create, update: if true;
+      allow delete: if false;
+    }
+    match /rankings/{entryId} {
+      allow read, create, update: if true;
+      allow delete: if false;
+    }
+  }
+}

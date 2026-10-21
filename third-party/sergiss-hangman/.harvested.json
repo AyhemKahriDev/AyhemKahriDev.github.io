@@ -1,0 +1,14 @@
+{
+  "repo": "sergiss/hangman",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 239,
+  "pushedAt": "2022-03-17T13:01:29Z",
+  "description": ":neckbeard: Hangman Game writted in Javascript",
+  "defaultBranch": "master",
+  "owner": "sergiss",
+  "slug": "sergiss-hangman",
+  "dest": "third-party/sergiss-hangman",
+  "readme": "# hangman\n\n:neckbeard: Hangman Game writted in Javascript\n\n### [Play](https://sergiss.github.io/hangman/)\n\n![Hangman Game](https://github.com/sergiss/hangman/blob/master/hangman.png?raw=true)\n\nwww.sergiosoriano.com\n",
+  "licenceFile": "LICENSE"
+}

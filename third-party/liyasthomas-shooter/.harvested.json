@@ -1,0 +1,14 @@
+{
+  "repo": "liyasthomas/shooter",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 6,
+  "pushedAt": "2019-05-26T16:56:59Z",
+  "description": "💣 Shoot em down!",
+  "defaultBranch": "master",
+  "owner": "liyasthomas",
+  "slug": "liyasthomas-shooter",
+  "dest": "third-party/liyasthomas-shooter",
+  "readme": "# Shooter\n💣 Shoot em down!\n",
+  "licenceFile": "LICENSE"
+}

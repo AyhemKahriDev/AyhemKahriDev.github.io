@@ -1,0 +1,14 @@
+{
+  "repo": "Nikhil-Ladha/Snake-Game",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 1600,
+  "pushedAt": "2023-04-12T05:52:07Z",
+  "description": "A snake game that we all know developed on HTML Canvas.",
+  "defaultBranch": "master",
+  "owner": "Nikhil-Ladha",
+  "slug": "nikhil-ladha-snake-game",
+  "dest": "third-party/nikhil-ladha-snake-game",
+  "readme": "# Snake-Game\nIt is a anake game developed using HTML Canvas.\n\nTo play the game, simply clone the repo and open the `index.html` file in your browser (DESKTOP ONLY). VOILA! You can start playing your game....\n\n## Sample Screenshot\n<img src=\"assets/images/Game-Window.png\" alt=\"Game Screenshot\" />\n",
+  "licenceFile": "LICENSE"
+}

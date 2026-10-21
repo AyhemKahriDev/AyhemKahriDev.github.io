@@ -1,0 +1,354 @@
+:root {
+  font-family: "Courier New", Courier, monospace;
+  line-height: 1.4;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.87);
+  background: radial-gradient(#555, #000);
+  --grid-border-color: #555;
+  --main-color-glow: #0cfca0;
+  --main-color: #00b78b;
+  --main-color-shade: rgb(0, 122, 93);
+}
+
+body,
+html {
+  margin: 0;
+  height: 100%;
+  /* Prevent "side-scrolling" on mobile devices */
+  overflow-x: hidden;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#logo {
+  letter-spacing: -1px;
+  font-size: 11px;
+  padding: 5px;
+  color: var(--main-color);
+  text-shadow: 1px 1px 12px var(--main-color-glow);
+  font-weight: bold;
+}
+
+#top {
+  display: flex;
+  position: relative;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+#app {
+  flex-grow: 1;
+  padding: 10px 0px;
+  box-sizing: border-box;
+  background: rgba(255, 105, 180, 0.1);
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#score {
+  font-size: 10px;
+  letter-spacing: 2px;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: 1px dashed var(--main-color-shade);
+  height: 38px;
+  line-height: 42px;
+  padding: 0 8px;
+}
+
+#bottom {
+  padding: 5px 5px 0 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#countdown {
+  border: 1px dashed var(--main-color);
+  height: 34px;
+  line-height: 38px;
+  font-size: 10px;
+  padding: 0 8px;
+}
+
+#message {
+  position: absolute;
+  width: 100%;
+  text-align: center;
+  bottom: -35px;
+  z-index: 1;
+}
+#message span {
+  color: red;
+  padding: 10px;
+  background-color: rgb(0, 122, 93, 0.3);
+  display: block;
+  font-size: 11px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  z-index: 5;
+  animation: fade-out 0.5s 1;
+  animation-fill-mode: forwards;
+  animation-delay: 2s;
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* #TODO: Show this in game menu later */
+#high {
+  display: none;
+  font-size: 11px;
+}
+
+@keyframes blink {
+  25% {
+    opacity: 0, 5;
+  }
+  50% {
+    opacity: 0;
+  }
+  75% {
+    opacity: 0.5;
+  }
+}
+
+button {
+  appearance: none;
+  background: transparent;
+  border: 2px solid var(--main-color);
+  color: #fff;
+  font-family: "Courier New", Courier, monospace;
+  text-transform: uppercase;
+  font-size: 10px;
+  line-height: 14px;
+  letter-spacing: 1px;
+  font-weight: bold;
+  border-radius: 20px;
+  padding: 2px 8px 0px 8px;
+}
+
+button:hover {
+  background: darkolivegreen;
+}
+
+blink {
+  animation-name: blink;
+  color: red;
+  text-shadow: 1px 1px 12px hotpink;
+  animation-iteration-count: infinite;
+  animation-timing-function: cubic-bezier(1, 0, 0, 1);
+  animation-duration: 1s;
+}
+
+#grid {
+  display: grid;
+  gap: 1px;
+  grid-template-columns: repeat(var(--num-cols), 1fr);
+  background: #444;
+  /* prevent text selection */
+  user-select: none;
+  /* prevent double tap to zoom on mobile */
+  touch-action: manipulation;
+  /* center grid */
+  margin: 0 auto;
+  width: 100%;
+}
+
+#grid > div {
+  position: relative;
+  font-size: 0;
+  background: #000;
+  aspect-ratio: 1;
+}
+
+.on-top {
+  position: absolute;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+}
+
+#grid.game-in-progress > div.tile {
+  cursor: cell;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  #grid.game-in-progress > div.tile:hover {
+    background: rgba(255, 105, 180, 0.1);
+  }
+}
+
+#grid.game-over {
+  opacity: 1;
+}
+
+#upcoming-pipes {
+  border-top: 1px solid #000;
+  border-left: 1px solid #000;
+  grid-template-columns: repeat(6, 1fr);
+  width: fit-content;
+  display: flex;
+}
+
+#upcoming-pipes > div {
+  height: 40px;
+  width: 40px;
+  font-size: 0;
+  box-sizing: border-box;
+  border-right: 1px solid #000;
+  border-bottom: 1px solid #000;
+}
+
+#upcoming-pipes > div svg {
+  opacity: 0.3;
+}
+
+#upcoming-pipes > div:last-child svg {
+  opacity: 1;
+}
+
+#grid div.label {
+  font-size: clamp(11px, 2.5vw, 13px);
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: lighter;
+  width: 40%;
+  border-radius: 50%;
+  height: 40%;
+  top: 50%;
+  left: 50%;
+  background: var(--main-color-shade);
+  z-index: 5;
+  transform: translate(-50%, -50%);
+}
+
+/* SVG rotation & Animation */
+@keyframes dash {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.fill {
+  display: none;
+}
+
+.on-top.vertical {
+  z-index: 1;
+}
+
+.fill-pipe .fill {
+  display: block;
+}
+
+.fill-pipe-animate div.already-visisted .fill {
+  animation: none;
+  display: block;
+}
+
+.fill-pipe-animate div:first-child .fill {
+  display: block;
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: dash 2000ms linear forwards;
+}
+
+.fill-pipe-animate div.start-tile .fill {
+  animation: dash 1000ms linear forwards;
+  animation-delay: 1000ms;
+}
+
+.fill-pipe-animate div.end-tile .fill {
+  animation: dash 1000ms linear forwards;
+}
+
+/* Start tile */
+.start-tile.w .svg {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(90deg);
+}
+.start-tile.e .svg {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(270deg);
+}
+.start-tile.n .svg {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(180deg);
+}
+
+/* End tile */
+.end-tile.w .svg {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(-90deg);
+}
+.end-tile.e .svg {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(90deg);
+}
+.end-tile.s .svg {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(180deg);
+}
+
+.rotate-90 {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(90deg);
+}
+
+.rotate-180 {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(180deg);
+}
+
+.rotate-270 {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: rotate(270deg);
+}
+
+.tile  {
+  position: relative;
+}
+
+.flip-180 {
+  transform: scaleX(-1) rotate(180deg);
+}
+
+.flip-90 {
+  transform: scaleX(-1) rotate(90deg);
+}
+
+.flip-270 {
+  transform: scaleX(-1) rotate(270deg);
+}
+
+.flip {
+  transform: scaleX(-1);
+}

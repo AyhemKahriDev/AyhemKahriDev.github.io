@@ -1,0 +1,14 @@
+{
+  "repo": "sbdh11/Tetris-Game",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 141,
+  "pushedAt": "2020-10-02T13:27:42Z",
+  "description": "A  Basic Tetris Game made from JavaScript & HTML.",
+  "defaultBranch": "master",
+  "owner": "sbdh11",
+  "slug": "sbdh11-tetris-game",
+  "dest": "third-party/sbdh11-tetris-game",
+  "readme": "# Tetris-Game\nA Tetris Game made from JavaScript & HTML.\n\n* Play the game [Here.](https://js-tetris-game.glitch.me/)\n * View the [Code.](https://github.com/DeltaCoderr/Tetris-Game)\n \n * Supported Browsers: Chrome, Firefox, Safari, Opera and IE9+.\n\n",
+  "licenceFile": "LICENSE"
+}

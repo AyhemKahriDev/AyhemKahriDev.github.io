@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<!--
+   Copyright 2017 Pablo Lopez Santori
+   floppybird - index.html
+
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+-->
+<head>
+	<meta charset="utf-8">
+	<title>Floppy Bird</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
+	<script src="js/jquery-3.1.1.min.js"></script>
+	<script src="js/buzz.min.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/menu.js"></script>
+	<script src="js/environment.js"></script>
+	<script src="js/bird.js"></script>
+	<script src="js/items.js"></script>
+	<script src="js/score.js"></script>
+	<link rel="stylesheet" type="text/css" href="main.css">
+
+</head>
+<body>
+	<div id="container">
+		<div id="container-game">
+			<div id="container-sky" class="animated speed">
+				<div id="gameplay-area">
+					<div id="start-menu"></div>
+					<div id="score"><p>Score: <span id="points">0 </span></p></div>
+					<div class="ceiling animated speed"></div>
+					<div class="bird animated"></div>	
+					<!-- Aqui van los obstaculos -->
+				</div>
+			</div>
+
+			<div id="container-floor" class="animated speed">
+				
+			</div>
+			
+		</div>
+	</div>
+
+</body>
+</html> 

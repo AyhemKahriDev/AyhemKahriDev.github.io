@@ -1,0 +1,14 @@
+{
+  "repo": "michaelkolesidis/the-zen-of-hangman",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 1143,
+  "pushedAt": "2026-06-13T11:51:58Z",
+  "description": "The Zen of Hangman: A calm, minimalist take on hangman【ツ】",
+  "defaultBranch": "main",
+  "owner": "michaelkolesidis",
+  "slug": "michaelkolesidis-the-zen-of-hangman",
+  "dest": "third-party/michaelkolesidis-the-zen-of-hangman",
+  "readme": "![Screenshot](./screenshot_01.png)\n\nMinimal Hangman made with JavaScript. Optimised for mobile.\n\n## License\n\nMIT License\n\nCopyright (c) 2017  Michael Kolesidis\n",
+  "licenceFile": "license"
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "bytegames/bytes",
+  "stars": 21,
+  "licence": "MIT",
+  "sizeKB": 563,
+  "pushedAt": "2019-07-01T17:53:32Z",
+  "description": "Retro snake game built with HTML5 Canvas and TypeScript",
+  "defaultBranch": "master",
+  "owner": "bytegames",
+  "slug": "bytegames-bytes",
+  "dest": "third-party/bytegames-bytes",
+  "readme": "# bytes\nRetro snake game built with HTML5 Canvas and TypeScript\n\n![](./images/preview.png)\n\n### Introduction\nThis is a simple 2D game built from scratch with TypeScript 3.4 and HTML5 Canvas.\n\n### Getting Started\nTo run this project:\n1. Clone it to your local machine\n2. Ensure you have TypeScript 3.4 - to install it, type `npm install -g typescript`\n3. `cd` into the project directory (i.e. `cd bytes` or wherever you cloned the repo to)\n4. Run `tsc` to compile the application\n5. Serve the app with a static server such as [serve](https://www.npmjs.com/package/serve)\n\n### Contributing\nBug reports, pull requests, and other contributions are welcome. As this was a simple example game that I developed\nwith my kids to teach the concepts of simple game development and not a professional product, there may be errors or things\nmissing which would otherwise be present. \n\nAny questions, comments, or suggestions are also welcome (but please be courteous and professional).\nThanks!\n-K\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

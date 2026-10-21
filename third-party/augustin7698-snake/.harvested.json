@@ -1,0 +1,14 @@
+{
+  "repo": "augustin7698/snake",
+  "stars": 6,
+  "licence": "Apache-2.0",
+  "sizeKB": 40,
+  "pushedAt": "2023-01-09T16:45:08Z",
+  "description": "snake game in javascript",
+  "defaultBranch": "main",
+  "owner": "augustin7698",
+  "slug": "augustin7698-snake",
+  "dest": "third-party/augustin7698-snake",
+  "readme": "# snake\n#### A simple snake game in javascript.\n#### To play easly got to => <a href=\"https://augustin.great-site.net/snake\" target=\"_blank\">https://augustin.great-site.net/snake</a>\n\n<img src=\"./images/snake.png\"></img>\n",
+  "licenceFile": "LICENSE"
+}

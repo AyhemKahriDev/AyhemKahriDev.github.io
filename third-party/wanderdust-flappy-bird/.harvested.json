@@ -1,0 +1,14 @@
+{
+  "repo": "wanderdust/flappy-bird",
+  "stars": 3,
+  "licence": "Apache-2.0",
+  "sizeKB": 5799,
+  "pushedAt": "2019-06-01T19:13:01Z",
+  "description": "Floppy Bird en HTML5",
+  "defaultBranch": "master",
+  "owner": "wanderdust",
+  "slug": "wanderdust-flappy-bird",
+  "dest": "third-party/wanderdust-flappy-bird",
+  "readme": "# FLoPPY BIRD\n\n## INSTRUCCIONES\n\n- Click para saltar.\n- Los plátanos :banana: te hacen invencible durante un tiempo limitado en el que podras matar a los malos y atravesar obstaculos, además de multiplicar tu puntuación.\n\n## IMPORTANTE\n\nTodos los elementos visuales y texturas han sido extraidos del juego original Flappy Bird. Yo solo he hecho el código, no he diseñado los elementos visuales. \n\nNo soy dueño de estos elementos ni tengo permiso explícito de sus creadores para utilizarlos. Pertenecen a su creador original Dong Nguyen y .GEARS games(http://www.dotgears.com/).\n\nNo tengo intencion de robar este juego, o reclamarlo como mio. Esto es solo una recreacion para divertirme. ¡Si su dueño o cualquier otra persona con derechos de copyright quiere reclamarlo que lo haga saber!\n\n\n------\n\n\n## HOW TO PLAY\n\n- Click to jump.\n- Bananas :banana: make you invincible for a few seconds. During this time you can go through the obstacles and kill the enemies, plus you get extra score.\n\n## IMPORTANT\n\nAll the visual assets and the textures have been extrated from the original game Flappy Bird. I´ve only coded it, not designed the visual assets. \n\nI am not the owner of this assets nor I have explicit permission from its owners to use them. They all belong to its original creator Dong Nguyen and .Gears games(http://www.dotgears.com/).\n\nI have not intention to steal the game, or claim it as my own. This is only a recreation for fun. If the owner or anyone who owns copyright wants to claim it, let me know!\n\n",
+  "licenceFile": "LICENSE.txt"
+}
