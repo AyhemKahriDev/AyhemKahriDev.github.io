@@ -111,8 +111,12 @@ untouched.
 
 `.github/workflows/deploy.yml` does everything:
 
-- on every push to `main`: install, typecheck, build, deploy
-- every day at 00:10 UTC: rebuild so the rolling daily-puzzle window advances
+- on every push to `main`: install, typecheck, build, publish `dist/` to the
+  `gh-pages` branch
+- GitHub Pages serves the `gh-pages` branch at the **root** of
+  `ayhemkahridev.github.io` — no subpath, so every absolute path in the site
+  works untouched
+- every day at 00:10 UTC it rebuilds, so the rolling daily-puzzle window advances
 - `npm ci --ignore-scripts` because npm 11 gates install scripts; esbuild ships
   its binary as an optional dependency, so this is safe
 
@@ -121,6 +125,10 @@ To publish a change:
 ```bash
 git push
 ```
+
+> Note: the `deploy-pages` action reported success but the site kept serving the
+> legacy Jekyll build of the README. Publishing to `gh-pages` directly is the
+> method that actually works here, so that is what the workflow does.
 
 ### Cloudflare Pages (optional alternative)
 
