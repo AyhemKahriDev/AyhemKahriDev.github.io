@@ -11,6 +11,7 @@ import { generateWordBoard, boardAnswers, dateSeed, todayISO } from '../src/shar
 import { themeForDate } from '../src/shared/wordlists.js';
 
 const args = process.argv.slice(2);
+const base = content.site.baseUrl.replace(/\/$/, '');
 const jsonOut = args.includes('--json');
 const dateArg = args.find((a) => !a.startsWith('--'));
 const date = dateArg && /^\d{4}-\d{2}-\d{2}$/.test(dateArg) ? dateArg : todayISO();
@@ -27,8 +28,8 @@ if (jsonOut) {
         theme: { id: theme.id, title: theme.title, accent: theme.accent },
         grid: board.grid,
         words: answers,
-        url: `${content.site.baseUrl}/daily/${date}/`,
-        answersUrl: `${content.site.baseUrl}/daily/${date}/answers/`,
+        url: `${base}/daily/${date}/`,
+        answersUrl: `${base}/daily/${date}/answers/`,
       },
       null,
       2,
@@ -43,5 +44,5 @@ if (jsonOut) {
   console.log('');
   for (const a of answers) console.log(`  ${a.word.padEnd(12)} ${a.start} -> ${a.end}`);
   console.log('');
-  console.log(`${content.site.baseUrl}/daily/${date}/`);
+  console.log(`${base}/daily/${date}/`);
 }

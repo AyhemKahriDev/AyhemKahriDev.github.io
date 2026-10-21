@@ -2,7 +2,7 @@
 
 Free browser arcade. Many games, many categories, **zero running cost**.
 
-- **Live:** `https://arcadefork.pages.dev` — free subdomain, free hosting, free forever
+- **Live:** `https://ayhemkahridev.github.io/` — free GitHub Pages, free forever
 - **Optional, never required:** `arcadefork.com` (also free to register: `.net` `.io` `.gg` `.games` `.fun`)
 
 No accounts, no tracking walls, no paywalls, and **no purchase is required at any
@@ -102,23 +102,40 @@ session. When a real network is connected, the same call site uses it instead.
 
 ## Deploying (free)
 
-### Cloudflare Pages
+### GitHub Pages — this is how it is live right now
+
+The site is published from the `AyhemKahriDev/AyhemKahriDev.github.io` repository.
+Because the repo is named after the account, GitHub serves it at the **root** of
+`ayhemkahridev.github.io` — no subpath, so every absolute path in the site works
+untouched.
+
+`.github/workflows/deploy.yml` does everything:
+
+- on every push to `main`: install, typecheck, build, deploy
+- every day at 00:10 UTC: rebuild so the rolling daily-puzzle window advances
+- `npm ci --ignore-scripts` because npm 11 gates install scripts; esbuild ships
+  its binary as an optional dependency, so this is safe
+
+To publish a change:
+
+```bash
+git push
+```
+
+### Cloudflare Pages (optional alternative)
+
+If you ever want `arcadefork.pages.dev` instead — same code, same $0:
 
 1. Create a free Cloudflare account.
-2. **Workers & Pages -> Create -> Pages -> Connect to Git**.
-3. Repository: this project. Build command: `npm run build`. Output directory: `dist`.
-4. Done — you get `https://arcadefork.pages.dev` with HTTPS and a global CDN.
+2. **Workers & Pages → Create → Pages → Connect to Git**.
+3. Repository: this project. Build command: `npm run build`. Output: `dist`.
+4. Update `content/games.json → site.baseUrl` and redeploy.
 
 Free tier limits that matter: **500 builds/month** and **unlimited static
 requests** (no bandwidth cap). A million visits costs $0.
 
-`.github/workflows/deploy.yml` builds and deploys on every push to `main` and
-re-runs daily at 00:10 UTC to refresh the rolling puzzle window. Add
-`CLOUDFLARE_API_TOKEN` and `CLOUDFLARE_ACCOUNT_ID` as repo secrets to use it.
-
 ### Other free options
 
-- GitHub Pages (`username.github.io`)
 - Netlify / Vercel free tier
 - Cloudflare R2 (10 GB, no egress fees) for the reel files
 
@@ -153,7 +170,7 @@ not yours — which is why your own site still matters for the long game.
 
 ### 3. Telegram Mini Apps — free distribution, free payments
 
-Point a Telegram bot's Mini App at `https://arcadefork.pages.dev/games/merge/` and
+Point a Telegram bot's Mini App at `https://ayhemkahridev.github.io/games/merge/` and
 the game runs inside Telegram with haptics and Stars-based in-app purchases. The
 WebApp integration is already in `src/host.ts` (expand, theme colours, haptic
 feedback, vertical-swipe lock). Telegram needs only an HTTPS URL — a free

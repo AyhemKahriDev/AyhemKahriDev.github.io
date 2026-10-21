@@ -248,7 +248,7 @@ function boot(): void {
     );
     overlay!.querySelector('[data-act="again"]')?.addEventListener('click', restart);
     overlay!.querySelector('[data-act="share"]')?.addEventListener('click', async () => {
-      const url = `${content.site.baseUrl}/games/${spec!.id}/`;
+      const url = `${content.site.baseUrl.replace(/\/$/, '')}/games/${spec!.id}/`;
       const outcome = await shareResult({
         title: meta!.title,
         text: `${meta!.title} - score ${r.score} on arcadefork`,

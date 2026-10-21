@@ -8,6 +8,11 @@ on:
     - cron: '10 0 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 concurrency:
   group: pages
   cancel-in-progress: true
@@ -20,29 +25,23 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '24'
-      - run: npm ci
+          cache: npm
+      # npm 11 gates package install scripts; esbuild ships its binary as an
+      # optional dependency, so --ignore-scripts is safe here.
+      - run: npm ci --ignore-scripts
       - run: npm run typecheck
       - run: npm run build
-      - uses: actions/upload-artifact@v4
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
         with:
-          name: dist
           path: dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
     environment:
-      name: production
-      url: ${{ steps.deploy.outputs.deployment_url }}
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
     steps:
-      - uses: actions/download-artifact@v4
-        with:
-          name: dist
-          path: dist
-      - uses: cloudflare/wrangler-action@v3
-        id: deploy
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy dist --project-name arcadefork --branch main
+      - id: deploy
+        uses: actions/deploy-pages@v4

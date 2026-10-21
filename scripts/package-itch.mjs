@@ -71,7 +71,7 @@ ${gameShell(game)}
 <section class="wrap prose" style="padding:20px 16px 40px">
   <h2>${esc(game.title)}</h2>
   <p>${esc(game.description)}</p>
-  <p>Free to play in your browser - no download, no sign-up. More free games at arcadefork.pages.dev.</p>
+  <p>Free to play in your browser - no download, no sign-up. More free games at ${esc(content.site.baseUrl.replace(/\/$/, ''))}.</p>
 </section>
 <script type="module" src="assets/host.js"></script>
 </body>
