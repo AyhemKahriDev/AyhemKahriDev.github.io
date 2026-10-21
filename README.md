@@ -2,7 +2,8 @@
 
 Free browser arcade. Many games, many categories, **zero running cost**.
 
-- **Live:** `https://ayhemkahridev.github.io/` — free GitHub Pages, free forever
+- **Live:** `https://arcadefork.pages.dev/` — Cloudflare Pages, free forever
+- **Fallback:** `https://ayhemkahridev.github.io/` — GitHub Pages, same build
 - **Optional, never required:** `arcadefork.com` (also free to register: `.net` `.io` `.gg` `.games` `.fun`)
 
 No accounts, no tracking walls, no paywalls, and **no purchase is required at any
@@ -141,50 +142,45 @@ session. When a real network is connected, the same call site uses it instead.
 
 ## Deploying (free)
 
-### GitHub Pages — this is how it is live right now
+### Cloudflare Pages — the live site
 
-The site is published from the `AyhemKahriDev/AyhemKahriDev.github.io` repository.
-Because the repo is named after the account, GitHub serves it at the **root** of
-`ayhemkahridev.github.io` — no subpath, so every absolute path in the site works
-untouched.
-
-`.github/workflows/deploy.yml` does everything:
-
-- on every push to `main`: install, typecheck, build, publish `dist/` to the
-  `gh-pages` branch
-- GitHub Pages serves the `gh-pages` branch at the **root** of
-  `ayhemkahridev.github.io` — no subpath, so every absolute path in the site
-  works untouched
-- every day at 00:10 UTC it rebuilds, so the rolling daily-puzzle window advances
-- `npm ci --ignore-scripts` because npm 11 gates install scripts; esbuild ships
-  its binary as an optional dependency, so this is safe
-
-To publish a change:
+`https://arcadefork.pages.dev/` is served from the Cloudflare Pages project
+`arcadefork`. Deploy from the terminal:
 
 ```bash
-git push
+npm run build
+npm run deploy:cloudflare
 ```
 
-> Note: the `deploy-pages` action reported success but the site kept serving the
-> legacy Jekyll build of the README. Publishing to `gh-pages` directly is the
-> method that actually works here, so that is what the workflow does.
+The token is read from `CLOUDFLARE_API_TOKEN` or from `~/.cf_token`, so it
+never has to appear in a terminal history or a chat transcript. The account id
+is baked into the script.
 
-### Cloudflare Pages (optional alternative)
+To have Cloudflare build on every push instead, connect the repository in the
+dashboard: **Workers & Pages → arcadefork → Settings → Builds & deployments →
+Connect to Git repository**. Build command `npm run build`, output directory
+`dist`. That needs no token in the repo at all, which is the safer option for a
+public repository.
 
-If you ever want `arcadefork.pages.dev` instead — same code, same $0:
+### GitHub Pages — the fallback
 
-1. Create a free Cloudflare account.
-2. **Workers & Pages → Create → Pages → Connect to Git**.
-3. Repository: this project. Build command: `npm run build`. Output: `dist`.
-4. Update `content/games.json → site.baseUrl` and redeploy.
+The same source also publishes to `ayhemkahridev.github.io` via
+`.github/workflows/deploy.yml`, which builds and pushes `dist/` to the
+`gh-pages` branch on every push to `main` and every night at 00:10 UTC.
 
-Free tier limits that matter: **500 builds/month** and **unlimited static
-requests** (no bandwidth cap). A million visits costs $0.
+Because the repo is named after the account, GitHub serves it at the **root** of
+`ayhemkahridev.github.io` — no subpath, so every absolute path in the site
+works untouched.
 
-### Other free options
+`npm ci --ignore-scripts` is used because npm 11 gates install scripts; esbuild
+ships its binary as an optional dependency, so this is safe.
 
-- Netlify / Vercel free tier
-- Cloudflare R2 (10 GB, no egress fees) for the reel files
+To publish a change to both:
+
+```bash
+git push                        # -> GitHub Pages
+npm run deploy:cloudflare       # -> arcadefork.pages.dev
+```
 
 ---
 

@@ -1,9 +1,14 @@
 import { defineConfig } from 'vite';
 import { fileURLToPath } from 'node:url';
 
+import { cloudflare } from "@cloudflare/vite-plugin";
+
 const r = (p: string) => fileURLToPath(new URL(p, import.meta.url));
 
 export default defineConfig({
+  // `plugins: []` is explicit on purpose - some tooling that inspects this
+  // config (Cloudflare's framework detector) fails on a missing array.
+  plugins: [cloudflare()],
   root: r('./src'),
   publicDir: r('./public'),
   build: {

@@ -7,3 +7,6 @@ dist/
 .env.*
 !.env.example
 .smoke/
+
+.dev.vars*
+!.dev.vars.example
