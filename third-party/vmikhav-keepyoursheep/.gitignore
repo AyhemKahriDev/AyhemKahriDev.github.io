@@ -1,8 +1,0 @@
-node_modules/
-dist/
-build/
-ads/
-.vscode/
-.idea/
-*.log
-deploy.js
