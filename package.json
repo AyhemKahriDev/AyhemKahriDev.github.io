@@ -10,6 +10,7 @@
     "preview": "vite preview --port 4173",
     "typecheck": "tsc --noEmit",
     "daily": "node scripts/daily.mjs",
+    "package:itch": "node scripts/package-itch.mjs",
     "serve:dist": "node scripts/serve-dist.mjs"
   },
   "devDependencies": {

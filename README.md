@@ -1,12 +1,13 @@
 # arcadefork
 
-Free browser arcade. Many games, many categories, zero running cost.
+Free browser arcade. Many games, many categories, **zero running cost**.
 
-- **Live (free subdomain):** `https://arcadefork.pages.dev`
-- **Domain (recommended, ~$10/yr):** `arcadefork.com` — also free: `.net` `.io` `.gg` `.games` `.fun`
+- **Live:** `https://arcadefork.pages.dev` — free subdomain, free hosting, free forever
+- **Optional, never required:** `arcadefork.com` (also free to register: `.net` `.io` `.gg` `.games` `.fun`)
 
-No accounts, no tracking walls, no paywalls. Every game is one HTML file's worth of
-JavaScript — the whole runtime is **~14 kB gzipped**.
+No accounts, no tracking walls, no paywalls, and **no purchase is required at any
+point**. Every game is one HTML file's worth of JavaScript — the whole runtime is
+**~14 kB gzipped**.
 
 ---
 
@@ -123,55 +124,106 @@ re-runs daily at 00:10 UTC to refresh the rolling puzzle window. Add
 
 ---
 
-## The one purchase worth making
+## Making money without spending anything
 
-**A domain: `arcadefork.com`, about $10/year.** Everything else can be free.
+There is no step in this project that costs money. Here is the ladder, cheapest
+first. **Skip anything you don't want to do.**
 
-Google AdSense will not approve a `pages.dev`, `vercel.app` or `github.io`
-subdomain, because you cannot prove domain ownership. So without a domain you
-cannot run AdSense or Ad Manager on your own site — which is where the money is
-once the site has traffic.
+### 1. itch.io — free hosting, and you keep the revenue
 
-The rule that keeps this honest: **buy the domain with the first money that
-comes in.** Until then, revenue comes from the platforms that host and pay you
-(itch.io, Poki, CrazyGames), which need no domain at all.
+itch.io hosts the build for free, gives you a page that ranks on Google, lets you
+embed ad code, and takes **10% by default — and you can set that to 0%** under
+*Settings → Open revenue sharing*. No domain, no ad account, no approval.
+
+```bash
+npm run build
+npm run package:itch      # -> dist/itch/<game>.zip, ready to upload
+```
+
+Upload the zip: *Create new project → kind "HTML" → upload "This file will be
+played in the browser" → zip → upload.* The package is verified to run standalone.
+
+### 2. Poki and CrazyGames — they host, they pay, they take nothing from you
+
+Both take a zipped HTML5 build and run their own ad SDK. The engine detects
+`window.poki` and `window.CrazyGames` at runtime and routes ad calls to them
+automatically (see `src/engine/ads.ts`). Revenue is shared (~50/50 on Poki).
+**No domain, no ad account, no cost.** The trade is that the traffic is theirs,
+not yours — which is why your own site still matters for the long game.
+
+### 3. Telegram Mini Apps — free distribution, free payments
+
+Point a Telegram bot's Mini App at `https://arcadefork.pages.dev/games/merge/` and
+the game runs inside Telegram with haptics and Stars-based in-app purchases. The
+WebApp integration is already in `src/host.ts` (expand, theme colours, haptic
+feedback, vertical-swipe lock). Telegram needs only an HTTPS URL — a free
+subdomain is fine.
+
+### 4. Sell the ad slots yourself — no ad network required
+
+`content/sponsors.json` holds the sponsor slots. You find a sponsor, they pay you
+directly, you paste their details in, and it goes live on the next build. There is
+no network to join, no minimum spend, no approval queue, and no cut of your
+revenue.
+
+```json
+{
+  "slots": [
+    {
+      "title": "Your Brand",
+      "subtitle": "Sponsored",
+      "href": "https://example.com",
+      "categories": ["word"]
+    }
+  ]
+}
+```
+
+A slot matching the category wins the end-of-round placement. With the file
+empty, the slot promotes your own catalogue instead — which is free inventory that
+lengthens the session.
+
+### 5. Free-tier ad networks (only if you want them)
+
+Networks like Adsterra, PropellerAds or GamerAds accept free hosting subdomains
+(no domain ownership check like AdSense). They pay less and use intrusive formats,
+so treat them as a later option rather than the plan.
+
+### What is *not* available to you, and why it does not matter
+
+**Google AdSense will not approve a `pages.dev` / `vercel.app` / `github.io`
+subdomain**, because you cannot prove domain ownership. That is the one thing
+money would buy you. It is also the thing you do not need yet:
+
+- AdSense needs traffic volume to be worth enabling at all
+- The revenue above (itch.io + Poki + CrazyGames + direct sponsors) requires no
+  domain and no approval
+- If `arcadefork.com` ever becomes worth registering, it is a one-line change to
+  `content/games.json → site.baseUrl` plus a 301 redirect map. Nothing in the code
+  assumes a domain exists.
 
 Also note AdSense rejects "templated, machine-generated pages at scale". Every
 game must be genuinely distinct — different mechanic, different content, different
 keyword target. That is why the games here are real games and not reskins.
 
----
+### Free-tier ceilings to watch
 
-## Monetization, in the order you should switch them on
-
-| Channel | Needs | Notes |
-|---|---|---|
-| itch.io | nothing | They host, you keep ~90-100% of ad revenue. Free hosting. |
-| Poki / CrazyGames | nothing | They host, revenue share (~50/50). Their traffic, not yours. |
-| AdSense / Ad Manager | own domain | Best RPM on your own traffic. |
-| Rewarded ads | portal SDK | Highest RPM per impression, opt-in only. |
-| Telegram Mini App | nothing | Needs only an HTTPS URL; Telegram Stars for IAP. |
-| House ads | nothing | Already implemented — promotes your own catalogue. |
-
-Free-tier ceilings to watch: Pages 500 builds/month, Workers 100k requests/day
-(unused — puzzles are generated at build time), R2 10 GB.
+Pages 500 builds/month · Workers 100k requests/day (unused — puzzles are generated
+at build time) · R2 10 GB with no egress fees.
 
 ---
 
 ## Submitting to the portals
 
-**itch.io** — create a project, upload a zip of the built game, tick "This file
-will be played in the browser". Their pages rank on Google and can host ad code.
+**itch.io** — `npm run package:itch` builds a standalone zip per game. Create a
+project, kind "HTML", upload "This file will be played in the browser". Their
+pages rank on Google, and you can embed ad code and keep the revenue.
 
 **Poki** (developers.poki.com) and **CrazyGames** (docs.crazygames.com) both take
 a zipped HTML5 build and run their own SDK. The engine detects `window.poki` or
 `window.CrazyGames` at runtime and routes ad calls to them automatically — see
-`src/engine/ads.ts`. Build a standalone zip per game with:
-
-```bash
-npm run build
-cd dist && zip -r ../snake.zip games/snake index.html assets/ styles.css favicon.svg
-```
+`src/engine/ads.ts`. The zip in `dist/itch/<game>.zip` is already in the right
+shape for both.
 
 Requirements on both portals: a loading screen, a mute button, keyboard
 controls, mobile support, and no external requests other than their SDK. The
@@ -215,5 +267,6 @@ into the spec, and post.
 | `npm run build` | Bundle + generate the static site into `dist/` |
 | `npm run serve:dist` | Serve `dist/` on :4178 |
 | `npm run smoke` | Headless Chrome test: every page, every game, SEO assertions |
+| `npm run package:itch` | Standalone zip per game for itch.io / Poki / CrazyGames |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run daily` | Print today's puzzle + answers |

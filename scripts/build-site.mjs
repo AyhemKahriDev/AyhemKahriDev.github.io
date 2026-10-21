@@ -9,6 +9,8 @@ import { mkdirSync, writeFileSync, rmSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import content from '../content/games.json' with { type: 'json' };
+import sponsors from '../content/sponsors.json' with { type: 'json' };
+import { gameShell } from './shell.mjs';
 import {
   generateWordBoard,
   boardAnswers,
@@ -126,6 +128,30 @@ function gameIcon(id, accent) {
     );
   }
   return wrap(`<circle cx="48" cy="48" r="30" fill="${a}"/>`);
+}
+
+/* ---------------------------------------------------------- sponsors */
+
+/**
+ * Direct-sponsor slots. These are sold by hand - there is no ad network, no
+ * approval step and no minimum spend. An empty slot falls back to promoting
+ * our own catalogue.
+ */
+function sponsorFor(category) {
+  return (
+    sponsors.slots.find(
+      (s) => !s.categories || s.categories.length === 0 || s.categories.includes(category),
+    ) ?? null
+  );
+}
+
+function sponsorBanner(category) {
+  const s = sponsorFor(category);
+  if (!s) return '';
+  const inner = s.image
+    ? `<img src="${esc(s.image)}" alt="${esc(s.title)}" loading="lazy">`
+    : `<strong>${esc(s.title)}</strong><span>${esc(s.subtitle ?? '')}</span>`;
+  return `<a class="sponsor" href="${esc(s.href)}" target="_blank" rel="sponsored nofollow">${inner}</a>`;
 }
 
 /* ------------------------------------------------------------ site pages */
@@ -265,6 +291,7 @@ function buildCategory(cat) {
   </section>
   <section class="section">${gameTiles(games)}</section>
   <section class="section prose">
+    ${sponsorBanner(cat.id)}
     <h2>More arcadefork games</h2>
     <div class="linklist">${GAMES.filter((g) => g.category !== cat.id)
       .map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`)
@@ -313,20 +340,11 @@ function buildGamePage(game) {
       })),
     },
   ];
-  const body = `<div class="game-body">
-  <div class="topbar">
-    <a class="brand" href="/">arcade<span>fork</span></a>
-    <div class="hud" id="hud"></div>
-    <button class="icon-btn" id="mute" aria-label="Toggle sound">🔊</button>
-  </div>
-  <div class="stage" id="stage">
-    <canvas id="game" aria-label="${esc(game.title)}"></canvas>
-    <div class="overlay" id="overlay"></div>
-  </div>
-</div>
+  const body = `${gameShell(game)}
 <section class="wrap prose" style="padding-bottom:40px">
   <h1>${esc(game.title)} — play free online</h1>
   <p>${esc(game.description)}</p>
+  ${sponsorBanner(game.category)}
   <h2>How to play ${esc(game.title)}</h2>
   <ul>${game.howToPlay.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
   <h2>Frequently asked questions</h2>

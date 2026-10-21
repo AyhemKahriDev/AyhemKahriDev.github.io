@@ -321,6 +321,36 @@ a {
   font-size: clamp(11px, 2.6vw, 19px);
 }
 
+.sponsor {
+  display: block;
+  margin: 18px 0;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--panel);
+  text-decoration: none;
+}
+
+.sponsor:hover {
+  border-color: var(--accent);
+}
+
+.sponsor strong {
+  display: block;
+  font-size: 15px;
+}
+
+.sponsor span {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.sponsor img {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
 .site-footer {
   border-top: 1px solid var(--line);
   margin-top: 40px;

@@ -1,4 +1,5 @@
 import content from '../content/games.json';
+import sponsors from '../content/sponsors.json';
 import { createEngineBundle } from './engine';
 import { attachPointer } from './engine/input';
 import { startLoop } from './engine/loop';
@@ -12,7 +13,39 @@ interface GameMeta {
   title: string;
   accent: string;
   tagline: string;
+  category: string;
   daily?: boolean;
+}
+
+/** Telegram Mini App integration - free distribution, no domain needed. */
+interface TelegramWebApp {
+  ready?: () => void;
+  expand?: () => void;
+  close?: () => void;
+  disableVerticalSwipes?: () => void;
+  setHeaderColor?: (color: string) => void;
+  setBackgroundColor?: (color: string) => void;
+  HapticFeedback?: {
+    impactOccurred: (style: string) => void;
+    notificationOccurred: (type: string) => void;
+  };
+}
+
+function telegram(): TelegramWebApp | undefined {
+  const tg = (
+    window as unknown as { Telegram?: { WebApp?: TelegramWebApp } }
+  ).Telegram?.WebApp;
+  if (!tg) return undefined;
+  try {
+    tg.ready?.();
+    tg.expand?.();
+    tg.disableVerticalSwipes?.();
+    tg.setHeaderColor?.('#080c16');
+    tg.setBackgroundColor?.('#080c16');
+  } catch {
+    /* ignore */
+  }
+  return tg;
 }
 
 const gameId = document.body.dataset.game ?? '';
@@ -40,18 +73,43 @@ function boot(): void {
   const seed = dateSeed(date);
   const difficulty = readDifficulty();
 
-  const houseAds = content.games
-    .filter((g) => g.id !== meta?.id)
-    .map((g) => ({
-      title: g.title,
-      subtitle: g.tagline,
-      href: `/games/${g.id}/`,
-    }));
+  const sponsorSlots = sponsors.slots as {
+    title: string;
+    subtitle?: string;
+    href: string;
+    categories?: string[];
+  }[];
+
+  const houseAds = [
+    // A paid sponsor for this category always wins the slot.
+    ...sponsorSlots
+      .filter(
+        (s) =>
+          !s.categories ||
+          s.categories.length === 0 ||
+          s.categories.includes(meta!.category as string),
+      )
+      .map((s) => ({
+        title: s.title,
+        subtitle: s.subtitle ?? 'Sponsored',
+        href: s.href,
+      })),
+    // Otherwise promote our own catalogue - free inventory.
+    ...content.games
+      .filter((g) => g.id !== meta?.id)
+      .map((g) => ({
+        title: g.title,
+        subtitle: g.tagline,
+        href: `/games/${g.id}/`,
+      })),
+  ];
 
   const bundle = createEngineBundle({
     gameId: spec!.id,
     houseAds,
   });
+
+  const tg = telegram();
 
   let W = 640;
   let H = 480;
@@ -161,6 +219,7 @@ function boot(): void {
     );
     overlay!.querySelector('[data-act="play"]')?.addEventListener('click', () => {
       bundle.audio.unlock();
+      tg?.HapticFeedback?.impactOccurred('light');
       bundle.analytics.track('play', { game: spec!.id });
       playing = true;
       hideOverlay();
@@ -236,6 +295,9 @@ function boot(): void {
 
     if (instance.result && !resultShown) {
       resultShown = true;
+      tg?.HapticFeedback?.notificationOccurred(
+        instance.result.won ? 'success' : 'error',
+      );
       void bundle.ads.showInterstitial();
       resultOverlay();
     }
