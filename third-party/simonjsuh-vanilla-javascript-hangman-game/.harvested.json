@@ -10,5 +10,6 @@
   "slug": "simonjsuh-vanilla-javascript-hangman-game",
   "dest": "third-party/simonjsuh-vanilla-javascript-hangman-game",
   "readme": "",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }
