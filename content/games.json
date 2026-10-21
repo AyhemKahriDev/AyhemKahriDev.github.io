@@ -1,0 +1,192 @@
+{
+  "site": {
+    "name": "arcadefork",
+    "tagline": "Free browser games. No download, no sign-up, no ads before you play.",
+    "description": "arcadefork is a free browser arcade with word games, puzzle games and arcade classics. Play instantly on any device, no install required.",
+    "baseUrl": "https://arcadefork.pages.dev"
+  },
+  "categories": [
+    {
+      "id": "word",
+      "title": "Word Games",
+      "description": "Word puzzles you can play in under a minute. New challenges every day.",
+      "accent": "#FF4FA8"
+    },
+    {
+      "id": "puzzle",
+      "title": "Puzzle Games",
+      "description": "Logic and number puzzles with instant restart and no waiting.",
+      "accent": "#FFC93E"
+    },
+    {
+      "id": "arcade",
+      "title": "Arcade Games",
+      "description": "Classic arcade action, rebuilt for the browser and playable on a phone.",
+      "accent": "#2FE6FF"
+    },
+    {
+      "id": "brain",
+      "title": "Brain Games",
+      "description": "Memory, attention and pattern games that train while you play.",
+      "accent": "#3DFFA9"
+    }
+  ],
+  "games": [
+    {
+      "id": "wordsearch",
+      "title": "Daily Word Search",
+      "tagline": "Find the hidden words before the clock runs out.",
+      "description": "A free daily word search puzzle. Every player gets the same 10x10 grid, the clock starts at 100 seconds, and your score is based on the words you find and how fast you find them. Free to play, no download.",
+      "category": "word",
+      "accent": "#FF4FA8",
+      "daily": true,
+      "keywords": [
+        "word search",
+        "daily word search",
+        "word search puzzle",
+        "free word search",
+        "word search online",
+        "word search game"
+      ],
+      "howToPlay": [
+        "Drag across a straight line of letters - horizontal, vertical or diagonal.",
+        "Release to submit the word. Correct words stay highlighted in colour.",
+        "You have 100 seconds. Longer words and faster finds are worth more points.",
+        "A new grid is generated every day and everyone plays the same one."
+      ],
+      "faq": [
+        {
+          "q": "Is the daily word search free?",
+          "a": "Yes. Every game on arcadefork is free to play in your browser. There is no account, no download and no paywall."
+        },
+        {
+          "q": "Do I get a new puzzle every day?",
+          "a": "Yes. The grid is generated from the date, so every player worldwide gets exactly the same puzzle, and it changes at midnight UTC."
+        },
+        {
+          "q": "How is the score calculated?",
+          "a": "Each word is worth 60 points plus 20 per letter, doubled by the seconds still left on the clock when you find it."
+        },
+        {
+          "q": "Can I play on a phone?",
+          "a": "Yes. The game is built mobile first - drag with your finger, and it works in portrait or landscape."
+        }
+      ],
+      "related": ["merge", "snake"]
+    },
+    {
+      "id": "merge",
+      "title": "2048 Merge",
+      "tagline": "Slide the tiles, merge the numbers, chase 2048.",
+      "description": "A free 2048 style number merge game. Slide tiles in four directions, merge matching numbers, and try to reach the 2048 tile. Play instantly in your browser on mobile or desktop.",
+      "category": "puzzle",
+      "accent": "#FFC93E",
+      "daily": false,
+      "keywords": [
+        "2048",
+        "2048 game",
+        "merge game",
+        "number merge game",
+        "play 2048 online",
+        "2048 unblocked"
+      ],
+      "howToPlay": [
+        "Swipe in a direction, or use the arrow keys, to slide every tile.",
+        "Two tiles with the same number merge into one tile worth double.",
+        "A new tile appears after each move, so keep the board open.",
+        "The run ends when there are no moves left."
+      ],
+      "faq": [
+        {
+          "q": "How do I play 2048?",
+          "a": "Swipe or press an arrow key to slide all tiles in that direction. Matching tiles merge into a single tile with double the value. Keep sliding until you reach 2048."
+        },
+        {
+          "q": "Is 2048 free on arcadefork?",
+          "a": "Yes, completely free with no sign-up. Your best score is saved locally on your device."
+        },
+        {
+          "q": "Can I play 2048 on my phone?",
+          "a": "Yes. Swipe to move, or tap the on-screen arrow buttons. The game fits any screen size."
+        }
+      ],
+      "related": ["snake", "wordsearch"]
+    },
+    {
+      "id": "snake",
+      "title": "Neon Snake",
+      "tagline": "Classic snake, rebuilt for the browser.",
+      "description": "A free neon snake game. Guide the snake, eat the orbs, and grow as long as you can. The edges wrap around so one mistake is never the end.",
+      "category": "arcade",
+      "accent": "#2FE6FF",
+      "daily": false,
+      "keywords": [
+        "snake game",
+        "play snake online",
+        "free snake game",
+        "snake unblocked",
+        "neon snake",
+        "classic snake game"
+      ],
+      "howToPlay": [
+        "Swipe or use the arrow keys to steer the snake.",
+        "Eat the glowing orbs to score 10 points and grow longer.",
+        "The board wraps at the edges, so you never die on a wall.",
+        "Running into your own tail ends the run."
+      ],
+      "faq": [
+        {
+          "q": "How do I control the snake?",
+          "a": "Swipe in any direction on touch screens, or use the arrow keys or WASD on desktop. Turns are queued so fast double turns register."
+        },
+        {
+          "q": "Does the snake die at the wall?",
+          "a": "No. The edges wrap around, which keeps runs long. The only way to lose is to run into your own tail."
+        },
+        {
+          "q": "Is Neon Snake free?",
+          "a": "Yes, free to play in the browser with no install. Your best score is stored on your device."
+        }
+      ],
+      "related": ["merge", "wordsearch"]
+    },
+    {
+      "id": "memory",
+      "title": "Memory Match",
+      "tagline": "Find the matching pairs before the clock gets silly.",
+      "description": "A free memory match game. Flip two cards, remember where the pairs hide, and clear the board in as few moves as possible. Play free in your browser on mobile or desktop.",
+      "category": "brain",
+      "accent": "#3DFFA9",
+      "daily": false,
+      "keywords": [
+        "memory game",
+        "memory match",
+        "concentration game",
+        "find the pairs",
+        "free memory game",
+        "match game online"
+      ],
+      "howToPlay": [
+        "Tap a card to flip it over.",
+        "Tap a second card. If they match, both stay revealed.",
+        "If they do not match, they turn back over - remember where they were.",
+        "Clear every pair in as few moves as you can."
+      ],
+      "faq": [
+        {
+          "q": "How do I play memory match?",
+          "a": "Tap one card to flip it, then tap a second. Matching pairs stay face up, mismatched pairs flip back after a moment. Clear the whole board in the fewest moves."
+        },
+        {
+          "q": "Is Memory Match free on arcadefork?",
+          "a": "Yes - completely free, no account and no download. Your best score is saved on your device."
+        },
+        {
+          "q": "How many cards are in the game?",
+          "a": "A 4x4 board of 16 cards on normal difficulty. Try easy or hard mode with the difficulty switch to change the board size."
+        }
+      ],
+      "related": ["snake", "merge"]
+    }
+  ]
+}
