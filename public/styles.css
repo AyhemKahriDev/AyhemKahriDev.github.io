@@ -54,7 +54,7 @@ a {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  height: 56px;
+  min-height: 56px;
 }
 
 .brand {
@@ -63,6 +63,7 @@ a {
   letter-spacing: -0.02em;
   text-decoration: none;
   color: var(--text);
+  white-space: nowrap;
 }
 
 .brand span {
@@ -72,7 +73,14 @@ a {
 .site-nav {
   display: flex;
   gap: 14px;
-  flex-wrap: wrap;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.site-nav::-webkit-scrollbar {
+  display: none;
 }
 
 .site-nav a {
@@ -80,6 +88,7 @@ a {
   text-decoration: none;
   font-size: 14px;
   font-weight: 600;
+  white-space: nowrap;
 }
 
 .site-nav a:hover {
@@ -293,6 +302,7 @@ a {
 
 .board {
   display: grid;
+  grid-template-columns: repeat(10, 1fr);
   gap: 2px;
   background: var(--line);
   border: 1px solid var(--line);

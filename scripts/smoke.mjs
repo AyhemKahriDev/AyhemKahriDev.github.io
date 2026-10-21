@@ -11,6 +11,8 @@ import { join } from 'node:path';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
+import { generateWordBoard, dateSeed, todayISO } from '../src/shared/daily.js';
+import { themeForDate } from '../src/shared/wordlists.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const shots = join(root, '.smoke');
@@ -54,10 +56,14 @@ async function waitForServer() {
   throw new Error('server did not start');
 }
 
+const TODAY = todayISO();
+
 const PAGES = [
   { path: '/', name: 'home', expectCanvas: false },
   { path: '/categories/puzzle/', name: 'category-puzzle', expectCanvas: false },
   { path: '/daily/', name: 'daily-archive', expectCanvas: false },
+  { path: `/daily/${TODAY}/`, name: 'daily-puzzle', expectCanvas: false },
+  { path: `/daily/${TODAY}/answers/`, name: 'daily-answers', expectCanvas: false },
   { path: '/games/wordsearch/', name: 'game-wordsearch', expectCanvas: true },
   { path: '/games/merge/', name: 'game-merge', expectCanvas: true },
   { path: '/games/snake/', name: 'game-snake', expectCanvas: true },
@@ -90,6 +96,27 @@ async function main() {
     const url = `http://localhost:${port}${target.path}`;
     const res = await page.goto(url, { waitUntil: 'networkidle2', timeout: 20000 });
     if (!res || res.status() >= 400) errors.push(`status ${res?.status()}`);
+
+    if (target.path.includes('/answers/') || target.path.match(/\/daily\/\d{4}-\d{2}-\d{2}\/$/)) {
+      // The puzzle board must be a square grid, not a single tall column.
+      const board = await page.$eval('.board', (el) => {
+        const r = el.getBoundingClientRect();
+        const c0 = el.children[0]?.getBoundingClientRect();
+        return {
+          w: r.width,
+          h: r.height,
+          cellW: c0?.width ?? 0,
+          cellH: c0?.height ?? 0,
+          cols: getComputedStyle(el).gridTemplateColumns.split(' ').length,
+        };
+      });
+      if (!board.cellW || Math.abs(board.cellW - board.cellH) > 2) {
+        errors.push(`board grid broken (${JSON.stringify(board)})`);
+      }
+      if (board.h > board.w * 1.2) {
+        errors.push(`board too tall (${Math.round(board.h)}px vs ${Math.round(board.w)}px wide)`);
+      }
+    }
 
     if (target.expectCanvas) {
       // Start the round, then play for a moment.
@@ -138,6 +165,52 @@ async function main() {
     } else {
       console.log(`ok    ${target.path}`);
     }
+  }
+
+  // Functional check: drag across a real hidden word and assert it registers.
+  {
+    const today = todayISO();
+    const theme = themeForDate(today, dateSeed(today));
+    const board = generateWordBoard(today, theme, 10, 11);
+    const target = board.placed[0];
+
+    const page = await browser.newPage();
+    await page.setViewport({ width: 412, height: 860, deviceScaleFactor: 2 });
+    const errors = [];
+    page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+    await page.goto(`http://localhost:${port}/games/wordsearch/`, { waitUntil: 'networkidle2' });
+    await (await page.$('[data-act="play"]')).click();
+    await sleep(300);
+
+    const rect = await page.$eval('#game', (el) => {
+      const r = el.getBoundingClientRect();
+      return { left: r.left, top: r.top, width: r.width, height: r.height };
+    });
+    const side = Math.min(rect.width - 28, rect.height - 120);
+    const cell = side / 10;
+    const ox = rect.left + (rect.width - side) / 2;
+    const oy = rect.top + (rect.height - side) / 2 + 26;
+    const sx = ox + target.c0 * cell + cell / 2;
+    const sy = oy + target.r0 * cell + cell / 2;
+    const ex = ox + target.c1 * cell + cell / 2;
+    const ey = oy + target.r1 * cell + cell / 2;
+
+    await page.mouse.move(sx, sy);
+    await page.mouse.down();
+    await page.mouse.move(ex, ey, { steps: 14 });
+    await page.mouse.up();
+    await sleep(400);
+
+    const hud = await page.$eval('#hud', (el) => el.textContent ?? '');
+    const found = /1\/11/.test(hud);
+    console.log(
+      found
+        ? `ok    word search registers "${target.word}" (${hud.trim().replace(/\s+/g, ' ')})`
+        : `FAIL  word search did not register "${target.word}" (hud: ${hud.trim()})`,
+    );
+    if (!found) failures.push({ page: '/games/wordsearch/', errors: [`drag on "${target.word}" not counted`] });
+    errors.forEach((e) => failures.push({ page: '/games/wordsearch/', errors: [e] }));
+    await page.close();
   }
 
   // Canonical + basic SEO assertions on the home page.

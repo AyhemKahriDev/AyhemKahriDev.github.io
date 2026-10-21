@@ -89,22 +89,19 @@ function gameIcon(id, accent) {
   const wrap = (inner) =>
     `<svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true">${inner}</svg>`;
   if (id === 'wordsearch') {
-    const letters = 'ARCADE'.slice(0, 6);
+    const letters = 'ARCADE';
     let cells = '';
-    const words = ['CAT', 'DOG', 'SUN', 'RAY'];
     let k = 0;
     for (let r = 0; r < 4; r++) {
       for (let c = 0; c < 4; c++) {
-        const on = (r + c) % 3 === 0;
+        const on = r === c; // the hidden word runs down the diagonal
         cells += `<rect x="${8 + c * 20}" y="${8 + r * 20}" width="18" height="18" rx="4" fill="${
           on ? a : '#1b2440'
         }"/>`;
-        if (on) {
-          cells += `<text x="${17 + c * 20}" y="${22 + r * 20}" font-size="11" font-family="Outfit, sans-serif" font-weight="700" fill="#080c16" text-anchor="middle">${
-            letters[k % letters.length]
-          }</text>`;
-          k++;
-        }
+        cells += `<text x="${17 + c * 20}" y="${22 + r * 20}" font-size="11" font-family="Outfit, sans-serif" font-weight="700" fill="${
+          on ? '#080c16' : '#8c96bc'
+        }" text-anchor="middle">${letters[k % letters.length]}</text>`;
+        k++;
       }
     }
     return wrap(cells);
@@ -367,7 +364,7 @@ function boardHtml(board, hits) {
       )}</div>`;
     }
   }
-  return `<div class="board">${cells}</div>`;
+  return `<div class="board" style="grid-template-columns:repeat(${board.size},1fr)">${cells}</div>`;
 }
 
 function buildDailyPages() {
@@ -520,6 +517,17 @@ ${urls.map((u) => `  <url><loc>${esc(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.la
   write('sitemap.xml', xml);
 }
 
+function buildRobots() {
+  write(
+    'robots.txt',
+    `User-agent: *
+Allow: /
+
+Sitemap: ${SITE.baseUrl}/sitemap.xml
+`,
+  );
+}
+
 function buildNotFound() {
   const body = `${siteHeader('/')}
 <main class="wrap">
@@ -573,6 +581,7 @@ function main() {
   }
 
   buildSitemap(urls);
+  buildRobots();
   buildNotFound();
 
   const total = urls.length;
