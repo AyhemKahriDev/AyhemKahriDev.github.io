@@ -3,6 +3,7 @@
  * both produce the same markup.
  */
 import { gameIcon } from './icons.mjs';
+import { cleanTagline, creditLicence } from './content-utils.mjs';
 
 export function gameShell(game, opts = {}) {
   const related = opts.related ?? [];
@@ -10,7 +11,7 @@ export function gameShell(game, opts = {}) {
     <aside class="game-side">
       <div class="side-head">
         <div class="side-title">${gameIcon(game.id, game.accent, game.category)}<span>${game.title}</span></div>
-        <p class="side-tag">${game.tagline}</p>
+        <p class="side-tag">${cleanTagline(game)}</p>
       </div>
       <div class="side-actions">
         <a class="btn btn-ghost" href="/">All games</a>
@@ -57,7 +58,7 @@ export function embedShell(game, opts = {}) {
     <aside class="game-side">
       <div class="side-head">
         <div class="side-title">${gameIcon(game.id, game.accent, game.category)}<span>${game.title}</span></div>
-        <p class="side-tag">${game.tagline}</p>
+        <p class="side-tag">${cleanTagline(game)}</p>
       </div>
       <div class="side-actions">
         <a class="btn btn-ghost" href="/">All games</a>
@@ -67,7 +68,7 @@ export function embedShell(game, opts = {}) {
         game.credit
           ? `<div class="side-block">
         <div class="side-label">Original</div>
-        <p class="side-credit">${game.credit.author} · ${game.credit.license}<br>
+        <p class="side-credit">${game.credit.author} · ${creditLicence(game.credit)}<br>
         <a href="${game.credit.source}" target="_blank" rel="noopener nofollow">View source</a></p>
       </div>`
           : ''
@@ -99,7 +100,10 @@ export function embedShell(game, opts = {}) {
     </div>
     <div class="embed-stage">
       <iframe src="${game.embed.src}" title="${game.title}" loading="lazy"
-              allow="autoplay; fullscreen; gamepad" allowfullscreen></iframe>
+              referrerpolicy="no-referrer"
+              sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals allow-presentation allow-downloads"
+              allow="autoplay; fullscreen; gamepad; clipboard-write"
+              allowfullscreen></iframe>
     </div>
   </div>
   ${side}

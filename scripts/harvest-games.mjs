@@ -528,12 +528,42 @@ async function validate() {
               }
             }, 0);
             const text = (document.body?.innerText ?? '').replace(/\s+/g, ' ').trim();
+            // A repo whose landing page is the author's personal site (blog,
+            // portfolio, social hub) is not a game - it once shipped and
+            // walked players to a stranger's homepage.
+            const identityHosts = [
+              'github.com', 'gitee.com', 'gitlab.com', 'linkedin.com',
+              'twitter.com', 'x.com', 'facebook.com', 'instagram.com',
+              'youtube.com', 'weibo.com', 'zhihu.com', 'medium.com',
+              'patreon.com', 'paypal.me', 't.me', 'whatsapp.com',
+              'strava.com', 'buymeacoffee.com', 'ko-fi.com', 'itch.io',
+            ];
+            const sharePath = /\/(sharer|share|intent|submit|send)/i;
+            const identityLinks = [...document.querySelectorAll('a[href]')]
+              .map((a) => a.href)
+              .filter((href) => {
+                if (!/^https?:\/\//i.test(href)) return false;
+                let u;
+                try { u = new URL(href); } catch { return false; }
+                const host = u.hostname.replace(/^www\./, '');
+                if (!identityHosts.some((h) => host === h || host.endsWith('.' + h))) return false;
+                if (sharePath.test(u.pathname + u.search)) return false;
+                if (host === 'github.com' || host === 'gitlab.com') {
+                  const parts = u.pathname.split('/').filter(Boolean);
+                  if (parts.length >= 2 && !/fork|star|sponsor|follow/i.test(u.pathname)) return false;
+                }
+                return true;
+              });
+            const html = document.documentElement.innerHTML;
+            const payment = /\b(usdt|bitcoin|ethereum|crypto\.com|coinbase|binance|metamask|buy\s+me\s+a\s+coffee|sberbank|webmoney|qiwi)/i.test(html);
             return {
               canvasPixels,
               textLen: text.length,
               text: text.slice(0, 300),
               controls: document.querySelectorAll('button, a, input, [role=button]').length,
               canvases: canvases.length,
+              identityLinks: identityLinks.length,
+              payment,
             };
           }),
           12000,
@@ -551,7 +581,13 @@ async function validate() {
         const interactive = probe.textLen > 120 && probe.controls >= 1;
         const alive = probe.canvases > 0 && probe.textLen > 40;
 
-        if (/404|not found|error occurred/i.test(probe.text)) {
+        if (probe.payment) {
+          verdict = 'dead';
+          lastReason = 'landing page shows payment/crypto chrome, not a game';
+        } else if (probe.identityLinks >= 4) {
+          verdict = 'dead';
+          lastReason = `landing page is a personal hub (${probe.identityLinks} profile links)`;
+        } else if (/404|not found|error occurred/i.test(probe.text)) {
           verdict = 'dead';
           lastReason = 'page reports an error';
         } else if (paints || interactive || alive) {

@@ -5,7 +5,7 @@
  * Everything is deterministic: same inputs -> same output, so the nightly
  * rebuild only adds new pages instead of churning URLs.
  */
-import { mkdirSync, writeFileSync, rmSync, existsSync, cpSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, readdirSync, rmSync, existsSync, cpSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import content from '../content/games.json' with { type: 'json' };
@@ -13,6 +13,8 @@ import generated from '../content/games.generated.json' with { type: 'json' };
 import sponsors from '../content/sponsors.json' with { type: 'json' };
 import { gameShell, embedShell } from './shell.mjs';
 import { gameIcon, iconSprite, glyph, tileAccent } from './icons.mjs';
+import { cleanTagline, creditLicence } from './content-utils.mjs';
+import { sanitizeHtml } from './sanitize-embed.mjs';
 import {
   generateWordBoard,
   boardAnswers,
@@ -21,6 +23,46 @@ import {
   addDays,
 } from '../src/shared/daily.js';
 import { themeForDate } from '../src/shared/wordlists.js';
+import { createHash } from 'node:crypto';
+
+/** All .html files under a directory (used to sanitise vendored pages). */
+function htmlFilesIn(dir, depth = 0) {
+  const out = [];
+  if (depth > 3) return out;
+  let entries = [];
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return out;
+  }
+  for (const e of entries) {
+    const p = join(dir, e.name);
+    if (e.isDirectory()) out.push(...htmlFilesIn(p, depth + 1));
+    else if (/\.html?$/i.test(e.name)) out.push(p);
+  }
+  return out;
+}
+
+/**
+ * Content hash for /styles.css and /ui.js.
+ *
+ * Without a version the browser keeps the previous stylesheet for up to a
+ * week (the CDN sends max-age=604800), so a deploy can serve new HTML with
+ * last week's CSS - that is how the ticker once rendered as a wall of text.
+ * The query string changes whenever the file changes, so every deploy is
+ * picked up immediately.
+ */
+let assetVersion = '0';
+function computeAssetVersion() {
+  const parts = [];
+  for (const f of ['public/styles.css', 'public/ui.js']) {
+    const p = join(root, f);
+    if (existsSync(p)) parts.push(readFileSync(p));
+  }
+  const hash = createHash('sha1').update(parts.join('|')).digest('hex').slice(0, 8);
+  assetVersion = hash;
+  return hash;
+}
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
@@ -40,6 +82,7 @@ const esc = (s) =>
   );
 
 const abs = (path) => new URL(path, SITE.baseUrl).href;
+
 
 function write(relPath, html) {
   const file = join(dist, relPath);
@@ -72,7 +115,7 @@ function layout({
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="/styles.css?v=${assetVersion}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,7 +127,7 @@ ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script
 ${iconSprite()}
 ${body}
 ${script}
-<script src="/ui.js" defer></script>
+<script src="/ui.js?v=${assetVersion}" defer></script>
 </body>
 </html>`;
 }
@@ -164,7 +207,7 @@ function gameTiles(ids, opts = {}) {
       <div class="thumb">${gameIcon(g.id, g.accent, g.category)}</div>
       ${g.credit ? '<span class="badge">Open source</span>' : ''}
       <h3>${esc(g.title)}</h3>
-      <p>${esc(g.tagline)}</p>
+      <p>${esc(cleanTagline(g))}</p>
       ${cat ? `<span class="tag">${esc(cat.title)}</span>` : ''}
     </a>`;
     })
@@ -352,7 +395,7 @@ function buildGamePage(game) {
   <p>${esc(game.description)}</p>
   ${
     game.credit
-      ? `<p class="credit-line">Originally by ${esc(game.credit.author)} · ${esc(game.credit.license)} licence · <a href="${esc(game.credit.source)}" rel="noopener nofollow" target="_blank">source</a></p>`
+      ? `<p class="credit-line">Originally by ${esc(game.credit.author)} · ${esc(creditLicence(game.credit))} licence · <a href="${esc(game.credit.source)}" rel="noopener nofollow" target="_blank">source</a></p>`
       : ''
   }
   <h2>How to play ${esc(game.title)}</h2>
@@ -580,11 +623,33 @@ function copyThirdParty() {
   mkdirSync(destRoot, { recursive: true });
 
   let copied = 0;
+  const fixups = { refresh: 0, topTarget: 0, topNav: 0, rel: 0, files: 0 };
   for (const name of wanted) {
     const from = join(src, name);
     if (!existsSync(from)) continue;
-    cpSync(from, join(destRoot, name), { recursive: true });
+    const to = join(destRoot, name);
+    cpSync(from, to, { recursive: true });
     copied++;
+    // Neutralise anything that could navigate us out of the arcade.
+    for (const file of htmlFilesIn(to)) {
+      const raw = readFileSync(file, 'utf8');
+      const { html, changes } = sanitizeHtml(raw);
+      if (html !== raw) {
+        writeFileSync(file, html);
+        fixups.files++;
+        fixups.refresh += changes.refresh;
+        fixups.topTarget += changes.topTarget;
+        fixups.topNav += changes.topNav;
+        fixups.rel += changes.rel;
+      }
+    }
+  }
+  if (fixups.files) {
+    console.log(
+      `arcadefork: sanitised ${fixups.files} vendored pages ` +
+        `(${fixups.topTarget} target=_top, ${fixups.topNav} top-navigation, ` +
+        `${fixups.refresh} meta refresh, ${fixups.rel} rel=noopener)`,
+    );
   }
   return copied;
 }
@@ -620,7 +685,7 @@ function buildCredits() {
           (g) =>
             `<tr><td><a href="/games/${g.id}/">${esc(g.title)}</a></td><td>${esc(
               g.credit.author,
-            )}</td><td>${esc(g.credit.license)}</td><td><a href="${esc(
+            )}</td><td>${esc(creditLicence(g.credit))}</td><td><a href="${esc(
               g.credit.source,
             )}" rel="noopener nofollow" target="_blank">github</a></td></tr>`,
         )
@@ -761,6 +826,7 @@ function main() {
   }
   mkdirSync(dist, { recursive: true });
 
+  computeAssetVersion();
   const today = todayISO();
   const urls = [];
 

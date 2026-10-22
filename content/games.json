@@ -84,7 +84,10 @@
           "a": "Yes. The game is built mobile first - drag with your finger, and it works in portrait or landscape."
         }
       ],
-      "related": ["merge", "snake"]
+      "related": [
+        "merge",
+        "snake"
+      ]
     },
     {
       "id": "merge",
@@ -122,7 +125,10 @@
           "a": "Yes. Swipe to move, or tap the on-screen arrow buttons. The game fits any screen size."
         }
       ],
-      "related": ["snake", "wordsearch"]
+      "related": [
+        "snake",
+        "wordsearch"
+      ]
     },
     {
       "id": "snake",
@@ -160,7 +166,10 @@
           "a": "Yes, free to play in the browser with no install. Your best score is stored on your device."
         }
       ],
-      "related": ["merge", "wordsearch"]
+      "related": [
+        "merge",
+        "wordsearch"
+      ]
     },
     {
       "id": "memory",
@@ -198,7 +207,10 @@
           "a": "A 4x4 board of 16 cards on normal difficulty. Try easy or hard mode with the difficulty switch to change the board size."
         }
       ],
-      "related": ["snake", "merge"]
+      "related": [
+        "snake",
+        "merge"
+      ]
     },
     {
       "id": "tetris",
@@ -208,7 +220,9 @@
       "category": "arcade",
       "accent": "#B388FF",
       "daily": false,
-      "embed": { "src": "/third-party/tetris/index.html" },
+      "embed": {
+        "src": "/third-party/tetris/index.html"
+      },
       "credit": {
         "author": "Jake Gordon",
         "license": "MIT",
@@ -241,50 +255,10 @@
           "a": "Javascript Tetris by Jake Gordon, open sourced under the MIT licence. See the credits page for details."
         }
       ],
-      "related": ["pacman", "merge"]
-    },
-    {
-      "id": "pacman",
-      "title": "Pacman",
-      "tagline": "Maze, pellets, ghosts. The chase is on.",
-      "description": "Free Pacman in your browser. Eat the pellets, dodge the ghosts and clear the maze. An open-source Pacman by mumuy, playable instantly with no download and no sign-up.",
-      "category": "arcade",
-      "accent": "#FFE066",
-      "daily": false,
-      "embed": { "src": "/third-party/pacman/index.html" },
-      "credit": {
-        "author": "mumuy",
-        "license": "MIT",
-        "source": "https://github.com/mumuy/pacman"
-      },
-      "keywords": [
+      "related": [
         "pacman",
-        "pac man game",
-        "play pacman online",
-        "free pacman",
-        "arcade maze game"
-      ],
-      "howToPlay": [
-        "Use the arrow keys or WASD to steer Pacman around the maze.",
-        "Eat the pellets to clear the level.",
-        "The ghosts get faster as you go - power pellets let you eat them.",
-        "Three lives. Keep them as long as you can."
-      ],
-      "faq": [
-        {
-          "q": "How do I play Pacman?",
-          "a": "Steer with the arrow keys or WASD, and on mobile with the on-screen controls. Eat the small pellets to clear the maze and avoid the ghosts."
-        },
-        {
-          "q": "Is Pacman free to play?",
-          "a": "Yes, free in the browser with no download or sign-up. It is an open-source Pacman by mumuy, MIT licensed."
-        },
-        {
-          "q": "Does this work on a phone?",
-          "a": "Yes. The game scales to the screen and includes touch controls."
-        }
-      ],
-      "related": ["tetris", "snake"]
+        "merge"
+      ]
     },
     {
       "id": "trust",
@@ -294,7 +268,9 @@
       "category": "strategy",
       "accent": "#FF9F6B",
       "daily": false,
-      "embed": { "src": "/third-party/trust/index.html" },
+      "embed": {
+        "src": "/third-party/trust/index.html"
+      },
       "credit": {
         "author": "Nicky Case",
         "license": "CC0-1.0",
@@ -327,7 +303,10 @@
           "a": "Nicky Case, the creator of We Become What We Behold and Loopy. See the credits page."
         }
       ],
-      "related": ["loopy", "merge"]
+      "related": [
+        "loopy",
+        "merge"
+      ]
     },
     {
       "id": "loopy",
@@ -337,7 +316,9 @@
       "category": "sandbox",
       "accent": "#5AD8FF",
       "daily": false,
-      "embed": { "src": "/third-party/loopy/index.html" },
+      "embed": {
+        "src": "/third-party/loopy/index.html"
+      },
       "credit": {
         "author": "Nicky Case",
         "license": "CC0-1.0",
@@ -370,7 +351,10 @@
           "a": "Yes, though a larger screen makes drawing loops much easier."
         }
       ],
-      "related": ["trust", "memory"]
+      "related": [
+        "trust",
+        "memory"
+      ]
     }
   ]
 }
