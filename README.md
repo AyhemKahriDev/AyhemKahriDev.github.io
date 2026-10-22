@@ -113,9 +113,12 @@ The build only copies games the catalogue references, so a harvest run in
 progress can never publish a game that has not passed the gate. The smoke test
 loads every published game in a real browser on every run.
 
-Rough numbers: 700 candidates swept, ~300 vendored, **~35% pass the browser
-gate**. The gate is the point — a broken game or a near-duplicate page is worse
-than fewer games.
+Rough numbers: 700 candidates swept across 60+ GitHub queries, 301 vendored,
+**every one judged in a real browser** — 162 passed, 101 rejected for blank
+frames / missing scripts / fatal errors, 3 kept for a later pass, and 7 more
+cut by the smoke test for only failing inside the iframe they are actually
+delivered in. The gate is the point — a broken game or a near-duplicate page
+is worse than fewer games.
 
 ---
 
