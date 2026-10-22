@@ -369,6 +369,14 @@ into the spec, and post.
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run daily` | Print today's puzzle + answers |
 | `npm run vendor:games` | Download and refresh the vendored open-source games |
+| `npm run og:image` | Re-render the social preview card |
+
+The health check also runs against the live site, so production can be
+verified without a deploy:
+
+```bash
+AUDIT_ORIGIN=https://arcadefork.pages.dev npm run audit:health
+```
 
 ---
 

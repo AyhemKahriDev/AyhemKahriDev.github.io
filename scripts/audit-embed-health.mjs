@@ -29,6 +29,16 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const port = Number(process.env.AUDIT_PORT ?? 4181);
 
+/**
+ * Where to check.
+ *
+ * By default the built site is served from dist/ and checked. Point
+ * AUDIT_ORIGIN at a live URL to run the same gate against production:
+ *
+ *   AUDIT_ORIGIN=https://arcadefork.pages.dev node scripts/audit-embed-health.mjs
+ */
+const liveOrigin = process.env.AUDIT_ORIGIN?.replace(/\/+$/, '') ?? null;
+
 const curated = JSON.parse(readFileSync(join(root, 'content/games.json'), 'utf8'));
 const generatedPath = join(root, 'content/games.generated.json');
 const generated = existsSync(generatedPath)
@@ -71,11 +81,13 @@ async function main() {
     process.exit(1);
   }
 
-  const server = spawn(process.execPath, [join(root, 'scripts/serve-dist.mjs')], {
-    env: { ...process.env, PORT: String(port) },
-    stdio: 'ignore',
-  });
-  if (!(await waitForServer())) {
+  const server = liveOrigin
+    ? null
+    : spawn(process.execPath, [join(root, 'scripts/serve-dist.mjs')], {
+        env: { ...process.env, PORT: String(port) },
+        stdio: 'ignore',
+      });
+  if (!liveOrigin && !(await waitForServer())) {
     server.kill();
     throw new Error('static server never came up');
   }
@@ -86,7 +98,7 @@ async function main() {
     args: ['--no-sandbox', '--disable-dev-shm-usage'],
   });
 
-  const origin = `http://localhost:${port}`;
+  const origin = liveOrigin ?? `http://localhost:${port}`;
   const results = [];
   let index = 0;
 
@@ -202,7 +214,7 @@ async function main() {
   }
 
   await browser.close();
-  server.kill();
+  server?.kill();
 
   const dead = results.filter((r) => r.verdict === 'DEAD');
   const warned = results.filter((r) => r.warnings?.length);
