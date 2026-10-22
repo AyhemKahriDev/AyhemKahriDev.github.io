@@ -121,6 +121,13 @@ cut by the smoke test for only failing inside the iframe they are actually
 delivered in. The gate is the point — a broken game or a near-duplicate page
 is worse than fewer games.
 
+Of the 162 that passed the harvest gate, five turned out to be unusable when
+they were actually played (a landing page rather than a game, or a game that
+needs a build step) and are now on `content/blocked.json`. The rest are
+repaired by `npm run fix:embeds` and re-checked in a browser by
+`npm run audit:health`, which is how the 31 games that shipped broken were
+found and fixed.
+
 ---
 
 ## Adding a game
