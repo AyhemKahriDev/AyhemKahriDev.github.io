@@ -66,6 +66,13 @@ const before = await page.evaluate(() => ({
 console.log('before click:', JSON.stringify(before, null, 1));
 
 const clicked = await page.evaluate(() => {
+  // Dismiss an author's promo modal first - it covers the game.
+  const modal = document.querySelector('.swal2-container, .swal2-popup');
+  const modalBtn = modal?.querySelector('.swal2-confirm, .swal2-cancel, button');
+  if (modalBtn) {
+    modalBtn.click();
+    return 'modal:' + (modalBtn.innerText || '').trim();
+  }
   const b = [...document.querySelectorAll('button, input[type=button], input[type=submit]')].find((x) =>
     /start|play|begin|new game|launch/i.test(x.innerText || x.value || ''),
   );

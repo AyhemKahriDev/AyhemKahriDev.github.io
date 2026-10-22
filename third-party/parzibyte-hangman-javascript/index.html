@@ -84,6 +84,24 @@ excepto si este es un proyecto de un estudiante.
         </span>
     </footer>
 </body>
+<script>
+/* arcadefork: the game keeps its word list in localStorage and refuses to
+   start without one, so a first-time player got a redirect to the word
+   manager instead of a game. Seed a starter list when there is none. */
+(function () {
+  try {
+    if (localStorage.getItem('words')) return;
+    localStorage.setItem('words', JSON.stringify([
+      'APPLE', 'BRIDGE', 'CANDLE', 'DREAM', 'EAGLE', 'FLAME', 'GRAPE',
+      'HONEY', 'IVORY', 'JADE', 'KETTLE', 'LEMON', 'MAPLE', 'NIGHT',
+      'OCEAN', 'PIANO', 'QUICK', 'RIVER', 'STONE', 'TIGER', 'UMBRA',
+      'VIOLET', 'WATER', 'YARDEN', 'ZEBRA',
+    ]));
+  } catch (e) {
+    /* private mode - the game will ask for its own words */
+  }
+})();
+</script>
 <script src="js/vue.min.js"></script>
 <script src="js/common.js"></script>
 <script src="js/game.js"></script>

@@ -261,6 +261,31 @@ const PER_GAME = {
       why: "the 'individual' theme has no block images, so the game threw on every frame",
     },
   ],
+  'parzibyte-hangman-javascript': [
+    {
+      file: 'index.html',
+      insertBefore: '<script src="js/vue.min.js"></script>',
+      insert: `<script>
+/* arcadefork: the game keeps its word list in localStorage and refuses to
+   start without one, so a first-time player got a redirect to the word
+   manager instead of a game. Seed a starter list when there is none. */
+(function () {
+  try {
+    if (localStorage.getItem('words')) return;
+    localStorage.setItem('words', JSON.stringify([
+      'APPLE', 'BRIDGE', 'CANDLE', 'DREAM', 'EAGLE', 'FLAME', 'GRAPE',
+      'HONEY', 'IVORY', 'JADE', 'KETTLE', 'LEMON', 'MAPLE', 'NIGHT',
+      'OCEAN', 'PIANO', 'QUICK', 'RIVER', 'STONE', 'TIGER', 'UMBRA',
+      'VIOLET', 'WATER', 'YARDEN', 'ZEBRA',
+    ]));
+  } catch (e) {
+    /* private mode - the game will ask for its own words */
+  }
+})();
+</script>`,
+      why: 'the game has no word list until the player builds one',
+    },
+  ],
   'stared-quantum-game': [
     {
       file: 'js/sound_service.js',
@@ -282,6 +307,16 @@ function applyPerGame(name, gameDir, notes) {
     const path = join(gameDir, fix.file);
     if (!existsSync(path)) continue;
     const raw = readFileSync(path, 'utf8');
+
+    // A snippet is inserted before a marker.
+    if (fix.insertBefore) {
+      if (!raw.includes(fix.insertBefore)) continue;
+      if (raw.includes(fix.insert)) continue; // already applied
+      writeFileSync(path, raw.replace(fix.insertBefore, `${fix.insert}\n${fix.insertBefore}`));
+      notes.push(`\`${fix.file}\`: inserted a starter word list (${fix.why})`);
+      continue;
+    }
+
     if (!raw.includes(fix.from)) continue;
     writeFileSync(path, raw.split(fix.from).join(fix.to));
     notes.push(`\`${fix.file}\`: \`${fix.from}\` -> \`${fix.to}\` (${fix.why})`);

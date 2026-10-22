@@ -6,3 +6,7 @@
 - **Vendored by:** arcadefork (Ayhem Kahri)
 
 The original MIT licence text ships in this folder and applies to its contents.
+
+## Local repairs
+
+- `index.html`: inserted a starter word list (the game has no word list until the player builds one)

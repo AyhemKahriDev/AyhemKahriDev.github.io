@@ -149,6 +149,13 @@ async function main() {
       // button, so a game behind a start screen is not mistaken for a dead
       // game.
       const started = await page.evaluate(() => {
+        // An author's promo modal covers the game until it is dismissed.
+        const modal = document.querySelector('.swal2-container, .swal2-popup, .modal.show');
+        const modalBtn = modal?.querySelector('.swal2-confirm, .swal2-cancel, .btn-close, button');
+        if (modalBtn) {
+          modalBtn.click();
+          return true;
+        }
         for (const input of document.querySelectorAll('input[type=text], input:not([type])')) {
           if (!input.value) {
             input.value = 'Player';
