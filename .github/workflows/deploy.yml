@@ -27,8 +27,17 @@ jobs:
       # npm 11 gates package install scripts; esbuild ships its binary as an
       # optional dependency, so --ignore-scripts is safe here.
       - run: npm ci --ignore-scripts
+      # The audits and the smoke test drive a real browser, so they need one.
+      - name: Install Chrome
+        run: npx --yes @puppeteer/browsers install chrome-headless-shell@stable --path "$HOME/.cache/hyperframes/chrome"
       - run: npm run typecheck
       - run: npm run build
+      # The gate. A broken game, a dead link or a page that no longer parses
+      # must never reach a deploy.
+      - name: Audit
+        run: npm run audit
+      - name: Smoke test
+        run: npm run smoke
       - uses: actions/upload-artifact@v4
         with:
           name: dist

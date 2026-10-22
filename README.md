@@ -20,7 +20,8 @@ npm run dev            # vite dev server
 npm run build          # -> dist/ (static site, deployable as-is)
 npm run serve:dist     # serve dist/ locally on :4178
 npm run smoke          # headless-chrome smoke test of every page + game
-node scripts/daily.mjs # print today's puzzle and answers
+npm run audit          # links, embeds, assets and a live check of every game
+npm run daily          # print today's puzzle and answers
 ```
 
 ---
@@ -351,7 +352,64 @@ into the spec, and post.
 | `npm run build` | Bundle + generate the static site into `dist/` |
 | `npm run serve:dist` | Serve `dist/` on :4178 |
 | `npm run smoke` | Headless Chrome test: every page, every game, SEO assertions |
+| `npm run audit` | The full gate: links, embed rules, asset resolution, live game health |
+| `npm run audit:links` | Every internal link and every sitemap URL resolves to a real file |
+| `npm run audit:embeds` | No embedded game is a personal page or can navigate out of the arcade |
+| `npm run audit:assets` | Every script, style and asset a published game asks for exists |
+| `npm run audit:health` | Every published game loads, starts and paints in a real browser |
+| `npm run fix:embeds` | Repair the vendored games (see below) |
 | `npm run package:itch` | Standalone zip per game for itch.io / Poki / CrazyGames |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run daily` | Print today's puzzle + answers |
 | `npm run vendor:games` | Download and refresh the vendored open-source games |
+
+---
+
+## The quality gate
+
+A games site lives or dies on whether the games actually work. A page that
+looks fine in a screenshot and is broken when you press play is worse than no
+page at all, so every game is checked in a real browser before it ships.
+
+```bash
+npm run build && npm run audit
+```
+
+| Check | What it catches |
+|---|---|
+| `audit:links` | A link to a page that was never built, a sitemap URL with no page |
+| `audit:embeds` | An embedded game that is really the author's homepage, a donation wall or a crypto payment page |
+| `audit:assets` | A game whose script, style or image does not exist - the game cannot run |
+| `audit:health` | A game that loads but never paints, throws a JavaScript error, or waits behind a start screen nobody can find |
+| `smoke` | Every page of the site: one `h1`, a title, a description, a canonical, valid JSON-LD, a working board |
+
+All of them run in CI before a deploy, so a broken game cannot reach the
+live site.
+
+### Repairing a vendored game
+
+A vendored game is written to run from the root of its own repository. Served
+from `/third-party/<name>/` it breaks in three ways, and
+`npm run fix:embeds` repairs all three:
+
+1. **Root-absolute references.** `/scripts/main.js` asks the site root for a
+   file that lives inside the game folder, so the script never loads. It
+   becomes document-relative.
+2. **Files that moved.** `nokiafc22.ttf` when the author moved it to
+   `FontFiles/` 404s. It is rewritten to where the file actually is.
+3. **Script tags for files the author deleted.** The tag stays in the page
+   and throws a 404 on every load. It is removed.
+
+A repair only fires when the target file really exists inside the game
+folder, so nothing is guessed, and every change is written into that game's
+`ARCADEFORK-NOTICE.md` — the vendored copy is no longer byte-for-byte
+upstream, and the notice says so.
+
+### Games that can never work
+
+Some repositories cannot be a game here: the published page is the project's
+landing page, or the game needs a build step (webpack, vite, emscripten) that
+a browser cannot run. Those are listed in `content/blocked.json` and the
+harvest pipeline skips them, so they cannot come back on the next run.
+`content/overrides.json` does the opposite: it points a catalogue entry at the
+right file when the repository's `index.html` is not the game.

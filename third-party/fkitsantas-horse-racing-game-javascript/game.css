@@ -161,9 +161,9 @@ aside ul {list-style-type: none; margin-left: 0; padding-left: 0; margin-bottom:
 	border-collapse: separate;
 	display: table;
 	border-width: 16px;
-	-moz-border-image: url(outer.png) 14 15 14 16 repeat;
+	-moz-border-image: url(./images/outer.png) 14 15 14 16 repeat;
 	-webkit-border-image: url(images/outer.png) 14 15 14 16 repeat;
-	-o-border-image: url(outer.png) 14 15 14 16 repeat;
+	-o-border-image: url(./images/outer.png) 14 15 14 16 repeat;
 	border-image: url(images/outer.png) 14 15 14 16 repeat; background-image: url(images/mud.png);
 	 position: absolute; height: 80vh; width: 80vw; margin: 5vw; margin-top: 5vh;
 }

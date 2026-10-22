@@ -6,3 +6,7 @@
 - **Vendored by:** arcadefork (Ayhem Kahri)
 
 The original MIT licence text ships in this folder and applies to its contents.
+
+## Local repairs
+
+- `index.html`: " main2.js" -> ./main2.js

@@ -1,0 +1,115 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>arcadefork - social card</title>
+<style>
+  @font-face { font-family: Outfit; src: local('Outfit'); }
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    background:
+      radial-gradient(900px 520px at 12% -10%, rgba(47, 230, 255, 0.22), transparent 60%),
+      radial-gradient(760px 480px at 96% 112%, rgba(167, 110, 255, 0.22), transparent 62%),
+      linear-gradient(160deg, #060a13 0%, #0a1020 55%, #070b16 100%);
+    color: #eaf0ff;
+    font-family: 'Outfit', ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 72px 76px;
+    position: relative;
+  }
+  .grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(rgba(148, 170, 220, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148, 170, 220, 0.055) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(760px 460px at 30% 40%, #000 20%, transparent 78%);
+  }
+  .top { position: relative; display: flex; align-items: center; gap: 18px; }
+  .mark {
+    width: 64px; height: 64px; border-radius: 18px;
+    background: linear-gradient(135deg, #2fe6ff, #7b5cff);
+    display: grid; place-items: center;
+    box-shadow: 0 18px 46px rgba(47, 230, 255, 0.28);
+  }
+  .mark svg { width: 34px; height: 34px; }
+  .brand { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; color: #94a1c6; }
+  .brand b { color: #eaf0ff; font-weight: 800; }
+  .pill {
+    margin-left: auto; font-size: 19px; font-weight: 600; color: #2fe6ff;
+    border: 1px solid rgba(47, 230, 255, 0.32); background: rgba(47, 230, 255, 0.10);
+    padding: 9px 20px; border-radius: 999px;
+  }
+  h1 {
+    position: relative; font-size: 86px; line-height: 1.02; font-weight: 800;
+    letter-spacing: -0.035em; max-width: 15ch;
+  }
+  h1 span { color: #2fe6ff; }
+  p.lede {
+    position: relative; margin-top: 22px; font-size: 27px; line-height: 1.42;
+    color: #94a1c6; max-width: 30ch; font-weight: 500;
+  }
+  .tiles { position: relative; display: flex; gap: 16px; margin-top: 40px; }
+  .tile {
+    width: 104px; height: 104px; border-radius: 24px; position: relative;
+    border: 1px solid rgba(148, 170, 220, 0.16);
+    background: linear-gradient(150deg, var(--a), var(--b));
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.4);
+    display: grid; place-items: center;
+  }
+  .tile svg { width: 52px; height: 52px; opacity: 0.95; }
+  .foot {
+    position: relative; display: flex; align-items: center; gap: 18px;
+    font-size: 23px; font-weight: 600; color: #94a1c6;
+  }
+  .foot i { font-style: normal; color: rgba(148, 170, 220, 0.4); }
+</style>
+</head>
+<body>
+  <div class="grid"></div>
+
+  <div class="top">
+    <div class="mark">
+      <svg viewBox="0 0 32 32" fill="none">
+        <rect x="2" y="9" width="7" height="14" rx="2.4" fill="#06121a"/>
+        <rect x="11" y="4" width="7" height="24" rx="2.4" fill="#06121a"/>
+        <rect x="20" y="13" width="7" height="10" rx="2.4" fill="#06121a"/>
+      </svg>
+    </div>
+    <div class="brand">arcade<b>fork</b></div>
+    <div class="pill">153 free games</div>
+  </div>
+
+  <div>
+    <h1>Free browser games that <span>load instantly</span>.</h1>
+    <p class="lede">Word games, puzzles and arcade classics. No download, no sign-up, no paywall.</p>
+
+    <div class="tiles">
+      <div class="tile" style="--a:#2fe6ff;--b:#0f7fb8">
+        <svg viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="11" stroke="#06121a" stroke-width="3"/><path d="M16 9v7l5 3" stroke="#06121a" stroke-width="3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="tile" style="--a:#7b5cff;--b:#3b2a9c">
+        <svg viewBox="0 0 32 32" fill="none"><rect x="6" y="6" width="20" height="20" rx="5" stroke="#06121a" stroke-width="3"/><circle cx="16" cy="16" r="3.4" fill="#06121a"/></svg>
+      </div>
+      <div class="tile" style="--a:#ff7b5c;--b:#a83320">
+        <svg viewBox="0 0 32 32" fill="none"><rect x="7" y="7" width="18" height="18" rx="4" stroke="#06121a" stroke-width="3"/><path d="M12 16h8M16 12v8" stroke="#06121a" stroke-width="3" stroke-linecap="round"/></svg>
+      </div>
+      <div class="tile" style="--a:#ffd166;--b:#b3762a">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M6 20l6-7 5 5 4-5 5 7" stroke="#06121a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="16" cy="9" r="3" fill="#06121a"/></svg>
+      </div>
+      <div class="tile" style="--a:#5cffb1;--b:#1d8a55">
+        <svg viewBox="0 0 32 32" fill="none"><path d="M8 24V9l16 14V8" stroke="#06121a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="foot">
+    <span>arcadefork.pages.dev</span>
+    <i>/</i>
+    <span>A new puzzle every day</span>
+  </div>
+</body>
+</html>

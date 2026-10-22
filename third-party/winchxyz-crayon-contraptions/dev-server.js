@@ -29,7 +29,7 @@ http.createServer((req, res) => {
     return;
   }
   let url = decodeURIComponent(req.url.split('?')[0]);
-  if (url === '/') url = '/index.html';
+  if (url === '/') url = './index.html';
   const file = path.normalize(path.join(root, url));
   if (!file.startsWith(root)) { res.writeHead(403); res.end(); return; }
   fs.readFile(file, (err, buf) => {

@@ -6,3 +6,8 @@
 - **Vendored by:** arcadefork (Ayhem Kahri)
 
 The original GPL-3.0 licence text ships in this folder and applies to its contents.
+
+## Local repairs
+
+- `game.css`: outer.png -> ./images/outer.png
+- `game.css`: outer.png -> ./images/outer.png

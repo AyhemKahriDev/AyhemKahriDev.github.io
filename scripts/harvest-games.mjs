@@ -25,10 +25,39 @@ import {
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
+import { judgeGame } from './embed-health.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const work = join(root, '.harvest');
 const thirdParty = join(root, 'third-party');
+
+/**
+ * Repositories that must never be published.
+ *
+ * Each of these was vendored, opened in a real browser and rejected: the
+ * published page is a landing page rather than a game, or the game needs a
+ * build step (webpack, vite, emscripten) and can never run in a browser.
+ * Listing them here means the next harvest cannot bring them back.
+ */
+const BLOCKED = new Set(
+  (
+    readJson(join(root, 'content/blocked.json'), { repos: [] }).repos ?? []
+  ).map((r) => normaliseRepo(r)),
+);
+
+/** Repositories are compared without punctuation or case. */
+function normaliseRepo(repo) {
+  return String(repo).toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+/**
+ * Per-game overrides, keyed by catalogue id.
+ *
+ * Used when the file a repository ships as index.html is not the one the
+ * catalogue should embed - typically because index.html is the project's
+ * landing page and the game itself lives somewhere else.
+ */
+const OVERRIDES = readJson(join(root, 'content/overrides.json'), { games: {} }).games ?? {};
 mkdirSync(work, { recursive: true });
 
 /**
@@ -449,6 +478,12 @@ async function validate() {
     index++;
     const dir = join(thirdParty, v.slug);
     if (!existsSync(join(dir, 'index.html'))) continue; // pruned or never vendored
+    if (BLOCKED.has(normaliseRepo(v.repo))) {
+      // On the block list: never publish it, and do not keep it on disk.
+      rmSync(dir, { recursive: true, force: true });
+      rejected.push(v.slug);
+      continue;
+    }
     if (readJson(join(dir, '.harvested.json'), {}).validated) {
       // Already passed an earlier pass - keep it without re-testing.
       passed.push(v);
@@ -575,11 +610,19 @@ async function validate() {
         // ribbon images failing is not a broken game.
         const missing = bad.filter((b) => !/favicon/.test(b) && b.includes('localhost'));
 
-        // Alive if it paints, or presents a real interface, or has a canvas
-        // plus readable text (many draw on the first keypress only).
-        const paints = probe.canvasPixels > 200;
-        const interactive = probe.textLen > 120 && probe.controls >= 1;
-        const alive = probe.canvases > 0 && probe.textLen > 40;
+        // One rule for "is this a working game?", shared with the post-build
+        // audit (scripts/embed-health.mjs) so the two cannot disagree.
+        const verdict2 = judgeGame({
+          failed: missing,
+          jsErrors: fatal,
+          status: 200,
+          probe: {
+            pixels: probe.canvasPixels,
+            textLen: probe.textLen,
+            controls: probe.controls,
+            canvases: probe.canvases,
+          },
+        });
 
         if (probe.payment) {
           verdict = 'dead';
@@ -590,19 +633,11 @@ async function validate() {
         } else if (/404|not found|error occurred/i.test(probe.text)) {
           verdict = 'dead';
           lastReason = 'page reports an error';
-        } else if (paints || interactive || alive) {
-          if (missing.length > 6) {
-            verdict = 'dead';
-            lastReason = `${missing.length} failed resources`;
-          } else if (fatal.length > 0) {
-            verdict = 'dead';
-            lastReason = `js error: ${fatal[0].slice(0, 80)}`;
-          } else {
-            verdict = 'pass';
-          }
+        } else if (verdict2.ok) {
+          verdict = 'pass';
         } else {
           verdict = 'dead';
-          lastReason = `nothing playable (canvas ${probe.canvasPixels}px, text ${probe.textLen})`;
+          lastReason = verdict2.reasons.join('; ').slice(0, 120);
         }
       } catch (err) {
         const msg = String(err?.message ?? err);
@@ -688,21 +723,59 @@ function titleFrom(repo, description) {
   return t;
 }
 
+/**
+ * Turn a README into sentences a player can actually read.
+ *
+ * READMEs are full of markup: headings, code blocks, tables, badges, lists
+ * of links. Left alone they turn into a "How to play" list that reads like
+ * a diff. Everything that is not a sentence is dropped here.
+ */
 function readmeSentences(readme) {
   if (!readme) return [];
-  const cleaned = readme
-    .replace(/```[\s\S]*?```/g, ' ')
-    .replace(/!\[[^\]]*\]\([^)]*\)/g, ' ')
-    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1')
-    .replace(/<[^>]+>/g, ' ')
-    .replace(/^#{1,6}\s*/gm, '')
-    .replace(/[*_`>|]/g, ' ')
-    .replace(/\r/g, '');
-  const parts = cleaned
-    .split(/(?<=[.!?])\s+/)
-    .map((s) => s.trim())
-    .filter((s) => s.length > 40 && s.length < 320 && !/^[-*=|]/.test(s));
-  return parts.slice(0, 12);
+  let text = readme;
+
+  // Fenced code blocks and indented code.
+  text = text.replace(/```[\s\S]*?```/g, ' ').replace(/~~~[\s\S]*?~~~/g, ' ');
+  // Images first, then links - keep the link text, drop the target.
+  text = text.replace(/!\[[^\]]*\]\([^)]*\)/g, ' ');
+  text = text.replace(/\[([^\]]*)\]\([^)]*\)/g, '$1');
+  // Reference-style links: [text][1] and [1]: url
+  text = text.replace(/^\[[^\]]+\]:\s*\S+.*$/gm, ' ');
+  text = text.replace(/\[([^\]]*)\]\[[^\]]*\]/g, '$1');
+  // HTML tags, including comments.
+  text = text.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<[^>]+>/g, ' ');
+  // Setext underlines and horizontal rules.
+  text = text.replace(/^\s*(=+|-{3,}|\*{3,})\s*$/gm, ' ');
+  // ATX headings keep their text, but the marker goes.
+  text = text.replace(/^\s{0,3}#{1,6}\s*/gm, '');
+  // Table rows and block quotes.
+  text = text.replace(/^\s*\|.*\|\s*$/gm, ' ');
+  text = text.replace(/^\s*>\s?/gm, '');
+  // Badges, shields and emoji shortcodes.
+  text = text.replace(/!\[.*?\]\(.*?\)/g, ' ');
+  text = text.replace(/:[a-z0-9_+-]+:/gi, ' ');
+  // Emphasis, inline code, list markers, pipes.
+  text = text.replace(/[*_`]/g, ' ').replace(/^\s*[-*+]\s+/gm, '').replace(/^\s*\d+\.\s+/gm, '');
+
+  const parts = [];
+  for (const line of text.split(/\r?\n/)) {
+    const clean = line.replace(/\s+/g, ' ').trim();
+    if (!clean) continue;
+    if (clean.length < 25) continue;
+    // A line that is a path, a command or a URL is not a sentence.
+    if (/^(https?:|www\.|git |npm |yarn |cd |sudo |\$|>|@|\.\/|\/)/i.test(clean)) continue;
+    if (/[{};=<>[\]]/.test(clean)) continue;
+    for (const piece of clean.split(/(?<=[.!?])\s+/)) {
+      const s = piece.trim();
+      if (s.length < 40 || s.length > 320) continue;
+      if (!/^[A-Z0-9"'(]/.test(s)) continue;
+      if (!/\s/.test(s)) continue;
+      parts.push(s);
+    }
+  }
+  // Deduplicate, keep the order.
+  const seen = new Set();
+  return parts.filter((s) => !seen.has(s) && seen.add(s)).slice(0, 12);
 }
 
 function generate() {
@@ -718,6 +791,9 @@ function generate() {
   for (const v of passed) {
     // Skip anything removed after validation (a second pass may have dropped it).
     if (!existsSync(join(thirdParty, v.slug, 'index.html'))) continue;
+    // Skip anything on the block list: a landing page rather than a game, or
+    // a game that needs a build step and can never run in a browser.
+    if (BLOCKED.has(normaliseRepo(v.repo))) continue;
 
     // URL slug from the repo name only - no owner prefix, it reads better and
     // ranks better. The owner is still credited on the page.
@@ -756,9 +832,9 @@ function generate() {
     titleCounts.set(title, (titleCounts.get(title) ?? 0) + 1);
 
     const prose = sentences.filter((s) => !desc.toLowerCase().startsWith(s.slice(0, 20).toLowerCase()));
-    const howToPlay = (prose.length ? prose : sentences).slice(0, 5).map((s) => ({
-      ...s,
-    }));
+    // Plain strings. Spreading a string into an object used to produce
+    // {0: 'B', 1: 'l', ...} and every game page rendered "[object Object]".
+    const howToPlay = (prose.length ? prose : sentences).slice(0, 5).map((s) => String(s).trim());
     const howTo = howToPlay.length
       ? howToPlay
       : [
@@ -778,7 +854,7 @@ function generate() {
 
     const category = categoryFor(`${v.repo} ${v.description} ${title}`.toLowerCase());
 
-    games.push({
+    const entry = {
       id: slug,
       title,
       tagline: (desc || `A free ${title} browser game.`).slice(0, 90),
@@ -813,7 +889,18 @@ function generate() {
         },
       ],
       related: [],
-    });
+    };
+
+    // Per-game overrides - for example a repository whose index.html is the
+    // project's landing page while the game lives in another file.
+    const override = OVERRIDES[slug];
+    if (override) {
+      for (const [key, value] of Object.entries(override)) {
+        entry[key] = typeof value === 'object' && !Array.isArray(value) ? { ...entry[key], ...value } : value;
+      }
+    }
+
+    games.push(entry);
   }
 
   writeJson(join(root, 'content/games.generated.json'), { games });

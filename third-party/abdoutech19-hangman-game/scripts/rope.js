@@ -330,9 +330,9 @@ victim.onload = () => {
 roller.onload = () => {
 	rollerLoaded = true;
 };
-gallows.src = "/images/gallows.png";
-victim.src = "/images/victim.png";
-roller.src = "/images/roller.png";
+gallows.src = "./images/gallows.png";
+victim.src = "./images/victim.png";
+roller.src = "./images/roller.png";
 let requestId;
 const angle = {
 	rotation: 0,

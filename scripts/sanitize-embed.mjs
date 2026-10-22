@@ -23,7 +23,7 @@ const REFRESH = /<meta\s+http-equiv=["']?refresh["']?[^>]*>/gi;
  * relative one ("url=tetris3d.html") is how some games hand over to their
  * real page - keep it.
  */
-function refreshIsExternal(tag) {
+export function refreshIsExternal(tag) {
   const url = (tag.match(/content\s*=\s*["'][^"']*?url\s*=\s*([^"';]+)/i) || [])[1];
   if (!url) return false;
   const target = url.trim();

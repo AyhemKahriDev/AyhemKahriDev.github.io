@@ -83,6 +83,27 @@ const esc = (s) =>
 
 const abs = (path) => new URL(path, SITE.baseUrl).href;
 
+/**
+ * The "how to play" lines of a game, as plain sentences.
+ *
+ * The catalogue used to hold objects where strings belong, which rendered
+ * as "[object Object]" on every game page. Anything that is not a usable
+ * sentence is dropped here, and a page never renders an empty list.
+ */
+function howToLines(game) {
+  const list = Array.isArray(game.howToPlay) ? game.howToPlay : [];
+  const lines = list
+    .filter((s) => typeof s === 'string')
+    .map((s) => s.trim())
+    .filter((s) => s.length > 12);
+  if (lines.length) return lines.slice(0, 5);
+  return [
+    `Open ${game.title} and follow the on-screen instructions.`,
+    'Play with the keyboard, the mouse or touch - the controls are shown in the game.',
+    'Score points and try to beat your best run.',
+  ];
+}
+
 
 function write(relPath, html) {
   const file = join(dist, relPath);
@@ -114,7 +135,15 @@ function layout({
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
+<meta property="og:image" content="${esc(abs('/og.png'))}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${esc(SITE.name)} — ${esc(SITE.tagline)}">
+<meta property="og:locale" content="en">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(title)}">
+<meta name="twitter:description" content="${esc(description)}">
+<meta name="twitter:image" content="${esc(abs('/og.png'))}">
 <link rel="stylesheet" href="/styles.css?v=${assetVersion}">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -399,7 +428,7 @@ function buildGamePage(game) {
       : ''
   }
   <h2>How to play ${esc(game.title)}</h2>
-  <ul>${game.howToPlay.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
+  <ul>${howToLines(game).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
   <h2>Frequently asked questions</h2>
   <div class="faq">${game.faq
     .map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`)

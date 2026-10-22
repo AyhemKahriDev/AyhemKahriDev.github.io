@@ -85,7 +85,7 @@ function startStaticServer(baseDir) {
     let relativePath = decodeURIComponent(url.pathname);
 
     if (relativePath === "/") {
-      relativePath = "/index.html";
+      relativePath = "./index.html";
     }
 
     const filePath = path.join(baseDir, relativePath);

@@ -314,10 +314,24 @@ async function main() {
     canonical: document.querySelector('link[rel=canonical]')?.getAttribute('href') ?? '',
     h1: document.querySelectorAll('h1').length,
     jsonld: document.querySelectorAll('script[type="application/ld+json"]').length,
+    ogImage: document.querySelector('meta[property="og:image"]')?.getAttribute('content') ?? '',
+    ogUrl: document.querySelector('meta[property="og:url"]')?.getAttribute('content') ?? '',
   }));
   console.log('\nSEO check:', JSON.stringify(seo, null, 2));
   if (!seo.title || !seo.desc || !seo.canonical || seo.h1 !== 1) {
     failures.push({ page: '/', errors: ['seo assertions failed'] });
+  }
+  // A shared link with no preview image is a wasted click.
+  if (!seo.ogImage || !seo.ogUrl) {
+    failures.push({ page: '/', errors: ['missing og:image or og:url'] });
+  }
+  // The preview image itself must be there. The og:image is an absolute
+  // URL, so the local copy is checked by path.
+  const og = await page
+    .goto(`http://localhost:${port}/og.png`, { waitUntil: 'domcontentloaded' })
+    .catch(() => null);
+  if (!og || og.status() >= 400) {
+    failures.push({ page: '/', errors: [`og:image is not served (${og?.status() ?? 'no response'})`] });
   }
   await page.close();
 

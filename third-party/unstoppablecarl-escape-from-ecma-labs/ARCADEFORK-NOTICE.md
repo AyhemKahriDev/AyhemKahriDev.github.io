@@ -6,3 +6,7 @@
 - **Vendored by:** arcadefork (Ayhem Kahri)
 
 The original MIT licence text ships in this folder and applies to its contents.
+
+## Local repairs
+
+- `index.html`: removed a dead <script> tag for `js/src/entity-manager.js`

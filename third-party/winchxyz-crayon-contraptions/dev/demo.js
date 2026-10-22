@@ -1,5 +1,5 @@
 /* Crayon Contraptions — demo video recorder. Runs on the dev server page:
-     const s = document.createElement('script'); s.src = '/dev/demo.js'; document.head.appendChild(s);
+     const s = document.createElement('script'); s.src = './dev/demo.js'; document.head.appendChild(s);
      DEMO.run()                 // records every scene
      DEMO.status                // { frame, scene, done, error }
    The game is frozen and driven on a virtual 30 fps clock, so every frame is

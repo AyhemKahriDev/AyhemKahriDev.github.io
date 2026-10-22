@@ -6,3 +6,7 @@
 - **Vendored by:** arcadefork (Ayhem Kahri)
 
 The original MIT licence text ships in this folder and applies to its contents.
+
+## Local repairs
+
+- `styles.css`: nokiafc22.ttf -> ./FontFiles/nokiafc22.ttf

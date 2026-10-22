@@ -1,0 +1,10 @@
+{
+  "_comment": "Per-game overrides applied by the harvest generate phase. Use this when a repository's published page is not the one the catalogue should embed - for example when index.html is the project's landing page and the game lives in another file.",
+  "games": {
+    "blockrain-js": {
+      "embed": {
+        "src": "/third-party/aerolab-blockrain-js/demo.html"
+      }
+    }
+  }
+}

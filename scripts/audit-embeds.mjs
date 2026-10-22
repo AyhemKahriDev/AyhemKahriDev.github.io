@@ -10,6 +10,7 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 import { personalPageSignals } from './personal-page.mjs';
+import { refreshIsExternal } from './sanitize-embed.mjs';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const curated = JSON.parse(readFileSync(join(ROOT, 'content/games.json'), 'utf8'));
@@ -27,7 +28,11 @@ for (const g of GAMES) {
   const html = readFileSync(p, 'utf8');
   const signals = personalPageSignals(html);
   const topTarget = (html.match(/target\s*=\s*(["'])_top\1/gi) || []).length;
-  const refresh = (html.match(/http-equiv=["']?refresh/gi) || []).length;
+  // A meta refresh to somewhere else is a redirect out of the arcade. A
+  // relative one is how some games hand over to their real page.
+  const refresh = (html.match(/<meta\s+http-equiv=["']?refresh["']?[^>]*>/gi) || []).filter(
+    refreshIsExternal,
+  ).length;
   if (signals.verdict !== 'game' || topTarget || refresh) {
     rows.push({
       id: g.id,

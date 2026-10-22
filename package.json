@@ -15,7 +15,15 @@
     "deploy:cloudflare": "node scripts/deploy-cloudflare.mjs",
     "package:itch": "node scripts/package-itch.mjs",
     "serve:dist": "node scripts/serve-dist.mjs",
-    "deploy": "npm run build && wrangler deploy"
+    "deploy": "npm run build && wrangler deploy",
+    "smoke": "node scripts/smoke.mjs",
+    "fix:embeds": "node scripts/embed-fixes.mjs",
+    "og:image": "node scripts/og-image.mjs",
+    "audit": "npm run audit:links && npm run audit:embeds && npm run audit:assets && npm run audit:health",
+    "audit:links": "node scripts/audit-links.mjs",
+    "audit:embeds": "node scripts/audit-embeds.mjs",
+    "audit:assets": "node scripts/audit-embed-assets.mjs",
+    "audit:health": "node scripts/audit-embed-health.mjs"
   },
   "devDependencies": {
     "@cloudflare/vite-plugin": "^1.64.0",

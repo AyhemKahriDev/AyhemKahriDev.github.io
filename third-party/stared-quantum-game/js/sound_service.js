@@ -36,7 +36,7 @@ export class SoundService {
     }
     // Register sounds
     _.forIn(SOUND_DEFS, (def, name) => {
-      soundjs.Sound.registerSound(`/sounds/${def.file}`, name);
+      soundjs.Sound.registerSound(`sounds/${def.file}`, name);
     });
     // Create throttled versions
     SoundService.throttled = _.mapValues(SOUND_DEFS, (def, name) => {

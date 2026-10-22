@@ -1,6 +1,6 @@
 @font-face{
     font-family: myFont;
-    src: url(nokiafc22.ttf);
+    src: url(./FontFiles/nokiafc22.ttf);
 }
 *{
     padding: 0;

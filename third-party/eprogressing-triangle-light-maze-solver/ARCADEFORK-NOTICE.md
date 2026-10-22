@@ -6,3 +6,8 @@
 - **Vendored by:** arcadefork (Ayhem Kahri)
 
 The original MIT licence text ships in this folder and applies to its contents.
+
+## Local repairs
+
+- `scripts/capture-screenshots.js`: /index.html -> ./index.html
+- `scripts/smoke-test.js`: /index.html -> ./index.html
