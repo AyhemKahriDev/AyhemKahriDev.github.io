@@ -2,12 +2,14 @@
  * The in-game shell. Shared by the site builder and the itch.io packager so
  * both produce the same markup.
  */
+import { gameIcon } from './icons.mjs';
+
 export function gameShell(game, opts = {}) {
   const related = opts.related ?? [];
   const side = `
     <aside class="game-side">
       <div class="side-head">
-        <div class="side-title">${game.title}</div>
+        <div class="side-title">${gameIcon(game.id, game.accent, game.category)}<span>${game.title}</span></div>
         <p class="side-tag">${game.tagline}</p>
       </div>
       <div class="side-actions">
@@ -54,7 +56,7 @@ export function embedShell(game, opts = {}) {
   const side = `
     <aside class="game-side">
       <div class="side-head">
-        <div class="side-title">${game.title}</div>
+        <div class="side-title">${gameIcon(game.id, game.accent, game.category)}<span>${game.title}</span></div>
         <p class="side-tag">${game.tagline}</p>
       </div>
       <div class="side-actions">
@@ -92,7 +94,7 @@ export function embedShell(game, opts = {}) {
   <div class="game-main embed-main">
     <div class="embed-bar">
       <a class="brand" href="/">arcade<span>fork</span></a>
-      <span class="embed-title">${game.title}</span>
+      <span class="embed-title">${gameIcon(game.id, game.accent, game.category)}<span class="embed-name">${game.title}</span></span>
       <a class="embed-open" href="${game.embed.src}" target="_blank" rel="noopener">Open full &#8599;</a>
     </div>
     <div class="embed-stage">
@@ -111,7 +113,7 @@ export function gamePageHead({ title, description, canonical, jsonLd = null }) {
       (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c],
     );
   return `<!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">

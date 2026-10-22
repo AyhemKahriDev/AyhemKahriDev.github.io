@@ -1176,3 +1176,372 @@ a {
     transform: none;
   }
 }
+
+/* ============================================================
+   v2 — icon tiles, motion, and identity polish
+   ============================================================ */
+
+/* Cross-document view transitions (progressive; Chrome/Edge only). */
+@view-transition {
+  navigation: auto;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.3s;
+  animation-timing-function: var(--ease-out);
+}
+
+/* Icon SVGs fill their tile; glyph strokes turn white. */
+.tile .thumb {
+  background: transparent;
+  border-color: transparent;
+}
+
+.tile .thumb {
+  transition: transform 0.34s var(--ease-out), filter 0.34s var(--ease);
+}
+
+.tile .thumb svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  filter: saturate(1.08);
+}
+
+.gicon-svg use,
+.af-glyph use,
+.recent-tile svg use,
+.hero-cta svg use {
+  color: #fff;
+}
+
+.gicon-svg use {
+  --use-color: #fff;
+}
+
+.tile:hover .thumb {
+  transform: translateY(-2px) scale(1.025);
+}
+
+.tile:hover .thumb svg {
+  filter: saturate(1.25) brightness(1.06);
+}
+
+/* Daily answers tile keeps a panel backdrop behind its big "?" */
+.thumb-plain {
+  background: var(--panel-2) !important;
+  border: 1px solid var(--line) !important;
+}
+
+/* ------------------------------------------------ scroll reveals */
+.js .reveal {
+  opacity: 0;
+  transform: translateY(18px) scale(0.985);
+  transition:
+    opacity 0.55s var(--ease-out),
+    transform 0.7s var(--ease-out);
+  transition-delay: min(calc(var(--i, 0) * 42ms), 460ms);
+  will-change: opacity, transform;
+}
+
+.js .reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+/* Safety net below fold+/&error paths: content never stays hidden long */
+@keyframes af-forced-in {
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ------------------------------------------------ hero ambience */
+.hero {
+  position: relative;
+}
+
+.hero::before,
+.hero::after {
+  content: '';
+  position: absolute;
+  width: 340px;
+  height: 340px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: -1;
+  filter: blur(60px);
+  opacity: 0.4;
+}
+
+.hero::before {
+  top: -80px;
+  left: -60px;
+  background: radial-gradient(closest-side, rgba(47, 230, 255, 0.5), transparent 70%);
+  animation: af-orb-a 26s var(--ease) infinite alternate;
+}
+
+.hero::after {
+  bottom: -120px;
+  right: -40px;
+  background: radial-gradient(closest-side, rgba(180, 75, 255, 0.42), transparent 70%);
+  animation: af-orb-b 32s var(--ease) infinite alternate;
+}
+
+@keyframes af-orb-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(70px, 40px, 0) scale(1.18);
+  }
+}
+
+@keyframes af-orb-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.12);
+  }
+  to {
+    transform: translate3d(-60px, -46px, 0) scale(0.94);
+  }
+}
+
+/* ------------------------------------------------ ticker marquee */
+.ticker {
+  margin-top: 30px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 10px 0;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+}
+
+.ticker-track {
+  display: flex;
+  width: max-content;
+  animation: af-tick 75s linear infinite;
+}
+
+.ticker:hover .ticker-track {
+  animation-play-state: paused;
+}
+
+.ticker-set {
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  padding-right: 30px;
+  white-space: nowrap;
+}
+
+.ticker-set b {
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.ticker-set i {
+  font-style: normal;
+  font-size: 10px;
+  color: var(--accent);
+  opacity: 0.55;
+}
+
+@keyframes af-tick {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ------------------------------------------------ hero CTAs */
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 0 0 24px;
+}
+
+.btn-dice svg {
+  transition: transform 0.5s var(--ease-out);
+}
+
+.btn-dice:hover svg {
+  transform: rotate(140deg) scale(1.12);
+}
+
+/* gradient accent sweep across the h1 */
+.hero h1 {
+  background: linear-gradient(118deg, #ffffff 20%, #9ad0ff 55%, var(--accent) 92%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: #fff;
+}
+
+@supports not ((-webkit-background-clip: text) or (background-clip: text)) {
+  .hero h1 {
+    background: none;
+    -webkit-text-fill-color: currentColor;
+    color: var(--text);
+  }
+}
+
+/* ------------------------------------------------ recently played */
+#recent-section {
+  display: none;
+}
+
+#recent-section.has {
+  display: block;
+}
+
+.hscroll {
+  display: flex;
+  gap: 12px;
+  overflow-x: auto;
+  padding: 6px 4px 14px;
+  scrollbar-width: none;
+}
+
+.hscroll::-webkit-scrollbar {
+  display: none;
+}
+
+.recent-tile {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: var(--text);
+  font-weight: 600;
+  font-size: 14px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  padding: 7px 18px 7px 7px;
+  border-radius: 999px;
+  transition:
+    transform 0.3s var(--ease),
+    border-color 0.3s var(--ease),
+    background 0.3s var(--ease);
+}
+
+.recent-tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--tile-accent, var(--accent));
+  background: var(--panel-2);
+}
+
+.recent-tile svg {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: block;
+}
+
+/* ------------------------------------------------ game side panel icon */
+.side-title {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+.side-title .gicon-svg {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  flex: none;
+}
+
+.embed-bar .gicon-svg {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  flex: none;
+}
+
+.embed-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+}
+
+.embed-title .gicon-svg {
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  flex: none;
+}
+
+/* ------------------------------------------------ brand + scrollbar */
+.brand {
+  transition: filter 0.3s var(--ease), transform 0.3s var(--ease-out);
+}
+
+.brand:hover {
+  filter: drop-shadow(0 0 14px rgba(47, 230, 255, 0.45));
+  transform: translateY(-1px);
+}
+
+::selection {
+  background: rgba(47, 230, 255, 0.32);
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--panel-3);
+  border-radius: 99px;
+  border: 3px solid var(--bg-2);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2c3e6b;
+}
+
+html {
+  scrollbar-color: var(--panel-3) var(--bg-2);
+}
+
+/* ------------------------------------------------ reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .js .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  .hero::before,
+  .hero::after,
+  .ticker-track {
+    animation: none;
+  }
+
+  .tile .thumb,
+  .tile:hover .thumb,
+  .tile .thumb svg,
+  .btn-dice svg,
+  .recent-tile,
+  .brand {
+    transition: none;
+    transform: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}

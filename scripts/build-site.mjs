@@ -12,6 +12,7 @@ import content from '../content/games.json' with { type: 'json' };
 import generated from '../content/games.generated.json' with { type: 'json' };
 import sponsors from '../content/sponsors.json' with { type: 'json' };
 import { gameShell, embedShell } from './shell.mjs';
+import { gameIcon, iconSprite, glyph, tileAccent } from './icons.mjs';
 import {
   generateWordBoard,
   boardAnswers,
@@ -58,7 +59,7 @@ function layout({
   jsonLd = null,
 }) {
   return `<!doctype html>
-<html lang="en">
+<html lang="en" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -80,56 +81,12 @@ ${head}
 ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
 </head>
 <body class="${bodyClass}"${bodyAttrs ? ' ' + bodyAttrs : ''}>
+${iconSprite()}
 ${body}
 ${script}
+<script src="/ui.js" defer></script>
 </body>
 </html>`;
-}
-
-/* ---------------------------------------------------------------- icons */
-
-function gameIcon(id, accent) {
-  const a = accent || '#2fe6ff';
-  const wrap = (inner) =>
-    `<svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true">${inner}</svg>`;
-  if (id === 'wordsearch') {
-    // A 4x4 grid of letters with one word highlighted horizontally.
-    const letters = 'CATSDOGSSUNSRAYS';
-    let cells = '';
-    for (let r = 0; r < 4; r++) {
-      for (let c = 0; c < 4; c++) {
-        const on = r === 0;
-        const ch = letters[r * 4 + c];
-        cells += `<rect x="${8 + c * 20}" y="${8 + r * 20}" width="18" height="18" rx="4" fill="${
-          on ? a : '#1b2440'
-        }"/>`;
-        cells += `<text x="${17 + c * 20}" y="${22 + r * 20}" font-size="11" font-family="Outfit, sans-serif" font-weight="700" fill="${
-          on ? '#080c16' : '#8c96bc'
-        }" text-anchor="middle">${ch}</text>`;
-      }
-    }
-    return wrap(cells);
-  }
-  if (id === 'merge') {
-    return wrap(
-      `<rect x="8" y="8" width="38" height="38" rx="8" fill="${a}"/>
-       <rect x="50" y="8" width="38" height="38" rx="8" fill="#1b2440"/>
-       <rect x="8" y="50" width="38" height="38" rx="8" fill="#1b2440"/>
-       <rect x="50" y="50" width="38" height="38" rx="8" fill="${a}" opacity="0.5"/>
-       <text x="27" y="35" font-size="22" font-family="Outfit, sans-serif" font-weight="800" fill="#080c16" text-anchor="middle">2</text>
-       <text x="69" y="35" font-size="22" font-family="Outfit, sans-serif" font-weight="800" fill="#e9edff" text-anchor="middle">8</text>`,
-    );
-  }
-  if (id === 'snake') {
-    return wrap(
-      `<rect x="14" y="14" width="18" height="18" rx="6" fill="${a}"/>
-       <rect x="34" y="14" width="18" height="18" rx="6" fill="${a}" opacity="0.75"/>
-       <rect x="54" y="14" width="18" height="18" rx="6" fill="${a}" opacity="0.5"/>
-       <rect x="54" y="34" width="18" height="18" rx="6" fill="${a}" opacity="0.35"/>
-       <circle cx="30" cy="60" r="7" fill="#ff8fb3"/>`,
-    );
-  }
-  return wrap(`<circle cx="48" cy="48" r="30" fill="${a}"/>`);
 }
 
 /* ---------------------------------------------------------- sponsors */
@@ -199,10 +156,12 @@ function siteFooter() {
 function gameTiles(ids, opts = {}) {
   const gridClass = opts.featured ? 'grid grid-featured' : 'grid';
   return `<div class="${gridClass}">${ids
-    .map((g) => {
+    .map((g, i) => {
       const cat = CATEGORIES.find((c) => c.id === g.category);
-      return `<a class="tile" href="/games/${g.id}/" style="--tile-accent:${esc(g.accent)};--glow:${esc(g.accent)}">
-      <div class="thumb">${gameIcon(g.id, g.accent)}</div>
+      const accent = tileAccent(g);
+      return `<a class="tile reveal" href="/games/${g.id}/" data-cat="${esc(g.category)}"
+   style="--tile-accent:${esc(accent)};--glow:${esc(accent)};--i:${i}">
+      <div class="thumb">${gameIcon(g.id, g.accent, g.category)}</div>
       ${g.credit ? '<span class="badge">Open source</span>' : ''}
       <h3>${esc(g.title)}</h3>
       <p>${esc(g.tagline)}</p>
@@ -241,10 +200,18 @@ function buildHome() {
     <span class="pill">Works on any device</span>
     <h1>Free browser games<br>that load instantly.</h1>
     <p>${esc(SITE.description)}</p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="/games/">Browse all ${GAMES.length} games</a>
+      <button class="btn btn-ghost btn-dice" id="btn-random" type="button">${glyph('a-dice', 18)} Play a random game</button>
+    </div>
     <div class="cat-row">${CATEGORIES.map(
       (c) => `<a class="cat-chip" href="/categories/${c.id}/">${esc(c.title)}</a>`,
     ).join('')}</div>
   </section>
+
+  <section class="ticker" aria-hidden="true"><div class="ticker-track"><span class="ticker-set">${GAMES.map(
+    (g) => `<b>${esc(g.title)}</b><i>✦</i>`,
+  ).join('')}</span></div></section>
 
   <section class="section">
     <h2>Today's puzzle</h2>
@@ -256,7 +223,7 @@ function buildHome() {
         <span class="tag">New every day</span>
       </a>
       <a class="tile" href="/daily/${today}/answers/" style="--tile-accent:${esc(theme.accent)};--glow:${esc(theme.accent)}">
-        <div class="thumb" style="font-size:38px;font-weight:800;color:${theme.accent}">?</div>
+        <div class="thumb thumb-plain" style="font-size:38px;font-weight:800;color:${theme.accent}">?</div>
         <h3>Today's answers</h3>
         <p>The full solved grid with every word and where it starts.</p>
         <span class="tag">Answers</span>
@@ -272,12 +239,23 @@ function buildHome() {
     ${gameTiles(GAMES.slice(0, 12))}
   </section>
 
+  <section class="section" id="recent-section">
+    <div class="section-head">
+      <h2>Recently played</h2>
+      <span class="pill">yours</span>
+    </div>
+    <div class="hscroll" aria-live="polite"></div>
+  </section>
+
   <section class="section prose">
     <h2>Why arcadefork</h2>
     <p>Every game here runs entirely in your browser. Nothing to install, no account to create, no email required. The page is under a megabyte, so it starts instantly on a phone connection.</p>
     <p>New puzzles are added regularly, and the <a href="/daily/">daily puzzle archive</a> keeps every past grid so you can look up the answers or replay an old board.</p>
   </section>
 </main>
+<script id="af-catalog-json" type="application/json">${JSON.stringify(
+    GAMES.map((g) => ({ i: g.id, t: g.title, c: g.category, a: g.accent })),
+  )}</script>
 ${siteFooter()}`;
   write('index.html', layout({
     title: `${SITE.name} — free browser games, no download`,
@@ -395,7 +373,9 @@ ${isEmbed ? '' : '<script type="module" src="/assets/host.js"></script>'}`;
       canonical: abs(`/games/${game.id}/`),
       body,
       bodyClass: 'is-game',
-      bodyAttrs: `data-game="${game.id}"`,
+      bodyAttrs: `data-game="${game.id}" data-gtitle="${esc(game.title)}" data-gcat="${esc(
+        game.category,
+      )}" data-gaccent="${esc(game.accent)}"`,
       script: '',
       jsonLd,
     }),
@@ -696,9 +676,23 @@ function buildGamesIndex() {
     <input id="game-filter" class="filter-input" type="search" placeholder="Search ${total} games…"
            autocomplete="off" aria-label="Search games">
     <p id="filter-status" class="filter-status"></p>
+    <div class="hero-cta">
+      <button class="btn btn-ghost btn-dice" id="btn-random" type="button">${glyph('a-dice', 18)} Play a random game</button>
+    </div>
   </section>
   <div id="game-sections">${sections}</div>
+
+  <section class="section" id="recent-section">
+    <div class="section-head">
+      <h2>Recently played</h2>
+      <span class="pill">yours</span>
+    </div>
+    <div class="hscroll" aria-live="polite"></div>
+  </section>
 </main>
+<script id="af-catalog-json" type="application/json">${JSON.stringify(
+    GAMES.map((g) => ({ i: g.id, t: g.title, c: g.category, a: g.accent })),
+  )}</script>
 ${siteFooter()}
 <script>
 (function () {
