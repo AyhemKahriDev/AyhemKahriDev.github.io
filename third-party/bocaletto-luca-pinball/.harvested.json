@@ -10,5 +10,6 @@
   "slug": "bocaletto-luca-pinball",
   "dest": "third-party/bocaletto-luca-pinball",
   "readme": "# Pinball\nPinball WebGame\nno good\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

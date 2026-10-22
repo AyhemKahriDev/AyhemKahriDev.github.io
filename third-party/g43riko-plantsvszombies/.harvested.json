@@ -10,5 +10,6 @@
   "slug": "g43riko-plantsvszombies",
   "dest": "third-party/g43riko-plantsvszombies",
   "readme": "PlantsVsZombies\n===============\n\nSimpla Javascript Plants vs Zombies game\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

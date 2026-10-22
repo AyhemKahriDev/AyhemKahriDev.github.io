@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://thumbfeed.com/the-zen-of-hangman/sitemap.xml

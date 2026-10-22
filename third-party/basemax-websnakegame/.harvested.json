@@ -10,5 +10,6 @@
   "slug": "basemax-websnakegame",
   "dest": "third-party/basemax-websnakegame",
   "readme": "# Web Snake Game\n\nSnake game with HTML, CSS, JavaScript. (Web-based)\n\n[![Web Snake Game](demo.jpg)](https://basemax.github.io/WebSnakeGame/)\n\nDemo game: https://basemax.github.io/WebSnakeGame/\n\n## TODO\n\nNot works in mobile devices, because no arrow key and keyboard in phone!\n\nIf you want to contribute to project. I really accept commit and PR for this feature.\n\n---------\n\n# Max Base\n\nMy nickname is Max, Programming language developer, Full-stack programmer. I love computer scientists, researchers, and compilers. ([Max Base](https://maxbase.org/))\n\n## Asrez Team\n\nA team includes some programmer, developer, designer, researcher(s) especially Max Base.\n\n[Asrez Team](https://www.asrez.com/)\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

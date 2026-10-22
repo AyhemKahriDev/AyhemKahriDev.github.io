@@ -10,5 +10,6 @@
   "slug": "humage-virtual-weiqi-go-surround-chess",
   "dest": "third-party/humage-virtual-weiqi-go-surround-chess",
   "readme": "# virtual-weiqi-go-surround-chess\nPlay Online Virtual WeiQi 围棋 (Chinese Surround Chess), Go, Goe, Baduk, or Igo, without the actual board and stones. Select any size from 19x19, 9x9 and more. This world's oldest strategic chess board game will train you mentally and improve your intelligence. Uses HTML5 Canvas.\n\n[Online Version at Humage.com](http://humage.com/games/chess/online-virtual-weiqi-chinese-surround-chess.html).\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

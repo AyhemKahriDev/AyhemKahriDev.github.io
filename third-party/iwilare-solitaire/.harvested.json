@@ -10,5 +10,6 @@
   "slug": "iwilare-solitaire",
   "dest": "third-party/iwilare-solitaire",
   "readme": "",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

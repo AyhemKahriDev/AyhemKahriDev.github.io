@@ -10,5 +10,6 @@
   "slug": "yongchaofan-jsblockout",
   "dest": "third-party/yongchaofan-jsblockout",
   "readme": "# jsBlockout\nreimplementation of Blockout, the 3D tetris game from 1989, using Javascript and HTML5\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

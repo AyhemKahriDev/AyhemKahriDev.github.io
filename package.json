@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit",
     "daily": "node scripts/daily.mjs",
     "vendor:games": "node scripts/vendor-games.mjs",
+    "harvest": "node scripts/harvest-games.mjs all",
     "deploy:cloudflare": "node scripts/deploy-cloudflare.mjs",
     "package:itch": "node scripts/package-itch.mjs",
     "serve:dist": "node scripts/serve-dist.mjs",

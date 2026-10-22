@@ -1,2 +1,0 @@
-# Shooter
-💣 Shoot em down!

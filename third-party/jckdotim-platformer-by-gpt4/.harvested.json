@@ -10,5 +10,6 @@
   "slug": "jckdotim-platformer-by-gpt4",
   "dest": "third-party/jckdotim-platformer-by-gpt4",
   "readme": "# Super Mario-like Game by GPT-4\n\nA simple platformer game inspired by Super Mario, built using HTML, CSS, and JavaScript. GPT-4 based ChatGPT made this within 1 hour.\n\nhttps://jck.im/platformer-by-gpt4\n\n## Features\n\n- Player movement (left, right, and jump)\n- Goomba-like enemies\n- Jump points for added platforming challenges\n- End goal to complete the stage\n- Game Over and Game Won screens\n- Auto-scrolling camera that follows the player\n\n## Installation and Usage\n\n1. Clone the repository or download the files as a ZIP archive.\n\n```\ngit clone https://github.com/jckdotim/platformer-by-gpt4\n```\n\n2. Open the `index.html` file in a modern web browser.\n\n3. Use the arrow keys to move the player left and right, and the spacebar to jump.\n\n4. Avoid or jump on top of enemies to defeat them.\n\n5. Reach the end goal to complete the stage.\n\n6. Press \"R\" to restart the game if you lose or win.\n\n## Notes\n\nThis game is a simple demonstration of creating a platformer using HTML, CSS, and JavaScript. It is not meant to be a full-featured game, but rather a starting point for further development and experimentation.\n\n## License\n\nThis project is open-source and available under the [MIT License](./LICENSE).\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

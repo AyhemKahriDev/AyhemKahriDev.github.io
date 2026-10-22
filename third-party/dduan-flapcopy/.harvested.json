@@ -10,5 +10,6 @@
   "slug": "dduan-flapcopy",
   "dest": "third-party/dduan-flapcopy",
   "readme": "#Flap(co)py#\n\nAn HTML5 game created between school classes by the author.\n\nWorks in canvas-enabled desktop and mobile browsers.\n\nInspired by the mobile game Flappy Bird.\n\n[Play](http://dduan.github.io/Flapcopy)\n",
-  "licenceFile": "LICENSE.txt"
+  "licenceFile": "LICENSE.txt",
+  "validated": true
 }

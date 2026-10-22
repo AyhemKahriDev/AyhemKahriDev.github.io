@@ -10,5 +10,6 @@
   "slug": "123survesh-tetris",
   "dest": "third-party/123survesh-tetris",
   "readme": "# tetris\n\nHi, I am learning game dev and this (\"tetris\") is the first game that I made from scratch with javascript. I have used HTML canvas to draw all the moving elements that can be seen in this game. \n\nPlay the game : https://123survesh.github.io/tetris/\n\nThanks for stopping by, the game still needs some major make up to make it look and feel beautifull, I will be getting to it in due time :)\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

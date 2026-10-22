@@ -10,5 +10,6 @@
   "slug": "wlodpawlowski-2d-breakout-web-browser-game",
   "dest": "third-party/wlodpawlowski-2d-breakout-web-browser-game",
   "readme": "",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

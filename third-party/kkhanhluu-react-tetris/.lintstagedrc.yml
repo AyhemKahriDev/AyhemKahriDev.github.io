@@ -1,5 +1,0 @@
-'*.{js,ts,tsx}':
-  - eslint
-  - prettier --write
-'Dockerfile':
-  - npm run lint:dockerfile

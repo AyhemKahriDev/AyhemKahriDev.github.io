@@ -1,4 +1,0 @@
-User-agent: *
-Allow: /
-
-Sitemap: https://mastermind.qiaomu.ai/sitemap.xml

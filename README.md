@@ -90,30 +90,32 @@ game's SEO copy and its runtime can never disagree.
 | Memory Match | Brain | Find all the pairs in as few moves as possible |
 
 **Open source** — vendored verbatim with their original licences, credited on
-[/credits/](https://ayhemkahridev.github.io/credits/):
+[/credits/](https://arcadefork.pages.dev/credits/): The Evolution of Trust, Loopy
+(Nicky Case, CC0), Javascript Tetris (Jake Gordon, MIT), Pacman (mumuy, MIT),
+plus a larger catalogue harvested from GitHub.
 
-| Game | By | Licence |
-|---|---|---|
-| The Evolution of Trust | Nicky Case | CC0-1.0 |
-| Loopy | Nicky Case | CC0-1.0 |
-| Javascript Tetris | Jake Gordon | MIT |
-| Pacman | mumuy | MIT |
-
-### Adding an open-source game
+### The harvest pipeline
 
 ```bash
-npm run vendor:games
+npm run harvest          # sweep -> vendor -> validate -> generate
 ```
 
-`scripts/vendor-games.mjs` downloads the repositories, copies them into
-`third-party/<id>/`, keeps the original `LICENSE`, writes a
-`ARCADEFORK-NOTICE.md` with the author, licence and source link, re-encodes
-oversized audio, and **localises any external resource the game hotlinks** so
-the vendored copy makes no third-party requests. The build copies
-`third-party/` into `dist/` automatically.
+`scripts/harvest-games.mjs` runs four phases:
 
-The smoke test loads every vendored game in a real browser, inside its iframe,
-and fails if it does not paint.
+| Phase | What it does |
+|---|---|
+| `sweep` | 60+ GitHub searches across game topics and naming conventions. Filters to permissive **and copyleft** licences (GPL/LGPL/MPL are fine here because the vendored copy ships its original licence and this repository is the corresponding source), then to repos that are actually games rather than libraries or tutorials. |
+| `vendor` | Downloads each repo, keeps the original `LICENSE`, writes an `ARCADEFORK-NOTICE.md` crediting author, licence and source, re-encodes oversized audio and localises any external resource the game hotlinks. |
+| `validate` | **The quality gate.** Loads each vendored game in headless Chrome. It must actually paint or present a real interface, and must not have same-origin resource failures. Failures are deleted, not published. |
+| `generate` | Writes `content/games.generated.json`: unique title, description, keywords, how-to-play and FAQ per game, derived from the repo README so the copy is real rather than templated. |
+
+The build only copies games the catalogue references, so a harvest run in
+progress can never publish a game that has not passed the gate. The smoke test
+loads every published game in a real browser on every run.
+
+Rough numbers: 700 candidates swept, ~300 vendored, **~35% pass the browser
+gate**. The gate is the point — a broken game or a near-duplicate page is worse
+than fewer games.
 
 ---
 

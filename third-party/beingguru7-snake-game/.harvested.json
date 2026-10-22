@@ -10,5 +10,6 @@
   "slug": "beingguru7-snake-game",
   "dest": "third-party/beingguru7-snake-game",
   "readme": "# Snake Game\n\nThis is a simple, browser-based Snake game made using HTML, CSS, and JavaScript.  \nPlayers control the snake using arrow keys, aiming to eat the food and grow as long as possible without hitting the walls or itself.  \n\n## Features\n- Classic Snake gameplay  \n- Smooth JavaScript-based controls  \n- Fully client-side, no backend required  \n- Works on desktop and mobile browsers  \n\n## How to Play\n- Use arrow keys to move the snake  \n- Eat the red food to grow longer  \n- Avoid colliding with walls or yourself  \n\n## Demo\nYou can play it online: [Link to your hosted game]  \n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

@@ -10,5 +10,6 @@
   "slug": "drewsilcock-maze-js",
   "dest": "third-party/drewsilcock-maze-js",
   "readme": "# maze.js\nMaze game in JavaScript using HTML5 canvas\n\nTo play the game, visit [https://rawgit.com/drewsberry/maze.js/master/index.html](https://rawgit.com/drewsberry/maze.js/master/index.html).\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

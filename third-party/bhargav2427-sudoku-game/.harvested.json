@@ -10,5 +10,6 @@
   "slug": "bhargav2427-sudoku-game",
   "dest": "third-party/bhargav2427-sudoku-game",
   "readme": "# sudoku-game\nSudoku game using Javascript, HTML and CSS.<br>\nLive Demo: https://sudoku-bhargav.netlify.app/\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

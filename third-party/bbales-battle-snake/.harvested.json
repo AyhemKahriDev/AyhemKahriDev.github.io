@@ -10,5 +10,6 @@
   "slug": "bbales-battle-snake",
   "dest": "third-party/bbales-battle-snake",
   "readme": "# BattleSnake\nA two player twist on the classic game 'snake', written in pure javascript.\n\n<img src='http://i.giphy.com/l0HlLDBzsculjU0vK.gif' width=\"1200\" />\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

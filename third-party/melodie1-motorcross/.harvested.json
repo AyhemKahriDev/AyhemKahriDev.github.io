@@ -10,5 +10,6 @@
   "slug": "melodie1-motorcross",
   "dest": "third-party/melodie1-motorcross",
   "readme": "# MotorCross\nHey! I created a Motorcyle hill racing game in javascript! Play it and tell me how it is! \n\nPlay it here ==> https://melodie1.github.io/MotorCross/\n\nI hope you'll enjoy it.\n\nOther instructions in the game itself\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

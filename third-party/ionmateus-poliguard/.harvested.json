@@ -10,5 +10,6 @@
   "slug": "ionmateus-poliguard",
   "dest": "third-party/ionmateus-poliguard",
   "readme": "",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

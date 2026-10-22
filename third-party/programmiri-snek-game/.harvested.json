@@ -10,5 +10,6 @@
   "slug": "programmiri-snek-game",
   "dest": "third-party/programmiri-snek-game",
   "readme": "# snek-game\nA clone of the game Snake in Javascript with HTML5 Canvas\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

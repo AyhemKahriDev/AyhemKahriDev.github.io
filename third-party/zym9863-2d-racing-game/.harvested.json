@@ -10,5 +10,6 @@
   "slug": "zym9863-2d-racing-game",
   "dest": "third-party/zym9863-2d-racing-game",
   "readme": "# 2D赛车游戏\n\n中文 | [English](README_EN.md)\n\n一个使用HTML5 Canvas开发的简约风格2D赛车游戏。\n\n## 游戏特性\n\n- 现代化的UI界面设计\n- 实时速度和得分显示\n- 生命值系统\n- 流畅的赛车控制体验\n- 游戏开始和结束界面\n- 响应式设计\n\n## 操作说明\n\n使用键盘方向键控制赛车：\n- ↑ - 加速\n- ↓ - 减速\n- ← - 左转\n- → - 右转\n\n## 游戏界面\n\n- 顶部信息栏显示：\n  - 当前得分\n  - 行驶速度\n  - 剩余生命值\n- 主游戏画布\n- 底部控制说明\n- 游戏结束弹窗\n- 开始游戏界面\n\n## 技术栈\n\n- HTML5 Canvas - 游戏渲染\n- CSS3 - 现代化界面样式\n- JavaScript - 游戏逻辑\n- Font Awesome - 图标库\n- 自定义字体 - 优化显示效果\n\n## 项目结构\n\n```\n├── index.html    # 游戏主页面\n├── style.css     # 样式表\n├── game.js       # 游戏逻辑\n└── fonts.css     # 字体样式\n```\n\n## 开发特点\n\n- 使用现代化的渐变背景\n- 精心设计的用户界面\n- 响应式布局\n- 平滑的动画效果\n- 直观的游戏控制\n\n## 安装和运行\n\n1. 克隆或下载项目代码\n2. 使用现代浏览器打开index.html文件\n3. 开始享受游戏！\n\n## 浏览器支持\n\n- Chrome（推荐）\n- Firefox\n- Safari\n- Edge\n\n支持所有现代浏览器，建议使用最新版本获得最佳游戏体验。",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

@@ -10,5 +10,6 @@
   "slug": "dev-ggomes-breakout-web-game",
   "dest": "third-party/dev-ggomes-breakout-web-game",
   "readme": "<div align=\"center\">\n\n ## 🕹️Breakout Game\n\n</div>\n\n<p align=\"center\">\n  Developed with HTML + CSS + JavaScript. <br>\n  A classic funny game for the ones who love an arcade. <br>\n ⭐ If you liked this project, please give it a star. <br>\n</p>\n\n<!-- |||||||||||||||||||| SPONSORS & STARS |||||||||||||||||||| -->\n<p align='center'>\n  <a href=\"https://github.com/sponsors/dev-ggomes\"><img alt=\"Sponsor\" src=\"https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors&logoColor=#white\" /></a>\n  &nbsp;\n  <a href=\"#\"><img alt=\"GitHub Repo stars\" src=\"https://img.shields.io/github/stars/dev-ggomes/breakout-web-game?style=for-the-badge\" /></a>\n</p>\n\n<br>\n\n---\n\n<div align=\"left\">\n  \n  ### 📈 Possible improvements:\n   - Add higher difficulty levels\n</div>\n\n---\n\n<div align=\"center\">\n  \n  ### 👀 How it looks like:\n  ![image](https://github.com/user-attachments/assets/fe3572d6-b7f5-4fe8-a28c-1106709a4dd1)  \n</div>\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

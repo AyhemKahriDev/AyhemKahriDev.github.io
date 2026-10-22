@@ -1,0 +1,15 @@
+{
+  "repo": "olzhasar/sdl-tetris",
+  "stars": 34,
+  "licence": "MIT",
+  "sizeKB": 1820,
+  "pushedAt": "2026-06-13T20:08:15Z",
+  "description": "Tetris game implemented with C and SDL-2",
+  "defaultBranch": "master",
+  "owner": "olzhasar",
+  "slug": "olzhasar-sdl-tetris",
+  "dest": "third-party/olzhasar-sdl-tetris",
+  "readme": "# SDL Tetris\n\nAn implementation of the classic [Tetris game](https://en.wikipedia.org/wiki/Tetris) in the C programming language using the [SDL-2 library](https://www.libsdl.org/)\n\n## WebAssembly\n\nThe game has been ported to WebAssembly using [Emscripten](https://emscripten.org/)\n\nCheck out the [Live Demo](https://olzhasar.github.io/sdl-tetris/)\n\n## Desktop preview\n\n![Preview](preview.gif)\n\n## Installation\n\n1. Clone this repository to your system:\n\n```sh\ngit clone https://github.com/olzhasar/sdl-tetris.git\n```\n\n2. [Install](https://wiki.libsdl.org/SDL2/Installation) SDL2 and SDL2_ttf on your machine\n\n- On MacOS you can use Homebrew:\n\n```sh\nbrew install sdl2 sdl2_ttf\n```\n\n3. Compile and run the project code with make\n\n```sh\ncd sdl-tetris\nmake\n```\n\n## Controls\n\n- Rotate: Up arrow, W\n- Move Left: Left arrow, A\n- Move Right: Right arrow, D\n- Soft Drop: Down arrow, S\n- Hard drop: Space\n- Quit: ESC\n\n## License\n\nThis project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

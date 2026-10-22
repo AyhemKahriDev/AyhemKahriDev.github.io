@@ -10,5 +10,6 @@
   "slug": "gaetz-js-racing",
   "dest": "third-party/gaetz-js-racing",
   "readme": "# js-Racing\nA javascript 2d top-down racing game as a game kata.\n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

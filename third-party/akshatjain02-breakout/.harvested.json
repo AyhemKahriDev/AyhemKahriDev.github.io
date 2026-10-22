@@ -10,5 +10,6 @@
   "slug": "akshatjain02-breakout",
   "dest": "third-party/akshatjain02-breakout",
   "readme": "# Breakout\nPlay the game at: https://akshatjain02.github.io/\n\nAn arcade game written entirely in JavaScript and rendered on HTML5 <canvas>. Inspired by Atari's classic game \"Breakout\".\nPlayable via left and right arrow keys, as well as with mouse movement.\n\nScreenshots:\n\n![Screenshot1](https://github.com/akshatjain02/Breakout/blob/master/Screenshot1.png?raw=true)\n\n![Screenshot2](https://github.com/akshatjain02/Breakout/blob/master/Screenshot2.png?raw=true) \n",
-  "licenceFile": "LICENSE"
+  "licenceFile": "LICENSE",
+  "validated": true
 }

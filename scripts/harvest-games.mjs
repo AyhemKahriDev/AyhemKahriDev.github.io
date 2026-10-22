@@ -272,20 +272,23 @@ function vendor() {
     const licenseFile = names.find((n) => /^licen[cs]e(\.|$)/i.test(n));
     if (!hasIndex || !licenseFile) continue;
 
-    // Pull the repo.
+    // Pull the repo. Reuse a cached tarball when there is one, so a second
+    // validation pass does not re-download everything.
     const tgz = join(work, `${slug}.tgz`);
-    try {
-      execFileSync(
-        'curl',
-        [
-          '-sL', '-m', '180',
-          `https://codeload.github.com/${c.repo}/tar.gz/refs/heads/${c.defaultBranch}`,
-          '-o', tgz,
-        ],
-        { stdio: 'ignore' },
-      );
-    } catch {
-      continue;
+    if (!existsSync(tgz) || stat(tgz) < 2000) {
+      try {
+        execFileSync(
+          'curl',
+          [
+            '-sL', '-m', '180',
+            `https://codeload.github.com/${c.repo}/tar.gz/refs/heads/${c.defaultBranch}`,
+            '-o', tgz,
+          ],
+          { stdio: 'ignore' },
+        );
+      } catch {
+        continue;
+      }
     }
     if (!existsSync(tgz) || stat(tgz) < 2000) continue;
 
@@ -376,102 +379,238 @@ async function validate() {
     return [];
   }
 
+  const port = process.env.HARVEST_PORT ?? 4191;
+  const { spawn } = await import('node:child_process');
+
+  const serverHealth = async () => {
+    try {
+      // Check a file that exists - the repo root itself has no index.html.
+      const res = await fetch(`http://localhost:${port}/package.json`, {
+        signal: AbortSignal.timeout(2000),
+      });
+      return res.ok;
+    } catch {
+      return false;
+    }
+  };
+
+  const startServer = () => {
+    // detached: the server can outlive a killed parent, so a half-finished
+    // pass can be resumed instead of losing everything.
+    const s = spawn(process.execPath, [join(root, 'scripts/serve-root.mjs')], {
+      env: { ...process.env, PORT: String(port) },
+      stdio: 'ignore',
+      detached: true,
+    });
+    s.unref();
+    return s;
+  };
+
+  const ensureServer = async () => {
+    if (await serverHealth()) return true;
+    console.error('\n  static server died - restarting it');
+    startServer();
+    for (let i = 0; i < 40; i++) {
+      if (await serverHealth()) return true;
+      await new Promise((r) => setTimeout(r, 250));
+    }
+    return false;
+  };
+
+  if (!(await ensureServer())) {
+    console.error(`validate: static server on :${port} never came up. Nothing was deleted.`);
+    process.exit(1);
+  }
+
   const { default: puppeteer } = await import('puppeteer-core');
-  const browser = await puppeteer.launch({
+  let browser = await puppeteer.launch({
     executablePath: findChrome(),
     headless: 'shell',
     args: ['--no-sandbox', '--disable-dev-shm-usage'],
   });
 
-  const page = await browser.newPage();
-  await page.setViewport({ width: 1024, height: 768 });
+  // Hard deadlines so a page that spins forever cannot stall the whole run.
+  const withTimeout = (promise, ms, what) =>
+    Promise.race([
+      promise,
+      new Promise((_, reject) =>
+        setTimeout(() => reject(new Error(`${what} timed out`)), ms),
+      ),
+    ]);
+
+  const CONNECTION_DEAD = /Connection closed|Target closed|Session closed|browser has been closed/i;
 
   const passed = [];
+  const rejected = [];
+  const inconclusive = [];
   let index = 0;
 
   for (const v of vendored) {
     index++;
-    const entry = `http://localhost:${process.env.HARVEST_PORT ?? 4191}/third-party/${v.slug}/index.html`;
-    let ok = false;
-    let reason = '';
-
-    try {
-      const errors = [];
-      const onErr = (e) => errors.push(String(e.message ?? e));
-      page.on('pageerror', onErr);
-      const bad = [];
-      page.on('response', (r) => {
-        if (r.status() >= 400) bad.push(`${r.status()} ${r.url()}`);
-      });
-
-      await page.goto(entry, { waitUntil: 'domcontentloaded', timeout: 15000 });
-      await new Promise((r) => setTimeout(r, 1800));
-
-      const probe = await page.evaluate(() => {
-        const canvases = [...document.querySelectorAll('canvas')];
-        const canvasPixels = canvases.reduce((total, c) => {
-          try {
-            const ctx = c.getContext('2d');
-            if (!ctx) return total;
-            const d = ctx.getImageData(0, 0, Math.min(c.width, 400), Math.min(c.height, 400)).data;
-            let n = 0;
-            for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++;
-            return total + n;
-          } catch {
-            return total;
-          }
-        }, 0);
-        const text = (document.body?.innerText ?? '').replace(/\s+/g, ' ').trim();
-        const hasControls = document.querySelectorAll('button, a, input, [role=button]').length;
-        return {
-          canvasPixels,
-          textLen: text.length,
-          text: text.slice(0, 300),
-          controls: hasControls,
-          canvases: canvases.length,
-          title: document.title ?? '',
-        };
-      });
-
-      const fatal = errors.filter((e) => !/favicon|ERR_/.test(e));
-      // Only same-origin failures matter - a game's own analytics or ribbon
-      // images failing is not a broken game.
-      const missing = bad.filter((b) => !/favicon/.test(b) && b.includes('localhost'));
-
-      // A game must paint something or present a real interface.
-      const paints = probe.canvasPixels > 500;
-      const interactive = probe.textLen > 120 && probe.controls >= 1;
-      const looksLikeAnError = /404|not found|error occurred/i.test(probe.text);
-
-      if (looksLikeAnError) {
-        reason = 'page reports an error';
-      } else if (!paints && !interactive) {
-        reason = `nothing playable (canvas ${probe.canvasPixels}px, text ${probe.textLen})`;
-      } else if (missing.length > 4) {
-        reason = `${missing.length} failed resources`;
-      } else if (fatal.length > 0) {
-        reason = `js error: ${fatal[0].slice(0, 80)}`;
-      } else {
-        ok = true;
-      }
-
-      page.off('pageerror', onErr);
-    } catch (err) {
-      reason = `load failed: ${String(err.message).slice(0, 60)}`;
-    }
-
-    if (ok) {
+    const dir = join(thirdParty, v.slug);
+    if (!existsSync(join(dir, 'index.html'))) continue; // pruned or never vendored
+    if (readJson(join(dir, '.harvested.json'), {}).validated) {
+      // Already passed an earlier pass - keep it without re-testing.
       passed.push(v);
-      writeJson(join(thirdParty, v.slug, '.harvested.json'), { ...v, validated: true });
-    } else {
-      rmSync(join(thirdParty, v.slug), { recursive: true, force: true });
+      continue;
     }
-    process.stdout.write(`\r  validated ${index}/${vendored.length} (kept ${passed.length})   `);
+    // The environment restarts cheaply here; re-check the server every 20
+    // games so a death costs at most 20 results, never the whole run.
+    if (index % 20 === 0) await ensureServer();
+
+    let verdict = ''; // 'pass' | 'dead' | ''
+    let lastReason = '';
+    let browserDead = false;
+
+    for (let attempt = 0; attempt < 2 && !verdict; attempt++) {
+      if (attempt > 0) {
+        if (browserDead) {
+          try {
+            await browser.close();
+          } catch {
+            /* already gone */
+          }
+          browser = await puppeteer.launch({
+            executablePath: findChrome(),
+            headless: 'shell',
+            args: ['--no-sandbox', '--disable-dev-shm-usage'],
+          });
+        }
+        browserDead = false;
+        if (!(await ensureServer())) break;
+      }
+      let page;
+      try {
+        page = await browser.newPage();
+        await page.setViewport({ width: 1024, height: 768 });
+        const errors = [];
+        const bad = [];
+        page.on('pageerror', (e) => errors.push(String(e.message ?? e)));
+        page.on('response', (r) => {
+          if (r.status() >= 400) bad.push(`${r.status()} ${r.url()}`);
+        });
+
+        await withTimeout(
+          page.goto(`http://localhost:${port}/third-party/${v.slug}/index.html`, {
+            waitUntil: 'domcontentloaded',
+            timeout: 15000,
+          }),
+          20000,
+          'goto',
+        );
+        await new Promise((r) => setTimeout(r, 2200));
+        // Many games draw only after the first input.
+        try {
+          await page.keyboard.press('Space');
+          await page.keyboard.press('Enter');
+          await new Promise((r) => setTimeout(r, 600));
+        } catch {
+          /* the page may not accept synthetic keys */
+        }
+
+        const probe = await withTimeout(
+          page.evaluate(() => {
+            const canvases = [...document.querySelectorAll('canvas')];
+            // Sample the WHOLE canvas. A corner sample misses games that draw
+            // in the middle, which is most of them.
+            const canvasPixels = canvases.reduce((total, c) => {
+              try {
+                const ctx = c.getContext('2d');
+                if (!ctx) return total;
+                const d = ctx
+                  .getImageData(0, 0, Math.min(c.width, 800), Math.min(c.height, 800))
+                  .data;
+                let n = 0;
+                for (let i = 3; i < d.length; i += 4) if (d[i] > 0) n++;
+                return total + n;
+              } catch {
+                return total;
+              }
+            }, 0);
+            const text = (document.body?.innerText ?? '').replace(/\s+/g, ' ').trim();
+            return {
+              canvasPixels,
+              textLen: text.length,
+              text: text.slice(0, 300),
+              controls: document.querySelectorAll('button, a, input, [role=button]').length,
+              canvases: canvases.length,
+            };
+          }),
+          12000,
+          'probe',
+        );
+
+        const fatal = errors.filter((e) => !/favicon|ERR_/.test(e));
+        // Only same-origin failures matter - a game's own analytics or its
+        // ribbon images failing is not a broken game.
+        const missing = bad.filter((b) => !/favicon/.test(b) && b.includes('localhost'));
+
+        // Alive if it paints, or presents a real interface, or has a canvas
+        // plus readable text (many draw on the first keypress only).
+        const paints = probe.canvasPixels > 200;
+        const interactive = probe.textLen > 120 && probe.controls >= 1;
+        const alive = probe.canvases > 0 && probe.textLen > 40;
+
+        if (/404|not found|error occurred/i.test(probe.text)) {
+          verdict = 'dead';
+          lastReason = 'page reports an error';
+        } else if (paints || interactive || alive) {
+          if (missing.length > 6) {
+            verdict = 'dead';
+            lastReason = `${missing.length} failed resources`;
+          } else if (fatal.length > 0) {
+            verdict = 'dead';
+            lastReason = `js error: ${fatal[0].slice(0, 80)}`;
+          } else {
+            verdict = 'pass';
+          }
+        } else {
+          verdict = 'dead';
+          lastReason = `nothing playable (canvas ${probe.canvasPixels}px, text ${probe.textLen})`;
+        }
+      } catch (err) {
+        const msg = String(err?.message ?? err);
+        if (CONNECTION_DEAD.test(msg)) {
+          // Chrome died with the environment restart. Relaunch and retry;
+          // this says nothing about the game.
+          browserDead = true;
+          lastReason = `browser died: ${msg.slice(0, 50)}`;
+          verdict = '';
+        } else if (/timed out$/.test(msg) && attempt > 0) {
+          // Hung on two attempts in a row: spinning forever or never
+          // finishing. Unplayable for a real user too.
+          verdict = 'dead';
+          lastReason = `page hung: ${msg.slice(0, 50)}`;
+        } else {
+          // Any other failure is not a verdict. The game stays on disk and
+          // gets its retry.
+          lastReason = `load failed: ${msg.slice(0, 60)}`;
+          verdict = '';
+        }
+      } finally {
+        if (page) await page.close().catch(() => {});
+      }
+    }
+
+    if (verdict === 'pass') {
+      passed.push(v);
+      writeJson(join(dir, '.harvested.json'), { ...v, validated: true });
+    } else if (verdict === 'dead') {
+      rmSync(dir, { recursive: true, force: true });
+      rejected.push(v.slug);
+    } else {
+      inconclusive.push(v.slug);
+    }
+    process.stdout.write(
+      `\r  ${index}/${vendored.length}  pass ${passed.length}  dead ${rejected.length}  retry-later ${inconclusive.length}   `,
+    );
   }
 
-  await browser.close();
+  await browser.close().catch(() => {});
+  console.log(
+    `\nvalidate: ${passed.length} passed, ${rejected.length} rejected, ${inconclusive.length} left for another pass`,
+  );
   writeJson(join(work, 'passed.json'), passed);
-  console.log(`\nvalidate: ${passed.length}/${vendored.length} passed the browser gate`);
   return passed;
 }
 
