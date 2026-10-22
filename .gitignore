@@ -1,5 +1,8 @@
 node_modules/
-dist/
+# Only the top-level build output. A vendored game may have its own dist/
+# folder - that is the game's compiled source, and without it the game is
+# broken in a fresh clone.
+/dist/
 .wrangler/
 .DS_Store
 *.log
