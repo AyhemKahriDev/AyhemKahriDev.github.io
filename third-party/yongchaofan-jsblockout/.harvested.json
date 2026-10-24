@@ -1,0 +1,15 @@
+{
+  "repo": "yongchaofan/jsBlockout",
+  "stars": 4,
+  "licence": "GPL-3.0",
+  "sizeKB": 53,
+  "pushedAt": "2019-04-20T16:22:39Z",
+  "description": "reimplementation of Blockout, the 3D tetris game from 1989, using Javascript and HTML5",
+  "defaultBranch": "master",
+  "owner": "yongchaofan",
+  "slug": "yongchaofan-jsblockout",
+  "dest": "third-party/yongchaofan-jsblockout",
+  "readme": "# jsBlockout\nreimplementation of Blockout, the 3D tetris game from 1989, using Javascript and HTML5\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

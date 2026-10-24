@@ -1,0 +1,15 @@
+{
+  "repo": "melcor76/js-breakout",
+  "stars": 14,
+  "licence": "MIT",
+  "sizeKB": 3442,
+  "pushedAt": "2022-01-14T19:06:07Z",
+  "description": "JavaScript Breakout Game",
+  "defaultBranch": "main",
+  "owner": "melcor76",
+  "slug": "melcor76-js-breakout",
+  "dest": "third-party/melcor76-js-breakout",
+  "readme": "# js-breakout\n\nJavaScript Breakout Game.\n\n- [Play the game](https://affectionate-shockley-c3f5d7.netlify.app/) or download and open `index.html`.\n\n- [Read the blog](https://levelup.gitconnected.com/game-development-breakout-in-javascript-5e5d142d3203?sk=2c6ab1781b1ee362f652b1f88b1b4220) of making the game.\n\n- Check out my [Tetris game](https://github.com/melcor76/js-tetris).\n\n![breakout picture](assets/share-image-large.png)\n\n## Resources\n\n- Sound effects from [freesound.org](https://freesound.org):\n- [Robot breakout sound](https://freesound.org/people/Ionicsmusic/sounds/196843/) by Ionicsmusic licensed under CC BY 3.0\n- [Robotic level completed](https://freesound.org/people/SevaRandeep/sounds/233033/) by SevaRandeep licensed under CC BY 3.0\n- [Arcade Classic Font](https://www.1001fonts.com/arcadeclassic-font.html)\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

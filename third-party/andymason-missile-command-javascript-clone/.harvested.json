@@ -1,0 +1,15 @@
+{
+  "repo": "andymason/Missile-Command-JavaScript-Clone",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 368,
+  "pushedAt": "2012-11-05T19:51:03Z",
+  "description": "A clone of the classic video game Missile Command for the Atari written in JavaScript and HTML5.",
+  "defaultBranch": "master",
+  "owner": "andymason",
+  "slug": "andymason-missile-command-javascript-clone",
+  "dest": "third-party/andymason-missile-command-javascript-clone",
+  "readme": "HTML5 Missile Command Clone\n===========================\n\nA WIP clone of the classic Atari game Missile Command remade using HTML5 Canvas.\n\n\nLicense: MIT license.",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,188 @@
+:root {
+  --light-blue: #34ace0;
+  --mid-blue: #227093;
+  --dark-blue: #192a56;
+  --light-grey: #f7f1e3;
+  --mid-grey: #aaa69d;
+  --light-orange: #ff793f;
+  --light-red: #cd6133;
+  --dark-red: #b33939;
+  --green: #28a745;
+  --dark-green: #1c622c;
+}
+
+html {
+  height: 100%;
+}
+ 
+body {
+  background-color: var(--dark-blue);
+  padding: 0;
+  margin: 0;
+  border: 0;
+  height: 100%;
+  overflow: hidden;
+  font-family: Helvetica;
+  font-size: 18px;
+  padding:1em;
+  display:flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#header, #progress-text {
+  color: var(--light-grey);
+  text-align: center;
+  margin: 0;
+}
+
+#header-title {
+  margin-top:0.3em;
+}
+
+#page-title {
+  margin-top: 5vh;
+  margin-bottom:0.5em;
+}
+
+#sub-header {
+  margin-bottom:1em;
+  color: var(--mid-grey);
+}
+ 
+.hidden {
+  display: none;
+}
+ 
+#game {
+  height: 100%;
+  display:grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 1fr 2fr 1fr;
+  margin-bottom:4em;
+  align-items: center;
+}
+ 
+/* TODO: replace progress area */
+#center-panel {
+  margin: auto;
+  position: relative;
+  padding: 1em;
+  width: calc(100% - 2em);
+}
+
+#myProgress {
+  width: 100%;
+  background-color: var(--mid-grey);
+}
+
+#myBar {
+  width: 1%;
+  height: 30px;
+  background-color: green;
+}
+
+#gif {
+  width:100%;
+}
+ 
+#left-panel {
+  background-color: white;
+  color: black;
+  margin: auto;
+  padding: 0.5em;
+  width: calc(100% - 1em);
+}
+ 
+.stat-value {
+  float: right;
+}
+ 
+#updates-area {
+  background-color: white;
+  margin: auto;
+  padding: 0.5em;
+  width: calc(100% - 1em);
+  height: calc(100% - 1em);
+  overflow-y: scroll;
+}
+ 
+.update-positive {
+  color: #669966;
+}
+ 
+.update-negative {
+  color: var(--dark-red);
+}
+ 
+.update-neutral {
+  color: var(--light);
+}
+ 
+#shop {
+  /* background-color: white; */
+}
+ 
+.product {
+  margin: 5px;
+}
+ 
+#shop button, #attack button {
+  clear: both;
+  margin: 5px;
+  /* margon-b */
+}
+ 
+#attack {
+  /* background-color: white; */
+}
+
+#shop, #attack {
+  width: calc(100% - 1em);
+  text-align:center;
+  padding: 0.5em;
+  color: var(--light-grey);
+}
+
+.product, button {
+  background: var(--green);
+  color: #fff;
+  box-shadow: 0 2px #1c622c;
+  border-radius: 2px 2px 4px 4px;
+  transition: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0.3em 1em;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+  outline: none;
+  position: relative;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  transition: all 0.3s;
+}
+
+button:hover, .product:hover {
+  box-shadow: 0 5px #1c622c;
+  top: -2px;
+  color: white;
+  text-decoration: none;
+}
+
+#leave-btn, #leave-btn:hover {
+  background-color: var(--mid-grey);
+  box-shadow: none;
+}
+
+button:active, .product:active {
+  box-shadow: 0 0 #1c622c;
+  top: 6px;
+}
+
+#right-pane {
+  padding:1em;
+}

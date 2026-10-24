@@ -1,0 +1,15 @@
+{
+  "repo": "nsafai/Oregon-Trail-Game",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 3949,
+  "pushedAt": "2019-02-19T18:44:05Z",
+  "description": "A remake of the classic game, Oregon Trail, written entirely in JavaScript",
+  "defaultBranch": "master",
+  "owner": "nsafai",
+  "slug": "nsafai-oregon-trail-game",
+  "dest": "third-party/nsafai-oregon-trail-game",
+  "readme": "# Oregon Trail - Remake (in JavaScript)\n This game is a classic text adventure game: Oregon Trail. \n\n## How to run\nBecause this is written entirely in vanilla HTML/CSS/JS, you can simply download the project and open the `index.html` file to run this game.\n\n## Challenges / Milestones\n- [x] 1) Get the tutorial working \n- [x] 2) Play the game\n- [x] 3) Check for errors.\n  - [x] Check for any errors you might find\n  - [x] Play test and make sure all of the features in the game are working. \n- [x] 4) Update the code to more modern and easier to understand syntax\n  - [x] Replace var with let, and const wherever possible\n  - [x] Object deconstruction\n- [x] 5) OOP - Define class Objects for Caravan, Event, Game, and UI\n\n## Credits\nThis was largely inspired from [this tutorial](https://gamedevacademy.org/js13kgames-tutorial/) and this [starter project](https://github.com/soggybag/adventure-0-starter)\n\nThe tutorial and starter project were filled with syntax issues and bugs. Solving them was part of the learning experience, analogous to inheriting an old code base.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

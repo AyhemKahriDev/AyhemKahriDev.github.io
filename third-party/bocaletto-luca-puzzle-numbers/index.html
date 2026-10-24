@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Puzzle Numbers | WebGame | Bocaletto Luca</title>
+<meta name="description" content="Puzzle-Numbers Web Game is a fun and interactive number puzzle game that challenges players with logic-based mathematical puzzles. Arrange numbers, solve equations, and match sequences to progress through increasingly complex levels. Designed for brain training, problem-solving, and numerical reasoning. Developed by Bocaletto Luca.">
+<meta name="keywords" content="game, webgame, puzzle, numbers, logic, math, brain training, problem-solving, sequences, numerical reasoning, Bocaletto Luca">
+<meta name="author" content="Bocaletto Luca">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Puzzle Number Game</h1>
+  </header>
+  <div class="container">
+    <!-- Tabs Navigation: Game and Records -->
+    <div class="tabs">
+      <button class="tablinks active" onclick="openTab(event, 'gameTab')" id="defaultTab">Game</button>
+      <button class="tablinks" onclick="openTab(event, 'recordsTab')">Records</button>
+    </div>
+    <!-- Game Tab -->
+    <div id="gameTab" class="tabcontent active">
+      <h2>Sliding Puzzle</h2>
+      <div class="game-controls">
+        <label for="playerName">Player Name:</label>
+        <input type="text" id="playerName" placeholder="Your name">
+        <label for="puzzleSize">Puzzle Size:</label>
+        <select id="puzzleSize">
+          <option value="3" selected>3 x 3 (8 Puzzle)</option>
+          <option value="4">4 x 4 (15 Puzzle)</option>
+        </select>
+        <button id="shuffleBtn">Shuffle</button>
+      </div>
+      <div class="status">
+        <span>Score: <span id="scoreDisplay">0</span></span>
+        <span>Correct Moves: <span id="correctDisplay">0</span></span>
+        <span>Errors: <span id="errorDisplay">0</span></span>
+        <span>Moves: <span id="moveCount">0</span></span>
+      </div>
+      <div id="boardContainer"></div>
+      <p id="message" style="text-align: center; font-size:1.2rem; color: green;"></p>
+    </div>
+    <!-- Records Tab -->
+    <div id="recordsTab" class="tabcontent">
+      <h2>High Scores</h2>
+      <div id="recordsArea">
+        <table id="recordsTable">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Score</th>
+              <th>Correct Moves</th>
+              <th>Errors</th>
+              <th>Moves</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Records will be loaded here dynamically -->
+          </tbody>
+        </table>
+      </div>
+      <button class="btn-clear" onclick="clearRecords()">Clear Records</button>
+    </div>
+  </div>
+  <footer>
+    Bocaletto Luca
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>

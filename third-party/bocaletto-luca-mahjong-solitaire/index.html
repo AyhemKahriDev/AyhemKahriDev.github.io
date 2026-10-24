@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mahjong Solitaire – Final Release</title>
+  <style>
+    /* ====================== RESET & GLOBAL STYLES ====================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    /* Body uses flex layout in column mode to ensure the footer is at the bottom */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #121212;
+      color: #e0e0e0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+      text-align: center;
+    }
+    h1 { margin-bottom: 10px; }
+    button {
+      padding: 8px 16px;
+      margin: 4px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #28a745;
+      color: #fff;
+      transition: background-color 0.3s ease;
+    }
+    button:hover { background-color: #218838; }
+    
+    /* ====================== BOARD CONTAINER ====================== */
+    /* The board-container holds the tile layout and is centered. */
+    #board-container {
+      position: relative;
+      margin: 0 auto;
+      width: 100%;
+      max-width: 1000px;
+      height: 600px;
+      background-color: #2a2a2a;
+      border: 2px solid #333;
+    }
+    
+    /* ====================== TILE STYLING ====================== */
+    .tile {
+      position: absolute;
+      width: 80px;
+      height: 100px;
+      background-color: #fff;
+      /* A thicker, decorative border and a subtle box shadow */
+      border: 2px solid #555;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      /* Force the tile content to be nearly black for contrast */
+      color: #000;
+      font-size: 1.4rem;
+      font-weight: bold;
+      user-select: none;
+      transition: opacity 0.3s ease;
+      cursor: pointer;
+    }
+    .tile.back {
+      background-color: #444;
+      border: 2px solid #222;
+      color: #444;
+    }
+    .tile.selected {
+      outline: 3px solid #FFD700;
+    }
+    .dragging { opacity: 0.6; }      /* Lower opacity during drag */
+    .drag-over { border: 2px dashed #FFD700; } /* Highlight drop area */
+    
+    /* ====================== MESSAGE AREA ====================== */
+    #message {
+      margin-top: 20px;
+      padding: 8px;
+      font-size: 1.1rem;
+      position: relative;
+      z-index: 10;
+    }
+    
+    /* ====================== HELP MODAL ====================== */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+      padding: 20px;
+    }
+    .modal-content {
+      background-color: #2a2a2a;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 90%;
+      max-width: 500px;
+      border-radius: 6px;
+      text-align: left;
+      color: #e0e0e0;
+    }
+    .close {
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+      color: #ccc;
+    }
+    .close:hover, .close:focus { color: #fff; }
+    
+    /* ====================== FOOTER ====================== */
+    footer {
+      margin-top: auto;
+      padding: 10px 0;
+      background-color: #1f1f1f;
+      font-size: 0.9rem;
+      color: #ccc;
+      text-align: center;
+    }
+    
+    /* ====================== RESPONSIVE STYLES ====================== */
+    @media (max-width: 600px) {
+      .tile {
+        width: 60px;
+        height: 75px;
+        font-size: 1.1rem;
+      }
+      #board-container {
+        max-width: 100%;
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- HEADER -->
+  <header>
+    <h1>Mahjong Solitaire</h1>
+    <button id="helpBtn">Help</button>
+    <button id="newGameBtn">New Game</button>
+  </header>
+  
+  <!-- BOARD CONTAINER: holds all the tile elements -->
+  <div id="board-container"></div>
+  
+  <!-- MESSAGE AREA: for feedback on moves, errors, and level-ups -->
+  <div id="message"></div>
+  
+  <!-- FOOTER -->
+  <footer>
+    © 2025 Bocaletto Luca
+  </footer>
+  
+  <!-- HELP MODAL -->
+  <div id="helpModal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="closeHelp">&times;</span>
+      <h2>How to Play Mahjong Solitaire</h2>
+      <p>
+        <strong>Goal:</strong> Remove all matching pairs of tiles from the board.<br><br>
+        <strong>Rules:</strong><br>
+        - Tiles are removed in pairs if they match exactly.<br>
+        - A tile is considered <em>free</em> if it is not overlapped by any tile from a higher layer and if at least one of its left or right sides is unobstructed.<br>
+        - Click a free tile to select it. Then click on a second free tile with the same symbol to remove both tiles.<br>
+        - If two selected tiles do not match, they are deselected.<br><br>
+        Enjoy the game!
+      </p>
+    </div>
+  </div>
+  
+  <!-- ====================== JAVASCRIPT (GAME LOGIC, LEVEL GENERATOR, & DRAG & DROP) ====================== -->
+  <script>
+    /***********************************************
+     * Global Variables and Game State
+     ***********************************************/
+    let tiles = [];            // Array containing all tile objects.
+    let selectedTileId = null; // Id of the currently selected tile.
+    let currentLevel = 1;      // Start at Level 1.
+    const TILE_WIDTH = 80;
+    const TILE_HEIGHT = 100;
+    
+    // Define a comprehensive set of Mahjong tile emojis (34 available).
+    const tileEmojis = ["🀇","🀈","🀉","🀊","🀋","🀌","🀍","🀎","🀏",
+                        "🀐","🀑","🀒","🀓","🀔","🀕","🀖","🀗","🀘",
+                        "🀙","🀚","🀛","🀜","🀝","🀞","🀟","🀠","🀡"];
+    
+    /***********************************************
+     * Generate Dynamic Positions for the Level
+     * Level 1: Base layout with 36 positions (28 on layer 0 + 8 on layer 1)
+     * Each level after 1 adds 4 extra positions (an extra layer with 4 tiles)
+     ***********************************************/
+    function generatePositions(level) {
+      let pos = [];
+      // Base layout: Level 1 - Layer 0 (7 columns x 4 rows = 28 positions)
+      for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 7; col++) {
+          pos.push({
+            x: 50 + col * 100,
+            y: 50 + row * 110,
+            z: 0,
+            width: TILE_WIDTH,
+            height: TILE_HEIGHT
+          });
+        }
+      }
+      // Base layout: Level 1 - Layer 1 (2 rows x 4 columns = 8 positions)
+      for (let row = 0; row < 2; row++) {
+        for (let col = 0; col < 4; col++) {
+          pos.push({
+            x: 200 + col * 100,
+            y: 150 + row * 110,
+            z: 1,
+            width: TILE_WIDTH,
+            height: TILE_HEIGHT
+          });
+        }
+      }
+      // For each extra level beyond 1, add 4 positions (one extra layer per level).
+      for (let extra = 0; extra < level - 1; extra++) {
+        for (let col = 0; col < 4; col++) {
+          pos.push({
+            x: 150 + col * 90,
+            y: 300 + extra * 110,
+            z: 2 + extra,
+            width: TILE_WIDTH,
+            height: TILE_HEIGHT
+          });
+        }
+      }
+      return pos;
+    }
+    
+    /***********************************************
+     * Initialize the Game
+     * Generates positions dynamically based on the current level,
+     * creates tile pairs (each unique emoji appears twice),
+     * and assigns each tile to a position.
+     ***********************************************/
+    function initGame() {
+      tiles = [];
+      selectedTileId = null;
+      document.getElementById("message").textContent = "";
+      
+      // Generate positions based on the current level.
+      const positions = generatePositions(currentLevel);
+      const totalTiles = positions.length; // Must be even.
+      const uniqueCount = totalTiles / 2;
+      
+      // Select the first 'uniqueCount' emojis from our set.
+      // If uniqueCount is larger than available, wrap-around.
+      let uniqueEmojis = [];
+      for (let i = 0; i < uniqueCount; i++) {
+        uniqueEmojis.push(tileEmojis[i % tileEmojis.length]);
+      }
+      
+      // Create a tileTypes array where each unique emoji appears twice.
+      let tileTypes = [];
+      uniqueEmojis.forEach(emoji => {
+        tileTypes.push(emoji);
+        tileTypes.push(emoji);
+      });
+      // Shuffle the tileTypes array.
+      shuffle(tileTypes);
+      
+      // Create a tile for each position.
+      for (let i = 0; i < positions.length; i++) {
+        let pos = positions[i];
+        let tile = {
+          id: i,
+          type: tileTypes[i],
+          x: pos.x,
+          y: pos.y,
+          z: pos.z,
+          width: pos.width,
+          height: pos.height,
+          removed: false
+        };
+        tiles.push(tile);
+      }
+      renderTiles();
+    }
+    
+    // Fisher–Yates Shuffle
+    function shuffle(array) {
+      for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+      }
+    }
+    
+    /***********************************************
+     * Rendering Functions
+     * Render all tiles on the board based on their properties.
+     ***********************************************/
+    function renderTiles() {
+      let board = document.getElementById("board-container");
+      board.innerHTML = "";
+      
+      // Sort tiles by z-index so that higher-layer tiles are displayed on top.
+      let sortedTiles = tiles.slice().sort((a, b) => a.z - b.z);
+      
+      sortedTiles.forEach(tile => {
+        if (!tile.removed) {
+          let tileDiv = document.createElement("div");
+          tileDiv.className = "tile";
+          if (tile.id === selectedTileId) {
+            tileDiv.classList.add("selected");
+          }
+          tileDiv.textContent = tile.type;
+          tileDiv.style.left = tile.x + "px";
+          tileDiv.style.top = tile.y + "px";
+          tileDiv.style.zIndex = tile.z;
+          tileDiv.onclick = () => handleTileClick(tile.id);
+          board.appendChild(tileDiv);
+        }
+      });
+    }
+    
+    /***********************************************
+     * Free Tile Detection
+     * A tile is free if:
+     * 1. No tile on a higher layer overlaps it.
+     * 2. At least one of its left or right sides is unobstructed by any tile on the same layer.
+     ***********************************************/
+    function isTileFree(tile) {
+      if (tile.removed) return false;
+      
+      // Condition 1: Check if any tile on a higher layer overlaps.
+      for (let other of tiles) {
+        if (!other.removed && other.z > tile.z) {
+          if (isOverlap(tile, other)) {
+            return false;
+          }
+        }
+      }
+      
+      // Condition 2: Check for horizontal free sides on the same layer.
+      let leftBlocked = false;
+      let rightBlocked = false;
+      for (let other of tiles) {
+        if (!other.removed && other.z === tile.z && other.id !== tile.id) {
+          if (isTouchingLeft(tile, other)) leftBlocked = true;
+          if (isTouchingRight(tile, other)) rightBlocked = true;
+        }
+      }
+      return (!leftBlocked || !rightBlocked);
+    }
+    
+    // Check for bounding box overlap of two tiles.
+    function isOverlap(tile1, tile2) {
+      return (
+        tile1.x < tile2.x + tile2.width &&
+        tile1.x + tile1.width > tile2.x &&
+        tile1.y < tile2.y + tile2.height &&
+        tile1.y + tile1.height > tile2.y
+      );
+    }
+    
+    // Check if 'other' tile touches the left side of 'tile'.
+    function isTouchingLeft(tile, other) {
+      if (other.x + other.width >= tile.x - 10 && other.x + other.width <= tile.x + 10) {
+        return verticalOverlap(tile, other);
+      }
+      return false;
+    }
+    
+    // Check if 'other' tile touches the right side of 'tile'.
+    function isTouchingRight(tile, other) {
+      if (other.x <= tile.x + tile.width + 10 && other.x >= tile.x + tile.width - 10) {
+        return verticalOverlap(tile, other);
+      }
+      return false;
+    }
+    
+    function verticalOverlap(tile, other) {
+      return (tile.y < other.y + other.height && tile.y + tile.height > other.y);
+    }
+    
+    /***********************************************
+     * Tile Selection & Matching
+     * Select a free tile by clicking it.  
+     * If a second free tile with the same type is clicked, both are removed.
+     ***********************************************/
+    function handleTileClick(tileId) {
+      let tile = tiles.find(t => t.id === tileId);
+      if (!tile || tile.removed) return;
+      
+      if (!isTileFree(tile)) {
+        document.getElementById("message").textContent = "Tile is not free.";
+        return;
+      }
+      
+      if (selectedTileId === null) {
+        // First selection
+        selectedTileId = tileId;
+        document.getElementById("message").textContent = "Selected tile " + tile.type + ". Click on a matching free tile.";
+      } else {
+        let firstTile = tiles.find(t => t.id === selectedTileId);
+        if (firstTile.id === tile.id) {
+          // Deselect if the same tile is clicked.
+          selectedTileId = null;
+          document.getElementById("message").textContent = "";
+        } else if (firstTile.type === tile.type) {
+          // Tiles match: Remove both.
+          firstTile.removed = true;
+          tile.removed = true;
+          document.getElementById("message").textContent = "Matched " + tile.type + " pair!";
+          selectedTileId = null;
+          renderTiles();
+          checkWinCondition();
+          return;
+        } else {
+          // Tiles do not match.
+          document.getElementById("message").textContent = "Tiles do not match. Try again.";
+          selectedTileId = null;
+        }
+      }
+      renderTiles();
+    }
+    
+    /***********************************************
+     * Win Condition & Level Progression
+     * If all tiles are removed, the level is cleared and a new level is generated.
+     ***********************************************/
+    function checkWinCondition() {
+      let remaining = tiles.filter(t => !t.removed).length;
+      if (remaining === 0) {
+        document.getElementById("message").textContent = "Congratulations! You cleared level " + currentLevel + "!";
+        // After a short delay, increase level and generate a new one.
+        setTimeout(() => {
+          currentLevel++;
+          document.getElementById("message").textContent = "Level up! Starting level " + currentLevel + "...";
+          initGame();
+        }, 2000);
+      }
+    }
+    
+    /***********************************************
+     * Event Handlers for UI Buttons and Help Modal
+     ***********************************************/
+    document.getElementById("newGameBtn").onclick = function() {
+      currentLevel = 1;
+      initGame();
+    };
+    document.getElementById("helpBtn").onclick = function() {
+      document.getElementById("helpModal").style.display = "block";
+    };
+    document.getElementById("closeHelp").onclick = function() {
+      document.getElementById("helpModal").style.display = "none";
+    };
+    window.onclick = function(e) {
+      if (e.target === document.getElementById("helpModal")) {
+        document.getElementById("helpModal").style.display = "none";
+      }
+    };
+    
+    /***********************************************
+     * Initialize the Game
+     ***********************************************/
+    initGame();
+  </script>
+</body>
+</html>

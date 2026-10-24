@@ -1,0 +1,15 @@
+{
+  "repo": "Aayushiii25/snake-and-ladder",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 12,
+  "pushedAt": "2025-06-06T09:18:22Z",
+  "description": "A modern, animated Snake & Ladder game built with HTML, CSS, and JavaScript.",
+  "defaultBranch": "main",
+  "owner": "Aayushiii25",
+  "slug": "aayushiii25-snake-and-ladder",
+  "dest": "third-party/aayushiii25-snake-and-ladder",
+  "readme": "# snake-and-ladder\nA modern, animated Snake &amp; Ladder game built with HTML, CSS, and JavaScript.\n\nWelcome to a modern and interactive version of the classic **Snake & Ladder** game! This web-based version is built using **HTML**, **CSS**, and **JavaScript** and features animations, player inputs, SVG snakes and ladders, and a dynamic winner screen.\n\n\n## 📦 How to Access & Run the Game\n\n1. Fork or clone this repository to your GitHub account.\n2. Go to `Settings > Pages`.\n3. Under **Source**, select `main` branch and `/root`.\n4. GitHub will generate a link — share or open that to play the game.\n\n\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

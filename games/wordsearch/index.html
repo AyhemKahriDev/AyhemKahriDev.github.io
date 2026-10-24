@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Daily Word Search — play free online | arcadefork</title>
+<meta name="description" content="A free daily word search puzzle. Every player gets the same 10x10 grid, the clock starts at 100 seconds, and your score is based on the words you find and how fast you find them. Free to play, no download.">
+<link rel="canonical" href="https://arcadefork.pages.dev/games/wordsearch/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="arcadefork">
+<meta property="og:title" content="Daily Word Search — play free online | arcadefork">
+<meta property="og:description" content="A free daily word search puzzle. Every player gets the same 10x10 grid, the clock starts at 100 seconds, and your score is based on the words you find and how fast you find them. Free to play, no download.">
+<meta property="og:url" content="https://arcadefork.pages.dev/games/wordsearch/">
+<meta property="og:image" content="https://arcadefork.pages.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="arcadefork — Free browser games. No download, no sign-up, no ads before you play.">
+<meta property="og:locale" content="en">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Daily Word Search — play free online | arcadefork">
+<meta name="twitter:description" content="A free daily word search puzzle. Every player gets the same 10x10 grid, the clock starts at 100 seconds, and your score is based on the words you find and how fast you find them. Free to play, no download.">
+<meta name="twitter:image" content="https://arcadefork.pages.dev/og.png">
+<link rel="stylesheet" href="/styles.css?v=c459ac04">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap">
+
+<script type="application/ld+json">[{"@context":"https://schema.org","@type":"VideoGame","name":"Daily Word Search","url":"https://arcadefork.pages.dev/games/wordsearch/","description":"A free daily word search puzzle. Every player gets the same 10x10 grid, the clock starts at 100 seconds, and your score is based on the words you find and how fast you find them. Free to play, no download.","genre":"Word Games","gamePlatform":"Web Browser","applicationCategory":"Game","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","name":"arcadefork","url":"https://arcadefork.pages.dev/"}},{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the daily word search free?","acceptedAnswer":{"@type":"Answer","text":"Yes. Every game on arcadefork is free to play in your browser. There is no account, no download and no paywall."}},{"@type":"Question","name":"Do I get a new puzzle every day?","acceptedAnswer":{"@type":"Answer","text":"Yes. The grid is generated from the date, so every player worldwide gets exactly the same puzzle, and it changes at midnight UTC."}},{"@type":"Question","name":"How is the score calculated?","acceptedAnswer":{"@type":"Answer","text":"Each word is worth 60 points plus 20 per letter, doubled by the seconds still left on the clock when you find it."}},{"@type":"Question","name":"Can I play on a phone?","acceptedAnswer":{"@type":"Answer","text":"Yes. The game is built mobile first - drag with your finger, and it works in portrait or landscape."}}]}]</script>
+</head>
+<body class="is-game" data-game="wordsearch" data-gtitle="Daily Word Search" data-gcat="word" data-gaccent="#FF4FA8">
+<svg class="af-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+<defs>
+<pattern id="af-scan" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
+  <rect x="0" y="2.6" width="4" height="1" fill="#06060c" opacity="0.38"/>
+</pattern>
+<linearGradient id="af-sheen" x1="0" y1="0" x2="0.85" y2="1">
+  <stop offset="0" stop-color="#ffffff" stop-opacity="0.36"/>
+  <stop offset="0.42" stop-color="#ffffff" stop-opacity="0.06"/>
+  <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+</linearGradient>
+</defs>
+<symbol id="a-pad" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7.4 7h9.2c2.3 0 3.9 1.7 4.5 4.2.5 2.2.9 4.9.7 6.4-.2 1.6-1.4 2.6-3 2.6-1.4 0-2.4-.8-3.2-2l-.8-1.2H9.2l-.8 1.2c-.8 1.2-1.8 2-3.2 2-1.6 0-2.8-1-3-2.6-.2-1.5.2-4.2.7-6.4C3.5 8.7 5.1 7 7.4 7Z"/>
+  <path d="M7 10.6v4M5 12.6h4"/>
+  <circle cx="15.4" cy="11.2" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="18" cy="13.8" r="1" fill="currentColor" stroke="none"/>
+</g></symbol>
+<symbol id="a-puzzle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="3" width="8" height="8" rx="2"/>
+  <rect x="13" y="3" width="8" height="8" rx="2"/>
+  <rect x="3" y="13" width="8" height="8" rx="2"/>
+  <circle cx="17" cy="17" r="4"/>
+</g></symbol>
+<symbol id="a-word" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5"/>
+  <text x="12" y="16.4" text-anchor="middle" font-size="10.5" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="800" fill="currentColor" stroke="none">Aa</text>
+</g></symbol>
+<symbol id="a-bulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3a6 6 0 0 1 3.9 10.6c-.8.7-1.3 1.5-1.5 2.4h-4.8c-.2-.9-.7-1.7-1.5-2.4A6 6 0 0 1 12 3Z"/>
+  <path d="M9.6 19.5h4.8M10.9 22h2.2"/>
+</g></symbol>
+<symbol id="a-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 21V4"/>
+  <path d="M5 4.5h12.6l-2.6 3.9 2.6 3.9H5"/>
+</g></symbol>
+<symbol id="a-blocks" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3.5" y="13.5" width="7.5" height="7" rx="1.6"/>
+  <rect x="13" y="13.5" width="7.5" height="7" rx="1.6"/>
+  <rect x="8.25" y="4" width="7.5" height="7" rx="1.6"/>
+</g></symbol>
+<symbol id="a-dice" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/>
+  <circle cx="8.3" cy="8.3" r="1.35" fill="currentColor" stroke="none"/>
+  <circle cx="15.7" cy="8.3" r="1.35" fill="currentColor" stroke="none"/>
+  <circle cx="12" cy="12" r="1.35" fill="currentColor" stroke="none"/>
+  <circle cx="8.3" cy="15.7" r="1.35" fill="currentColor" stroke="none"/>
+  <circle cx="15.7" cy="15.7" r="1.35" fill="currentColor" stroke="none"/>
+</g></symbol>
+<symbol id="a-play" viewBox="0 0 24 24">
+  <path d="M8 5.5v13l10.5-6.5Z" fill="currentColor" stroke="none"/>
+</symbol>
+<symbol id="a-spark" viewBox="0 0 24 24">
+  <path d="M12 3l2.1 6.9L21 12l-6.9 2.1L12 21l-2.1-6.9L3 12l6.9-2.1Z" fill="currentColor" stroke="none"/>
+</symbol>
+<symbol id="a-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="10.5" cy="10.5" r="6.5"/>
+  <path d="M15.3 15.3 21 21"/>
+  <path d="M8.2 9.2v3.4M10.5 9.2v3.4M12.8 9.2v3.4" stroke-width="1.4"/>
+</g></symbol>
+<symbol id="a-merge" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 4.5 10 10.5V7M10 10.5H6.5"/>
+  <path d="M20 4.5 14 10.5V7M14 10.5h3.5"/>
+  <path d="M4 19.5 10 13.5v3.5M10 13.5H6.5"/>
+  <path d="M20 19.5 14 13.5v3.5M14 13.5h3.5"/>
+</g></symbol>
+<symbol id="a-snake" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18.5 4.5h-10a3.5 3.5 0 0 0 0 7h7.5a3.5 3.5 0 0 1 0 7h-11"/>
+</g></symbol>
+<symbol id="a-memory" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="4.5" width="10" height="14" rx="2.5"/>
+  <rect x="10.5" y="6.5" width="10.5" height="13.5" rx="2.5"/>
+  <path d="M15.75 15.5a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4Z" stroke-width="1.5"/>
+</g></symbol>
+</svg>
+<div class="game-layout">
+  <div class="game-main">
+    <div class="topbar">
+      <a class="brand" href="/">arcade<span>fork</span></a>
+      <div class="hud" id="hud"></div>
+      <button class="icon-btn" id="mute" aria-label="Toggle sound">🔊</button>
+    </div>
+    <div class="stage" id="stage">
+      <canvas id="game" aria-label="Daily Word Search"></canvas>
+      <div class="overlay" id="overlay"></div>
+    </div>
+  </div>
+  
+    <aside class="game-side">
+      <div class="side-head">
+        <div class="side-title"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg"><rect x="8" y="8" width="18" height="18" rx="4" fill="#FF4FA8"/><text x="17" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#080c16" text-anchor="middle">C</text><rect x="28" y="8" width="18" height="18" rx="4" fill="#FF4FA8"/><text x="37" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#080c16" text-anchor="middle">A</text><rect x="48" y="8" width="18" height="18" rx="4" fill="#FF4FA8"/><text x="57" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#080c16" text-anchor="middle">T</text><rect x="68" y="8" width="18" height="18" rx="4" fill="#FF4FA8"/><text x="77" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#080c16" text-anchor="middle">S</text><rect x="8" y="28" width="18" height="18" rx="4" fill="#1b2440"/><text x="17" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">D</text><rect x="28" y="28" width="18" height="18" rx="4" fill="#1b2440"/><text x="37" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">O</text><rect x="48" y="28" width="18" height="18" rx="4" fill="#1b2440"/><text x="57" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">G</text><rect x="68" y="28" width="18" height="18" rx="4" fill="#1b2440"/><text x="77" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">S</text><rect x="8" y="48" width="18" height="18" rx="4" fill="#1b2440"/><text x="17" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">S</text><rect x="28" y="48" width="18" height="18" rx="4" fill="#1b2440"/><text x="37" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">U</text><rect x="48" y="48" width="18" height="18" rx="4" fill="#1b2440"/><text x="57" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">N</text><rect x="68" y="48" width="18" height="18" rx="4" fill="#1b2440"/><text x="77" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">S</text><rect x="8" y="68" width="18" height="18" rx="4" fill="#1b2440"/><text x="17" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">R</text><rect x="28" y="68" width="18" height="18" rx="4" fill="#1b2440"/><text x="37" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">A</text><rect x="48" y="68" width="18" height="18" rx="4" fill="#1b2440"/><text x="57" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">Y</text><rect x="68" y="68" width="18" height="18" rx="4" fill="#1b2440"/><text x="77" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8c96bc" text-anchor="middle">S</text></svg><span>Daily Word Search</span></div>
+        <p class="side-tag">Find the hidden words before the clock runs out.</p>
+      </div>
+      <div class="side-actions">
+        <a class="btn btn-ghost" href="/">All games</a>
+        <a class="btn btn-ghost" href="/categories/word/">More in this category</a>
+      </div>
+      <div class="side-block">
+        <div class="side-label">Keep playing</div>
+        <div class="side-links"><a href="/games/merge/">2048 Merge</a><a href="/games/snake/">Neon Snake</a><a href="/games/hangman-game/">Hangman</a><a href="/games/vanilla-javascript-hangman-game/">Vanilla Hangman</a><a href="/games/hangman-javascript/">Hangman Bootstrap</a></div>
+      </div>
+      
+      <p class="side-foot">Free to play · no sign-up · works on any device</p>
+    </aside>
+</div>
+<section class="wrap prose" style="padding-bottom:40px">
+  <h1>Daily Word Search — play free online</h1>
+  <p>A free daily word search puzzle. Every player gets the same 10x10 grid, the clock starts at 100 seconds, and your score is based on the words you find and how fast you find them. Free to play, no download.</p>
+  
+  <h2>How to play Daily Word Search</h2>
+  <ul><li>Drag across a straight line of letters - horizontal, vertical or diagonal.</li><li>Release to submit the word. Correct words stay highlighted in colour.</li><li>You have 100 seconds. Longer words and faster finds are worth more points.</li><li>A new grid is generated every day and everyone plays the same one.</li></ul>
+  <h2>Frequently asked questions</h2>
+  <div class="faq"><details><summary>Is the daily word search free?</summary><p>Yes. Every game on arcadefork is free to play in your browser. There is no account, no download and no paywall.</p></details><details><summary>Do I get a new puzzle every day?</summary><p>Yes. The grid is generated from the date, so every player worldwide gets exactly the same puzzle, and it changes at midnight UTC.</p></details><details><summary>How is the score calculated?</summary><p>Each word is worth 60 points plus 20 per letter, doubled by the seconds still left on the clock when you find it.</p></details><details><summary>Can I play on a phone?</summary><p>Yes. The game is built mobile first - drag with your finger, and it works in portrait or landscape.</p></details></div>
+  <h2>More free games</h2>
+  <div class="linklist"><a href="/games/merge/">2048 Merge</a><a href="/games/snake/">Neon Snake</a><a href="/games/hangman-game/">Hangman</a><a href="/games/vanilla-javascript-hangman-game/">Vanilla Hangman</a><a href="/games/hangman-javascript/">Hangman Bootstrap</a></div>
+</section>
+<script type="module" src="/assets/host.js"></script>
+
+<script src="/ui.js?v=c459ac04" defer></script>
+</body>
+</html>

@@ -1,0 +1,15 @@
+{
+  "repo": "takosenpai2687/doodle-jump",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 716,
+  "pushedAt": "2026-05-26T03:44:00Z",
+  "description": "A doodle jump game clone built with Javascript.",
+  "defaultBranch": "master",
+  "owner": "takosenpai2687",
+  "slug": "takosenpai2687-doodle-jump",
+  "dest": "third-party/takosenpai2687-doodle-jump",
+  "readme": "# CLICK [HERE](https://takosenpai2687.github.io/doodle-jump/) TO PLAY ONLINE\n\n# Recent Update\n\n### 2026.01.14 Major Update: Upgraded dependencies and fixed iOS device support! Now fully compatible with iOS devices.\n\n### 2022.10.5 Major Update: Fixed bugs for smaller screens. Now doodler behaves the same on all screens!\n\n# Introduction\n\n_Doodle Jump_ (https://en.wikipedia.org/wiki/Doodle_Jump) is a platforming video game, popular on multiple platforms for many years. It was initially developed and published by American studio Lima Sky.\n\nThis project is a Javascript replica of the video game _Doodle Jump_ mentioned above. The project is mainly developed using Javascript with the help of p5Js library. _See also https://p5js.org/_\n\n# How to Play\n\n## For PC Users:\n\nPress LEFT and RIGHT Arrow for movement control of the doodler.\n\n## For Mobile Users and PC Users:\n\nTouch screen left part or right part to move the doodler.\n\nJump on the platforms.\n\nAvoid Blackholes.\n\n### Note that you can transport through the left and right screen and appear on the opposite side.\n\n### There are 3 types of platforms to note:\n\n    Green : Stable and safe platform.\n    Blue : Moving platform.\n    White : Fragile platform, vanish upon jumped on once.\n\n# How to Build\n\n1. Clone repository\n2. Open /index.html with VSCode\n3. Run with live server\n\n# Tech Specs\n\nHTML, CSS, Javascript\n\ncanvas, P5Js Library\n\n# Known Issues\n\nOccasional minor bugs when window resized.\n\n# Updates\n\n### 2026.01.14 Major Update: Upgraded dependencies and fixed iOS device support! Now fully compatible with iOS devices.\n\n- Upgraded p5.js from v1.5.0 to v1.11.2\n- Upgraded p5.sound.js from v1.0.1 to v1.11.2\n- Added iOS audio context unlock mechanism with `userStartAudio()`\n- Enhanced iOS viewport meta tags for better mobile experience\n- Added iOS-specific CSS to prevent unwanted touch behaviors\n- Fixed touch event handlers with proper iOS event prevention\n- Removed iOS limitation notice from documentation\n\n### 2022.10.5 Major Update: Fixed bugs for smaller screens. Now doodler behaves the same on all screens!\n\n### 2020.06.29 Smoothened mobile experience by supporting touch moving. Optimized random platform generating distance. Made player falling speed faster than jumping up.\n\n### 2020.06.24 Added mobile devices full screen and touch event support. Minor bug fixes.\n\n### 2020.06.24 Project launched\n\n# Developer\n\ntakosenpai2687\n\n# Credits\n\nAll sound files from https://www.sounds-resource.com/mobile/doodlejump/sound/1636/\n\nAll art assets from random web search\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

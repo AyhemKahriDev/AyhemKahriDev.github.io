@@ -1,0 +1,15 @@
+{
+  "repo": "adoer/adoerTetris.js",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 3169,
+  "pushedAt": "2023-03-24T15:10:11Z",
+  "description": "HTML5 Tetris Game for Canvas 🎮 （基于Canvas的俄罗斯方块游戏）",
+  "defaultBranch": "master",
+  "owner": "adoer",
+  "slug": "adoer-adoertetris-js",
+  "dest": "third-party/adoer-adoertetris-js",
+  "readme": "## 演示地址\n[点击这里](http://www.xerduo.com/adoerTetris.js//)\n## 界面预览\n初始界面\n\n![](https://raw.githubusercontent.com/adoer/adoerTetris.js/gh-pages/preview/start.jpg)\n\n游戏结束界面\n\n![](https://raw.githubusercontent.com/adoer/adoerTetris.js/gh-pages/preview/over.jpg)\n\n## 使用方法\n```html\n    <div id=\"tetris\"></div>\n```\n```javascript\n    // 初始化\n    var tetris=new Tetris({\n        id:\"tetris\"\n    });\n```\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

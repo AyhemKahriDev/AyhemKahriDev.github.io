@@ -1,0 +1,15 @@
+{
+  "repo": "hoo89/hoojang_local",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 483,
+  "pushedAt": "2012-11-28T17:03:30Z",
+  "description": "This is Mahjong game working on WebBrowser with JavaScript.",
+  "defaultBranch": "master",
+  "owner": "hoo89",
+  "slug": "hoo89-hoojang-local",
+  "dest": "third-party/hoo89-hoojang-local",
+  "readme": "ブラウザ上で動くJavaScriptの麻雀ゲームです。\r\nただし、動作確認は今のところ最新版のGoogle Chromeでしか行なっておりません。\r\nこのプログラムはCoffeeScriptで書かれています。\r\n\r\nThis is Mahjong game working on WebBrowser with JavaScript.\r\nThis program is written in CoffeeScript.\r\n\r\nCopyright(c) 2012 hoo89 http://d.hatena.ne.jp/Hoo/ hoo89@me.com\r\nThis source (in 'js' directory) licensed under the MIT license.\r\n\r\nThanks for Mahjong Pai image.\r\nEmpire of the Mahjong-麻雀帝國- http://www.ambitious-net.com/",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

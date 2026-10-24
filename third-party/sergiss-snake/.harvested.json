@@ -1,0 +1,15 @@
+{
+  "repo": "sergiss/snake",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 45,
+  "pushedAt": "2022-03-28T14:42:12Z",
+  "description": ":snake: Snake game written in Javascript.",
+  "defaultBranch": "master",
+  "owner": "sergiss",
+  "slug": "sergiss-snake",
+  "dest": "third-party/sergiss-snake",
+  "readme": "# snake\n\n:snake: Snake game written in Javascript.\n\n### [Play](https://sergiss.github.io/snake/)\n\n<a href=\"https://sergiss.github.io/snake/\" rel=\"noreferrer\" target=\"_blank\"><img src=\"https://github.com/sergiss/snake/blob/master/snake.png?raw=true\" alt=\"Artillery Game\"></a>\n\nwww.sergiosoriano.com\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

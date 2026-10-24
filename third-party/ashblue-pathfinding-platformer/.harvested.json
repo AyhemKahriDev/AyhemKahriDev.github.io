@@ -1,0 +1,15 @@
+{
+  "repo": "ashblue/pathfinding-platformer",
+  "stars": 55,
+  "licence": "Apache-2.0",
+  "sizeKB": 440,
+  "pushedAt": "2014-01-30T15:38:05Z",
+  "description": "JavaScript algorithm for A* Pathfinding in a platformer game. Includes a notion of gravity and able to take into account complex obstacles and jumping.",
+  "defaultBranch": "master",
+  "owner": "ashblue",
+  "slug": "ashblue-pathfinding-platformer",
+  "dest": "third-party/ashblue-pathfinding-platformer",
+  "readme": "pathfinding-platformer\n======================\n\nJavaScript algorithm for A* Pathfinding in a platformer game. Includes a notion of gravity and able to take into account complex obstacles and jumping.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

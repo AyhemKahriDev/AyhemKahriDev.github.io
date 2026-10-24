@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Labyrinth - Maze | WebGame | Bocaletto Luca</title>
+  <meta name="description" content="Enjoy an engaging and interactive web game that challenges your knowledge and skills. Compete, have fun, and push your limits in this dynamic gaming experience! Developed by Bocaletto Luca.">
+  <meta name="keywords" content="game, webgame, challenge, fun, quiz, interactive, competition, knowledge, entertainment, online gaming, Bocaletto Luca">
+  <meta name="author" content="Bocaletto Luca">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Maze Explorer</h1>
+  </header>
+  <div class="container">
+    <div class="controls">
+      <button onclick="newMaze()">Generate New Maze</button>
+      <button onclick="resetPath()">Reset Path</button>
+      <p>
+        Use the W, A, S, D keys to trace the path (blue line).<br>
+        The <strong>Start</strong> cell is highlighted in <span style="color:green; font-weight:bold;">green</span> 
+        and the <strong>Finish</strong> cell in <span style="color:red; font-weight:bold;">red</span>.
+      </p>
+    </div>
+    <canvas id="mazeCanvas" width="600" height="600"></canvas>
+    <div class="export-controls">
+      <button onclick="downloadImage('png')">Download PNG</button>
+      <button onclick="downloadImage('jpeg')">Download JPG</button>
+      <button onclick="downloadPDF()">Download PDF</button>
+    </div>
+    <div id="message"></div>
+  </div>
+  <footer>
+    Bocaletto Luca
+  </footer>
+  
+  <!-- jsPDF library for PDF export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
