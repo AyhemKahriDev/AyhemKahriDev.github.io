@@ -199,20 +199,91 @@ npm run deploy:cloudflare       # -> arcadefork.pages.dev
 
 ## Interface
 
-The layout is built mobile-first and adapts up:
+### The identity: "Signal"
 
-- **Phone** — full-bleed play area, 44px minimum touch targets, safe-area
-  insets for notches, horizontal-scroll nav, game cards stacked one per row.
+One system, three ingredients — ink, signal, coin.
+
+| Token | Value | Used for |
+|---|---|---|
+| Ink | `#08090a` stage, `#131518` panels | every surface |
+| Paper | `#f6f3eb` (warm white, never `#fff`) | all type |
+| Signal | `#c9f94b` acid lime | actions, marks, focus, the word "fork" |
+| Coin | `#ffc46b` amber | the daily grid only |
+
+- **Type** — Bricolage Grotesque (display), Outfit (UI), Geist Mono (labels
+  and data). All three are SIL OFL and **self-hosted** from `/fonts`, latin
+  subset only: no third-party connection, no privacy leak, no font flash.
+  Total: 115 kB for all three variable faces.
+- **Mark** — a path that forks: two branches from one line. It is the same
+  drawing in the wordmark, the favicon, the app icons and the social card.
+- **Hairlines, not borders** — every surface is a single `inset` 1px line plus
+  a soft close shadow, so panels read as one material rather than a stack of
+  boxes.
+- **Motion** — designeer.xyz's easing vocabulary (`--e-out`,
+  `--e-spring`, `--e-io`), 140–520 ms, reveals staggered 26 ms apart.
+  `prefers-reduced-motion` turns all of it off.
+
+### Layout
+
+- **Phone** — the game fills the first screen, 44px minimum touch targets,
+  safe-area insets for notches, a horizontally scrolling category strip, and
+  two game cards per row.
 - **Tablet** — two-column card grids, wider play area, the side rail moves
   below the game.
 - **Desktop** — a two-column shell: the game on the left, a side rail on the
   right with the game name, category links, "keep playing" links and the
-  sponsor slot. The play area is capped at 760px so the board is not lost in a
-  wide column.
-- **Motion** — every transition is under 320ms on a shared easing curve, cards
-  lift and glow on hover, and `prefers-reduced-motion` turns all of it off.
-- **Keyboard** — visible focus rings, `R` restarts, `M` mutes, arrows and WASD
-  move.
+  sponsor slot. The board itself is capped so it is not lost in a wide column.
+### Themes
+
+Six coats, one system. A theme only swaps tokens — stage, panels, ink on
+stage, the signal colour and the coin. Shape, spacing, type and motion never
+change, so every theme is the same product in a different colour.
+
+| Theme | Stage | Signal | Character |
+|---|---|---|---|
+| **Signal** (default) | near-black | acid lime | the identity |
+| **Lights on** | paper | olive-lime | daylight, projectors |
+| **Coin-op** | warm black | amber | the cabinet |
+| **Ice** | blue-black | cyan | cool, arcade-classic |
+| **DMG** | olive-black | 1989 green | the handheld |
+| **Vapor** | violet | hot pink | neon night |
+
+The picker lives in the header (a paint-chip button). It is a real menu
+button: `↑`/`↓`, `Home`/`End`, `Esc`, click-outside, and the current theme is
+marked with `aria-checked`. The choice persists in `localStorage` and is
+applied by an inline script **before first paint**, so there is no flash. The
+browser chrome colour (`theme-color`) follows the theme too.
+
+Every theme is contrast-checked: body, secondary, meta, coin and on-signal
+text all clear AA (the numbers are in
+`~/open-code-hub/design-god/arcadefork-identity.md`).
+- **Keyboard** — visible focus rings, `/` focuses search, `Esc` clears it, `R`
+  restarts a game, `M` mutes, arrows and WASD move, `Space` starts.
+
+### Search and browsing
+
+- The header search is a real form: it lands on `/games/?q=…`, which the page
+  reads on load, so a search result is a shareable URL.
+- `/games/` filters as you type across titles, categories and keywords, with
+  category chips, A→Z / Z→A sorting, a live count in an `aria-live` region and
+  an honest empty state.
+- Categories wider than twelve games collapse behind a "Show all N" button, so
+  the page opens as a menu rather than a 110-tile wall.
+- "Random" respects the category you are looking at.
+
+### Offline
+
+`/sw.js` is a small service worker: navigations are network-first (a deploy is
+picked up immediately) and every other same-origin GET is
+stale-while-revalidate. A game you have played once still opens with no
+connection. The manifest makes the arcade installable, with a maskable icon and
+two shortcuts.
+
+### Security headers
+
+`public/_headers` sets a Content-Security-Policy (self-only scripts, styles,
+fonts and frames), `nosniff`, a referrer policy, `X-Frame-Options: SAMEORIGIN`
+and a Permissions-Policy that denies camera, microphone and location.
 
 ---
 
@@ -428,3 +499,21 @@ a browser cannot run. Those are listed in `content/blocked.json` and the
 harvest pipeline skips them, so they cannot come back on the next run.
 `content/overrides.json` does the opposite: it points a catalogue entry at the
 right file when the repository's `index.html` is not the game.
+
+---
+
+## Making it sustainable (2026-10)
+
+The games stay free and unpaywalled — that is a promise on every page. What
+changed: the site can now pay for itself without an ad network.
+
+- **Sponsor slots.** `/advertise/` sells labelled sponsor cards: one per
+  category, no pop-ups, no tracking. Fill `content/sponsors.json` slots and the
+  card goes live on the next build. The homepage "Cabinet slots" section shows
+  the open slots honestly while they are unsold.
+- **Tip jar.** Set `tips.kofi` (etc.) in `sponsors.json` to add footer tip
+  links — ten minutes of setup, no fee beyond the processor.
+- **Later, optional:** AdSense only when traffic justifies it. `ads.txt` and a
+  privacy page are the gates; nothing else is needed first.
+
+`outreach-pitch.md` is the one-paragraph message to send when offering a slot.

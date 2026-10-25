@@ -2,20 +2,20 @@
  * The in-game shell. Shared by the site builder and the itch.io packager so
  * both produce the same markup.
  */
-import { gameIcon } from './icons.mjs';
+import { gameIcon, brandMark, glyph } from './icons.mjs';
 import { cleanTagline, creditLicence } from './content-utils.mjs';
 
-export function gameShell(game, opts = {}) {
-  const related = opts.related ?? [];
-  const side = `
-    <aside class="game-side">
+function rail(game, related, opts, extra = '') {
+  return `
+    <aside class="game-side" aria-label="About this game">
       <div class="side-head">
         <div class="side-title">${gameIcon(game.id, game.accent, game.category)}<span>${game.title}</span></div>
         <p class="side-tag">${cleanTagline(game)}</p>
       </div>
       <div class="side-actions">
-        <a class="btn btn-ghost" href="/">All games</a>
-        <a class="btn btn-ghost" href="/categories/${game.category}/">More in this category</a>
+        <a class="btn" href="/">${glyph('a-grid', 16)} All games</a>
+        <a class="btn" href="/categories/${game.category}/">More like this</a>
+        ${extra}
       </div>
       ${
         related.length
@@ -34,69 +34,45 @@ export function gameShell(game, opts = {}) {
       }
       <p class="side-foot">Free to play · no sign-up · works on any device</p>
     </aside>`;
+}
 
-  return `<div class="game-layout">
+export function gameShell(game, opts = {}) {
+  const related = opts.related ?? [];
+  return `<main id="main" class="game-layout">
   <div class="game-main">
     <div class="topbar">
-      <a class="brand" href="/">arcade<span>fork</span></a>
-      <div class="hud" id="hud"></div>
-      <button class="icon-btn" id="mute" aria-label="Toggle sound">🔊</button>
+      <a class="brand" href="/" aria-label="arcadefork — home">${brandMark(26)}<span>arcade<b>fork</b></span></a>
+      <div class="hud" id="hud" aria-live="polite"></div>
+      <div class="top-actions">
+        <button class="icon-btn" id="mute" type="button" aria-label="Toggle sound" aria-pressed="false">${glyph('a-sound', 17)}</button>
+        <button class="icon-btn" id="fullscreen" type="button" aria-label="Fullscreen">${glyph('a-expand', 17)}</button>
+      </div>
     </div>
     <div class="stage" id="stage">
       <canvas id="game" aria-label="${game.title}"></canvas>
       <div class="overlay" id="overlay"></div>
     </div>
   </div>
-  ${side}
-</div>`;
+  ${rail(game, related, opts)}
+</main>`;
 }
 
 /** Third-party games keep their own UI, so they get an iframe stage instead. */
 export function embedShell(game, opts = {}) {
   const related = opts.related ?? [];
-  const side = `
-    <aside class="game-side">
-      <div class="side-head">
-        <div class="side-title">${gameIcon(game.id, game.accent, game.category)}<span>${game.title}</span></div>
-        <p class="side-tag">${cleanTagline(game)}</p>
-      </div>
-      <div class="side-actions">
-        <a class="btn btn-ghost" href="/">All games</a>
-        <a class="btn btn-ghost" href="${game.embed.src}" target="_blank" rel="noopener">Open full &#8599;</a>
-      </div>
-      ${
-        game.credit
-          ? `<div class="side-block">
+  const credit = game.credit
+    ? `<div class="side-block">
         <div class="side-label">Original</div>
         <p class="side-credit">${game.credit.author} · ${creditLicence(game.credit)}<br>
         <a href="${game.credit.source}" target="_blank" rel="noopener nofollow">View source</a></p>
       </div>`
-          : ''
-      }
-      ${
-        related.length
-          ? `<div class="side-block">
-        <div class="side-label">Keep playing</div>
-        <div class="side-links">${related
-          .map((g) => `<a href="/games/${g.id}/">${g.title}</a>`)
-          .join('')}</div>
-      </div>`
-          : ''
-      }
-      ${
-        opts.sponsor
-          ? `<div class="side-block"><div class="side-label">Sponsored</div>${opts.sponsor}</div>`
-          : ''
-      }
-      <p class="side-foot">Free to play · no sign-up · works on any device</p>
-    </aside>`;
-
-  return `<div class="game-layout">
+    : '';
+  return `<main id="main" class="game-layout">
   <div class="game-main embed-main">
     <div class="embed-bar">
-      <a class="brand" href="/">arcade<span>fork</span></a>
+      <a class="brand" href="/" aria-label="arcadefork — home">${brandMark(26)}<span>arcade<b>fork</b></span></a>
       <span class="embed-title">${gameIcon(game.id, game.accent, game.category)}<span class="embed-name">${game.title}</span></span>
-      <a class="embed-open" href="${game.embed.src}" target="_blank" rel="noopener">Open full &#8599;</a>
+      <a class="embed-open" href="${game.embed.src}" target="_blank" rel="noopener">Open full ${glyph('a-arrow', 13)}</a>
     </div>
     <div class="embed-stage">
       <iframe src="${game.embed.src}" title="${game.title}" loading="lazy"
@@ -106,8 +82,8 @@ export function embedShell(game, opts = {}) {
               allowfullscreen></iframe>
     </div>
   </div>
-  ${side}
-</div>`;
+  ${rail(game, related, opts, credit)}
+</main>`;
 }
 
 export function gamePageHead({ title, description, canonical, jsonLd = null }) {
@@ -127,11 +103,9 @@ ${canonical ? `<link rel="canonical" href="${esc(canonical)}">` : ''}
 <meta property="og:type" content="website">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
+<link rel="stylesheet" href="/fonts.css">
 <link rel="stylesheet" href="styles.css">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&display=swap">
 ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
 </head>`;
 }

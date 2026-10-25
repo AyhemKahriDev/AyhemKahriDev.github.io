@@ -40,8 +40,8 @@ function telegram(): TelegramWebApp | undefined {
     tg.ready?.();
     tg.expand?.();
     tg.disableVerticalSwipes?.();
-    tg.setHeaderColor?.('#080c16');
-    tg.setBackgroundColor?.('#080c16');
+    tg.setHeaderColor?.('#08090a');
+    tg.setBackgroundColor?.('#08090a');
   } catch {
     /* ignore */
   }
@@ -142,8 +142,11 @@ function boot(): void {
 
   function resize(): void {
     const rect = stage!.getBoundingClientRect();
-    W = Math.max(240, Math.floor(rect.width));
-    H = Math.max(240, Math.floor(rect.height));
+    const cs = getComputedStyle(stage!);
+    const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) || 0;
+    const padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) || 0;
+    W = Math.max(240, Math.floor(rect.width - padX));
+    H = Math.max(240, Math.floor(rect.height - padY));
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
     canvas!.width = Math.floor(W * dpr);
     canvas!.height = Math.floor(H * dpr);
@@ -172,6 +175,13 @@ function boot(): void {
   });
 
   window.addEventListener('keydown', (e) => {
+    // Space / Enter act on whatever overlay is up: start, or play again.
+    if ((e.key === ' ' || e.key === 'Enter') && overlay?.classList.contains('is-open')) {
+      e.preventDefault();
+      if (resultShown) restart();
+      else begin();
+      return;
+    }
     if (e.key === 'r' || e.key === 'R') {
       restart();
       return;
@@ -183,11 +193,37 @@ function boot(): void {
     instance.key?.(e);
   });
 
-  function toggleMute(): void {
-    const muted = bundle.audio.toggleMute();
-    if (muteBtn) muteBtn.textContent = muted ? '🔇' : '🔊';
+  function paintMute(): void {
+    if (!muteBtn) return;
+    const muted = bundle.audio.muted();
+    muteBtn.innerHTML = `<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true" class="af-glyph"><use href="#${
+      muted ? 'a-muted' : 'a-sound'
+    }"/></svg>`;
+    muteBtn.setAttribute('aria-pressed', String(muted));
+    muteBtn.setAttribute('aria-label', muted ? 'Sound is off — turn it on' : 'Sound is on — mute it');
   }
-  if (muteBtn) muteBtn.textContent = bundle.audio.muted() ? '🔇' : '🔊';
+
+  function toggleMute(): void {
+    bundle.audio.toggleMute();
+    paintMute();
+  }
+  paintMute();
+
+  // Fullscreen: the stage is the thing worth filling, not the rail.
+  const fsBtn = document.getElementById('fullscreen');
+  if (fsBtn) {
+    fsBtn.addEventListener('click', () => {
+      const el = stage!;
+      if (document.fullscreenElement) void document.exitFullscreen();
+      else void el.requestFullscreen?.().catch(() => undefined);
+    });
+    document.addEventListener('fullscreenchange', () => {
+      const on = Boolean(document.fullscreenElement);
+      fsBtn.setAttribute('aria-pressed', String(on));
+      fsBtn.setAttribute('aria-label', on ? 'Leave fullscreen' : 'Fullscreen');
+      resize();
+    });
+  }
 
   function restart(): void {
     instance = spec!.create(engineCtx);
@@ -208,22 +244,24 @@ function boot(): void {
     if (overlay) overlay.innerHTML = '';
   }
 
+  function begin(): void {
+    bundle.audio.unlock();
+    tg?.HapticFeedback?.impactOccurred('light');
+    bundle.analytics.track('play', { game: spec!.id });
+    playing = true;
+    hideOverlay();
+  }
+
   function startOverlay(): void {
     showOverlay(
       `<div class="card">
-        <h1>${escapeHtml(meta!.title)}</h1>
+        <h2>${escapeHtml(meta!.title)}</h2>
         <p>${escapeHtml(meta!.tagline)}</p>
         <button class="btn btn-primary" data-act="play">Play now</button>
-        <p class="fine">Free &middot; no sign-up &middot; works on any device</p>
+        <p class="fine">Free &middot; no sign-up &middot; press <kbd>Space</kbd> to start</p>
       </div>`,
     );
-    overlay!.querySelector('[data-act="play"]')?.addEventListener('click', () => {
-      bundle.audio.unlock();
-      tg?.HapticFeedback?.impactOccurred('light');
-      bundle.analytics.track('play', { game: spec!.id });
-      playing = true;
-      hideOverlay();
-    });
+    overlay!.querySelector('[data-act="play"]')?.addEventListener('click', begin);
   }
 
   function resultOverlay(): void {
@@ -258,9 +296,9 @@ function boot(): void {
             instance.shareCard(c, w, h);
             return;
           }
-          c.fillStyle = '#080C16';
+          c.fillStyle = '#08090a';
           c.fillRect(0, 0, w, h);
-          c.fillStyle = '#E9EDFF';
+          c.fillStyle = '#f6f3eb';
           c.textAlign = 'center';
           c.textBaseline = 'middle';
           c.font = '700 80px system-ui, sans-serif';

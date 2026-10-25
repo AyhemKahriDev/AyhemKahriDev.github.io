@@ -20,14 +20,34 @@ export const CAT_GLYPH = {
   sandbox: 'a-blocks',
 };
 
+/**
+ * A category with one glyph per game produces a wall of identical icons
+ * once a category has 110 entries. Each pool keeps the category legible
+ * while the id hash picks the variant, so neighbours differ.
+ */
+const CAT_GLYPH_POOL = {
+  word: ['a-word', 'a-search', 'a-puzzle'],
+  puzzle: ['a-puzzle', 'a-grid', 'a-blocks', 'a-spark'],
+  arcade: ['a-pad', 'a-play', 'a-bolt', 'a-dice'],
+  brain: ['a-bulb', 'a-grid', 'a-spark', 'a-shield'],
+  strategy: ['a-flag', 'a-shield', 'a-grid'],
+  sandbox: ['a-blocks', 'a-grid', 'a-bolt'],
+};
+
 const GLYPH_DEFAULT = 'a-spark';
 
-/** Symbols for categories without a hand-drawn 96px special. */
-const CLIENT_SPECIAL = {
+/**
+ * Sprite glyph per hand-drawn game, for client-side re-renders (ui.js
+ * recently-played rows) that build tiles from the shared sprite instead of
+ * shipping inline SVG. Keep in sync with ui.js GAME_GLYPHS.
+ */
+export const CLIENT_SPECIAL = {
   wordsearch: 'a-search',
   merge: 'a-merge',
   snake: 'a-snake',
   memory: 'a-memory',
+  trust: 'a-trust',
+  loopy: 'a-loopy',
 };
 
 /** Hex accent -> hue. Used so tile accents and icon gradients agree. */
@@ -65,7 +85,7 @@ export function hueForId(id) {
 }
 
 /** Ids with hand-drawn art that keeps their curated accent color. */
-export const SPECIAL_IDS = new Set(['wordsearch', 'merge', 'snake', 'memory', 'answers']);
+export const SPECIAL_IDS = new Set(['wordsearch', 'merge', 'snake', 'memory', 'trust', 'loopy', 'answers']);
 
 /**
  * The tile accent/glow color for a game. Hand-drawn tiles keep their
@@ -91,15 +111,37 @@ const gid = (id) => 'gx-' + String(id).toLowerCase().replace(/[^a-z0-9-]/g, '');
 export function iconSprite() {
   return `<svg class="af-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
 <defs>
-<pattern id="af-scan" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(0)">
-  <rect x="0" y="2.6" width="4" height="1" fill="#06060c" opacity="0.38"/>
-</pattern>
-<linearGradient id="af-sheen" x1="0" y1="0" x2="0.85" y2="1">
-  <stop offset="0" stop-color="#ffffff" stop-opacity="0.36"/>
-  <stop offset="0.42" stop-color="#ffffff" stop-opacity="0.06"/>
+<linearGradient id="af-sheen" x1="0" y1="0" x2="0.6" y2="1">
+  <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+  <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.04"/>
   <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
 </linearGradient>
 </defs>
+<symbol id="a-mark" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="9" fill="currentColor"/>
+  <g fill="none" stroke="#0b1000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 26V16"/>
+    <path d="M16 16c0-3.6-2.6-4.8-5.5-4.8M16 16c0-3.6 2.6-4.8 5.5-4.8"/>
+  </g>
+  <circle cx="10.5" cy="11.2" r="1.9" fill="#0b1000"/>
+  <circle cx="21.5" cy="11.2" r="1.9" fill="#0b1000"/>
+</symbol>
+<symbol id="a-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+  <circle cx="12" cy="12" r="4.2"/>
+  <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>
+</g></symbol>
+<symbol id="a-moon" viewBox="0 0 24 24"><path d="M20 14.6A8.4 8.4 0 0 1 9.4 4a8.5 8.5 0 1 0 10.6 10.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="a-arrow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></g></symbol>
+<symbol id="a-check" viewBox="0 0 24 24"><path d="M4.5 12.8l4.6 4.4L19.5 6.6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="a-bolt" viewBox="0 0 24 24"><path d="M13.6 2.5 4.8 13.4h6L10.4 21.5 19.2 10.6h-6l.4-8.1Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+<symbol id="a-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2.8 4.8 5.6v6c0 4.4 3 8 7.2 9.6 4.2-1.6 7.2-5.2 7.2-9.6v-6L12 2.8Z"/><path d="M8.8 12.2l2.4 2.4 4-4.4" stroke-linecap="round"/></g></symbol>
+<symbol id="a-wifi-off" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5.5 20.5 19"/><path d="M5.2 9.6a14 14 0 0 1 4.1-2.1M14.8 7.7a14 14 0 0 1 4 1.9M8.6 13.1a9 9 0 0 1 2.5-1.2M15.8 12.6c.6.3 1.1.6 1.6 1M12 17.4v.1"/></g></symbol>
+<symbol id="a-expand" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4v5M15 4h5v5M15 20h5v-5M9 20H4v-5"/></g></symbol>
+<symbol id="a-restart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4.5 4.5v4h4"/></g></symbol>
+<symbol id="a-sound" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3L12 5v14L7 14.5H4v-5Z"/><path d="M16 9a4.2 4.2 0 0 1 0 6"/><path d="M18.8 6.4a8 8 0 0 1 0 11.2"/></g></symbol>
+<symbol id="a-muted" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3L12 5v14L7 14.5H4v-5Z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></g></symbol>
+<symbol id="a-coin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.6v8.8M9.6 10.2h3.6a1.9 1.9 0 1 1 0 3.8H9.6" stroke-linecap="round"/></g></symbol>
+<symbol id="a-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.2" y="3.2" width="7" height="7" rx="1.8"/><rect x="13.8" y="3.2" width="7" height="7" rx="1.8"/><rect x="3.2" y="13.8" width="7" height="7" rx="1.8"/><rect x="13.8" y="13.8" width="7" height="7" rx="1.8"/></g></symbol>
 <symbol id="a-pad" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <path d="M7.4 7h9.2c2.3 0 3.9 1.7 4.5 4.2.5 2.2.9 4.9.7 6.4-.2 1.6-1.4 2.6-3 2.6-1.4 0-2.4-.8-3.2-2l-.8-1.2H9.2l-.8 1.2c-.8 1.2-1.8 2-3.2 2-1.6 0-2.8-1-3-2.6-.2-1.5.2-4.2.7-6.4C3.5 8.7 5.1 7 7.4 7Z"/>
   <path d="M7 10.6v4M5 12.6h4"/>
@@ -162,6 +204,19 @@ export function iconSprite() {
   <rect x="10.5" y="6.5" width="10.5" height="13.5" rx="2.5"/>
   <path d="M15.75 15.5a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4Z" stroke-width="1.5"/>
 </g></symbol>
+<symbol id="a-trust" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="3" width="8" height="8" rx="2"/>
+  <rect x="13" y="3" width="8" height="8" rx="2"/>
+  <rect x="3" y="13" width="8" height="8" rx="2"/>
+  <path d="M5.6 7l1.6 1.6 2.6-3"/>
+  <path d="M15.2 15.2l3.6 3.6"/>
+  <path d="M18.8 15.2l-3.6 3.6"/>
+</g></symbol>
+<symbol id="a-loopy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 4.5a7.5 7.5 0 1 0 7.5 7.5"/>
+  <path d="M11.4 2.7l3.9-1.7.1 4.2Z" fill="currentColor" stroke="none"/>
+  <circle cx="19.5" cy="12" r="1.7" fill="currentColor" stroke="none"/>
+</g></symbol>
 </svg>`;
 }
 
@@ -176,7 +231,11 @@ const FONT = 'Outfit, ui-sans-serif, system-ui, sans-serif';
 function specialIcon(id, accent) {
   const a = accent || '#2fe6ff';
   const wrap = (inner) =>
-    `<svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">${inner}</svg>`;
+    `<svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">` +
+    `<rect x="0" y="0" width="96" height="96" rx="22" fill="#101316"/>` +
+    `<rect x="0" y="0" width="96" height="96" rx="22" fill="${a}" opacity="0.16"/>` +
+    `<rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>` +
+    `${inner}</svg>`;
 
   if (id === 'wordsearch') {
     // A 4x4 grid of letters with one word highlighted horizontally.
@@ -187,10 +246,10 @@ function specialIcon(id, accent) {
         const on = r === 0;
         const ch = letters[r * 4 + c];
         cells += `<rect x="${8 + c * 20}" y="${8 + r * 20}" width="18" height="18" rx="4" fill="${
-          on ? a : '#1b2440'
+          on ? a : '#191d21'
         }"/>`;
         cells += `<text x="${17 + c * 20}" y="${22 + r * 20}" font-size="11" font-family="${FONT}" font-weight="700" fill="${
-          on ? '#080c16' : '#8c96bc'
+          on ? '#08090a' : '#8a867d'
         }" text-anchor="middle">${ch}</text>`;
       }
     }
@@ -199,11 +258,11 @@ function specialIcon(id, accent) {
   if (id === 'merge') {
     return wrap(
       `<rect x="8" y="8" width="38" height="38" rx="8" fill="${a}"/>
-       <rect x="50" y="8" width="38" height="38" rx="8" fill="#1b2440"/>
-       <rect x="8" y="50" width="38" height="38" rx="8" fill="#1b2440"/>
+       <rect x="50" y="8" width="38" height="38" rx="8" fill="#191d21"/>
+       <rect x="8" y="50" width="38" height="38" rx="8" fill="#191d21"/>
        <rect x="50" y="50" width="38" height="38" rx="8" fill="${a}" opacity="0.5"/>
-       <text x="27" y="35" font-size="22" font-family="${FONT}" font-weight="800" fill="#080c16" text-anchor="middle">2</text>
-       <text x="69" y="35" font-size="22" font-family="${FONT}" font-weight="800" fill="#e9edff" text-anchor="middle">8</text>`,
+       <text x="27" y="35" font-size="22" font-family="${FONT}" font-weight="800" fill="#08090a" text-anchor="middle">2</text>
+       <text x="69" y="35" font-size="22" font-family="${FONT}" font-weight="800" fill="#f6f3eb" text-anchor="middle">8</text>`,
     );
   }
   if (id === 'snake') {
@@ -217,16 +276,42 @@ function specialIcon(id, accent) {
   }
   if (id === 'memory') {
     return wrap(
-      `<rect x="8" y="14" width="38" height="52" rx="10" fill="#1b2440"/>
+      `<rect x="8" y="14" width="38" height="52" rx="10" fill="#191d21"/>
        <circle cx="27" cy="40" r="7" fill="${a}" opacity="0.55"/>
        <rect x="38" y="24" width="46" height="60" rx="11" fill="${a}"/>
-       <text x="61" y="66" font-size="34" font-family="${FONT}" font-weight="800" fill="#080c16" text-anchor="middle">?</text>`,
+       <text x="61" y="66" font-size="34" font-family="${FONT}" font-weight="800" fill="#08090a" text-anchor="middle">?</text>`,
+    );
+  }
+  if (id === 'trust') {
+    // The Evolution of Trust: a 2x2 payoff matrix — mutual win highlighted,
+    // betrayal cells marked, mutual defection crossed out.
+    const cell = (x, y, fill) =>
+      `<rect x="${x}" y="${y}" width="38" height="38" rx="9" fill="${fill}"/>`;
+    const ok = (x, y, c, w) =>
+      `<path d="M${x + 8} ${y + 20}l5 5 9 -10" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round" stroke-linejoin="round"/>`;
+    const no = (x, y, c, w) =>
+      `<g stroke="${c}" stroke-width="${w}" stroke-linecap="round"><path d="M${x + 11} ${y + 13}l14 14M${x + 25} ${y + 13}l-14 14"/></g>`;
+    return wrap(
+      cell(6, 6, a) + ok(6, 6, '#08090a', 5) +
+      cell(52, 6, '#191d21') + ok(52, 6, a, 4) + no(64, 6, '#8a867d', 4) +
+      cell(6, 52, '#191d21') + ok(8, 50, a, 4) + no(20, 52, '#8a867d', 4) +
+      cell(52, 52, '#191d21') + no(56, 56, '#ff5470', 5),
+    );
+  }
+  if (id === 'loopy') {
+    // Loopy: a feedback loop — big arc, arrowhead, stock node on the ring.
+    return wrap(
+      `<path d="M48 12a36 36 0 1 0 36 36" fill="none" stroke="${a}" stroke-width="9" stroke-linecap="round"/>
+       <path d="M43 6.5l16-4.4-1 16.5Z" fill="${a}"/>
+       <circle cx="84" cy="48" r="9" fill="#08090a" opacity="0.35"/>
+       <circle cx="84" cy="48" r="5.5" fill="${a}"/>
+       <circle cx="48" cy="48" r="7" fill="${a}" opacity="0.28"/>`,
     );
   }
   if (id === 'answers') {
     return wrap(
       `<rect x="0" y="0" width="96" height="96" rx="20" fill="${a}"/>
-       <text x="48" y="70" font-size="52" font-family="${FONT}" font-weight="800" fill="#080c16" text-anchor="middle">?</text>`,
+       <text x="48" y="70" font-size="52" font-family="${FONT}" font-weight="800" fill="#08090a" text-anchor="middle">?</text>`,
     );
   }
   return null;
@@ -242,16 +327,16 @@ export function gameIcon(id, accent, category) {
 
   const [h1, h2] = [hueForId(id), (hueForId(id) + 42) % 360];
   const axis = GRADIENT_AXES[hueForId(id + '|g') % GRADIENT_AXES.length];
-  const sym = category && CAT_GLYPH[category] ? CAT_GLYPH[category] : GLYPH_DEFAULT;
+  const pool = CAT_GLYPH_POOL[category];
+  const sym = pool ? pool[hueForId(id + '|sym') % pool.length] : GLYPH_DEFAULT;
   const grad = gid(id);
   return `<svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
   <defs><linearGradient id="${grad}" ${axis}>
-    <stop offset="0" stop-color="hsl(${h1} 76% 56%)"/>
-    <stop offset="1" stop-color="hsl(${h2} 84% 40%)"/>
+    <stop offset="0" stop-color="hsl(${h1} 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(${h2} 76% 38%)"/>
   </linearGradient></defs>
-  <rect x="0" y="0" width="96" height="96" rx="20" fill="url(#${grad})"/>
-  <rect x="0" y="0" width="96" height="96" rx="20" fill="url(#af-sheen)"/>
-  <rect x="0" y="0" width="96" height="96" rx="20" fill="url(#af-scan)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#${grad})"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
   <use href="#${sym}" x="21" y="21" width="54" height="54"/>
 </svg>`;
 }
@@ -259,6 +344,11 @@ export function gameIcon(id, accent, category) {
 /** Small inline chrome icon (buttons etc.) referencing the sprite. */
 export function glyph(name, size = 18) {
   return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" aria-hidden="true" class="af-glyph"><use href="#${name}"/></svg>`;
+}
+
+/** The identity mark: a path that forks. Lime tile, ink glyph. */
+export function brandMark(size = 30) {
+  return `<svg class="mark" viewBox="0 0 32 32" width="${size}" height="${size}" aria-hidden="true"><use href="#a-mark"/></svg>`;
 }
 
 export default { gameIcon, iconSprite, glyph, huePair, hueFromHex, CAT_GLYPH };

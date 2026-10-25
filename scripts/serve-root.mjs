@@ -33,6 +33,12 @@ createServer(async (req, res) => {
   try {
     let path = normalize(decodeURIComponent(new URL(req.url ?? '/', 'http://x').pathname));
     if (path.includes('..')) path = '/';
+    // this server exposes the repo ROOT, so .git/, .env and friends would be
+    // readable too — refuse every dot-segment outright
+    if (path.split('/').some((seg) => seg.startsWith('.'))) {
+      res.writeHead(404, { 'content-type': 'text/plain' });
+      return res.end('not found');
+    }
     let file = join(root, path);
     try {
       const s = await stat(file);
@@ -51,4 +57,4 @@ createServer(async (req, res) => {
     res.writeHead(500, { 'content-type': 'text/plain' });
     res.end('error');
   }
-}).listen(port, () => console.log(`root server on http://localhost:${port}`));
+}).listen(port, '127.0.0.1', () => console.log(`root server on http://localhost:${port}`));

@@ -12,20 +12,28 @@ const N = 4;
 const TARGET = 2048;
 
 const TILE_COLORS: Record<number, { bg: string; fg: string }> = {
-  2: { bg: '#2B3550', fg: '#C9D3F5' },
-  4: { bg: '#354268', fg: '#D8E0FF' },
-  8: { bg: '#4A6BC4', fg: '#FFFFFF' },
-  16: { bg: '#5E86E8', fg: '#FFFFFF' },
-  32: { bg: '#4FA3C7', fg: '#FFFFFF' },
-  64: { bg: '#46B98A', fg: '#FFFFFF' },
-  128: { bg: '#8FBF3F', fg: '#10210A' },
-  256: { bg: '#D9C33A', fg: '#221C02' },
-  512: { bg: '#EFA02E', fg: '#241603' },
-  1024: { bg: '#E9702E', fg: '#241203' },
-  2048: { bg: '#E8484C', fg: '#FFFFFF' },
+  2: { bg: '#2b3037', fg: '#cfcbc1' },
+  4: { bg: '#353b43', fg: '#f6f3eb' },
+  8: { bg: '#3d5c66', fg: '#eafcff' },
+  16: { bg: '#3f7480', fg: '#eafcff' },
+  32: { bg: '#4a8f86', fg: '#f0fffb' },
+  64: { bg: '#5da86f', fg: '#f0fff4' },
+  128: { bg: '#86c23f', fg: '#10210a' },
+  256: { bg: '#b6d92e', fg: '#17200a' },
+  512: { bg: '#d8e83a', fg: '#17200a' },
+  1024: { bg: '#ffc46b', fg: '#241603' },
+  2048: { bg: '#c9f94b', fg: '#0b1000' },
 };
 
 type Dir = 'up' | 'down' | 'left' | 'right';
+
+/** Keyboard and swipe exist on desktop, so the on-screen D-pad is only
+ *  drawn where a finger is the likely pointer. It also frees that space
+ *  for the board itself. */
+const TOUCH =
+  typeof window === 'undefined' || !window.matchMedia
+    ? true
+    : window.matchMedia('(pointer: coarse)').matches;
 
 class Merge implements GameInstance {
   private ctx: EngineContext;
@@ -181,11 +189,11 @@ class Merge implements GameInstance {
     const bw = 46;
     const bgap = 6;
     const dpadH = bw * 3 + bgap * 2;
-    const dpadTop = this.ctx.height - dpadH - 12;
-    const hintY = dpadTop - 16;
+    const dpadTop = TOUCH ? this.ctx.height - dpadH - 12 : this.ctx.height;
+    const hintY = TOUCH ? dpadTop - 16 : this.ctx.height - 14;
 
     const boardBottom = hintY - 18;
-    const side = Math.min(this.ctx.width - pad * 2, boardBottom - 10);
+    const side = Math.min(this.ctx.width - pad * 2, boardBottom - 10, 620);
     const cell = side / N;
     return {
       x: (this.ctx.width - side) / 2,
@@ -222,10 +230,12 @@ class Merge implements GameInstance {
 
   pointerDown(p: Vec2): void {
     if (this.over) return;
-    for (const b of this.dpadButtons()) {
-      if (p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h) {
-        this.move(b.dir);
-        return;
+    if (TOUCH) {
+      for (const b of this.dpadButtons()) {
+        if (p.x >= b.x && p.x <= b.x + b.w && p.y >= b.y && p.y <= b.y + b.h) {
+          this.move(b.dir);
+          return;
+        }
       }
     }
     this.swipeStart = p;
@@ -301,7 +311,7 @@ class Merge implements GameInstance {
     }
 
     // D-pad for touch.
-    for (const b of this.dpadButtons()) {
+    if (TOUCH) for (const b of this.dpadButtons()) {
       fillRound(ctx, b.x, b.y, b.w, b.h, 10, PANEL_2, GRID_LINE);
       ctx.fillStyle = MUTED;
       ctx.textAlign = 'center';
@@ -315,7 +325,7 @@ class Merge implements GameInstance {
     setFont(ctx, 12, 600);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText('SWIPE OR USE ARROW KEYS', this.ctx.width / 2, g.hintY);
+    ctx.fillText(TOUCH ? 'SWIPE OR USE ARROW KEYS' : 'USE THE ARROW KEYS', this.ctx.width / 2, g.hintY);
   }
 
   shareCard(ctx: CanvasRenderingContext2D, w: number, h: number): void {

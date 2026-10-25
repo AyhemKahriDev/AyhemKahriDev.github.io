@@ -1,0 +1,13 @@
+import puppeteer from 'puppeteer-core';
+const chrome='/home/ayhem/.cache/hyperframes/chrome/chrome-headless-shell/linux-152.0.7977.30/chrome-headless-shell-linux64/chrome-headless-shell';
+const b=await puppeteer.launch({executablePath:chrome,args:['--no-sandbox','--disable-gpu','--hide-scrollbars']});
+const p=await b.newPage(); await p.setViewport({width:1440,height:700});
+await p.goto('http://127.0.0.1:4178/',{waitUntil:'networkidle0'});
+await p.click('#btn-theme'); await new Promise(r=>setTimeout(r,300));
+await p.screenshot({path:'/tmp/af-shots/picker.png', clip:{x:900,y:0,width:540,height:420}});
+await p.keyboard.press('Escape');
+await p.evaluate(()=>{localStorage.setItem('af_theme','lights');});
+await p.reload({waitUntil:'networkidle0'});
+await new Promise(r=>setTimeout(r,400));
+await p.screenshot({path:'/tmp/af-shots/lights.png'});
+await b.close();

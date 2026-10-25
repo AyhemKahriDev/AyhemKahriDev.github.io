@@ -1,4 +1,11 @@
 {
-  "_comment": "Direct sponsor slots. You sell these yourself - no ad network, no approval, no cost. Leave a slot empty and the site promotes its own games instead. Fill one in when a sponsor pays you and it goes live on the next build.",
+  "_comment": "Direct sponsor slots. You sell these yourself - no ad network, no approval, no cost. Leave a slot empty and the site promotes its own games instead. Fill one in when a sponsor pays you and it goes live on the next build. Real slots render in the side panel marked 'Sponsored' beside one category's pages; the homepage 'Cabinet slots' cards switch from 'Your game here' to the real sponsor automatically.",
+  "_slot_fields": "title (required), href (required), subtitle (optional), image (optional URL/string of a small logo), categories (optional array of category ids like 'word'; empty = site-wide slot)",
+  "_tips_comment": "Tip-jar links for the footer; every game stays free either way. Add a URL and the link goes live on the next build - e.g. 'kofi': 'https://ko-fi.com/yourname' takes about ten minutes to set up at ko-fi.com. Leave empty until you have an account.",
+  "tips": {
+    "kofi": "",
+    "githubSponsors": "",
+    "patreon": ""
+  },
   "slots": []
 }

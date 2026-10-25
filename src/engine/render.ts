@@ -1,11 +1,11 @@
 /** Shared canvas helpers and the site palette. */
 
-export const INK = '#080C16';
-export const PANEL = '#131A2C';
-export const PANEL_2 = '#1B2440';
-export const TEXT = '#E9EDFF';
-export const MUTED = '#8C96BC';
-export const GRID_LINE = '#232D4A';
+export const INK = '#08090a';
+export const PANEL = '#16191d';
+export const PANEL_2 = '#242931';
+export const TEXT = '#f6f3eb';
+export const MUTED = '#9b978d';
+export const GRID_LINE = '#2c3138';
 export const FONT = "'Outfit', ui-sans-serif, system-ui, -apple-system, Segoe UI, sans-serif";
 
 export function roundRect(

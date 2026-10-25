@@ -46,6 +46,6 @@ const server = createServer(async (req, res) => {
   }
 });
 
-server.listen(port, () => {
+server.listen(port, '127.0.0.1', () => {
   console.log(`arcadefork dist served on http://localhost:${port}`);
 });
