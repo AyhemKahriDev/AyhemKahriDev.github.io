@@ -140,8 +140,36 @@ async function main() {
     page.on('pageerror', (e) => jsErrors.push(String(e.message ?? e)));
 
     let probe = { pixels: 0, textLen: 0, controls: 0, canvases: 0 };
+    const navWarnings = [];
     try {
-      const res = await page.goto(origin + g.embed.src, { waitUntil: 'domcontentloaded', timeout: 20000 });
+      // A cold, loaded CI runner can miss one 20s window on a game that is
+      // perfectly fine locally, so a timeout gets one bounded retry. Any
+      // other navigation error (DNS, refused, 404) is real and fails at once.
+      // If both attempts time out there is no committed document to probe -
+      // page.evaluate() on a page that never navigated waits forever - so the
+      // timeout itself becomes the verdict.
+      let res = null;
+      let retried = false;
+      for (let attempt = 1; attempt <= 2 && !res; attempt++) {
+        try {
+          res = await page.goto(origin + g.embed.src, {
+            waitUntil: 'domcontentloaded',
+            timeout: attempt === 1 ? 20000 : 30000,
+          });
+        } catch (err) {
+          const msg = String(err?.message ?? err);
+          if (!/timeout/i.test(msg)) throw err;
+          if (attempt === 1) {
+            retried = true;
+            await sleep(1500);
+          } else {
+            throw new Error(`navigation timed out twice: ${msg.slice(0, 60)}`);
+          }
+        }
+      }
+      // Only a retry that actually succeeded is worth reporting: on a dead
+      // page the timeout is already the verdict.
+      if (retried) navWarnings.push('first navigation attempt timed out - retried once');
       docStatus = res?.status() ?? 0;
       await sleep(1200);
       // Many games wait for a click before they draw, and many of them want
@@ -203,7 +231,13 @@ async function main() {
     } catch (err) {
       jsErrors.push(`navigation: ${String(err.message ?? err).slice(0, 90)}`);
     }
-    await page.close();
+    // Closing a page whose target the browser already dropped throws. That is
+    // not a finding about the game, and it must never abort the audit.
+    try {
+      await page.close();
+    } catch {
+      /* target already gone */
+    }
 
     // One rule for "is this a working game?", shared with the harvest
     // validator so the two can never disagree.
@@ -215,12 +249,12 @@ async function main() {
       src: g.embed.src,
       verdict: verdict.ok ? 'ok' : 'DEAD',
       problems: verdict.reasons,
-      warnings: verdict.warnings,
+      warnings: [...verdict.warnings, ...navWarnings],
       detail: { ...probe, failed: failed.slice(0, 6), jsErrors: jsErrors.slice(0, 3) },
     });
   }
 
-  await browser.close();
+  await browser.close().catch(() => undefined);
   server?.kill();
 
   const dead = results.filter((r) => r.verdict === 'DEAD');
