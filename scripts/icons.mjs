@@ -119,12 +119,8 @@ export function iconSprite() {
 </defs>
 <symbol id="a-mark" viewBox="0 0 32 32">
   <rect width="32" height="32" rx="9" fill="currentColor"/>
-  <g fill="none" stroke="#0b1000" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M16 26V16"/>
-    <path d="M16 16c0-3.6-2.6-4.8-5.5-4.8M16 16c0-3.6 2.6-4.8 5.5-4.8"/>
-  </g>
-  <circle cx="10.5" cy="11.2" r="1.9" fill="#0b1000"/>
-  <circle cx="21.5" cy="11.2" r="1.9" fill="#0b1000"/>
+  <circle cx="16" cy="16" r="9.4" fill="none" stroke="#0b1000" stroke-width="3"/>
+  <path d="M13.6 11.4 21 16l-7.4 4.6Z" fill="#0b1000"/>
 </symbol>
 <symbol id="a-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
   <circle cx="12" cy="12" r="4.2"/>

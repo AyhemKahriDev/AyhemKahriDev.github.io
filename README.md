@@ -214,8 +214,10 @@ One system, three ingredients — ink, signal, coin.
   and data). All three are SIL OFL and **self-hosted** from `/fonts`, latin
   subset only: no third-party connection, no privacy leak, no font flash.
   Total: 115 kB for all three variable faces.
-- **Mark** — a path that forks: two branches from one line. It is the same
-  drawing in the wordmark, the favicon, the app icons and the social card.
+- **Mark** — a token with a play triangle cut into it: the coin you would
+  once have inserted, and the button you press instead. It is the same drawing
+  in the wordmark, the favicon, the app icons and the social card, and it
+  still reads at 16px where a thinner mark turned to mush.
 - **Hairlines, not borders** — every surface is a single `inset` 1px line plus
   a soft close shadow, so panels read as one material rather than a stack of
   boxes.
