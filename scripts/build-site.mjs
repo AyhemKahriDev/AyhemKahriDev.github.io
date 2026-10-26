@@ -96,6 +96,27 @@ function versionServiceWorker() {
   if (out !== src) writeFileSync(file, out);
 }
 
+/**
+ * Write dist/_headers: the committed file plus one generated, exact rule for
+ * the hashed game bundle.
+ *
+ * The bundle's name is only known after vite runs, and a wildcard will not do:
+ * Cloudflare merges every rule whose path matches, and `/assets/host.*.js`
+ * matches `/assets/host.js` as well, which produced a single header reading
+ * `max-age=0, must-revalidate, max-age=31536000, immutable` on the live site -
+ * both policies at once.
+ */
+function writeHeaders() {
+  const src = join(root, 'public/_headers');
+  if (!existsSync(src)) return;
+  const base = readFileSync(src, 'utf8').trimEnd();
+  const hashed = hostBundle === '/assets/host.js' ? '' : hostBundle;
+  const generated = hashed
+    ? `\n\n# Generated: the content-hashed game bundle (see scripts/build-site.mjs).\n${hashed}\n  Cache-Control: public, max-age=31536000, immutable\n`
+    : '';
+  writeFileSync(join(dist, '_headers'), `${base}${generated}`);
+}
+
 function computeAssetVersion() {
   const parts = [];
   for (const f of ['public/styles.css', 'public/ui.js']) {
@@ -1277,6 +1298,7 @@ function main() {
   computeAssetVersion();
   findHostBundle();
   versionServiceWorker();
+  writeHeaders();
   const today = todayISO();
   const urls = [];
 
