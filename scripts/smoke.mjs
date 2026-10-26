@@ -103,6 +103,14 @@ async function main() {
         warnings.push(`cors: ${text.slice(0, 60)}`);
         return;
       }
+      // A *report-only* CSP cannot block anything: the browser logs it and
+      // loads the resource. Several vendored games frame an ad or analytics
+      // page that ships one, and which of them run varies per visit, so
+      // failing on it made CI red for games that work.
+      if (/report-only Content Security Policy/i.test(text)) {
+        warnings.push(`csp-report-only: ${text.slice(0, 60)}`);
+        return;
+      }
       errors.push(`console: ${text}`);
     });
     page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
