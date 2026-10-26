@@ -300,6 +300,31 @@ const PER_GAME = {
       why: 'the bundled build has the same runtime-built sound paths',
     },
   ],
+  /* A file the author referenced but never committed is a 404 on every load.
+     The reference is dropped; the element itself stays because the game's own
+     script looks it up by id. */
+  'simonlc-tetr-js': [
+    {
+      file: 'index.html',
+      from: '<video id=bg src=bg.webm loop autoplay></video>',
+      to: '<video id=bg loop autoplay></video>',
+      why: 'bg.webm was never committed upstream, so every load asked for a file that cannot exist',
+    },
+  ],
+  'humage-virtual-weiqi-go-surround-chess': [
+    {
+      file: 'css/weiqi.css',
+      from: '#888 url(../image/chinese-ink-painting.jpg) no-repeat center center',
+      to: '#888 no-repeat center center',
+      why: 'chinese-ink-painting.jpg is not in the repository',
+    },
+    {
+      file: 'index.html',
+      from: '<img src="games/chess/image/virtual-weiqi-screenshot.jpg" alt="WeiQi Chinese Chess screenshot"> ',
+      to: '',
+      why: 'the screenshot it points at is not in the repository',
+    },
+  ],
 };
 
 function applyPerGame(name, gameDir, notes) {

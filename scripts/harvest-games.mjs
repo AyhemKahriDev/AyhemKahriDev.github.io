@@ -26,6 +26,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import { judgeGame } from './embed-health.mjs';
+import { findChrome } from './chrome.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const work = join(root, '.harvest');
@@ -386,20 +387,6 @@ function stat(p) {
 }
 
 /* ---------------------------------------------------------- validate */
-
-function findChrome() {
-  const base = join(homedir(), '.cache/hyperframes/chrome/chrome-headless-shell');
-  if (existsSync(base)) {
-    for (const v of readdirSync(base)) {
-      const p = join(base, v, 'chrome-headless-shell-linux64', 'chrome-headless-shell');
-      if (existsSync(p)) return p;
-    }
-  }
-  for (const p of ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser']) {
-    if (existsSync(p)) return p;
-  }
-  throw new Error('No Chrome found');
-}
 
 async function validate() {
   const vendored = readJson(join(work, 'vendored.json'), []);

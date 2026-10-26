@@ -11,30 +11,13 @@ import { join } from 'node:path';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
+import { findChrome } from './chrome.mjs';
 import { generateWordBoard, dateSeed, todayISO } from '../src/shared/daily.js';
 import { themeForDate } from '../src/shared/wordlists.js';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const shots = join(root, '.smoke');
 const port = 4179;
-
-function findChrome() {
-  const base = join(homedir(), '.cache/hyperframes/chrome/chrome-headless-shell');
-  if (existsSync(base)) {
-    for (const v of readdirSync(base)) {
-      const p = join(base, v, 'chrome-headless-shell-linux64', 'chrome-headless-shell');
-      if (existsSync(p)) return p;
-    }
-  }
-  for (const p of [
-    '/usr/bin/google-chrome',
-    '/usr/bin/chromium',
-    '/usr/bin/chromium-browser',
-  ]) {
-    if (existsSync(p)) return p;
-  }
-  throw new Error('No Chrome found. Run: npx hyperframes browser ensure');
-}
 
 const server = spawn(process.execPath, [join(root, 'scripts/serve-dist.mjs')], {
   env: { ...process.env, PORT: String(port) },

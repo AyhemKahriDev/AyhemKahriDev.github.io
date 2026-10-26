@@ -548,4 +548,28 @@
   } catch (e) {
     /* no worker, the site still works */
   }
+
+  /* ------------------------------------------- embedded game splash */
+  try {
+    Array.prototype.forEach.call(document.querySelectorAll('.embed-stage'), function (stage) {
+      var frame = stage.querySelector('iframe');
+      if (!frame) return;
+      var done = function () {
+        stage.classList.add('is-loaded');
+      };
+      frame.addEventListener('load', done);
+      // A frame restored from the back/forward cache can finish loading
+      // before this script runs, and its load event never fires again.
+      try {
+        if (frame.contentDocument && frame.contentDocument.readyState === 'complete') done();
+      } catch (e) {
+        /* cross-origin: the load event is the only signal */
+      }
+      // A lazy frame far below the fold never loads; do not leave a spinner
+      // turning forever.
+      setTimeout(done, 15000);
+    });
+  } catch (e) {
+    /* the splash is decoration; the frame still loads underneath it */
+  }
 })();

@@ -12,9 +12,10 @@
  * or the deploy would depend on one.
  */
 import { spawn } from 'node:child_process';
-import { existsSync, mkdirSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { findChrome } from './chrome.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const card = join(root, 'scripts/og-card.html');
@@ -31,20 +32,6 @@ function gameCount() {
     ? JSON.parse(readFileSync(generatedPath, 'utf8'))
     : { games: [] };
   return curated.games.length + (generated.games ?? []).length;
-}
-
-function findChrome() {
-  const base = join(process.env.HOME ?? '', '.cache/hyperframes/chrome/chrome-headless-shell');
-  if (existsSync(base)) {
-    for (const v of readdirSync(base)) {
-      const p = join(base, v, 'chrome-headless-shell-linux64', 'chrome-headless-shell');
-      if (existsSync(p)) return p;
-    }
-  }
-  for (const p of ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser']) {
-    if (existsSync(p)) return p;
-  }
-  throw new Error('No Chrome found. Run: npx hyperframes browser ensure');
 }
 
 const chrome = findChrome();

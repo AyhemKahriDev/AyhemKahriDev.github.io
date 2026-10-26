@@ -176,12 +176,19 @@ class Merge implements GameInstance {
   private finish(): void {
     if (this.over) return;
     this.over = true;
-    this.best = Math.max(this.score, this.ctx.storage.number('best', 0));
+    const previous = this.ctx.storage.number('best', 0);
+    this.best = Math.max(this.score, previous);
     this.ctx.storage.set('best', this.best);
     this.ctx.storage.inc('plays', 1);
     this.ctx.audio.play('gameover');
     this.ctx.analytics.track('game_over', { game: 'merge', score: this.score, won: this.won });
-    this.result = { score: this.score, best: this.best, won: this.won, detail: this.won ? 'Reached 2048' : 'No moves left' };
+    this.result = {
+      score: this.score,
+      best: this.best,
+      record: this.score > previous,
+      won: this.won,
+      detail: this.won ? 'Reached 2048' : 'No moves left',
+    };
   }
 
   private geo() {

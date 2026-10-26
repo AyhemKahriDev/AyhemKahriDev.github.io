@@ -2011,6 +2011,54 @@ td a {
   border-color: var(--signal-line);
 }
 
+/* Difficulty: a segmented control, sized like the icon buttons beside it. */
+.diff {
+  display: inline-flex;
+  align-items: stretch;
+  height: 38px;
+  padding: 2px;
+  border: 1px solid var(--hair);
+  border-radius: var(--r-sm);
+  background: var(--panel);
+}
+
+.diff-btn {
+  min-width: 34px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: calc(var(--r-sm) - 2px);
+  background: transparent;
+  color: var(--paper-3);
+  font-family: var(--f-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition:
+    color var(--t-fast),
+    background var(--t-fast);
+}
+
+.diff-btn:hover {
+  color: var(--paper);
+  background: var(--panel-2);
+}
+
+.diff-btn[aria-pressed='true'] {
+  color: var(--ink);
+  background: var(--signal);
+}
+
+.diff-btn:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 1px;
+}
+
+.diff-short {
+  display: none;
+}
+
 .stage {
   position: relative;
   flex: 1 1 auto;
@@ -2310,6 +2358,51 @@ td a {
   border: 0;
 }
 
+/* 149 of the games are other people's pages in an iframe. On a slow
+   connection a blank dark panel looks like a broken site, so the frame gets a
+   splash until it has actually loaded. ui.js adds .is-loaded. */
+.embed-splash {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 12px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--paper-3);
+  background: var(--ink);
+  transition: opacity 240ms ease;
+  pointer-events: none;
+}
+
+.embed-stage.is-loaded .embed-splash {
+  opacity: 0;
+}
+
+.embed-spinner {
+  width: 22px;
+  height: 22px;
+  border: 2px solid var(--hair-2);
+  border-top-color: var(--signal);
+  border-radius: 50%;
+  animation: embed-spin 700ms linear infinite;
+}
+
+@keyframes embed-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .embed-spinner {
+    animation: none;
+  }
+}
+
 .embed-main {
   min-height: 0;
 }
@@ -2394,6 +2487,29 @@ td a {
   clip: rect(0 0 0 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* First tab stop on every page: the header nav is 8 links deep on a phone. */
+.skip-link {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 200;
+  padding: 10px 16px;
+  border-radius: var(--r-sm);
+  background: var(--signal);
+  color: var(--ink);
+  font-weight: 700;
+  text-decoration: none;
+  transform: translateY(-160%);
+  transition: transform 160ms var(--e-out);
+}
+
+.skip-link:focus-visible,
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--paper);
+  outline-offset: 2px;
 }
 
 /* ============================================================
@@ -2616,6 +2732,26 @@ td a {
 
   .hud-value {
     font-size: 16px;
+  }
+
+  /* Three difficulty buttons plus two icon buttons do not fit the topbar
+     beside the HUD on a phone: keep the pressed level readable, shrink the
+     rest to their initial. */
+  .diff {
+    height: 34px;
+  }
+
+  .diff-btn {
+    min-width: 26px;
+    padding: 0 6px;
+  }
+
+  .diff-long {
+    display: none;
+  }
+
+  .diff-short {
+    display: inline;
   }
 
   .side-title {

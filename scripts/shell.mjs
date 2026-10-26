@@ -36,22 +36,46 @@ function rail(game, related, opts, extra = '') {
     </aside>`;
 }
 
+/**
+ * Difficulty, for the games that are built on this engine. The setting lives
+ * in localStorage (`af:difficulty`) and is applied by restarting the round, so
+ * the control has to look like a control: three real buttons, one pressed.
+ */
+function difficultyControl() {
+  const levels = [
+    ['easy', 'Easy', 'E'],
+    ['normal', 'Normal', 'N'],
+    ['hard', 'Hard', 'H'],
+  ];
+  return `<div class="diff" role="group" aria-label="Difficulty">
+        ${levels
+          .map(
+            ([id, label, short]) => `<button class="diff-btn" type="button" data-diff="${id}"
+          aria-pressed="${id === 'normal' ? 'true' : 'false'}"
+          title="${label} difficulty"><span class="diff-long">${label}</span><span class="diff-short" aria-hidden="true">${short}</span></button>`,
+          )
+          .join('')}
+      </div>`;
+}
+
 export function gameShell(game, opts = {}) {
   const related = opts.related ?? [];
   return `<main id="main" class="game-layout">
   <div class="game-main">
     <div class="topbar">
       <a class="brand" href="/" aria-label="arcadefork — home">${brandMark(26)}<span>arcade<b>fork</b></span></a>
-      <div class="hud" id="hud" aria-live="polite"></div>
+      <div class="hud" id="hud"></div>
       <div class="top-actions">
+        ${difficultyControl()}
         <button class="icon-btn" id="mute" type="button" aria-label="Toggle sound" aria-pressed="false">${glyph('a-sound', 17)}</button>
         <button class="icon-btn" id="fullscreen" type="button" aria-label="Fullscreen">${glyph('a-expand', 17)}</button>
       </div>
     </div>
     <div class="stage" id="stage">
-      <canvas id="game" aria-label="${game.title}"></canvas>
+      <canvas id="game" tabindex="-1" aria-label="${game.title}. Press space to start."></canvas>
       <div class="overlay" id="overlay"></div>
     </div>
+    <p class="sr-only" id="announce" role="status" aria-live="polite"></p>
   </div>
   ${rail(game, related, opts)}
 </main>`;
@@ -75,6 +99,10 @@ export function embedShell(game, opts = {}) {
       <a class="embed-open" href="${game.embed.src}" target="_blank" rel="noopener">Open full ${glyph('a-arrow', 13)}</a>
     </div>
     <div class="embed-stage">
+      <div class="embed-splash" aria-hidden="true">
+        <span class="embed-spinner"></span>
+        <span>Loading ${game.title}…</span>
+      </div>
       <iframe src="${game.embed.src}" title="${game.title}" loading="lazy"
               referrerpolicy="no-referrer"
               sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals allow-presentation allow-downloads"

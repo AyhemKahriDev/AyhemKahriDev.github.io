@@ -53,6 +53,39 @@ function htmlFilesIn(dir, depth = 0) {
  * picked up immediately.
  */
 let assetVersion = '0';
+/**
+ * The hashed filename of the game bundle that vite just emitted, e.g.
+ * `assets/host.a1b2c3d4.js`. Discovered rather than assumed: the entry is
+ * content-hashed, so a hardcoded name would 404 after the first deploy that
+ * changes the engine.
+ */
+let hostBundle = '/assets/host.js';
+function findHostBundle() {
+  const dir = join(dist, 'assets');
+  if (!existsSync(dir)) return hostBundle;
+  const hit = readdirSync(dir).find((f) => /^host\.[A-Za-z0-9_-]+\.js$/.test(f));
+  if (hit) hostBundle = `/assets/${hit}`;
+  else if (existsSync(join(dir, 'host.js'))) hostBundle = '/assets/host.js';
+  return hostBundle;
+}
+
+/**
+ * Version the offline cache with the deploy.
+ *
+ * The cache name used to be fixed, so a returning visitor kept the first
+ * stylesheet and ui.js they ever saw until the service worker happened to
+ * refresh them - and the stale entries were never evicted. Tying the name to
+ * the asset hash makes each deploy a new cache, and activate() deletes the
+ * rest.
+ */
+function versionServiceWorker() {
+  const file = join(dist, 'sw.js');
+  if (!existsSync(file)) return;
+  const src = readFileSync(file, 'utf8');
+  const out = src.replace(/__AF_VERSION__/g, assetVersion);
+  if (out !== src) writeFileSync(file, out);
+}
+
 function computeAssetVersion() {
   const parts = [];
   for (const f of ['public/styles.css', 'public/ui.js']) {
@@ -187,6 +220,7 @@ ${head}
 ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
 </head>
 <body class="${bodyClass}"${bodyAttrs ? ' ' + bodyAttrs : ''}>
+<a class="skip-link" href="#main">Skip to content</a>
 ${iconSprite()}
 ${body}
 ${script}
@@ -690,6 +724,23 @@ function buildGamePage(game) {
         acceptedAnswer: { '@type': 'Answer', text: f.a },
       })),
     },
+    // The breadcrumb is already on the page as markup; saying the same thing
+    // in structured data is what lets a result show Home › Category › Game
+    // instead of a bare URL.
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: abs('/') },
+        {
+          '@type': 'ListItem',
+          position: 2,
+          name: cat?.title ?? 'Games',
+          item: abs(`/categories/${game.category}/`),
+        },
+        { '@type': 'ListItem', position: 3, name: game.title, item: abs(`/games/${game.id}/`) },
+      ],
+    },
   ];
   const isEmbed = Boolean(game.embed);
   const shellOpts = { related, sponsor: sponsorBanner(game.category) };
@@ -716,7 +767,7 @@ function buildGamePage(game) {
   <h2>More free games</h2>
   <div class="linklist">${related.map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`).join('')}</div>
 </section>
-${isEmbed ? '' : '<script type="module" src="/assets/host.js"></script>'}`;
+${isEmbed ? '' : `<script type="module" src="${hostBundle}"></script>`}`;
   write(
     `games/${game.id}/index.html`,
     layout({
@@ -1214,6 +1265,8 @@ function main() {
   mkdirSync(dist, { recursive: true });
 
   computeAssetVersion();
+  findHostBundle();
+  versionServiceWorker();
   const today = todayISO();
   const urls = [];
 

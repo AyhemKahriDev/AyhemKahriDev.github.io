@@ -15,6 +15,13 @@ export interface HudLine {
 export interface GameResult {
   score: number;
   best: number;
+  /**
+   * True when this run beat the previous best. Games must compare against the
+   * stored best BEFORE writing the new one - `score >= best` is always true
+   * once best has been updated, which is how every result card ended up
+   * claiming a new record.
+   */
+  record?: boolean;
   won?: boolean;
   detail?: string;
 }

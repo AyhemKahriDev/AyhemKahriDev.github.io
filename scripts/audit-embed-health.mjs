@@ -23,6 +23,7 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
+import { findChrome as findChromeImpl } from './chrome.mjs';
 import { judgeGame } from './embed-health.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -47,17 +48,7 @@ const generated = existsSync(generatedPath)
 const GAMES = [...curated.games, ...(generated.games ?? generated)];
 
 function findChrome() {
-  const base = join(process.env.HOME ?? '', '.cache/hyperframes/chrome/chrome-headless-shell');
-  if (existsSync(base)) {
-    for (const v of readdirSync(base)) {
-      const p = join(base, v, 'chrome-headless-shell-linux64', 'chrome-headless-shell');
-      if (existsSync(p)) return p;
-    }
-  }
-  for (const p of ['/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser']) {
-    if (existsSync(p)) return p;
-  }
-  throw new Error('No Chrome found. Run: npx hyperframes browser ensure');
+  return findChromeImpl();
 }
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -100,7 +91,6 @@ async function main() {
 
   const origin = liveOrigin ?? `http://localhost:${port}`;
   const results = [];
-  let index = 0;
 
   // `node scripts/audit-embed-health.mjs <id> [<id>...]` checks only the
   // named games - useful when iterating on a single one.
@@ -109,9 +99,14 @@ async function main() {
     ? GAMES.filter((g) => g.embed?.src && only.includes(g.id))
     : GAMES.filter((g) => g.embed?.src);
 
-  for (const g of targets) {
-    index++;
-    process.stdout.write(`\r  ${index}/${targets.length} ${g.id}          `);
+  /**
+   * Check one game. Split out of the loop so several can run at once: a
+   * single-threaded run took ~25 minutes for 149 games, almost all of it
+   * waiting on a navigation or a deliberate settle delay, which made the gate
+   * too slow to run before every push.
+   */
+  async function check(g, order) {
+    process.stdout.write(`\r  ${order + 1}/${targets.length} ${g.id}          `);
     const page = await browser.newPage();
     await page.setViewport({ width: 1024, height: 768 });
 
@@ -244,6 +239,7 @@ async function main() {
     const verdict = judgeGame({ failed, jsErrors, status: docStatus, probe });
 
     results.push({
+      order,
       id: g.id,
       title: g.title,
       src: g.embed.src,
@@ -254,13 +250,47 @@ async function main() {
     });
   }
 
+  /* Four pages at a time is enough to keep the browser busy waiting on
+     navigations; more just competes for the same CPU and makes the 20s
+     timeouts flaky on a loaded runner. Override with AUDIT_JOBS. */
+  const jobs = Math.min(targets.length, Math.max(1, Number(process.env.AUDIT_JOBS ?? 4) || 4));
+  let next = 0;
+  await Promise.all(
+    Array.from({ length: jobs }, async () => {
+      while (next < targets.length) {
+        const i = next++;
+        try {
+          await check(targets[i], i);
+        } catch (err) {
+          results.push({
+            order: i,
+            id: targets[i].id,
+            title: targets[i].title,
+            src: targets[i].embed.src,
+            verdict: 'DEAD',
+            problems: [`the check itself failed: ${String(err?.message ?? err).slice(0, 90)}`],
+            warnings: [],
+            detail: { failed: [], jsErrors: [] },
+          });
+        }
+      }
+    }),
+  );
+  results.sort((a, b) => a.order - b.order);
+
   await browser.close().catch(() => undefined);
   server?.kill();
 
   const dead = results.filter((r) => r.verdict === 'DEAD');
   const warned = results.filter((r) => r.warnings?.length);
   if (process.argv.includes('--json')) {
-    console.log(JSON.stringify({ total: results.length, dead, warned }, null, 2));
+    const strip = (r) => {
+      const { order, ...rest } = r;
+      return rest;
+    };
+    console.log(
+      JSON.stringify({ total: results.length, dead: dead.map(strip), warned: warned.map(strip) }, null, 2),
+    );
   } else {
     console.log(
       `audit-embed-health: ${results.length} embedded games, ${dead.length} dead, ${warned.length} with warnings`,

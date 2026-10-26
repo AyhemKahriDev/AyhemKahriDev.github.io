@@ -6,7 +6,7 @@ import { startLoop } from './engine/loop';
 import { shareResult } from './engine/share';
 import { getGame } from './games';
 import { dateSeed, mulberry32, todayISO } from './shared/daily.js';
-import type { EngineContext, GameInstance, GameSpec } from './engine/types';
+import type { Difficulty, EngineContext, GameInstance, GameSpec } from './engine/types';
 
 interface GameMeta {
   id: string;
@@ -57,6 +57,7 @@ const stage = document.getElementById('stage') as HTMLElement | null;
 const hudEl = document.getElementById('hud') as HTMLElement | null;
 const overlay = document.getElementById('overlay') as HTMLElement | null;
 const muteBtn = document.getElementById('mute') as HTMLButtonElement | null;
+const announceEl = document.getElementById('announce') as HTMLElement | null;
 
 if (!canvas || !stage || !spec || !meta) {
   if (overlay) {
@@ -71,7 +72,9 @@ if (!canvas || !stage || !spec || !meta) {
 function boot(): void {
   const date = todayISO();
   const seed = dateSeed(date);
-  const difficulty = readDifficulty();
+  // Mutable: the difficulty control changes it mid-session and the next
+  // GameInstance reads it from the context getter.
+  let difficulty: Difficulty = readDifficulty();
 
   const sponsorSlots = sponsors.slots as {
     title: string;
@@ -122,7 +125,9 @@ function boot(): void {
     audio: bundle.audio,
     ads: bundle.ads,
     analytics: bundle.analytics,
-    difficulty,
+    get difficulty() {
+      return difficulty;
+    },
     get width() {
       return W;
     },
@@ -140,14 +145,32 @@ function boot(): void {
   const ctx = canvas!.getContext('2d');
   if (!ctx) throw new Error('2d context unavailable');
 
+  /** Screen-reader announcements; the HUD itself is too noisy to be live. */
+  let announceTimer = 0;
+  function announce(message: string): void {
+    if (!announceEl) return;
+    announceEl.textContent = '';
+    window.clearTimeout(announceTimer);
+    // A fresh tick lets the same message be announced twice in a row.
+    announceTimer = window.setTimeout(() => {
+      if (announceEl) announceEl.textContent = message;
+    }, 60);
+  }
+
   function resize(): void {
     const rect = stage!.getBoundingClientRect();
     const cs = getComputedStyle(stage!);
     const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight) || 0;
     const padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom) || 0;
-    W = Math.max(240, Math.floor(rect.width - padX));
-    H = Math.max(240, Math.floor(rect.height - padY));
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const nextW = Math.max(240, Math.floor(rect.width - padX));
+    const nextH = Math.max(240, Math.floor(rect.height - padY));
+    // Re-allocating the backing store clears the canvas and costs a full
+    // buffer copy, so only do it when the size really changed - a
+    // ResizeObserver fires far more often than the layout does.
+    if (nextW === W && nextH === H && canvas!.width === Math.floor(nextW * dpr)) return;
+    W = nextW;
+    H = nextH;
     canvas!.width = Math.floor(W * dpr);
     canvas!.height = Math.floor(H * dpr);
     canvas!.style.width = `${W}px`;
@@ -158,6 +181,23 @@ function boot(): void {
   resize();
   window.addEventListener('resize', resize);
   window.addEventListener('orientationchange', () => setTimeout(resize, 120));
+
+  // A ResizeObserver, not just `resize`: the stage also changes size when the
+  // side rail reflows, when the fonts finish loading, and when the browser
+  // chrome collapses on a phone. None of those fire a window resize event,
+  // and a stale 640x480 buffer inside a bigger stage renders blurry.
+  if (typeof ResizeObserver !== 'undefined') {
+    let queued = false;
+    const ro = new ResizeObserver(() => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => {
+        queued = false;
+        resize();
+      });
+    });
+    ro.observe(stage!);
+  }
 
   attachPointer(canvas!, {
     onDown: (p) => {
@@ -175,6 +215,15 @@ function boot(): void {
   });
 
   window.addEventListener('keydown', (e) => {
+    // Never steal a shortcut from the browser or from a text field: Cmd+R
+    // must reload, and typing into an input must not restart the game.
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const target = e.target as HTMLElement | null;
+    const tag = target?.tagName ?? '';
+    if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || target?.isContentEditable) {
+      return;
+    }
+
     // Space / Enter act on whatever overlay is up: start, or play again.
     if ((e.key === ' ' || e.key === 'Enter') && overlay?.classList.contains('is-open')) {
       e.preventDefault();
@@ -183,13 +232,19 @@ function boot(): void {
       return;
     }
     if (e.key === 'r' || e.key === 'R') {
-      restart();
+      if (playing || resultShown) {
+        e.preventDefault();
+        restart();
+      }
       return;
     }
     if (e.key === 'm' || e.key === 'M') {
       toggleMute();
       return;
     }
+    // Arrows and space scroll the page by default; inside a game they are
+    // input, and a page that jumps mid-run is unplayable.
+    if (playing && /^(Arrow|Space| )/.test(e.key)) e.preventDefault();
     instance.key?.(e);
   });
 
@@ -204,60 +259,138 @@ function boot(): void {
   }
 
   function toggleMute(): void {
-    bundle.audio.toggleMute();
+    const muted = bundle.audio.toggleMute();
     paintMute();
+    announce(muted ? 'Sound off' : 'Sound on');
   }
   paintMute();
+
+  /* ------------------------------------------------------- difficulty */
+  function paintDifficulty(): void {
+    document.querySelectorAll<HTMLButtonElement>('[data-diff]').forEach((btn) => {
+      btn.setAttribute('aria-pressed', String(btn.dataset.diff === difficulty));
+    });
+  }
+
+  function setDifficulty(next: Difficulty): void {
+    if (next === difficulty) return;
+    difficulty = next;
+    try {
+      localStorage.setItem('af:difficulty', next);
+    } catch {
+      /* the level still applies to this session */
+    }
+    paintDifficulty();
+    bundle.analytics.track('difficulty', { game: spec!.id, difficulty: next });
+    announce(`Difficulty ${next}`);
+    // The level is read when a GameInstance is created, so a change means a
+    // fresh round. Before the first round there is nothing to throw away.
+    if (playing || resultShown) restart();
+    else startOverlay();
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-diff]').forEach((btn) => {
+    btn.addEventListener('click', () => setDifficulty((btn.dataset.diff as Difficulty) ?? 'normal'));
+  });
+  paintDifficulty();
 
   // Fullscreen: the stage is the thing worth filling, not the rail.
   const fsBtn = document.getElementById('fullscreen');
   if (fsBtn) {
-    fsBtn.addEventListener('click', () => {
-      const el = stage!;
-      if (document.fullscreenElement) void document.exitFullscreen();
-      else void el.requestFullscreen?.().catch(() => undefined);
-    });
-    document.addEventListener('fullscreenchange', () => {
-      const on = Boolean(document.fullscreenElement);
-      fsBtn.setAttribute('aria-pressed', String(on));
-      fsBtn.setAttribute('aria-label', on ? 'Leave fullscreen' : 'Fullscreen');
-      resize();
-    });
+    if (!stage!.requestFullscreen) {
+      // iOS Safari has no element fullscreen: an inert button is worse than
+      // no button.
+      fsBtn.hidden = true;
+    } else {
+      fsBtn.addEventListener('click', () => {
+        const el = stage!;
+        if (document.fullscreenElement) void document.exitFullscreen();
+        else void el.requestFullscreen?.().catch(() => undefined);
+      });
+      document.addEventListener('fullscreenchange', () => {
+        const on = Boolean(document.fullscreenElement);
+        fsBtn.setAttribute('aria-pressed', String(on));
+        fsBtn.setAttribute('aria-label', on ? 'Leave fullscreen' : 'Fullscreen');
+        resize();
+      });
+    }
+  }
+
+  let hudHtml = '';
+  function paintHud(): void {
+    if (!hudEl) return;
+    // Rebuilding this every frame was 60-120 innerHTML writes a second for a
+    // scoreboard that changes once a second at most.
+    const html = instance
+      .hud()
+      .map(
+        (l) =>
+          `<span class="hud-item"><span class="hud-label">${escapeHtml(
+            l.label,
+          )}</span><span class="hud-value">${escapeHtml(l.value)}</span></span>`,
+      )
+      .join('');
+    if (html === hudHtml) return;
+    hudHtml = html;
+    hudEl.innerHTML = html;
   }
 
   function restart(): void {
     instance = spec!.create(engineCtx);
     resultShown = false;
     playing = true;
+    hudHtml = '';
     hideOverlay();
-    bundle.analytics.track('restart', { game: spec!.id });
+    bundle.analytics.track('restart', { game: spec!.id, difficulty });
+    announce('New round. Press R to restart, M to mute.');
   }
 
   function showOverlay(html: string): void {
     if (!overlay) return;
     overlay.innerHTML = html;
     overlay.classList.add('is-open');
+    // A dialog, not a div full of buttons: focus has to move into it or a
+    // keyboard player is tabbing through a hidden page behind the card.
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    if (overlay.querySelector('#ov-title')) overlay.setAttribute('aria-labelledby', 'ov-title');
+    const focusTarget = overlay.querySelector<HTMLElement>('[data-autofocus], button, a');
+    requestAnimationFrame(() => focusTarget?.focus());
   }
 
   function hideOverlay(): void {
     overlay?.classList.remove('is-open');
-    if (overlay) overlay.innerHTML = '';
+    if (overlay) {
+      overlay.innerHTML = '';
+      overlay.removeAttribute('role');
+      overlay.removeAttribute('aria-modal');
+      overlay.removeAttribute('aria-labelledby');
+    }
   }
 
   function begin(): void {
     bundle.audio.unlock();
     tg?.HapticFeedback?.impactOccurred('light');
-    bundle.analytics.track('play', { game: spec!.id });
+    bundle.analytics.track('play', { game: spec!.id, difficulty });
     playing = true;
+    hudHtml = '';
     hideOverlay();
+    announce('Game started. Press R to restart, M to mute.');
+  }
+
+  function difficultyLine(): string {
+    const hint =
+      difficulty === 'easy' ? 'gentler' : difficulty === 'hard' ? 'brutal' : 'the standard run';
+    return `Difficulty <strong>${difficulty}</strong> &middot; ${hint}`;
   }
 
   function startOverlay(): void {
     showOverlay(
       `<div class="card">
-        <h2>${escapeHtml(meta!.title)}</h2>
+        <h2 id="ov-title">${escapeHtml(meta!.title)}</h2>
         <p>${escapeHtml(meta!.tagline)}</p>
-        <button class="btn btn-primary" data-act="play">Play now</button>
+        <button class="btn btn-primary" data-act="play" data-autofocus>Play now</button>
+        <p class="fine">${difficultyLine()}</p>
         <p class="fine">Free &middot; no sign-up &middot; press <kbd>Space</kbd> to start</p>
       </div>`,
     );
@@ -267,14 +400,17 @@ function boot(): void {
   function resultOverlay(): void {
     const r = instance.result!;
     const promo = bundle.ads.houseAd();
-    const best = r.score >= r.best;
+    const record = Boolean(r.record);
     showOverlay(
       `<div class="card">
-        <h2>${r.won ? 'Solved!' : 'Run over'}</h2>
+        <h2 id="ov-title">${r.won ? 'Solved!' : 'Run over'}</h2>
         <div class="score">${r.score}</div>
-        <div class="meta">${r.detail ? escapeHtml(r.detail) + ' &middot; ' : ''}best ${r.best}${best ? ' &#9733;' : ''}</div>
+        <div class="meta">${r.detail ? escapeHtml(r.detail) + ' &middot; ' : ''}best ${r.best}${
+          record ? ' &#9733;' : ''
+        }</div>
+        ${record ? '<p class="fine">New personal best</p>' : ''}
         <div class="row">
-          <button class="btn btn-primary" data-act="again">Play again</button>
+          <button class="btn btn-primary" data-act="again" data-autofocus>Play again</button>
           <button class="btn" data-act="share">Share</button>
         </div>
         ${
@@ -283,6 +419,11 @@ function boot(): void {
             : ''
         }
       </div>`,
+    );
+    announce(
+      `${r.won ? 'Solved' : 'Run over'}. Score ${r.score}, best ${r.best}${
+        record ? ', a new personal best' : ''
+      }.`,
     );
     overlay!.querySelector('[data-act="again"]')?.addEventListener('click', restart);
     overlay!.querySelector('[data-act="share"]')?.addEventListener('click', async () => {
@@ -308,6 +449,7 @@ function boot(): void {
         },
       });
       bundle.analytics.track('share', { game: spec!.id, outcome });
+      if (outcome === 'copied') announce('Result copied to the clipboard');
     });
   }
 
@@ -316,23 +458,16 @@ function boot(): void {
   startLoop((dt) => {
     if (playing && !resultShown) instance.update(dt);
 
-    if (hudEl) {
-      hudEl.innerHTML = instance
-        .hud()
-        .map(
-          (l) =>
-            `<span class="hud-item"><span class="hud-label">${escapeHtml(
-              l.label,
-            )}</span><span class="hud-value">${escapeHtml(l.value)}</span></span>`,
-        )
-        .join('');
-    }
+    paintHud();
 
     ctx!.clearRect(0, 0, W, H);
     instance.render(ctx!);
 
     if (instance.result && !resultShown) {
       resultShown = true;
+      // Stop feeding input to a finished round: the overlay is up, and any
+      // stray tap underneath it would otherwise still move the board.
+      playing = false;
       tg?.HapticFeedback?.notificationOccurred(
         instance.result.won ? 'success' : 'error',
       );
@@ -342,7 +477,7 @@ function boot(): void {
   });
 }
 
-function readDifficulty(): 'easy' | 'normal' | 'hard' {
+function readDifficulty(): Difficulty {
   const param = new URLSearchParams(location.search).get('d');
   if (param === 'easy' || param === 'hard' || param === 'normal') return param;
   try {

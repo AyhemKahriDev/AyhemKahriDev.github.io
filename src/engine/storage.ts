@@ -52,7 +52,11 @@ export function createStorage(namespace: string): Storage {
       return Number.isFinite(n) ? n : fallback;
     },
     inc(k: string, by: number): number {
-      const next = this.number(k, 0) + by;
+      // Read through `read`, not `this.number`: a caller that destructures the
+      // storage object would otherwise lose the binding.
+      const raw = read(k);
+      const base = raw === null ? 0 : Number(raw);
+      const next = (Number.isFinite(base) ? base : 0) + by;
       write(k, JSON.stringify(next));
       return next;
     },

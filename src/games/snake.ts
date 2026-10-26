@@ -122,12 +122,18 @@ class Snake implements GameInstance {
   private finish(): void {
     if (this.over) return;
     this.over = true;
-    this.best = Math.max(this.score, this.ctx.storage.number('best', 0));
+    const previous = this.ctx.storage.number('best', 0);
+    this.best = Math.max(this.score, previous);
     this.ctx.storage.set('best', this.best);
     this.ctx.storage.inc('plays', 1);
     this.ctx.audio.play('gameover');
     this.ctx.analytics.track('game_over', { game: 'snake', score: this.score });
-    this.result = { score: this.score, best: this.best, detail: `length ${this.body.length}` };
+    this.result = {
+      score: this.score,
+      best: this.best,
+      record: this.score > previous,
+      detail: `length ${this.body.length}`,
+    };
   }
 
   private queueDir(d: Dir): void {

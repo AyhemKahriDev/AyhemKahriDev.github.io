@@ -8,22 +8,12 @@ import { existsSync, readFileSync, readdirSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
+import { findChrome } from './chrome.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 const port = 4183;
 const target = process.argv[2];
-
-function findChrome() {
-  const base = join(process.env.HOME ?? '', '.cache/hyperframes/chrome/chrome-headless-shell');
-  if (existsSync(base)) {
-    for (const v of readdirSync(base)) {
-      const p = join(base, v, 'chrome-headless-shell-linux64', 'chrome-headless-shell');
-      if (existsSync(p)) return p;
-    }
-  }
-  throw new Error('No Chrome found');
-}
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 

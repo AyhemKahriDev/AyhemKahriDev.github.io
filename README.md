@@ -235,6 +235,21 @@ One system, three ingredients — ink, signal, coin.
 - **Desktop** — a two-column shell: the game on the left, a side rail on the
   right with the game name, category links, "keep playing" links and the
   sponsor slot. The board itself is capped so it is not lost in a wide column.
+
+### Difficulty
+
+The four engine games take a level: **Easy / Normal / Hard**, chosen from the
+segmented control in the game's top bar. It is one setting shared by the
+whole arcade (`localStorage → af:difficulty`) and it is read when a round is
+created, so changing it starts a fresh round at the new level rather than
+silently altering the one in progress. On a phone the three buttons collapse
+to E / N / H so they fit beside the HUD.
+
+What the level changes, precisely: word search timer (150 / 100 / 60
+seconds), memory grid (4x3 / 4x4 / 6x4), snake tick (180 / 150 / 110 ms).
+2048 has fixed rules and ignores the setting. A `?d=easy|normal|hard` query
+parameter overrides the stored value for one visit.
+
 ### Themes
 
 Six coats, one system. A theme only swaps tokens — stage, panels, ink on
@@ -276,16 +291,28 @@ text all clear AA (the numbers are in
 ### Offline
 
 `/sw.js` is a small service worker: navigations are network-first (a deploy is
-picked up immediately) and every other same-origin GET is
-stale-while-revalidate. A game you have played once still opens with no
-connection. The manifest makes the arcade installable, with a maskable icon and
-two shortcuts.
+picked up immediately, with a 3.5 s fallback so a dying connection cannot hang
+the first paint) and every other same-origin GET is stale-while-revalidate. A
+game you have played once still opens with no connection, and a page you have
+never opened gets a plain "No connection" card instead of the browser's error.
+The manifest makes the arcade installable, with a maskable icon and two
+shortcuts.
+
+The cache name carries the deploy's asset hash, injected by the site builder,
+so each deploy starts a fresh cache and `activate` deletes the previous one.
+It also trims itself to 140 entries: 153 games plus art is otherwise a lot of
+megabytes on a phone.
 
 ### Security headers
 
 `public/_headers` sets a Content-Security-Policy (self-only scripts, styles,
 fonts and frames), `nosniff`, a referrer policy, `X-Frame-Options: SAMEORIGIN`
 and a Permissions-Policy that denies camera, microphone and location.
+
+That file is a Cloudflare Pages feature. GitHub Pages ignores it and sends its
+own `Cache-Control: max-age=600` for everything, so the fallback host is
+unprotected by these headers — one more reason the canonical URLs point at
+`arcadefork.pages.dev`.
 
 ---
 
@@ -451,6 +478,17 @@ verified without a deploy:
 AUDIT_ORIGIN=https://arcadefork.pages.dev npm run audit:health
 ```
 
+It checks four games at a time (`AUDIT_JOBS=8` to go wider) — serially the run
+spent almost all of its 25 minutes waiting on navigations. Any gate needs
+Chrome; `scripts/chrome.mjs` finds a cached headless shell, a system Chrome or
+`CHROME_PATH`, and the message when it finds none includes the one-line
+install command.
+
+```bash
+npx @puppeteer/browsers install chrome-headless-shell@stable \
+  --path ~/.cache/hyperframes/chrome
+```
+
 ---
 
 ## The quality gate
@@ -519,3 +557,49 @@ changed: the site can now pay for itself without an ad network.
   privacy page are the gates; nothing else is needed first.
 
 `outreach-pitch.md` is the one-paragraph message to send when offering a slot.
+
+---
+
+## Audit pass (2026-10-26)
+
+The whole gate was run from a clean clone — `typecheck`, `build`, `audit:links`
+(8,275 references), `audit:embeds` (149 embeds), `audit:assets`, `audit:health`
+(149 games in a real browser) and `smoke`. What it found, and what changed:
+
+### Bugs fixed
+
+| Where | Problem | Fix |
+|---|---|---|
+| `vite.config.ts`, `scripts/build-site.mjs` | `/assets/host.js` was served `immutable, max-age=31536000` but the filename never changed. Every returning visitor kept the first game bundle they ever downloaded — for a year. | The entry is content-hashed and the builder discovers the real filename. `package-itch` too. |
+| `src/host.ts` | The HUD's `innerHTML` was rebuilt on every frame: 60–120 DOM writes a second for a scoreboard that changes once a second. | Rendered into a string and written only when it changes. |
+| `src/host.ts`, `src/games/*` | `record` was computed as `score >= best` *after* `best` had been updated, so every result card announced a new personal best. | Games compare against the previous best before writing; `GameResult.record` carries it. |
+| `public/sw.js` | The cache name was a constant, so the offline cache was never versioned, never cleaned, and could serve a stale stylesheet; 404/206 bodies were cached; no size limit; a navigation could hang on the network. | Cache named by the deploy's asset hash (injected at build), trimmed to 140 entries, only complete 200s stored, 3.5 s navigation fallback, and a real offline page. |
+| `src/engine/analytics.ts` | With no analytics endpoint configured — the default — events queued forever in an array that could never drain. | Nothing is queued unless there is somewhere to send it; `pagehide` flush added. |
+| `src/engine/storage.ts` | `inc()` went through `this.number`, which breaks the moment a caller destructures the storage object. | Reads the key directly. |
+| `src/host.ts` | `Cmd/Ctrl+R` restarted the game *and* reloaded the page; keys were read while typing in a field; arrows scrolled the page mid-run; a finished round still accepted pointer input through the overlay. | Modifier, focus and input-target guards; arrows and space are claimed only while playing; `playing = false` when the result lands. |
+| `scripts/audit-embed-assets.mjs` | Two games failed the asset gate because `src=` values like `${show.image ? …` and `imagePath()` were treated as filenames. | Refs that cannot be a path are skipped, so the gate only reports real misses. |
+| `scripts/*.mjs` | Five copies of `findChrome`, each assuming one exact cache layout — all of them failed on a machine where the browser was installed correctly. | One `scripts/chrome.mjs` that walks the cache, then tries system paths, then `CHROME_PATH`. |
+| `scripts/audit-embed-health.mjs` | Serial: 149 games in ~25 minutes, which is too slow to run before a push. | Four-way pool (`AUDIT_JOBS`), and the run is now ~6 minutes. |
+| `third-party/yongchaofan-jsblockout` | Four sound files the author never committed: four 404s on every load, silent game. | Four generated tones, documented in that game's `ARCADEFORK-NOTICE.md`. |
+
+### Accessibility and polish
+
+- The start and result cards are real dialogs now: `role="dialog"`,
+  `aria-modal`, `aria-labelledby`, and focus moves to the primary button.
+- The HUD is no longer `aria-live` (it ticked a screen reader every second).
+  A hidden `role="status"` region announces the round start, the result, the
+  difficulty change and the mute state instead.
+- Skip link as the first tab stop, and the stage gets a `ResizeObserver` so
+  the backing store follows rail reflow, font load, fullscreen and mobile
+  browser-chrome collapse — not just `window.resize`.
+- A splash on embedded games: on a slow connection 149 iframes of other
+  people's pages used to look like a blank panel.
+- Game pages emit `BreadcrumbList` alongside `VideoGame` and `FAQPage`.
+
+### Feature added
+
+**Difficulty** — Easy / Normal / Hard in the game top bar, shared across the
+arcade, applied by starting a fresh round, and reflected in the start card.
+The engine already read `ctx.difficulty`; nothing ever set it, so the whole
+mechanism was dead code. `?d=` still overrides for one visit.
+

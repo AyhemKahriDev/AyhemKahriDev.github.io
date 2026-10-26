@@ -35,6 +35,22 @@ const CODE = /\.(js|mjs|css|wasm)$/i;
 
 const REF = /<(?:script|link|img|audio|video|source|iframe)\b[^>]*?\b(?:src|href)\s*=\s*["']([^"']+)["']/gi;
 
+/**
+ * A value in src= is not necessarily a filename.
+ *
+ * The vendored games are other people's code, and some of them write markup
+ * inside JavaScript template strings ("${show.image ? show.image.medium : ...}")
+ * or pass a function call through ("imagePath()"). Those matched the attribute
+ * regex and were reported as missing files, which is exactly the kind of false
+ * alarm that teaches everyone to ignore the gate.
+ */
+function looksLikePath(ref) {
+  if (/\$\{|\{\{|<<</.test(ref)) return false;
+  if (/[\s<>(){}`+*|\[\]\\]/.test(ref)) return false;
+  if (ref.startsWith('${')) return false;
+  return true;
+}
+
 const rows = [];
 
 for (const g of GAMES) {
@@ -52,6 +68,7 @@ for (const g of GAMES) {
   for (const m of html.matchAll(REF)) {
     const ref = m[1].trim();
     if (!ref) continue;
+    if (!looksLikePath(ref)) continue;
     if (/^(https?:)?\/\//i.test(ref)) continue;
     if (/^(data:|mailto:|tel:|javascript:|#)/i.test(ref)) continue;
 

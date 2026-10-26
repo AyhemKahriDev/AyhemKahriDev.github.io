@@ -160,7 +160,8 @@ class WordSearch implements GameInstance {
   private finish(won: boolean): void {
     if (this.over) return;
     this.over = true;
-    const best = Math.max(this.score, this.ctx.storage.number('best', 0));
+    const previous = this.ctx.storage.number('best', 0);
+    const best = Math.max(this.score, previous);
     this.ctx.storage.set('best', best);
     this.ctx.storage.inc('plays', 1);
     this.ctx.audio.play(won ? 'win' : 'gameover');
@@ -173,6 +174,7 @@ class WordSearch implements GameInstance {
     this.result = {
       score: this.score,
       best,
+      record: this.score > previous,
       won,
       detail: `${this.found.size}/${this.placed.length} words`,
     };

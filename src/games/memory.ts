@@ -148,7 +148,8 @@ class Memory implements GameInstance {
     if (this.over) return;
     this.over = true;
     const score = Math.max(100, 1200 - this.moves * 25 - Math.floor(this.seconds) * 4);
-    const best = Math.max(score, this.ctx.storage.number('best', 0));
+    const previous = this.ctx.storage.number('best', 0);
+    const best = Math.max(score, previous);
     this.ctx.storage.set('best', best);
     this.ctx.storage.inc('plays', 1);
     this.ctx.audio.play('win');
@@ -156,6 +157,7 @@ class Memory implements GameInstance {
     this.result = {
       score,
       best,
+      record: score > previous,
       won: true,
       detail: `${this.moves} moves · ${Math.floor(this.seconds)}s`,
     };

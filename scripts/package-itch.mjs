@@ -8,7 +8,7 @@
  *   npm run package:itch
  *   -> dist/itch/<game>/index.html + dist/itch/<game>.zip
  */
-import { cpSync, existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { cpSync, existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -52,6 +52,9 @@ function main() {
   const assets = join(dist, 'assets');
   const styles = join(dist, 'styles.css');
   const favicon = join(dist, 'favicon.svg');
+  // The game bundle is content-hashed by vite; find it instead of guessing.
+  const hostName =
+    readdirSync(assets).find((f) => /^host\.[A-Za-z0-9_-]+\.js$/.test(f)) ?? 'host.js';
 
   for (const game of content.games) {
     const dir = join(out, game.id);
@@ -73,7 +76,7 @@ ${gameShell(game)}
   <p>${esc(game.description)}</p>
   <p>Free to play in your browser - no download, no sign-up. More free games at ${esc(content.site.baseUrl.replace(/\/$/, ''))}.</p>
 </section>
-<script type="module" src="assets/host.js"></script>
+<script type="module" src="assets/${hostName}"></script>
 </body>
 </html>`;
     writeFileSync(join(dir, 'index.html'), html);

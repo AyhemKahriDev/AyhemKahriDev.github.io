@@ -19,10 +19,13 @@ export default defineConfig({
     rollupOptions: {
       input: { host: r('./src/host.ts') },
       output: {
-        // Deterministic entry name so the static site builder can reference it.
-        entryFileNames: 'assets/[name].js',
+        // Content-hashed entry name. /assets/* is served `immutable` with a
+        // one-year max-age, so a fixed name would pin the old game bundle in
+        // every returning visitor's cache for a year after a deploy. The site
+        // builder discovers the real filename.
+        entryFileNames: 'assets/[name].[hash].js',
         chunkFileNames: 'assets/[name].[hash].js',
-        assetFileNames: 'assets/[name][extname]',
+        assetFileNames: 'assets/[name].[hash][extname]',
       },
     },
   },
