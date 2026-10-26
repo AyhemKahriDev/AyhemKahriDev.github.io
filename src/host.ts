@@ -283,10 +283,16 @@ function boot(): void {
     paintDifficulty();
     bundle.analytics.track('difficulty', { game: spec!.id, difficulty: next });
     announce(`Difficulty ${next}`);
-    // The level is read when a GameInstance is created, so a change means a
-    // fresh round. Before the first round there is nothing to throw away.
-    if (playing || resultShown) restart();
-    else startOverlay();
+    // The level is read when a GameInstance is created, so a change always
+    // means a fresh instance. Before the first round that is just a rebuild
+    // behind the start card; mid-round it is a restart.
+    if (playing || resultShown) {
+      restart();
+    } else {
+      instance = spec!.create(engineCtx);
+      hudHtml = '';
+      startOverlay();
+    }
   }
 
   document.querySelectorAll<HTMLButtonElement>('[data-diff]').forEach((btn) => {
