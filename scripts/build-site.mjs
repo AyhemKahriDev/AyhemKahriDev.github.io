@@ -5,7 +5,7 @@
  * Everything is deterministic: same inputs -> same output, so the nightly
  * rebuild only adds new pages instead of churning URLs.
  */
-import { mkdirSync, writeFileSync, readFileSync, readdirSync, rmSync, existsSync, cpSync } from 'node:fs';
+import { mkdirSync, writeFileSync, readFileSync, readdirSync, rmSync, existsSync, cpSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import content from '../content/games.json' with { type: 'json' };
@@ -64,8 +64,18 @@ function findHostBundle() {
   const dir = join(dist, 'assets');
   if (!existsSync(dir)) return hostBundle;
   const hit = readdirSync(dir).find((f) => /^host\.[A-Za-z0-9_-]+\.js$/.test(f));
-  if (hit) hostBundle = `/assets/${hit}`;
-  else if (existsSync(join(dir, 'host.js'))) hostBundle = '/assets/host.js';
+  if (hit) {
+    hostBundle = `/assets/${hit}`;
+    // Keep a copy at the old fixed path for the transition: a visitor whose
+    // HTML is still in the HTTP cache asks for /assets/host.js, and this
+    // deploy no longer ships that name. The copy revalidates on every load
+    // (public/_headers), while the hashed original stays immutable.
+    try {
+      copyFileSync(join(dir, hit), join(dir, 'host.js'));
+    } catch {
+      /* the copy is a courtesy, not a requirement */
+    }
+  } else if (existsSync(join(dir, 'host.js'))) hostBundle = '/assets/host.js';
   return hostBundle;
 }
 

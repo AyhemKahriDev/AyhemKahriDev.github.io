@@ -1,3 +1,10 @@
+# Transitional copy of the game bundle at the pre-hashing path, kept for one
+# deploy cycle so cached HTML does not 404. It must revalidate - its content
+# changes while its name does not, which is the exact bug the hashed entry
+# fixed.
+/assets/host.js
+  Cache-Control: public, max-age=0, must-revalidate
+
 /assets/*
   Cache-Control: public, max-age=31536000, immutable
 
