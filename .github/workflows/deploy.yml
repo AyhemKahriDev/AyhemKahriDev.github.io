@@ -28,8 +28,24 @@ jobs:
       # optional dependency, so --ignore-scripts is safe here.
       - run: npm ci --ignore-scripts
       # The audits and the smoke test drive a real browser, so they need one.
+      # `@stable` resolves through a manifest on a third-party host, which
+      # occasionally answers with something that is not JSON (rate limited, or
+      # a proxy error page) and takes the whole deploy down before a single
+      # gate has run. Retry, then fall back to a pinned build that bypasses the
+      # lookup entirely.
       - name: Install Chrome
-        run: npx --yes @puppeteer/browsers install chrome-headless-shell@stable --path "$HOME/.cache/hyperframes/chrome"
+        run: |
+          set -euo pipefail
+          install() {
+            npx --yes @puppeteer/browsers install "$1" --path "$HOME/.cache/hyperframes/chrome"
+          }
+          for attempt in 1 2 3; do
+            if install chrome-headless-shell@stable; then exit 0; fi
+            echo "install attempt $attempt failed; retrying"
+            sleep $((attempt * 10))
+          done
+          echo "channel lookup is down; installing a pinned build instead"
+          install chrome-headless-shell@156.0.8078.47
       - run: npm run typecheck
       - run: npm run build
       # The gate. A broken game, a dead link or a page that no longer parses
