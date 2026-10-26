@@ -478,8 +478,9 @@ verified without a deploy:
 AUDIT_ORIGIN=https://arcadefork.pages.dev npm run audit:health
 ```
 
-It checks four games at a time (`AUDIT_JOBS=8` to go wider) — serially the run
-spent almost all of its 25 minutes waiting on navigations. Any gate needs
+It checks four games at a time (`AUDIT_JOBS=8` to go wider). On a 15-game
+sample that is 27 s serially versus 7 s with four workers; the full sweep of
+149 games takes about 1 m 50 s. Any gate needs
 Chrome; `scripts/chrome.mjs` finds a cached headless shell, a system Chrome or
 `CHROME_PATH`, and the message when it finds none includes the one-line
 install command.
@@ -579,7 +580,7 @@ The whole gate was run from a clean clone — `typecheck`, `build`, `audit:links
 | `src/host.ts` | `Cmd/Ctrl+R` restarted the game *and* reloaded the page; keys were read while typing in a field; arrows scrolled the page mid-run; a finished round still accepted pointer input through the overlay. | Modifier, focus and input-target guards; arrows and space are claimed only while playing; `playing = false` when the result lands. |
 | `scripts/audit-embed-assets.mjs` | Two games failed the asset gate because `src=` values like `${show.image ? …` and `imagePath()` were treated as filenames. | Refs that cannot be a path are skipped, so the gate only reports real misses. |
 | `scripts/*.mjs` | Five copies of `findChrome`, each assuming one exact cache layout — all of them failed on a machine where the browser was installed correctly. | One `scripts/chrome.mjs` that walks the cache, then tries system paths, then `CHROME_PATH`. |
-| `scripts/audit-embed-health.mjs` | Serial: 149 games in ~25 minutes, which is too slow to run before a push. | Four-way pool (`AUDIT_JOBS`), and the run is now ~6 minutes. |
+| `scripts/audit-embed-health.mjs` | Serial: one page at a time, 27 s for 15 games — the sweep was dominated by navigations and settle delays. | Four-way pool (`AUDIT_JOBS`); 7 s for the same 15, ~1 m 50 s for all 149. |
 | `third-party/yongchaofan-jsblockout` | Four sound files the author never committed: four 404s on every load, silent game. | Four generated tones, documented in that game's `ARCADEFORK-NOTICE.md`. |
 
 ### Accessibility and polish

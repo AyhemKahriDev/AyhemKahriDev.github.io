@@ -101,9 +101,9 @@ async function main() {
 
   /**
    * Check one game. Split out of the loop so several can run at once: a
-   * single-threaded run took ~25 minutes for 149 games, almost all of it
-   * waiting on a navigation or a deliberate settle delay, which made the gate
-   * too slow to run before every push.
+   * single-threaded sweep is dominated by navigations and settle delays
+   * (27 s for 15 games on a warm machine), and four at a time brings the same
+   * 15 to 7 s and all 149 games to about 1 m 50 s.
    */
   async function check(g, order) {
     process.stdout.write(`\r  ${order + 1}/${targets.length} ${g.id}          `);
