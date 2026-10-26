@@ -1,11 +1,13 @@
-# Transitional copy of the game bundle at the pre-hashing path, kept for one
-# deploy cycle so cached HTML does not 404. It must revalidate - its content
-# changes while its name does not, which is the exact bug the hashed entry
-# fixed.
+# Two disjoint patterns on purpose. Cloudflare Pages merges every rule whose
+# path matches, so `/assets/host.js` plus `/assets/*` produced a single header
+# reading `max-age=0, must-revalidate, max-age=31536000, immutable` - the exact
+# contradiction that pinned the game bundle for a year. Nothing overlaps here:
+# the hashed entry is immutable, the transitional copy revalidates. Any other
+# file under /assets/ falls back to Cloudflare's default, which revalidates.
 /assets/host.js
   Cache-Control: public, max-age=0, must-revalidate
 
-/assets/*
+/assets/host.*.js
   Cache-Control: public, max-age=31536000, immutable
 
 /fonts/*
