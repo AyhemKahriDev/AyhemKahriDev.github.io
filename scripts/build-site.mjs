@@ -145,7 +145,12 @@ const THEMES = [
   { id: 'ice', name: 'Ice', hint: 'cyan', sw: '#4fe3ff', sw2: '#050b12' },
   { id: 'dmg', name: 'DMG', hint: '1989 green', sw: '#9bbc0f', sw2: '#0b1410' },
   { id: 'vapor', name: 'Vapor', hint: 'hot pink', sw: '#ff6ec7', sw2: '#0d0716' },
+  { id: 'pixel', name: 'Pixel', hint: '16-bit cartridge', sw: '#ffcc4d', sw2: '#14121f' },
+  { id: 'crt', name: 'CRT', hint: 'phosphor + scanlines', sw: '#39ff88', sw2: '#04120c' },
+  { id: 'newsprint', name: 'Newsprint', hint: 'printed page', sw: '#b3402e', sw2: '#f2efe4', light: true },
 ];
+/** Themes whose stage is paper, not a screen: the browser chrome follows. */
+const LIGHT_THEMES = THEMES.filter((t) => t.light).map((t) => t.id);
 /** Curated games first, then the harvested catalogue. */
 const GAMES = [...content.games, ...(generated.games ?? [])];
 const CATEGORIES = content.categories.filter((c) => GAMES.some((g) => g.category === c.id));
@@ -235,14 +240,15 @@ function layout({
 /* Theme before first paint: no flash, and no render-blocking request. */
 (function () {
   var r = document.documentElement;
-  var ok = ['signal', 'lights', 'coinop', 'ice', 'dmg', 'vapor'];
+  var ok = ${JSON.stringify(THEMES.map((t) => t.id))};
+  var light = ${JSON.stringify(LIGHT_THEMES)};
   var t = 'signal';
   try {
     var saved = localStorage.getItem('af_theme');
     if (saved && ok.indexOf(saved) !== -1) t = saved;
   } catch (e) {}
   r.setAttribute('data-theme', t);
-  r.setAttribute('data-chrome', t === 'lights' ? 'light' : 'dark');
+  r.setAttribute('data-chrome', light.indexOf(t) !== -1 ? 'light' : 'dark');
   r.classList.remove('no-js');
   r.classList.add('js');
 })();
@@ -349,7 +355,7 @@ function siteHeader(active = '') {
           <p class="theme-pop-label">Theme</p>
           ${THEMES.map(
             (t) => `<button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
-              data-theme-id="${t.id}" style="--sw:${t.sw};--sw2:${t.sw2}">
+              data-theme-id="${t.id}"${t.light ? ' data-light="1"' : ''} style="--sw:${t.sw};--sw2:${t.sw2}">
               <span class="sw" aria-hidden="true"></span>
               <span class="nm">${t.name}<em>${t.hint}</em></span>
             </button>`,

@@ -226,6 +226,189 @@ html[data-theme='vapor'] {
   --coin-soft: #7df9ff1f;
 }
 
+/* 7 · Pixel — a 16-bit cartridge: 8 colours, hard 2px edges, zero radius,
+   no soft shadow anywhere. Shape is a token in this system, so the whole coat
+   is a token swap plus the pixel type face. */
+html[data-theme='pixel'] {
+  color-scheme: dark;
+  --ink: #14121f;
+  --ink-2: #191730;
+  --panel: #221f3d;
+  --panel-2: #2b2750;
+  --panel-3: #353066;
+  --sunk: #0f0d1a;
+  --hair: #ffffff1f;
+  --hair-2: #ffffff33;
+  --hair-3: #ffffff5c;
+  --paper: #f4f1e8;
+  --paper-2: #c3bede;
+  --paper-3: #a49ec4;
+  --signal: #ffcc4d;
+  --signal-2: #ffdd80;
+  --signal-ink: #1a1400;
+  --signal-text: #ffd980;
+  --signal-soft: #ffcc4d26;
+  --signal-line: #ffcc4d73;
+  --coin: #6fd3ff;
+  --coin-ink: #041820;
+  --coin-text: #9de5ff;
+  --coin-soft: #6fd3ff26;
+  --c-word: #ff8fb4;
+  --c-puzzle: #ffcc4d;
+  --c-arcade: #6fd3ff;
+  --c-brain: #8be08b;
+  --c-strategy: #ff9e6b;
+  --c-sandbox: #b9a4ff;
+  /* shape: nothing round, nothing soft */
+  --r-xs: 0px;
+  --r-sm: 0px;
+  --r-md: 0px;
+  --r-lg: 0px;
+  --r-xl: 0px;
+  --r-pill: 0px;
+  --lift: 0 0 0 2px var(--hair-3), 4px 4px 0 0 #000;
+  --lift-hi: 0 0 0 2px var(--signal-line), 6px 6px 0 0 #000;
+  --lift-signal: 0 0 0 2px var(--signal), 4px 4px 0 0 #000;
+  /* type: pixel display, pixel text, pixel numerals */
+  --f-display: 'Silkscreen', 'Pixelify Sans', ui-monospace, monospace;
+  --f-body: 'Pixelify Sans', ui-monospace, monospace;
+  --f-mono: 'Silkscreen', ui-monospace, monospace;
+  --t-label: 12px;
+  --t-sm: 14px;
+  --t-base: 16px;
+  --t-md: 18px;
+  --e-out: steps(4, end);
+  --e-spring: steps(6, end);
+  --t-fast: 90ms;
+  --t-mid: 140ms;
+  --t-slow: 240ms;
+}
+
+/* Pixel keeps the grid visible: a 4px checker, so panels sit on a tile floor
+   instead of a void. */
+html[data-theme='pixel'] body {
+  background-image: repeating-conic-gradient(#ffffff05 0% 25%, transparent 0% 50%);
+  background-size: 8px 8px;
+}
+html[data-theme='pixel'] img,
+html[data-theme='pixel'] canvas,
+html[data-theme='pixel'] svg.icon {
+  image-rendering: pixelated;
+}
+html[data-theme='pixel'] :focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+/* Several components carry a literal radius instead of a token. A pixel theme
+   cannot inherit those, so the corner is squared once, globally, rather than
+   leaving a stray 12px round on two panels. Scoped to the theme, and never
+   inside a vendored game (that is another document). */
+html[data-theme='pixel'] *:not(svg):not(svg *) {
+  border-radius: 0 !important;
+}
+
+/* A 5x7 pixel face loses its legibility below 12px, and several micro labels
+   are set at 9-11px. In this coat they get a floor and wider tracking instead
+   of turning to mush. */
+html[data-theme='pixel'] :is(.card .meta, .chip b, .hero-card-foot .meta, .hero-card-head h2,
+  .hero-card-head .ticket, .side-label, .theme-pop-label, .ticker-set b, .ticker-set i,
+  .tile .tag, kbd) {
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  line-height: 1.5;
+}
+
+/* ...and the same floor for the remaining micro copy: stat captions, the
+   ticker, feature notes and card footers. */
+html[data-theme='pixel'] :is(.stats-strip i, .stats-strip span, .ticker-set, .ticker-set b,
+  .ticker-set i, .feature p, .feature h3, .foot-note, .grid-featured .meta) {
+  font-size: 12px;
+  line-height: 1.55;
+  letter-spacing: 0.05em;
+}
+
+/* The D-pad's small R/P keys are the one place 12px type would break the pad
+   rhythm; they keep their own size. */
+html[data-theme='pixel'] .af-key-sm {
+  font-size: 11px;
+}
+
+/* 8 · CRT — a green phosphor tube. Scanlines are a real grid, not a texture
+   image, and they sit behind content so nothing is dimmed twice. */
+html[data-theme='crt'] {
+  color-scheme: dark;
+  --ink: #04120c;
+  --ink-2: #06180f;
+  --panel: #082015;
+  --panel-2: #0b2a1b;
+  --panel-3: #103722;
+  --sunk: #030e09;
+  --hair: #39ff881f;
+  --hair-2: #39ff8833;
+  --hair-3: #39ff8859;
+  --paper: #d8ffe2;
+  --paper-2: #9bd6ae;
+  --paper-3: #7fb894;
+  --signal: #39ff88;
+  --signal-2: #7dffae;
+  --signal-ink: #00200d;
+  --signal-text: #7dffae;
+  --signal-soft: #39ff8824;
+  --signal-line: #39ff8866;
+  --coin: #ffcf5c;
+  --coin-soft: #ffcf5c1f;
+  --f-mono: 'Geist Mono', ui-monospace, monospace;
+}
+html[data-theme='crt'] body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    #0000004d 0px,
+    #0000004d 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  mix-blend-mode: multiply;
+}
+html[data-theme='crt'] .brand,
+html[data-theme='crt'] h1,
+html[data-theme='crt'] h2 {
+  text-shadow: 0 0 12px #39ff8859;
+}
+
+/* 9 · Newsprint — a printed arcade page: warm stock, black ink, one red
+   signal. Light chrome, so it is registered as a light theme. */
+html[data-theme='newsprint'] {
+  color-scheme: light;
+  --ink: #f2efe4;
+  --ink-2: #faf8f0;
+  --panel: #fffdf6;
+  --panel-2: #f4f1e6;
+  --panel-3: #e8e4d6;
+  --sunk: #ece8db;
+  --hair: #14120e1a;
+  --hair-2: #14120e2e;
+  --hair-3: #14120e47;
+  --paper: #14120e;
+  --paper-2: #4a463c;
+  --paper-3: #5c5850;
+  --signal: #b3402e;
+  --signal-2: #d1523d;
+  --signal-ink: #fff6f2;
+  --signal-text: #99301f;
+  --signal-soft: #b3402e1a;
+  --signal-line: #b3402e59;
+  --coin: #1f5f8b;
+  --coin-ink: #f2f9ff;
+  --coin-text: #14507a;
+  --coin-soft: #1f5f8b1a;
+}
+
 /* ============================================================
    Base
    ============================================================ */
@@ -1032,18 +1215,20 @@ kbd {
 
 .ticker-set b {
   font-family: var(--f-mono);
-  font-size: 11px;
+  /* 11px at 0.14em tracking in --paper-3 was the weakest text on the page in
+     every coat; it is body-adjacent, so it gets body-adjacent legibility. */
+  font-size: 12px;
   font-weight: 500;
-  letter-spacing: 0.14em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--paper-3);
+  color: var(--paper-2);
   white-space: nowrap;
 }
 
 .ticker-set i {
   font-style: normal;
   color: var(--signal-text);
-  font-size: 9px;
+  font-size: 10px;
 }
 
 @keyframes ticker {
@@ -3009,8 +3194,10 @@ body.is-immersive .af-exit {
 }
 
 .af-key-sm {
-  width: 44px;
-  height: 34px;
+  /* 44px is the smallest height a thumb hits reliably; the first cut used 34,
+     which read as a label rather than a button on a phone. */
+  width: 48px;
+  height: 44px;
   font-size: 11px;
   letter-spacing: 0.06em;
 }
@@ -3039,6 +3226,148 @@ body.is-immersive .af-exit {
   opacity: 0;
 }
 
+/* ------------------------------------------------------------
+   Pad preferences
+   mode: swipe only hides the pad; hand: mirrors the two halves;
+   size: a bigger thumb target for large hands or bad light.
+   ------------------------------------------------------------ */
+
+.af-gear {
+  grid-column: 1 / -1;
+  width: 44px;
+  height: 44px;
+  justify-self: end;
+  font-size: 17px;
+  color: var(--paper-2);
+}
+
+body.af-mode-swipe .af-pad {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+body.af-hand-left .af-pad {
+  flex-direction: row-reverse;
+}
+
+body.af-size-lg .af-dpad {
+  grid-template-columns: repeat(3, 64px);
+  grid-template-rows: repeat(3, 64px);
+}
+
+body.af-size-lg .af-acts {
+  grid-template-columns: repeat(2, 70px);
+  grid-auto-rows: 70px;
+}
+
+body.af-size-lg .af-key-a,
+body.af-size-lg .af-key-b {
+  width: 70px;
+  height: 70px;
+  font-size: 19px;
+}
+
+body.af-size-lg .af-key-sm {
+  width: 54px;
+  height: 42px;
+  font-size: 12px;
+}
+
+/* ------------------------------------------------------------
+   Controls sheet — four rows, each one cycles on tap.
+   ------------------------------------------------------------ */
+
+.af-sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: grid;
+  place-items: end center;
+  padding: 16px;
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  background: #00000066;
+  animation: af-sheet-in var(--t-mid) var(--e-out);
+}
+
+@keyframes af-sheet-in {
+  from {
+    opacity: 0;
+  }
+}
+
+.af-sheet.is-out {
+  opacity: 0;
+  transition: opacity var(--t-fast) var(--e-out);
+}
+
+.af-sheet-in {
+  width: min(100%, 420px);
+  padding: 14px;
+  border: 1px solid var(--hair-2);
+  border-radius: var(--r-lg);
+  background: var(--panel);
+  box-shadow: var(--lift-hi);
+}
+
+.af-sheet-t {
+  margin: 0 0 10px;
+  color: var(--paper-3);
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.af-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: var(--tap);
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--hair);
+  border-radius: var(--r-sm);
+  background: var(--panel-2);
+  color: var(--paper);
+  font-family: var(--f-body);
+  font-size: var(--t-sm);
+  text-align: left;
+  cursor: pointer;
+}
+
+.af-row + .af-row {
+  margin-top: 8px;
+}
+
+.af-row:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.af-row-v {
+  color: var(--signal-text);
+  font-family: var(--f-mono);
+  font-size: var(--t-label);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.af-done {
+  margin-top: 12px;
+  background: var(--signal);
+  border-color: transparent;
+  color: var(--signal-ink);
+  font-weight: 600;
+}
+
+.af-done .af-row-v {
+  color: var(--signal-ink);
+  opacity: 0.7;
+}
+
 /* Landscape: the thumbs want the sides, not the bottom. */
 @media (orientation: landscape) and (max-height: 560px) {
   .af-dpad {
@@ -3065,7 +3394,9 @@ body.is-immersive .af-exit {
 @media (prefers-reduced-motion: reduce) {
   .af-pad,
   .af-hint,
-  .af-key {
+  .af-key,
+  .af-sheet {
     transition: none;
+    animation: none;
   }
 }

@@ -303,9 +303,11 @@ parameter overrides the stored value for one visit.
 
 ### Themes
 
-Six coats, one system. A theme only swaps tokens — stage, panels, ink on
-stage, the signal colour and the coin. Shape, spacing, type and motion never
-change, so every theme is the same product in a different colour.
+Nine coats, one system. Six of them swap colour only — stage, panels, ink on
+stage, the signal colour and the coin — so they are the same product in a
+different colour. Three go further and move shape and type as well, because a
+cartridge does not have 12px rounded corners: `pixel` is the 16-bit coat, `crt`
+adds a scanline grid, `newsprint` is a light printed page.
 
 | Theme | Stage | Signal | Character |
 |---|---|---|---|
@@ -315,6 +317,14 @@ change, so every theme is the same product in a different colour.
 | **Ice** | blue-black | cyan | cool, arcade-classic |
 | **DMG** | olive-black | 1989 green | the handheld |
 | **Vapor** | violet | hot pink | neon night |
+| **Pixel** | indigo | gold | 16-bit cartridge: zero radius, hard 2px edges, offset shadows, Silkscreen + Pixelify Sans, stepped easing, 8px tile floor |
+| **CRT** | phosphor black | green | a green tube with a real scanline grid and glowing headings |
+| **Newsprint** | paper | brick red | printed page, light chrome |
+
+`pixel` and `newsprint` are the reason shape is tokenised: `--r-*`, `--lift*`,
+`--f-*` and the easing set are all theme-scoped, so the pixel coat squares the
+corners once instead of leaving a stray 12px round on two panels. Its micro
+type gets a 12px floor — a 5×7 pixel face turns to mush below that.
 
 The picker lives in the header (a paint-chip button). It is a real menu
 button: `↑`/`↓`, `Home`/`End`, `Esc`, click-outside, and the current theme is
@@ -322,9 +332,10 @@ marked with `aria-checked`. The choice persists in `localStorage` and is
 applied by an inline script **before first paint**, so there is no flash. The
 browser chrome colour (`theme-color`) follows the theme too.
 
-Every theme is contrast-checked: body, secondary, meta, coin and on-signal
-text all clear AA (the token values and their pairings live in
-`public/styles.css` under `:root`).
+Every theme is contrast-checked — `npm run themes` parses the token blocks out
+of `public/styles.css`, resolves the pairs that actually carry text and fails
+the build on anything under WCAG AA (108 pairs across 9 themes today). The
+check runs in CI with the other audits.
 - **Keyboard** — visible focus rings, `/` focuses search, `Esc` clears it, `R`
   restarts a game, `M` mutes, arrows and WASD move, `Space` starts.
 

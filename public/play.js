@@ -179,10 +179,171 @@
       keyButton('pause', 'af-key-sm', 'P', 'Pause') +
       keyButton('b', 'af-key-b', 'B', 'Action B') +
       keyButton('a', 'af-key-a', 'A', 'Action') +
+      '<button type="button" class="af-key af-gear" id="af-gear" aria-label="Control settings"' +
+      ' aria-haspopup="dialog" aria-expanded="false">\u2699</button>' +
       '</div>';
     document.body.appendChild(pad);
-    Array.prototype.forEach.call(pad.querySelectorAll('.af-key'), bindKey);
+    Array.prototype.forEach.call(pad.querySelectorAll('.af-key[data-k]'), bindKey);
+    var gear = pad.querySelector('#af-gear');
+    if (gear) {
+      gear.addEventListener('click', function (e) {
+        e.preventDefault();
+        openSheet();
+      });
+    }
     return pad;
+  }
+
+  /* ------------------------------------------------------------ pad prefs */
+  /**
+   * A thumb is not a keyboard, and one pad shape does not fit every game or
+   * every pair of hands. Four preferences, stored per game, applied as classes
+   * on <body> so the stylesheet owns the layout:
+   *
+   *   mode   pad | swipe | both   what steers (some puzzle games need drag)
+   *   hand   right | left         which side the D-pad sits on
+   *   size   md | lg              how big the buttons are
+   *   buzz   on | off             a short haptic tick per press
+   */
+  var prefs = {
+    mode: read('af_mode_' + gameId, 'both'),
+    hand: read('af_hand_' + gameId, 'right'),
+    size: read('af_size_' + gameId, 'md'),
+    buzz: read('af_buzz', '1') !== '0',
+  };
+  if (['pad', 'swipe', 'both'].indexOf(prefs.mode) === -1) prefs.mode = 'both';
+  if (['left', 'right'].indexOf(prefs.hand) === -1) prefs.hand = 'right';
+  if (['md', 'lg'].indexOf(prefs.size) === -1) prefs.size = 'md';
+
+  function applyPrefs() {
+    var b = document.body;
+    b.classList.toggle('af-mode-pad', prefs.mode === 'pad');
+    b.classList.toggle('af-mode-swipe', prefs.mode === 'swipe');
+    b.classList.toggle('af-hand-left', prefs.hand === 'left');
+    b.classList.toggle('af-size-lg', prefs.size === 'lg');
+    b.classList.toggle('af-buzz-off', !prefs.buzz);
+    if (prefs.mode === 'swipe' && pad) pad.classList.add('is-off');
+    if (prefs.mode !== 'swipe' && pad && gestures) pad.classList.remove('is-off');
+  }
+
+  function buzz() {
+    if (!prefs.buzz) return;
+    try {
+      if (navigator.vibrate) navigator.vibrate(9);
+    } catch (e) {
+      /* no haptics on this device */
+    }
+  }
+
+  /* The sheet is a plain list of choices: every row cycles, no text entry, so
+     it works with a thumb and with a keyboard. */
+  var OPTIONS = {
+    mode: ['both', 'pad', 'swipe'],
+    hand: ['right', 'left'],
+    size: ['md', 'lg'],
+    buzz: ['on', 'off'],
+  };
+  var LABELS = {
+    mode: 'Steering',
+    hand: 'D-pad side',
+    size: 'Button size',
+    buzz: 'Haptic tick',
+  };
+  var NAMES = {
+    both: 'pad + swipe',
+    pad: 'pad only',
+    swipe: 'swipe only',
+    right: 'right',
+    left: 'left',
+    md: 'normal',
+    lg: 'large',
+    on: 'on',
+    off: 'off',
+  };
+
+  function savePrefs() {
+    write('af_mode_' + gameId, prefs.mode);
+    write('af_hand_' + gameId, prefs.hand);
+    write('af_size_' + gameId, prefs.size);
+    write('af_buzz', prefs.buzz ? '1' : '0');
+    applyPrefs();
+  }
+
+  var sheet = null;
+
+  function closeSheet() {
+    if (!sheet) return;
+    var s = sheet;
+    sheet = null;
+    s.classList.add('is-out');
+    setTimeout(function () {
+      if (s.parentNode) s.parentNode.removeChild(s);
+    }, 160);
+    var gear = document.getElementById('af-gear');
+    if (gear) {
+      gear.setAttribute('aria-expanded', 'false');
+      gear.focus();
+    }
+  }
+
+  function buildSheet() {
+    if (sheet) return sheet;
+    sheet = document.createElement('div');
+    sheet.className = 'af-sheet';
+    sheet.setAttribute('role', 'dialog');
+    sheet.setAttribute('aria-label', 'Controls');
+    var rows = Object.keys(OPTIONS)
+      .map(function (key) {
+        var value = key === 'buzz' ? (prefs.buzz ? 'on' : 'off') : prefs[key];
+        return (
+          '<button class="af-row" type="button" data-pref="' + key + '">' +
+          '<span class="af-row-l">' + LABELS[key] + '</span>' +
+          '<span class="af-row-v">' + NAMES[value] + '</span>' +
+          '</button>'
+        );
+      })
+      .join('');
+    sheet.innerHTML =
+      '<div class="af-sheet-in">' +
+      '<p class="af-sheet-t">Controls</p>' +
+      rows +
+      '<button class="af-row af-done" type="button" data-done="1">' +
+      '<span class="af-row-l">Done</span><span class="af-row-v">esc</span>' +
+      '</button>' +
+      '</div>';
+    Array.prototype.forEach.call(sheet.querySelectorAll('[data-pref]'), function (btn) {
+      btn.addEventListener('click', function () {
+        var key = btn.getAttribute('data-pref');
+        if (key === 'buzz') {
+          prefs.buzz = !prefs.buzz;
+          if (prefs.buzz) buzz();
+        } else {
+          var list = OPTIONS[key];
+          prefs[key] = list[(list.indexOf(prefs[key]) + 1) % list.length];
+        }
+        savePrefs();
+        buzz();
+        var value = key === 'buzz' ? (prefs.buzz ? 'on' : 'off') : prefs[key];
+        var out = btn.querySelector('.af-row-v');
+        if (out) out.textContent = NAMES[value];
+      });
+    });
+    var done = sheet.querySelector('[data-done]');
+    if (done) done.addEventListener('click', closeSheet);
+    sheet.addEventListener('click', function (e) {
+      if (e.target === sheet) closeSheet();
+    });
+    document.body.appendChild(sheet);
+    var gear = document.getElementById('af-gear');
+    if (gear) gear.setAttribute('aria-expanded', 'true');
+    var first = sheet.querySelector('[data-pref]');
+    if (first) first.focus();
+    return sheet;
+  }
+
+  function openSheet() {
+    if (sheet) closeSheet();
+    else buildSheet();
   }
 
   var REPEAT_SLOTS = { left: 1, right: 1, up: 1, down: 1 };
@@ -197,6 +358,7 @@
       if (held) return;
       held = true;
       btn.classList.add('is-down');
+      buzz();
       fire(slot, 'keydown');
       if (REPEAT_SLOTS[slot]) {
         timer = setInterval(function () {
@@ -237,6 +399,7 @@
   var gesture = { live: false, x: 0, y: 0, at: 0, moved: false };
 
   function onTouchStart(e) {
+    if (prefs.mode === 'pad') return;
     if (e.touches.length !== 1) return;
     var t = e.touches[0];
     gesture.live = true;
@@ -497,6 +660,8 @@
   }
 
   function init() {
+    applyPrefs();
+
     // Immersive is the default on a phone: the page is the game.
     if (coarse) {
       setImmersive(read('af_immersive', '1') === '1', false);
@@ -549,6 +714,10 @@
     }
 
     document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && sheet) {
+        closeSheet();
+        return;
+      }
       if (e.key === 'Escape' && immersiveOn()) exitImmersive();
     });
 

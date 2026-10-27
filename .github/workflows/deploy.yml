@@ -54,6 +54,11 @@ jobs:
         run: npm run audit
       - name: Smoke test
         run: npm run smoke
+
+      # Colour is a token tree here, so a theme can be checked without a
+      # browser - and a theme nobody can read must never reach the menu.
+      - name: Theme contrast
+        run: npm run themes
       - uses: actions/upload-artifact@v4
         with:
           name: dist

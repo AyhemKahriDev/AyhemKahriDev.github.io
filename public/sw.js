@@ -10,7 +10,17 @@
    cache, and nothing ever evicted them. */
 
 const CACHE = 'af-__AF_VERSION__';
-const SHELL = ['/', '/games/', '/styles.css', '/fonts.css', '/ui.js', '/favicon.svg'];
+const SHELL = [
+  '/',
+  '/games/',
+  '/styles.css',
+  '/fonts.css',
+  '/ui.js',
+  // The play layer is what makes a game usable on a phone; a cached page
+  // without it opens into an unplayable frame when offline.
+  '/play.js',
+  '/favicon.svg',
+];
 
 /* Keeps the cache from growing without limit: 153 games plus art is a lot of
    megabytes on a phone. */

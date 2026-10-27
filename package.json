@@ -18,6 +18,7 @@
     "deploy": "npm run build && wrangler deploy",
     "smoke": "node scripts/smoke.mjs",
     "check:mobile": "node scripts/mobile-check.mjs",
+    "themes": "node scripts/theme-contrast.mjs",
     "fix:embeds": "node scripts/embed-fixes.mjs",
     "og:image": "node scripts/og-image.mjs",
     "audit": "npm run audit:links && npm run audit:embeds && npm run audit:assets && npm run audit:health",

@@ -22,27 +22,35 @@
 
   /* ------------------------------------------------------- theme */
   try {
-    var THEME_LABELS = {
-      signal: 'Signal',
-      lights: 'Lights on',
-      coinop: 'Coin-op',
-      ice: 'Ice',
-      dmg: 'DMG',
-      vapor: 'Vapor',
-    };
     var themeBtn = document.getElementById('btn-theme');
     var themePop = document.getElementById('theme-pop');
     var themeItems = Array.prototype.slice.call(
       document.querySelectorAll('[data-theme-id]'),
     );
 
+    /* One source of truth: the menu markup. A new coat is a THEMES entry in
+       the builder, and the switcher labels itself from the DOM. */
+    var themeLabels = {};
+    themeItems.forEach(function (el) {
+      var nm = el.querySelector('.nm');
+      themeLabels[el.getAttribute('data-theme-id')] = nm
+        ? (nm.textContent || '').split('\n')[0].replace(/\s+/g, ' ').trim()
+        : el.getAttribute('data-theme-id');
+    });
+
     function paintTheme(id) {
       root.setAttribute('data-theme', id);
-      root.setAttribute('data-chrome', id === 'lights' ? 'light' : 'dark');
+      var item = themeItems.filter(function (el) {
+        return el.getAttribute('data-theme-id') === id;
+      })[0];
+      root.setAttribute(
+        'data-chrome',
+        item && item.getAttribute('data-light') ? 'light' : 'dark',
+      );
       themeItems.forEach(function (el) {
         el.setAttribute('aria-checked', String(el.getAttribute('data-theme-id') === id));
       });
-      if (themeBtn) themeBtn.setAttribute('aria-label', 'Theme: ' + (THEME_LABELS[id] || id));
+      if (themeBtn) themeBtn.setAttribute('aria-label', 'Theme: ' + (themeLabels[id] || id));
       var meta = document.getElementById('meta-theme');
       if (meta) {
         var bg = getComputedStyle(root).getPropertyValue('--ink').trim();
@@ -547,6 +555,55 @@
     }
   } catch (e) {
     /* no worker, the site still works */
+  }
+
+  /* ------------------------------------------------------ prefetch */
+  /**
+   * A game page is one HTML file; the game itself is a lazy iframe inside it.
+   * Fetching that HTML when the pointer lands on a tile (or the tile takes
+   * focus) takes the network wait out of the click without spending a byte on
+   * someone who is only scrolling. Capped, and skipped on metered or slow
+   * connections.
+   */
+  try {
+    var saveData = navigator.connection && navigator.connection.saveData;
+    var et = (navigator.connection && navigator.connection.effectiveType) || '';
+    var slow = et === 'slow-2g' || et === '2g';
+    if (!saveData && !slow) {
+      var seen = {};
+      var spent = 0;
+      var warm = function (a) {
+        if (!a || spent >= 14) return;
+        var href = a.getAttribute('href') || '';
+        if (href.indexOf('/games/') !== 0 || href.indexOf('#') !== -1) return;
+        if (seen[href]) return;
+        seen[href] = 1;
+        spent++;
+        var link = document.createElement('link');
+        link.rel = 'prefetch';
+        link.as = 'document';
+        link.href = href;
+        document.head.appendChild(link);
+      };
+      document.addEventListener(
+        'pointerover',
+        function (e) {
+          var a = e.target && e.target.closest ? e.target.closest('a[href^="/games/"]') : null;
+          if (a) warm(a);
+        },
+        { passive: true },
+      );
+      document.addEventListener(
+        'focusin',
+        function (e) {
+          var a = e.target && e.target.closest ? e.target.closest('a[href^="/games/"]') : null;
+          if (a) warm(a);
+        },
+        { passive: true },
+      );
+    }
+  } catch (e) {
+    /* prefetch is an optimisation; nothing depends on it */
   }
 
   /* ------------------------------------------- embedded game splash */

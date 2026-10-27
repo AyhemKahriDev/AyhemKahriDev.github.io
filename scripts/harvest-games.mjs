@@ -207,10 +207,38 @@ function writeJson(file, data) {
   writeFileSync(file, JSON.stringify(data, null, 2));
 }
 
+/**
+ * Search API calls are capped at 30/minute. A call that comes back empty is
+ * almost always that cap rather than "no results", so wait for the window to
+ * reset and ask again instead of silently ending the sweep - which is how an
+ * earlier run collected 144 candidates out of a 1600 target and looked fine.
+ */
+function ghSearch(args) {
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const raw = gh(args);
+    if (raw) return raw;
+    let reset = 0;
+    try {
+      reset = Number(
+        JSON.parse(gh(['api', 'rate_limit']) || '{}')?.resources?.search?.reset ?? 0,
+      );
+    } catch {
+      reset = 0;
+    }
+    const waitS = reset ? Math.ceil(reset - Date.now() / 1000) + 2 : 15;
+    execFileSync('sleep', [String(Math.max(2, Math.min(waitS, 90)))]);
+  }
+  return '';
+}
+
 /* ------------------------------------------------------------- sweep */
 
 function sweep() {
-  const seen = new Map();
+  // Candidates found by an earlier sweep are kept: a deep sweep is meant to
+  // accumulate across runs, and overwriting the file threw away every repo the
+  // previous run had already paid API calls for.
+  const previous = readJson(join(work, 'candidates.json'), []);
+  const seen = new Map(previous.map((c) => [c.repo, c]));
   let queries = 0;
   let calls = 0;
 
@@ -232,10 +260,18 @@ function sweep() {
         if (maxCalls && calls >= maxCalls) break;
         if (target && seen.size >= target) break;
         calls++;
-        const raw = gh([
+        if (calls % 25 === 0) {
+          process.stderr.write(
+            `  sweep: ${calls} calls, ${seen.size} candidates (${q} / ${lic} / p${page})\n`,
+          );
+        }
+        const raw = ghSearch([
           'api',
           `search/repositories?q=${encodeURIComponent(`${q} license:${lic} stars:>2`)}&per_page=100&page=${page}&sort=stars`,
         ]);
+        // 30 a minute is the cap; 2.1s a call keeps a long sweep under it
+        // instead of spending most of its budget waiting for a reset.
+        execFileSync('sleep', ['2.1']);
         if (!raw) break;
         let payload = {};
         try {
