@@ -334,6 +334,14 @@ html[data-theme='pixel'] .af-key-sm {
   font-size: 11px;
 }
 
+/* Silkscreen draws a capital A as a flat-topped triangle: at button size it
+   reads as a house, and a control label that has to be decoded is not a label.
+   Pad glyphs keep the rounder pixel face and gain weight instead. */
+html[data-theme='pixel'] .af-key {
+  font-family: 'Pixelify Sans', ui-monospace, monospace;
+  font-weight: 700;
+}
+
 /* 8 · CRT — a green phosphor tube. Scanlines are a real grid, not a texture
    image, and they sit behind content so nothing is dimmed twice. */
 html[data-theme='crt'] {
