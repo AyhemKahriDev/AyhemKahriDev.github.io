@@ -212,10 +212,26 @@ function writeJson(file, data) {
 function sweep() {
   const seen = new Map();
   let queries = 0;
+  let calls = 0;
+
+  // A sweep is bounded on purpose. The full matrix below is 60+ queries x 9
+  // licences x 10 pages, which is thousands of search calls at 30/minute and
+  // looks like a hang. HARVEST_TARGET stops as soon as there is enough new
+  // material, HARVEST_PAGES limits depth, and HARVEST_CALLS caps the API.
+  const target = Math.max(0, Number(process.env.HARVEST_TARGET ?? 0) || 0);
+  const maxPages = Math.max(1, Number(process.env.HARVEST_PAGES ?? 10) || 10);
+  const maxCalls = Math.max(0, Number(process.env.HARVEST_CALLS ?? 0) || 0);
+  const already = new Set(existsSync(thirdParty) ? readdirSync(thirdParty) : []);
+  // Repos already judged unusable (no root index.html or no licence file):
+  // they used to be re-downloaded and re-rejected on every run.
+  const skipped = new Set(readJson(join(work, 'skipped.json'), []));
 
   for (const q of QUERIES) {
     for (const lic of ['mit', 'cc0-1.0', 'apache-2.0', 'bsd-3-clause', 'isc', 'gpl-3.0', 'gpl-2.0', 'lgpl-3.0', 'mpl-2.0']) {
-      for (const page of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]) {
+      for (const page of Array.from({ length: maxPages }, (_, i) => i + 1)) {
+        if (maxCalls && calls >= maxCalls) break;
+        if (target && seen.size >= target) break;
+        calls++;
         const raw = gh([
           'api',
           `search/repositories?q=${encodeURIComponent(`${q} license:${lic} stars:>2`)}&per_page=100&page=${page}&sort=stars`,
@@ -238,6 +254,8 @@ function sweep() {
           const text = `${r.full_name} ${r.description ?? ''}`.toLowerCase();
           if (SKIP_WORDS.some((w) => text.includes(w))) continue;
           if (!STRONG_GAME_WORDS.some((w) => text.includes(w))) continue;
+          if (already.has(slugify(r.full_name))) continue;
+          if (skipped.has(r.full_name)) continue;
           seen.set(r.full_name, {
             repo: r.full_name,
             stars: r.stargazers_count ?? 0,
@@ -250,12 +268,27 @@ function sweep() {
           });
         }
       }
+      if (maxCalls && calls >= maxCalls) break;
+      if (target && seen.size >= target) break;
     }
+    if (maxCalls && calls >= maxCalls) break;
+    if (target && seen.size >= target) break;
   }
 
   const list = [...seen.values()].sort((a, b) => b.stars - a.stars);
+
+  // Silence is the failure mode this used to have: an unauthenticated `gh`
+  // returns '' for every call, so the sweep "succeeded" with zero candidates
+  // and nothing said so.
+  if (!list.length) {
+    throw new Error(
+      `sweep: 0 candidates from ${calls} calls. Check \`gh auth status\` and the network; ` +
+        `nothing was vendored, and content/games.generated.json is untouched.`,
+    );
+  }
+
   writeJson(join(work, 'candidates.json'), list);
-  console.log(`sweep: ${queries} queries -> ${list.length} game-shaped candidates`);
+  console.log(`sweep: ${queries} queries, ${calls} API calls -> ${list.length} new candidates`);
   return list;
 }
 
@@ -278,6 +311,7 @@ function vendor() {
       .map((u) => u.replace('https://github.com/', '').replace(/\/$/, '')),
   );
   const results = [];
+  const noIndex = readJson(join(work, 'skipped.json'), []);
 
   for (const c of candidates) {
     if (curated.has(c.repo)) continue;
@@ -300,7 +334,12 @@ function vendor() {
     const names = files.map((f) => f.name);
     const hasIndex = names.includes('index.html');
     const licenseFile = names.find((n) => /^licen[cs]e(\.|$)/i.test(n));
-    if (!hasIndex || !licenseFile) continue;
+    if (!hasIndex || !licenseFile) {
+      // Remember it, so the next sweep does not spend candidates on a repo
+      // that can never be served as a game page.
+      noIndex.push(c.repo);
+      continue;
+    }
 
     // Pull the repo. Reuse a cached tarball when there is one, so a second
     // validation pass does not re-download everything.
@@ -374,6 +413,7 @@ The original ${c.licence} licence text ships in this folder and applies to its c
     process.stdout.write(`\r  vendored ${results.length}/${candidates.length} (${slug})   `);
   }
   writeJson(join(work, 'vendored.json'), results);
+  writeJson(join(work, 'skipped.json'), [...new Set(noIndex)]);
   console.log(`\nvendor: ${results.length} repos vendored into third-party/`);
   return results;
 }
@@ -582,6 +622,7 @@ async function validate() {
               canvasPixels,
               textLen: text.length,
               text: text.slice(0, 300),
+              raw: text.slice(0, 2000),
               controls: document.querySelectorAll('button, a, input, [role=button]').length,
               canvases: canvases.length,
               identityLinks: identityLinks.length,
@@ -614,6 +655,16 @@ async function validate() {
         if (probe.payment) {
           verdict = 'dead';
           lastReason = 'landing page shows payment/crypto chrome, not a game';
+        } else if (
+          // A repo selling its source code and art is a shop, not a game -
+          // it paints real text and real buttons, so the painting check alone
+          // cannot tell it apart from a game menu.
+          /(源码|完整源码|source\s*\+\s*art|full\s*source\s*code|source\s*code\s*(package|available|for\s*sale)|assets?\s*for\s*sale)/i.test(
+            probe.raw ?? '',
+          )
+        ) {
+          verdict = 'dead';
+          lastReason = 'landing page is selling source code / art assets';
         } else if (probe.identityLinks >= 4) {
           verdict = 'dead';
           lastReason = `landing page is a personal hub (${probe.identityLinks} profile links)`;
@@ -768,16 +819,22 @@ function readmeSentences(readme) {
 function generate() {
   const passed = readJson(join(work, 'passed.json'), []);
   const games = [];
-  const used = new Set(
-    readJson(join(root, 'content/games.json'), { games: [] }).games.map((g) => g.id),
-  );
-  const titleCounts = new Map(
-    readJson(join(root, 'content/games.json'), { games: [] }).games.map((g) => [g.title, 1]),
-  );
+  const curated = readJson(join(root, 'content/games.json'), { games: [] }).games;
+  const previous = readJson(join(root, 'content/games.generated.json'), { games: [] }).games ?? [];
+  // Ids and titles already in the catalogue - including the ones an earlier
+  // harvest produced - so a new batch can never collide with a live page.
+  const used = new Set([...curated, ...previous].map((g) => g.id));
+  const titleCounts = new Map([...curated, ...previous].map((g) => [g.title, 1]));
+  const repoOf = (g) =>
+    (g.credit?.source ?? '').replace('https://github.com/', '').replace(/\/$/, '').toLowerCase();
+  const publishedSources = new Set([...curated, ...previous].map(repoOf).filter(Boolean));
 
   for (const v of passed) {
     // Skip anything removed after validation (a second pass may have dropped it).
     if (!existsSync(join(thirdParty, v.slug, 'index.html'))) continue;
+    // Already published from the same repository under another slug (two
+    // repos can both be "pacman"): a duplicate page is worse than one game.
+    if (publishedSources.has(v.repo.toLowerCase())) continue;
     // Skip anything on the block list: a landing page rather than a game, or
     // a game that needs a build step and can never run in a browser.
     if (BLOCKED.has(normaliseRepo(v.repo))) continue;
@@ -890,9 +947,24 @@ function generate() {
     games.push(entry);
   }
 
-  writeJson(join(root, 'content/games.generated.json'), { games });
-  console.log(`generate: wrote ${games.length} game entries to content/games.generated.json`);
-  return games;
+  // A harvest run validates one batch, not the whole catalogue - so this is a
+  // merge, never a replacement. Generating from `passed` alone once truncated
+  // 146 published games down to the 2 that happened to be in the last batch.
+  const existing = readJson(join(root, 'content/games.generated.json'), { games: [] }).games ?? [];
+  const byId = new Map();
+  for (const g of existing) {
+    const m = (g.embed?.src ?? '').match(/^\/third-party\/([^/]+)\//);
+    if (!m || existsSync(join(thirdParty, m[1], 'index.html'))) byId.set(g.id, g);
+  }
+  const added = games.filter((g) => !byId.has(g.id)).length;
+  for (const g of games) byId.set(g.id, g);
+  const merged = [...byId.values()];
+
+  writeJson(join(root, 'content/games.generated.json'), { games: merged });
+  console.log(
+    `generate: ${games.length} from this batch (${added} new), ${merged.length} in content/games.generated.json`,
+  );
+  return merged;
 }
 
 /* ------------------------------------------------------------- main */

@@ -60,6 +60,7 @@ function difficultyControl() {
 
 export function gameShell(game, opts = {}) {
   const related = opts.related ?? [];
+  const native = game.mobile === 'native' ? ' data-mobile="native"' : '';
   return `<main id="main" class="game-layout">
   <div class="game-main">
     <div class="topbar">
@@ -71,7 +72,7 @@ export function gameShell(game, opts = {}) {
         <button class="icon-btn" id="fullscreen" type="button" aria-label="Fullscreen">${glyph('a-expand', 17)}</button>
       </div>
     </div>
-    <div class="stage" id="stage">
+    <div class="stage" id="stage"${native}>
       <canvas id="game" tabindex="-1" aria-label="${game.title}. Press space to start."></canvas>
       <div class="overlay" id="overlay"></div>
     </div>
@@ -91,19 +92,26 @@ export function embedShell(game, opts = {}) {
         <a href="${game.credit.source}" target="_blank" rel="noopener nofollow">View source</a></p>
       </div>`
     : '';
+  // Keyboard overrides for the on-screen pad, e.g. { "a": "KeyZ" }.
+  const padKeys = JSON.stringify(game.pad ?? {});
+  const native = game.mobile === 'native' ? ' data-mobile="native"' : '';
   return `<main id="main" class="game-layout">
   <div class="game-main embed-main">
     <div class="embed-bar">
       <a class="brand" href="/" aria-label="arcadefork — home">${brandMark(26)}<span>arcade<b>fork</b></span></a>
       <span class="embed-title">${gameIcon(game.id, game.accent, game.category)}<span class="embed-name">${game.title}</span></span>
-      <a class="embed-open" href="${game.embed.src}" target="_blank" rel="noopener">Open full ${glyph('a-arrow', 13)}</a>
+      <div class="embed-actions">
+        <button class="icon-btn" id="af-pad-toggle" type="button" aria-pressed="false" aria-label="On-screen controls">${glyph('a-pad', 17)}</button>
+        <button class="icon-btn" id="af-full" type="button" aria-pressed="false" aria-label="Full screen">${glyph('a-expand', 17)}</button>
+        <a class="embed-open" href="${game.embed.src}" target="_blank" rel="noopener">Open full ${glyph('a-arrow', 13)}</a>
+      </div>
     </div>
-    <div class="embed-stage">
+    <div class="embed-stage" data-keys='${padKeys}'${native}>
       <div class="embed-splash" aria-hidden="true">
         <span class="embed-spinner"></span>
         <span>Loading ${game.title}…</span>
       </div>
-      <iframe src="${game.embed.src}" title="${game.title}" loading="lazy"
+      <iframe id="af-frame" src="${game.embed.src}" title="${game.title}" loading="lazy"
               referrerpolicy="no-referrer"
               sandbox="allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock allow-modals allow-presentation allow-downloads"
               allow="autoplay; fullscreen; gamepad; clipboard-write"

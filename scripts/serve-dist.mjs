@@ -7,6 +7,9 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', 'dist');
 const port = Number(process.env.PORT ?? 4178);
+// 0.0.0.0 makes the build reachable from a phone on the same network, which is
+// the only honest way to test a touch bug. The default stays loopback.
+const host = process.env.HOST ?? '127.0.0.1';
 
 const MIME = {
   '.html': 'text/html; charset=utf-8',
@@ -46,6 +49,6 @@ const server = createServer(async (req, res) => {
   }
 });
 
-server.listen(port, '127.0.0.1', () => {
-  console.log(`arcadefork dist served on http://localhost:${port}`);
+server.listen(port, host, () => {
+  console.log(`arcadefork dist served on http://${host === '0.0.0.0' ? '<lan-ip>' : host}:${port}`);
 });

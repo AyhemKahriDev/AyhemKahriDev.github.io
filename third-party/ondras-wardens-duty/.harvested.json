@@ -1,0 +1,15 @@
+{
+  "repo": "ondras/wardens-duty",
+  "stars": 5,
+  "licence": "ISC",
+  "sizeKB": 448,
+  "pushedAt": "2015-03-17T12:46:41Z",
+  "description": "Warden's Duty: a game created for the 7-day Roguelike 2015 challenge. Lacks the traditional roguelike map and features over-sized ascii glyphs. You cannot really win this game, but you can try to get deeper than others.",
+  "defaultBranch": "gh-pages",
+  "owner": "ondras",
+  "slug": "ondras-wardens-duty",
+  "dest": "third-party/ondras-wardens-duty",
+  "readme": "# Warden's Duty\n\n![Screenshot](wardens-duty.png)\n\nThis is a [7DRL](http://7drl.org/) game. To play it, just open http://ondras.github.io/wardens-duty/ in your browser.\n\n## Technology\n\nHTML, CSS (LESS), JavaScript (ES6). To build, just `make`. To build continually, do `make watch` -- this requires `inotify-tools`.\n\nTwo custom fonts are used:\n\n - **Inconsolata** for the general UI,\n - **Droid Sans Mono** for individual critters and other dungeon features.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -216,11 +216,19 @@ async function main() {
           }
         }
         const text = (document.body?.innerText ?? '').replace(/\s+/g, ' ').trim();
+        const webgl = canvases.some((c) => {
+          try {
+            return !!(c.getContext('webgl2') || c.getContext('webgl')) && c.width >= 32 && c.height >= 32;
+          } catch {
+            return false;
+          }
+        });
         return {
           pixels,
           textLen: text.length,
           controls: document.querySelectorAll('button, a, input, [role=button]').length,
           canvases: canvases.length,
+          webgl,
         };
       });
     } catch (err) {

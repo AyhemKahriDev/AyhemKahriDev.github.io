@@ -1,0 +1,15 @@
+{
+  "repo": "TheAlchemist64/Flying-Tower",
+  "stars": 6,
+  "licence": "Apache-2.0",
+  "sizeKB": 3419,
+  "pushedAt": "2023-04-18T17:11:29Z",
+  "description": "Open source roguelike dungeon crawler that uses ES6 features.",
+  "defaultBranch": "master",
+  "owner": "TheAlchemist64",
+  "slug": "thealchemist64-flying-tower",
+  "dest": "third-party/thealchemist64-flying-tower",
+  "readme": "# Flying Tower\nOpen source turn based roguelike that uses ES6 features\n\nCurrently in **Alpha** state (Not Playable in any capacity of the word)\n## Motivations\n- To make and *finish* developing a complete roguelike game\n- To learn ES6 features by practice\n- To create a resource for how to use ES6 features, escpecially with JS games\n## Special Thanks\n- [ondras](https://github.com/ondras) for the Rot.js library\n- [Larkenx](https://github.com/Larkenx) whose project inspired me to attempt to make my own JS roguelike using ES6.\n- Jean-Pierre Sierens, for his [tutorial](http://jpsierens.com/use-es6-right-now/) that helped me setup the project.\n- The many developers who work on the dependencies used in this project.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

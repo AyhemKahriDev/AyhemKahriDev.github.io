@@ -7,9 +7,8 @@
      coin     warm amber, used only for the daily grid
    Everything else is a hairline. No scanlines, no rainbow chrome.
 
-   Derived from extracted values in ~/open-code-hub/design-god
-   (designeer.xyz dark surface + easing vocabulary), re-cut for an
-   arcade. Values only, no borrowed assets.
+   Derived from extracted values (designeer.xyz dark surface + easing
+   vocabulary), re-cut for an arcade. Values only, no borrowed assets.
    ============================================================ */
 
 :root {
@@ -253,7 +252,15 @@ body {
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
+  /* No pull-to-refresh, anywhere. A swipe that starts on a game used to pull
+     the whole page down to reload it mid-run. */
+  overscroll-behavior: none;
 }
+
+html {
+  overscroll-behavior: none;
+}
+
 
 /* One ambient wash behind everything: a lime horizon at the top. */
 body::before {
@@ -2334,11 +2341,20 @@ td a {
 }
 
 .embed-open {
-  margin-left: auto;
+  margin-left: 0;
   flex: 0 0 auto;
   font-size: 13px;
   color: var(--paper-2);
 }
+
+.embed-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
 
 .embed-open:hover {
   color: var(--signal-text);
@@ -2358,7 +2374,7 @@ td a {
   border: 0;
 }
 
-/* 149 of the games are other people's pages in an iframe. On a slow
+/* Most of the games are other people's pages in an iframe. On a slow
    connection a blank dark panel looks like a broken site, so the frame gets a
    splash until it has actually loaded. ui.js adds .is-loaded. */
 .embed-splash {
@@ -2767,5 +2783,289 @@ td a {
 
   .game-side {
     display: none;
+  }
+}
+
+/* ============================================================
+   Phone play layer
+   The end of a swipe that used to be a page refresh, and the pad
+   that stands in for a keyboard. Behaviour lives in public/play.js:
+   this is only the shape.
+   ============================================================ */
+
+/* The scroll chain stops at the game's edge: a swipe inside the stage can
+   never drag the page, and a frame that scrolls internally cannot chain its
+   overscroll into a pull-to-refresh. */
+.stage,
+.embed-stage,
+.embed-stage iframe {
+  overscroll-behavior: contain;
+}
+
+body.is-immersive,
+html.is-immersive {
+  height: 100%;
+  overflow: hidden;
+  overscroll-behavior: none;
+}
+
+/* The page becomes the game: no rail, no article, no footer. */
+body.is-immersive .game-layout {
+  grid-template-columns: minmax(0, 1fr);
+  height: 100dvh;
+}
+
+body.is-immersive .game-side,
+body.is-immersive #about,
+body.is-immersive .skip-link {
+  display: none;
+}
+
+body.is-immersive .embed-bar,
+body.is-immersive .topbar {
+  height: auto;
+  min-height: 46px;
+  padding-top: env(safe-area-inset-top, 0px);
+}
+
+/* The mark is the wordmark on a phone, and the HUD needs its room more. */
+body.is-immersive .topbar .brand {
+  display: none;
+}
+
+body.is-immersive .topbar {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+body.is-immersive .hud {
+  gap: 12px;
+  justify-self: start;
+  padding-left: 4px;
+}
+
+body.is-immersive .hud-value {
+  font-size: 15px;
+}
+
+body.is-immersive .embed-stage,
+body.is-immersive .stage {
+  min-height: 0;
+}
+
+/* The only way out has to be visible without scrolling. */
+.af-exit {
+  display: none;
+  align-items: center;
+  height: 34px;
+  padding: 0 12px;
+  border: 1px solid var(--hair-2);
+  border-radius: var(--r-sm);
+  background: var(--panel);
+  color: var(--paper);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+body.is-immersive .af-exit {
+  display: inline-flex;
+}
+
+/* The bar has to survive four buttons on a 390px screen: in immersive the
+   redundant "Open full" goes, and everything else tightens up. */
+body.is-immersive .embed-open {
+  display: none;
+}
+
+body.is-immersive .embed-actions {
+  gap: 6px;
+}
+
+body.is-immersive .embed-bar {
+  gap: 8px;
+  padding-right: max(10px, env(safe-area-inset-right, 0px));
+  padding-left: max(10px, env(safe-area-inset-left, 0px));
+}
+
+body.is-immersive .af-exit {
+  flex: 0 0 auto;
+}
+
+/* The pad floats over the stage; the game keeps the full frame. */
+.embed-stage {
+  position: relative;
+}
+
+.embed-stage iframe {
+  transition: height var(--t-mid) var(--e-out);
+}
+
+/* --- the pad ---------------------------------------------------------- */
+
+.af-pad {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 70;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 0 12px calc(10px + env(safe-area-inset-bottom, 0px));
+  pointer-events: none;
+  transition: opacity var(--t-mid) var(--e-out);
+}
+
+.af-pad.is-off {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.af-pad-side {
+  display: grid;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.af-dpad {
+  grid-template-columns: repeat(3, 52px);
+  grid-template-rows: repeat(3, 52px);
+}
+
+.af-up {
+  grid-area: 1 / 2;
+}
+
+.af-left {
+  grid-area: 2 / 1;
+}
+
+.af-right {
+  grid-area: 2 / 3;
+}
+
+.af-down {
+  grid-area: 3 / 2;
+}
+
+.af-acts {
+  grid-template-columns: repeat(2, 58px);
+  grid-auto-rows: 58px;
+  align-items: end;
+  justify-items: center;
+}
+
+.af-key {
+  -webkit-appearance: none;
+  appearance: none;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid var(--hair-2);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--panel) 78%, transparent);
+  color: var(--paper);
+  font-family: var(--f-mono);
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 12px 30px -18px #000;
+  cursor: pointer;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition:
+    background var(--t-fast),
+    border-color var(--t-fast),
+    color var(--t-fast),
+    transform var(--t-fast);
+}
+
+.af-key.is-down,
+.af-key:active {
+  border-color: var(--signal);
+  background: var(--signal);
+  color: var(--signal-ink);
+  transform: scale(0.95);
+}
+
+.af-key:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 2px;
+}
+
+.af-key-a,
+.af-key-b {
+  width: 58px;
+  height: 58px;
+  font-size: 16px;
+}
+
+.af-key-sm {
+  width: 44px;
+  height: 34px;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+}
+
+.af-hint {
+  position: fixed;
+  bottom: calc(196px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  z-index: 71;
+  max-width: min(92vw, 380px);
+  padding: 8px 14px;
+  border: 1px solid var(--hair);
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--panel) 92%, transparent);
+  color: var(--paper-2);
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-align: center;
+  pointer-events: none;
+  transform: translateX(-50%);
+  transition: opacity var(--t-slow) var(--e-out);
+}
+
+.af-hint.is-out {
+  opacity: 0;
+}
+
+/* Landscape: the thumbs want the sides, not the bottom. */
+@media (orientation: landscape) and (max-height: 560px) {
+  .af-dpad {
+    grid-template-columns: repeat(3, 46px);
+    grid-template-rows: repeat(3, 46px);
+  }
+
+  .af-acts {
+    grid-template-columns: repeat(2, 52px);
+    grid-auto-rows: 52px;
+  }
+
+  .af-key-a,
+  .af-key-b {
+    width: 52px;
+    height: 52px;
+  }
+
+  .af-hint {
+    bottom: calc(150px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .af-pad,
+  .af-hint,
+  .af-key {
+    transition: none;
   }
 }

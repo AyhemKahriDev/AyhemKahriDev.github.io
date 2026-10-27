@@ -1,0 +1,15 @@
+{
+  "repo": "knightyun/maze-game",
+  "stars": 55,
+  "licence": "MIT",
+  "sizeKB": 305,
+  "pushedAt": "2023-05-28T08:37:30Z",
+  "description": "🗺HTML 在线走迷宫游戏",
+  "defaultBranch": "master",
+  "owner": "knightyun",
+  "slug": "knightyun-maze-game",
+  "dest": "third-party/knightyun-maze-game",
+  "readme": "# maze-game\n\n![GitHub stars](https://img.shields.io/github/stars/knightyun/maze-game)\n![GitHub forks](https://img.shields.io/github/forks/knightyun/maze-game)\n![GitHub issues](https://img.shields.io/github/issues/knightyun/maze-game)\n\nH5 在线走迷宫游戏\n\n> 在线玩耍地址：<https://knightyun.github.io/maze-game/>\n\n# Features\n\n- 移动端识别重力感应器进行移动，体验真实的重力感；\n- 可自定义调整游戏难度、地图大小；\n- 随机生成迷宫地图，每一次的都不尽相同；\n- 桌面端也可通过方向键或 `W A S D` 进行移动，加速度固定；\n- 地图较复杂时，可提示迷宫的通关出路；\n- 无提示通关最大地图可触发游戏彩蛋🎉，尽情玩耍吧🎮；\n\n# License\n\n[MIT License](https://raw.githubusercontent.com/knightyun/maze-game/master/LICENSE)",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

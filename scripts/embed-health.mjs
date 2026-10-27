@@ -27,11 +27,11 @@ const CODE = /\.(m?js|css|json|wasm)(\?|$)/i;
  * @param {string[]} input.failed    "404 <url>" entries for same-origin failures
  * @param {string[]} input.jsErrors  JavaScript errors thrown by the page
  * @param {number}   input.status    HTTP status of the page itself
- * @param {object}   input.probe     { pixels, textLen, controls, canvases }
+ * @param {object}   input.probe     { pixels, textLen, controls, canvases, webgl }
  * @returns {{ok: boolean, reasons: string[], fatal: string[]}}
  */
 export function judgeGame({ failed = [], jsErrors = [], status = 200, probe = {} }) {
-  const { pixels = 0, textLen = 0, controls = 0, canvases = 0 } = probe;
+  const { pixels = 0, textLen = 0, controls = 0, canvases = 0, webgl = false } = probe;
 
   const reasons = [];
   const warnings = [];
@@ -67,7 +67,9 @@ export function judgeGame({ failed = [], jsErrors = [], status = 200, probe = {}
   // canvas with no pixels is not a failure either: WebGL games have no 2D
   // context to read, and drawing games paint only once the player draws.
   const paints = pixels > 200;
-  const canvasWithInterface = canvases > 0 && (textLen > 60 || controls >= 1);
+  // A WebGL canvas has no 2D context to read back, so a sized one that owns a
+  // GL context is evidence of a renderer rather than of an empty page.
+  const canvasWithInterface = canvases > 0 && (textLen > 60 || controls >= 1 || webgl === true);
   const interfaceOnly = textLen > 120 && controls >= 1;
 
   if (!paints && !canvasWithInterface && !interfaceOnly) {

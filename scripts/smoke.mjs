@@ -165,14 +165,24 @@ async function main() {
           }
           const text = (document.body?.innerText ?? '').replace(/\s+/g, ' ').trim();
           const controls = document.querySelectorAll('button, a, input, [role=button]').length;
-          return { pixels, has2d, textLen: text.length, controls, hasCanvas: !!canvas };
+          // WebGL games cannot be read back through a 2D context; the context
+          // itself is the evidence that something is rendering.
+          let webgl = false;
+          if (canvas) {
+            try {
+              webgl = !!(canvas.getContext('webgl2') || canvas.getContext('webgl')) && canvas.width >= 32;
+            } catch {
+              /* no GL here */
+            }
+          }
+          return { pixels, has2d, textLen: text.length, controls, hasCanvas: !!canvas, webgl };
         });
         const paints = probe.pixels > 200;
         const interactive = probe.textLen > 120 && probe.controls >= 1;
         // A canvas plus real text is a live game even if it has not drawn yet.
         const alive = probe.hasCanvas && probe.textLen > 60;
 
-        if (!paints && !interactive && !alive) {
+        if (!paints && !interactive && !alive && !probe.webgl) {
           errors.push(
             `third-party frame looks dead (canvas ${probe.hasCanvas}, ${probe.pixels}px, text ${probe.textLen})`,
           );

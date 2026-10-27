@@ -110,6 +110,21 @@ npm run harvest          # sweep -> vendor -> validate -> generate
 | `validate` | **The quality gate.** Loads each vendored game in headless Chrome. It must actually paint or present a real interface, and must not have same-origin resource failures. Failures are deleted, not published. |
 | `generate` | Writes `content/games.generated.json`: unique title, description, keywords, how-to-play and FAQ per game, derived from the repo README so the copy is real rather than templated. |
 
+A full sweep is 60+ queries × 9 licences × 10 pages — thousands of search calls
+at 30/minute, which looks like a hang and burns the API budget for nothing. The
+sweep is therefore bounded, and the budget is the knob:
+
+```bash
+HARVEST_TARGET=40 HARVEST_PAGES=3 HARVEST_CALLS=120 npm run harvest
+```
+
+`HARVEST_TARGET` stops as soon as there are enough new candidates, `HARVEST_PAGES`
+limits page depth, `HARVEST_CALLS` caps the API outright, and repos already in
+`third-party/` are skipped. A sweep that finds nothing now fails loudly: `gh()`
+used to return `''` on any error, so an unauthenticated run "succeeded" with an
+empty catalogue. Phases are still resumable (`sweep`, `vendor`, `validate`,
+`generate`) and report to `.harvest/`.
+
 The build only copies games the catalogue references, so a harvest run in
 progress can never publish a game that has not passed the gate. The smoke test
 loads every published game in a real browser on every run.
@@ -141,6 +156,10 @@ The whole point is that this is cheap. Budget: **under two hours per game**.
 3. Add its metadata to `content/games.json` (title, description, keywords,
    how-to-play, FAQ, accent colour, category).
 4. `npm run build && npm run smoke`.
+
+Optional metadata both shells understand: `"mobile": "native"` when the game
+already handles touch itself (no pad, no swipe interception), and
+`"pad": { "a": "KeyZ" }` to remap a pad key for a game with unusual controls.
 
 The site builder then creates the game page, the category page picks it up, the
 sitemap updates, and the home page grid refreshes — no other edits.
@@ -229,12 +248,44 @@ One system, three ingredients — ink, signal, coin.
 
 - **Phone** — the game fills the first screen, 44px minimum touch targets,
   safe-area insets for notches, a horizontally scrolling category strip, and
-  two game cards per row.
+  two game cards per row. A game page opens immersive and thumb-playable.
+
 - **Tablet** — two-column card grids, wider play area, the side rail moves
   below the game.
 - **Desktop** — a two-column shell: the game on the left, a side rail on the
   right with the game name, category links, "keep playing" links and the
   sponsor slot. The board itself is capped so it is not lost in a wide column.
+
+### Phone play — the pad, the swipe, the end of the refresh
+
+Almost every game is somebody else's page in an iframe, and nearly all of them
+only ever listened for a keyboard. On a phone that is unplayable, and worse: the
+swipe you reach for is the browser's, so steering a game pulled the page down to
+refresh it and lost the run.
+
+`public/play.js` (game pages only, ~10 kB) fixes that in three moves:
+
+- **A pad that speaks keyboard.** Two-thumb D-pad plus A/B/P/R dispatches real
+  `KeyboardEvent`s into the game's own document. Same origin, so it is allowed;
+  the legacy `keyCode` is defined by hand because that is the field the games
+  actually switch on. Held directions auto-repeat like a real keyboard.
+- **Swipes as arrows.** A swipe on the game becomes the matching arrow and a tap
+  becomes Space. Handlers run in the capture phase on the frame's document, so a
+  game cannot swallow the gesture. A game that is already touch-native is marked
+  `"mobile": "native"` in `content/games.json` and gets neither.
+- **Immersive by default.** On a coarse pointer the page becomes the game:
+  `100dvh`, no rail, no article, page scroll locked, safe-area aware, an always
+  visible Exit, and `overscroll-behavior: none` on `html`/`body` plus on the
+  frame's own document — that pair is what actually kills pull-to-refresh.
+
+Games that paint a fixed box smaller than the frame are scaled to the frame's
+width (never past 2×) and the frame is shrunk to the result, so an old 300 px
+game is not a postage stamp in a field of its own white background. Keys for a
+game with unusual controls are declared per game: `"pad": { "a": "KeyZ" }`.
+
+Verified on a 390×844 touch viewport by `npm run check:mobile`, which asserts the
+scroll lock, that a swipe moves the page by zero pixels, and that a pad press is
+delivered *inside* the game — the three things a desktop smoke test cannot see.
 
 ### Difficulty
 
@@ -272,8 +323,8 @@ applied by an inline script **before first paint**, so there is no flash. The
 browser chrome colour (`theme-color`) follows the theme too.
 
 Every theme is contrast-checked: body, secondary, meta, coin and on-signal
-text all clear AA (the numbers are in
-`~/open-code-hub/design-god/arcadefork-identity.md`).
+text all clear AA (the token values and their pairings live in
+`public/styles.css` under `:root`).
 - **Keyboard** — visible focus rings, `/` focuses search, `Esc` clears it, `R`
   restarts a game, `M` mutes, arrows and WASD move, `Space` starts.
 
@@ -300,7 +351,7 @@ shortcuts.
 
 The cache name carries the deploy's asset hash, injected by the site builder,
 so each deploy starts a fresh cache and `activate` deletes the previous one.
-It also trims itself to 140 entries: 153 games plus art is otherwise a lot of
+It also trims itself to 140 entries: the whole catalogue plus art is otherwise a lot of
 megabytes on a phone.
 
 ### Security headers
@@ -459,6 +510,7 @@ into the spec, and post.
 | `npm run build` | Bundle + generate the static site into `dist/` |
 | `npm run serve:dist` | Serve `dist/` on :4178 |
 | `npm run smoke` | Headless Chrome test: every page, every game, SEO assertions |
+| `npm run check:mobile` | Phone viewport: pad, swipe → arrow, scroll lock, no pull-to-refresh |
 | `npm run audit` | The full gate: links, embed rules, asset resolution, live game health |
 | `npm run audit:links` | Every internal link and every sitemap URL resolves to a real file |
 | `npm run audit:embeds` | No embedded game is a personal page or can navigate out of the arcade |
@@ -480,7 +532,7 @@ AUDIT_ORIGIN=https://arcadefork.pages.dev npm run audit:health
 
 It checks four games at a time (`AUDIT_JOBS=8` to go wider). On a 15-game
 sample that is 27 s serially versus 7 s with four workers; the full sweep of
-149 games takes about 1 m 50 s. Any gate needs
+the whole catalogue takes about two minutes. Any gate needs
 Chrome; `scripts/chrome.mjs` finds a cached headless shell, a system Chrome or
 `CHROME_PATH`, and the message when it finds none includes the one-line
 install command.
@@ -505,7 +557,7 @@ npm run build && npm run audit
 | Check | What it catches |
 |---|---|
 | `audit:links` | A link to a page that was never built, a sitemap URL with no page |
-| `audit:embeds` | An embedded game that is really the author's homepage, a donation wall or a crypto payment page |
+| `audit:embeds` | An embedded game that is really the author's homepage, a donation wall, a crypto payment page or a shop selling its own source code |
 | `audit:assets` | A game whose script, style or image does not exist - the game cannot run |
 | `audit:health` | A game that loads but never paints, throws a JavaScript error, or waits behind a start screen nobody can find |
 | `smoke` | Every page of the site: one `h1`, a title, a description, a canonical, valid JSON-LD, a working board |
@@ -565,7 +617,7 @@ changed: the site can now pay for itself without an ad network.
 
 The whole gate was run from a clean clone — `typecheck`, `build`, `audit:links`
 (8,275 references), `audit:embeds` (149 embeds), `audit:assets`, `audit:health`
-(149 games in a real browser) and `smoke`. What it found, and what changed:
+(every game in a real browser) and `smoke`. What it found, and what changed:
 
 ### Bugs fixed
 

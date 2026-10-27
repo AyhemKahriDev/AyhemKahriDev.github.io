@@ -119,7 +119,7 @@ function writeHeaders() {
 
 function computeAssetVersion() {
   const parts = [];
-  for (const f of ['public/styles.css', 'public/ui.js']) {
+  for (const f of ['public/styles.css', 'public/ui.js', 'public/play.js']) {
     const p = join(root, f);
     if (existsSync(p)) parts.push(readFileSync(p));
   }
@@ -798,7 +798,8 @@ function buildGamePage(game) {
   <h2>More free games</h2>
   <div class="linklist">${related.map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`).join('')}</div>
 </section>
-${isEmbed ? '' : `<script type="module" src="${hostBundle}"></script>`}`;
+${isEmbed ? '' : `<script type="module" src="${hostBundle}"></script>`}
+<script src="/play.js?v=${assetVersion}" defer></script>`;
   write(
     `games/${game.id}/index.html`,
     layout({
