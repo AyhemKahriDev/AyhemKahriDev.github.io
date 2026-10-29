@@ -93,6 +93,14 @@ async function main() {
     executablePath: findChrome(),
     headless: 'shell',
     args: ['--no-sandbox', '--disable-dev-shm-usage', '--hide-scrollbars'],
+    /**
+     * Default is 180 s, and on a loaded CI runner a heavy vendored game can
+     * hold the renderer long enough to trip it. The failure was
+     * `Runtime.callFunctionOn timed out`, which aborts the whole run instead of
+     * failing one page - 485 games lost for one slow frame. The watchdog below
+     * bounds each page anyway, so this only needs to outlive a single page.
+     */
+    protocolTimeout: 90_000,
   });
 
   const failures = [];
@@ -100,6 +108,9 @@ async function main() {
   for (const target of PAGES) {
     const page = await browser.newPage();
     await page.setViewport({ width: 412, height: 860, deviceScaleFactor: 2 });
+    // A game that never settles must cost one page, not the run.
+    page.setDefaultTimeout(20_000);
+    page.setDefaultNavigationTimeout(20_000);
 
     const errors = [];
     const warnings = [];
@@ -282,6 +293,9 @@ async function main() {
 
     const page = await browser.newPage();
     await page.setViewport({ width: 412, height: 860, deviceScaleFactor: 2 });
+    // A game that never settles must cost one page, not the run.
+    page.setDefaultTimeout(20_000);
+    page.setDefaultNavigationTimeout(20_000);
     const errors = [];
     page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
     await page.goto(`http://localhost:${port}/games/wordsearch/`, { waitUntil: 'networkidle2' });
