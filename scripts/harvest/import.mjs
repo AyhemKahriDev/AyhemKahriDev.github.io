@@ -305,8 +305,12 @@ export function importGames({
     usedIds.add(id);
 
     const copy = record.copy;
+    // categoryFor takes (family, title, description) - passing one concatenated
+    // string looked fine and silently sent every harvested game to the default
+    // 'arcade' bucket, which is how 2048 ended up under Arcade.
+    const family = String(record.family ?? familyFor(`${record.title ?? ''} ${record.repo ?? ''} ${record.description ?? ''}`) ?? '');
     const category = String(
-      categoryFor(`${record.repo} ${record.description ?? ''} ${record.title}`.toLowerCase()) || 'arcade',
+      categoryFor(family, record.title, record.description) || 'arcade',
     );
 
     let title = String(copy.title);

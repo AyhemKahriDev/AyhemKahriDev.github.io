@@ -6,7 +6,7 @@
       "title": "2048 (Gabrielecirulli)",
       "tagline": "Slide, merge and build the biggest number on the board.",
       "description": "A sliding-tile puzzle: merge matching numbers, build bigger tiles and keep the board moving. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(134 85% 62%)",
       "daily": false,
       "embed": {
@@ -50,7 +50,7 @@
       "title": "Pacman (Mumuy)",
       "tagline": "Clear the maze while the ghosts hunt you down.",
       "description": "A maze chase: eat every dot, dodge the ghosts and clear the level before they corner you. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "classics",
       "accent": "hsl(172 85% 62%)",
       "daily": false,
       "embed": {
@@ -94,7 +94,7 @@
       "title": "Dungeongeneration",
       "tagline": "One life, a fresh dungeon and a fight to the last floor.",
       "description": "Roguelike game with a random dungeon generator. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "strategy",
       "accent": "hsl(314 85% 62%)",
       "daily": false,
       "embed": {
@@ -138,7 +138,7 @@
       "title": "Ideosorter Github Io",
       "tagline": "Answer the questions and see how much you know.",
       "description": "The ideosorter political quiz is a test that assigns you an ideology based on a flowchart as opposed to traditional methods via. Play free in your browser, with no download and no account.",
-      "category": "arcade",
+      "category": "word",
       "accent": "hsl(232 85% 62%)",
       "daily": false,
       "embed": {
@@ -226,7 +226,7 @@
       "title": "DrunkenViking",
       "tagline": "A quick game to pick up and play in the browser.",
       "description": "Top-down puzzle game for Mini LD 53. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(133 85% 62%)",
       "daily": false,
       "embed": {
@@ -270,7 +270,7 @@
       "title": "Towerdefense",
       "tagline": "Build your towers and hold the line against the waves.",
       "description": "A tower defence game: place your towers along the path and stop every wave. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "strategy",
       "accent": "hsl(67 85% 62%)",
       "daily": false,
       "embed": {
@@ -314,7 +314,7 @@
       "title": "CursedSouls",
       "tagline": "One life, a fresh dungeon and a fight to the last floor.",
       "description": "A dungeon run: one life, a fresh layout each time and a fight for every floor. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "strategy",
       "accent": "hsl(87 85% 62%)",
       "daily": false,
       "embed": {
@@ -402,7 +402,7 @@
       "title": "Qubit Factory",
       "tagline": "Start small, earn steadily and watch the numbers grow.",
       "description": "Puzzle/construction game about quantum computing. Free in your browser, with no download and no sign-up at all.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(160 85% 62%)",
       "daily": false,
       "embed": {
@@ -490,7 +490,7 @@
       "title": "Canvas Td",
       "tagline": "Build your towers and hold the line against the waves.",
       "description": "Fully featured tower defence game built with. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "strategy",
       "accent": "hsl(41 85% 62%)",
       "daily": false,
       "embed": {
@@ -578,7 +578,7 @@
       "title": "Laya Vs Jev Arena",
       "tagline": "Eat, grow and keep clear of your own tail.",
       "description": "Laya (open source, local) vs TypeSafe Jev (API): two AI models race in Snake and fight in a Mortal-Kombat-style arena. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "racing",
       "accent": "hsl(167 85% 62%)",
       "daily": false,
       "embed": {
@@ -622,7 +622,7 @@
       "title": "RuneHunter",
       "tagline": "One life, a fresh dungeon and a fight to the last floor.",
       "description": "Coffee break roguelike game. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "strategy",
       "accent": "hsl(65 85% 62%)",
       "daily": false,
       "embed": {
@@ -666,7 +666,7 @@
       "title": "Bunnymuralhelper",
       "tagline": "A quick game to pick up and play in the browser.",
       "description": "The Bunny Mural Puzzle Helper is a little tool for solving the Bunny Mural puzzle in the game Animal Well made by Billy Basso. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(76 85% 62%)",
       "daily": false,
       "embed": {
@@ -710,7 +710,7 @@
       "title": "Sudoku Puzzle",
       "tagline": "Fill the grid so every row, column and box is complete.",
       "description": "Interactive web Sudoku puzzle game. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "table",
       "accent": "hsl(74 85% 62%)",
       "daily": false,
       "embed": {
@@ -754,7 +754,7 @@
       "title": "Drive Mad",
       "tagline": "Steer for the line and keep your foot down.",
       "description": "High-octane, dependency-free arcade racing game ( / ) - keyboard, gamepad and touch controls. Free in your browser, with no download and no sign-up at all.",
-      "category": "arcade",
+      "category": "racing",
       "accent": "hsl(28 85% 62%)",
       "daily": false,
       "embed": {
@@ -842,7 +842,7 @@
       "title": "Image Puzzle",
       "tagline": "A quick game to pick up and play in the browser.",
       "description": "Image Puzzle game in pure. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(20 85% 62%)",
       "daily": false,
       "embed": {
@@ -886,7 +886,7 @@
       "title": "Sudoku Visualizer",
       "tagline": "Fill the grid so every row, column and box is complete.",
       "description": "App to visualize Sudoku solving using backtracking. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "table",
       "accent": "hsl(24 85% 62%)",
       "daily": false,
       "embed": {
@@ -930,7 +930,7 @@
       "title": "Spacerocks",
       "tagline": "Hold the line and clear the sky, wave after wave.",
       "description": "Escape through space on stolen plasma engines while slinging photon bolts at deadly asteroids. Play free in your browser, with no download and no account.",
-      "category": "arcade",
+      "category": "classics",
       "accent": "hsl(333 85% 62%)",
       "daily": false,
       "embed": {
@@ -1018,7 +1018,7 @@
       "title": "Bytle",
       "tagline": "Six guesses to find the five-letter word.",
       "description": "Wordle-like game where you have to guess the unsigned 8-bit binary number. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "word",
       "accent": "hsl(3 85% 62%)",
       "daily": false,
       "embed": {
@@ -1194,7 +1194,7 @@
       "title": "Aquastax",
       "tagline": "A quick game to pick up and play in the browser.",
       "description": "AquaStax, the 2007 mobile puzzle game. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(50 85% 62%)",
       "daily": false,
       "embed": {
@@ -1370,7 +1370,7 @@
       "title": "Wordz Solver",
       "tagline": "Find every hidden word in the grid.",
       "description": "Word puzzle solver for Wordle, Boggle, WordzUp, wordoid and more. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "word",
       "accent": "hsl(114 85% 62%)",
       "daily": false,
       "embed": {
@@ -1414,7 +1414,7 @@
       "title": "JSQuizee",
       "tagline": "Answer the questions and see how much you know.",
       "description": "A quiz: answer the questions, keep the score ticking and see how far you get. Play free in your browser, with no download and no account.",
-      "category": "arcade",
+      "category": "word",
       "accent": "hsl(283 85% 62%)",
       "daily": false,
       "embed": {
@@ -1458,7 +1458,7 @@
       "title": "Monopoly Multiplayer",
       "tagline": "Take turns, think ahead and win the board.",
       "description": "The Monopoly, an online adaptation of the legendary board game. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "strategy",
       "accent": "hsl(152 85% 62%)",
       "daily": false,
       "embed": {
@@ -1502,7 +1502,7 @@
       "title": "2048 Circle",
       "tagline": "Slide, merge and build the biggest number on the board.",
       "description": "Use the arrow keys to move the tiles. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(59 85% 62%)",
       "daily": false,
       "embed": {
@@ -1590,7 +1590,7 @@
       "title": "Domino",
       "tagline": "Clear the board by pairing matching tiles from the edges.",
       "description": "Domino is a strategic board game based on the classic domino tile-matching game, where players compete by placing tiles with matching. Play free in your browser, with no download and no account.",
-      "category": "arcade",
+      "category": "table",
       "accent": "hsl(340 85% 62%)",
       "daily": false,
       "embed": {
@@ -1678,7 +1678,7 @@
       "title": "Need For",
       "tagline": "Steer for the line and keep your foot down.",
       "description": "A race against the clock: steer through the course, hold your line and finish first. Free in your browser, with no download and no sign-up at all.",
-      "category": "arcade",
+      "category": "racing",
       "accent": "hsl(320 85% 62%)",
       "daily": false,
       "embed": {
@@ -1722,7 +1722,7 @@
       "title": "PixiJS Solitaire",
       "tagline": "Build the four suits from ace to king and clear the table.",
       "description": "A card game for one: build the suits in order, turn over the hidden cards and clear the table. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "table",
       "accent": "hsl(26 85% 62%)",
       "daily": false,
       "embed": {
@@ -1766,7 +1766,7 @@
       "title": "Maze Maker",
       "tagline": "Find the way out before the walls close in.",
       "description": "Generate square, circular, triangular and heart-shaped mazes with seven algorithms (backtracker, Prim, Kruskal, Wilson, hunt-and-kill. Play free in your browser, with no download and no account.",
-      "category": "arcade",
+      "category": "brain",
       "accent": "hsl(254 85% 62%)",
       "daily": false,
       "embed": {
@@ -1810,7 +1810,7 @@
       "title": "Pong Two Player",
       "tagline": "Keep the ball in play and return every shot.",
       "description": "Two-Player Pong is a modern, remake of the classic Pong arcade game designed for local multiplayer. Free in your browser, with no download and no sign-up at all.",
-      "category": "arcade",
+      "category": "classics",
       "accent": "hsl(107 85% 62%)",
       "daily": false,
       "embed": {
@@ -1898,7 +1898,7 @@
       "title": "2048 (Migtibincoski)",
       "tagline": "Slide, merge and build the biggest number on the board.",
       "description": "A sliding-tile puzzle: merge matching numbers, build bigger tiles and keep the board moving. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(313 85% 62%)",
       "daily": false,
       "embed": {
@@ -2074,7 +2074,7 @@
       "title": "Canvas Pacman",
       "tagline": "Clear the maze while the ghosts hunt you down.",
       "description": "The original Pacman with Mobile support. Runs in your browser, free, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "classics",
       "accent": "hsl(331 85% 62%)",
       "daily": false,
       "embed": {
@@ -2118,7 +2118,7 @@
       "title": "Be Rocket",
       "tagline": "Hold the line and clear the sky, wave after wave.",
       "description": "The classic Asteroids game using React. Play free in your browser, with no download and no account.",
-      "category": "arcade",
+      "category": "classics",
       "accent": "hsl(320 85% 62%)",
       "daily": false,
       "embed": {
@@ -2206,7 +2206,7 @@
       "title": "Infinite Cars",
       "tagline": "Steer for the line and keep your foot down.",
       "description": "I don't know how did I come up with this name, but this is an endless racing game. Free in your browser, with no download and no sign-up at all.",
-      "category": "arcade",
+      "category": "racing",
       "accent": "hsl(99 85% 62%)",
       "daily": false,
       "embed": {
@@ -2294,7 +2294,7 @@
       "title": "Phaser Pong",
       "tagline": "Keep the ball in play and return every shot.",
       "description": "A paddle-and-ball classic: return every shot, find the angle and win the point. Free in your browser, with no download and no sign-up at all.",
-      "category": "arcade",
+      "category": "classics",
       "accent": "hsl(334 85% 62%)",
       "daily": false,
       "embed": {
@@ -2470,7 +2470,7 @@
       "title": "Blocktoblock",
       "tagline": "A quick game to pick up and play in the browser.",
       "description": "Sliding block puzzle game. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "puzzle",
       "accent": "hsl(335 85% 62%)",
       "daily": false,
       "embed": {
@@ -2514,7 +2514,7 @@
       "title": "AI Pong",
       "tagline": "Keep the ball in play and return every shot.",
       "description": "Pong game featuring a human player vs. Free in your browser, with no download and no sign-up at all.",
-      "category": "arcade",
+      "category": "classics",
       "accent": "hsl(36 85% 62%)",
       "daily": false,
       "embed": {
@@ -2734,7 +2734,7 @@
       "title": "Flappy Birds Genetic Evol",
       "tagline": "Tap to flap and thread every gap.",
       "description": "Simulation of Flappy Birds game using a simple neural network and genetic evolution strategy. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
+      "category": "strategy",
       "accent": "hsl(219 85% 62%)",
       "daily": false,
       "embed": {
@@ -2778,7 +2778,7 @@
       "title": "Asteroids (Ryan Menezes)",
       "tagline": "Hold the line and clear the sky, wave after wave.",
       "description": "Asteroids é um jogo de arcade com gráficos vetoriais muito popular lançado em 1979 pela Atari. Play free in your browser, with no download and no account.",
-      "category": "arcade",
+      "category": "classics",
       "accent": "hsl(315 85% 62%)",
       "daily": false,
       "embed": {

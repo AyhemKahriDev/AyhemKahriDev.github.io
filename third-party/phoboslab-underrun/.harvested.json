@@ -1,0 +1,15 @@
+{
+  "repo": "phoboslab/underrun",
+  "stars": 1112,
+  "licence": "MIT",
+  "sizeKB": 40,
+  "pushedAt": "2022-01-26T19:29:41Z",
+  "description": "Twin stick shooter game in 13kb of JavaScript/WebGL",
+  "defaultBranch": "master",
+  "owner": "phoboslab",
+  "slug": "phoboslab-underrun",
+  "dest": "third-party/phoboslab-underrun",
+  "readme": "# UNDERRUN - A JS13k GAME\n\nMy entry for the 2018 [js13k](https://js13kgames.com/) competition.\n\nPlay here: https://phoboslab.org/underrun/\n\nMIT Licensed\n\nPlease be aware that this projects makes use of the Sonant-X library (albeit heavily modified) which is published under the zlib license.",
+  "licenceFile": "LICENSE.md",
+  "entry": "index-debug.html"
+}

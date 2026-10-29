@@ -1,0 +1,15 @@
+{
+  "repo": "johakr/html5-slot-machine",
+  "stars": 633,
+  "licence": "MIT",
+  "sizeKB": 3833,
+  "pushedAt": "2026-02-14T03:50:18Z",
+  "description": "Modern casino slot machine game using only plain JavaScript (Web Animations API)",
+  "defaultBranch": "main",
+  "owner": "johakr",
+  "slug": "johakr-html5-slot-machine",
+  "dest": "third-party/johakr-html5-slot-machine",
+  "readme": "# HTML5 Slot Machine\n\n![Build and Deploy Status](https://github.com/johakr/html5-slot-machine/actions/workflows/deploy.yml/badge.svg) [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)\n\nThis is a modern proof of concept casino slot machine game, built using only vanilla HTML, CSS and JavaScript.\nNo Flash or Frameworks required. Allowing for an amazing low bundle size and blazing fast performance.\n\nBuilt using the _Web Animations API_.\n\n**[Live Demo](https://johakr.github.io/html5-slot-machine/)**\n\n## Features\n\n- Fully responsive for great UX on mobile, web & fullscreen mode.\n- Autoplay functionality, which keeps running even if the game window is in background.\n\n## Installation, Build & Deployment\n\n1. Clone repository\n2. Run `npm install`\n   - _Development_: run `npm start` and go to `http://localhost:8080`\n   - _Production_: run `npm run build` and serve from `/dist`\n\n## Configuration\n\nFor configuration options see `config` object in [index.js](https://github.com/johakr/html5-slot-machine/blob/master/src/js/index.js)\n\n| Property      | Description                                                                                                                            | Default   |\n| ------------- | -------------------------------------------------------------------------------------------------------------------------------------- | --------- |\n| `inverted`    | Controls visual spinning direction of reels. If false, reels will spin from bottom to top. If true, reels will spin from top to bottom | false     |\n| `onSpinStart` | Callback function invoked when spin starts with symbols pattern array `(symbols) => void`.                                             | undefined |\n| `onSpinEnd`   | Callback function invoked when spin ends with symbols pattern array `(symbols) => void`.                                               | undefined |\n\n## Credits\n\nIcons are created by [KPD Media](https://dribbble.com/shots/3517520-Star-Wars) and can be used for private and commercial purposes with no attribution required ([check license here](https://iconstore.co/icons/10-star-wars-icons/)).\n",
+  "licenceFile": "LICENSE",
+  "entry": "src/index.html"
+}
