@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Squirrel Tale</title>
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+</head>
+<body>
+	<div id="black-screen">
+		<div>
+			<img class="loading-icon" src="data/image/loading.png" alt="Loading icon">
+			<div class="controls">
+				<h1>Keyboard Controls</h1>
+				<table>
+					<tr>
+						<td>Movement:</td>
+						<td>arrows or WASD</td>
+					</tr>
+					<tr>
+						<td>Interaction:</td>
+						<td>Z or E or Return</td>
+					</tr>
+					<tr>
+						<td>Inventory:</td>
+						<td>X or Q</td>
+					</tr>
+					<tr>
+						<td>Pause:</td>
+						<td>Escape</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<canvas id="map"></canvas>
+	<canvas id="entity_under"></canvas>
+	<canvas id="player"></canvas>
+	<canvas id="entity_over"></canvas>
+	<canvas id="hud">Your browser does not support the HTML5 canvas tag.</canvas>
+
+	<script src="js/Application.js"></script>
+	<script src="js/Config.js"></script>
+	<script src="js/LoadingScreen.js"></script>
+	<script src="js/ResourceLoader.js"></script>
+	<script src="js/CanvasList.js"></script>
+	<script src="js/Nutcracker.js"></script>
+	<script src="js/FontList.js"></script>
+	<script src="js/Controls.js"></script>
+	<script src="js/Map.js"></script>
+	<script src="js/Entity.js"></script>
+	<script src="js/Player.js"></script>
+	<script src="js/Hud.js"></script>
+	<script src="js/tools.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>

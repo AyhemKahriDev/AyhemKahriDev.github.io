@@ -1,0 +1,15 @@
+{
+  "repo": "gnuwilliam/phaser-pong",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 274,
+  "pushedAt": "2017-02-08T09:20:39Z",
+  "description": "Pong game made with Phaser",
+  "defaultBranch": "master",
+  "owner": "gnuwilliam",
+  "slug": "gnuwilliam-phaser-pong",
+  "dest": "third-party/gnuwilliam-phaser-pong",
+  "readme": "# Phaser Pong\n\nSimple Pong game made with Phaser Game Framework\n\n## Play online\n\n[Phaser Pong](https://gnuwilliam.github.io/phaser-pong/)\n\n## To run locally\n\nMake sure you have `python` installed\n\n```\n$ make\n```",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

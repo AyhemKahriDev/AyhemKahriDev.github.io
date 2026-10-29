@@ -1,0 +1,15 @@
+{
+  "repo": "iliagrigorevdev/quoridor-web",
+  "stars": 7,
+  "licence": "GPL-3.0",
+  "sizeKB": 5524,
+  "pushedAt": "2024-04-16T08:20:58Z",
+  "description": "Board game against AI in which you either move a pawn or place a wall to cross the board first.",
+  "defaultBranch": "main",
+  "owner": "iliagrigorevdev",
+  "slug": "iliagrigorevdev-quoridor-web",
+  "dest": "third-party/iliagrigorevdev-quoridor-web",
+  "readme": "# Quoridor\n![Screenshot](screenshot.png)\n\n## Description\nThe abstract strategy game Quoridor is surprisingly deep for its simple rules. The object of the game is to advance your pawn to the opposite edge of the board. On your turn you may either move your pawn or place a wall. You may hinder your opponent with wall placement, but not completely block him off. Meanwhile, he is trying to do the same to you. The first pawn to reach the opposite side wins.\n\n## Run\n[Check](https://caniuse.com/webgl2) the list of supported browsers.\n\n[Open on GitHub Pages](https://iliagrigorevdev.github.io/quoridor-web/)\n\n## Thanks To\n[AlphaZero](https://deepmind.com/blog/article/alphazero-shedding-new-light-grand-games-chess-shogi-and-go) is a general-purpose reinforcement\nlearning algorithm.\n\n[PyTorch](https://pytorch.org/) is an open source machine learning framework.\n\n[GoogleTest](https://github.com/google/googletest) is a Google testing and mocking framework.\n\n[Emscripten](https://emscripten.org/) is a complete compiler toolchain to WebAssembly.\n\n[Filament](https://github.com/google/filament) is a real-time physically based rendering engine.\n\n[ONNX.js](https://github.com/microsoft/onnxjs) is a Javascript library for running ONNX models on browsers.\n\n[HDRIHaven](https://hdrihaven.com/) is where you can find high quality HDRIs for free.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

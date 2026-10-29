@@ -1,0 +1,15 @@
+{
+  "repo": "collidingScopes/manual-brick-breaker",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 694,
+  "pushedAt": "2025-01-22T08:53:17Z",
+  "description": "Play brick breaker in-browser using hand-tracking (javascript + mediapipe)",
+  "defaultBranch": "main",
+  "owner": "collidingScopes",
+  "slug": "collidingscopes-manual-brick-breaker",
+  "dest": "third-party/collidingscopes-manual-brick-breaker",
+  "readme": "",
+  "licenceFile": "LICENSE.txt",
+  "validated": true
+}

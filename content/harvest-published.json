@@ -41,8 +41,8 @@
       ],
       "related": [
         "mumuy-pacman",
-        "cxong-drunkenviking",
-        "selenebun-towerdefense"
+        "ideosorter-ideosorter-github-io",
+        "sarahrosannabusch-dice"
       ]
     },
     {
@@ -85,8 +85,96 @@
       ],
       "related": [
         "gabrielecirulli-2048",
-        "cxong-drunkenviking",
-        "selenebun-towerdefense"
+        "ideosorter-ideosorter-github-io",
+        "sarahrosannabusch-dice"
+      ]
+    },
+    {
+      "id": "ideosorter-ideosorter-github-io",
+      "title": "Ideosorter Github Io",
+      "tagline": "Answer the questions and see how much you know.",
+      "description": "The ideosorter political quiz is a test that assigns you an ideology based on a flowchart as opposed to traditional methods via. Play free in your browser, with no download and no account.",
+      "category": "arcade",
+      "accent": "hsl(232 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/ideosorter-ideosorter-github-io/index.html"
+      },
+      "credit": {
+        "author": "Ideosorter",
+        "licence": "MIT",
+        "source": "https://github.com/Ideosorter/ideosorter.github.io"
+      },
+      "keywords": [
+        "ideosorter io game",
+        "play ideosorter io online",
+        "free ideosorter io",
+        "online quiz game",
+        "word game"
+      ],
+      "howToPlay": [
+        "Pick an answer with a tap or a click.",
+        "Move between answers with the arrow keys or the on-screen pad.",
+        "Every correct answer adds to your score, and the questions keep coming."
+      ],
+      "faq": [
+        {
+          "q": "Is Ideosorter Io free to play?",
+          "a": "Yes. Ideosorter Io is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Ideosorter Io work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "sarahrosannabusch-dice"
+      ]
+    },
+    {
+      "id": "sarahrosannabusch-dice",
+      "title": "Dice",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "The best 3D dice roller for web stuff. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(170 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/sarahrosannabusch-dice/index.html"
+      },
+      "credit": {
+        "author": "sarahRosannaBusch",
+        "licence": "MIT",
+        "source": "https://github.com/sarahRosannaBusch/dice"
+      },
+      "keywords": [
+        "dice game",
+        "play dice online",
+        "free dice",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Dice free to play?",
+          "a": "Yes. Dice is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Dice work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -130,7 +218,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "selenebun-towerdefense"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -174,7 +262,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -218,7 +306,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -262,7 +350,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -306,7 +394,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -350,7 +438,51 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "tddyco-canvas-td",
+      "title": "Canvas Td",
+      "tagline": "Build your towers and hold the line against the waves.",
+      "description": "Fully featured tower defence game built with. Runs in your browser, free, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(41 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/tddyco-canvas-td/index.html"
+      },
+      "credit": {
+        "author": "tddyco",
+        "licence": "MIT",
+        "source": "https://github.com/tddyco/canvas-td"
+      },
+      "keywords": [
+        "td game",
+        "play td online",
+        "free td",
+        "online tower defence game",
+        "strategy game"
+      ],
+      "howToPlay": [
+        "Pick a tower with a tap or a click, then pick a spot beside the path.",
+        "Move between build spots with the arrow keys or the on-screen pad.",
+        "Each wave is stronger than the last, so upgrade before it arrives."
+      ],
+      "faq": [
+        {
+          "q": "Is Td free to play?",
+          "a": "Yes. Td is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Td work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -394,7 +526,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -438,7 +570,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -482,7 +614,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -526,7 +658,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -570,7 +702,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -614,7 +746,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -658,7 +790,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -702,7 +834,51 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "audioslayer-nanoarcade",
+      "title": "NanoArcade",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Tool to manage retro game collections and box art for RG Nano and similar handhelds. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(277 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/audioslayer-nanoarcade/index.html"
+      },
+      "credit": {
+        "author": "audioslayer",
+        "licence": "MIT",
+        "source": "https://github.com/audioslayer/NanoArcade"
+      },
+      "keywords": [
+        "nano arcade game",
+        "play nano arcade online",
+        "free nano arcade",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Nano Arcade free to play?",
+          "a": "Yes. Nano Arcade is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Nano Arcade work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -746,7 +922,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -790,7 +966,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -834,7 +1010,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -878,7 +1054,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -922,7 +1098,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -966,7 +1142,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -1010,7 +1186,51 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "dag7dev-jsquizee",
+      "title": "JSQuizee",
+      "tagline": "Answer the questions and see how much you know.",
+      "description": "A quiz: answer the questions, keep the score ticking and see how far you get. Play free in your browser, with no download and no account.",
+      "category": "arcade",
+      "accent": "hsl(283 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/dag7dev-jsquizee/index.html"
+      },
+      "credit": {
+        "author": "dag7dev",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/dag7dev/JSQuizee"
+      },
+      "keywords": [
+        "jsquizee game",
+        "play jsquizee online",
+        "free jsquizee",
+        "online quiz game",
+        "word game"
+      ],
+      "howToPlay": [
+        "Pick an answer with a tap or a click.",
+        "Move between answers with the arrow keys or the on-screen pad.",
+        "Every correct answer adds to your score, and the questions keep coming."
+      ],
+      "faq": [
+        {
+          "q": "Is Jsquizee free to play?",
+          "a": "Yes. Jsquizee is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Jsquizee work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -1054,7 +1274,7 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
       ]
     },
     {
@@ -1098,7 +1318,447 @@
       "related": [
         "gabrielecirulli-2048",
         "mumuy-pacman",
-        "cxong-drunkenviking"
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "omar-mazen-weatherio",
+      "title": "Weatherio",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Web application that provides real-time weather information. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(174 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/omar-mazen-weatherio/index.html"
+      },
+      "credit": {
+        "author": "omar-mazen",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/omar-mazen/weatherio"
+      },
+      "keywords": [
+        "weatherio game",
+        "play weatherio online",
+        "free weatherio",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Weatherio free to play?",
+          "a": "Yes. Weatherio is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Weatherio work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "bocaletto-luca-domino",
+      "title": "Domino",
+      "tagline": "Clear the board by pairing matching tiles from the edges.",
+      "description": "Domino is a strategic board game based on the classic domino tile-matching game, where players compete by placing tiles with matching. Play free in your browser, with no download and no account.",
+      "category": "arcade",
+      "accent": "hsl(340 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/bocaletto-luca-domino/index.html"
+      },
+      "credit": {
+        "author": "bocaletto-luca",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/bocaletto-luca/Domino"
+      },
+      "keywords": [
+        "domino game",
+        "play domino online",
+        "free domino",
+        "online mahjong game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick two matching tiles with a tap or a click.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Only tiles with a free side can be taken, so work inwards from the edges."
+      ],
+      "faq": [
+        {
+          "q": "Is Domino free to play?",
+          "a": "Yes. Domino is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Domino work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "milchreis-tinydefence2",
+      "title": "Tinydefence2",
+      "tagline": "Build your towers and hold the line against the waves.",
+      "description": "TowerDefence clone which is playable in browser. Runs in your browser, free, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(5 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/milchreis-tinydefence2/index.html"
+      },
+      "credit": {
+        "author": "Milchreis",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/Milchreis/tinydefence2"
+      },
+      "keywords": [
+        "tinydefence2 game",
+        "play tinydefence2 online",
+        "free tinydefence2",
+        "online tower defence game",
+        "strategy game"
+      ],
+      "howToPlay": [
+        "Pick a tower with a tap or a click, then pick a spot beside the path.",
+        "Move between build spots with the arrow keys or the on-screen pad.",
+        "Each wave is stronger than the last, so upgrade before it arrives."
+      ],
+      "faq": [
+        {
+          "q": "Is Tinydefence2 free to play?",
+          "a": "Yes. Tinydefence2 is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Tinydefence2 work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "tinawebdev-need-for-js",
+      "title": "Need For",
+      "tagline": "Steer for the line and keep your foot down.",
+      "description": "A race against the clock: steer through the course, hold your line and finish first. Free in your browser, with no download and no sign-up at all.",
+      "category": "arcade",
+      "accent": "hsl(320 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/tinawebdev-need-for-js/index.html"
+      },
+      "credit": {
+        "author": "tinawebdev",
+        "licence": "MIT",
+        "source": "https://github.com/tinawebdev/need-for-js"
+      },
+      "keywords": [
+        "need game",
+        "play need online",
+        "free need",
+        "online racing game",
+        "racing game"
+      ],
+      "howToPlay": [
+        "Steer with the left and right arrows, or use the on-screen pad.",
+        "Accelerate with the up arrow and brake with the down arrow.",
+        "Swipe left or right on a phone to steer through the corner."
+      ],
+      "faq": [
+        {
+          "q": "Is Need free to play?",
+          "a": "Yes. Need is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Need work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "s2031215-pixijs-solitaire",
+      "title": "PixiJS Solitaire",
+      "tagline": "Build the four suits from ace to king and clear the table.",
+      "description": "A card game for one: build the suits in order, turn over the hidden cards and clear the table. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(26 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/s2031215-pixijs-solitaire/index.html"
+      },
+      "credit": {
+        "author": "s2031215",
+        "licence": "Apache-2.0",
+        "source": "https://github.com/s2031215/PixiJS-Solitaire"
+      },
+      "keywords": [
+        "solitaire game",
+        "play solitaire online",
+        "free solitaire",
+        "online solitaire game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick up a card with a tap or a click, then pick the pile it belongs on.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Build each suit in order and turn over the hidden cards as you go."
+      ],
+      "faq": [
+        {
+          "q": "Is Solitaire free to play?",
+          "a": "Yes. Solitaire is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Solitaire work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "evoluteur-maze-maker",
+      "title": "Maze Maker",
+      "tagline": "Find the way out before the walls close in.",
+      "description": "Generate square, circular, triangular and heart-shaped mazes with seven algorithms (backtracker, Prim, Kruskal, Wilson, hunt-and-kill. Play free in your browser, with no download and no account.",
+      "category": "arcade",
+      "accent": "hsl(254 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/evoluteur-maze-maker/index.html"
+      },
+      "credit": {
+        "author": "evoluteur",
+        "licence": "MIT",
+        "source": "https://github.com/evoluteur/maze-maker"
+      },
+      "keywords": [
+        "maze maker game",
+        "play maze maker online",
+        "free maze maker",
+        "online maze game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next junction.",
+        "Reach the way out without getting stuck in a dead end."
+      ],
+      "faq": [
+        {
+          "q": "Is Maze Maker free to play?",
+          "a": "Yes. Maze Maker is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Maze Maker work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "milchreis-snake3d",
+      "title": "Snake3D",
+      "tagline": "Eat, grow and keep clear of your own tail.",
+      "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(54 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/milchreis-snake3d/index.html"
+      },
+      "credit": {
+        "author": "Milchreis",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/Milchreis/Snake3D"
+      },
+      "keywords": [
+        "snake3d game",
+        "play snake3d online",
+        "free snake3d",
+        "online snake game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Steer with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the snake a new direction.",
+        "Eat the food, grow longer and never touch the walls or your own tail."
+      ],
+      "faq": [
+        {
+          "q": "Is Snake3d free to play?",
+          "a": "Yes. Snake3d is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Snake3d work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "niravcodes-flappy-millennial",
+      "title": "Flappy Millennial",
+      "tagline": "Tap to flap and thread every gap.",
+      "description": "Help this Flappy Millennial ignore reality while he scrolls through Instagram or something. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(231 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/niravcodes-flappy-millennial/index.html"
+      },
+      "credit": {
+        "author": "niravcodes",
+        "licence": "MIT",
+        "source": "https://github.com/niravcodes/flappy-millennial"
+      },
+      "keywords": [
+        "flappy millennial game",
+        "play flappy millennial online",
+        "free flappy millennial",
+        "online one-button game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Tap the screen or press Space to flap.",
+        "Pass through each gap without touching the edges.",
+        "Press R to start again after a crash."
+      ],
+      "faq": [
+        {
+          "q": "Is Flappy Millennial free to play?",
+          "a": "Yes. Flappy Millennial is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Flappy Millennial work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "rededge967-adventures-of-red",
+      "title": "Adventures Of Red",
+      "tagline": "Run, jump and reach the end of the level.",
+      "description": "Just a little platformer game made within just 4 hours. Runs in your browser, free, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(188 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/rededge967-adventures-of-red/index.html"
+      },
+      "credit": {
+        "author": "RedEdge967",
+        "licence": "MIT",
+        "source": "https://github.com/RedEdge967/adventures-of-red"
+      },
+      "keywords": [
+        "adventures of red game",
+        "play adventures of red online",
+        "free adventures of red",
+        "online platform game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Jump with Space or the up arrow.",
+        "Swipe up on a phone to jump, and swipe left or right to run."
+      ],
+      "faq": [
+        {
+          "q": "Is Adventures of Red free to play?",
+          "a": "Yes. Adventures of Red is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Adventures of Red work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
+      ]
+    },
+    {
+      "id": "felix45-breakout",
+      "title": "Breakout (Felix45)",
+      "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
+      "description": "Browser game and inspired by Atari Inc.'s implementation of the same game. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(263 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/felix45-breakout/index.html"
+      },
+      "credit": {
+        "author": "Felix45",
+        "licence": "MIT",
+        "source": "https://github.com/Felix45/Breakout"
+      },
+      "keywords": [
+        "breakout game",
+        "play breakout online",
+        "free breakout",
+        "online brick breaker game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Slide the paddle with the left and right arrows, or use the on-screen pad.",
+        "Bounce the ball into the bricks without letting it past you.",
+        "Clear every brick to finish the wall and move on."
+      ],
+      "faq": [
+        {
+          "q": "Is Breakout free to play?",
+          "a": "Yes. Breakout is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Breakout work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "ideosorter-ideosorter-github-io"
       ]
     }
   ]

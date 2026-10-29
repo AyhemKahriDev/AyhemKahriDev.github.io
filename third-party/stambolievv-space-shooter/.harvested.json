@@ -1,0 +1,15 @@
+{
+  "repo": "stambolievv/Space-Shooter",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 1135,
+  "pushedAt": "2022-02-10T10:48:54Z",
+  "description": "👾 Space Shooter is game where you fight for your survival against antigalactic enemies! 👾",
+  "defaultBranch": "master",
+  "owner": "stambolievv",
+  "slug": "stambolievv-space-shooter",
+  "dest": "third-party/stambolievv-space-shooter",
+  "readme": "# Space-Shooter\n\n👾 Space Shooter is game where you fight for your survival against antigalactic enemies! 👾\n\n## Controls\n\n<pre>\n  Left click  -- makes the player shoot towards the aim.\n  Right click -- moves him towards the aim's position.\n</pre>\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "mrm8488/flappy_birds_genetic_evol",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 106,
+  "pushedAt": "2019-05-03T12:05:26Z",
+  "description": "Simulation of Flappy Birds game using a simple neural network and genetic evolution strategy",
+  "defaultBranch": "master",
+  "owner": "mrm8488",
+  "slug": "mrm8488-flappy-birds-genetic-evol",
+  "dest": "third-party/mrm8488-flappy-birds-genetic-evol",
+  "readme": "# Flappy Birds with genetic algorithm 🐣 🐥 🐦\n## Simulation of Flappy Birds game using a simple neural network and genetic evolution strategy\n\n![screenshot](screenshots/sc1.png)\n\n## How does it work?\nWe create a large population of birds that try to fly over the pipes. When all of them have died (crashed against the pipes) we copy the **brain** of the bird that went further and create another generation with that brain and some mutation (changes). We repeat it over and over until we get one or several birds that do not crash against the pipes.\n\nThe brain of each bird is a simple neural network with 5 input nodes, one hidden layer with 8 nodes and the output layer with 2 nodes and softmax as activation function *(jump or not to jump)*\n\n[Go to live demo](https://mrm8488.github.io/flappy_birds_genetic_evol/index.html)\n\n### Network diagram:\n\n![Network schema](screenshots/nn.png)\n\n\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

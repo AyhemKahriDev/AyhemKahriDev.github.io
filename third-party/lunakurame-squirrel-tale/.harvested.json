@@ -1,0 +1,15 @@
+{
+  "repo": "lunakurame/squirrel-tale",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 1612,
+  "pushedAt": "2022-04-05T22:10:36Z",
+  "description": "A video game about helping a squirrel find her lost friend. Created with the Nuthead engine (see the nuthead repo).",
+  "defaultBranch": "main",
+  "owner": "lunakurame",
+  "slug": "lunakurame-squirrel-tale",
+  "dest": "third-party/lunakurame-squirrel-tale",
+  "readme": "# Squirrel Tale\n\n![Screenshot of the game](doc/screenshot.png)\n\n## Description\n\nA video game about helping a squirrel find her lost friend. Created with the\n[Nuthead engine](https://github.com/lunakurame/nuthead).\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "RedEdge967/adventures-of-red",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 330,
+  "pushedAt": "2022-06-06T15:02:09Z",
+  "description": "just a little platformer game made within just 4 hours",
+  "defaultBranch": "master",
+  "owner": "RedEdge967",
+  "slug": "rededge967-adventures-of-red",
+  "dest": "third-party/rededge967-adventures-of-red",
+  "readme": "<h1 align=\"center\">Adventures of Red</h1>\n<p align=\"center\">\n  <img src=\"/Red player_stand.png\">\n</p>\n\n- Adventures of Red is a little platformer game I made within just 4 hours.\n- In this you just have to kill one enemy and collect 20 coins.\n- You can edit this game with GDevelop.\n- You need a pc or a laptop with a keyboard to play this game.\n\n## Features 🌟\n- Can run in the browser\n- Can run it with installing it\n- Can edit with GDevelop\n- Can edit with a code editor\n\n## Running 💻\n- This game is only made with html5 and javascript, so you can run this game in your browser\n- go to https://rededge.is-a.dev/adventures-of-red/\n\n### Released Setups 📦\n- [x] Windows `exe`file\n- [x] Mac `archieved` file\n- [ ] Linux `AppImage`\n\n## Installing and Running 📥\n- download `adventures_of_redx64_windows.exe` to install this game on windows (you need a 64 bit pc to run this game)\n  - After downloading, double click on the setup to install and run\n\n- download `adventures_of_red_macos.zip` to install this on Mac\n  - After downloading, extract the archive and double click on the app to launch it\n\n> ##### Note: When launching the game on Windows and macOS, you might get a notice about security. Choose to run the game anyway. On macOS, you may need to open Security and Privacy tab in System Preferences.\n\n## Editing with GDevelop 📝\n- download `adventures_of_red.json` to edit this game with GDevelop\n- download GDevelop desktop app\n- open the downloaded file with GDevelop\n\n## Support this game 🤝\n- If you think this game is good, support this project by starring and sharing this project with your friends\n\n## Can I contribute? ✍️\n- Sure. Open an issue, point out errors and what not? wanna fix something yourself? open a PR and I really appreciate it\n\n## Questions? ❓\n- If you have any doughts reguarding this project, ask any questions in discussions\n\n## License ⚖️\n- This project is licensed under MIT license\n- Read more about it [here](https://github.com/RedEdge967/adventures-of-red/blob/master/LICENSE).\n\nCopyright (c) 2022 Chandula Janith\n\n- find me on [Liluo.io](https://liluo.io/Doctor_Strange).\n- Play this game on [Liluo.io](https://liluo.io/doctor_strange/adventures-of-red).\n\n\n\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

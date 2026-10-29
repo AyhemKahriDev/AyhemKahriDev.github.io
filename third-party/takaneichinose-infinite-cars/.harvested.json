@@ -1,0 +1,15 @@
+{
+  "repo": "takaneichinose/infinite-cars",
+  "stars": 7,
+  "licence": "GPL-3.0",
+  "sizeKB": 1874,
+  "pushedAt": "2022-03-10T02:38:06Z",
+  "description": "I don't know how did I come up with this name, but this is an endless racing game.",
+  "defaultBranch": "main",
+  "owner": "takaneichinose",
+  "slug": "takaneichinose-infinite-cars",
+  "dest": "third-party/takaneichinose-infinite-cars",
+  "readme": "# Infinite Cars\n\n## Description\n\nMy first ever game created using a game engine!\n\nWhy \"Infinite Cars\"? Well simply because this is an endless racing game.\n\nThis is just a simple time killer when you are bored.  This game does not have a specific goal. Just drive the car, survive the game, and dodge all the obstacles with all your might!\n\nI already created many versions of this game, but this is so far is my creation that I feel satisfied the most. Well it's because this is the first time I actually used a game engine.\n\nThe computer car has a light artificial intelligence algorithm which it avoids an obstacle to go through. Although, it's not perfect, I'm already satisfied with it.\n\nI read the API documentation, and the code in the examples a lot, for me to understand how to work on this game. Although, I'm pretty sure that my writing is not perfect.\n\n## Instructions\n\nAs mentioned before, just avoid the obstacles on the road.\n\nYou may drag the red car (or the character) to left or to the right to control it.\n\nThere is no other controls other than that.\n\nIf you feel that the background sound effect is noisy, you may mute it (Located at the top right of the game screen).\n\n## Resources\n\n[Phaser](https://phaser.io/) - JavaScript game engine or framework.\n\n[Aseprite](aseprite.org) - Drawing tool for the game objects .\n\n[LMMS](https://lmms.io/lsp/) - DAW application for the sound effects.\n\n[Luckiest Guy](https://fonts.googleapis.com/css2?family=Luckiest+Guy) - Font used for the texts.\n\n[AAP64](https://lospec.com/palette-list/aap-64) - The color palette used for the images and the UI.\n\n[Codepen](https://codepen.io/) - As a text editor (Or IDE) for development.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

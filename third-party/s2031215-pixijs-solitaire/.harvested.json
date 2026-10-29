@@ -1,0 +1,15 @@
+{
+  "repo": "s2031215/PixiJS-Solitaire",
+  "stars": 10,
+  "licence": "Apache-2.0",
+  "sizeKB": 805,
+  "pushedAt": "2023-08-07T02:15:08Z",
+  "description": "A Web solitaire game",
+  "defaultBranch": "master",
+  "owner": "s2031215",
+  "slug": "s2031215-pixijs-solitaire",
+  "dest": "third-party/s2031215-pixijs-solitaire",
+  "readme": "![visitor badge](https://visitor-badge.laobi.icu/badge?page_id=s2031215.PixiJS-Solitaire)\n# PixiJs solitaire\nA Web solitaire game using PixiJsV4.<br>\n![image](https://github.com/s2031215/pixi_solitaire/blob/master/Pixi_Solitaire_screenshot.png)\n\n## About PixiJs solitaire\n\nPixi solitaire is a solitaire game on PixiJs, this game can run in Offline mode and PWA in smartphone.<br>\nYou can play this in https://s2031215.github.io/PixiJS-Solitaire/index.html\n\n## Feature:<br>\n\n- [x] Double click place card\n- [x] Win trigger\n- [x] Progressive Web Apps\n- [x] Offline Play Support (Require SSL)\n- [ ] Score Board\n- [ ] Multi touch Support\n## License\n\nCopyright © 2020 s2031215<br>\nThis project itself is licensed under the Apache-2.0 License<br>\nThe Pixel Plebes Digital Card Deck is create by Devlyn JD<br>\nhttps://greebles.itch.io/pixel-plebes<br>\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

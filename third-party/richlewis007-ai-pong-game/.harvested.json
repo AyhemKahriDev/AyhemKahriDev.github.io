@@ -1,0 +1,15 @@
+{
+  "repo": "RichLewis007/AI-Pong-game",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 460,
+  "pushedAt": "2025-10-16T21:17:14Z",
+  "description": "Pong game featuring a human player vs. a simple AI player, using canvas in 2d space. ⭐️ Star to support my work!",
+  "defaultBranch": "main",
+  "owner": "RichLewis007",
+  "slug": "richlewis007-ai-pong-game",
+  "dest": "third-party/richlewis007-ai-pong-game",
+  "readme": "# AI-Pong\nAn AI-enhanced Pong game featuring a human player vs. a simple AI player, using canvas in 2d space.\n\nScreenshot:\n![alt text](<Pong Canvas 2D screenshot.png>)\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

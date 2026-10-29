@@ -1,0 +1,15 @@
+{
+  "repo": "Milchreis/tinydefence2",
+  "stars": 10,
+  "licence": "GPL-3.0",
+  "sizeKB": 1798,
+  "pushedAt": "2019-07-18T18:25:16Z",
+  "description": "A simple TowerDefence clone which is playable in browser",
+  "defaultBranch": "master",
+  "owner": "Milchreis",
+  "slug": "milchreis-tinydefence2",
+  "dest": "third-party/milchreis-tinydefence2",
+  "readme": "<p align=\"center\">\n  <img src=\"https://raw.githubusercontent.com/Milchreis/tinydefence2/master/assets/images/logo.png\" />\n</p>\n\nAfter approximately 5 years I want to create a more modern version of my first [TinyDefence](https://github.com/Milchreis/TinyDefence) game. Here is the result of my little hackathon.\nTinyDefence 2 is a simple implementation of the tower defence principe (build towers to fight against the incoming enemies). Now it's build with the [phaser game engine](http://phaser.io/), which I also used for my platformer game [I Hate Zombies](https://github.com/Milchreis/I-Hate-Zombies). The game is hosted on github and is ready to play.\n\n![alt screenshot](https://raw.githubusercontent.com/Milchreis/tinydefence2/master/assets/images/screenshot.png)\n\n**[Play it here](https://milchreis.github.io/tinydefence2/index.html)**\n\n## Improvements over TinyDefence 1\n - playable in modern browser\n - sprites and animations\n - maps are creatable with `Tiled`\n - automatic way detection\n\n## Create your own level\nYou want to change the waves to make the game more difficult or easy? Than open up the file `assets/js/maps.js`. There is each wave for the first map defined.\n\nIf you want to create a complete new map than install the map editor `Tiled` and create a copy of `assets/maps/map.tmx`. With Tiled you can open up your copy and create your own map. After that export your map as JSON file next to your copy and intergate it into the `assets/js/maps.js`. \n\nShare your map with other people and start a pull request.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

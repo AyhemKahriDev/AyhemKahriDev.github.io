@@ -1,0 +1,15 @@
+{
+  "repo": "feldhaus/phaser-platformer",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 265,
+  "pushedAt": "2021-01-17T13:29:50Z",
+  "description": "A simple platformer using Phaser.js and Tiled.",
+  "defaultBranch": "main",
+  "owner": "feldhaus",
+  "slug": "feldhaus-phaser-platformer",
+  "dest": "third-party/feldhaus-phaser-platformer",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

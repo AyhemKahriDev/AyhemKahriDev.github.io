@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Domino Web Game | WebGame | Bocaletto Luca</title>
+<meta name="description" content="Domino Web Game is a strategic board game based on the classic domino tile-matching game. Compete by placing tiles with matching numbers in single-player, multiplayer, and AI opponent modes for an engaging and competitive experience. Developed by Bocaletto Luca.">
+<meta name="keywords" content="game, webgame, domino, board game, strategy, multiplayer, AI opponent, tile-matching, challenge, online gaming, Bocaletto Luca">
+<meta name="author" content="Bocaletto Luca">
+ <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Original Domino Game</h1>
+  </header>
+  <div class="container">
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <button class="tablinks active" onclick="showTab(event, 'gameTab')" id="defaultTab">Game</button>
+      <button class="tablinks" onclick="showTab(event, 'recordsTab')">Records</button>
+    </div>
+    
+    <!-- Game Tab -->
+    <div id="gameTab" class="tabcontent active">
+      <div class="game-controls">
+        <label for="playerName">Player Name:</label>
+        <input type="text" id="playerName" placeholder="Your name">
+        <label for="gameVariant">Variant:</label>
+        <select id="gameVariant">
+          <option value="8" selected>8-Domino (8 tiles, 3x3 equivalent)</option>
+          <option value="15">15-Domino (15 tiles, 4x4 equivalent)</option>
+        </select>
+        <button onclick="startGame()">New Game</button>
+        <button id="drawBtn" onclick="drawTile()" style="display:none;">Draw Tile</button>
+      </div>
+      <div class="status">
+        <span>Score: <span id="scoreDisplay">0</span></span>
+        <span>Moves: <span id="moveCount">0</span></span>
+        <span>Errors: <span id="errorCount">0</span></span>
+      </div>
+      <div class="board-section">
+        <h3 class="board-title">Computer's Hand (<span id="compCount">0</span> tiles)</h3>
+        <div id="computerHand"></div>
+      </div>
+      <div class="board-section">
+        <h3 class="board-title">Domino Chain</h3>
+        <div id="chainContainer"></div>
+      </div>
+      <div class="board-section">
+        <h3 class="board-title">Your Hand</h3>
+        <div id="playerHand"></div>
+      </div>
+      <div id="gameMessage" style="text-align:center; font-size:1.2rem; margin-top:10px;"></div>
+    </div>
+    
+    <!-- Records Tab -->
+    <div id="recordsTab" class="tabcontent">
+      <h2>High Scores</h2>
+      <div id="recordsArea">
+        <table id="recordsTable">
+          <thead>
+            <tr>
+              <th>Player</th>
+              <th>Score</th>
+              <th>Moves</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Records load here dynamically -->
+          </tbody>
+        </table>
+      </div>
+      <button class="btn-clear" onclick="clearRecords()">Clear Records</button>
+    </div>
+  </div>
+  
+  <footer>
+    Bocaletto Luca
+  </footer>
+  <script src="main.js"></script>
+</body>
+</html>

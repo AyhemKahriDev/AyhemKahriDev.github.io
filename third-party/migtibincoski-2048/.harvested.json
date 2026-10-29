@@ -1,0 +1,15 @@
+{
+  "repo": "migtibincoski/2048",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 583,
+  "pushedAt": "2022-10-27T17:39:51Z",
+  "description": "A simple math game developed by Miguel Tibincoski",
+  "defaultBranch": "main",
+  "owner": "migtibincoski",
+  "slug": "migtibincoski-2048",
+  "dest": "third-party/migtibincoski-2048",
+  "readme": "# 2048 - A simple math game developed by Miguel Tibincoski and Guilherme Santos\n\n## Demo\n![Demo Image](./assets/img/demo_1.png)\n\n## Compatibilidade\n\n- [X] Mobile\n- [X] Desktop\n",
+  "licenceFile": "LICENSE.txt",
+  "validated": true
+}

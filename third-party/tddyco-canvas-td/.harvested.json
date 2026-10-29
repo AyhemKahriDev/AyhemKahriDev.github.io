@@ -1,0 +1,15 @@
+{
+  "repo": "tddyco/canvas-td",
+  "stars": 41,
+  "licence": "MIT",
+  "sizeKB": 60,
+  "pushedAt": "2019-02-10T05:51:30Z",
+  "description": "A fully featured tower defense game built with <canvas>.",
+  "defaultBranch": "master",
+  "owner": "tddyco",
+  "slug": "tddyco-canvas-td",
+  "dest": "third-party/tddyco-canvas-td",
+  "readme": "A fully featured tower defense game built with &lt;canvas&gt;. https://canvas-td.teddy.io\n\n---\n\n© 2017 [Teddy Cross](https://teddy.io), shared under the [MIT license](https://opensource.org/licenses/MIT).\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

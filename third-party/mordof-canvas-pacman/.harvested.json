@@ -1,0 +1,15 @@
+{
+  "repo": "mordof/canvas-pacman",
+  "stars": 8,
+  "licence": "GPL-2.0",
+  "sizeKB": 127,
+  "pushedAt": "2024-11-13T16:41:49Z",
+  "description": "A Canvas Implementation of the original Pacman with Mobile support",
+  "defaultBranch": "master",
+  "owner": "mordof",
+  "slug": "mordof-canvas-pacman",
+  "dest": "third-party/mordof-canvas-pacman",
+  "readme": "canvas-pacman\n=============\n\nA Canvas Implementation of the original Pacman with Mobile support\n\nFeatures already available:\n - Ghosts with waypoint movement (fully random currently)\n - Collision detection with pacman (ghosts, fruits, pacs)\n - Pacman able to eat ghosts after noming an ultra Pac\n - Point counter\n - New life every 10,000 points\n - Input-agnostic movement mechanics for all units (so all AI/pacman, doesn't matter what input you control it with, it's states that get evaluated)\n - Lives tracking\n - Full Rendering of all components (everything procedural, including animations) as well as all drawings based on calculations of available size - so full scaling is in place.\n - All animations and movements based on time delta\n - Map creating is procedural based on a map config, can be altered fully (some layouts might have bugs that need to be fixed, not all permutations have been tested)\n - The teleportation points (both vertical, and horizontal, if vertical ever gets put into place, are available) - available to be used for any sprite entity\n - Waypoint lookup, and point to point route calculation helpers have been made.\n\n... There may be more, but that was off the top of my head.",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

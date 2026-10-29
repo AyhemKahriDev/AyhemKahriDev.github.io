@@ -1,0 +1,15 @@
+{
+  "repo": "Milchreis/Snake3D",
+  "stars": 9,
+  "licence": "GPL-3.0",
+  "sizeKB": 696,
+  "pushedAt": "2019-08-27T19:51:15Z",
+  "description": "Programming Snake as 3D Version with P5js (Coding Challange)",
+  "defaultBranch": "master",
+  "owner": "Milchreis",
+  "slug": "milchreis-snake3d",
+  "dest": "third-party/milchreis-snake3d",
+  "readme": "# Snake3D\n\n![Alt Screenshot](https://github.com/Milchreis/Snake3D/raw/master/screenshot.png)\n\nInspired by [The-Coding-Train Snake-Redux Video](https://www.youtube.com/watch?v=OMoVcohRgZA), I decide to programm my version of Snake in 3D with the same look. Just JavaScript and p5js make it possible :blush:\n\nMove the mouse up and down for changing the angle of view and use the arrow keys for moving the snake. Reach the red block to feed the snake that it grows.\n\nPlay it here: https://milchreis.github.io/Snake3D/\n\n![Alt Screencast](https://github.com/Milchreis/Snake3D/raw/master/snake3d.gif)\n\n# Ideas for PR's\n* Isometric view\n* First-Person view\n* Skybox\n* Blinking snake while eating\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}
