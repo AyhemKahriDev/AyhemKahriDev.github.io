@@ -276,7 +276,7 @@ export function importGames({
     records.push(record);
   }
 
-  const kept = dedupeByTitle(records, { familyOf: (r) => r.family, capPerFamily });
+  const kept = dedupeByTitle(records, { familyOf: (r) => r.family, capPerFamily, perTitle: 3 });
   const limited = Number.isFinite(Number(budget)) ? kept.slice(0, Math.max(0, Number(budget))) : kept;
 
   // Ids are derived from the repo, so they can be built without knowing about

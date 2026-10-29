@@ -81,12 +81,18 @@ test('no family publishes more than capPerFamily games', () => {
   assert.equal(counts.get('tetris'), 3);
 });
 
-test('duplicate normalised titles are dropped, keeping the best-starred copy', () => {
+test('a title repeats at most three times, strongest copies first', () => {
   const games = run({ capPerFamily: 40 });
   const ids = games.map((g) => g.id);
-  // Alpha (1200 stars) beat Gamma (400 stars) for the title "Block Drop".
+  // Alpha (1200 stars) outranks Gamma (400 stars) for the title "Block Drop":
+  // both survive, strongest first, and the weaker one is renamed with its
+  // author so the site never ships two pages with one name.
   assert.ok(ids.includes('alpha-tetris'), 'the higher-starred Block Drop should survive');
-  assert.ok(!ids.includes('gamma-blocks'), 'the lower-starred duplicate should be dropped');
+  assert.ok(ids.includes('gamma-blocks'), 'the second Block Drop survives under a distinct title');
+  assert.ok(
+    games.filter((g) => normaliseTitle(g.title).startsWith('block drop')).length <= 3,
+    'no title may repeat more than three times',
+  );
 
   const titles = games.map((g) => normaliseTitle(g.title));
   assert.equal(new Set(titles).size, titles.length, 'published titles must be unique');

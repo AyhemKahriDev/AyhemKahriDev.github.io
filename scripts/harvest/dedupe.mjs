@@ -97,23 +97,41 @@ function compareRank(a, b) {
  * @param {number}   [options.capPerFamily=40]
  * @returns {object[]} the surviving records, strongest first
  */
-export function dedupeByTitle(entries = [], { familyOf = defaultFamilyOf, capPerFamily = 40 } = {}) {
+export function dedupeByTitle(
+  entries = [],
+  { familyOf = defaultFamilyOf, capPerFamily = 40, perTitle = 1 } = {},
+) {
   if (!Array.isArray(entries)) throw new TypeError('dedupeByTitle: entries must be an array');
   const cap = Number(capPerFamily);
   if (!Number.isFinite(cap) || cap < 1) {
     throw new RangeError(`dedupeByTitle: capPerFamily must be a positive number, got ${capPerFamily}`);
   }
 
-  // One survivor per normalised title.
+  /**
+   * `perTitle` survivors per normalised title, strongest first.
+   *
+   * 1 is the SEO answer: two pages called "Tetris" compete for one query.
+   * The importer raises it to 3 because a big harvest is dominated by a dozen
+   * famous names - dropping every "Snake" but one threw away 42 % of the games
+   * that passed the browser gate, and each one is a genuinely different
+   * implementation. Beyond three, a title really is clutter.
+   */
+  const quota = Math.max(1, Number(perTitle) || 1);
   const byTitle = new Map();
   for (const entry of entries) {
     const key = normaliseTitle(entry?.title);
-    const prev = byTitle.get(key);
-    if (!prev || compareRank(rankOf(entry), rankOf(prev)) < 0) byTitle.set(key, entry);
+    const bucket = byTitle.get(key) ?? [];
+    bucket.push(entry);
+    byTitle.set(key, bucket);
   }
 
   // Strongest first, so a family cap always keeps its best members.
-  const candidates = [...byTitle.values()].sort((a, b) => compareRank(rankOf(a), rankOf(b)));
+  const candidates = [];
+  for (const bucket of byTitle.values()) {
+    bucket.sort((a, b) => compareRank(rankOf(a), rankOf(b)));
+    candidates.push(...bucket.slice(0, quota));
+  }
+  candidates.sort((a, b) => compareRank(rankOf(a), rankOf(b)));
 
   const perFamily = new Map();
   const kept = [];

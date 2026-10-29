@@ -1,0 +1,15 @@
+{
+  "repo": "mewmewdevart/SnakeGame",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 943,
+  "pushedAt": "2024-02-04T21:03:32Z",
+  "description": "🎮 |SnakeGame, the more you eat the longer will the snake grow made with HTML, CSS and JS, for study purposes.",
+  "defaultBranch": "main",
+  "owner": "mewmewdevart",
+  "slug": "mewmewdevart-snakegame",
+  "dest": "third-party/mewmewdevart-snakegame",
+  "readme": "<h1 align=\"center\">\n Snake Game 🐍\n</h1>\n\n<p align=\"center\">\n\t<b><i>Snake Game created during the Digital Innovation One's JavaScript Game Developer bootcamp..</i></b><br>\n</p>\n\n<p align=\"center\">\n\t<img alt=\"Number of lines of code\" src=\"https://img.shields.io/tokei/lines/github/mewmewdevart/Game-SnakeGame?color=6272a4\" />\n\t<img alt=\"GitHub code size in bytes\" src=\"https://img.shields.io/github/languages/code-size/mewmewdevart/Game-SnakeGame?color=6272a4\" />\n\t<img alt=\"Main language\" src=\"https://img.shields.io/github/languages/top/mewmewdevart/Game-SnakeGame?color=6272a4\"/>\n\t<img alt=\"Main language\" src=\"https://img.shields.io/github/license/mewmewdevart/Game-SnakeGame?color=6272a4\"/>\n</p>\n\n## 🐍 About the project\n\n> _The game is a remake of the original Snake with pixel graphics and monophonic sounds. The project presendted in this repository is the part of a series of challenges created by the free course platform [Digital Innovation One](https://web.digitalinnovation.one/home)  - JavaScript for Games Bootcamp. \n\n## ⚙️ Implementations\n\n* The goal is to make as many points as possible by making the snake eat stuff that shows up.\n* The more you eat the longer will the snake grow. If the snake collides with itself the game ends.\n* • Using the arrows of your keyboard to move around the screen. ↑ (up) ↓ (down) → (right) ← (left).\n\n## 🦄 Tech\n\n* HTML5\n* CSS3\n* JAVASCRIPT - Owl Carousel\n\n\n## 📌 Credits\n\n* Software for UI Design: [Figma](https://www.figma.com)\n* Documentation: [W3Schools](https://www.w3schools.com/)\n* Challenge: [Bootcamp Js Game Developer](https://web.digitalinnovation.one/track/javascript-game-developer)\n* Music: [Youtube](https://www.youtube.com)\n\n## ✨ PrintScreen:\n\n![snakeGame](https://user-images.githubusercontent.com/50052600/121605519-ebe0a900-ca22-11eb-9548-0c526840aca6.png)\n\n<p align=\"center\"> Developed with love 💜 by Larissa Cristina Benedito (Mewmew/Larcrist). </p>\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

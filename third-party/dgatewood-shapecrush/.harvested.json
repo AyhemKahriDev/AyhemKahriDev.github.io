@@ -1,0 +1,15 @@
+{
+  "repo": "dgatewood/ShapeCrush",
+  "stars": 7,
+  "licence": "GPL-3.0",
+  "sizeKB": 1564,
+  "pushedAt": "2020-01-08T17:11:50Z",
+  "description": "A bejeweled/Candy Crush inspired game done in Javascript.",
+  "defaultBranch": "master",
+  "owner": "dgatewood",
+  "slug": "dgatewood-shapecrush",
+  "dest": "third-party/dgatewood-shapecrush",
+  "readme": "# ShapeCrush\nA Bejeweled/Candy Crush inspired game done in Javascript.\n\nGame can be currently played at:\nhttp://shapecrush.epizy.com/\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

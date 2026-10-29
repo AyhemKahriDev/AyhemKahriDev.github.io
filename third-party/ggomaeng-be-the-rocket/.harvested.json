@@ -1,0 +1,15 @@
+{
+  "repo": "ggomaeng/be-the-rocket",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 493,
+  "pushedAt": "2016-11-22T07:22:32Z",
+  "description": "An implementation of the classic Asteroids game using React and Canvas in es6",
+  "defaultBranch": "master",
+  "owner": "ggomaeng",
+  "slug": "ggomaeng-be-the-rocket",
+  "dest": "third-party/ggomaeng-be-the-rocket",
+  "readme": "# Be-the-Rocket Asteroid\nAn implementation of the classic Asteroids game using React and Canvas in es6\n\nInspired by \"Be the Rocket\" to change the assets and add sharing feature.\n\nImproved the project by https://github.com/chriz001/Reacteroids.\n\nMain foucs is to add more social functionalities and add power-ups.\n\n## Demo\n\nhttps://ggomaeng.github.io/be-the-rocket/\n\n## Install\n\nnpm install\nnpm start\n\n## Play\n\nOpen http://localhost:8080\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}
