@@ -71,9 +71,37 @@ const EN = {
     'search.label': 'Search all games',
     'theme.label': 'Theme',
     'theme.button': 'Theme: {name}',
+    /* Coat names and hints: chrome, so they are catalogue strings like any
+       other. THEMES in scripts/build-site.mjs keeps only the id and swatch. */
+    'theme.signal.name': 'Signal',
+    'theme.signal.hint': 'ink + lime',
+    'theme.lights.name': 'Lights on',
+    'theme.lights.hint': 'paper',
+    'theme.coinop.name': 'Coin-op',
+    'theme.coinop.hint': 'amber cabinet',
+    'theme.ice.name': 'Ice',
+    'theme.ice.hint': 'cyan',
+    'theme.dmg.name': 'DMG',
+    'theme.dmg.hint': '1989 green',
+    'theme.vapor.name': 'Vapor',
+    'theme.vapor.hint': 'hot pink',
+    'theme.pixel.name': 'Pixel',
+    'theme.pixel.hint': '16-bit cartridge',
+    'theme.crt.name': 'CRT',
+    'theme.crt.hint': 'phosphor + scanlines',
+    'theme.newsprint.name': 'Newsprint',
+    'theme.newsprint.hint': 'printed page',
     'pager.prev': 'Prev',
     'pager.next': 'Next',
+    /* A counted noun carries one key per CLDR category. English only ever
+       selects one/other; the rest exist so the three files share a key set
+       and a new language can be added without touching the builder. */
+    'count.games_zero': '{count} games',
     'count.games_one': '{count} game',
+    'count.games_two': '{count} games',
+    'count.games_few': '{count} games',
+    'count.games_many': '{count} games',
+    'count.games_other': '{count} games',
     'count.games': '{count} games',
 
     /* ---------------------------------------------------------- footer */
@@ -544,6 +572,62 @@ export function t(catalog, key, vars = {}) {
   // Last resort: a readable word instead of a dotted key or "undefined".
   const tail = String(key ?? '').split('.').pop() || '';
   return tail.replace(/([a-z])([A-Z])/g, '$1 $2').replace(/[_-]+/g, ' ').toLowerCase();
+}
+
+/* --------------------------------------------------------------- plurals */
+
+/**
+ * Plurals belong to the language, not to the builder.
+ *
+ * The site used to pick between `count.games_one` and `count.games` with
+ * `n === 1`, which is the English rule: French says "0 jeu" (CLDR files zero
+ * with the singular) and Arabic has six forms - zero, one, two, few (3-10),
+ * many (11-99) and other. `Intl.PluralRules` knows all of them, so the
+ * catalogue carries one key per category (`count.games_<category>`) and this
+ * helper asks the locale which one to read.
+ *
+ * The rules object is built once per locale: the build renders ~1,700 pages
+ * and constructing an Intl.PluralRules per count is measurable.
+ */
+const PLURAL_RULES = new Map();
+
+/** The CLDR category (`zero`/`one`/`two`/`few`/`many`/`other`) for `count`. */
+export function pluralCategory(locale, count) {
+  const id = localeById(locale ?? DEFAULT_LOCALE).id;
+  if (!PLURAL_RULES.has(id)) {
+    try {
+      PLURAL_RULES.set(id, new Intl.PluralRules(id));
+    } catch {
+      // An engine without the locale's rules: the default locale's plural
+      // rule is closer than a crash, and every catalogue has its keys.
+      PLURAL_RULES.set(id, new Intl.PluralRules(DEFAULT_LOCALE));
+    }
+  }
+  const n = Number(count);
+  return PLURAL_RULES.get(id).select(Number.isFinite(n) ? n : 0);
+}
+
+/**
+ * The key to read for `count`: `key_<category>`, then `key_other`, then `key`.
+ *
+ * The fallback matters at build time for a catalogue that has not been
+ * translated yet: a French file without `count.games_many` still renders the
+ * generic form instead of an English leak or a raw dotted key.
+ */
+export function pluralKey(catalog, key, count) {
+  const category = pluralCategory(catalog?.locale, count);
+  for (const candidate of [`${key}_${category}`, `${key}_other`, key]) {
+    if (typeof lookup(catalog?.strings, candidate) === 'string') return candidate;
+  }
+  return key;
+}
+
+/**
+ * t() for a counted string: the form this language uses for `count`, with
+ * `{count}` filled in. All other placeholders work as they do in t().
+ */
+export function tPlural(catalog, key, count, vars = {}) {
+  return t(catalog, pluralKey(catalog, key, count), { ...vars, count });
 }
 
 /** t() for a whole array (how-to steps, FAQ answers). Never returns holes. */

@@ -652,6 +652,56 @@ kbd {
   justify-self: end;
 }
 
+/* ------------------------------------------------- language switcher */
+
+/* Three codes in one row, each a real touch target.
+   This used to be inline styles on the links with `flex-wrap: wrap` on the
+   nav, which at 375px stacked EN/FR/AR into three rows 28px tall and left the
+   search field squeezed beside them. The nav never shrinks now (`flex: 0 0
+   auto`), the links never wrap, and 32px is the smallest thing a thumb hits
+   reliably. */
+.lang-switch {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 2px;
+}
+
+.lang-switch a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  padding: 0 6px;
+  border-radius: var(--r-pill);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  color: var(--paper-3);
+  text-decoration: none;
+  transition:
+    color var(--t-fast) var(--e-io),
+    background var(--t-fast) var(--e-io);
+}
+
+.lang-switch a:hover,
+.lang-switch a:focus-visible {
+  color: var(--paper);
+  background: var(--panel);
+}
+
+/* The tree the reader is in: a filled pill reads at 32px where an outline
+   set outside the box would overlap its neighbours. */
+.lang-switch a[aria-current='page'] {
+  color: var(--signal-ink);
+  background: var(--signal);
+  font-weight: 700;
+}
+
 .search {
   display: flex;
   align-items: center;
