@@ -3,10 +3,10 @@
  *
  * A harvested repository gives us three unreliable things: a folder name, a
  * one-line GitHub description and a README written for developers. None of
- * them is page copy. This module turns them into a tagline, a description,
- * three controls, two questions and five keywords, using a fixed vocabulary
- * of game families. Same input always produces the same output - no clock,
- * no randomness - so a rebuild never churns the catalogue.
+ * them is page copy. This module turns them into a title, a tagline, a
+ * description, three controls, two questions and five keywords, using a fixed
+ * vocabulary of game families. Same input always produces the same output -
+ * no clock, no randomness - so a rebuild never churns the catalogue.
  *
  * The control lines are only allowed to claim what public/play.js really
  * injects: arrow keys, Space, swipe-to-arrow and the on-screen pad. No mouse
@@ -158,6 +158,8 @@ export const FAMILIES = [
     match: /\bsnake\b|serpent|nokia snake/,
     category: 'arcade',
     tagline: () => 'Eat, grow and keep clear of your own tail.',
+    description: (title) =>
+      'Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.',
     controls: [
       'Steer with the arrow keys, or use the on-screen pad.',
       'Swipe on a phone to send the snake a new direction.',
@@ -169,6 +171,8 @@ export const FAMILIES = [
     match: /tetris|blockrain|block ?out|falling block|tetromino|line clear/,
     category: 'arcade',
     tagline: () => 'Stack the falling blocks and clear every line.',
+    description: (title) =>
+      'Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.',
     controls: [
       'Move with the left and right arrows, rotate with the up arrow.',
       'Soft-drop with the down arrow and hard-drop with Space.',
@@ -180,6 +184,8 @@ export const FAMILIES = [
     match: /\bpong\b|ping ?pong|table tennis/,
     category: 'classics',
     tagline: () => 'Keep the ball in play and return every shot.',
+    description: (title) =>
+      'Move your paddle to meet every shot, angle the ball past your opponent and take the point.',
     controls: [
       'Move your paddle with the up and down arrows, or use the on-screen pad.',
       'Swipe up or down on a phone to move the paddle.',
@@ -191,6 +197,8 @@ export const FAMILIES = [
     match: /pac ?-?man|dot muncher/,
     category: 'arcade',
     tagline: () => 'Clear the maze while the ghosts hunt you down.',
+    description: (title) =>
+      'Run the maze, eat every dot along the way and slip past the ghosts before they close in.',
     controls: [
       'Move with the arrow keys, or use the on-screen pad.',
       'Swipe on a phone to turn at the next corner.',
@@ -202,6 +210,8 @@ export const FAMILIES = [
     match: /breakout|arkanoid|brick ?breaker|brickles|brick game|paddle game/,
     category: 'arcade',
     tagline: () => 'Bounce the ball, break the wall and keep the paddle ready.',
+    description: (title) =>
+      'Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.',
     controls: [
       'Slide the paddle with the left and right arrows, or use the on-screen pad.',
       'Bounce the ball into the bricks without letting it past you.',
@@ -213,6 +223,8 @@ export const FAMILIES = [
     match: /\binvaders?\b|\basteroids?\b|galaga|galaxian|centipede|space invaders|missile command/,
     category: 'arcade',
     tagline: () => 'Hold the line and clear the sky, wave after wave.',
+    description: (title) =>
+      'Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.',
     controls: [
       'Move with the left and right arrows, or use the on-screen pad.',
       'Fire with Space or the A button on the pad.',
@@ -224,6 +236,8 @@ export const FAMILIES = [
     match: /\brace\b|\bracing\b|\bracer\b|\bkart\b|\brally\b|\bdrift\b|motocross|grand prix/,
     category: 'racing',
     tagline: () => 'Steer for the line and keep your foot down.',
+    description: (title) =>
+      'Steer through the course, brake into the corners and hold your line all the way to the flag.',
     controls: [
       'Steer with the left and right arrows, or use the on-screen pad.',
       'Accelerate with the up arrow and brake with the down arrow.',
@@ -235,6 +249,8 @@ export const FAMILIES = [
     match: /platform(?:er|ing)?|side ?scroll|jump(?:ing)? game|\brunner\b|doodle jump/,
     category: 'arcade',
     tagline: () => 'Run, jump and reach the end of the level.',
+    description: (title) =>
+      'Run along the level, jump the gaps and time each leap so you land on solid ground.',
     controls: [
       'Move with the left and right arrows, or use the on-screen pad.',
       'Jump with Space or the up arrow.',
@@ -246,6 +262,8 @@ export const FAMILIES = [
     match: /flappy|\bflap\b|helicopter|\bbird\b/,
     category: 'arcade',
     tagline: () => 'Tap to flap and thread every gap.',
+    description: (title) =>
+      'Tap to keep the bird in the air, thread every gap and see how far one run will take you.',
     controls: [
       'Tap the screen or press Space to flap.',
       'Pass through each gap without touching the edges.',
@@ -257,6 +275,8 @@ export const FAMILIES = [
     match: /\bmaze\b|\blabyrinth\b/,
     category: 'brain',
     tagline: () => 'Find the way out before the walls close in.',
+    description: (title) =>
+      'Find the route through the walls, remember the dead ends and make your way to the exit.',
     controls: [
       'Move with the arrow keys, or use the on-screen pad.',
       'Swipe on a phone to turn at the next junction.',
@@ -268,6 +288,8 @@ export const FAMILIES = [
     match: /match[- ]?(?:3|three)|bejewel|jewel|gem|three in a row|candy crush|same ?game|collapse/,
     category: 'brain',
     tagline: () => 'Swap two tiles, line up three and watch them go.',
+    description: (title) =>
+      'Swap two neighbouring tiles, line up three of a colour and clear them to open up the board.',
     controls: [
       'Pick a tile with a tap or a click, then pick the one next to it.',
       'Line up three or more of the same colour to clear them.',
@@ -279,6 +301,8 @@ export const FAMILIES = [
     match: /\b2048\b|\bthrees\b|sliding tiles|number merge|merge tiles/,
     category: 'puzzle',
     tagline: () => 'Slide, merge and build the biggest number on the board.',
+    description: (title) =>
+      'Slide the whole board with each move, merge matching numbers and build the largest tile you can.',
     controls: [
       'Slide every tile with the arrow keys, or use the on-screen pad.',
       'Two tiles with the same number merge into one when they meet.',
@@ -290,6 +314,8 @@ export const FAMILIES = [
     match: /fifteen puzzle|15 puzzle|sliding puzzle|slide puzzle|puzzle ?15/,
     category: 'puzzle',
     tagline: () => 'Slide the tiles into order, one move at a time.',
+    description: (title) =>
+      'Move one tile at a time into the empty space and put the whole picture back in order.',
     controls: [
       'Move a tile into the empty space with the arrow keys.',
       'Swipe on a phone to slide the tile in that direction.',
@@ -301,6 +327,8 @@ export const FAMILIES = [
     match: /sokoban|box ?push|crate push|push the crates?/,
     category: 'puzzle',
     tagline: () => 'Push every crate into place without getting stuck.',
+    description: (title) =>
+      'Walk the room, push each crate onto its mark and take care never to trap it against a wall.',
     controls: [
       'Move with the arrow keys, or use the on-screen pad.',
       'Walk into a crate to push it one square.',
@@ -312,6 +340,8 @@ export const FAMILIES = [
     match: /memory|concentration|\bpairs\b|matching pairs|simon says/,
     category: 'brain',
     tagline: () => 'Turn two cards, remember where they were, find the pairs.',
+    description: (title) =>
+      'Turn two cards at a time, remember where each picture sits and pair up the whole board.',
     controls: [
       'Pick a card with a tap or a click to turn it over.',
       'Turn a second card and keep the pair when the two match.',
@@ -323,6 +353,8 @@ export const FAMILIES = [
     match: /sudoku|killer sudoku|number place/,
     category: 'table',
     tagline: () => 'Fill the grid so every row, column and box is complete.',
+    description: (title) =>
+      'Fill every row, column and box with the digits one to nine, each of them used exactly once.',
     controls: [
       'Pick a square with a tap or a click, then choose the number you want.',
       'Move between squares with the arrow keys or the on-screen pad.',
@@ -334,6 +366,8 @@ export const FAMILIES = [
     match: /solitaire|klondike|freecell|spider solitaire|\bpatience\b/,
     category: 'table',
     tagline: () => 'Build the four suits from ace to king and clear the table.',
+    description: (title) =>
+      'Deal the cards, build each suit from ace to king and turn over the hidden cards as you go.',
     controls: [
       'Pick up a card with a tap or a click, then pick the pile it belongs on.',
       'Move the selection with the arrow keys or the on-screen pad.',
@@ -345,6 +379,8 @@ export const FAMILIES = [
     match: /mahjong|mah-jongg?|shanghai tile|tile matching/,
     category: 'table',
     tagline: () => 'Clear the board by pairing matching tiles from the edges.',
+    description: (title) =>
+      'Pair identical tiles from the edges and work inwards until the whole board has been cleared.',
     controls: [
       'Pick two matching tiles with a tap or a click.',
       'Move the selection with the arrow keys or the on-screen pad.',
@@ -356,6 +392,8 @@ export const FAMILIES = [
     match: /hang ?man/,
     category: 'word',
     tagline: () => 'Guess the hidden word before the picture is complete.',
+    description: (title) =>
+      'Guess the hidden word one letter at a time and keep your wrong guesses down to a handful.',
     controls: [
       'Choose a letter with a tap or a click.',
       'Move between letters with the arrow keys or the on-screen pad.',
@@ -367,6 +405,8 @@ export const FAMILIES = [
     match: /word ?search|wordsearch|word find|find a word|word puzzle/,
     category: 'word',
     tagline: () => 'Find every hidden word in the grid.',
+    description: (title) =>
+      'Scan the grid across, down and diagonally to find every word on the list before the round ends.',
     controls: [
       'Drag across a line of letters, or move the cursor with the arrow keys.',
       'Words can run across, down, up or diagonally.',
@@ -378,6 +418,8 @@ export const FAMILIES = [
     match: /wordle|guess the word|five[- ]letter|5[- ]letter|daily word/,
     category: 'word',
     tagline: () => 'Six guesses to find the five-letter word.',
+    description: (title) =>
+      'Guess the five-letter word in six tries, using the colour clues after each attempt to narrow it down.',
     controls: [
       'Type a word, or pick the letters on the keyboard shown in the game.',
       'Green means the right letter in the right place; yellow means it belongs elsewhere.',
@@ -389,6 +431,8 @@ export const FAMILIES = [
     match: /\bquiz\b|trivia|questions? and answers?/,
     category: 'word',
     tagline: () => 'Answer the questions and see how much you know.',
+    description: (title) =>
+      'Answer a run of questions, pick from the choices on screen and see how many you get right.',
     controls: [
       'Pick an answer with a tap or a click.',
       'Move between answers with the arrow keys or the on-screen pad.',
@@ -400,6 +444,8 @@ export const FAMILIES = [
     match: /typing|type ?racer|keyboard hero|speed typing|type test/,
     category: 'word',
     tagline: () => 'Type the words as fast and as accurately as you can.',
+    description: (title) =>
+      'Type each word that appears as quickly and accurately as you can, and keep the run going.',
     controls: [
       'Type each word that appears, then press Space to move on.',
       'Keep your hands on the keyboard and your eyes on the text.',
@@ -411,6 +457,8 @@ export const FAMILIES = [
     match: /tower[- ]?defen[cs]e|\btd\b|defend the (?:base|tower|path)/,
     category: 'strategy',
     tagline: () => 'Build your towers and hold the line against the waves.',
+    description: (title) =>
+      'Place towers along the path, spend what you earn on upgrades and stop every wave before it reaches the base.',
     controls: [
       'Pick a tower with a tap or a click, then pick a spot beside the path.',
       'Move between build spots with the arrow keys or the on-screen pad.',
@@ -422,6 +470,8 @@ export const FAMILIES = [
     match: /rogue[- ]?like|dungeon|nethack|dwarf fortress|procgen|permadeath/,
     category: 'strategy',
     tagline: () => 'One life, a fresh dungeon and a fight to the last floor.',
+    description: (title) =>
+      'Take one life into a fresh dungeon, fight what you meet and see how deep you can get.',
     controls: [
       'Move one square at a time with the arrow keys, or use the on-screen pad.',
       'Walk into a monster to attack it and step on an item to pick it up.',
@@ -433,6 +483,8 @@ export const FAMILIES = [
     match: /\bshoot(?:er|ing)?\b|\bgun\b|gunfight|turret|bullet hell|space war|\btank\b/,
     category: 'arcade',
     tagline: () => 'Keep moving, keep firing and stay alive.',
+    description: (title) =>
+      'Keep moving, aim at whatever comes for you and clear the screen without taking a hit.',
     controls: [
       'Move with the arrow keys, or use the on-screen pad.',
       'Fire with Space or the A button on the pad.',
@@ -444,6 +496,8 @@ export const FAMILIES = [
     match: /\bidle\b|clicker|incremental|tycoon|simulator|factory|\bminer\b|farming|builder/,
     category: 'sandbox',
     tagline: () => 'Start small, earn steadily and watch the numbers grow.',
+    description: (title) =>
+      'Tap to earn your first coins, spend them on upgrades and watch the numbers climb while you wait.',
     controls: [
       'Tap or click to earn your first coins.',
       'Spend what you earn on upgrades that earn faster.',
@@ -455,6 +509,8 @@ export const FAMILIES = [
     match: /board game|\bchess\b|checkers|draughts|reversi|othello|backgammon|\bludo\b|domino|poker|blackjack|connect four|four in a row|tic tac toe|noughts and crosses/,
     category: 'table',
     tagline: () => 'Take turns, think ahead and win the board.',
+    description: (title) =>
+      'Take turns moving your pieces, plan a few moves ahead and protect your own side of the board.',
     controls: [
       'Pick a piece with a tap or a click, then pick where it moves.',
       'Move the selection with the arrow keys or the on-screen pad.',
@@ -467,6 +523,8 @@ export const FAMILIES = [
     match: /(?:)^/,
     category: 'sandbox',
     tagline: () => 'A quick game to pick up and play in the browser.',
+    description: (title) =>
+      'Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.',
     controls: [
       'Tap or click to start, then follow the prompts inside the game.',
       'Move with the arrow keys, or use the on-screen pad.',
@@ -479,59 +537,15 @@ export const FAMILIES = [
 
 /**
  * One sentence per family, used when the harvested description is empty or
- * nothing player-facing survives the clean-up. Kept between 60 and 140
- * characters so the assembled description always lands in its 60-200 window.
+ * nothing player-facing survives the clean-up. These are the families'
+ * `description()` templates read back by id, so there is exactly one copy of
+ * each sentence and no family can drift from its fallback.
+ *
+ * The templates accept the page title but do not repeat it: a genre sentence
+ * plus the game's name in the same breath is keyword stuffing, and several
+ * harvested titles are still being repaired elsewhere.
  */
-const FALLBACK = {
-  snake:
-    'A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail.',
-  tetris:
-    'A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up.',
-  pong: 'A paddle-and-ball classic: return every shot, find the angle and win the point.',
-  pacman: 'A maze chase: eat every dot, dodge the ghosts and clear the level before they corner you.',
-  breakout:
-    'A brick-breaking game: keep the ball in play, aim it with the paddle and clear the wall.',
-  invaders:
-    'A wave shooter: move along the bottom, fire upwards and clear the formation before it lands.',
-  racing:
-    'A race against the clock: steer through the course, hold your line and finish first.',
-  platformer:
-    'A side-on platform game: run, jump across the gaps and reach the end of the level.',
-  flappy: 'A one-button game: flap to stay in the air and thread through every gap.',
-  maze: 'A maze to solve: find the route through the walls and reach the way out.',
-  match3:
-    'A match-three puzzle: swap neighbouring tiles, line up three of a colour and clear the board.',
-  '2048':
-    'A sliding-tile puzzle: merge matching numbers, build bigger tiles and keep the board moving.',
-  sliding:
-    'A sliding-tile puzzle: move one tile at a time and put the whole board back in order.',
-  sokoban:
-    'A box-pushing puzzle: walk the room, push every crate onto its mark and never trap yourself.',
-  memory:
-    'A memory game: turn two cards at a time and remember where each picture was.',
-  sudoku:
-    'A number puzzle: fill every row, column and box with the digits one to nine, each used once.',
-  solitaire:
-    'A card game for one: build the suits in order, turn over the hidden cards and clear the table.',
-  mahjong:
-    'A tile-matching puzzle: pair identical tiles from the edges and work your way inwards.',
-  hangman:
-    'A word game: guess the hidden word one letter at a time before your chances run out.',
-  wordsearch:
-    'A word puzzle: scan the grid across, down and diagonally to find every word on the list.',
-  wordle: 'A word puzzle: six guesses, five letters and a colour clue after every try.',
-  quiz: 'A quiz: answer the questions, keep the score ticking and see how far you get.',
-  typing:
-    'A typing challenge: copy the words on screen as quickly and accurately as you can.',
-  towerdefense:
-    'A tower defence game: place your towers along the path and stop every wave.',
-  roguelike:
-    'A dungeon run: one life, a fresh layout each time and a fight for every floor.',
-  shooter: 'A shoot-out: keep moving, fire at what comes for you and stay alive.',
-  idle: 'An idle game: earn a little, spend it on upgrades and watch the numbers climb.',
-  board: 'A board game: take turns, plan a few moves ahead and protect your pieces.',
-  generic: 'A browser game that is quick to learn and easy to pick up again.',
-};
+const FALLBACK = Object.fromEntries(FAMILIES.map((family) => [family.id, family.description('')]));
 
 /**
  * Closing clause. Four variants, assigned per family, so 500 pages do not all
@@ -613,9 +627,16 @@ const FAMILY_LABEL = {
   generic: 'quick',
 };
 
-/** Words that are stripped from repository names before they become titles. */
+/**
+ * Words that are stripped from repository names before they become titles.
+ * `io` and `com` are here because a repository called `weatherio` or
+ * `games.com` is naming a host, not a game.
+ */
 const TITLE_NOISE = new Set([
   'github',
+  'io',
+  'com',
+  'www',
   'html',
   'html5',
   'javascript',
@@ -624,6 +645,7 @@ const TITLE_NOISE = new Set([
   'ts',
   'jquery',
   'canvas',
+  'web',
   'webgl',
   'phaser',
   'pixi',
@@ -636,6 +658,14 @@ const TITLE_NOISE = new Set([
   'example',
   'tutorial',
   'sample',
+  'source',
+  'assets',
+  'asset',
+  'complete',
+  'art',
+  'arts',
+  'final',
+  'wip',
 ]);
 
 const TITLE_TAIL = /^(?:games?|clone|remake|copy)$/i;
@@ -659,6 +689,189 @@ const TITLE_MINOR = new Set([
   'vs',
   'with',
 ]);
+
+/** Acronyms and numeric labels that stay upper-case in a title. */
+const TITLE_ACRONYMS = new Set([
+  'tv',
+  'ai',
+  'hd',
+  'hdmi',
+  '3d',
+  '2d',
+  '4k',
+  '8k',
+  'vr',
+  'ar',
+  'rpg',
+  'fps',
+  'pvp',
+  'td',
+  'dps',
+  'html5',
+  'n64',
+  'gba',
+  'nes',
+  'snes',
+  'usa',
+  'uk',
+]);
+
+/** Two-letter words that may sit in the middle of a run-together name. */
+const TITLE_CONNECTORS = new Set(['to']);
+
+/**
+ * Common game words, used to break run-together repository names such as
+ * `dungeongeneration` or `towerdefense` back into words. Only lowercase
+ * entries belong here; `splitRunTogether` matches whole pieces.
+ */
+const TITLE_WORDS = new Set([
+  // The core vocabulary: every family the catalogue publishes.
+  'dungeon',
+  'generation',
+  'cursed',
+  'souls',
+  'tower',
+  'defense',
+  'defence',
+  'snake',
+  'tetris',
+  'breakout',
+  'flappy',
+  'bird',
+  'racing',
+  'puzzle',
+  'memory',
+  'space',
+  'invaders',
+  'platform',
+  'runner',
+  'maze',
+  'card',
+  'cards',
+  'solitaire',
+  'sudoku',
+  'mahjong',
+  'hangman',
+  'word',
+  'search',
+  'typing',
+  'quiz',
+  'trivia',
+  'blocks',
+  'block',
+  'bricks',
+  'ball',
+  'paddle',
+  'alien',
+  'aliens',
+  'zombie',
+  'zombies',
+  'ninja',
+  'knights',
+  'adventure',
+  'quest',
+  'battle',
+  'arena',
+  'drift',
+  'kart',
+  'tank',
+  'tanks',
+  'war',
+  'chess',
+  'checkers',
+  'go',
+  'ludo',
+  'bingo',
+  // Words the live harvest actually needs to split cleanly.
+  'to',
+  'game',
+  'games',
+  'rocks',
+  'tiny',
+  'asteroid',
+  'asteroids',
+  'galaxy',
+  'pinball',
+  'bubble',
+  'fruit',
+  'candy',
+  'jewel',
+  'gems',
+  'match',
+  'merge',
+  'stack',
+  'skies',
+  'flight',
+  'plane',
+  'cars',
+  'car',
+  'truck',
+  'moto',
+  'bike',
+  'dash',
+  'rush',
+  'hero',
+  'heroes',
+  'knight',
+  'dragon',
+  'magic',
+  'sword',
+  'castle',
+  'kingdom',
+  'farm',
+  'city',
+  'tycoon',
+  'idle',
+  'clicker',
+  'fish',
+  'fishing',
+  'soccer',
+  'football',
+  'tennis',
+  'golf',
+  'pool',
+  'bowling',
+  'darts',
+  'shooter',
+  'survival',
+  'defender',
+  'pong',
+  'pacman',
+  'doodle',
+  'jump',
+  'bounce',
+  'climb',
+]);
+
+/**
+ * Words that really do end in `io`/`com`; the site-suffix strip in
+ * `cleanTitle` must leave them alone.
+ */
+const TITLE_KEEP_SUFFIX = new Set([
+  'radio',
+  'studio',
+  'portfolio',
+  'scenario',
+  'scorpio',
+  'audio',
+  'trio',
+  'ratio',
+  'patio',
+  'folio',
+  'rodeo',
+]);
+
+/** Repository-name furniture: a Pages site, a host suffix, a branch name. */
+const SITE_SUFFIX = [
+  /\.github\.io$/i,
+  /[-_.]github[-_.]io$/i,
+  /[-_.]github[-_.]com$/i,
+  /[-_.]gh[-_.]pages$/i,
+  /[-_.]game[-_.]web$/i,
+  /[-_.]web$/i,
+  /[-_.]master$/i,
+  /[-_.]main$/i,
+];
 
 /* --------------------------------------------------------------- helpers */
 
@@ -707,13 +920,145 @@ function isAllCaps(value) {
   return /[A-Z]{2}/.test(s) && !/[a-z]/.test(s);
 }
 
-/** Title-case one token, leaving the small joining words alone. */
+/** Title-case one token, leaving acronyms and small joining words alone. */
 function titleWord(word, index) {
   const lower = word.toLowerCase();
+  if (TITLE_ACRONYMS.has(lower) || /^\d+[a-z]$/.test(lower)) return lower.toUpperCase();
   if (/^\d+$/.test(word)) return word;
-  if (/^\d+[a-z]+$/.test(lower)) return word.toUpperCase();
-  if (index > 0 && TITLE_MINOR.has(lower)) return lower;
-  return lower.charAt(0).toUpperCase() + lower.slice(1);
+  // A title should use British spelling where the word has two forms.
+  const base = US_TO_UK.get(lower) || lower;
+  if (index > 0 && TITLE_MINOR.has(base)) return base;
+  return base.charAt(0).toUpperCase() + base.slice(1);
+}
+
+/** Split camelCase and PascalCase: `CursedSouls` -> `Cursed Souls`. */
+function splitCamel(text) {
+  return String(text)
+    .replace(/([\p{Ll}\p{N}])(\p{Lu})/gu, '$1 $2')
+    .replace(/(\p{Lu})(\p{Lu}\p{Ll})/gu, '$1 $2');
+}
+
+/** Split letter/digit boundaries: `2048Game` -> `2048 Game`. */
+function splitDigits(text) {
+  return String(text).replace(/(?<=\p{L})(?=\p{N})|(?<=\p{N})(?=\p{L})/gu, ' ');
+}
+
+/** `owner/name` (or a bare URL) -> its two parts. */
+function splitRepo(repo) {
+  const raw = squash(repo)
+    .replace(/^[a-z][a-z0-9+.-]*:\/\/[^/]+\//i, '')
+    .replace(/[?#].*$/, '')
+    .replace(/\.git$/i, '')
+    .replace(/\/+$/, '');
+  const parts = raw.split('/').filter(Boolean);
+  const name = parts.pop() || '';
+  const owner = parts.pop() || '';
+  return { owner, name };
+}
+
+/** Strip repository furniture such as `-github-io`, `-web` and `-master`. */
+function stripSiteNoise(name) {
+  let s = String(name ?? '');
+  for (let pass = 0; pass < 3; pass += 1) {
+    const before = s;
+    for (const pattern of SITE_SUFFIX) s = s.replace(pattern, '');
+    s = s.replace(/^[-_.\s]+/, '').replace(/[-_.\s]+$/, '');
+    if (s === before) break;
+  }
+  return s;
+}
+
+/**
+ * Split a lowercase run-together word into the fewest known game words.
+ * Returns `null` unless the whole word can be covered by at least two.
+ */
+function splitRunTogether(word) {
+  const lower = word.toLowerCase();
+  if (lower.length < 6 || TITLE_WORDS.has(lower)) return null;
+
+  const memo = new Map();
+  const solve = (start) => {
+    if (start === lower.length) return [];
+    if (memo.has(start)) return memo.get(start);
+    let best = null;
+    const most = Math.min(12, lower.length - start);
+    for (let len = most; len >= 2; len -= 1) {
+      const piece = lower.slice(start, start + len);
+      if (!TITLE_WORDS.has(piece)) continue;
+      // A two-letter piece is only a word at the edge of a name, or when it
+      // is a joiner such as `to`; in the middle it is almost always a
+      // coincidence such as the `go` in `mangoes`.
+      const edge = start === 0 || start + len === lower.length;
+      if (len === 2 && !edge && !TITLE_CONNECTORS.has(piece)) continue;
+      const rest = solve(start + len);
+      if (!rest) continue;
+      const candidate = [piece, ...rest];
+      if (!best || candidate.length < best.length) best = candidate;
+    }
+    memo.set(start, best);
+    return best;
+  };
+
+  const parts = solve(0);
+  return parts && parts.length >= 2 ? parts : null;
+}
+
+/**
+ * Every word a repository name contributes, in order.
+ *
+ * CamelCase and PascalCase are split first, then letter/digit boundaries,
+ * then run-together lowercase names are broken against `TITLE_WORDS`, and
+ * finally technology words and host names are dropped.
+ */
+function wordsFromName(raw) {
+  const out = [];
+  for (const chunk of String(raw).split(/[^\p{L}\p{N}]+/u)) {
+    if (!chunk || TITLE_NOISE.has(chunk.toLowerCase())) continue;
+    for (const piece of splitCamel(chunk).split(' ')) {
+      if (!piece) continue;
+      for (const bit of splitDigits(piece).split(' ')) {
+        if (!bit || TITLE_NOISE.has(bit.toLowerCase())) continue;
+        const parts = /^\p{L}+$/u.test(bit) ? splitRunTogether(bit) : null;
+        if (parts) out.push(...parts);
+        else out.push(bit);
+      }
+    }
+  }
+
+  // `Snake3D` splits into `Snake 3 D`; the pair is one word again.
+  const merged = [];
+  for (let i = 0; i < out.length; i += 1) {
+    const next = out[i + 1];
+    const joined = next ? `${out[i]}${next}`.toLowerCase() : '';
+    if (/^\d+$/.test(out[i]) && next && next.length === 1 && TITLE_ACRONYMS.has(joined)) {
+      merged.push(`${out[i]}${next}`);
+      i += 1;
+    } else {
+      merged.push(out[i]);
+    }
+  }
+  return merged;
+}
+
+/** Lowercase words of an owner name, without the dictionary or noise rules. */
+function ownerWords(owner) {
+  return splitCamel(owner)
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter(Boolean)
+    .map((word) => word.toLowerCase());
+}
+
+/** Drop the author's own name from the front of a repository name. */
+function stripOwner(words, owner) {
+  const owned = ownerWords(owner);
+  if (!owned.length || words.length <= owned.length) return words;
+  const lower = words.map((word) => word.toLowerCase());
+  if (owned.every((word, i) => lower[i] === word)) return words.slice(owned.length);
+  // `bocaletto-luca/...` and a `luca-monopoly` name: the surname is enough.
+  if (owned.length >= 2 && lower[0] === owned[owned.length - 1] && words.length > 1) {
+    return words.slice(1);
+  }
+  return words;
 }
 
 /* ------------------------------------------------------------------ title */
@@ -721,37 +1066,62 @@ function titleWord(word, index) {
 /**
  * Turn a repository slug into a human title.
  *
- * `bocaletto-luca/arkanoid` becomes `Arkanoid`; `luleoa12/wordle-craft`
- * becomes `Wordle Craft`. Owner prefixes, technology words, trailing `game`
- * and repeated words are removed, and the result is Title Cased.
+ * `Bozar/cursedSouls` becomes `Cursed Souls`; `Ideosorter/ideosorter.github.io`
+ * becomes `Ideosorter`; `stefanweck/dungeongeneration` becomes
+ * `Dungeon Generation`. The six rules below run in order so the same slug
+ * always produces the same title.
  *
  * @param {string} repo  Repository name, optionally `owner/name`.
  * @param {string} [description] Used only when the repository is empty.
  * @returns {string} A short human title.
  */
 export function cleanTitle(repo, description) {
-  let raw = squash(repo);
-  raw = raw.replace(/^https?:\/\/[^/]+\//i, '').replace(/\.git$/i, '');
-  if (raw.includes('/')) raw = raw.split('/').filter(Boolean).pop() || '';
-  if (!raw) {
-    raw = squash(description).split(/\s+/).slice(0, 4).join(' ');
+  const { owner, name } = splitRepo(repo);
+  // A repository that is only a Pages host (`foo.github.io`) names no game at
+  // all once the host is gone, so the description is the only clue left.
+  const raw =
+    stripSiteNoise(name) || squash(description).split(/\s+/).slice(0, 4).join(' ');
+
+  // Rules 1-4 happen word by word inside `wordsFromName`: camelCase and
+  // PascalCase are split before anything is discarded (`CursedSouls` ->
+  // `Cursed Souls`), letter/digit boundaries are split (`2048Game` ->
+  // `2048 Game`), technology and host words are dropped, and a run-together
+  // lowercase name is broken against the small game vocabulary
+  // (`dungeongeneration` -> `dungeon generation`).
+  let words = wordsFromName(raw);
+
+  // Rule 3, continued: the author is not part of the game's name
+  // (`bocaletto-luca/...`), and a trailing `game`/`clone` adds nothing - except
+  // after a number, where `2048 Game` is the name itself.
+  words = stripOwner(words, owner);
+  while (
+    words.length > 1 &&
+    TITLE_TAIL.test(words[words.length - 1]) &&
+    !/^\d+$/.test(words[words.length - 2])
+  ) {
+    words.pop();
   }
-
-  let words = raw
-    .replace(/([a-z])([A-Z])/g, '$1 $2')
-    .replace(/[_\-.,+]+/g, ' ')
-    .replace(/[^\p{L}\p{N} ]+/gu, ' ')
-    .split(/\s+/)
-    .filter(Boolean)
-    .filter((word) => !TITLE_NOISE.has(word.toLowerCase()));
-
-  while (words.length > 1 && TITLE_TAIL.test(words[words.length - 1])) words.pop();
   words = words.filter((word, i) => i === 0 || word.toLowerCase() !== words[i - 1].toLowerCase());
   while (words.length > 1 && TITLE_MINOR.has(words[words.length - 1].toLowerCase())) words.pop();
 
   if (!words.length) words = ['Arcade', 'Classic'];
+
+  // Rule 6: the title never ends in a host suffix, so `weatherio` becomes
+  // `Weather` while real words such as `radio` survive.
+  const last = words[words.length - 1].toLowerCase();
+  if (/^[a-z]{4,}io$/.test(last) && !TITLE_KEEP_SUFFIX.has(last)) {
+    words[words.length - 1] = words[words.length - 1].slice(0, -2);
+  } else if (/^[a-z]{5,}com$/.test(last) && !TITLE_KEEP_SUFFIX.has(last)) {
+    words[words.length - 1] = words[words.length - 1].slice(0, -3);
+  }
+
+  // Rule 6: keep it inside six words. A name that splits into a single
+  // unknown word (`Bytle`, `Daddelkiste`) stays whole rather than being
+  // padded with an invented second word.
   if (words.length > 6) words = words.slice(0, 6);
 
+  // Rule 5: acronyms stay upper-case, everything else is Title Cased, with
+  // British spelling where a word has two forms.
   const title = words
     .map((word, i) => titleWord(word, i))
     .join(' ')
@@ -931,6 +1301,40 @@ function deriveSentence(description) {
 }
 
 /**
+ * "A game built with canvas" and "built with React" describe the build, not
+ * the play, so they never become catalogue copy.
+ */
+const GENERIC_BUILD =
+  /^(?:(?:a|an|the)?\s*(?:game|project|demo|app|tool|toy|thing)\s+)?(?:built|made|created|written|coded|developed|implemented|powered)\s+(?:with|in|using|by)\b/i;
+
+/** Our own family sentences, so recycled copy is never treated as repo copy. */
+const OWN_TEMPLATES = new Set(FAMILIES.map((family) => squash(family.description(''))));
+
+/**
+ * The repository's own description, but only when a player could read it.
+ *
+ * Shorter than 40 characters is a fragment ("A snake game."), developer
+ * language and "built with X" sentences are about the code, and one of our
+ * own templates is copy a previous run already wrote. All four send the
+ * caller to the family template instead.
+ *
+ * @param {string} description  Raw repository description.
+ * @returns {string} A usable sentence, or `''`.
+ */
+function usableRepoDescription(description) {
+  const derived = deriveSentence(description);
+  if (!derived) return '';
+  if (derived.length < 40) return '';
+  if (DEV_JARGON.test(derived)) return '';
+  if (GENERIC_BUILD.test(derived)) return '';
+  if (/\b(?:built|made|written|coded|developed|implemented)\s+(?:with|in|using|by)\s*\.?$/i.test(derived)) {
+    return '';
+  }
+  if (OWN_TEMPLATES.has(squash(derived))) return '';
+  return derived;
+}
+
+/**
  * One clean sentence for a catalogue card.
  *
  * Falls back to a template chosen from the family the description hints at,
@@ -940,7 +1344,7 @@ function deriveSentence(description) {
  * @returns {string} A player-facing sentence.
  */
 export function cleanDescription(description) {
-  const derived = deriveSentence(description);
+  const derived = usableRepoDescription(description);
   if (derived) return derived;
   const guess = familyFor(typeof description === 'string' ? description : '');
   return FALLBACK[guess] || FALLBACK.generic;
@@ -990,6 +1394,8 @@ function resolveFamily(family, title, description) {
 /**
  * Keep a supplied title when it is already human; otherwise rebuild it.
  * A title carrying developer words, shouting, or running long is not usable.
+ * A title that is only the repository slug (`Dungeongeneration`,
+ * `Ideosorter Github Io`) has not been written yet, so it is rebuilt too.
  */
 function resolveTitle(title, repo, description) {
   const given = squash(title);
@@ -1000,19 +1406,34 @@ function resolveTitle(title, repo, description) {
     !isAllCaps(given) &&
     /[a-z]/i.test(given) &&
     /^[\p{L}\p{N} '&.\-]+$/u.test(given);
-  if (usable) return given.replace(/[\s,;:.\-]+$/, '');
+  if (usable) {
+    const slug = splitRepo(repo).name.toLowerCase().replace(/[^a-z0-9]+/g, '');
+    const same = squash(given).toLowerCase().replace(/[^a-z0-9]+/g, '');
+    if (slug && same === slug) {
+      const rebuilt = cleanTitle(repo, description);
+      if (rebuilt) return rebuilt;
+    }
+    return given.replace(/[\s,;:.\-]+$/, '');
+  }
   return cleanTitle(repo || given, description);
 }
 
 /* ------------------------------------------------------------------- copy */
 
-/** Assemble a description inside the 60-200 character window. */
+/**
+ * Assemble a description inside the 60-200 character window.
+ *
+ * A sentence that already fits is left alone: the family templates are
+ * written to that length, and a repo description that survives at that
+ * length does not need marketing bolted on. Only a short survivor gets a
+ * closing clause, so the card still reads as a complete paragraph.
+ */
 function composeDescription(base, familyId) {
   const MAX = 200;
-  const suffix = SUFFIX[familyId] || SUFFIX.generic;
-  const room = MAX - suffix.length - 1;
   let body = squash(base);
-  if (body.length > room) body = shorten(body, room);
+  if (body.length > MAX) body = shorten(body, MAX);
+  if (body.length >= 60) return body;
+  const suffix = SUFFIX[familyId] || SUFFIX.generic;
   let out = squash(`${body} ${suffix}`);
   if (out.length < 60) out = squash(`${out} It is free to play in your browser.`);
   if (out.length > MAX) out = shorten(out, MAX);
@@ -1060,15 +1481,18 @@ function keywordsFor(title, family) {
  * @param {string} [game.repo]       `owner/name` repository slug.
  * @param {string} [game.description] Raw repository description.
  * @param {string} [game.family]     Family id; guessed when absent.
- * @returns {{tagline: string, description: string, howToPlay: string[],
- *   faq: Array<{q: string, a: string}>, keywords: string[]}}
+ * @returns {{title: string, tagline: string, description: string,
+ *   howToPlay: string[], faq: Array<{q: string, a: string}>,
+ *   keywords: string[]}}
  */
 export function copyFor({ title, repo, description, family } = {}) {
   const safeTitle = resolveTitle(title, repo, description);
   const entry = resolveFamily(family, safeTitle, description);
 
   const tagline = shorten(entry.tagline(safeTitle), 70);
-  const base = deriveSentence(description) || FALLBACK[entry.id] || FALLBACK.generic;
+  // The repository's own words when they are usable, the family's template
+  // when they are not: a snake game and a card game must not share a sentence.
+  const base = usableRepoDescription(description) || FALLBACK[entry.id] || FALLBACK.generic;
   const descriptionText = composeDescription(base, entry.id);
 
   const howToPlay = entry.controls.map((line) => squash(line));
@@ -1084,5 +1508,5 @@ export function copyFor({ title, repo, description, family } = {}) {
   ];
   const keywords = keywordsFor(safeTitle, entry);
 
-  return { tagline, description: descriptionText, howToPlay, faq, keywords };
+  return { title: safeTitle, tagline, description: descriptionText, howToPlay, faq, keywords };
 }
