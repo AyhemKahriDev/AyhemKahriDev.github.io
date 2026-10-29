@@ -1,0 +1,4 @@
+{
+  "_comment": "Per-game patches applied after every layer: { \"<id>\": { category?, title?, copy?: { tagline, description, howToPlay, faq, keywords } } }. An overlay for an unknown id fails the build. See scripts/catalogue.mjs.",
+  "games": {}
+}
