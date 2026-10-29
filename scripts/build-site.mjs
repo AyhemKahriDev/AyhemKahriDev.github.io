@@ -22,6 +22,7 @@ import {
   DEFAULT_LOCALE,
   loadCatalog,
   t as translate,
+  tPlural,
   tList,
   localePath,
   alternatesFor,
@@ -150,21 +151,91 @@ const SITE = content.site;
 /**
  * Themes are token overrides only — same shape, spacing, motion and type.
  * The swatch is drawn from the two colours that define the coat: signal and
- * stage. Adding one here is the whole change: CSS block + this entry.
+ * stage. Adding one here is the whole change: CSS block + this entry + the
+ * coat's name and hint in the three catalogues (`theme.<id>.name` /
+ * `theme.<id>.hint`).
+ *
+ * The name and the hint are *not* here: they are chrome, so they live in
+ * content/i18n/, and a French page says "Borne d'arcade · cabinet ambré"
+ * rather than "Coin-op · amber cabinet". ui.js keeps learning the picker's
+ * label from the button, so the contract is unchanged.
  */
-const THEMES = [
-  { id: 'signal', name: 'Signal', hint: 'ink + lime', sw: '#c9f94b', sw2: '#08090a' },
-  { id: 'lights', name: 'Lights on', hint: 'paper', sw: '#c2f23f', sw2: '#f7f4ec' },
-  { id: 'coinop', name: 'Coin-op', hint: 'amber cabinet', sw: '#ffb648', sw2: '#0d0907' },
-  { id: 'ice', name: 'Ice', hint: 'cyan', sw: '#4fe3ff', sw2: '#050b12' },
-  { id: 'dmg', name: 'DMG', hint: '1989 green', sw: '#9bbc0f', sw2: '#0b1410' },
-  { id: 'vapor', name: 'Vapor', hint: 'hot pink', sw: '#ff6ec7', sw2: '#0d0716' },
-  { id: 'pixel', name: 'Pixel', hint: '16-bit cartridge', sw: '#ffcc4d', sw2: '#14121f' },
-  { id: 'crt', name: 'CRT', hint: 'phosphor + scanlines', sw: '#39ff88', sw2: '#04120c' },
-  { id: 'newsprint', name: 'Newsprint', hint: 'printed page', sw: '#b3402e', sw2: '#f2efe4', light: true },
+export const THEMES = [
+  { id: 'signal', sw: '#c9f94b', sw2: '#08090a' },
+  { id: 'lights', sw: '#c2f23f', sw2: '#f7f4ec' },
+  { id: 'coinop', sw: '#ffb648', sw2: '#0d0907' },
+  { id: 'ice', sw: '#4fe3ff', sw2: '#050b12' },
+  { id: 'dmg', sw: '#9bbc0f', sw2: '#0b1410' },
+  { id: 'vapor', sw: '#ff6ec7', sw2: '#0d0716' },
+  { id: 'pixel', sw: '#ffcc4d', sw2: '#14121f' },
+  { id: 'crt', sw: '#39ff88', sw2: '#04120c' },
+  { id: 'newsprint', sw: '#b3402e', sw2: '#f2efe4', light: true },
 ];
+/** A coat's name and caption in the active language. */
+const coatName = (theme) => tn(`theme.${theme.id}.name`);
+const coatHint = (theme) => tn(`theme.${theme.id}.hint`);
 /** Themes whose stage is paper, not a screen: the browser chrome follows. */
 const LIGHT_THEMES = THEMES.filter((t) => t.light).map((t) => t.id);
+/**
+ * The one count that JavaScript writes: the filter status on /games/.
+ *
+ * ui.js composes that line from two strings - `{count} game` for exactly one
+ * hit, `{count} games` for everything else - because it ships as a static file
+ * with no plural data in it. On a French page that renders "0 jeux", and in
+ * Arabic it can only ever be right for two of the language's six forms.
+ *
+ * The builder knows the language, so it ships the full table with the page and
+ * gives the element that holds the sentence a plural-aware setter: the count is
+ * the first thing in the line, so the leading number plus the words ui.js put
+ * after it are replaced with the form this language's plural rule selects.
+ * Everything after that ("matching “tetris”", the pager note) is left exactly
+ * as ui.js wrote it. Without Intl.PluralRules the setter is not installed and
+ * the page is what it was before.
+ */
+function statusPluralScript() {
+  const forms = Object.fromEntries(
+    ['zero', 'one', 'two', 'few', 'many', 'other'].map((category) => [
+      category,
+      translate(L.catalog, `count.games_${category}`),
+    ]),
+  );
+  const legacy = {
+    one: translate(L.catalog, 'count.games_one'),
+    many: translate(L.catalog, 'count.games'),
+  };
+  return `<script>
+/* The filter status counts games: the plural rule for that count is the
+   reader's language, not English's one-or-not-one. */
+(function () {
+  var el = document.getElementById('filter-status');
+  var desc = Object.getOwnPropertyDescriptor(Node.prototype, 'textContent');
+  if (!el || !desc || !desc.set || !desc.get || !window.Intl || !Intl.PluralRules) return;
+  var FORMS = ${JSON.stringify(forms)};
+  var LEGACY = ${JSON.stringify(legacy)};
+  var rules;
+  try { rules = new Intl.PluralRules(document.documentElement.lang || 'en'); } catch (e) { return; }
+  function form(n) {
+    var tpl = FORMS[rules.select(n)] || FORMS.other || LEGACY.many;
+    return String(tpl).replace(/\\{count\\}/g, n);
+  }
+  function repair(text) {
+    var hit = /^(\\d+)/.exec(text);
+    if (!hit) return text;
+    var n = Number(hit[1]);
+    var used = (n === 1 ? LEGACY.one : LEGACY.many).replace(/\\{count\\}/g, n);
+    if (text.indexOf(used) !== 0) return text;
+    var better = form(n);
+    return better === used ? text : better + text.slice(used.length);
+  }
+  Object.defineProperty(el, 'textContent', {
+    configurable: true,
+    get: function () { return desc.get.call(el); },
+    set: function (value) { desc.set.call(el, repair(String(value))); },
+  });
+})();
+</script>`;
+}
+
 /**
  * Read an optional catalogue layer from content/.
  *
@@ -281,9 +352,24 @@ const pageUrl = (path = '/') => abs(lp(path));
 const tesc = (s) =>
   String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 
+/**
+ * The message for `key`, in the reader's language, with the language's own
+ * plural form when the call carries a count.
+ *
+ * `{count}` used to be resolved by the caller with `n === 1 ? 'key_one' :
+ * 'key'`, which is the English rule - French says "0 jeu" and Arabic has six
+ * forms. Every count goes through tPlural now, so a call site only has to pass
+ * the number; a key with no variants still resolves to itself.
+ */
+function message(key, vars) {
+  return typeof vars?.count === 'number'
+    ? tPlural(L.catalog, key, vars.count, vars)
+    : translate(L.catalog, key, vars ?? {});
+}
+
 /** Localised text, escaped. Falls back to English per key, never to undefined. */
 function tn(key, vars) {
-  return tesc(translate(L.catalog, key, vars ?? {}));
+  return tesc(message(key, vars));
 }
 
 /**
@@ -292,7 +378,7 @@ function tn(key, vars) {
  * value escaped here as well would reach the page as `&amp;amp;`.
  */
 function plain(key, vars) {
-  return translate(L.catalog, key, vars ?? {});
+  return message(key, vars);
 }
 
 /**
@@ -306,7 +392,7 @@ function plain(key, vars) {
  * link sits.
  */
 function rich(key, vars = {}) {
-  return translate(L.catalog, key, vars);
+  return message(key, vars);
 }
 
 /** Category title / short label / description in the active locale. */
@@ -583,27 +669,17 @@ function advertiseSlots(count = 2) {
  * off, which a <select> would not.
  */
 function langSwitcher(path) {
-  // No stylesheet rule draws this nav (it lives outside the header's flex
-  // row), so the gap and the active state are inline: the three codes used to
-  // run together as "ENFRAR".
+  // Three real links. Every rule that draws them - spacing, the active pill,
+  // the 32px touch target that keeps them on one row at 375px - lives in
+  // public/styles.css under .lang-switch: inline styles here would beat the
+  // stylesheet and stack the three codes on a phone.
   const items = LOCALES.map((l) => {
     const current = l.id === L.id;
-    const style = [
-      'display:inline-block',
-      'padding:2px 7px',
-      'margin-inline-start:6px',
-      'border-radius:999px',
-      'text-decoration:none',
-      'line-height:1.6',
-      current
-        ? 'font-weight:700;outline:1.5px solid currentColor;outline-offset:1px'
-        : 'opacity:.66;font-weight:500',
-    ].join(';');
-    return `<a href="${esc(localePath(l, path))}" data-lang="${l.id}" lang="${l.id}" title="${esc(l.name)}" style="${style}"${
-      current ? ' aria-current="page"' : ''
-    }>${l.id.toUpperCase()}</a>`;
+    return `<a href="${esc(localePath(l, path))}" data-lang="${l.id}" lang="${l.id}" title="${esc(
+      l.name,
+    )}"${current ? ' aria-current="page"' : ''}>${l.id.toUpperCase()}</a>`;
   }).join('');
-  return `<nav class="lang-switch" aria-label="${tn('a11y.lang')}" data-locale="${L.id}" style="display:flex;align-items:center;flex-wrap:wrap">${items}</nav>`;
+  return `<nav class="lang-switch" aria-label="${tn('a11y.lang')}" data-locale="${L.id}">${items}</nav>`;
 }
 
 function siteHeader(path = '/') {
@@ -641,7 +717,7 @@ function siteHeader(path = '/') {
       </form>
       <div class="theme-menu">
         <button class="theme-btn" id="btn-theme" type="button" aria-haspopup="menu"
-                aria-expanded="false" aria-controls="theme-pop" aria-label="${tn('theme.button', { name: THEMES[0].name })}">
+                aria-expanded="false" aria-controls="theme-pop" aria-label="${tn('theme.button', { name: coatName(THEMES[0]) })}">
           <span class="sw" aria-hidden="true"></span>
         </button>
         <div class="theme-pop" id="theme-pop" role="menu" aria-label="${tn('theme.label')}" hidden>
@@ -650,7 +726,7 @@ function siteHeader(path = '/') {
             (t) => `<button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
               data-theme-id="${t.id}"${t.light ? ' data-light="1"' : ''} style="--sw:${t.sw};--sw2:${t.sw2}">
               <span class="sw" aria-hidden="true"></span>
-              <span class="nm">${t.name}<em>${t.hint}</em></span>
+              <span class="nm">${coatName(t)}<em>· ${coatHint(t)}</em></span>
             </button>`,
           ).join('')}
         </div>
@@ -814,7 +890,7 @@ function buildHome() {
       <span class="cat-dot" aria-hidden="true"></span>
       <h3>${esc(catTitle(c))}</h3>
       <p>${esc(catDesc(c))}</p>
-      <span class="cat-count">${tn(n === 1 ? 'count.games_one' : 'count.games', { count: n })} <span class="cat-arrow" aria-hidden="true">${L.dir === 'rtl' ? '←' : '→'}</span></span>
+      <span class="cat-count">${tn('count.games', { count: n })} <span class="cat-arrow" aria-hidden="true">${L.dir === 'rtl' ? '←' : '→'}</span></span>
     </a>`;
   };
 
@@ -844,7 +920,7 @@ function buildHome() {
       </div>
       ${miniBoard(board)}
       <div class="hero-card-foot">
-        <span class="meta">${esc(themeName(theme))} · ${tn(wordCount === 1 ? 'home.words_one' : 'home.words', { count: wordCount })} · ${today}</span>
+        <span class="meta">${esc(themeName(theme))} · ${tn('home.words', { count: wordCount })} · ${today}</span>
         <a class="btn btn-primary" href="${lp(`/daily/${today}/`)}" style="height:38px;padding:0 14px;font-size:13.5px">${tn('home.play')} ${glyph('a-arrow', 15)}</a>
       </div>
     </aside>
@@ -1777,6 +1853,7 @@ ${siteFooter(pageHref(page))}`;
         path: pageHref(page),
         head,
         body,
+        script: statusPluralScript(),
       }),
     );
 
