@@ -102,6 +102,23 @@ function writeJson(file, data) {
 /** Repos are compared without punctuation or case, as the rest of the pipeline does. */
 const normaliseRepo = (repo) => String(repo ?? '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
+/**
+ * The page to open for a vendored game.
+ *
+ * vendor records the entry it discovered (`docs/index.html`, `game/index.html`,
+ * ...). Games vendored before that existed only ever kept a root index.html,
+ * which is the correct default. The path is treated as untrusted - it comes
+ * from a JSON file on disk - so it must stay inside the game's folder.
+ */
+function entryOf(record, meta = {}) {
+  const raw = String(record?.entry ?? meta.entry ?? 'index.html')
+    .replace(/\\/g, '/')
+    .replace(/^\/+/, '');
+  const segments = raw.split('/').filter(Boolean);
+  if (!segments.length || segments.some((s) => s === '.' || s === '..')) return 'index.html';
+  return segments.join('/');
+}
+
 /* ------------------------------------------------------------- server */
 
 async function serverUp() {
@@ -187,7 +204,7 @@ function withTimeout(promise, ms, what) {
  * same-origin requests, JS errors, the document status, what actually painted
  * - is collected exactly as the post-build audit collects it.
  */
-async function probe(slug) {
+async function probe(slug, entry = 'index.html') {
   const b = await getBrowser();
   const page = await b.newPage();
   await page.setViewport({ width: 1024, height: 768 });
@@ -211,7 +228,7 @@ async function probe(slug) {
 
   try {
     const res = await withTimeout(
-      page.goto(`${origin}/third-party/${slug}/index.html`, {
+      page.goto(encodeURI(`${origin}/third-party/${slug}/${entry}`), {
         waitUntil: 'domcontentloaded',
         timeout: 15000,
       }),
@@ -292,10 +309,12 @@ async function probe(slug) {
  *     game stays on disk and gets picked up by the next pass.
  */
 async function judgeSlug(v, { verbose = false } = {}) {
+  const meta = readJson(join(thirdParty, v.slug, '.harvested.json'), {});
+  const entry = entryOf(v, meta);
   let lastError = '';
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      return await probe(v.slug);
+      return await probe(v.slug, entry);
     } catch (err) {
       const message = String(err?.message ?? err);
       lastError = message;
@@ -350,8 +369,11 @@ async function main() {
   for (const v of vendored) {
     if (!v?.slug) continue;
     const dir = join(thirdParty, v.slug);
-    if (!existsSync(join(dir, 'index.html'))) continue; // pruned or never vendored
-    if (readJson(join(dir, '.harvested.json'), {}).validated) {
+    const meta = readJson(join(dir, '.harvested.json'), {});
+    // Pruned or never vendored: the file that has to exist is the game's
+    // entry, which is no longer necessarily index.html.
+    if (!existsSync(join(dir, entryOf(v, meta)))) continue;
+    if (meta.validated) {
       // Already passed an earlier pass - keep it without re-testing.
       resumed.push(v);
       const prior = resultsBySlug.get(v.slug);

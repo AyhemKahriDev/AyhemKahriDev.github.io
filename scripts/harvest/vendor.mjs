@@ -24,6 +24,7 @@ import {
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { slugify } from './filters.mjs';
+import { pickEntry } from './entry.mjs';
 import { pruneVendored } from '../prune-vendored.mjs';
 
 const run = promisify(execFile);
@@ -80,6 +81,41 @@ async function pool(items, limit, worker) {
 
 function repoOf(candidate) {
   return String(candidate?.repo ?? candidate?.full_name ?? '').trim();
+}
+
+/**
+ * The entry path a preflight verdict carries, or null.
+ *
+ * Cached verdicts come from a file on disk, so the path is treated as
+ * untrusted: it has to stay inside the vendored directory.
+ */
+function entryFromVerdict(verdict) {
+  const raw = String(verdict?.entry ?? '')
+    .replace(/\\/g, '/')
+    .replace(/^\/+/, '');
+  const segments = raw.split('/').filter(Boolean);
+  if (!segments.length || segments.some((s) => s === '.' || s === '..')) return null;
+  return segments.join('/');
+}
+
+/** Every file in an extracted tree, repo-relative and forward-slashed. */
+function walkPaths(dir, base = '') {
+  const out = [];
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return out;
+  }
+  for (const entry of entries) {
+    // Never index a dependency tree or git metadata: the picker would spend
+    // its time on node_modules and can only find the wrong answer there.
+    if (entry.name === '.git' || entry.name === 'node_modules') continue;
+    const rel = base ? `${base}/${entry.name}` : entry.name;
+    if (entry.isDirectory()) out.push(...walkPaths(join(dir, entry.name), rel));
+    else out.push(rel);
+  }
+  return out;
 }
 
 function branchOf(candidate) {
@@ -187,12 +223,16 @@ export async function vendorAll(candidates, options = {}) {
         throw new Error(`extract failed: ${String(err?.stderr || err?.message || err).trim().slice(0, 120)}`);
       }
 
-      // A repo whose game lives in a subdirectory is not servable at
-      // /third-party/<slug>/index.html - and that is the only URL the
-      // catalogue embeds.
-      if (!existsSync(join(tree, 'index.html'))) {
-        throw skip('no root index.html after extract');
+      // A repo whose game lives in a subdirectory used to be thrown away
+      // here: only /third-party/<slug>/index.html was considered servable.
+      // The catalogue embeds any path, so require the entry preflight found
+      // instead. The verdict came from the API tree, which can lag the
+      // tarball by a commit, so the extracted copy is the authority.
+      let entry = entryFromVerdict(verdict);
+      if (!entry || !existsSync(join(tree, entry))) {
+        entry = pickEntry(walkPaths(tree)).entry;
       }
+      if (!entry) throw skip('no entry html after extract');
 
       rmSync(dest, { recursive: true, force: true });
       mkdirSync(dest, { recursive: true });
@@ -213,6 +253,12 @@ export async function vendorAll(candidates, options = {}) {
       // Prune before committing: the repo is the deploy. APKs, PSDs, READMEs,
       // CI files and unreferenced multi-megabyte media never reach git.
       pruneVendored(dest);
+      if (!existsSync(join(dest, entry))) {
+        // pruned anyway (a .gitkeep-only docs/ build, say): do not publish a
+        // game whose page is not there.
+        rmSync(dest, { recursive: true, force: true });
+        throw skip(`entry ${entry} did not survive prune`);
+      }
 
       const licence = candidate.licence ?? candidate.license?.spdx_id ?? 'UNKNOWN';
       const owner = candidate.owner ?? repo.split('/')[0];
@@ -226,6 +272,9 @@ export async function vendorAll(candidates, options = {}) {
         dest: `third-party/${slug}`,
         readme: readme.slice(0, 6000),
         licenceFile,
+        // Where the game actually starts, relative to the vendored folder.
+        // validate opens this and import publishes it as embed.src.
+        entry,
       };
       writeJson(join(dest, '.harvested.json'), meta);
       writeFileSync(
