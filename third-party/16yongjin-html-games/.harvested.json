@@ -1,0 +1,16 @@
+{
+  "repo": "16Yongjin/html-games",
+  "stars": 50,
+  "licence": "MIT",
+  "sizeKB": 69,
+  "pushedAt": "2025-08-17T03:27:13Z",
+  "description": "Games built in one html file",
+  "defaultBranch": "master",
+  "owner": "16Yongjin",
+  "slug": "16yongjin-html-games",
+  "dest": "third-party/16yongjin-html-games",
+  "readme": "# One HTML Games & Utils\n\nBuilt during COVID-19 lockdown in my base.\n\n### 📃 One Single HTML File\n\nNo CSS, Javascript Import. All Embedded in One HTML File.\n\n### 🚚 Super Fast Code Shipping\n\nLoading Single HTML File... and Done!\n\n### 🛒 No Dependency\n\nFull Vanilia Javascript\n\n### 😈 No code split\n\nI Gave up Maintenance...\n\n### ⚠ Support Only PC Chrome Browser\n\nNo Mobile Support 🤔\n\n## [Brick Breaker](https://html-games.surge.sh/brick-breaker)\n\n<img alt=\"sbb\" src=\"https://user-images.githubusercontent.com/22253556/81933996-2cf06900-9629-11ea-9b4e-31cee7502d29.png \" width=\"400px\"/>\n\n## [Korean Chess](https://html-games.surge.sh/janggi)\n\n<img alt=\"janggji\" src=\"https://user-images.githubusercontent.com/22253556/81934129-645f1580-9629-11ea-89b9-5bdf53918eb2.png\" width=\"400px\"/>\n\n## [Gomoku](https://html-games.surge.sh/omok)\n\n<img alt=\"gomoku\" src=\"https://user-images.githubusercontent.com/22253556/81934177-7ccf3000-9629-11ea-8478-fb1894a93e84.png\" width=\"400px\"/>\n\n## [Tetris](https://html-games.surge.sh/tetris)\n\n<img alt=\"tetris\" src=\"https://user-images.githubusercontent.com/22253556/81934265-a5572a00-9629-11ea-9f8f-6d807f4f37cb.png\" width=\"400px\"/>\n\n## [Kanban Board](https://html-games.surge.sh/kanban)\n\n<img alt=\"canban1\" src=\"https://user-images.githubusercontent.com/22253556/81934493-fff08600-9629-11ea-92e1-eadd3c0f3393.png\" width=\"400px\"/>\n\n<img alt=\"canban2\" src=\"https://user-images.githubusercontent.com/22253556/81934425-e51e1180-9629-11ea-85d4-bff5f6e671c8.png\" width=\"400px\"/>\n\n## [Maze Generator](https://html-games.surge.sh/maze)\n\n<img alt=\"maze\" src=\"https://user-images.githubusercontent.com/22253556/82049751-dac74a80-96f1-11ea-96d8-f3fff2f002a9.png\" width=\"400px\"/>\n\n## [Stack!](https://html-games.surge.sh/stack)\n\n<img alt=\"stack\" src=\"https://user-images.githubusercontent.com/22253556/86470747-07edbc00-bd77-11ea-9457-aee76662e62c.png\" width=\"400px\"/>\n",
+  "licenceFile": "LICENSE",
+  "entry": "brick-breaker.html",
+  "validated": true
+}

@@ -1,0 +1,16 @@
+{
+  "repo": "julianYaman/bitcoin-clicker",
+  "stars": 42,
+  "licence": "MIT",
+  "sizeKB": 219,
+  "pushedAt": "2022-03-29T21:35:02Z",
+  "description": "💰🖱 The source code for the web game Bitcoin Clicker! Feel free to contribute!",
+  "defaultBranch": "master",
+  "owner": "julianYaman",
+  "slug": "julianyaman-bitcoin-clicker",
+  "dest": "third-party/julianyaman-bitcoin-clicker",
+  "readme": "<p align=\"center\">\n    <img src=\"https://github.com/julianYaman/bitcoin-clicker/blob/master/images/bitcoin-8bit.png?raw=true\" width=200 />\n</p>\n\n<h1 align=\"center\"> Bitcoin Clicker </h1>\n<h2 align=\"center\"><a href=\"https://julianyaman.github.io/bitcoin-clicker/index.html\" target=\"_blank\">Play now!</a></h2>\n\n**Currently, there is no active development on this game. If you are interested in contributing to it and give it a nice revamp, please contact me on [Discord](https://discord.com/invite/ccpgH3b) or [Twitter](https://twitter.com/julianYaman).**\n\nThis repository contains the source code of the game **Bitcoin Clicker**.\n\n## Changelog - [here](https://github.com/julianYaman/bitcoin-clicker/blob/master/CHANGELOG.md)\n\n## Contributing\n\nIf you found any issues or typos, just clone the repository and do the changes you want.\n\nI recommand that you follow this order:\n\n1. Fork it!\n2. Create your feature branch: `git checkout -b my-new-feature`\n3. Commit your changes: `git commit -am 'Add some feature'`\n4. Push to the branch: `git push origin my-new-feature`\n5. Submit a pull request :D\n\n## Planned\n\nThere are following things planned for future updates:\n\n- Revise the item price system (higher prices, better Bitcoin/second rate)\n- Better code structure\n- Better looking design for the item menu\n- (**BIG**) Special items with the ability to give some bonus.\n\nIf you have any other suggestion, just write an issue with your ideas.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

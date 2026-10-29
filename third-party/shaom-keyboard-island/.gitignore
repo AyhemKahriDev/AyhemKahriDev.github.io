@@ -1,0 +1,13 @@
+node_modules/
+playwright-report/
+test-results/
+coverage/
+.DS_Store
+.env
+.env.*
+!.env.example
+.openai/
+.sites-*/
+.cache/
+*.log
+public/voices/**/*.mp3

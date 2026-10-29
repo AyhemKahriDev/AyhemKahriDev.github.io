@@ -1,0 +1,16 @@
+{
+  "repo": "nxr-dine/fun-games-hub",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 421,
+  "pushedAt": "2025-04-19T12:41:31Z",
+  "description": "A collection of simple browser games built with HTML, CSS, and vanilla JavaScript. Play Tic Tac Toe, Coin Flip Challenge, and more!",
+  "defaultBranch": "main",
+  "owner": "nxr-dine",
+  "slug": "nxr-dine-fun-games-hub",
+  "dest": "third-party/nxr-dine-fun-games-hub",
+  "readme": "# Fun Games Hub\n\nA collection of simple, engaging browser games built with HTML, CSS, and vanilla JavaScript. Play alone or challenge a friend on the same device!\n\n<img src=\"images/homepage.png\" alt=\"Fun Games Hub Homepage\" style=\"width: 700px;\">\n\n## 🎮 Games Included\n\n### Multiplayer Games\n- **Tic Tac Toe**: Classic X and O game with score tracking\n- **Rock Paper Scissors**: Challenge a friend in this game of chance and strategy\n- **Coin Flip Challenge**: Test your luck by predicting heads or tails\n\n### Solo Games\n- **Snake Game**: Eat food, grow longer, and avoid hitting walls or yourself\n- **Memory Match**: Test your memory by finding matching pairs of cards\n\n## 🛠️ Technologies Used\n- HTML5\n- CSS3\n- JavaScript (Vanilla)\n- Font Awesome icons\n- Google Fonts\n\n## 🎯 Features\n- Responsive design works on mobile and desktop\n- Consistent styling across all games\n- Score tracking in multiplayer games\n- Clean, modern UI with smooth animations\n\n## 🚦 Getting Started\n1. Clone this repository:\n     git clone https://github.com/nxr-deen/fun-games-hub.git\n2. Open `index.html` in your browser\n3. Navigate to any game and enjoy!\n\n## 📝 License\nThis project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

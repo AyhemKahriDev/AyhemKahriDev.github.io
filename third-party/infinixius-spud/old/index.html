@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>spud</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+
+		<meta name="description" content="A save editor for Shattered Pixel Dungeon, a roguelike dungeon crawler with pixel graphics.">
+		<meta name="keywords" content="editor, save-editor, save editor, dungeoncrawler, dungeon crawler, roguelike, rogue-like, pixeldungeon, pixel-dungeon, shatteredpixeldungeon, shattered pixel dungeon, shattered-pixel-dungeon">
+		<meta name="author" content="infinixius">
+
+		<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
+		<link rel="icon" href="favicon.ico" type="./favicon.ico"/>
+		<link rel="stylesheet" href="assets/css/index.css">
+
+		<script src="assets/js/node-browser.js"></script>
+	</head>
+	<body>
+		<h1>spud - a shattered pixel dungeon save editor</h1>
+		<p>Save editor for the game <a href="https://github.com/00-Evan/shattered-pixel-dungeon">Shattered Pixel Dungeon</a>, a roguelike dungeon crawler with pixel graphics. Please note that nobody except you is responsible for any harm you cause to your save or device, and you should backup your saves before using this tool anyway. Please note that this only supports game.dat editing (as of now), this is NOT a level editor. <b>Read the FAQ <a href="https://github.com/Infinixius/spud#FAQ">here!</a></b></p>
+		<p>Made with <3 by <a href="https://infinixius.github.io">infinixius</a>. Leave a star on <a href="https://github.com/infinixius/spud">GitHub</a>!<br>
+		<p>Pixel Dungeon made by <a href="https://watabou.itch.io/">Watabou</a>. Shattered Pixel Dungeon made by <a href="https://github.com/00-Evan">00-Evan</a>.</p>
+		
+		<b>WARNING: Desktop support is kind of finicky right now, and requires you turn "Leave data ungzipped" when exporting for the game to read it properly. I have no idea why it doesn't work normally and oh god oh fuck it broke again</b>
+		<hr class="divider">
+			
+		<h2 id="status">Status: JavaScript disabled or this page hasn't loaded yet</h2>
+		<code id="error"></code>
+		
+		<hr class="divider">
+		<div>
+			<h2>General</h2>
+				
+			<label>Leave data ungzipped: </label>
+			<input type="checkbox" id="form_gzip">
+			<br>
+			<small>If this is enabled while loading a save or downloading a save, the data will not be GZipped or Un-GZipped, which will treat it as raw JSON data. <b>This option MUST be ticked when downloading saves if you're playing the desktop version of the game!</b></b></small>
+			<br>
+
+			<label>Use HJSON format: </label>
+			<input type="checkbox" id="form_hjson" checked>
+			<br>
+			<small>Every version over v1.1.0 uses a new JSON format called HJSON, which is not compatible with older versions. If you're using a version of Shattered older than v1.1.0, leave this unchecked. Otherwise, leave this enabled.</small>
+			<br><br>
+				
+			<label>Save file: </label>
+			<input type="file" id="form_file">
+			<br>
+			
+			<button type="button" id="form_save">Download</button>
+			<button type="button" id="form_reset">Reset</button><br>
+		</div>
+		
+		<hr class="divider">
+		<div>
+			<h2>Game</h2>
+				
+			<label>Seed: </label>
+			<input type="number" id="form_seed"></input>
+			<br>
+			
+			<label>Version: </label>
+			<input type="number" id="form_version"></input>
+			<br>
+			
+			<label>Obtained the Amulet of Yendor: </label>
+			<input type="checkbox" id="form_yendor"></input>
+			<br>
+			
+			<label>Depth: </label>
+			<input type="number" id="form_depth"></input>
+			<br><br>
+		</div>
+		
+		<hr class="divider">
+		<div>
+			<h2>Statistics</h2>
+			
+			<label>Ankhs used: </label>
+			<input type="number" id="form_ankh"></input>
+			<br>
+			
+			<label>Food eaten: </label>
+			<input type="number" id="form_food"></input>
+			<br>
+			
+			<label>Piranhas killed: </label>
+			<input type="number" id="form_piranhas"></input>
+			<br>
+			
+			<label>Upgrades used: </label>
+			<input type="number" id="form_upgrades"></input>
+			<br>
+			
+			<label>Potions cooked: </label>
+			<input type="number" id="form_potions"></input>
+			<br>
+			
+			<label>Enemies slain: </label>
+			<input type="number" id="form_enemies"></input>
+			<br>
+			
+			<label>Maxiumum depth: </label>
+			<input type="number" id="form_maxdepth"></input>
+			<br>
+			
+			<label>Sneak attacks: </label>
+			<input type="number" id="form_sneakattacks"></input>
+			<br>
+			
+			<label>Thrown weapon assists: </label>
+			<input type="number" id="form_thrownweaponassists"></input>
+			<br>
+				
+			<label>Qualified for no-killing: </label>
+			<input type="checkbox" id="form_nokill"></input>
+			<br>
+			
+			<label>Score: </label>
+			<input type="number" id="form_score"></input>
+			<small>(total gold collected)</small><br><br>
+		</div>
+		
+		<hr class="divider">
+		<div>
+			<h2>Hero</h2>
+			
+			<label>Class: </label>
+			<select id="form_class">
+				<option value="WARRIOR">Warrior</option>
+				<option value="MAGE">Mage</option>
+				<option value="ROGUE">Rogue</option>
+				<option value="HUNTRESS">Huntress</option>
+			</select>
+			<br>
+			
+			<label>Subclass: </label>
+			<select id="form_subclass">
+				<option value="">None</option>
+				<option value="BERSERKER">Berserker</option>
+				<option value="GLADIATOR">Gladiator</option>
+				<option value="BATTLEMAGE">Battlemage</option>
+				<option value="WARLOCK">Warlock</option>
+				<option value="ASSASSIN">Assassin</option>
+				<option value="FREERUNNER">Freerunner</option>
+				<option value="WARDEN">Warden</option>
+				<option value="SNIPER">Sniper</option>
+			</select>
+			<br><br>
+			
+			<label>Gold: </label>
+			<input type="number" id="form_gold"></input>
+			<br>
+			
+			<label>Health: </label>
+			<input type="number" id="form_hp"></input>
+			<br>
+			
+			<label>Shielding: </label>
+			<input type="number" id="form_shield"></input>
+			<br>
+			
+			<label>Maxhealth: </label>
+			<input type="number" id="form_maxhp"></input>
+			<br>
+			
+			<label>Strength: </label>
+			<input type="number" id="form_strength"></input>
+			<br>
+			
+			<label>Attack skill: </label>
+			<input type="number" id="form_attack"></input>
+			<br>
+			
+			<label>Defense skill: </label>
+			<input type="number" id="form_defense"></input>
+			<br>
+			
+			<label>Level: </label>
+			<input type="number" id="form_level"></input>
+			<br>
+			
+			<label>EXP: </label>
+			<input type="number" id="form_exp"></input>
+			<br><br>
+		</div>
+		
+		<hr class="divider">
+		<div>
+			<h2>Inventory</h2>
+			<button id="inventoryadd">Add</button>
+			<div id="inventoryeditor">
+			</div>
+		</div>
+		<p id="secret">(╯°□°）╯︵ ┻━┻</p>
+
+
+
+		<script src="assets/js/index.js"></script>
+	</body>
+</html>

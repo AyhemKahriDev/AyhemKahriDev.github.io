@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>WallBrawl</title>
+<style>
+  * { user-select: none; -webkit-user-select: none; box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden; font-family: system-ui, sans-serif; }
+  #viewport { position: fixed; inset: 0; background: #000; }
+  #stage { position: absolute; left: 0; top: 0; width: 1280px; height: 720px; transform-origin: 0 0; }
+  #game { display: block; width: 1280px; height: 720px; }
+  .handle {
+    position: fixed; width: 18px; height: 18px; margin: -9px;
+    background: #27e6ff; border-radius: 50%;
+    box-shadow: 0 0 14px #27e6ff; cursor: grab; z-index: 30; display: none;
+    touch-action: none;
+  }
+  #toolbar {
+    position: fixed; top: 10px; left: 50%; transform: translateX(-50%);
+    display: none; flex-wrap: wrap; justify-content: center; align-items: center;
+    gap: 5px; padding: 7px 10px; max-width: 96vw; z-index: 20;
+    background: rgba(10, 18, 26, 0.88); border: 1px solid rgba(60, 220, 255, 0.25);
+    border-radius: 10px; color: #9fb3c8; font-size: 13px;
+  }
+  #toolbar .sep { width: 1px; height: 20px; background: rgba(60, 220, 255, 0.25); margin: 0 3px; }
+  #toolbar button {
+    background: rgba(60, 220, 255, 0.08); color: #cfe9f5;
+    border: 1px solid rgba(60, 220, 255, 0.3); border-radius: 6px;
+    padding: 4px 9px; font-size: 13px; cursor: pointer; font-family: inherit;
+  }
+  #toolbar button:hover { background: rgba(60, 220, 255, 0.2); }
+  #toolbar button.on { background: #27e6ff; color: #04222c; border-color: #27e6ff; font-weight: 600; }
+  #toolbar button.accent { background: #ff5db1; color: #2c0418; border-color: #ff5db1; font-weight: 700; }
+  #toolbar label { display: flex; align-items: center; gap: 4px; }
+  #toolbar input[type=range] { width: 90px; accent-color: #27e6ff; }
+  #toolbar input[type=checkbox] { accent-color: #27e6ff; }
+  #toolbar .headbtn img { width: 18px; height: 18px; border-radius: 50%; object-fit: cover; vertical-align: -4px; margin-right: 3px; }
+  #hint {
+    position: fixed; bottom: 8px; left: 0; width: 100%; text-align: center;
+    color: #3d4f5f; font-size: 13px; z-index: 20; pointer-events: none;
+  }
+  #props {
+    position: fixed; top: 12px; right: 12px; z-index: 20;
+    display: none; flex-direction: column; gap: 6px; width: 160px;
+    background: rgba(10, 18, 26, 0.88); border: 1px solid rgba(60, 220, 255, 0.25);
+    border-radius: 10px; padding: 10px 12px; color: #9fb3c8; font-size: 13px;
+  }
+  #props .title { color: #3cdcff; font-weight: 600; letter-spacing: 0.04em; }
+  #props label { display: flex; justify-content: space-between; align-items: center; gap: 6px; }
+  #props input, #props select {
+    width: 88px; background: #0d1720; color: #cfe9f5;
+    border: 1px solid rgba(60, 220, 255, 0.3); border-radius: 5px;
+    padding: 3px 6px; font-size: 13px; font-family: inherit;
+  }
+  #props button {
+    background: rgba(60, 220, 255, 0.08); color: #cfe9f5;
+    border: 1px solid rgba(60, 220, 255, 0.3); border-radius: 6px;
+    padding: 4px 9px; font-size: 13px; cursor: pointer; font-family: inherit;
+  }
+  #props button:hover { background: rgba(60, 220, 255, 0.2); }
+  #headEdit {
+    position: fixed; inset: 0; z-index: 40; display: none;
+    align-items: center; justify-content: center;
+    background: rgba(0, 0, 0, 0.65);
+  }
+  #headEdit .panel {
+    display: flex; flex-direction: column; gap: 10px; align-items: center;
+    background: rgba(10, 18, 26, 0.97); border: 1px solid rgba(60, 220, 255, 0.35);
+    border-radius: 12px; padding: 14px 16px; color: #9fb3c8; font-size: 13px;
+  }
+  #headEdit .title { color: #3cdcff; font-weight: 600; letter-spacing: 0.04em; }
+  #hePrev { border-radius: 8px; background: #05090d; cursor: grab; touch-action: none; }
+  #headEdit label { display: flex; align-items: center; gap: 6px; }
+  #headEdit input[type=range] { width: 170px; accent-color: #27e6ff; }
+  #headEdit .row { display: flex; gap: 8px; }
+  #headEdit button {
+    background: rgba(60, 220, 255, 0.08); color: #cfe9f5;
+    border: 1px solid rgba(60, 220, 255, 0.3); border-radius: 6px;
+    padding: 5px 12px; font-size: 13px; cursor: pointer; font-family: inherit;
+  }
+  #headEdit button:hover { background: rgba(60, 220, 255, 0.2); }
+  #headEdit button.accent { background: #27e6ff; color: #04222c; border-color: #27e6ff; font-weight: 600; }
+</style>
+</head>
+<body>
+  <div id="viewport">
+    <div id="stage"><canvas id="game" width="1280" height="720"></canvas></div>
+    <div id="handles"></div>
+  </div>
+
+  <div id="toolbar">
+    <button data-tool="select" title="Select / move / resize (drag white handle)">✥ Select</button>
+    <button data-tool="box" title="Drag a rectangle platform">▭ Box</button>
+    <button data-tool="circle" title="Drag a circle from its center">◯ Circle</button>
+    <button data-tool="wall" title="Drag an angled wall">╱ Wall</button>
+    <button data-tool="poly" title="Outline any object: click corner points, click the first point or press Enter to close">⬠ Poly</button>
+    <button data-tool="spawn1" title="Click to place Player 1 spawn">P1</button>
+    <button data-tool="spawn2" title="Click to place Player 2 spawn">P2</button>
+    <button data-tool="erase" title="Click shapes to delete them">✕ Erase</button>
+    <div class="sep"></div>
+    <label title="Stick figure size">size <input type="range" id="scale" min="0.4" max="2" step="0.05" value="1"><span id="scaleVal">1.00x</span></label>
+    <button id="head1" class="headbtn" title="Upload a photo for Player 1's head (right-click to remove)">🙂 P1</button>
+    <button id="head2" class="headbtn" title="Upload a photo for Player 2's head (right-click to remove)">🙂 P2</button>
+    <label title="Show level geometry as a faint ghost during play"><input type="checkbox" id="showGeo" checked> ghost</label>
+    <div class="sep"></div>
+    <button id="btnDemo" title="Load the demo arena">Demo</button>
+    <button id="btnClear" title="Remove all shapes">Clear</button>
+    <button id="btnExport" title="Download arena as JSON">Export</button>
+    <button id="btnImport" title="Load arena from JSON">Import</button>
+    <div class="sep"></div>
+    <button id="btnCalib" title="Corner-pin the projection onto your wall (C)">⛶ Calibrate</button>
+    <button id="btnCalibReset" title="Reset the corner-pin to a centered rectangle">Reset pin</button>
+    <button id="btnFull" title="Fullscreen">⤢ Full</button>
+    <button id="btnPlay" class="accent" title="Start the match (Enter)">▶ Fight</button>
+  </div>
+
+  <div id="props">
+    <span class="title" id="propTitle">Box</span>
+    <label>x <input type="number" id="pX" step="1"></label>
+    <label>y <input type="number" id="pY" step="1"></label>
+    <label class="boxonly">width <input type="number" id="pW" step="1" min="4"></label>
+    <label class="boxonly">height <input type="number" id="pH" step="1" min="4"></label>
+    <label class="boxonly">angle° <input type="number" id="pA" step="1"></label>
+    <label class="circonly">radius <input type="number" id="pR" step="1" min="4"></label>
+    <label>type
+      <select id="pKind">
+        <option value="solid">platform</option>
+        <option value="deadly">deadly</option>
+        <option value="bouncy">bouncy</option>
+      </select>
+    </label>
+    <button id="pDup" title="Copy this shape (Ctrl+D)">⧉ Duplicate</button>
+    <button id="pDel" title="Delete this shape (Del)">✕ Delete</button>
+  </div>
+
+  <div id="headEdit">
+    <div class="panel">
+      <span class="title">Position the face</span>
+      <canvas id="hePrev" width="260" height="260"></canvas>
+      <label>zoom <input type="range" id="heZoom" min="0" max="100" step="1" value="0"></label>
+      <div class="row">
+        <button id="heRotL" title="Rotate left">⟲ 90°</button>
+        <button id="heRotR" title="Rotate right">⟳ 90°</button>
+      </div>
+      <div class="row">
+        <button id="heCancel">Cancel</button>
+        <button id="heUse" class="accent">Use photo</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="hint"></div>
+  <input type="file" id="importFile" accept=".json,application/json" style="display:none">
+  <input type="file" id="headFile" accept="image/*" style="display:none">
+
+  <script src="src/util.js"></script>
+  <script src="src/sound.js"></script>
+  <script src="src/input.js"></script>
+  <script src="src/arena.js"></script>
+  <script src="src/physics.js"></script>
+  <script src="src/particles.js"></script>
+  <script src="src/heads.js"></script>
+  <script src="src/player.js"></script>
+  <script src="src/weapons.js"></script>
+  <script src="src/calibrate.js"></script>
+  <script src="src/editor.js"></script>
+  <script src="src/game.js"></script>
+</body>
+</html>

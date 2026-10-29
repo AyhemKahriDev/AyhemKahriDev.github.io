@@ -1,0 +1,16 @@
+{
+  "repo": "AtharvaKulkarniIT/Rock-Paper-Scissor",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 229,
+  "pushedAt": "2024-10-22T09:33:02Z",
+  "description": "This repository hosts a dynamic Rock, Paper, Scissors game crafted using HTML, CSS and JavaScript. Engage in an exhilarating match against a computer adversary for an electrifying gaming experience!",
+  "defaultBranch": "main",
+  "owner": "AtharvaKulkarniIT",
+  "slug": "atharvakulkarniit-rock-paper-scissor",
+  "dest": "third-party/atharvakulkarniit-rock-paper-scissor",
+  "readme": "# Rock, Paper, Scissors Game\n\nThis is a Rock, Paper, Scissors game built with HTML, CSS, and JavaScript. You can play this classic hand game against the computer. The game is fully responsive and can be played on both desktop and mobile devices.\n\n## Features\n\n- Play Rock, Paper, Scissors against the computer.\n- Simple and intuitive user interface.\n- Responsive design for both desktop and mobile devices.\n- Tracks your wins, losses, and ties.\n\n## How to Play\n\n1. Choose your move: Rock, Paper, or Scissors by clicking on the respective button.\n2. The computer will randomly select its move.\n3. The winner of the round will be displayed on the screen.\n4. Keep playing and try to beat the computer!\n\n## Installation\n\nTo run the game locally, follow these steps:\n\n1. Clone this repository to your local machine using Git:\n\n   ```bash\n   git clone https://github.com/AtharvaKulkarniIT/Rock-Paper-Scissor.git\n   \nThat's it! You don't need to install any additional dependencies.\n\n## Usage\n\nSimply open the `index.html` file in your web browser. You can start playing the game immediately. \n\n## Contributing\n\nContributions are welcome! If you want to contribute to this project, follow these steps:\n\n1. Fork the repository.\n2. Create a new branch for your feature or bug fix: `git checkout -b feature/your-feature`.\n3. Make your changes and commit them: `git commit -m 'Add a new feature'`.\n4. Push to the branch: `git push origin feature/your-feature`.\n5. Create a pull request.\n\nPlease ensure your pull request is in line with the project's coding style and standards. \n\n## License\n\nThis project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

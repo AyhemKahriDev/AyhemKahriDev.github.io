@@ -1,0 +1,16 @@
+{
+  "repo": "meronogbai/panda-runner",
+  "stars": 10,
+  "licence": "MIT",
+  "sizeKB": 2816,
+  "pushedAt": "2021-02-03T07:41:42Z",
+  "description": "Play as a panda in this fun and addictive runner game. Built with Phaser 3.",
+  "defaultBranch": "main",
+  "owner": "meronogbai",
+  "slug": "meronogbai-panda-runner",
+  "dest": "third-party/meronogbai-panda-runner",
+  "readme": "# Panda Runner\n\n> This is a game where you play the role of a panda and collect as many coins as you can before falling over a platform or getting hurt.\n\n![screenshot](./game_preview.gif)\n\n## Game Design\n\n### Concept\n\n- Play as a cute panda and collect goodies while jumping from platform to platform and avoiding traps.\n- Collect gold coins to increase your score.\n- Avoid falling off platforms or touching spikes to not lose the game.\n\n### Controls\n\nYou need a keyboard to control the panda.\n\n- Press ⬆️ to jump.\n- Press ➡️ to go right.\n- Press ⬅️ to go left.\n\n### Assets\n\n|Asset                                      |Description                            |\n|-------------------------------------------|---------------------------------------|\n|![panda](./dist/assets/panda.png)          |Panda spritesheet to animate the player|\n|![platform](./dist/assets/ground_wood.png) |Platform that the player can jump on   |\n|![background](./dist/assets/background.png)|World background                       |\n|![gold coin](./dist/assets/gold.png)       |Gold coins that the player can collect |\n|![spikes](./dist/assets/spikes.png)        |Spikes that the player needs to avoid  |\n\n## Built With\n\n- Javascript\n- Phaser\n- Webpack, Babel and Jest\n\n## Live Demo\n\n[Live Demo Link](https://meronokbay.github.io/panda-runner/)\n\n## Getting Started\n\nTo get a local copy up and running follow these simple example steps.\n\n### Prerequisites\n\n- Node.js\n- npm\n\n### Setup\n\nRun `git clone git@github.com:meronokbay/panda-runner.git` in your terminal to clone this repo.\n\n### Install\n\nInstall the necesarry dependencies by running `npm install` in the root of cloned repo.\n\n### Usage\n\nRun `npm start` to view the game in your default browser.\n\n### Testing\n\nRun `npm test` to run the tests.\n\n## Authors\n\n👤 **Meron Ogbai**\n\n- Github: [@meronokbay](https://github.com/meronokbay)\n- Twitter: [@MeronDev](https://twitter.com/MeronDev)\n- Linkedin: [Meron Ogbai](https://linkedin.com/in/meron-ogbai/)\n\n## 🤝 Contributing\n\nContributions, issues, and feature requests are welcome!\n\n## Show your support\n\nGive a ⭐️ if you like this project!\n\n## Acknowledgments\n\n- [Kenny](https://kenney.nl/)\n- [OpenGameArt](https://opengameart.org/content/panda-character-32x32)\n\n## 📝 License\n\nThis project is [MIT](./LICENSE) licensed.\n",
+  "licenceFile": "LICENSE",
+  "entry": "dist/index.html",
+  "validated": true
+}

@@ -1,0 +1,605 @@
+/**
+ * 推箱子（Sokoban）核心逻辑。
+ * 约定：关卡数据来自 SOKOBAN_LEVELS（levels.js），主题由公共 CSS 变量驱动，
+ * 故无需在 JS 中处理明暗重绘；主题切换由 common.js 的 CommonManager 统一接管。
+ * 简图（缩小俯视图）功能已迁移至「查看关卡页」，本页仅负责游戏玩法。
+ */
+class SokobanGame {
+    constructor(levels, startIndex = 0, officialCount = 0) {
+        this.$levelNum  = document.getElementById('level-num');
+        this.$levelName = document.getElementById('level-name');
+        this.$moves     = document.getElementById('moves-count');
+        this.$best      = document.getElementById('best-moves');
+        this.$board     = document.getElementById('board');
+        this.$message   = document.getElementById('game-message');
+        this.$msgText   = this.$message ? this.$message.querySelector('p') : null;
+
+        this.levels = (Array.isArray(levels) && levels.length) ? levels
+            : (typeof SOKOBAN_LEVELS !== 'undefined' ? SOKOBAN_LEVELS : []);
+        this.source = 'default';   // 'default'（内置）| 'custom'（上传试玩）
+        this.sourceIndex = 0;      // 当前关在其来源命名空间内的下标（官方=levelIndex，自定义=在自定义列表中的位置）
+        this.officialCount = officialCount;  // 合并池中官方关卡数量（自定义关卡紧随其后）
+        this.fromShare = false;    // 是否来自「分享直玩」(?play=)，决定显示“添加到自定义关卡”
+        this.levelIndex = 0;
+        this.grid = [];      // 静态层：'wall' | 'floor' | 'target'
+        this.rows = 0;
+        this.cols = 0;
+        this.player = { r: 0, c: 0 };
+        this.boxes = [];     // [{r,c}, ...]
+        this.moves = 0;
+        this.history = [];   // 撤销栈：{player, boxes, moves}
+        this.solved = false;
+
+        this._bindEvents();
+        this._loadLevel(startIndex);
+    }
+
+    // ─── 关卡加载 ───────────────────────────────────────────────
+    _loadLevel(index) {
+        if (index < 0 || index >= this.levels.length) return;
+        this.levelIndex = index;
+        const lv = this.levels[index];
+        // 合并池下每关携带 source：官方='default' 自定义='custom'；
+        // 自定义关卡在合并池中下标 = officialCount + 其在自定义列表中的位置，
+        // 故其来源下标 = levelIndex - officialCount，保证最佳步数按“自定义列表下标”存储，不随官方增减漂移。
+        this.source = (lv && lv.source === 'custom') ? 'custom' : 'default';
+        this.sourceIndex = (this.source === 'custom') ? (index - this.officialCount) : index;
+        const map = lv.map;
+        this.rows = map.length;
+        this.cols = map[0].length;
+        this.grid = [];
+        this.boxes = [];
+        this.player = { r: 0, c: 0 };
+
+        for (let r = 0; r < this.rows; r++) {
+            const row = [];
+            for (let c = 0; c < this.cols; c++) {
+                const ch = map[r][c];
+                if (ch === '#') {
+                    row.push('wall');
+                } else if (ch === '.' || ch === '*' || ch === '+') {
+                    row.push('target');
+                } else {
+                    row.push('floor');
+                }
+                if (ch === '@' || ch === '+') this.player = { r, c };
+                if (ch === '$' || ch === '*') this.boxes.push({ r, c });
+            }
+            this.grid.push(row);
+        }
+
+        this.moves = 0;
+        this.history = [];
+        this.solved = false;
+        this._hideMessage();
+        // 列宽用 minmax(28px, 1fr)：小关卡 1fr 撑满（最多 480px）；大关卡（列多）被 28px 下限兜住，
+        // 不再等比缩到几像素看不清，多余部分由 .game-board 的 overflow 滚动查看。
+        this.$board.style.gridTemplateColumns = `repeat(${this.cols}, var(--sokoban-cell))`;
+        this._render();
+        this._updateStats();
+        this._updateControls();
+    }
+
+    // ─── 渲染 ───────────────────────────────────────────────────
+    _render() {
+        const frag = document.createDocumentFragment();
+        const boxSet = new Set(this.boxes.map(b => b.r + ',' + b.c));
+        const playerKey = this.player.r + ',' + this.player.c;
+
+        for (let r = 0; r < this.rows; r++) {
+            for (let c = 0; c < this.cols; c++) {
+                const cell = document.createElement('div');
+                const type = this.grid[r][c];
+                cell.className = 'cell ' + (type === 'wall' ? 'wall' : (type === 'target' ? 'target' : 'floor'));
+                cell.dataset.row = r;
+                cell.dataset.col = c;
+
+                const key = r + ',' + c;
+                const isTarget = type === 'target';
+                if (key === playerKey) {
+                    const p = document.createElement('div');
+                    p.className = 'entity player';
+                    cell.appendChild(p);
+                } else if (boxSet.has(key)) {
+                    const b = document.createElement('div');
+                    b.className = 'entity box' + (isTarget ? ' on-target' : '');
+                    cell.appendChild(b);
+                } else if (isTarget) {
+                    const t = document.createElement('div');
+                    t.className = 'entity target-mark';
+                    cell.appendChild(t);
+                }
+                frag.appendChild(cell);
+            }
+        }
+        this.$board.innerHTML = '';
+        this.$board.appendChild(frag);
+        this._ensurePlayerVisible();
+    }
+
+    // 大关卡（棋盘超出可视区）时，每次渲染后把玩家所在格滚动进视图，
+    // 实现「相机跟随」，避免玩家走出可视区。小关卡不溢出则 no-op。
+    _ensurePlayerVisible() {
+        if (!this.$board) return;
+        const sel = '.cell[data-row="' + this.player.r + '"][data-col="' + this.player.c + '"]';
+        const cell = this.$board.querySelector(sel);
+        if (cell && cell.scrollIntoView) {
+            cell.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+        }
+    }
+
+    _updateStats() {
+        if (this.$levelNum) this.$levelNum.textContent = String(this.levelIndex + 1);
+        const lv = this.levels[this.levelIndex];
+        const baseName = lv ? lv.name : '';
+        const prefix = (this.source === 'custom') ? '自定义 · '
+            : (lv && lv.user) ? '自制 · ' : '';
+        if (this.$levelName) this.$levelName.textContent = prefix + baseName;
+        if (this.$moves) this.$moves.textContent = String(this.moves);
+        const best = GameStorage.getBestMovesByMap(this.levels[this.levelIndex].map, this.sourceIndex, this.source);
+        if (this.$best) this.$best.textContent = best ? String(best) : '-';
+    }
+
+    // 按当前状态控制控制栏按钮显隐：
+    // - 单关（levels.length<=1）时上一关/下一关无意义，隐藏
+    // - 自定义试玩（source==='custom'）时上传关卡无意义，隐藏
+    _updateControls() {
+        const multi = this.levels.length > 1;
+        const prevBtn = document.getElementById('prev-level-btn');
+        const nextBtn = document.getElementById('next-level-btn');
+        const uploadBtn = document.getElementById('upload-btn');
+        const saveSharedBtn = document.getElementById('save-shared-btn');
+        if (prevBtn) prevBtn.style.display = multi ? '' : 'none';
+        if (nextBtn) nextBtn.style.display = multi ? '' : 'none';
+        if (uploadBtn) uploadBtn.style.display = (this.source === 'custom') ? 'none' : '';
+        // “添加到自定义关卡”仅分享直玩(?play=)时显示
+        if (saveSharedBtn) saveSharedBtn.style.display = this.fromShare ? '' : 'none';
+    }
+
+    // ─── 移动与推箱 ─────────────────────────────────────────────
+    _move(dr, dc) {
+        if (this.solved) return;
+        const nr = this.player.r + dr;
+        const nc = this.player.c + dc;
+        if (!this._inBounds(nr, nc) || this.grid[nr][nc] === 'wall') return;
+
+        const boxIdx = this.boxes.findIndex(b => b.r === nr && b.c === nc);
+        if (boxIdx !== -1) {
+            const bnr = nr + dr;
+            const bnc = nc + dc;
+            if (!this._inBounds(bnr, bnc) || this.grid[bnr][bnc] === 'wall') return;
+            if (this.boxes.some(b => b.r === bnr && b.c === bnc)) return;
+            // 推箱
+            this._pushHistory();
+            this.boxes[boxIdx] = { r: bnr, c: bnc };
+            this.player = { r: nr, c: nc };
+        } else {
+            this._pushHistory();
+            this.player = { r: nr, c: nc };
+        }
+
+        this.moves++;
+        this._render();
+        this._updateStats();
+        if (this._checkWin()) this._onWin();
+    }
+
+    _inBounds(r, c) {
+        return r >= 0 && c >= 0 && r < this.rows && c < this.cols;
+    }
+
+    _pushHistory() {
+        this.history.push({
+            player: { ...this.player },
+            boxes: this.boxes.map(b => ({ ...b })),
+            moves: this.moves
+        });
+        if (this.history.length > 300) this.history.shift();
+    }
+
+    _undo() {
+        if (this.solved || this.history.length === 0) return;
+        const prev = this.history.pop();
+        this.player = prev.player;
+        this.boxes = prev.boxes;
+        this.moves = prev.moves;
+        this._render();
+        this._updateStats();
+    }
+
+    _reset() {
+        this._loadLevel(this.levelIndex);
+    }
+
+    _checkWin() {
+        return this.boxes.every(b => this.grid[b.r][b.c] === 'target');
+    }
+
+    _onWin() {
+        this.solved = true;
+        const isRecord = GameStorage.saveBestMovesByMap(this.levels[this.levelIndex].map, this.moves);
+        if (this.source === 'default') GameStorage.unlockLevel(this.sourceIndex + 1);
+        this._updateStats();
+
+        const isLast = this.levelIndex >= this.levels.length - 1;
+        if (this.$msgText) {
+            this.$msgText.innerHTML = isLast
+                ? `🎉 全部通关！本关用了 <strong>${this.moves}</strong> 步${isRecord ? '（新纪录）' : ''}`
+                : `🎉 过关！用了 <strong>${this.moves}</strong> 步${isRecord ? '（新纪录）' : ''}`;
+        }
+        const nextBtn = document.getElementById('next-btn');
+        if (nextBtn) {
+            nextBtn.style.display = isLast ? 'none' : '';
+        }
+        this._showMessage();
+    }
+
+    // ─── 消息遮罩 ───────────────────────────────────────────────
+    _showMessage() {
+        if (this.$message) this.$message.classList.add('show');
+    }
+
+    _hideMessage() {
+        if (this.$message) this.$message.classList.remove('show');
+    }
+
+    // ─── 事件绑定 ───────────────────────────────────────────────
+    _bindEvents() {
+        // 键盘
+        document.addEventListener('keydown', (e) => {
+            let handled = true;
+            switch (e.key) {
+                case 'ArrowUp': case 'w': case 'W': this._move(-1, 0); break;
+                case 'ArrowDown': case 's': case 'S': this._move(1, 0); break;
+                case 'ArrowLeft': case 'a': case 'A': this._move(0, -1); break;
+                case 'ArrowRight': case 'd': case 'D': this._move(0, 1); break;
+                case 'z': case 'Z': this._undo(); break;
+                default: handled = false;
+            }
+            if (handled) e.preventDefault();
+        });
+
+        // 触摸滑动（全页）：在棋盘上或棋盘外的空白区域轻扫均可控制方向；
+        // 起点在按钮 / 输入框 / 评论抽屉等交互元素上时不启用，避免误触。
+        // 方向锁定策略（棋盘外也能玩，同时保住页面滚动能力）：
+        // - 棋盘上：可滚动关卡"拖拽=平移查看、轻扫=移动"（原行为不变）；
+        // - 棋盘外：横向滑动锁定为游戏移动（页面无横向滚动，互不冲突）；
+        //   纵向滑动优先页面原生滚动（矮屏 / 大关卡要查看下方按钮与说明），
+        //   仅当页面本身无纵向溢出（无可滚内容）时纵向也锁定为游戏移动。
+        let sx = 0, sy = 0, tracking = false, startedOnBoard = false, locked = null, boardSX = 0, boardSY = 0;
+        const TH = 24;   // 移动触发阈值
+        const LOCK = 10; // 方向锁定阈值（先于 TH 判定主方向）
+        const board = this.$board;
+        const boardScrollable = () => board && (board.scrollWidth > board.clientWidth + 1 || board.scrollHeight > board.clientHeight + 1);
+        const pageScrollable = () => document.documentElement.scrollHeight > window.innerHeight + 1;
+        document.addEventListener('touchstart', (e) => {
+            const target = e.target;
+            if (target && target.closest && target.closest('button, input, select, textarea, a, .flea-comments-drawer, .flea-comments-backdrop, .level-backdrop, .level-panel, .level-fab')) {
+                tracking = false;
+                return;
+            }
+            const t = e.changedTouches[0];
+            sx = t.clientX; sy = t.clientY;
+            locked = null;
+            startedOnBoard = !!(board && target && board.contains(target));
+            boardSX = board ? board.scrollLeft : 0;
+            boardSY = board ? board.scrollTop : 0;
+            tracking = true;
+        }, { passive: true });
+        document.addEventListener('touchmove', (e) => {
+            if (!tracking) return;
+            // 可滚动棋盘上的手势交给原生平移查看（不锁定、不阻止）
+            if (startedOnBoard && boardScrollable()) return;
+            if (!locked) {
+                const t = e.changedTouches[0];
+                const dx = t.clientX - sx, dy = t.clientY - sy;
+                if (Math.abs(dx) >= LOCK && Math.abs(dx) > Math.abs(dy)) {
+                    locked = 'h';
+                } else if (Math.abs(dy) >= LOCK && Math.abs(dy) > Math.abs(dx)) {
+                    locked = 'v';
+                    // 棋盘外的纵向手势：页面有可滚内容时让位给原生滚动，不参与游戏
+                    if (!startedOnBoard && pageScrollable()) { tracking = false; return; }
+                } else {
+                    return;
+                }
+            }
+            e.preventDefault();
+        }, { passive: false });
+        document.addEventListener('touchend', (e) => {
+            if (!tracking) return;
+            tracking = false;
+            const wasOnBoard = startedOnBoard;
+            startedOnBoard = false;
+            locked = null;
+            // 起点在棋盘且本次手势触发了滚动(拖拽平移) → 仅查看，不移动
+            if (wasOnBoard && board) {
+                const scrolled = Math.abs(board.scrollLeft - boardSX) > 4 || Math.abs(board.scrollTop - boardSY) > 4;
+                if (scrolled) return;
+            }
+            const t = e.changedTouches[0];
+            const dx = t.clientX - sx;
+            const dy = t.clientY - sy;
+            if (Math.abs(dx) < TH && Math.abs(dy) < TH) return;
+            if (Math.abs(dx) > Math.abs(dy)) {
+                this._move(0, dx > 0 ? 1 : -1);
+            } else {
+                this._move(dy > 0 ? 1 : -1, 0);
+            }
+        }, { passive: true });
+
+        // 控制按钮
+        document.getElementById('undo-btn')?.addEventListener('click', () => this._undo());
+        document.getElementById('reset-btn')?.addEventListener('click', () => this._reset());
+        document.getElementById('prev-level-btn')?.addEventListener('click', () => this._loadLevel(this.levelIndex - 1));
+        document.getElementById('next-level-btn')?.addEventListener('click', () => this._loadLevel(this.levelIndex + 1));
+
+        // 遮罩按钮
+        document.getElementById('next-btn')?.addEventListener('click', () => {
+            if (this.levelIndex < this.levels.length - 1) this._loadLevel(this.levelIndex + 1);
+        });
+        document.getElementById('retry-btn')?.addEventListener('click', () => this._reset());
+
+        // 上传自定义关卡
+        this._bindUpload();
+
+        // 分享直玩时「添加到自定义关卡」
+        document.getElementById('save-shared-btn')?.addEventListener('click', () => this._saveSharedToUserLevels());
+    }
+
+    // ─── 自定义关卡（上传试玩）─────────────────────────────
+    /**
+     * 加载一组自定义关卡进行本地试玩（不污染内置关卡进度/最佳记录）。
+     * @param {Array} levels 已解析的关卡数组
+     * @param {string} [label] 来源标签（如文件名 / “我的关卡”）
+     * @param {number} [startIndex] 起始关卡下标（默认 0）
+     */
+    loadCustomLevels(levels, label, startIndex) {
+        if (!Array.isArray(levels) || levels.length === 0) {
+            this._toast('没有可试玩的关卡');
+            return;
+        }
+        // 自定义试玩为独立关卡池：官方数量为 0，来源下标即关卡下标
+        this.levels = levels.map(function (l) { return { name: l.name, map: l.map, source: 'custom' }; });
+        this.officialCount = 0;
+        this.source = 'custom';
+        this.levelIndex = 0;
+        this._hideMessage();
+        var start = (typeof startIndex === 'number' && startIndex >= 0 && startIndex < this.levels.length) ? startIndex : 0;
+        this._loadLevel(start);
+        if (label) this._toast('已加载《' + label + '》共 ' + this.levels.length + ' 关，开始试玩');
+    }
+
+    /**
+     * 构建「官方 + 自定义」合并关卡池（所有入口与面板切换共用）。
+     * 官方关卡在前（source='default'），自定义关卡在后（source='custom', user=true）；
+     * 合并池中自定义关卡下标 = 官方数量 + 其在自定义列表中的位置。
+     */
+    static buildPool(official, customs) {
+        var o = (Array.isArray(official) ? official : []).map(function (l) {
+            return { name: l.name, map: l.map, source: 'default' };
+        });
+        var c = (Array.isArray(customs) ? customs : []).map(function (l) {
+            return { name: l.name, map: l.map, source: 'custom', user: true };
+        });
+        return o.concat(c);
+    }
+
+    /**
+     * 从「选择关卡」面板就地切到官方关卡（不整页刷新）。
+     * 切到的合并池 = 官方 + 自定义，故之后仍可继续在面板里切到自定义关卡。
+     * @param {number} i 官方关卡下标
+     */
+    switchToOfficial(i) {
+        var self = this;
+        var loader = (typeof SokobanLevels !== 'undefined' && SokobanLevels.load)
+            ? SokobanLevels.load()
+            : Promise.resolve((typeof SOKOBAN_LEVELS !== 'undefined') ? SOKOBAN_LEVELS : []);
+        loader.then(function (official) {
+            official = official || [];
+            var customs = (typeof SokobanUserLevels !== 'undefined' && SokobanUserLevels.getUserLevels)
+                ? SokobanUserLevels.getUserLevels() : [];
+            self.levels = SokobanGame.buildPool(official, customs);
+            self.officialCount = official.length;
+            self.fromShare = false;
+            var idx = (typeof i === 'number' && i >= 0 && i < official.length) ? i : 0;
+            self._loadLevel(idx);
+            self._updateControls();
+        });
+    }
+
+    /**
+     * 从「选择关卡」面板就地切到一组自定义关卡中的某一关（不整页刷新）。
+     * 切到的合并池 = 官方 + 自定义，故之后仍可继续在面板里切到官方关卡。
+     * @param {Array} list 关卡数组（{ name, map }），此处仅用于回退判断，实际关卡取自本地自定义库
+     * @param {number} idx 自定义关卡在本地列表中的下标
+     */
+    switchToCustom(list, idx) {
+        var self = this;
+        var loader = (typeof SokobanLevels !== 'undefined' && SokobanLevels.load)
+            ? SokobanLevels.load()
+            : Promise.resolve((typeof SOKOBAN_LEVELS !== 'undefined') ? SOKOBAN_LEVELS : []);
+        loader.then(function (official) {
+            official = official || [];
+            var customs = (typeof SokobanUserLevels !== 'undefined' && SokobanUserLevels.getUserLevels)
+                ? SokobanUserLevels.getUserLevels() : [];
+            if (!customs.length) return;
+            self.levels = SokobanGame.buildPool(official, customs);
+            self.officialCount = official.length;
+            self.fromShare = false;
+            var i = (typeof idx === 'number' && idx >= 0 && idx < customs.length) ? idx : 0;
+            self._loadLevel(official.length + i);
+            self._updateControls();
+        });
+    }
+
+    /**
+     * 返回当前展示关卡的 {name, map}，供「选择关卡」面板按内容高亮定位。
+     * 注意：内部 levelIndex 在「开始游戏」分支会因追加自定义关卡而偏移，
+     * 故面板统一用 name+map 内容匹配，而非直接依赖下标。
+     */
+    getCurrentLevel() {
+        var lv = (this.levels && this.levels[this.levelIndex]) || null;
+        return lv ? { name: lv.name, map: lv.map } : null;
+    }
+
+    /** 绑定“上传关卡”按钮与隐藏文件输入 */
+    _bindUpload() {
+        const self = this;
+        const fileInput = document.getElementById('level-file');
+        const uploadBtn = document.getElementById('upload-btn');
+        if (uploadBtn && fileInput) {
+            uploadBtn.addEventListener('click', function () { fileInput.click(); });
+        }
+        if (!fileInput) return;
+        fileInput.addEventListener('change', function (e) {
+            const file = e.target.files && e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = function () {
+                try {
+                    const levels = SokobanLevels.parse(String(reader.result), file.name.replace(/\.[^.]+$/, ''));
+                    self.loadCustomLevels(levels, file.name);
+                } catch (err) {
+                    self._toast('解析失败：' + (err && err.message ? err.message : err));
+                }
+                fileInput.value = '';
+            };
+            reader.onerror = function () { self._toast('文件读取失败'); };
+            reader.readAsText(file);
+        });
+    }
+
+    /** 把当前「分享直玩」关卡存入本地自定义关卡库（去重） */
+    _saveSharedToUserLevels() {
+        if (!this.fromShare) return;
+        const lv = this.levels[this.levelIndex];
+        if (!lv) return;
+        try {
+            const existing = (typeof SokobanUserLevels !== 'undefined' && SokobanUserLevels.getUserLevels)
+                ? SokobanUserLevels.getUserLevels() : [];
+            const dup = existing.some(function (it) {
+                return it.name === lv.name && JSON.stringify(it.map) === JSON.stringify(lv.map);
+            });
+            if (dup) {
+                this._toast('《' + lv.name + '》已在自定义关卡中');
+                return;
+            }
+            SokobanUserLevels.saveUserLevel({ name: lv.name, map: lv.map });
+            this._toast('已添加到自定义关卡《' + lv.name + '》');
+        } catch (e) {
+            this._toast('添加失败：' + (e && e.message ? e.message : e));
+        }
+    }
+
+    /** 轻量提示（解析/加载结果） */
+    _toast(msg) {
+        const el = document.getElementById('level-toast');
+        if (!el) return;
+        el.textContent = msg;
+        el.classList.add('show');
+        clearTimeout(this._toastTimer);
+        this._toastTimer = setTimeout(function () { el.classList.remove('show'); }, 2600);
+    }
+}
+
+// 关卡（棋谱）配置化：优先用 sokoban/config/sokoban-levels.json 覆盖内置默认，
+// 加载失败/未配置时回退内置。加载是异步的，拿到关卡后再启动游戏。
+// 试玩目标：查看/制作页通过 localStorage 'sokoban_play_target' 传入待试玩关卡
+//（{name, map}），读取后立即以自定义关卡试玩，并清除该标记。
+window.addEventListener('DOMContentLoaded', function () {
+    // 返回按钮：推箱子为“入口页 → 游戏页”多页结构，common.js 默认的 goBack 会
+    // 跳回门户首页（../），需按来源拦截跳回对应页面（参考五子棋的 beforeBack 机制）。
+    // from=levels 来自查看关卡页试玩；from=editor 来自制作关卡页试玩；
+    // 无 from（入口页“开始游戏”/直接打开）则回入口页 index.html。
+    window.addEventListener('beforeBack', function (e) {
+        var from = new URLSearchParams(window.location.search).get('from');
+        var target = 'index.html';
+        if (from === 'levels') target = 'levels.html';
+        else if (from === 'editor') target = 'editor.html';
+        e.detail.defaultPrevented = true;
+        window.location.href = target;
+    });
+
+    var params = new URLSearchParams(window.location.search);
+
+    // 统一入口：构建「官方 + 自定义」合并关卡池，从指定起点开始试玩。
+    // officialStart：从官方第 N 关开始；customStart：从自定义第 N 关开始；
+    // 合并池官方在前、自定义在后，故自定义起点下标 = 官方数量 + N。startCombined 后游戏内
+    // 打开「选择关卡」面板即可在官方 / 自定义之间自由切换。
+    function startCombined(officialStart, customStart) {
+        var loader = (typeof SokobanLevels !== 'undefined' && SokobanLevels.load)
+            ? SokobanLevels.load()
+            : Promise.resolve((typeof SOKOBAN_LEVELS !== 'undefined') ? SOKOBAN_LEVELS : []);
+        loader.then(function (official) {
+            official = Array.isArray(official) ? official : [];
+            var customs = (typeof SokobanUserLevels !== 'undefined' && SokobanUserLevels.getUserLevels)
+                ? SokobanUserLevels.getUserLevels() : [];
+            var pool = SokobanGame.buildPool(official, customs);
+            var officialCount = official.length;
+            var startIndex = 0;
+            if (typeof customStart === 'number' && customStart >= 0 && customStart < customs.length) {
+                startIndex = officialCount + customStart;
+            } else if (typeof officialStart === 'number' && officialStart >= 0 && officialStart < officialCount) {
+                startIndex = officialStart;
+            }
+            window.sokobanGame = new SokobanGame(pool, startIndex, officialCount);
+        });
+    }
+
+    // 查看关卡页试玩官方关卡：带 ?level=N 进入，合并池中官方仍在前、下标不变，最佳记录/解锁进度均保留。
+    var startIndex = parseInt(params.get('level'), 10);
+    if (!isNaN(startIndex) && startIndex >= 0) {
+        // 清空可能存在的旧试玩标记，避免官方关卡试玩被误判为自定义。
+        try { localStorage.removeItem('sokoban_play_target'); } catch (e) { /* ignore */ }
+        startCombined(startIndex, null);
+        return;
+    }
+
+    // 分享链接「直接打开试玩」：?play=<code> 携带编码后的单关，打开即玩（独立自定义关卡，不污染我的关卡库）。
+    var playCode = params.get('play');
+    if (playCode) {
+        var shared = null;
+        try {
+            shared = (typeof SokobanUserLevels !== 'undefined' && SokobanUserLevels.decodeLevel)
+                ? SokobanUserLevels.decodeLevel(playCode) : null;
+        } catch (e) { shared = null; }
+        if (shared && Array.isArray(shared.map) && shared.map.length) {
+            var sharedName = shared.name || '分享关卡';
+            var g0 = new SokobanGame([]);
+            g0.fromShare = true;   // 来自分享直玩，显示“添加到自定义关卡”
+            g0.loadCustomLevels([{ name: sharedName, map: shared.map }], sharedName);
+            window.sokobanGame = g0;
+            return;
+        }
+        // 解码失败（分享码损坏）：继续走下方默认加载，避免白屏
+    }
+
+    var playTarget = null;
+    try {
+        var raw = localStorage.getItem('sokoban_play_target');
+        if (raw) {
+            playTarget = JSON.parse(raw);
+            localStorage.removeItem('sokoban_play_target');
+        }
+    } catch (e) { /* ignore */ }
+
+    if (playTarget) {
+        // 整组自定义关卡（查看页“自定义关卡试玩”传入 list + index）：合并官方后从自定义位置开始，
+        // 这样在游戏内点开「选择关卡」面板可自由切到官方 / 自定义任意关卡。
+        if (Array.isArray(playTarget.list) && playTarget.list.length) {
+            startCombined(null, (typeof playTarget.index === 'number') ? playTarget.index : 0);
+            return;
+        }
+        // 单关（制作关卡页试玩 / 旧版）：仅试玩这一关（不混入官方，避免改到正在编辑的关卡）
+        if (Array.isArray(playTarget.map) && playTarget.map.length) {
+            var custom = { name: playTarget.name || '试玩关卡', map: playTarget.map };
+            var game2 = new SokobanGame([]);
+            game2.loadCustomLevels([custom], custom.name);
+            window.sokobanGame = game2;
+            return;
+        }
+    }
+
+    // 默认「开始游戏」：官方 + 自定义合并池，从第 0 关开始。
+    startCombined(null, null);
+});

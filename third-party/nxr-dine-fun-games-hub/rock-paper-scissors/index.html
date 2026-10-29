@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors | Fun Games Hub</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Rock Paper Scissors</h1>
+        <a href="../index.html" class="back-button">Back to Homepage</a>
+    </header>
+
+    <main>
+        <div class="game-container">
+            <h2>Play against a friend!</h2>
+            
+            <div class="score-board">
+                <div class="score player1">
+                    <h3>Player 1</h3>
+                    <p id="score-p1">0</p>
+                </div>
+                <div class="score ties">
+                    <h3>Ties</h3>
+                    <p id="score-ties">0</p>
+                </div>
+                <div class="score player2">
+                    <h3>Player 2</h3>
+                    <p id="score-p2">0</p>
+                </div>
+            </div>
+            
+            <div class="game-area">
+                <div class="player-section" id="player1-section">
+                    <h3>Player 1's choice</h3>
+                    <div class="choices">
+                        <button class="choice-btn" data-player="1" data-choice="rock">✊ Rock</button>
+                        <button class="choice-btn" data-player="1" data-choice="paper">✋ Paper</button>
+                        <button class="choice-btn" data-player="1" data-choice="scissors">✌️ Scissors</button>
+                    </div>
+                    <div class="selection" id="p1-selection">?</div>
+                </div>
+                
+                <div class="vs">VS</div>
+                
+                <div class="player-section" id="player2-section">
+                    <h3>Player 2's choice</h3>
+                    <div class="choices">
+                        <button class="choice-btn" data-player="2" data-choice="rock">✊ Rock</button>
+                        <button class="choice-btn" data-player="2" data-choice="paper">✋ Paper</button>
+                        <button class="choice-btn" data-player="2" data-choice="scissors">✌️ Scissors</button>
+                    </div>
+                    <div class="selection" id="p2-selection">?</div>
+                </div>
+            </div>
+            
+            <div class="result" id="result">Choose your weapons!</div>
+            
+            <div class="controls">
+                <button id="play-btn">Play Round</button>
+                <button id="reset-btn">Reset Game</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

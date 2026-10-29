@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous" async></script>
+
+    <!-- MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6%2CArray.prototype.flatMap" async></script>
+    <script id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+
+    <!-- Custom imports -->
+    <link href="styles.css" rel="stylesheet">
+
+    <!-- Demos -->
+    <script src="assets/demos/demo1.js" async></script>
+    <script src="assets/demos/demo2.js" async></script>
+    <script src="assets/demos/demo3.js" async></script>
+    <script src="assets/demos/demo4.js" async></script>
+    <script src="assets/demos/demo5.js" async></script>
+    <script src="assets/demos/demo6.js" async></script>
+    <script src="assets/demos/demo7.js" async></script>
+    <script src="assets/demos/demo8.js" async></script>
+    <script src="assets/demos/demo9.js" async></script>
+    <script src="assets/demos/demo10.js" async></script>
+    <script src="assets/demos/demo11.js" async></script>
+    <script src="assets/demos/demo12.js" async></script>
+    <script src="assets/demos/demo13.js" async></script>
+    <script src="assets/demos/demo14.js" async></script>
+
+    <title>Ray casting in 2D game engines</title>
+  </head>
+  <body data-bs-spy="scroll" data-bs-target="#navbar" data-bs-offset="0" tabindex="0">
+    <div class="container">
+      <h1 class="text-center">Ray casting in 2D game engines</h1>
+      <div class="row">
+        <div class="col-lg-3 d-none d-lg-block">
+          <nav id="navbar" class="navbar flex-column align-items-stretch sticky-top">
+            <nav class="nav nav-pills flex-column">
+              <a class="nav-link" href="#introduction">Introduction</a>
+              <nav class="nav nav-pills flex-column ms-3">
+                <a class="nav-link" href="#what-is-ray-casting">What is ray casting?</a>
+                <a class="nav-link" href="#where-might-ray-casting-be-used">Where might ray casting be used?</a>
+                <nav class="nav nav-pills flex-column ms-3">
+                  <a class="nav-link" href="#creating-3d-perspective-in-2d-map">Creating 3D perspective in a 2D map</a>
+                  <a class="nav-link" href="#point-in-polygon-problem">Point-in-polygon problem</a>
+                  <a class="nav-link" href="#object-visibility-and-light-casting">Object visibility and light casting</a>
+                </nav> 
+              </nav>
+              <a class="nav-link" href="#object-visibility-and-light-casting-in-2d-games">Object visibility and light casting in 2D games</a>
+              <nav class="nav nav-pills flex-column ms-3">
+                <a class="nav-link" href="#line-segment-ray-intersection-point">Line-segment - ray intersection point</a>
+                <nav class="nav nav-pills flex-column ms-3">
+                  <a class="nav-link" href="#deriving-line-parametric-equation">Deriving line parametric equation</a>
+                  <a class="nav-link" href="#calculating-intersection-point">Calculating the intersection point</a>
+                  <a class="nav-link" href="#finding-closest-intersection-point">Finding the closest intersection point</a>
+                </nav>
+                <a class="nav-link" href="#casting-rays">Casting rays</a>
+                <nav class="nav nav-pills flex-column ms-3">
+                  <a class="nav-link" href="#casting-rays-by-offset-angle">Casting rays by offset angle</a>
+                  <a class="nav-link" href="#casting-rays-on-vertices">Casting rays on vertices</a>
+                </nav>
+                <a class="nav-link" href="#illuminating-visible-area">Illuminating the visible area</a>
+                <nav class="nav nav-pills flex-column ms-3">
+                  <a class="nav-link" href="#sorting-intersection-points">Sorting intersection points</a>
+                  <a class="nav-link" href="#casting-slightly-offseted-rays">Casting slightly offseted rays</a>
+                  <a class="nav-link" href="#visibility-circle-and-flashlight">Visibility circle and flashlight</a>
+                </nav>
+                <a class="nav-link" href="#what-about-circles">What about circles?</a>
+                <nav class="nav nav-pills flex-column ms-3">
+                  <a class="nav-link" href="#circle-ray-intersection-point">Circle - ray intersection point</a>
+                  <a class="nav-link" href="#casting-rays-on-circles">Casting rays on circles</a>
+                </nav>
+              </nav>
+              <a class="nav-link" href="#few-optimization-techniques">Few optimization techniques</a>
+              <nav class="nav nav-pills flex-column ms-3">
+                <a class="nav-link" href="spatial-hashmaps">Spatial hashmaps</a>
+                <a class="nav-link" href="#bresenham-based-supercover-line-algorithm">Bresenham-based supercover line algorithm</a>
+              </nav>
+              <a class="nav-link" href="#everything-has-an-end">Everything has an end</a>
+            </nav>
+          </nav>
+        </div>
+        <div class="col">
+          <h2 id="introduction">Introduction</h2>
+          <p>
+            In my opinion, ray casting is a beautiful concept that is not that hard to grasp, but the quality resources are rare. We will learn the math behind it so you can implement it in your future projects with ease. I will try to make it as comprehensible as possible, explain all the caveats and issues you may stumble upon. We will also talk about optimization and how can spatial hash maps significantly help you. I will also provide some basic live examples for you to try out. Please note that demos were written to be as simple as possible, do not expect enterprise-grade code - we only learn about the concept, not the implementation.
+          </p>
+
+          <h3 id="what-is-ray-casting">What is ray casting?</h3>
+          <figure>
+            <blockquote class="blockquote">
+              <p>
+                Ray casting is the most basic of many computer graphics rendering algorithms that use the geometric algorithm of ray tracing. Ray tracing-based rendering algorithms operate in image order to render three-dimensional scenes to two-dimensional images...
+                The idea behind ray casting is to <mark>trace rays from the eye, one per pixel, and find the closest object blocking the path of that ray</mark> – think of an image as a screen-door, with each square in the screen being a pixel. This is then the object the eye sees through that pixel.
+              </p>
+            </blockquote>
+            <figcaption class="blockquote-footer">
+              Wikipedia on <a href="https://en.wikipedia.org/wiki/Ray_casting">Ray casting</a>
+            </figcaption>
+          </figure>
+          <p>
+            Well, it does not tell us much, does it? Let me simplify that. Ray casting is a fundamental and popular technique used to determine the visibility of specific objects (polygons) by tracing rays from the eye (for instance, player’s hero) on every pixel (well, not quite in our case - more on that later) and finding the nearest intersections with objects.
+          </p>
+
+          <h3 id="where-might-ray-casting-be-used">Where might ray casting be used?</h3>
+          <p>
+            Ray casting has many uses, especially in three-dimensional space. I outlined three, in my opinion, the most important, which are commonly used in 2D game engines:
+          </p>
+
+          <h4 id="creating-3d-perspective-in-2d-map">Creating 3D perspective in a 2D map</h4>
+          <p>
+            The most well-known game that used this technique is Wolfenstein 3D. Rays were traced to determine the closest objects, and their distance from the player position was used to appropriately scale them.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/Simple_raycasting_with_fisheye_correction.gif" class="figure-img img-fluid" alt="Simple raycasting with fisheye correction">
+            <figcaption class="figure-caption"><a href="https://commons.wikimedia.org/wiki/File:Simple_raycasting_with_fisheye_correction.gif">Simple raycasting with fisheye correction</a> by <a href="https://commons.wikimedia.org/wiki/User:LucasVB">Lucas Vieira</a></figcaption>
+          </figure>
+
+          <h4 id="point-in-polygon-problem">Point-in-polygon problem</h4>
+          <p>
+            PIP problem asks whether a given point lies inside, outside, or on the boundary of a polygon. Using the ray casting algorithm, we can count how many times the point intersects the edges of the polygon. If the number of the intersections is even, the point is on the outside of the polygon. If the number of the intersections is odd, the point is on the inside or on the boundary of a polygon.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/pip.jpg" class="figure-img img-fluid" alt="Point-in-polygon problem using ray casting">
+            <figcaption class="figure-caption">Point-in-polygon problem using ray casting</figcaption>
+          </figure>
+
+          <h4 id="object-visibility-and-light-casting">Object visibility and light casting</h4>
+          <p>
+            This is the problem we will specifically tackle in this article - determining which objects are visible by the player and illuminating the visible area.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/light-casting.jpg" class="figure-img img-fluid" alt="Object visibility and light casting">
+            <figcaption class="figure-caption">Object visibility and light casting</figcaption>
+          </figure>
+
+          <h2 id="object-visibility-and-light-casting-in-2d-games">Object visibility and light casting in 2D games</h3>
+          <p>
+            In this section we will go through basics such as calculating intersection points, casting rays, sorting intersection points to illuminate the visible area, and few words about circles. I will provide interactive demos at each stage so you do not get lost and see the results immediately.
+          </p>
+          
+          <h3 id="line-segment-ray-intersection-point">Line-segment - ray intersection point</h3>
+          <p>It is all about those intersection points. Let's learn step by step how to find them and how to use them. We will derive a line parametric equation first, calculate intersection points and finally learn how to determine which one of them is the closest efficiently.</p>
+
+          <h4 id="deriving-line-parametric-equation">Deriving line parametric equation</h4>
+          <p>
+            Let us talk about lines and their parametric equation first. 
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/line.jpg" class="figure-img img-fluid" alt="Simple line example">
+            <figcaption class="figure-caption">Simple line example</figcaption>
+          </figure>
+          <p>
+            We can express vector \(\overrightarrow{AP}\) by the following equation: \(\overrightarrow{AP} = t\overrightarrow{AB}\), where \(t\) is an equation parameter defining how much do we stretch (\(|t| > 1\)) or shrink (\(|t| < 1\)) and if we flip the direction (\(t < 0\)) of vector \(\overrightarrow{AP}\) in relation to vector \(\overrightarrow{AB}\).
+          </p>
+          <p>
+            Let me show you few examples:
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/line-t.jpg" class="figure-img img-fluid" alt="Line parametric equation parameter example">
+            <figcaption class="figure-caption">Line parametric equation parameter example</figcaption>
+          </figure>
+          <p>
+            As you might have noticed, we can use \(t\) as a scale factor: \(|AP| = |t||AB|\).
+            We will use that fact when determining the closest intersection point. 
+          </p>
+          <p>
+            Now we can easily see, that if we want the point to be contained on:
+          </p>
+          <ul>
+            <li>line: \(t \in \mathbb{R}\),</li>
+            <li>ray: \(t \geq 0\),</li>
+            <li>line-segment: \(0 \leq t \leq 1\).</li>
+          </ul>
+          <p>
+            Having all of that sorted out, we can finally derive the parametric equation:<br>
+            \[
+              \begin{align}
+                \overrightarrow{AP} &= t \overrightarrow{AB} \\
+                P - A &= t (B - A) \\
+                P &= t(B - A) + A \\
+              \end{align}
+            \]
+          </p>
+          <p>
+            If you still do not know what happens here, I can recommend an awesome short lecture by Norm Prokup: <a href="https://www.brightstorm.com/math/precalculus/vectors-and-parametric-equations/parametrizing-a-line-segment/">Parametrizing a Line Segment - Concept</a>.
+          </p>
+
+          <h4 id="calculating-intersection-point">Calculating the intersection point</h4>
+          <p>
+            Assume that point \(P\) is the intersection point of line-segment defined by points \(A\) and \(B\), and ray defined by points \(C\) and \(D\). Point \(P\) is then expressed by set of two equations:
+            \[
+              \left\{\begin{align}
+                P &= s(B - A) + A\text {, where } 0 \leq s \leq 1 \text{, and} \\
+                P &= r(D - C) + C\text {, where } r \geq 0 \text{.}
+              \end{align}\right.
+            \]
+          </p>
+          <p>
+            Solve for \(s\) and \(r\):
+            \[
+              \left\{\begin{align}
+                s(B_x - A_x) + A_x &= r(D_x - C_x) + C_x \Rightarrow s = \tfrac{r(D_x - C_x) + (C_x - A_x)}{B_x - A_x} \\
+                s(B_y - A_y) + A_y &= r(D_y - C_y) + C_y \Rightarrow r = \tfrac{s(B_y - A_y) + (A_y - C_y)}{D_y - C_y}
+              \end{align}\right.
+            \]
+          </p>
+          <div class="row">
+            <div class="col-xxl-6">
+              <p>
+                Substitute \(s\) into the second equation:
+                \[
+                  \begin{align}
+                    &\tfrac{r(D_x - C_x) + (C_x - A_x)}{B_x - A_x} (B_y - A_y) + A_y = r(D_y - C_y) + C_y \\[10pt]
+                    &r \tfrac{(D_x - C_x)(B_y - A_y)}{B_x - A_x} + \tfrac{(C_x - A_x)(B_y - A_y)}{B_x - A_x} + A_y = r(D_y - C_y) + C_y \\[10pt]
+                    &r (\tfrac{(D_x - C_x)(B_y - A_y)}{B_x - A_x} - (D_y - C_y)) = (C_y - A_y) - \tfrac{(C_x - A_x)(B_y - A_y)}{B_x - A_x} \\[10pt]
+                    &r \tfrac{(D_x - C_x)(B_y - A_y) - (D_y - C_y)(B_x - A_x)}{B_x - A_x} = \tfrac{(C_y - A_y)(B_x - A_x) - (C_x - A_x)(B_y - A_y)}{B_x - A_x} \\[10pt]
+                    &r = \tfrac{(C_y - A_y)(B_x - A_x) - (C_x - A_x)(B_y - A_y)}{(D_x - C_x)(B_y - A_y) - (D_y - C_y)(B_x - A_x)} \\[10pt]
+                    &r = \tfrac{(B_x - A_x)(C_y - A_y) - (C_x - A_x)(B_y - A_y)}{(D_x - C_x)(B_y - A_y) - (B_x - A_x)(D_y - C_y)} \\[10pt]
+                  \end{align}
+                \]
+              </p>
+            </div>
+            <div class="col-xxl-6">
+              <p>
+                Substitute \(r\) into the first equation:
+                \[
+                  \begin{align}
+                    &s(B_x - A_x) + A_x = \tfrac{s(B_y - A_y) + (A_y - C_y)}{D_y - C_y} (D_x - C_x) + C_x \\[10pt]
+                    &s(B_x - A_x) + A_x = s \tfrac{(B_y - A_y)(D_x - C_x)}{D_y - C_y} + \tfrac{(A_y - C_y)(D_x - C_x)}{D_y - C_y} + C_x \\[10pt]
+                    &s (\tfrac{(B_y - A_y)(D_x - C_x)}{D_y - C_y} - (B_x - A_x)) = (A_x - C_x) - \tfrac{(A_y - C_y)(D_x - C_x)}{D_y - C_y} \\[10pt]
+                    &s \tfrac{(B_y - A_y)(D_x - C_x) - (B_x - A_x)(D_y - C_y)}{D_y - C_y} = \tfrac{(A_x - C_x)(D_y - C_y) - (A_y - C_y)(D_x - C_x)}{D_y - C_y} \\[10pt]
+                    &s = \tfrac{(A_x - C_x)(D_y - C_y) - (A_y - C_y)(D_x - C_x)}{(B_y - A_y)(D_x - C_x) - (B_x - A_x)(D_y - C_y)} \\[10pt]
+                    &s = \tfrac{(A_x - C_x)(D_y - C_y) - (D_x - C_x)(A_y - C_y)}{(D_x - C_x)(B_y - A_y) - (B_x - A_x)(D_y - C_y)} \\[10pt]
+                  \end{align}
+                \]
+              </p>
+            </div>
+          </div>
+          <p>
+            Having \(s\) and \(r\) calculated, we can calculate \(P\) using one of the equations from the set.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo1" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo1.js">Demo 1</a> - all intersection points</figcaption>
+          </figure>
+
+          <h4 id="finding-closest-intersection-point">Finding the closest intersection point</h4>
+          <p>
+            We only need the closest intersection point to properly draw the visible area. The naive solution would be to calculate distances between the ray starting point and intersection points using the <i>Pythagorean Theorem</i>: \(\sqrt{(C_x - P_x) ^ 2 + (C_y - P_y) ^ 2}\). Remember the line equation parameter, though? I have already mentioned that we can use it as a scale factor. As we want to compare distances on ray, we can check for the smallest \(r\) parameter value: \(|\overrightarrow{CP_1}| < |\overrightarrow{CP_2}| \Leftrightarrow |r_1| < |r_2|\).
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo2" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo2.js">Demo 2</a> - the closest intersection point</figcaption>
+          </figure>
+
+          <h3 id="casting-rays">Casting rays</h3>
+          <p>
+            In the following section we will go through two different ways rays might be cast. We will compare them and mention their pros and cons. 
+          </p>
+
+          <h4 id="casting-rays-by-offset-angle">Casting rays by offset angle</h4>
+          <p>
+            First way is to cast rays in all directions by specified offset angle. For instance, we could cast 30 rays in total offseted by \(12^\circ\). Let's see how to generate all those rays first.
+          </p>
+          <p>
+            Let \(P_1 = (x_1, y_1)\) be an anchor point of our rays, and let \(P_2 = (x_2, y_2)\) be a some point on a line going through \(P_1\) at angle \(\phi\):
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/angle-offset.jpg" class="figure-img img-fluid" alt="Line from given point at some angle">
+            <figcaption class="figure-caption">Line from given point at some angle</figcaption>
+          </figure>
+          <p>
+            We can define \(x_2\) as \(x_1 + dx\) and \(y_2\) as \(y_1 - dy\) (our y-axis is inverted hence why the minus sign).<br>
+            Now we need to derive formulas for \(dx\) and \(dy\):
+            \[
+              \left\{\begin{align}
+                \sin(\phi) &= \tfrac{dy}{\mathit{dist}} \Rightarrow dy = \mathit{dist} * \sin(\phi) \\
+                \cos(\phi) &= \tfrac{dx}{\mathit{dist}} \Rightarrow dx = \mathit{dist} * \cos(\phi)
+              \end{align}\right.
+            \]
+            \(\mathit{dist}\) in our case has an arbitrary (greater than 0) value (we are looking for any point on the line), so we are safe to assume \(\mathit{dist} = 1\) to simplify the calculations. Having it all considered, \(P_2 = (x_1 + \sin(\phi), y_1 - \cos(\phi))\), where \(\phi\) is our angle offset. 
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo3" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo3.js">Demo 3</a> - casting rays by offset angle</figcaption>
+          </figure>
+
+          <h4 id="casting-rays-on-vertices">Casting rays on vertices</h4>
+          <p>
+            Casting rays on vertices is most likely your go-to solution. Instead of casting rays in all directions, we can simply cast them on our polygons' vertices. Depending on the number of vertices, we can save computing power by not casting useless rays. In the next sections you will see how does it impact animation smoothness and also learn how to further optimize the whole process.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo4" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo4.js">Demo 4</a> - casting rays on vertices</figcaption>
+          </figure>
+
+          <h3 id="illuminating-visible-area">Illuminating the visible area</h3>
+          <p>
+            This is where the real fun begins. We will illuminate the visible area by filling a giant polygon. 
+          </p>
+
+          <h4 id="sorting-intersection-points">Sorting intersection points</h4>
+          <p>
+            To correctly order vertices to build a proper polygon, we need to sort them by angle first. We will use \(atan2(y, x)\) function for that. You can read more about it <a href="https://en.wikipedia.org/wiki/Atan2">here</a>.
+          </p>
+          <p>
+            Let's compare both ray casting methods:
+          </p>
+          <div class="row">
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo5" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo5.js">Demo 5</a> - casting rays by offset angle (filled visible area)</figcaption>
+            </figure>
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo6" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo6.js">Demo 6</a> - casting rays on vertices (filled visible area)</figcaption>
+            </figure>
+          </div>
+          <p>
+            Both of them looks glitchy, jumpy and inaccurate. Let's take a closer look why.
+          </p>
+
+          <h4 id="casting-slightly-offseted-rays">Casting slightly offseted rays</h4>
+          <p>
+            Notice what happens when rays are cast directly on vertices - they should go beyond that vertex but we are getting only the closest intersection point:
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/offseted-rays.jpg" class="figure-img img-fluid" alt="Rays on vertices problem">
+            <figcaption class="figure-caption">Rays on vertices problem</figcaption>
+          </figure>
+          <p>
+            The most common solution is casting two extra rays offseted by small angle (in both directions) for every cast ray. Consider ray \(AB\) starting at \(A = (A_x, A_y)\) going through \(B = (B_x, B_y)\). We want to find such point \(C = (C_x, C_y)\) that ray \(AC\) would be rotated by \(\phi\) with \(A\) being the origin point. \(C\) coordinates would be as follow:
+            \[
+              \left\{\begin{align}
+                C_x &= (B_x - A_x)\cos(\phi) - (B_y - A_y)\sin(\phi) + A_x \\
+                C_y &= (B_y - A_y)\cos(\phi) + (B_x - A_x)\sin(\phi) + A_y
+              \end{align}\right.
+            \]
+            Note that we do not need to do it for the first method - simply add or substract the offset from the angle we are calculating from.<br>
+            For further explanation you can check <a href="https://academo.org/demos/rotation-about-point/">this</a> article.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <img src="assets/images/offseted-rays-solve.jpg" class="figure-img img-fluid" alt="Rays on vertices problem - solve">
+            <figcaption class="figure-caption">Rays on vertices problem - solve</figcaption>
+          </figure>
+          <p>
+            Let's see how the illumination behaves after changes:
+          </p>
+          <div class="row">
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo7" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo7.js">Demo 7</a> - casting rays by offset angle (filled visible area with extra rays)</figcaption>
+            </figure>
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo8" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo8.js">Demo 8</a> - casting rays on vertices (filled visible area with extra rays)</figcaption>
+            </figure>
+          </div>
+          <p>
+            It did not help much for the first method. We could decrease angle offset (hence increase number of rays) but the result will still be poor. On the other hand, the second method looks very smooth and accurate. From now on, we will not be talking about the first method anymore.
+          </p>
+
+          <h4 id="visibility-circle-and-flashlight">Visibility circle and flashlight</h4>
+          <p>
+            We may want to somehow limit player's visibility. We can achieve that by creating a clipping region of desired shape. In the demos below, I used a <i><a href="https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/clip">CanvasRenderingContext2D.clip()</a></i> method. 
+          </p>
+          <div class="row">
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo9" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo9.js">Demo 9</a> - visibility circle</figcaption>
+            </figure>
+            <figure class="figure my-3 mx-auto d-block text-center col-xxl-6">
+              <canvas id="demo10" class="figure-img img-fluid"></canvas>
+              <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo10.js">Demo 10</a> - flashlight</figcaption>
+            </figure>
+          </div>
+          <p>
+            As you might have noticed, there is no optimization whatsoever - we are still calculating all the intersection points. We will get back to it once we learn about spatial hashmaps. 
+          </p>
+
+          <h3 id="what-about-circles">What about circles?</h3>
+          <p>
+            I have rarely seen a real use-case scenario for ray casting on circles. Please treat this section as an extra where I only briefly talk about it. I will provide you with equations and basic demos, the rest is up to you.
+          </p>
+
+          <h4 id="circle-ray-intersection-point">Circle - ray intersection point</h4>
+          <p>
+            Let \(P\) be an intersection point, \(A\) a ray's anchor point, \(B\) a point on the ray, \(C\) a circle's center point and \(r\) a circle's radius.
+            \[
+              \left\{\begin{align}
+                P_x &= t(B_x - A_x) + A_x \\
+                P_y &= t(B_y - A_y) + A_y \\
+                r ^ 2 &= (P_x - C_x) ^ 2 + (P_y - C_y) ^ 2
+              \end{align}\right.
+            \]
+
+            Solve for \(t\):
+
+            \[
+              \begin{align}
+                r ^ 2 &= P_x ^ 2 - 2P_xC_x + C_x ^ 2 + P_y ^ 2 - 2P_yC_y + C_y ^ 2 \\
+                r ^ 2 &= (t(B_x - A_x) + A_x) ^ 2 - 2(t(B_x - A_x) + A_x)C_x + C_x ^ 2 \\
+                &+ (t(B_y - A_y) + A_y) ^ 2 - 2(t(B_y - A_y) + A_y)C_y + C_y ^ 2 \\
+                r ^ 2 &= t ^ 2 (B_x - A_x) ^ 2 + 2t(B_x - A_x)A_x + A_x ^ 2 - 2t(B_x - A_x)C_x - 2A_xC_x + C_x ^ 2 \\
+                &+ t ^ 2 (B_y - A_y) ^ 2 + 2t(B_y - A_y)A_y + A_y ^ 2 - 2t(B_y - A_y)C_y - 2A_yC_y + C_y ^ 2 \\
+                0 &= t ^ 2 ((B_x - A_x) ^ 2 + (B_y - A_y) ^ 2) \\
+                &+ 2t((B_x - A_x)A_x - (B_x - A_x)C_x + (B_y - A_y)A_y - (B_y - A_y)C_y) \\
+                &+ A_x ^ 2 - 2A_xC_x + C_x ^ 2 + A_y ^ 2 - 2A_yC_y + C_y ^ 2 - r ^ 2 \\
+                0 &= t ^ 2 ((B_x - A_x) ^ 2 + (B_y - A_y) ^ 2) \\
+                &+ 2t((B_x - A_x)(A_x - C_x) + (B_y - A_y)(A_y - C_y)) \\
+                &+ (A_x - C_x) ^ 2 + (A_y - C_y) ^ 2 - r ^ 2
+
+              \end{align}
+            \]
+
+            Solve the quadratic equation:
+
+            \[
+              \left\{\begin{align}
+                a &= (B_x - A_x) ^ 2 + (B_y - A_y) ^ 2 \\
+                b &= 2((B_x - A_x)(A_x - C_x) + (B_y - A_y)(A_y - C_y)) \\
+                c &= (A_x - C_x) ^ 2 + (A_y - C_y) ^ 2 - r ^ 2 \\
+                \Delta &= b ^ 2 - 4ac
+              \end{align}\right.
+            \]
+          </p>
+          <ul>
+            <li>\(\Delta < 0\): ray does not intersect the circle,</li>
+            <li>\(\Delta = 0 \): ray intersects the circle in one point (tangent),</li>
+            <li>\(\Delta > 0 \): ray intersects the circle in two points.</li>
+          </ul>
+          <div class="row">
+            <p class="col-sm-auto me-3">
+              Only if \(\Delta = 0\):
+
+              \[
+                \begin{align}
+                  t = \tfrac{-b}{2a}
+                \end{align}
+              \]
+
+              Only if \(t \geq 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_x &= t(B_x - A_x) + A_x \\
+                  P_y &= t(B_y - A_y) + A_y
+                \end{align}\right.
+              \]
+            </p>
+            <p class="col-sm-auto">
+              Only if \(\Delta > 0\):
+
+              \[
+                \left\{\begin{align}
+                  t_1 &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                  t_2 &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                \end{align}\right.
+              \]
+
+              Only if \(t_i \geq 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_{i_x} &= t_i(B_x - A_x) + A_x \\
+                  P_{i_y} &= t_i(B_y - A_y) + A_y
+                \end{align}\right.
+              \]
+            </p>
+          </div>
+
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo11" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo11.js">Demo 11</a> - circle - ray instersection</figcaption>
+          </figure>
+
+          <h4 id="casting-rays-on-circles">Casting rays on circles</h4>
+          <p>
+            We need to find two tangent lines to a given circle passing through a ray anchor point. <br>
+            Let \(P_i\) be tangent points, \(A\) a ray's anchor point, \(C\) a circle's center point and \(r\) a circle's radius. <br>
+            We will also be moving all points using translation vector \(\overrightarrow{v} = (-C_x, -C_y)\): \(X^\prime = X + \overrightarrow{v}\), so the circle's center is at \((0,0)\). <br>
+
+            <br>
+
+            From the circle equation:
+            \[
+              P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = r ^ 2
+            \]
+
+            From the perpendicular line to the circle's radius:
+
+            \[
+              \begin{align}
+                & \tfrac{P_y ^ \prime}{P_x ^ \prime} = - \tfrac{1}{\tfrac{P_y ^ \prime - A_y ^ \prime}{P_x ^ \prime - A_x ^ \prime}} \\
+                & \tfrac{P_y ^ \prime}{P_x ^ \prime} = - \tfrac{P_x ^ \prime - A_x ^ \prime}{P_y ^ \prime - A_y ^ \prime} \\
+                & - P_y ^ {\prime ^ 2} + P_y ^ \prime A_y ^ \prime = P_x ^ {\prime ^ 2} - P_x ^ \prime A_x ^ \prime \\
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime
+              \end{align}
+            \]
+            
+            Solve the equation system:
+
+            \[
+              \left\{\begin{align}
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = r ^ 2 \\
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime
+              \end{align}\right.
+            \]
+
+            \[
+              \begin{align}
+                & r ^ 2 = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime \\
+                & P_x ^ \prime = \tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime} \text{, where } A_x ^ \prime \neq 0
+              \end{align}
+            \]
+
+            Substitute \(P_x ^ \prime\) into the first equation:
+
+            \[
+              \begin{align}
+                & (\tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime}) ^ 2 + P_y ^ {\prime ^ 2} = r ^ 2 \\
+                & \tfrac{r ^ 4 - 2 r ^ 2 P_y ^ \prime A_y ^ \prime + (P_y ^ \prime A_y ^ \prime) ^ 2}{A_x ^{\prime ^ 2}} + P_y ^ {\prime ^ 2} = r ^ 2 \\
+                & r ^ 4 - 2 r ^ 2 P_y ^ \prime A_y ^ \prime + (P_y ^ \prime A_y ^ \prime) ^ 2 + P_y ^ {\prime ^ 2} A_x ^{\prime ^ 2} = r ^ 2 A_x ^{\prime ^ 2} \\
+                & P_y ^ {\prime ^ 2} (A_x ^{\prime ^ 2} + A_y ^{\prime ^ 2}) - P_y ^ \prime 2r ^ 2 A_y ^ \prime + r ^ 4 - r ^ 2 A_x ^ {\prime ^ 2} = 0
+              \end{align}
+            \]
+
+            Solve the quadratic equation:
+
+            \[
+              \left\{\begin{align}
+                a &= A_x ^{\prime ^ 2} + A_y ^{\prime ^ 2} \\
+                b &= - 2r ^ 2 A_y ^ \prime \\
+                c &= r ^ 4 - r ^ 2 A_x ^ {\prime ^ 2} \\
+                \Delta &= b ^ 2 - 4ac
+              \end{align}\right.
+            \]
+          </p>
+          <ul>
+            <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
+            <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
+            <li>\(\Delta > 0 \): there are two tangent points.</li>
+          </ul>
+          <div class="row">
+            <p class="col-sm-auto me-3">
+              Only if \(\Delta = 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_y ^ \prime &= \tfrac{-b}{2a} \\
+                  P_x ^ \prime &= \tfrac{r ^ 2 - P_y ^ \prime A_y ^ \prime }{A_x ^ \prime}
+                \end{align}\right.
+              \]
+
+              \[
+                \left\{\begin{align}
+                  P_x &= P_x ^ \prime + C_x \\
+                  P_y &= P_y ^ \prime + C_y
+                \end{align}\right.
+              \]
+            </p>
+            <p class="col-sm-auto">
+              Only if \(\Delta > 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_{1_y} ^ \prime &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                  P_{2_y} ^ \prime &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                  P_{i_x} ^ \prime &= \tfrac{r ^ 2 - P_{i_y} ^ \prime A_y ^ \prime }{A_x ^ \prime}
+                \end{align}\right.
+              \]
+
+              \[
+                \left\{\begin{align}
+                  P_{i_x} &= P_{i_x} ^ \prime + C_x \\
+                  P_{i_y} &= P_{i_y} ^ \prime + C_y
+                \end{align}\right.
+              \]
+            </p>
+          </div>
+          <p>
+            There is still one issue - it will not work if \(A_x ^ \prime = 0\). <br>
+            Take a closer look at the following equation: \(r ^ 2 = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime\). <br>
+            If \(A_x ^ \prime = 0\), the equation becomes: \(r ^ 2 = P_y ^ \prime A_y ^ \prime\) - we cannot substitute \(P_x ^ \prime\) anymore. <br>
+            Here are the steps for solving the equation system once that happens:
+          </p>
+          <p>
+            Solve the equation system:
+
+            \[
+              \left\{\begin{align}
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = r ^ 2 \\
+                & P_x ^ {\prime ^ 2} + P_y ^ {\prime ^ 2} = P_x ^ \prime A_x ^ \prime + P_y ^ \prime A_y ^ \prime \\
+                & A_x ^ \prime = 0
+              \end{align}\right.
+            \]
+
+            \[
+              \begin{align}
+                & r ^ 2 = P_y ^ \prime A_y ^ \prime \\
+                & P_y ^ \prime = \tfrac{r ^ 2}{A_y ^ \prime} \text{, where } A_y ^ \prime \neq 0
+              \end{align}
+            \]
+
+            Substitute \(P_y ^ \prime\) into the first equation:
+
+            \[
+              \begin{align}
+                & P_x ^ {\prime ^ 2} + (\tfrac{r ^ 2}{A_y ^ \prime}) ^ 2 = r ^ 2 \\
+                & P_x ^ {\prime ^ 2} + \tfrac{r ^ 4}{A_y ^ {\prime ^ 2}} = r ^ 2 \\
+                & P_x ^ {\prime ^ 2} A_y ^ {\prime ^ 2} + r ^ 4 = r ^ 2 A_y ^ {\prime ^ 2} \\
+                & P_x ^ {\prime ^ 2} A_y ^ {\prime ^ 2} + r ^ 4 - r ^ 2 A_y ^ {\prime ^ 2} = 0
+              \end{align}
+            \]
+
+            Solve the quadratic equation:
+
+            \[
+              \left\{\begin{align}
+                a &= A_y ^ {\prime ^ 2} \\
+                b &= 0 \\
+                c &= r ^ 4 - r ^ 2 A_y ^ {\prime ^ 2} \\
+                \Delta &= b ^ 2 - 4ac
+              \end{align}\right.
+            \]
+          </p>
+          <ul>
+            <li>\(\Delta < 0\): there are no tangent points (ray's anchor point is in the circle),</li>
+            <li>\(\Delta = 0 \): there is only one tangent point (ray's anchor point),</li>
+            <li>\(\Delta > 0 \): there are two tangent points.</li>
+          </ul>
+          <div class="row">
+            <p class="col-sm-auto me-3">
+              Only if \(\Delta = 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_x ^ \prime &= \tfrac{-b}{2a} \\
+                  P_y ^ \prime &= \tfrac{r ^ 2}{A_y ^ \prime}
+                \end{align}\right.
+              \]
+
+              \[
+                \left\{\begin{align}
+                  P_x &= P_x ^ \prime + C_x \\
+                  P_y &= P_y ^ \prime + C_y
+                \end{align}\right.
+              \]
+            </p>
+            <p class="col-sm-auto">
+              Only if \(\Delta > 0\):
+
+              \[
+                \left\{\begin{align}
+                  P_{1_x} ^ \prime &= \tfrac{-b -\sqrt{\Delta}}{2a} \\
+                  P_{2_x} ^ \prime &= \tfrac{-b +\sqrt{\Delta}}{2a} \\
+                  P_{i_y} ^ \prime &= \tfrac{r ^ 2}{A_y ^ \prime}
+                \end{align}\right.
+              \]
+
+              \[
+                \left\{\begin{align}
+                  P_{i_x} &= P_{i_x} ^ \prime + C_x \\
+                  P_{i_y} &= P_{i_y} ^ \prime + C_y
+                \end{align}\right.
+              \]
+            </p>
+          </div>
+          <p>
+            Note that we can do the same for \(A_y ^ \prime = 0\), however, it is optional. <br>
+            If \(A_x ^ \prime = A_y ^ \prime = 0\), there are no solutions.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo12" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo12.js">Demo 12</a> - casting rays on circles</figcaption>
+          </figure>
+
+          <h2 id="few-optimization-techniques">Few optimization techniques</h2>
+          <p>
+            In this section, we will discuss the usage of spatial hashmaps and modified Bresenham's line algorithm. I will not go into implementation details as they are commonly available on the Internet. I will, however, provide you with some demos to try these out and come up with your own ideas on where to use them.
+          </p>
+
+          <h3 id="spatial-hashmaps">Spatial hashmaps</h3>
+          <p>
+            Currently, we are drawing all polygons and calculating all intersection points, but it is pretty much useless. In most cases, our play area will be much bigger than the viewport. By using spatial hashmaps, we can quickly determine which polygons are visible to the player and perform adequate calculations. <br>
+            <br>
+            Basically, we want to divide the play area into smaller cells (of predefined size). Each cell consists of a list containing our shapes (most likely line-segments). If a single shape spans across multiple cells, it will be included in all of them. <br>
+            <br>
+            The name of this technique suggests using hashmaps (eg. cells would be named something like X+":"+Y), but in our case, using a simple 2D array might be more desired. <br>
+            <br>
+            Here is a simple demo showing how it might work:
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo13" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo13.js">Demo 13</a> - spatial hashmaps</figcaption>
+          </figure>
+          <p>
+            We can use them for viewports as mentioned previously, and also visibility circles and flashlights.
+          </p>
+
+          <h3 id="bresenham-based-supercover-line-algorithm">Bresenham-based supercover line algorithm</h3>
+          <p>
+            Well, it is high time we did something with finding the closest intersection points. Using spatial hashmaps and modified Bresenham's line algorithm, we can traverse the grid in an efficient manner making as few checks as required. The algorithm should stop when the first cell with an intersection point is found. <br>
+            <br>
+            You can read more about Bresenham's line algorithm <a href="https://en.wikipedia.org/wiki/Bresenham%27s_line_algorithm">here</a>, and its modified version <a href="https://playtechs.blogspot.com/2007/03/raytracing-on-grid.html">here</a>.
+          </p>
+          <figure class="figure my-3 mx-auto d-block text-center">
+            <canvas id="demo14" class="figure-img img-fluid"></canvas>
+            <figcaption class="figure-caption"><a href="https://github.com/sszczep/ray-casting-in-2d-game-engines/blob/main/assets/demos/demo14.js">Demo 14</a> - Bresenham-based supercover line algorithm</figcaption>
+          </figure>
+
+          <h2 id="everything-has-an-end">Everything has an end</h2>
+          <small>Sorry, unfortunately, I mean this article and not rays.</small>
+          <p>
+            I think I have covered everything to help you get started. I will try my best to expand it in the future if I spot something needing an additional explanation. I have also created <a href="https://sszczep.github.io/ray-casting-in-2d-game-engines/cheatsheet.html">a little cheatsheet</a> for you to quickly recap some of the topics and derived formulas. <br>
+            <br>
+            If you enjoyed the read be sure to star and watch <a href="https://github.com/sszczep/ray-casting-in-2d-game-engines">this repository on GitHub</a>. You might also want to follow <a href="https://github.com/sszczep">me</a> for more content like that in the future. Also do not forget to create an issue if one of the topics seems to be poorly explained or you have other suggestions. <br>
+            <br>
+            Stay tuned for more!
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

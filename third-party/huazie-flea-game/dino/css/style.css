@@ -1,0 +1,557 @@
+:root {
+    /* 浅色主题变量 */
+    --bg-color: #f5f5f5;
+    --text-color: #333;
+    --primary-color: #e67e22;
+    --icon-button-bg: #eaeaea;
+    --icon-button-hover: #d5d5d5;
+    --board-bg: #fff;
+    --board-border: #ddd;
+    --start-button-bg: #e67e22;
+    --start-button-text: #fff;
+    --start-button-hover: #d35400;
+    --restart-button-bg: #95a5a6;
+    --restart-button-text: #fff;
+    --restart-button-hover: #7f8c8d;
+    --duck-button-bg: #34495e;
+    --duck-button-text: #fff;
+    --theme-toggle-color: #ffa500;
+    /* 底部触控条（触屏专用）：通栏吸底、透明底 + 灰细边框 */
+    --touch-bar-h: 72px;
+    --touch-zone-border: #c6c6c6;
+    --touch-zone-text: #8a8a8a;
+    /* 画布调色板：白天 = 站点主题色；夜晚（游戏内反色）= 其反色 */
+    --canvas-bg: #ffffff;
+    --canvas-fg: #535353;
+    --canvas-night-bg: #2b2b2b;
+    --canvas-night-fg: #f5f5f5;
+}
+
+/* 深色主题变量 */
+[data-theme="dark"] {
+    --bg-color: #222;
+    --text-color: #f5f5f5;
+    --primary-color: #f39c12;
+    --icon-button-bg: #444;
+    --icon-button-hover: #555;
+    --board-bg: #1a1a1a;
+    --board-border: #444;
+    --start-button-bg: #d35400;
+    --start-button-text: #f0f0f0;
+    --start-button-hover: #ba4a00;
+    --restart-button-bg: #57606f;
+    --restart-button-text: #f0f0f0;
+    --restart-button-hover: #3d4756;
+    --theme-toggle-color: #f1c40f;
+    --duck-button-bg: #5d6d7e;
+    --duck-button-text: #f0f0f0;
+    --touch-zone-border: #4f4f4f;
+    --touch-zone-text: #9a9a9a;
+    --canvas-bg: #1a1a1a;
+    --canvas-fg: #d6d6d6;
+    --canvas-night-bg: #f0f0f0;
+    --canvas-night-fg: #333333;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    transition: background-color 0.3s ease;
+}
+
+.game-container {
+    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: var(--container-pad);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* 触控区通栏贴边：负 margin 抵消容器左右 padding，引用同一变量永不失配 */
+:root {
+    --container-pad: 10px;
+}
+
+@media (max-width: 600px) {
+    :root {
+        --container-pad: 5px;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 500px) {
+    :root {
+        --container-pad: 2px;
+    }
+}
+
+/* 浮动圆形按钮（参考 2048 布局）：左上返回，右上音效/主题 */
+.control-button {
+    position: fixed;
+    top: 20px;
+    width: 50px;
+    height: 50px;
+    border: none;
+    background-color: var(--icon-button-bg);
+    color: var(--text-color);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25em;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    padding: 0;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    z-index: 1000;
+}
+
+.control-button:hover {
+    background-color: var(--icon-button-hover);
+    transform: scale(1.05);
+}
+
+.control-button:active {
+    transform: scale(0.95);
+}
+
+#back-button {
+    left: 20px;
+    color: var(--primary-color);
+}
+
+.floating-buttons {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 1000;
+}
+
+/* 容器统一悬浮定位，音效/主题按钮在容器内并排（fixed 会脱离容器导致叠位溢出） */
+.floating-buttons .control-button {
+    position: static;
+}
+
+#sound-button {
+    color: var(--primary-color);
+}
+
+#theme-button {
+    color: var(--theme-toggle-color);
+}
+
+/* 透明 header：左侧大标题 + 右侧分数卡（参考 2048 布局） */
+.game-header {
+    width: min(100%, 760px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* 与 .game-controls 的 margin-bottom:auto 配对：剩余空间上下均分，
+       整体内容在满高容器中垂直居中；内容溢出时 auto 归零，顶部可滚动 */
+    margin-top: auto;
+}
+
+.game-header h1 {
+    font-size: clamp(1.8em, 5vw, 2.6em);
+    font-weight: bold;
+    color: var(--text-color);
+    line-height: 1.2;
+}
+
+.scores-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.score-container {
+    background-color: var(--board-bg);
+    color: var(--text-color);
+    border: 1px solid var(--board-border);
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 80px;
+}
+
+.best-container {
+    background-color: var(--board-bg);
+    color: var(--text-color);
+    border: 1px solid var(--board-border);
+    padding: 8px 14px;
+    border-radius: 8px;
+    text-align: center;
+    min-width: 80px;
+}
+
+.score-label {
+    font-size: 0.75em;
+    text-transform: uppercase;
+    margin-bottom: 2px;
+    opacity: 0.7;
+}
+
+#score, #best-score {
+    font-size: 1.2em;
+    font-weight: bold;
+    display: block;
+    font-variant-numeric: tabular-nums;
+}
+
+/* 每 100 分闪烁 */
+#score.flash {
+    animation: score-flash 0.3s ease;
+}
+
+@keyframes score-flash {
+    50% { opacity: 0.3; }
+}
+
+.game-board-container {
+    width: 100%;
+    max-width: 760px;
+    aspect-ratio: 76 / 22;
+    background-color: var(--board-bg);
+    border: 2px solid var(--board-border);
+    border-radius: 8px;
+    overflow: hidden;
+    touch-action: none;
+    flex-shrink: 0;
+}
+
+#game-board {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.game-controls {
+    width: 100%;
+    max-width: 760px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+    /* 与 .game-header 的 margin-top:auto 配对，实现整体垂直居中 */
+    margin-bottom: auto;
+}
+
+.control-panel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.control-info {
+    color: var(--text-color);
+}
+
+.control-info p {
+    margin: 2px 0;
+    font-size: 0.9em;
+}
+
+/* 触屏文案默认隐藏，JS（IS_TOUCH）检测到触屏后打开；键盘文案默认显示 */
+.help-touch {
+    display: none;
+}
+
+/* 双保险：支持 pointer/hover media feature 的内核由 CSS 直接切换，
+   不支持的由 JS 强制切换（两者结果一致） */
+@media (hover: none) and (pointer: coarse) {
+    .help-keyboard {
+        display: none;
+    }
+
+    .help-touch {
+        display: block;
+    }
+}
+
+.control-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.difficulty-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.difficulty-container label {
+    font-size: 0.9em;
+    color: var(--text-color);
+}
+
+.difficulty-select {
+    padding: 4px 8px;
+    border-radius: 4px;
+    border: 1px solid var(--board-border);
+    background-color: var(--board-bg);
+    color: var(--text-color);
+    font-size: 0.9em;
+    cursor: pointer;
+}
+
+.difficulty-select:focus {
+    outline: 2px solid var(--primary-color);
+}
+
+button {
+    padding: 6px 12px;
+    font-size: 0.9em;
+    border: none;
+    border-radius: 4px;
+    background-color: var(--restart-button-bg);
+    color: var(--restart-button-text);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: var(--restart-button-hover);
+}
+
+#start-btn {
+    background-color: var(--start-button-bg);
+    color: var(--start-button-text);
+    min-width: 72px;
+}
+
+#start-btn:hover {
+    background-color: var(--start-button-hover);
+}
+
+#restart-btn {
+    background-color: var(--restart-button-bg);
+    color: var(--restart-button-text);
+}
+
+#restart-btn:hover {
+    background-color: var(--restart-button-hover);
+}
+
+/* 触屏分区触控区：fixed 覆盖层——top 锚定控制行底部（JS 测量写入
+   --touch-zone-top），上方游戏主体保持垂直居中，条通栏盖住下方全部空白；
+   左「跳」右「蹲」各半宽，透明底 + 灰色细边框；PC 显示开始/重玩 */
+.touch-controls {
+    display: none;
+}
+
+.is-touch .touch-controls {
+    display: flex;
+    position: fixed;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    top: var(--touch-zone-top, auto);
+    min-height: var(--touch-bar-h);
+    gap: 2px;
+}
+
+.is-touch .control-buttons {
+    display: none;
+}
+
+.touch-zone {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    font-size: 1.2em;
+    font-weight: 500;
+    border-radius: 4px;
+    background-color: transparent;
+    color: var(--touch-zone-text);
+    border: 1px solid var(--touch-zone-border);
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    transition: background-color 0.12s ease, transform 0.12s ease;
+}
+
+/* 按压反馈：透明底上铺浅灰 + 轻微缩放。:active 兜底 PC 鼠标；
+   移动端由 JS .is-pressed 驱动——touchstart 内 preventDefault 会抑制 :active */
+.touch-zone:active,
+.touch-zone.is-pressed {
+    background-color: rgba(130, 130, 130, 0.22);
+    transform: scale(0.98);
+}
+
+/* 触屏端操作 = 分区触控条（JS 驱动 body.is-touch）：
+   开始/重玩仅 PC 显示 */
+.is-touch #start-btn,
+.is-touch #restart-btn {
+    display: none;
+}
+
+button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* 确保在所有屏幕尺寸下内容都在一个视图内 */
+@media (max-height: 600px) {
+    .game-header h1 {
+        font-size: 1.5em;
+    }
+
+    .control-info p {
+        font-size: 0.7em;
+    }
+
+    button {
+        padding: 4px 8px;
+        font-size: 0.8em;
+    }
+}
+
+@media (max-width: 600px) {
+    /* 手机端标题上移顶部正中间：fixed 在浮动按钮（top 12 + 高 42 + 间距）下方，
+       填补页面顶部空白；标题脱离流后分数卡独占 header，水平居中贴画布上方。
+       top 为兜底初始值，实际位置由 game.js syncTitleToScores 实测——在
+       「浮动按钮底沿 ～ 分数卡顶沿」的顶部空间内垂直居中（矮屏自动贴分数卡，
+       不与分数/最高分卡重叠）；字号较基准加大（2.2em ≈ 35px） */
+    .game-header h1 {
+        position: fixed;
+        top: 118px;
+        left: 50%;
+        transform: translateX(-50%);
+        margin: 0;
+        white-space: nowrap;
+        font-size: 2.2em;
+        z-index: 10;
+    }
+
+    .game-header {
+        justify-content: center;
+    }
+
+    /* 手机端画面加高：逻辑内容等比贴底，上方延伸天空色 */
+    .game-board-container {
+        aspect-ratio: 76 / 34;
+    }
+
+    .control-button {
+        top: 12px;
+        width: 42px;
+        height: 42px;
+        font-size: 1.1em;
+    }
+
+    #back-button {
+        left: 12px;
+    }
+
+    .floating-buttons {
+        top: 12px;
+        right: 12px;
+        gap: 8px;
+    }
+
+    .scores-container {
+        gap: 8px;
+    }
+
+    .score-container, .best-container {
+        padding: 5px 8px;
+        min-width: 72px;
+    }
+
+    .score-label {
+        font-size: 0.7em;
+    }
+
+    #score, #best-score {
+        font-size: 1.25em;
+    }
+
+    .control-buttons {
+        gap: 8px;
+    }
+}
+
+/* 横屏矮屏：紧凑布局 */
+@media (orientation: landscape) and (max-height: 500px) {
+    .game-container {
+        gap: 2px;
+    }
+
+    /* 横屏压低触控条给画面让位（画面比例不变，逻辑视野不受影响）：
+       居中 + 顶距 10 + 底距 2 后，控制行以下剩余常不足 24px，保底值随剩余收窄，
+       保证条始终触底不溢出 */
+    :root {
+        --touch-bar-h: 18px;
+    }
+
+    /* 横屏矮屏高度紧张：标题回流到 header 内（fixed 会压画布），字号收紧 */
+    .game-header h1 {
+        position: static;
+        transform: none;
+        font-size: 1.4em;
+    }
+
+    .control-button {
+        top: 8px;
+        width: 38px;
+        height: 38px;
+        font-size: 1em;
+    }
+
+    #back-button {
+        left: 8px;
+    }
+
+    .floating-buttons {
+        top: 8px;
+        right: 8px;
+        gap: 6px;
+    }
+
+    .score-container, .best-container {
+        padding: 3px 8px;
+        min-width: 58px;
+    }
+
+    .control-info p {
+        font-size: 0.7em;
+    }
+}
+
+@media (max-width: 400px) {
+    .score-container, .best-container {
+        min-width: 56px;
+    }
+
+    .difficulty-container label {
+        display: none;
+    }
+}

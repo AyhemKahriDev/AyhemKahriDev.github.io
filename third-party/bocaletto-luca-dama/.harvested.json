@@ -1,0 +1,16 @@
+{
+  "repo": "bocaletto-luca/Dama",
+  "stars": 11,
+  "licence": "GPL-3.0",
+  "sizeKB": 45,
+  "pushedAt": "2025-06-22T14:17:31Z",
+  "description": "Dama WebGame Single Player is a fully featured browser-based checkers game with official rules, real-time clocks, move history, undo/reset, and an intelligent bot offering three difficulty modes (Easy, Medium, Hard). Developed by Bocaletto Luca. No installations required—just play!",
+  "defaultBranch": "main",
+  "owner": "bocaletto-luca",
+  "slug": "bocaletto-luca-dama",
+  "dest": "third-party/bocaletto-luca-dama",
+  "readme": "# Dama | Checkers | WebGame | Single Player\n#### Author: Bocaletto Luca\n\n![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&style=for-the-badge)\n![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&style=for-the-badge)\n![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&style=for-the-badge)\n![PHP](https://img.shields.io/badge/PHP-777BB4?logo=php&style=for-the-badge)\n![WebGame](https://img.shields.io/badge/WebGame-Game-blue?style=for-the-badge)\n![Project Completed](https://img.shields.io/badge/Project-Completed-green?style=for-the-badge)\n![GPLv3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)\n\n[![Test Online](https://img.shields.io/badge/Test%20Online-Click%20Here-brightgreen?style=for-the-badge)](https://bocaletto-luca.github.io/Dama/)\n\n## Overview\n\n**Checkers WebGame Single Player** is a complete browser-based checkers game that faithfully implements official rules—including mandatory captures, jump chains, and king promotion (visually marked with a golden border and a \"D\"). The app features real-time clocks, move history, undo/reset functionality, and an intelligent bot with three difficulty levels (Easy, Medium, Hard).\n\n## Installation\n\nNo installations or registrations are required. Simply serve the files via an HTTP/HTTPS server (for example, using Apache) and open `index.php` in your browser.\n\n## Usage\n\n- **Select Color:** Choose whether you play as White or Black.\n- **Select Bot Difficulty:** Choose from Easy, Medium, or Hard. The bot’s search depth (and capture animation delay) adjusts accordingly.\n- **Set Game Time:** Select your desired time per side (5, 10, 15, or 20 minutes).\n- **Game Interaction:** Drag pieces to move. All official rules are enforced (including forced captures and promotion). The move history panel keeps track of every move.\n- **Undo/Reset:** Use the Undo Move button to cancel the last move or Reset Game to restart.\n\n## Technologies Used\n\n- **HTML5**\n- **CSS3**\n- **JavaScript**\n- **PHP**\n- **Custom Checkers Game Engine** (with minimax & alpha‑beta pruning for the bot)\n- **Bootstrap 5**\n\n## License\n\nThis project is released under the [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).\n\n## Author\n\n**Bocaletto Luca**  \n[GitHub](https://bocaletto-luca.github.io) • [Official Site](https://bocalettoluca.altervista.org)\n\n---\n\nEnjoy the game and feel free to report any issues or suggest improvements!\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

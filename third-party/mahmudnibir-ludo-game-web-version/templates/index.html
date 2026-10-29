@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome to Ludo Tournament{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="text-center mb-5">
+                <h1 class="display-4">Welcome to Ludo Tournament</h1>
+                <p class="lead">Experience the classic board game with exciting new features!</p>
+                
+                {% if current_user.is_authenticated %}
+                <div class="mt-4">
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-primary btn-lg me-3">Go to Dashboard</a>
+                    <a href="{{ url_for('free_play') }}" class="btn btn-success btn-lg">Play Now</a>
+                </div>
+                {% else %}
+                <div class="mt-4">
+                    <a href="{{ url_for('login') }}" class="btn btn-primary btn-lg me-3">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-success btn-lg">Register</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="row mb-5">
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-dice fa-3x mb-3 text-primary"></i>
+                            <h3>Free Play</h3>
+                            <p>Play casual games with friends and practice your skills without any stakes.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-coins fa-3x mb-3 text-warning"></i>
+                            <h3>Betting Mode</h3>
+                            <p>Place bets and compete for real rewards in intense matches.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body text-center">
+                            <i class="fas fa-trophy fa-3x mb-3 text-success"></i>
+                            <h3>Tournaments</h3>
+                            <p>Join tournaments, climb the leaderboard, and win amazing prizes!</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-5">
+                <div class="card-body">
+                    <h2 class="text-center mb-4">How to Play</h2>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <ol class="list-group list-group-flush">
+                                <li class="list-group-item">Create an account or login to your existing one</li>
+                                <li class="list-group-item">Choose your preferred game mode (Free Play or Betting)</li>
+                                <li class="list-group-item">Join a game room or create your own</li>
+                                <li class="list-group-item">Wait for other players to join (2-4 players required)</li>
+                            </ol>
+                        </div>
+                        <div class="col-md-6">
+                            <ol class="list-group list-group-flush" start="5">
+                                <li class="list-group-item">Roll the dice on your turn</li>
+                                <li class="list-group-item">Move your tokens strategically</li>
+                                <li class="list-group-item">Capture opponent tokens and avoid being captured</li>
+                                <li class="list-group-item">Get all your tokens to the home triangle to win!</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.card {
+    transition: transform 0.2s;
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.list-group-item {
+    border: none;
+    padding: 1rem;
+    background-color: transparent;
+}
+
+.list-group-item:nth-child(odd) {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+</style>
+{% endblock %} 

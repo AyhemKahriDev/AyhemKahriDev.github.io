@@ -1,0 +1,16 @@
+{
+  "repo": "GMartigny/socialismSimulator",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 172,
+  "pushedAt": "2019-10-01T11:40:01Z",
+  "description": ":cn: Game for the reds",
+  "defaultBranch": "master",
+  "owner": "GMartigny",
+  "slug": "gmartigny-socialismsimulator",
+  "dest": "third-party/gmartigny-socialismsimulator",
+  "readme": "# [![Logo](https://badgen.net/badge/Socialism/Simulator/red)](https://gmartigny.github.io/socialismSimulator/)\n\n## Goal\n\nYou have to distribute money across all instances and put everyone out of dept. It sound easier than it could actually be. The more you win, the more the game challenge you.\nAre you up for the task, comrade ?\n",
+  "licenceFile": "license",
+  "entry": "index.html",
+  "validated": true
+}

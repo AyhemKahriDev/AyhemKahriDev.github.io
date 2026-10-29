@@ -1,0 +1,330 @@
+.world-browser {
+  display: grid;
+  grid-template-columns: 38px minmax(0, 1fr) 38px;
+  gap: 6px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.world-browser .picture-worlds {
+  min-width: 0;
+}
+.world-browser > button,
+.world-page-button {
+  background: #f4e9ba;
+  border: 2px solid #dbcea0;
+  border-radius: 13px;
+  color: #577955;
+  min-width: 34px;
+  height: 42px;
+  font-size: 24px;
+}
+.world-browser > button:disabled,
+.world-page-button:disabled {
+  opacity: 0.35;
+}
+.map-world-browser {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-shrink: 0;
+}
+.map-world-browser .picture-world-tabs {
+  flex: 1;
+  min-width: 0;
+}
+.map-world-browser > button {
+  flex-shrink: 0;
+}
+.expanded-room {
+  gap: 8px;
+}
+.expanded-room .room-scene {
+  flex: 1;
+  min-height: 120px;
+}
+.expanded-room .room-furniture {
+  position: absolute;
+  font-size: 54px;
+  pointer-events: none;
+  line-height: 1;
+  filter: drop-shadow(0 5px 1px #72825333);
+}
+.expanded-room .slot-plant {
+  left: 9%;
+  bottom: 12%;
+}
+.expanded-room .slot-floor {
+  left: 43%;
+  bottom: 1%;
+  font-size: 70px;
+  transform: scaleY(0.48);
+  z-index: 0;
+}
+.expanded-room .slot-light {
+  right: 10%;
+  top: 9%;
+  filter: drop-shadow(0 0 16px #ffe882);
+}
+.expanded-room .slot-window {
+  left: 22%;
+  top: 13%;
+  font-size: 45px;
+}
+.expanded-room .slot-table {
+  right: 28%;
+  bottom: 13%;
+}
+.expanded-room .slot-toy {
+  right: 6%;
+  bottom: 7%;
+}
+.expanded-room .room-pet {
+  z-index: 1;
+}
+.room-owned-count {
+  position: absolute;
+  left: 16px;
+  top: 13px;
+  background: #fff6ddbb;
+  border-radius: 13px;
+  padding: 7px 12px;
+  font-size: 16px;
+  font-weight: 750;
+}
+.room-categories {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 8px;
+  flex-shrink: 0;
+}
+.room-categories button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 14px;
+  background: #f0ead0;
+  border: 2px solid transparent;
+  padding: 6px;
+}
+.room-categories button.selected {
+  background: #dceec9;
+  border-color: #8eb18b;
+}
+.room-categories span {
+  font-size: 27px;
+}
+.room-categories small {
+  font-size: 12px;
+}
+.expanded-room .shop {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 9px;
+  flex-shrink: 0;
+}
+.expanded-room .shop button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: none;
+  padding: 7px;
+  border: 3px solid #e1d4a7;
+  border-radius: 19px;
+  background: #fff4d7;
+  gap: 0;
+}
+.expanded-room .shop button.equipped {
+  border-color: #71a783;
+  background: #e4f0cc;
+}
+.expanded-room .shop span {
+  font-size: 43px;
+  line-height: 1.2;
+}
+.expanded-room .shop small {
+  font-size: 13px;
+  color: #587455;
+}
+.expanded-room .badge-shelf {
+  height: 66px;
+  min-height: 0;
+  flex-shrink: 0;
+  position: relative;
+  padding-right: 55px;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+}
+.expanded-room .badge-shelf > button {
+  height: 64px;
+  padding: 3px;
+}
+.expanded-room .badge-shelf .badge-next {
+  position: absolute;
+  right: 0;
+  top: 5px;
+  width: 42px;
+  min-width: 42px;
+  height: 48px;
+}
+.expanded-room .badge-shelf svg {
+  max-height: 43px;
+}
+.expanded-room .badge-shelf small {
+  font-size: 10px;
+}
+.expanded-room [data-window-theme="rainbow-window"] {
+  background: linear-gradient(120deg, #f8d9bc, #e4e8ba, #b7e1df);
+}
+.expanded-room [data-window-theme="snow-window"] {
+  background: #dceff2;
+}
+.expanded-room [data-window-theme="planet-window"],
+.expanded-room [data-window-theme="aurora-window"] {
+  background: linear-gradient(150deg, #8d9bbb, #a8c6c1, #e0d9a9);
+}
+.type-dinosaur {
+  background: #ffe4aa;
+}
+.type-ice {
+  background: #d5f2ff;
+}
+.type-candy {
+  background: #ffbfe0;
+}
+.type-farm {
+  background: #fce090;
+}
+.type-pirate {
+  background: #8ddddd;
+}
+.type-jungle {
+  background: #b7e39d;
+}
+.type-oasis {
+  background: #f5cf94;
+}
+.type-city {
+  background: #afcfeb;
+}
+.type-magic {
+  background: #d8b4f0;
+}
+.type-aurora {
+  background: #b7c6fa;
+}
+@media (max-width: 800px) {
+  .world-browser {
+    grid-template-columns: 24px minmax(0, 1fr) 24px;
+    gap: 2px;
+  }
+  .world-browser > button {
+    min-width: 23px;
+    height: 34px;
+    font-size: 18px;
+  }
+  .map-world-browser {
+    gap: 3px;
+  }
+  .world-page-button {
+    min-width: 25px;
+    width: 25px;
+    font-size: 18px;
+  }
+  .room-categories {
+    gap: 3px;
+  }
+  .room-categories button {
+    flex-direction: column;
+    gap: 1px;
+    padding: 3px;
+  }
+  .room-categories span {
+    font-size: 23px;
+  }
+  .room-categories small {
+    font-size: 9px;
+  }
+  .expanded-room .shop {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 5px;
+  }
+  .expanded-room .shop button {
+    padding: 3px;
+    border-radius: 13px;
+    border-width: 2px;
+  }
+  .expanded-room .shop span {
+    font-size: 30px;
+  }
+  .expanded-room .shop small {
+    font-size: 10px;
+  }
+  .expanded-room .badge-shelf {
+    height: 46px;
+    padding-right: 35px;
+    gap: 3px;
+  }
+  .expanded-room .badge-shelf > button {
+    height: 44px;
+  }
+  .expanded-room .badge-shelf svg {
+    max-height: 28px;
+  }
+  .expanded-room .badge-shelf .badge-next {
+    min-width: 29px;
+    width: 29px;
+    height: 36px;
+    top: 3px;
+    font-size: 20px;
+  }
+  .expanded-room .badge-shelf small {
+    font-size: 7px;
+  }
+  .expanded-room .room-furniture {
+    font-size: 35px;
+  }
+  .expanded-room .slot-floor {
+    font-size: 46px;
+  }
+  .expanded-room .slot-window {
+    font-size: 30px;
+  }
+  .room-owned-count {
+    font-size: 11px;
+    padding: 4px 7px;
+    left: 8px;
+    top: 8px;
+  }
+  .expanded-room {
+    gap: 6px;
+  }
+  .expanded-room .room-scene {
+    min-height: 100px;
+  }
+}
+@media (max-height: 620px) {
+  .expanded-room .shop span {
+    font-size: 28px;
+  }
+  .expanded-room .shop button {
+    padding: 2px;
+  }
+  .room-categories span {
+    font-size: 22px;
+  }
+  .room-categories button {
+    padding: 3px;
+  }
+  .expanded-room .badge-shelf {
+    height: 43px;
+  }
+  .expanded-room .badge-shelf > button {
+    height: 41px;
+  }
+  .expanded-room .badge-shelf svg {
+    max-height: 27px;
+  }
+}

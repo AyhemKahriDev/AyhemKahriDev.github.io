@@ -98,8 +98,13 @@ test('the helper falls back to the base key when a language has no variants', ()
 test('built French pages count games in French', (t) => {
   if (!existsSync(join(dist, 'fr', 'index.html'))) return t.skip('dist/ is not built');
   const html = readFileSync(join(dist, 'fr', 'games', 'index.html'), 'utf8');
-  assert.match(html, /464 jeux/, 'the French index shows the plural form for 464');
-  assert.doesNotMatch(html, /464 jeux\s*jeux/);
+  // The count changes with every harvest, so read it from the page instead of
+  // pinning a number: the assertion is that a plural count uses the plural
+  // form, not that the catalogue has 464 games forever.
+  const match = html.match(/(\d[\d\u00a0 ]*) jeux/);
+  assert.ok(match, 'the French index counts games with the plural noun');
+  assert.ok(Number(match[1].replace(/[^\d]/g, '')) >= 2, 'the plural form is only used for 2 or more');
+  assert.doesNotMatch(html, /\b(0|1) jeux\b/, 'no French page may say 0 jeux or 1 jeux');
 });
 
 /* ------------------------------------------------------- counted nouns */

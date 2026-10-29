@@ -1,0 +1,16 @@
+{
+  "repo": "harsilspatel/pong-breakout",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 2457,
+  "pushedAt": "2021-06-19T10:33:25Z",
+  "description": "An exercise to understand the difference between observer pattern and event-driven approach 🏓",
+  "defaultBranch": "master",
+  "owner": "harsilspatel",
+  "slug": "harsilspatel-pong-breakout",
+  "dest": "third-party/harsilspatel-pong-breakout",
+  "readme": "# pong-breakout\n\n\nCreated pong and breakout games employing the [Observer pattern](https://en.wikipedia.org/wiki/Observer_pattern) and abiding by paradigms of [functional programming](https://en.wikipedia.org/wiki/Functional_programming).\n\nTry it out here: https://harsilspatel.github.io/pong-breakout/\n\n\n## Screenshots 📸\n\n<img src=\"screenshots/pong.png\">\n\n</br>\n\n<img src=\"screenshots/breakout.png\">\n\n</br>\n\n## Credits 👏🏻\nAssignment base by [Professor Tim Dwyer](https://github.com/tgdwyer)\n\nProps to [Drs. Arthur Maheo](http://arthur.maheo.net/) for being my tutor. If it weren't for your guidance and strictness I wouldn't have had worked as hard or learnt as much. Thank you Arthur! :D\n\nThank you [Yang Liew](http://www.dyliew.com/) for all your patience and for staying back even after the late night consultations to help me out. It was a tough semester, but you got me though it! :D\n\n\n## Related 🎮\nYou may like [ohHell](https://github.com/harsilspatel/ohHell), a trick-taking card game in which the objective is to win exactly the number of tricks bid 🃏\n\n\n\nP.S. had nailed the assignment. 💯\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

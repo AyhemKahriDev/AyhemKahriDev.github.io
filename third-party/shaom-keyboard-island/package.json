@@ -1,0 +1,23 @@
+{
+  "name": "keyboard-island",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A gentle, browser-local typing adventure for children, with 96 chapters and optional on-device face tracking.",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "node scripts/serve.mjs",
+    "start": "node scripts/serve.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:e2e": "playwright test",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "@playwright/test": "1.62.1",
+    "prettier": "3.9.10"
+  }
+}

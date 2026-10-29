@@ -1,0 +1,16 @@
+{
+  "repo": "heathdutton/gametile-designer",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 4985,
+  "pushedAt": "2026-05-23T21:03:06Z",
+  "description": "Interactive design tool for laser-cut interlocking hex tiles",
+  "defaultBranch": "main",
+  "owner": "heathdutton",
+  "slug": "heathdutton-gametile-designer",
+  "dest": "third-party/heathdutton-gametile-designer",
+  "readme": "# Gametile Designer\n\nInteractive tool for designing laser-cut board game tiles that softly interlock via twist-lock joints.\n\n**[Try it live](https://heathdutton.github.io/gametile-designer/)**\n\nhttps://github.com/user-attachments/assets/c6ffdf92-a6c2-41c9-a01d-02e5ce71de6f\n\nSupports triangle, square, and hexagon shapes with adjustable twist angle, radius, rounding, and thickness. Preview in 3D, tweak physics gauges, and export production-ready SVG for laser cutting.\n\n## License\n\n[MIT](LICENSE)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

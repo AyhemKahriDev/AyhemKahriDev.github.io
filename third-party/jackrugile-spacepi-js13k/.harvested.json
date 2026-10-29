@@ -11,5 +11,6 @@
   "dest": "third-party/jackrugile-spacepi-js13k",
   "readme": "# SpacePi js13k\n*Created by Jack Rugile for js13kGames*\n\n\n\nSpacePi is a mouse accuracy/agility game revolving around the defense of 13 bases in the most desolate regions of space.\n\n**Objective:** Create lines to defend against enemy lines. Protect your base until it has grown to its target radius. Collect coins to purchase upgrades. Collect powerups to gain benefits.\n\n**Recommended Browsers:** Chrome, Firefox, Opera\n\n**Play SpacePi:** http://js13kgames.com/entries/spacepi/",
   "licenceFile": "LICENSE.md",
-  "entry": "index.html"
+  "entry": "index.html",
+  "validated": true
 }

@@ -1,0 +1,5 @@
+stats/*
+logs/*
+*.pyc
+__pycache__
+.idea/*

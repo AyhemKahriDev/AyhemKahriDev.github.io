@@ -1,0 +1,16 @@
+{
+  "repo": "freyamade/arena",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 690,
+  "pushedAt": "2018-05-11T15:22:50Z",
+  "description": "Arena - A Game of Tanks",
+  "defaultBranch": "master",
+  "owner": "freyamade",
+  "slug": "freyamade-arena",
+  "dest": "third-party/freyamade-arena",
+  "readme": "![Arena Logo](images/logo.png)  \n# Arena: A Game of Tanks\nArena is a 2 - 4 player browser based shoot-em-up, written in JavaScript with a custom written Python3 server.  \nIt's fast-paced fun for your local network.  \n\nAll you need is a browser and Python3.4 or greater. Running your server is easy;\n    ```python3 ArenaGUI.py``` will provide you with a GUI  \n\nA basic CLI version is now available, use ```python3 ArenaGUI.py --help``` for more info.\n_We will be improving this at a later stage_\n\n# Installation\nInstallation is simple:  \n    1. Download the source code from GitHub and put it into your webpages folder  \n    2. Ensure your permissions are correct (chmod -R 705 ./*)  \n    3. Done!  \n\n# Contribute\nRead our [Contribution Guide](https://github.com/ExceptionalVoid/Arena/wiki/How-to-Contribute)  \nAlso, see our [Developer Docs](https://www.exceptionalvoid.com/docs/Arena)\n\n[_Issue Tracker_](https://github.com/ExceptionalVoid/Arena/issues)  \n[_Source Code_](https://github.com/ExceptionalVoid/Arena)\n\n# Support\nIf you find a bug, either submit an issue at the Issue Tracker link above\n\n# Contributors\n- [Ciaran Broderick](https://github.com/crnbrdrck) creator, maintainer\n- [Grzegorz Ikwanty](https://github.com/gelo147) developer\n- [Herakliusz Lipiec](https://github.com/hero24) developer\n- [Brian Twohig](https://github.com/btwohig) graphics\n\n# License\nArena is licensed under the MIT license\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

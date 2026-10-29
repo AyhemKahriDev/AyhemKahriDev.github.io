@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Diddy Game</title>
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <meta property="og:title" content="Diddy Game" />
+    <meta property="og:description" content="Play Diddy Game, become diddy do everything he does (touch kids) and compete on the global leaderboard!" />
+    <meta property="og:image" content="https://diddygame.vercel.app/embed.png" />
+    <meta property="og:url" content="https://diddygame.vercel.app" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { background: #222; display: flex; flex-direction: column; align-items: center; }
+        canvas { 
+            background: #464646;
+            margin-top: 20px; 
+        }
+        #score { color: #fff; font-size: 20px; margin-top: 10px; }
+        #mainWrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            justify-content: center;
+            width: 100%;
+        }
+        #sidebar {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-right: 240px;
+            min-width: 200px;
+        }
+        #leaderboard {
+            color: #fff;
+            font-size: 18px;
+            margin-top: 20px;
+            min-width: 180px;
+            background: rgba(40,40,40,0.9);
+            border-radius: 10px;
+            padding: 16px 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            height: fit-content;
+        }
+        .mc-btn {
+            width: 60px;
+            height: 60px;
+            font-size: 32px;
+            margin: 4px;
+        }
+
+        
+        button,
+        a[role="button"],
+        #githubBtn,
+        #downloadBtn,
+        #volumeBtn,
+        #modeBtn,
+        #discordBtn,
+        #skinBtn,
+        #pauseToggleBtn {
+            transition: transform 0.15s, box-shadow 0.15s, background 0.15s, filter 0.15s;
+        }
+
+        button:hover,
+        a[role="button"]:hover,
+        #githubBtn:hover,
+        #downloadBtn:hover,
+        #volumeBtn:hover,
+        #modeBtn:hover,
+        #discordBtn:hover
+        #skinBtn:hover,
+        #pauseToggleBtn:hover {
+            transform: scale(1.12);
+            box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+            filter: brightness(1.2);
+            background: rgba(255,255,255,0.08);
+        }
+    .top-button{
+        position: absolute;
+        top: 20px;
+        background: transparent;
+        border: none;
+        z-index: 9999;
+        cursor: pointer;
+        outline: none;
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        transition: transform 0.14s ease, box-shadow 0.14s ease, filter 0.14s ease;
+    }
+    .top-button img{ display:block; transition: transform 0.14s ease, filter 0.14s ease; }
+
+    #discordBtn:hover {
+        transform: translateY(-4px) scale(1.06);
+        box-shadow: 0 8px 24px rgba(88,101,242,0.14);
+        background: rgba(88,101,242,0.03);
+        border-radius: 8px;
+    }
+    #discordBtn:hover img {
+        transform: scale(1.12);
+        filter: drop-shadow(0 6px 18px rgba(88,101,242,0.18)) saturate(1.1);
+    }
+
+    #chromeWebStoreBtn:hover {
+        transform: translateY(-4px) scale(1.03);
+        box-shadow: 0 10px 28px rgba(0,195,255,0.12);
+        background: rgba(255,255,255,0.02);
+        border-radius: 8px;
+    }
+    #chromeWebStoreBtn svg {
+        border-radius: 6px;
+    }
+    #chromeWebStoreBtn:hover svg {
+        transform: scale(1.08);
+        filter: none;
+    }
+
+    .custom-modal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #333;
+        color: #fff;
+        padding: 30px 40px;
+        border-radius: 12px;
+        border: 2px solid #000;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        z-index: 10000;
+        min-width: 300px;
+        text-align: center;
+        font-size: 18px;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .custom-modal.show {
+        display: block;
+    }
+
+    .custom-modal-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 9999;
+        animation: fadeIn 0.3s ease;
+    }
+
+    .custom-modal-overlay.show {
+        display: block;
+    }
+
+    .custom-modal-button {
+        margin-top: 20px;
+        padding: 10px 30px;
+        background: #444;
+        color: #fff;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .custom-modal-button:hover {
+        background: #555;
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    </style>
+</head>
+<body>
+    <a href="github.html" target="_blank" id="githubBtn" class="top-button" style="left:20px;">
+        <svg role="img" aria-label="GitHub" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;fill:#181717;">
+            <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+        </svg>
+    </a>
+
+    <a href="discord/" target="_blank" id="discordBtn" class="top-button" style="left:64px;">
+        <svg role="img" aria-label="Discord" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;fill:#5865F2;">
+            <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+        </svg>
+    </a>
+
+    <a href="chrome.html" target="_blank" id="chromeWebStoreBtn" class="top-button" style="left:108px;">
+        <svg role="img" aria-label="Chrome Web Store" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" style="width:32px;height:32px;fill:#4285F4;">
+            <path d="M0 1.637v19.09c0 .9.736 1.636 1.636 1.636h.131a10.4 10.4 0 0 1-.13-1.636 10.3 10.3 0 0 1 1.667-5.64l4.202 7.276h1.128A3.77 3.77 0 0 1 12 16.958a3.77 3.77 0 0 1 3.366 5.406h1.048a4.7 4.7 0 0 0-1.587-5.406h6.83a10.34 10.34 0 0 1 .577 5.406h.13c.9 0 1.636-.737 1.636-1.637V1.637Zm9.273 2.181h5.454a1.09 1.09 0 1 1 0 2.182H9.273a1.09 1.09 0 1 1 0-2.182M12 10.364a10.36 10.36 0 0 1 9.233 5.652H12a4.71 4.71 0 0 0-4.677 4.149L3.91 14.25A10.34 10.34 0 0 1 12 10.364"/>
+        </svg>
+    </a>
+    <h1 style="color:#fff;">Diddy Game</h1>
+    <div id="mainWrapper">
+        <div id="sidebar">
+            <div id="score">Score: 0</div>
+            <div id="highscore" style="color:#fff; font-size:18px; margin-top:5px;">High Score: 0</div>
+            <div id="leaderboard">
+                <strong>Global Leaderboard</strong>
+                <ol id="leaderboardList"></ol>
+            </div>
+        </div>
+        <div>
+            <canvas id="game" width="400" height="400"></canvas>
+        </div>
+    </div>
+    <button id="pauseToggleBtn" style="
+        position: absolute;
+        top: 104px;
+        right: 30px;
+        background: none;
+        border: none;
+        font-size: 32px;
+        color: #fff;
+        cursor: pointer;
+        z-index: 20;
+        outline: none;
+    ">
+        ⏸️
+    </button>
+    <div id="pauseMenu" style="display:none; position:absolute; top:50px; left:50%; transform:translateX(-50%); background:#333; color: #fff; padding:30px 50px; border-radius:10px; font-size:24px; z-index:10; text-align:center;">
+        <div>Paused</div>
+        <div style="font-size:16px; margin-top:10px;">Press ESC to resume</div>
+        <button id="resumeBtn" style="
+            margin-top: 20px;
+            font-size: 20px;
+            padding: 8px 24px;
+            border-radius: 8px;
+            border: none;
+            background: #444;
+            color: #fff;
+            cursor: pointer;
+        ">Resume</button>
+    </div>
+    <button id="volumeBtn" style="
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        background: none;
+        border: none;
+        font-size: 32px;
+        color: #fff;
+        cursor: pointer;
+        z-index: 20;
+        outline: none;
+    ">
+        🔊
+    </button>
+    <button id="modeBtn" style="
+        position: absolute;
+        top: 62px;
+        right: 30px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        z-index: 20;
+        outline: none;
+    ">
+        <span id="modeEmoji" style="font-size: 32px;">🌑</span>
+    </button>
+
+    <button id="musicNoteBtn" style="
+        position: absolute;
+        top: 188px;
+        right: 30px;
+        background: none;
+        border: none;
+        font-size: 32px;
+        color: #fff;
+        cursor: pointer;
+        z-index: 20;
+        outline: none;
+    ">
+        🎵
+    </button>
+    <div id="musicPopup" style="
+        display: none;
+        position: absolute;
+        top: 230px;
+        right: 30px;
+        background: #222;
+        color: #fff;
+        border-radius: 10px;
+        border: 1px solid #444;
+        padding: 12px 16px;
+        z-index: 30;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.18);
+    ">
+        <label for="soundSelect" style="font-size:18px; margin-bottom:8px; display:block;">Choose Music:</label>
+        <select id="soundSelect" style="
+            font-size: 18px;
+            background: #222;
+            color: #fff;
+            border-radius: 6px;
+            border: 1px solid #444;
+            padding: 4px 8px;
+            outline: none;
+            width: 180px;
+        ">
+            <option value="music.mp3">Diddy</option>
+            <option value="music2.mp3">Touching kids</option>
+            <option value="music3.mp3">Baby Oil</option>
+            <option value="music4.mp3">Basement</option>
+            <option value="music5.mp3">Diddy Blud Calc</option>
+            <option value="music6.mp3">caseoh</option>
+        </select>
+    </div>
+    <audio id="bgMusic" src="music.mp3" loop></audio>
+    
+    <div id="modalOverlay" class="custom-modal-overlay"></div>
+    <div id="customModal" class="custom-modal">
+        <div id="modalMessage"></div>
+        <button id="modalButton" class="custom-modal-button">OK</button>
+    </div>
+    <div id="inputModalOverlay" class="custom-modal-overlay"></div>
+    <div id="inputModal" class="custom-modal">
+        <div id="inputModalMessage"></div>
+        <input type="text" id="inputModalField" placeholder="Enter your name" style="
+            width: 100%;
+            padding: 10px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border: 1px solid #555;
+            border-radius: 6px;
+            background: #222;
+            color: #fff;
+            font-size: 16px;
+            box-sizing: border-box;
+        ">
+        <div style="display: flex; gap: 10px; justify-content: center;">
+            <button id="inputModalSubmit" class="custom-modal-button">Submit</button>
+            <button id="inputModalCancel" class="custom-modal-button">Cancel</button>
+        </div>
+    </div>
+
+    <script src="assets/firebase-app-compat.js"></script>
+    <script src="assets/firebase-database-compat.js"></script>
+    <script>
+        let modalOpen = false;
+
+        function showCustomAlert(message) {
+            const modal = document.getElementById('customModal');
+            const overlay = document.getElementById('modalOverlay');
+            const messageEl = document.getElementById('modalMessage');
+            const button = document.getElementById('modalButton');
+
+            // Allow simple line breaks / HTML for modal messages
+            if (message == null) message = '';
+            messageEl.innerHTML = String(message).replace(/\n/g, '<br>');
+            modal.classList.add('show');
+            overlay.classList.add('show');
+            modalOpen = true;
+
+            const closeModal = function() {
+                modal.classList.remove('show');
+                overlay.classList.remove('show');
+                modalOpen = false;
+                document.removeEventListener('keydown', handleEnter);
+            };
+
+            button.onclick = closeModal;
+            overlay.onclick = closeModal;
+
+            const handleEnter = function(e) {
+                if (e.key === 'Enter' || e.key === 'Escape') {
+                    closeModal();
+                }
+            };
+
+            document.addEventListener('keydown', handleEnter);
+        }
+
+        function showCustomInput(message, defaultValue = "") {
+            return new Promise((resolve) => {
+                const modal = document.getElementById('inputModal');
+                const overlay = document.getElementById('inputModalOverlay');
+                const messageEl = document.getElementById('inputModalMessage');
+                const input = document.getElementById('inputModalField');
+                const submitBtn = document.getElementById('inputModalSubmit');
+                const cancelBtn = document.getElementById('inputModalCancel');
+
+                messageEl.textContent = message;
+                input.value = defaultValue;
+                modal.classList.add('show');
+                overlay.classList.add('show');
+                input.focus();
+
+                const closeModal = (value) => {
+                    modal.classList.remove('show');
+                    overlay.classList.remove('show');
+                    resolve(value);
+                };
+
+                submitBtn.onclick = function() {
+                    closeModal(input.value || null);
+                };
+
+                cancelBtn.onclick = function() {
+                    closeModal(null);
+                };
+
+                overlay.onclick = function() {
+                    closeModal(null);
+                };
+
+                input.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        closeModal(input.value || null);
+                    }
+                });
+            });
+        }
+
+        const canvas = document.getElementById('game');
+        const ctx = canvas.getContext('2d');
+        const gridSize = 20;
+        const tileCount = canvas.width / gridSize;
+        let snake = [{x: 10, y: 10}];
+        let direction = {x: 0, y: 0};
+        let child = {x: 5, y: 5};
+        let score = 0;
+        let powerup = null;
+        let powerupActive = false;
+        let invincibilityPowerup = null;
+        let invincible = false;
+        let invincibilityTimer = 0;
+        let speedPowerup = null;
+        let speedBoostActive = false;
+        let speedBoostTimer = 0;
+        let turtlePowerup = null;
+        let turtleSlowActive = false;
+        let turtleSlowExpiresAt = 0;
+        const turtleSlowDurationMs = 30000;
+        const normalSpeed = 100;
+        const speedBoostSpeed = 50;
+        const turtleSlowSpeed = 200;
+        let gameSpeed = normalSpeed;
+        let gameInterval;
+        let highscore = localStorage.getItem('diddyHighScore') ? parseInt(localStorage.getItem('diddyHighScore')) : 0;
+        document.getElementById('highscore').textContent = "High Score: " + highscore;
+        const diddy = "👨🏿";
+        const childSkins = [
+            "👶🏻", "👶🏼", "👶🏽", "👶🏾", "👶🏿","👶",
+            "🧒🏻", "🧒🏼", "🧒🏽", "🧒🏾", "🧒🏿","🧒",
+        ];
+        let childSkinIndex = 0;
+        let childEmoji = childSkins[childSkinIndex];
+
+        function drawTile(x, y, emoji) {
+            ctx.font = `${gridSize}px Arial`;
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(emoji, x * gridSize + gridSize/2, y * gridSize + gridSize/2);
+        }
+        let paused = false;
+        function showPauseMenu(show) {
+            document.getElementById('pauseMenu').style.display = show ? 'block' : 'none';
+            document.getElementById('pauseToggleBtn').textContent = show ? "▶️" : "⏸️";
+        }
+        const pauseToggleBtn = document.getElementById('pauseToggleBtn');
+        pauseToggleBtn.onclick = function() {
+            paused = !paused;
+            showPauseMenu(paused);
+        };
+        document.getElementById('resumeBtn').onclick = function() {
+            paused = false;
+            showPauseMenu(false);
+        };
+        const firebaseConfig = {
+            databaseURL: "https://diddygame-dfd89-default-rtdb.asia-southeast1.firebasedatabase.app/",
+        };
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.database();
+
+        function updateLeaderboard() {
+            db.ref('leaderboard').orderByChild('score').limitToLast(10).once('value', snapshot => {
+                const items = [];
+                snapshot.forEach(child => {
+                    items.push(child.val());
+                });
+                items.reverse();
+                const list = document.getElementById('leaderboardList');
+                list.innerHTML = '';
+                items.forEach((entry, i) => {
+                    const li = document.createElement('li');
+                    let dateStr = '';
+                    if (entry.timestamp) {
+                        const d = new Date(entry.timestamp);
+                        const day = String(d.getDate()).padStart(2, '0');
+                        const month = String(d.getMonth() + 1).padStart(2, '0');
+                        const year = String(d.getFullYear()).slice(-2);
+                        dateStr = ` (${day}/${month}/${year})`;
+                    }
+
+                    const nameSpan = document.createElement('span');
+                    nameSpan.textContent = entry.name;
+                    nameSpan.style.cursor = 'pointer';
+                    nameSpan.tabIndex = 0;
+
+                    const scoreSpan = document.createElement('span');
+                    scoreSpan.textContent = ': ' + entry.score;
+
+                    li.appendChild(nameSpan);
+                    li.appendChild(scoreSpan);
+
+                    // Use existing custom modal for showing the date
+                    if (dateStr) {
+                        // compute UTC+8 date/time
+                        const tzOffsetMs = 8 * 60 * 60 * 1000;
+                        const tzDate = new Date(entry.timestamp + tzOffsetMs);
+                        const dDay = String(tzDate.getUTCDate()).padStart(2, '0');
+                        const dMonth = String(tzDate.getUTCMonth() + 1).padStart(2, '0');
+                        const dYear = String(tzDate.getUTCFullYear()).slice(-2);
+                        const rawHour = tzDate.getUTCHours();
+                        const dHour12 = (rawHour % 12) === 0 ? 12 : (rawHour % 12);
+                        const ampm = rawHour >= 12 ? 'PM' : 'AM';
+                        const dHour = String(dHour12).padStart(2, '0');
+                        const dMin = String(tzDate.getUTCMinutes()).padStart(2, '0');
+                        const dateText = `${dDay}/${dMonth}/${dYear}`;
+                        const timeText = `${dHour}:${dMin} ${ampm} (UTC+8)`;
+                        nameSpan.addEventListener('click', () => showCustomAlert(`This score was achieved on\n${dateText} at ${timeText}`));
+                        nameSpan.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showCustomAlert(`This score was achieved on\n${dateText} at ${timeText}`); } });
+                    }
+
+                    list.appendChild(li);
+                });
+            });
+        }
+        let playerName = localStorage.getItem('diddyPlayerName');
+        if (!playerName) {
+            (async () => {
+                playerName = await showCustomInput("Enter your name for the leaderboard:") || "Anonymous";
+                localStorage.setItem('diddyPlayerName', playerName);
+                updateLeaderboard();
+            })();
+        } else {
+            updateLeaderboard();
+        }
+        function placeChild() {
+            let valid = false;
+            while (!valid) {
+                child.x = Math.floor(Math.random() * tileCount);
+                child.y = Math.floor(Math.random() * tileCount);
+                valid = !snake.some(segment => segment.x === child.x && segment.y === child.y)
+                    && !police.some(p => p.x === child.x && p.y === child.y);
+            }
+        }
+
+        let police = [];
+        let policeChasingUntil = 0;
+        let lastPoliceMove = 0;
+        let playerMoved = false;
+        function movePoliceIfChasing() {
+            const now = Date.now();
+            if (now < policeChasingUntil && police.length > 0 && snake.length > 0) {
+                const policeMoveCooldown = Math.max(50, gameSpeed * 2);
+                if (now - lastPoliceMove < policeMoveCooldown) return;
+                lastPoliceMove = now;
+ 
+                const head = snake[0];
+                police.forEach(p => {
+                    const dx = head.x - p.x;
+                    const dy = head.y - p.y;
+                    if (Math.abs(dx) > Math.abs(dy)) {
+                        p.x += Math.sign(dx);
+                    } else if (Math.abs(dy) > 0) {
+                        p.y += Math.sign(dy);
+                    }
+                    p.x = Math.max(0, Math.min(tileCount - 1, p.x));
+                    p.y = Math.max(0, Math.min(tileCount - 1, p.y));
+                });
+            }
+        }
+        setInterval(movePoliceIfChasing, 50);
+        function placePolice() {
+            let valid = false;
+            let x, y;
+            while (!valid) {
+                x = Math.floor(Math.random() * tileCount);
+                y = Math.floor(Math.random() * tileCount);
+                valid = !snake.some(segment => segment.x === x && segment.y === y) &&
+                        !(child.x === x && child.y === y) &&
+                        !(powerup && powerup.x === x && powerup.y === y) &&
+                        !(invincibilityPowerup && invincibilityPowerup.x === x && invincibilityPowerup.y === y) &&
+                        !(speedPowerup && speedPowerup.x === x && speedPowerup.y === y) &&
+                        !(turtlePowerup && turtlePowerup.x === x && turtlePowerup.y === y) &&
+                        !police.some(p => p.x === x && p.y === y);
+            }
+            police.push({x, y});
+        }
+        let policeSpawnCounter = 0;
+        function placePowerup() {
+            let valid = false;
+            while (!valid) {
+                const x = Math.floor(Math.random() * tileCount);
+                const y = Math.floor(Math.random() * tileCount);
+                valid = !snake.some(segment => segment.x === x && segment.y === y) &&
+                        !(child.x === x && child.y === y) &&
+                        !(turtlePowerup && turtlePowerup.x === x && turtlePowerup.y === y);
+                if (valid) powerup = {x, y};
+            }
+        }
+        function placeInvincibilityPowerup() {
+            let valid = false;
+            while (!valid) {
+                const x = Math.floor(Math.random() * tileCount);
+                const y = Math.floor(Math.random() * tileCount);
+                valid = !snake.some(segment => segment.x === x && segment.y === y) &&
+                        !(child.x === x && child.y === y) &&
+                        !(powerup && powerup.x === x && powerup.y === y) &&
+                        !(turtlePowerup && turtlePowerup.x === x && turtlePowerup.y === y);
+                if (valid) invincibilityPowerup = {x, y};
+            }
+        }
+        function placeSpeedPowerup() {
+            let valid = false;
+            while (!valid) {
+                const x = Math.floor(Math.random() * tileCount);
+                const y = Math.floor(Math.random() * tileCount);
+                valid = !snake.some(segment => segment.x === x && segment.y === y) &&
+                        !(child.x === x && child.y === y) &&
+                        !(powerup && powerup.x === x && powerup.y === y) &&
+                        !(invincibilityPowerup && invincibilityPowerup.x === x && invincibilityPowerup.y === y);
+                if (valid) speedPowerup = {x, y};
+            }
+        }
+
+        function placeTurtlePowerup() {
+            let valid = false;
+            while (!valid) {
+                const x = Math.floor(Math.random() * tileCount);
+                const y = Math.floor(Math.random() * tileCount);
+                valid = !snake.some(segment => segment.x === x && segment.y === y) &&
+                        !(child.x === x && child.y === y) &&
+                        !(powerup && powerup.x === x && powerup.y === y) &&
+                        !(invincibilityPowerup && invincibilityPowerup.x === x && invincibilityPowerup.y === y) &&
+                        !(speedPowerup && speedPowerup.x === x && speedPowerup.y === y) &&
+                        !(lawyerPowerup && lawyerPowerup.x === x && lawyerPowerup.y === y) &&
+                        !(heartPowerup && heartPowerup.x === x && heartPowerup.y === y) &&
+                        !police.some(p => p.x === x && p.y === y);
+                if (valid) turtlePowerup = {x, y};
+            }
+        }
+
+        let lawyerPowerup = null;
+        let lawyerActive = false;
+        function placeLawyerPowerup() {
+            let valid = false;
+            while (!valid) {
+                const x = Math.floor(Math.random() * tileCount);
+                const y = Math.floor(Math.random() * tileCount);
+                valid = !snake.some(segment => segment.x === x && segment.y === y) &&
+                        !(child.x === x && child.y === y) &&
+                        !(powerup && powerup.x === x && powerup.y === y) &&
+                        !(invincibilityPowerup && invincibilityPowerup.x === x && invincibilityPowerup.y === y) &&
+                        !(speedPowerup && speedPowerup.x === x && speedPowerup.y === y) &&
+                        !(lawyerPowerup && lawyerPowerup.x === x && lawyerPowerup.y === y) &&
+                        !(turtlePowerup && turtlePowerup.x === x && turtlePowerup.y === y) &&
+                        !police.some(p => p.x === x && p.y === y);
+                if (valid) lawyerPowerup = {x, y};
+            }
+        }
+
+        let heartPowerup = null;
+        let extraLives = 0;
+        function placeHeartPowerup() {
+            let valid = false;
+            while (!valid) {
+                const x = Math.floor(Math.random() * tileCount);
+                const y = Math.floor(Math.random() * tileCount);
+                valid = !snake.some(segment => segment.x === x && segment.y === y) &&
+                        !(child.x === x && child.y === y) &&
+                        !(powerup && powerup.x === x && powerup.y === y) &&
+                        !(invincibilityPowerup && invincibilityPowerup.x === x && invincibilityPowerup.y === y) &&
+                        !(speedPowerup && speedPowerup.x === x && speedPowerup.y === y) &&
+                        !(lawyerPowerup && lawyerPowerup.x === x && lawyerPowerup.y === y) &&
+                        !(heartPowerup && heartPowerup.x === x && heartPowerup.y === y) &&
+                        !(turtlePowerup && turtlePowerup.x === x && turtlePowerup.y === y) &&
+                        !police.some(p => p.x === x && p.y === y);
+                if (valid) heartPowerup = {x, y};
+            }
+        }
+        function maybeSpawnPowerup() {
+            if (!powerup && Math.random() < 0.2) { 
+                placePowerup();
+            }
+        }
+
+        function gameLoop() {
+            if (paused) return;
+            let died = false;
+
+            const prevPolicePos = new Set(police.map(p => `${p.x},${p.y}`));
+
+            if (direction.x !== 0 || direction.y !== 0) {
+                const head = {x: snake[0].x + direction.x, y: snake[0].y + direction.y};
+                snake.unshift(head);
+                playerMoved = true;
+
+                for (let p of police) {
+                    const dx = Math.abs(p.x - head.x);
+                    const dy = Math.abs(p.y - head.y);
+                    if (Math.max(dx, dy) === 1 && !(p.x === head.x && p.y === head.y)) {
+                        setTimeout(() => {
+                            policeChasingUntil = Date.now() + 5000;
+                        }, 250);
+                        break;
+                    }
+                }
+                if (head.x === child.x && head.y === child.y) {
+                    let points = 1;
+                    if (powerupActive) {
+                        points = 5;
+                        powerupActive = false;
+                    }
+                    score += points;
+                    document.getElementById('score').textContent = "Score: " + score;
+                    if (score > highscore) {
+                        highscore = score;
+                        localStorage.setItem('diddyHighScore', highscore);
+                        document.getElementById('highscore').textContent = "High Score: " + highscore;
+                    }
+                    placeChild();
+                    maybeSpawnPowerup();
+                    if (score === 25 && !speedPowerup) {
+                        placeSpeedPowerup();
+                    }
+                    if (score === 20 && !turtlePowerup) {
+                        placeTurtlePowerup();
+                    }
+                    if (score !== 20 && !turtlePowerup && Math.random() < 0.0075) {
+                        placeTurtlePowerup();
+                    }
+                    if (score === 50 && !invincibilityPowerup) {
+                        placeInvincibilityPowerup();
+                    }
+                    if (score !== 50 && !invincibilityPowerup && Math.random() < 0.005) {
+                     placeInvincibilityPowerup();
+                    }
+                    if (score === 30 && !lawyerPowerup) {
+                        placeLawyerPowerup();
+                    }
+                    if (score !== 30 && !lawyerPowerup && Math.random() < 0.01) {
+                        placeLawyerPowerup();
+                    }
+                    if (!heartPowerup && Math.random() < 0.0025) {
+                        placeHeartPowerup();
+                    }
+                } else if (powerup && head.x === powerup.x && head.y === powerup.y) {
+                    powerupActive = true;
+                    powerup = null;
+                } else if (speedPowerup && head.x === speedPowerup.x && head.y === speedPowerup.y) {
+                    speedBoostActive = true;
+                    speedBoostTimer = 100;
+                    turtleSlowActive = false;
+                    speedPowerup = null;
+                    updateGameSpeed();
+                } else if (turtlePowerup && head.x === turtlePowerup.x && head.y === turtlePowerup.y) {
+                    turtleSlowActive = true;
+                    turtleSlowExpiresAt = Date.now() + turtleSlowDurationMs;
+                    speedBoostActive = false;
+                    turtlePowerup = null;
+                    updateGameSpeed();
+                } else if (invincibilityPowerup && head.x === invincibilityPowerup.x && head.y === invincibilityPowerup.y) {
+                    invincible = true;
+                    invincibilityTimer = 100;
+                    invincibilityPowerup = null;
+                } else if (lawyerPowerup && head.x === lawyerPowerup.x && head.y === lawyerPowerup.y) {
+                    lawyerActive = true;
+                    lawyerPowerup = null;
+                    police = [];
+                } else if (heartPowerup && head.x === heartPowerup.x && head.y === heartPowerup.y) {
+                    extraLives += 1;
+                    heartPowerup = null;
+                } else {
+                    snake.pop();
+                }
+                let center = {x: Math.floor(tileCount/2), y: Math.floor(tileCount/2)};
+                let hitWall = head.x < 0 || head.x >= tileCount || head.y < 0 || head.y >= tileCount;
+                let hitSelf = snake.slice(1).some(s => s.x === head.x && s.y === head.y);
+                let hitPolice = police.some(p => p.x === snake[0].x && p.y === snake[0].y);
+
+                if (invincible) {
+                    if (hitWall || hitSelf || hitPolice) {
+                        snake = Array(snake.length).fill().map(() => ({...center}));
+                        direction = {x: 0, y: 0};
+                        placeChild();
+                        police = [];
+                        return;
+                    }
+                } else if (lawyerActive && hitPolice) {
+                    police = [];
+                    lawyerActive = false;
+                    return;
+                } else if (extraLives > 0 && (hitWall || hitSelf || hitPolice)) {
+                    extraLives -= 1;
+                    snake = [{...center}];
+                    direction = {x: 0, y: 0};
+                    placeChild();
+                    showCustomAlert("You used an extra life! Respawning in the middle.");
+                    return;
+                } else if (hitWall || hitSelf || hitPolice) {
+                    showCustomAlert("Game Over! Final Score: " + score);
+                    if (score > 0) {
+                        db.ref('leaderboard').push({
+                            name: playerName,
+                            score: score,
+                            timestamp: Date.now()
+                        });
+                        setTimeout(updateLeaderboard, 500);
+                    }
+                    snake = [{x: 10, y: 10}];
+                    direction = {x: 0, y: 0};
+                    score = 0;
+                    document.getElementById('score').textContent = "Score: 0";
+                    placeChild();
+                    powerup = null;
+                    powerupActive = false;
+                    invincibilityPowerup = null;
+                    invincible = false;
+                    invincibilityTimer = 0;
+                    speedPowerup = null;
+                    speedBoostActive = false;
+                    speedBoostTimer = 0;
+                    turtlePowerup = null;
+                    turtleSlowActive = false;
+                    turtleSlowExpiresAt = 0;
+                    police = [];
+                    lawyerPowerup = null;
+                    lawyerActive = false;
+                    heartPowerup = null;
+                    extraLives = 0;
+                    updateGameSpeed();
+                    return;
+                }
+            }
+            policeSpawnCounter++;
+            if (policeSpawnCounter > 30 && Math.random() < 0.05 && police.length < 6) {
+                placePolice();
+                policeSpawnCounter = 0;
+            }
+            if (invincible) {
+                invincibilityTimer--;
+                if (invincibilityTimer <= 0) {
+                    invincible = false;
+                }
+            }
+            if (speedBoostActive) {
+                speedBoostTimer--;
+                if (speedBoostTimer <= 0) {
+                    speedBoostActive = false;
+                    updateGameSpeed();
+                }
+            }
+            if (turtleSlowActive && Date.now() >= turtleSlowExpiresAt) {
+                turtleSlowActive = false;
+                updateGameSpeed();
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawTile(child.x, child.y, childEmoji);
+            if (powerup) drawTile(powerup.x, powerup.y, "🧴");
+            if (speedPowerup) drawTile(speedPowerup.x, speedPowerup.y, "⚡");
+            if (turtlePowerup) drawTile(turtlePowerup.x, turtlePowerup.y, "🐢");
+            if (invincibilityPowerup) drawTile(invincibilityPowerup.x, invincibilityPowerup.y, "🛡️");
+            if (lawyerPowerup) drawTile(lawyerPowerup.x, lawyerPowerup.y, "🧑🏻‍⚖️");
+            if (heartPowerup) drawTile(heartPowerup.x, heartPowerup.y, "❤️");
+            snake.forEach((segment, i) => {
+                drawTile(segment.x, segment.y, diddy);
+            });
+            if (invincible) {
+                ctx.save();
+                ctx.globalAlpha = 0.2;
+                ctx.fillStyle = "#00ff00";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+            }
+            if (speedBoostActive) {
+                ctx.save();
+                ctx.globalAlpha = 0.2;
+                ctx.fillStyle = "#ffff00";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+            }
+            if (turtleSlowActive) {
+                ctx.save();
+                ctx.globalAlpha = 0.2;
+                ctx.fillStyle = "#00bfff";
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.restore();
+            }
+            police.forEach(p => drawTile(p.x, p.y, "👮‍♂️"))
+            const policeOnHeadNow = police.some(p => p.x === snake[0].x && p.y === snake[0].y);
+            const policeWasThereBeforeMove = prevPolicePos.has(`${snake[0].x},${snake[0].y}`);
+            if (playerMoved && policeOnHeadNow) {
+                if (lawyerActive) {
+                    police = [];
+                    lawyerActive = false;
+                    showCustomAlert("Protected by lawyer! All police removed.");
+                } else if (invincible) {
+                    police = [];
+                } else if (extraLives > 0) {
+                    extraLives -= 1;
+                    snake = [{x: Math.floor(tileCount/2), y: Math.floor(tileCount/2)}];
+                    direction = {x: 0, y: 0};
+                    placeChild();
+                    showCustomAlert("You used an extra life! Respawning in the middle.");
+                } else {
+                    died = true;
+                }
+            } else if (policeOnHeadNow && !policeWasThereBeforeMove) {
+                if (lawyerActive) {
+                    police = [];
+                    lawyerActive = false;
+                } else if (invincible) {
+                    police = [];
+                }
+             }
+             playerMoved = false;
+             if (died) {
+                 snake = [{x: Math.floor(tileCount/2), y: Math.floor(tileCount/2)}];
+                 direction = {x: 0, y: 0};
+                 placeChild();
+                 return;
+             }
+         }
+        function setGameSpeed(ms) {
+            gameSpeed = ms;
+            clearInterval(gameInterval);
+            gameInterval = setInterval(gameLoop, gameSpeed);
+        }
+        function updateGameSpeed() {
+            let targetSpeed = normalSpeed;
+            if (turtleSlowActive) targetSpeed = turtleSlowSpeed;
+            else if (speedBoostActive) targetSpeed = speedBoostSpeed;
+            if (targetSpeed !== gameSpeed) setGameSpeed(targetSpeed);
+        }
+        let lastInputTime = 0;
+        const inputDelay = 60;
+        document.addEventListener('keydown', e => {
+            if (modalOpen) return;
+            const now = Date.now();
+            if (now - lastInputTime < inputDelay) return;
+            lastInputTime = now;
+            if (e.key === "Escape") {
+                paused = !paused;
+                showPauseMenu(paused);
+            }
+            if (!paused) {
+                if ((e.key === "ArrowUp" || e.key === "w" || e.key === "W") && direction.y !== 1) direction = {x: 0, y: -1};
+                else if ((e.key === "ArrowDown" || e.key === "s" || e.key === "S") && direction.y !== -1) direction = {x: 0, y: 1};
+                else if ((e.key === "ArrowLeft" || e.key === "a" || e.key === "A") && direction.x !== 1) direction = {x: -1, y: 0};
+                else if ((e.key === "ArrowRight" || e.key === "d" || e.key === "D") && direction.x !== -1) direction = {x: 1, y: 0};
+            }
+        });
+        const volumeBtn = document.getElementById('volumeBtn');
+        const bgMusic = document.getElementById('bgMusic');
+        const soundSelect = document.getElementById('soundSelect');
+        window.addEventListener('DOMContentLoaded', () => {
+            bgMusic.play().then(() => {
+                volumeBtn.textContent = "🔊";
+                musicPlaying = true;
+            }).catch(() => {
+                const startMusic = () => {
+                    bgMusic.play();
+                    volumeBtn.textContent = "🔊";
+                    musicPlaying = true;
+                    window.removeEventListener('keydown', startMusic);
+                    window.removeEventListener('mousedown', startMusic);
+                };
+                window.addEventListener('keydown', startMusic);
+                window.addEventListener('mousedown', startMusic);
+            });
+        });
+        volumeBtn.onclick = function() {
+            if (!musicPlaying) {
+                bgMusic.play();
+                volumeBtn.textContent = "🔊";
+                musicPlaying = true;
+            } else {
+                bgMusic.pause();
+                volumeBtn.textContent = "🔇";
+                musicPlaying = false;
+            }
+        };
+        bgMusic.onpause = function() {
+            volumeBtn.textContent = "🔇";
+            musicPlaying = false;
+        };
+        bgMusic.onplay = function() {
+            volumeBtn.textContent = "🔊";
+            musicPlaying = true;
+        };
+        const modeBtn = document.getElementById('modeBtn');
+        const modeEmoji = document.getElementById('modeEmoji');
+        let darkMode = true;
+        modeBtn.onclick = function() {
+            darkMode = !darkMode;
+            if (darkMode) {
+                document.body.style.background = "#222";
+                document.querySelector('h1').style.color = "#fff";
+                document.getElementById('score').style.color = "#fff";
+                document.getElementById('highscore').style.color = "#fff";
+                document.getElementById('leaderboard').style.background = "rgba(70,70,70,0.9)";
+                document.getElementById('leaderboard').style.color = "#fff";
+                document.querySelectorAll('#leaderboardList li').forEach(li => li.style.color = "#fff");
+                canvas.style.background = "#464646";
+                modeEmoji.textContent = "🌑";
+            } else {
+                document.body.style.background = "#f7f7f7";
+                document.querySelector('h1').style.color = "#222";
+                document.getElementById('score').style.color = "#222";
+                document.getElementById('highscore').style.color = "#222";
+                document.getElementById('leaderboard').style.background = "rgba(255,255,255,0.9)";
+                document.getElementById('leaderboard').style.color = "#222";
+                document.querySelectorAll('#leaderboardList li').forEach(li => li.style.color = "#222");
+                canvas.style.background = "#fff";
+                modeEmoji.textContent = "☀️";
+            }
+        };
+        placeChild();
+        gameInterval = setInterval(gameLoop, gameSpeed);
+        const skinBtn = document.createElement('button');
+        skinBtn.id = "skinBtn";
+        skinBtn.style.position = "absolute";
+        skinBtn.style.top = "146px";
+        skinBtn.style.right = "30px";
+        skinBtn.style.background = "none";
+        skinBtn.style.border = "none";
+        skinBtn.style.fontSize = "32px";
+        skinBtn.style.cursor = "pointer";
+        skinBtn.style.zIndex = "20";
+        skinBtn.style.outline = "none";
+        skinBtn.textContent = childEmoji;
+        document.body.appendChild(skinBtn);
+        skinBtn.onclick = function() {
+            childSkinIndex = (childSkinIndex + 1) % childSkins.length;
+            childEmoji = childSkins[childSkinIndex];
+            skinBtn.textContent = childEmoji;
+        };
+
+    let musicPlaying = false;
+    soundSelect.onchange = function() {
+        const wasPlaying = musicPlaying;
+        bgMusic.pause();
+        bgMusic.src = soundSelect.value;
+        bgMusic.load();
+        if (wasPlaying) {
+            bgMusic.play();
+        }
+    };
+    const musicNoteBtn = document.getElementById('musicNoteBtn');
+    const musicPopup = document.getElementById('musicPopup');
+    musicNoteBtn.onclick = function() {
+        musicPopup.style.display = (musicPopup.style.display === "none" || musicPopup.style.display === "") ? "block" : "none";
+    };
+    document.addEventListener('mousedown', function(e) {
+        if (!musicPopup.contains(e.target) && e.target !== musicNoteBtn) {
+            musicPopup.style.display = "none";
+        }
+    });
+    const mobileControls = document.getElementById('mobileControls');
+    const mcUp = document.getElementById('mc-up');
+    const mcDown = document.getElementById('mc-down');
+    const mcLeft = document.getElementById('mc-left');
+    const mcRight = document.getElementById('mc-right');
+    function toggleMobileControls(show) {
+      mobileControls.style.display = show ? 'block' : 'none';
+    }
+    if ('ontouchstart' in window) {
+      toggleMobileControls(true);
+      canvas.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+      }, { passive: false });
+      mcUp.addEventListener('touchstart', () => { direction = {x: 0, y: -1}; });
+      mcDown.addEventListener('touchstart', () => { direction = {x: 0, y: 1}; });
+      mcLeft.addEventListener('touchstart', () => { direction = {x: -1, y: 0}; });
+      mcRight.addEventListener('touchstart', () => { direction = {x: 1, y: 0}; });
+      if (window.navigator.userAgent.indexOf("Safari") !== -1) {
+        setTimeout(() => {
+          window.scrollTo(0, 1);
+        }, 0);
+      }
+    }
+  </script>
+<div class="mobile-controls">
+  <button id="btn-left">⬅</button>
+  <button id="btn-up">⬆</button>
+  <button id="btn-down">⬇</button>
+  <button id="btn-right">➡</button>
+</div>
+<link rel="stylesheet" href="style.css">
+<script src="main.js"></script>
+</body>
+</html>

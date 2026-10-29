@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fun Games Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <div class="logo">
+                    <i class="fas fa-gamepad"></i>
+                </div>
+                <h1>Fun Games Hub</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#multiplayer"><i class="fas fa-users"></i> Multiplayer</a></li>
+                    <li><a href="#solo"><i class="fas fa-user"></i> Solo Games</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="intro">
+            <h2>Welcome to Fun Games Hub!</h2>
+            <p>Enjoy our collection of simple browser games you can play alone or with friends.</p>
+            <div class="cta-buttons">
+                <a href="#multiplayer" class="cta-button primary"><i class="fas fa-users"></i> Play with Friends</a>
+                <a href="#solo" class="cta-button secondary"><i class="fas fa-user"></i> Play Solo</a>
+            </div>
+        </section>
+
+        <div class="games-layout">
+            <section id="multiplayer" class="games-section">
+                <h2>Multiplayer Games</h2>
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="images/tic-tac-toe.png" alt="Tic Tac Toe" class="game-thumbnail">
+                        </div>
+                        <div class="game-content">
+                            <h3>Tic Tac Toe</h3>
+                            <p>Classic X and O game for two players on the same device.</p>
+                            <a href="tic-tac-toe/index.html" class="play-button">Play Tic Tac Toe</a>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="images/rock-paper-scissors.png" alt="Rock Paper Scissors" class="game-thumbnail">
+                        </div>
+                        <div class="game-content">
+                            <h3>Rock Paper Scissors</h3>
+                            <p>Challenge a friend in this game of chance and strategy.</p>
+                            <a href="rock-paper-scissors/index.html" class="play-button">Play Rock Paper Scissors</a>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="images/coin-flip.png" alt="Coin Flip Challenge" class="game-thumbnail">
+                        </div>
+                        <div class="game-content">
+                            <h3>Coin Flip Challenge</h3>
+                            <p>Test your luck by predicting the outcome of a coin flip.</p>
+                            <a href="coin-flip/index.html" class="play-button">Play Coin Flip</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="solo" class="games-section">
+                <h2>Solo Games</h2>
+                <div class="games-grid">
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="images/snake-game.png" alt="Snake Game" class="game-thumbnail">
+                        </div>
+                        <div class="game-content">
+                            <h3>Snake Game</h3>
+                            <p>Control a snake to eat food and grow without hitting walls or yourself.</p>
+                            <a href="snake-game/index.html" class="play-button">Play Snake</a>
+                        </div>
+                    </div>
+                    
+                    <div class="game-card">
+                        <div class="game-image">
+                            <img src="images/memory-game.png" alt="Memory Match" class="game-thumbnail">
+                        </div>
+                        <div class="game-content">
+                            <h3>Memory Match</h3>
+                            <p>Test your memory by matching pairs of cards.</p>
+                            <a href="memory-game/index.html" class="play-button">Play Memory Match</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <i class="fas fa-gamepad"></i>
+                <span>Fun Games Hub</span>
+            </div>
+            <p>&copy; 2025 Fun Games Hub. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>

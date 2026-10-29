@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>推箱子</title>    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Huazie">
+    <meta name="keywords" content="推箱子,Sokoban">
+    <meta name="description" content="经典推箱子小游戏">
+    <link rel="shortcut icon" href="../assets/images/flea-game.ico">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/levelpicker.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" media="print" onload="this.media='all'">
+</head>
+<body>
+    <button id="back-button" class="control-button">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    <button id="theme-button" class="control-button">
+        <i class="fas fa-sun"></i>
+    </button>
+    
+    <div class="game-container">
+        <div class="header">
+            <h1>推箱子</h1>
+            <div class="stats">
+                <div class="stat">
+                    <div class="stat-label">关卡</div>
+                    <div class="stat-value" id="level-num">1</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">步数</div>
+                    <div class="stat-value" id="moves-count">0</div>
+                </div>
+                <div class="stat">
+                    <div class="stat-label">最佳</div>
+                    <div class="stat-value" id="best-moves">-</div>
+                </div>
+            </div>
+        </div>
+        <div class="level-title" id="level-name"></div>
+
+        <div class="controls">
+            <button id="prev-level-btn" class="button">上一关</button>
+            <button id="undo-btn" class="button">撤销</button>
+            <button id="reset-btn" class="button">重置</button>
+            <button id="next-level-btn" class="button">下一关</button>
+            <button id="upload-btn" class="button">上传关卡</button>
+            <button id="save-shared-btn" class="button">添加</button>
+            <input type="file" id="level-file" accept=".json,.txt,application/json,text/plain" style="display:none">
+        </div>
+
+        <div class="board-wrap">
+            <div id="board" class="game-board"></div>
+            <div id="game-message" class="game-message">
+                <p></p>
+                <div class="game-message-buttons">
+                    <button id="next-btn" class="button">下一关</button>
+                    <button id="retry-btn" class="button">再试一次</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-intro">
+            <p class="pc-instruction">使用 <strong>方向键</strong> 或 <strong>WASD</strong> 移动，把所有箱子推到目标点。<strong>Z</strong> 撤销。</p>
+            <p class="mobile-instruction">通过 <strong>滑动</strong> 移动，把所有箱子推到目标点。</p>
+        </div>
+    </div>
+
+    <!-- 选择关卡（官方 + 自定义）FAB 与面板：堆叠顺序由 fab-stack.js 统一管理 -->
+    <button id="level-fab" class="level-fab" type="button" data-fab-stack="2" aria-label="选择关卡" title="选择关卡">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3V3zm10 0h8v8h-8V3zM3 13h8v8H3v-8zm10 0h8v8h-8v-8z"/></svg>
+    </button>
+    <div id="level-backdrop" class="level-backdrop"></div>
+    <aside id="level-panel" class="level-panel" role="dialog" aria-modal="true" aria-label="选择关卡">
+        <div class="level-panel-header">
+            <span class="level-panel-title">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16v2H4V6zm0 5h16v2H4v-2zm0 5h16v2H4v-2z"/></svg>
+                选择关卡
+            </span>
+            <button id="level-close" class="level-panel-close" type="button" aria-label="关闭">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+        </div>
+        <div class="level-panel-body">
+            <section class="level-section">
+                <h3 class="level-section-title">官方关卡</h3>
+                <div id="official-list" class="level-grid"></div>
+            </section>
+            <section class="level-section">
+                <h3 class="level-section-title">自定义关卡</h3>
+                <div id="custom-list" class="level-grid"></div>
+                <div id="custom-empty" class="level-empty" style="display:none">暂无自定义关卡，去「制作关卡」创建一个吧</div>
+            </section>
+        </div>
+    </aside>
+
+    <script src="../assets/js/common.js"></script>
+    <script src="js/storage.js"></script>
+    <script src="js/levels.js"></script>
+    <script src="js/userlevels.js"></script>
+    <script src="js/game.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/levelpicker.js"></script>
+
+    <script src="../assets/js/comments.js"></script>
+    <script>FleaComments.init('sokoban');</script>
+    <script src="../assets/js/share.js"></script>
+    <script>FleaShare.init();</script>
+
+    <div id="level-toast" class="level-toast"></div>
+</body>
+</html>

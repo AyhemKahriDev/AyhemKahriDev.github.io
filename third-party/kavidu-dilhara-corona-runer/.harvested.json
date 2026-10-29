@@ -1,0 +1,16 @@
+{
+  "repo": "kavidu-dilhara/Corona-Runer",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 2035,
+  "pushedAt": "2022-11-20T02:46:44Z",
+  "description": "The Corona-Runer game extracted from chrome https://kavidu-dilhara.github.io/Corona-Runer/",
+  "defaultBranch": "main",
+  "owner": "kavidu-dilhara",
+  "slug": "kavidu-dilhara-corona-runer",
+  "dest": "third-party/kavidu-dilhara-corona-runer",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

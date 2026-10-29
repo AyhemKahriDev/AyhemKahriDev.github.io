@@ -1,0 +1,70 @@
+/**
+ * Volume of a rectangular solid in cubic game-world units.
+ */
+export default class Volume {
+
+	/**
+	 * Construct the object.
+	 *
+	 * @param {Number} width
+	 * @param {Number} height
+	 * @param {Number} depth
+	 * @returns {Volume}
+	 */
+	constructor(
+		width  = 0,
+		height = 0,
+		depth  = 0
+	) {
+		return this.set( width, height, depth );
+	}
+
+	/**
+	 * Set the dimensions and calculate the volume.
+	 *
+	 * @param {Number} width
+	 * @param {Number} height
+	 * @param {Number} depth
+	 * @returns {Volume}
+	 */
+	set = (
+		width  = 0,
+		height = 0,
+		depth  = 0
+	) => {
+		this.width  = Math.max( 0, Number( width ) || 0 );
+		this.height = Math.max( 0, Number( height ) || 0 );
+		this.depth  = Math.max( 0, Number( depth ) || 0 );
+		this.value  = this.width * this.height * this.depth;
+
+		return this;
+	}
+
+	/**
+	 * Reset all dimensions.
+	 *
+	 * @returns {Volume}
+	 */
+	reset = () => this.set();
+
+	/**
+	 * Return the calculated volume during arithmetic coercion.
+	 *
+	 * @returns {Number} Width multiplied by height and depth.
+	 */
+	valueOf = () => this.value;
+
+	/**
+	 * Serialize volume as its calculated numeric value.
+	 *
+	 * @returns {Number} Calculated volume.
+	 */
+	toJSON = () => this.value;
+
+	/**
+	 * Convert volume to a JavaScript primitive.
+	 *
+	 * @returns {Number} Calculated volume.
+	 */
+	[ Symbol.toPrimitive ] = () => this.value;
+}

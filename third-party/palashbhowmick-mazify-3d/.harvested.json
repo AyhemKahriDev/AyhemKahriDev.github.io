@@ -1,0 +1,16 @@
+{
+  "repo": "palashbhowmick/mazify-3d",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 631,
+  "pushedAt": "2026-02-12T17:08:49Z",
+  "description": "Maze editor and 3d maze vizualization using aframe and vue js",
+  "defaultBranch": "master",
+  "owner": "palashbhowmick",
+  "slug": "palashbhowmick-mazify-3d",
+  "dest": "third-party/palashbhowmick-mazify-3d",
+  "readme": "# mazify-3d\n\nMaze editor and 3d maze game using A-Frame and Vue.js\n\n### Live maze game and and level editor\n\n- https://palashbhowmick.github.io/mazify-3d/\n- https://palashbhowmick.github.io/mazify-3d/editor\n\n### Installation\n\nFirst make sure you have Node installed.\n\nTo install the Node dependencies:\n\n    npm install\n\n### Local Development\n\nTo serve the site from a simple development server:\n\n    npm run serve\n\nThe site will automatically open in the browser or open it manually:\n\n[http://127.0.0.1:5500/](http://127.0.0.1:5500/)\n\n### Maze Editor\n\nTo open map editor, follow the link\n\n[http://127.0.0.1:5500/editor.html](http://127.0.0.1:5500/editor.html)\n\n### Links\n[A-Frame](https://aframe.io/)\n[Vue.js](https://vuejs.org/)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

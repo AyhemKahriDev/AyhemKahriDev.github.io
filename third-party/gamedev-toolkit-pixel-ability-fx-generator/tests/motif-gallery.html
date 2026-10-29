@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Visual motif gallery</title>
+    <style>
+        body { margin: 24px; background: #101217; color: #e9e9ed; font: 14px sans-serif; }
+        main { display: grid; grid-template-columns: repeat(5, 170px); gap: 18px; }
+        figure { margin: 0; }
+        canvas { width: 160px; height: 160px; image-rendering: pixelated; background: #1b2028; }
+        figcaption { margin-top: 8px; }
+    </style>
+</head>
+<body>
+<h1>Loop motifs</h1>
+<main id="gallery"></main>
+<script type="module">
+import { AbilityEffect, createEffectRecipe } from '../js/AbilityEffect.js';
+import { LOOP_MOTIFS } from '../js/engine/LoopArt.js';
+for (const [motif, label] of Object.entries(LOOP_MOTIFS)) {
+    const figure = document.createElement('figure');
+    const canvas = document.createElement('canvas');
+    const caption = document.createElement('figcaption');
+    canvas.width = canvas.height = 160;
+    caption.textContent = label;
+    figure.append(canvas, caption);
+    document.querySelector('#gallery').append(figure);
+    const recipe = { ...createEffectRecipe({ seed: 734211, element: 'arcane' }), motif };
+    new AbilityEffect(recipe).draw(canvas.getContext('2d'), recipe.duration * 0.22);
+}
+</script>
+</body>
+</html>

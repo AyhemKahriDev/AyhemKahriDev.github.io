@@ -1,0 +1,16 @@
+{
+  "repo": "NNBnh/noi-tu",
+  "stars": 10,
+  "licence": "GPL-3.0",
+  "sizeKB": 3072,
+  "pushedAt": "2022-09-10T03:55:28Z",
+  "description": "🔤 Vietnamese words connect game",
+  "defaultBranch": "main",
+  "owner": "NNBnh",
+  "slug": "nnbnh-noi-tu",
+  "dest": "third-party/nnbnh-noi-tu",
+  "readme": "<h1 align=\"center\">Nối Từ</h1>\n<p align=\"center\">Trò chơi nối từ tiếng Việt</p>\n<p align=\"center\"><img width=\"25%\" src=\"logo.svg\"></p>\n<p align=\"center\">\n  <a href=\"https://github.com/NNBnh/brainalias/blob/main/LICENSE\"><img src=\"https://img.shields.io/github/license/NNBnh/noi-tu?labelColor=585858&color=5890F8&style=for-the-badge\" alt=\"License: GPL-3.0\"></a>\n  <a href=\"https://gist.github.com/NNBnh/9ef453aba3efce26046e0d3119dab5a7#development-completed\"><img src=\"https://img.shields.io/badge/development-completed-%235890F8.svg?labelColor=585858&style=for-the-badge&logoColor=FFFFFF\" alt=\"Development completed\"></a>\n</p>\n\n## 💡 About\n\n**Nối từ** là trò chơi trí tuệ. Người chơi sẽ lần lượt đưa ra một từ có hai âm tiết bắt đầu bằng chữ cuối cùng trong từ lúc trước đưa ra. Người chơi không được phép sử dụng từ đã từng được dùng trong ván chơi, trò chơi kết thúc khi người chơi không nối được từ tiếp theo.\n\n## 💌 Credits\n\nSpecial thanks to:\n- [**Từ điển mở tiếng Việt**](https://github.com/undertheseanlp/dictionary) by [Under The Sea](https://github.com/undertheseanlp)\n\n<br><br><br><br>\n\n---\n\n> <h1 align=\"center\">Made with ❤️ by <a href=\"https://github.com/NNBnh\"><i>NNB</i></a></h1>\n>\n> <p align=\"center\"><a href=\"https://www.buymeacoffee.com/nnbnh\"><img src=\"https://img.shields.io/badge/buy_me_a_coffee%20-%23FFC387.svg?logo=buy-me-a-coffee&logoColor=333333&style=for-the-badge\" alt=\"Buy Me a Coffee\"></a></p>\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

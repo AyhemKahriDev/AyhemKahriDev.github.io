@@ -1,0 +1,16 @@
+{
+  "repo": "cadaverous-eris/Dungeon-Generator",
+  "stars": 19,
+  "licence": "MIT",
+  "sizeKB": 600,
+  "pushedAt": "2018-01-12T16:45:50Z",
+  "description": "A simple dungeon generator written in javascript",
+  "defaultBranch": "master",
+  "owner": "cadaverous-eris",
+  "slug": "cadaverous-eris-dungeon-generator",
+  "dest": "third-party/cadaverous-eris-dungeon-generator",
+  "readme": "# Dungeon-Generator\nA simple dungeon generator written in javascript.\n\nThe deployed app can be found [here](https://the-realest-stu.github.io/Dungeon-Generator/).\n\n## How it Works\nThe generator starts by trying to place randomly sized rooms at random locations on the grid. If an existing room would collide with the prospective room, the placement fails and the process repeats with a new randomly generated room. The number of placement attempts is pre-determined.\n\nOnce all the rooms have been placed, a Delaunay triangulation is performed using the center tile of each room as a vertex, creating a graph of all the rooms. The code used to perform the triangulation can be found [here](https://github.com/ironwallaby/delaunay).\n\nThe Delaunay triangulation is then used to create a minimum spanning tree connecting all the rooms. To make the dungeon more interesting, some edges which were removed from the triangulation are re-added to the tree.\n\nFinally, the A* pathfinding algorithm is used to create pathways between rooms which are connected in the modified tree.\n\n![Image of a generated dungeon](dungeon.png)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

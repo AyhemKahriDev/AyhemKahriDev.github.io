@@ -1,0 +1,16 @@
+{
+  "repo": "shuoros/coderman",
+  "stars": 10,
+  "licence": "MIT",
+  "sizeKB": 872,
+  "pushedAt": "2024-12-30T10:42:38Z",
+  "description": "🎮 Coderman is a 2d pixel art role playing game",
+  "defaultBranch": "main",
+  "owner": "shuoros",
+  "slug": "shuoros-coderman",
+  "dest": "third-party/shuoros-coderman",
+  "readme": "# Coderman ![idle-down](https://github.com/shuoros/Coderman/assets/45015114/60350dab-6d59-4a48-b7c9-794ba882215a)\n\nCoderman is a 2D role-playing game in pixel art style. The story of this game is about a programmer called Coderman who fights with bugs with his superhero powers and destroys them and makes the applications continue to run.\n\n**This project is currently under development 🚧🏗️**\n\n![idle-down](sample.gif)\n\n# What's new in v0.1.0\n- Rendering Map and Sprite\n- Animation for Sprite\n- Keyboard controller to controlling character movement\n\n## Install & Run\nSimply clone this repo into your machine and open `index.html` up on your browser. (Google Chrome recommended) \n\n## Authors\nCoderman is developed by [Soroush Shemshadi](https://github.com/shuoros) and [contributors](CONTRIBUTORS.md).\n\n# Contribution\nIf you have any idea about the game or want to contribute on this project, Please read the [contribution guide](CONTRIBUTE.md).\n\n## Releases\nTo see the changes in different versions of Coderman, you can read the [release notes](RELEASENOTES.md).\n\n## Issues\nIf you encounter a bug or vulnerability, please read the [issue policy](ISSUES.md).\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,16 @@
+{
+  "repo": "33YANG/mine-sweeper",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 652,
+  "pushedAt": "2022-08-25T08:24:35Z",
+  "description": "This is A Web Game Program For Mine Sweeper Writed By JavaScript",
+  "defaultBranch": "main",
+  "owner": "33YANG",
+  "slug": "33yang-mine-sweeper",
+  "dest": "third-party/33yang-mine-sweeper",
+  "readme": "# Mine-Sweeper Project\n\n> This is A Web Game Program For Mine Sweeper Writed By JavaScript.\n\n> Build with webpack\n\n# Preview\n\n[https://33yang.github.io/mine-sweeper](https://33yang.github.io/mine-sweeper)\n\nThis project includes a basic web-side **minesweeper game** with 3 levels of difficulty.\n\n![MINE-BOOM.PNG](https://raw.githubusercontent.com/33YANG/mine-sweeper/main/preview/BOOM.PNG)\n\nThere is an **automatic minesweeping mode** (each step can be delayed by 1s), and a debug mode in the automatic mode, which allows you to see clearly the operation of each step of the computer.\n\nAnd a **cyclic automatic minesweeping mode**, where the computer constantly tries to sweep mines to obtain the ratio between the success and failure of mine sweeping.\n\n![MINE-LOOP.PNG](https://raw.githubusercontent.com/33YANG/mine-sweeper/main/preview/LOOP.PNG)\n\nThe minesweeper probability chart of this automatic minesweeper program is provided.\n\n![MINE-CHART.PNG](https://raw.githubusercontent.com/33YANG/mine-sweeper/main/preview/CHART.PNG)\n\n# Start\n\n```bash\nyarn\n```\n\n## Build for production\n\n```bash\nyarn build\n```\n\nWhen build completed, open `dist/index.html` in broswer, or try:\n\n```bash\nyarn global add http-server && http-server dist\n```\n\nyou will get a local http server, open the server site to check the build result.\n\n## Start at devolepment\n\n```bash\nyarn start\n```\n\nYou will get a live-reload devolepment env about js&less files\n\n# License\n\n[MIT](./LICENSE)\n",
+  "licenceFile": "LICENSE",
+  "entry": "dist/index.html",
+  "validated": true
+}

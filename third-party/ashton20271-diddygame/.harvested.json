@@ -1,0 +1,16 @@
+{
+  "repo": "Ashton20271/diddygame",
+  "stars": 4,
+  "licence": "Apache-2.0",
+  "sizeKB": 4804,
+  "pushedAt": "2026-09-08T05:16:01Z",
+  "description": "your diddy and you have to touch as many children as possible",
+  "defaultBranch": "main",
+  "owner": "Ashton20271",
+  "slug": "ashton20271-diddygame",
+  "dest": "third-party/ashton20271-diddygame",
+  "readme": "# diddy game\nyour diddy and you have to touch as many children as possible\n\n# sites\nhttps://diddygame.vercel.app/\n\nhttps://diddygame.netlify.app/\n\nhttps://1458740388087988348.discordsays.com/ (leaderboard broken due to strict csp)\n\nhttps://diddygame.kesug.com\n\nhttps://diddygame.web1337.net/\n\nhttps://diddygame.gamer.gd/\n\nhttps://diddygame.infinityfreeapp.com\n\nhttps://diddygame.wuaze.com/\n\nhttps://diddygame.page.gd/\n\nhttps://diddygame.free.nf/\n\nhttps://diddygame.10001mb.com/\n\nhttps://diddygame.xo.je/\n\nhttps://diddygame.lovestoblog.com/\n\nhttps://diddygame.rf.gd/\n\nhttps://diddygame.great-site.net/\n\nhttps://diddygame.infinityfree.me/\n\nhttps://diddygame.22web.org/\n\nhttps://diddygame.2kool4u.net/\n\nhttps://diddygame.66ghz.com/\n\nhttps://diddygame.fanclub.rocks/\n\nhttps://diddygame.fast-page.org/\n\nhttps://diddygame.html-5.me/\n\nhttps://diddygame.iblogger.org/\n\nhttps://diddygame.is-best.net/\n\nhttps://diddygame.is-great.net/\n\nhttps://diddygame.is-great.org/\n\nhttps://diddygame.likesyou.org/\n\nhttps://diddygame.loveslife.biz/\n\nhttps://diddygame.my-board.org/\n\nhttps://diddygame.my-style.in/\n\nhttps://diddygame.mydiscussion.net/\n\nhttps://diddygame.nichesite.org/\n\nhttps://diddygame.social-networking.me/\n\nhttps://diddygame.synergize.co\n\nhttps://diddygame.talk4fun.net/\n\nhttps://diddygame.totalh.net/\n# Extension\n\n[![extention](https://static.chrome-stats.com/icons/chrome-web-store.webp)](https://chromewebstore.google.com/detail/diddy-game/bfjbmoglpfpbkaneffbihgnogdibgfpf) <- Click this to download the extention\n# Discord:\n\nhttps://discord.gg/mSYC83mEgb\n\n# Powerups\n🍼 = x5 points for next child\n\n⚡ = x2 speed spawns at score 25 (lasts 10 seconds)\n\n🛡️ = invincibility spawns at score 50 (lasts 10 seconds) 0.5% chance\n\n🧑🏻‍⚖️ = lawer removes all police and doesnt kill you when you touch next police 1% chance (100% at score 30)\n\n🐢 = turtle makes you half your speed for 30 seconds\n\n❤️ = extra life 0.25% chance also resets length upon death\n# Disclaimers \ni do not support diddy in any way this game is satire\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

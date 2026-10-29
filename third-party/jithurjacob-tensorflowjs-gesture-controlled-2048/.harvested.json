@@ -1,0 +1,16 @@
+{
+  "repo": "jithurjacob/tensorflowjs-gesture-controlled-2048",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 26,
+  "pushedAt": "2019-01-06T14:03:52Z",
+  "description": "Play 2048 using Convolutional Neural network trained on your browser.",
+  "defaultBranch": "master",
+  "owner": "jithurjacob",
+  "slug": "jithurjacob-tensorflowjs-gesture-controlled-2048",
+  "dest": "third-party/jithurjacob-tensorflowjs-gesture-controlled-2048",
+  "readme": "# Gesture controlled 2048 - TensorFlow.js Transfer Learning\n\nPlay 2048 using Convolutional Neural network trained on your browser.\n\nI've used TensorFlow.js to build a gesture control mechanism for playing 2048. It uses a pretrained MobileNet model and train another model using an internal mobilenet activation to predict the movements.\n\nTry it [here](https://jithurjacob.in/tensorflowjs-gesture-controlled-2048/UI/)\n\n# Video\n\n[![YouTube](https://i.ytimg.com/vi/L0iSFf0VExQ/3.jpg)](https://youtu.be/L0iSFf0VExQ)\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "UI/index.html",
+  "validated": true
+}

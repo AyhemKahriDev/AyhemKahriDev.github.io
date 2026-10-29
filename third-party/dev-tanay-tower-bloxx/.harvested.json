@@ -1,0 +1,16 @@
+{
+  "repo": "Dev-tanay/Tower-Bloxx",
+  "stars": 10,
+  "licence": "MIT",
+  "sizeKB": 9,
+  "pushedAt": "2024-05-09T19:32:51Z",
+  "description": "Build high skyscrapers by placing one block on the other & create tallest skyscraper",
+  "defaultBranch": "main",
+  "owner": "Dev-tanay",
+  "slug": "dev-tanay-tower-bloxx",
+  "dest": "third-party/dev-tanay-tower-bloxx",
+  "readme": "# Tower-Bloxx\n\n## Tower Bloxx Clone using HTML , CSS , JS\n\nLink -> https://dev-tanay.github.io/Tower-Bloxx/\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

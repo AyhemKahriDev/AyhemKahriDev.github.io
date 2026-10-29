@@ -1,0 +1,16 @@
+{
+  "repo": "samme/kristal-quest",
+  "stars": 15,
+  "licence": "MIT",
+  "sizeKB": 1927,
+  "pushedAt": "2019-03-20T02:13:59Z",
+  "description": "A Phaser 3 game demo",
+  "defaultBranch": "master",
+  "owner": "samme",
+  "slug": "samme-kristal-quest",
+  "dest": "third-party/samme-kristal-quest",
+  "readme": "![On a stark alien landscape, an astronaut jumps across platforms chasing crystals and dodging slimes.](https://samme.github.io/kristal-quest/cover.png)\n\nKristal Quest\n=============\n\n> Marooned! You must collect crystals to power your spaceship while avoiding hostile life forms.\n\nA Phaser 3 demo made with [brunch-phaser](https://github.com/samme/brunch-phaser).\n\nControls\n--------\n\n- cursor keys\n- `D` toggle physics debug\n- `F` start full screen (if available)\n- `Q` quit (to menu)\n\nFeatures\n--------\n\n- 99 levels\n- advanced slime AI\n- arcade physics\n- bitmap text\n- fruit\n- game data registry\n- grid alignment\n- load progress\n- particles\n- scene data passing\n- scene switching\n- tiling sprite\n- timer events\n- tweens\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,16 @@
+{
+  "repo": "mahmudnibir/Ludo-Game-web-version",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 179,
+  "pushedAt": "2025-03-14T10:02:54Z",
+  "description": "This is a Ludo game with web version functionalities. It is not fully implemented. So feel free to contribute to this project",
+  "defaultBranch": "main",
+  "owner": "mahmudnibir",
+  "slug": "mahmudnibir-ludo-game-web-version",
+  "dest": "third-party/mahmudnibir-ludo-game-web-version",
+  "readme": "# Modern Ludo Game\n\nA modern, interactive Ludo game built with Flask, Socket.IO, and modern CSS. This is a work in progress with a beautiful UI and real-time multiplayer functionality.\n\n## Features\n\n- 🎮 Real-time multiplayer gameplay\n- 💬 In-game chat system\n- 🎲 Interactive dice rolling\n- 🎨 Modern glass-morphism UI design\n- 🌈 Multiple theme options (Royal, Neon, Holographic)\n- 🎵 Sound effects and background music\n- 📱 Responsive design for all devices\n- ⚡ Real-time game updates\n- 🏆 Leaderboard system\n- 💰 Betting system (optional)\n\n## Prerequisites\n\n- Python 3.8 or higher\n- pip (Python package installer)\n- Git\n\n## Installation\n\n1. Clone the repository:\n```bash\ngit clone https://github.com/yourusername/ludo-game.git\ncd ludo-game\n```\n\n2. Create a virtual environment (recommended):\n```bash\n# Windows\npython -m venv venv\nvenv\\Scripts\\activate\n\n# Linux/Mac\npython3 -m venv venv\nsource venv/bin/activate\n```\n\n3. Install the required packages:\n```bash\npip install -r requirements.txt\n```\n\n## Running the Game\n\n1. Make sure your virtual environment is activated (if you created one)\n\n2. Start the Flask application:\n```bash\npython app.py\n```\n\n3. Open your web browser and navigate to:\n```\nhttp://127.0.0.1:5000\n```\n\n4. To play with multiple players:\n   - Open the game in different browser windows or tabs\n   - Each window/tab will represent a different player\n   - Join the same game room to play together\n\n## Game Modes\n\n### Free Play Mode\n- Access at: `http://127.0.0.1:5000/game/free`\n- No betting required\n- Perfect for casual gaming\n\n### Betting Mode\n- Access at: `http://127.0.0.1:5000/game/bet`\n- Place bets before starting the game\n- Win coins by defeating opponents\n\n## Project Structure\n\n```\nludo-game/\n├── app.py              # Main Flask application\n├── requirements.txt    # Python dependencies\n├── static/\n│   ├── css/           # Stylesheets\n│   ├── js/            # JavaScript files\n│   └── sounds/        # Game sound effects\n├── templates/         # HTML templates\n└── README.md         # This file\n```\n\n## Contributing\n\nContributions are welcome! Please feel free to submit a Pull Request.\n\n## License\n\nThis project is licensed under the MIT License - see the LICENSE file for details.\n\n## Acknowledgments\n\n- Flask framework\n- Socket.IO for real-time communication\n- Font Awesome for icons\n- Modern CSS techniques and animations\n\n## Note\n\nThis is a work in progress. Some features may be partially implemented or subject to change. ",
+  "licenceFile": "LICENSE",
+  "entry": "templates/index.html",
+  "validated": true
+}

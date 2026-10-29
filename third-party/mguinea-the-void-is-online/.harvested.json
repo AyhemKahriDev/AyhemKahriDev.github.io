@@ -1,0 +1,16 @@
+{
+  "repo": "mguinea/the-void-is-online",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 561,
+  "pushedAt": "2019-06-23T20:25:50Z",
+  "description": "Entry HTML5 game for js13k 2018 compo. Desktop category.",
+  "defaultBranch": "master",
+  "owner": "mguinea",
+  "slug": "mguinea-the-void-is-online",
+  "dest": "third-party/mguinea-the-void-is-online",
+  "readme": "# attack-on-server\njs13k games 2018 entry\n\n# Resources\nhttps://github.com/jonathan-vallet/js13k-starter\nhttps://www.smashingmagazine.com/2011/10/quick-look-math-animations-javascript/\nhttps://strategywiki.org/wiki/Gradius/Enemies\nhttp://www.superflashbros.net/as3sfxr/\nhttps://github.com/mneubrand/jsfxr\nhttps://www.html5canvastutorials.com/tutorials/html5-canvas-line-joins/\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

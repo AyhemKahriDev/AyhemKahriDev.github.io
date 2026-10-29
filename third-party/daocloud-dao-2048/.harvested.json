@@ -1,0 +1,16 @@
+{
+  "repo": "DaoCloud/dao-2048",
+  "stars": 227,
+  "licence": "MIT",
+  "sizeKB": 510,
+  "pushedAt": "2025-04-21T08:34:37Z",
+  "description": "2048 is a number puzzle game.",
+  "defaultBranch": "main",
+  "owner": "DaoCloud",
+  "slug": "daocloud-dao-2048",
+  "dest": "third-party/daocloud-dao-2048",
+  "readme": "# 2048\n\n[![Artifact Hub](https://img.shields.io/endpoint?url=https://artifacthub.io/badge/repository/dao-2048)](https://artifacthub.io/packages/search?repo=dao-2048)\n\n2048 is a number puzzle game. When the squares of the same number are merged together, they will add up. Each round will have an extra square with 2 or 4 written on it, and the game ends when the square cannot be moved. Players have to find a way to make up a square with **2048** (or larger) in this small 16 squares.\n\n# Quick Start\n\n## Run as docker container\n\nopen shell and input:\n\n```\nexport VERSION=v1.4.1\ndocker run -d -p 8080:80 ghcr.io/daocloud/dao-2048:$VERSION\n```\n\nopen browser and view http://<server-ip>:8080 .\n\n## Run in kubernetes\n\n```\nexport VERSION=v1.4.1\nhelm repo add dao-2048 http://daocloud.github.io/dao-2048/\nhelm install dao-2048 dao-2048/dao-2048 --version $VERSION \n```\n\n## Advanced Usage\n\n### Use LoadBalancer Service\n```\nhelm upgrade --install dao-2048 dao-2048/dao-2048 --version $VERSION --set service.type=LoadBalancer\n```\n\n### Use Dual Stack Service\n```\nhelm upgrade --install dao-2048 dao-2048/dao-2048 --version $VERSION --set service.ipFamilyPolicy=PreferDualStack\n```\n\n### Use Static Image\n```\nhelm upgrade --install dao-2048 dao-2048/dao-2048 --version $VERSION --set image.repository=daocloud/dao-2048-static\n```\n\n### Thanks\n\nThis image is derived from the Docker Hub image **[alexwhen/docker-2048](https://registry.hub.docker.com/u/alexwhen/docker-2048/)**, thanks to the developer **[alexwhen](https://github.com/alexwhen)** enthusiastic support. And thanks to gabrielecirulli's [2048](https://github.com/gabrielecirulli/2048) project\n",
+  "licenceFile": "LICENSE.txt",
+  "entry": "index.html",
+  "validated": true
+}

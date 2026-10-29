@@ -16,11 +16,14 @@
  * built dist/, because that is what actually ships - build-site.mjs already
  * copies only the directories the catalogue references.
  *
- * Limits: 10 MB per game, 20 MB per file, 700 MB for all of dist. Measured
- * 2026-10-29 after pruning: 173 games, dist 143 MB, heaviest game 8.8 MB
- * (courier-city, audio + sprite sheets it actually loads). 3 MB per game was
- * tried first and rejected 14 of 164 legitimately working games; the point of
- * the gate is to catch a game that ships its build tooling, not to punish art.
+ * Limits: 10 MB per game, 20 MB per file, 800 MB for all of dist. Measured
+ * 2026-10-29 at 560 games: dist 712 MB. GitHub Pages allows a 1 GB published
+ * site, so 800 MB leaves headroom without pretending the site is weightless -
+ * the catalogue is capped here, not the budget.
+ *
+ * File count is the other ceiling and it is NOT enforced here: Cloudflare Pages
+ * rejects deployments above 20,000 files, and 560 games produce 22,524. This
+ * site therefore deploys to GitHub Pages, which has no per-file-count limit.
  */
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
@@ -32,7 +35,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const MB = 1024 * 1024;
 const MAX_GAME = 10 * MB;
 const MAX_FILE = 20 * MB;
-const MAX_TOTAL = 700 * MB;
+const MAX_TOTAL = 800 * MB;
 
 const argv = process.argv.slice(2);
 const flag = (name) => {

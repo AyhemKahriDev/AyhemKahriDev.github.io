@@ -1,0 +1,176 @@
+import Settings from '../../../content/settings.js';
+import Tile from '../../tiles/tile.js';
+import Timer from '../../utilities/timer.js';
+import Game from '../../game.js';
+
+/**
+ * The Coyote mechanic.
+ *
+ * Tracks coyote jump eligibility within a short grace window after leaving
+ * the ground, enabling late jump forgiveness.
+ */
+export default class Coyote {
+
+	/**
+	 * Default coyote settings.
+	 *
+	 * @type {Object}
+	 */
+	static defaults = {
+		time: 300,
+	}
+
+	/**
+	 * Construct the Coyote mechanic.
+	 *
+	 * @param {Tile} tile A Tile with a `physics` property.
+	 * @returns {Coyote} this
+	 */
+	constructor(
+		tile = null
+	) {
+		return this.set( tile );
+	}
+
+	/**
+	 * Set the mechanic.
+	 *
+	 * @param {Tile} tile A Tile with a `physics` property.
+	 * @returns {Coyote} this
+	 */
+	set = (
+		tile = null
+	) => {
+
+		// Reset.
+		this.reset();
+
+		// Set properties.
+		this.tile = tile;
+
+		// Return.
+		return this;
+	}
+
+	/**
+	 * Reset the mechanic.
+	 *
+	 * @returns {Coyote} this
+	 */
+	reset = () => {
+		this.tile        = null;
+		this.listening   = true;
+		this.settings    = Settings.player.jumps?.coyote ?? Coyote.defaults;
+		this.freefall    = new Timer();
+		this.wasOnGround = false;
+
+		// Return.
+		return this;
+	}
+
+	/**
+	 * Listen for coyote logic.
+	 */
+	listen = () => {
+
+        // Bail if not listening or no tile present
+		if ( ! this.listening || ! this.tile ) {
+			return;
+		}
+
+		this.idle();
+
+		if ( this.doing() ) {
+			this.do();
+		}
+	}
+
+	/**
+	 * Check if mechanic is being done.
+	 *
+	 * @returns {Boolean}
+	 */
+	doing = () => {
+		return ( this.can() && Game.Inputs.pressed( 'jump' ) );
+	}
+
+	/**
+	 * Determine if coyote jump can occur.
+	 *
+	 * @returns {Boolean}
+	 */
+	can = () => {
+
+        // Skip if not in freefall.
+		if ( ! this.freefall.active() ) {
+			return false;
+		}
+
+        // Skip if on ground.
+		if ( this.grounded() ) {
+			return false;
+		}
+
+        // Skip if jump is already available.
+		if ( this.tile?.mechanics?.jump?.can?.() ) {
+			return false;
+		}
+
+        // Skip if jump count is greater than 0.
+		if ( this.jumpcount() > 0 ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Execute the coyote jump.
+	 */
+	do = () => {
+		this.wasOnGround = false;
+		this.freefall.clear();
+
+        // Execute jump if not already done.
+		if ( ! this.jumpcount() ) {
+			this.tile?.mechanics?.jump?.do();
+		}
+	}
+
+	/**
+	 * Idle logic updates timers and ground state.
+	 */
+	idle = () => {
+
+        // On ground.
+		if ( this.grounded() ) {
+			this.wasOnGround = true;
+			this.freefall.clear();
+			return;
+		}
+
+        // Was on ground.
+		if ( this.wasOnGround ) {
+			this.wasOnGround = false;
+			this.freefall.set( this.settings.time );
+		}
+	}
+
+    /**
+     * Check if the player is grounded.
+     *
+     * @returns {Boolean}
+     */
+    grounded = () => {
+		return ( this.tile?.physics?.contact?.bottom || false );
+	}
+
+	/**
+	 * Jump count helper.
+	 *
+	 * @returns {Number}
+	 */
+	jumpcount = () => {
+		return ( this.tile?.mechanics?.jump?.count || 0 );
+	}
+}

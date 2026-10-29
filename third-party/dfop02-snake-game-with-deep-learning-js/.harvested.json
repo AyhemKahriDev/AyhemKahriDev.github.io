@@ -1,0 +1,16 @@
+{
+  "repo": "dfop02/Snake-game-with-deep-learning-js",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 10,
+  "pushedAt": "2019-07-15T01:36:58Z",
+  "description": "A javascript snake game with deep learning application",
+  "defaultBranch": "master",
+  "owner": "dfop02",
+  "slug": "dfop02-snake-game-with-deep-learning-js",
+  "dest": "third-party/dfop02-snake-game-with-deep-learning-js",
+  "readme": "# Snake Game With Deep Learning (js)\nA javascript snake game with deep learning application\n\n### How Play?\n\nYou can test and play by yourself just click [here](https://dfop02.github.io/Snake-game-with-deep-learning-js/window.html).\n\n### Deep Learning?\n\nYeap, for now I just finish the game and will comming soon start to adding deep learning elements to finish the project.\n\n### Authors\n\n* [Diogo Fernandes](https://github.com/dfop02)\n\n### License\n\nThis project is licensed under the Apache License 3.0 - see the [LICENSE.md](LICENSE.md) file for details\n",
+  "licenceFile": "LICENSE",
+  "entry": "window.html",
+  "validated": true
+}

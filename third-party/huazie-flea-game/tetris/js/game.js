@@ -1,0 +1,1310 @@
+// 读取主题 CSS 变量：主题统一标在 <html>(documentElement)，直接读它即可。
+function getThemeVar(name) {
+    return getComputedStyle(document.documentElement).getPropertyValue(name);
+}
+
+// 游戏常量
+const GAME_CONSTANTS = {
+    COLS: 15,           // 游戏区域宽度（列数）——固定 15 列
+    ROWS: 30,           // 游戏区域高度（行数）——随视口自适应，resizeGame 中动态更新
+    BLOCK_SIZE: 15,     // 方块大小（像素）
+    COLORS: [
+        null,
+        getThemeVar('--tetromino-i-color') || '#00bcd4', // I - 青色
+        getThemeVar('--tetromino-j-color') || '#2196f3', // J - 蓝色
+        getThemeVar('--tetromino-l-color') || '#ff9800', // L - 橙色
+        getThemeVar('--tetromino-o-color') || '#ffeb3b', // O - 黄色
+        getThemeVar('--tetromino-s-color') || '#4caf50', // S - 绿色
+        getThemeVar('--tetromino-t-color') || '#9c27b0', // T - 紫色
+        getThemeVar('--tetromino-z-color') || '#f44336'  // Z - 红色
+    ],
+    SHAPES: [
+        [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], // I
+        [[2, 0, 0], [2, 2, 2], [0, 0, 0]], // J
+        [[0, 0, 3], [3, 3, 3], [0, 0, 0]], // L
+        [[4, 4], [4, 4]], // O
+        [[0, 5, 5], [5, 5, 0], [0, 0, 0]], // S
+        [[0, 6, 0], [6, 6, 6], [0, 0, 0]], // T
+        [[7, 7, 0], [0, 7, 7], [0, 0, 0]]  // Z
+    ]
+};
+
+// 方块类
+class Piece {
+    constructor(shape, x, y) {
+        this.shape = JSON.parse(JSON.stringify(shape));
+        this.x = x;
+        this.y = y;
+    }
+
+    rotate() {
+        const rows = this.shape.length;
+        const cols = this.shape[0].length;
+        const rotated = Array.from({ length: cols }, () => Array(rows).fill(0));
+
+        for (let y = 0; y < rows; y++) {
+            for (let x = 0; x < cols; x++) {
+                rotated[x][rows - 1 - y] = this.shape[y][x];
+            }
+        }
+
+        return rotated;
+    }
+
+    clone() {
+        return new Piece(this.shape, this.x, this.y);
+    }
+}
+
+// 游戏板类
+class Board {
+    constructor(rows, cols) {
+        this.rows = rows;
+        this.cols = cols;
+        this.grid = this.createGrid();
+    }
+
+    createGrid() {
+        return Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+    }
+
+    isValidMove(piece, offsetX = 0, offsetY = 0) {
+        const shape = piece.shape;
+        
+        for (let y = 0; y < shape.length; y++) {
+            for (let x = 0; x < shape[y].length; x++) {
+                if (shape[y][x] !== 0) {
+                    const newX = piece.x + x + offsetX;
+                    const newY = piece.y + y + offsetY;
+                    
+                    if (newX < 0 || newX >= this.cols || newY >= this.rows) {
+                        return false;
+                    }
+                    
+                    if (newY >= 0 && this.grid[newY][newX] !== 0) {
+                        return false;
+                    }
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    lockPiece(piece) {
+        const shape = piece.shape;
+        
+        for (let y = 0; y < shape.length; y++) {
+            for (let x = 0; x < shape[y].length; x++) {
+                if (shape[y][x] !== 0) {
+                    if (piece.y + y <= 0) {
+                        return false; // 游戏结束
+                    }
+                    this.grid[piece.y + y][piece.x + x] = shape[y][x];
+                }
+            }
+        }
+        
+        return true;
+    }
+
+    clearLines() {
+        let linesCleared = 0;
+        
+        for (let y = this.rows - 1; y >= 0; y--) {
+            if (this.grid[y].every(cell => cell !== 0)) {
+                // 移除当前行
+                for (let yy = y; yy > 0; yy--) {
+                    this.grid[yy] = [...this.grid[yy - 1]];
+                }
+                
+                // 创建新的空行
+                this.grid[0] = Array(this.cols).fill(0);
+                linesCleared++;
+                y++; // 重新检查当前行
+            }
+        }
+        
+        return linesCleared;
+    }
+
+    reset() {
+        this.grid = this.createGrid();
+    }
+}
+
+// 渲染器类
+class Renderer {
+    constructor(mainCanvas, nextCanvas, blockSize) {
+        this.mainCtx = mainCanvas.getContext('2d');
+        this.nextCtx = nextCanvas.getContext('2d');
+        this.blockSize = blockSize;
+        this.mainCanvas = mainCanvas;
+        this.nextCanvas = nextCanvas;
+        
+        // 保存原始尺寸比例
+        this.aspectRatio = GAME_CONSTANTS.COLS / GAME_CONSTANTS.ROWS;
+    }
+    
+    // 调整方块大小和画布尺寸
+    resize(newBlockSize) {
+        this.blockSize = newBlockSize;
+
+        /* 位图尺寸 = 逻辑尺寸 × dpr，配合 setTransform 保证高分屏清晰 */
+        const dpr = window.devicePixelRatio || 1;
+        this.dpr = dpr;
+
+        // 调整主画布尺寸（位图 ×dpr，CSS 尺寸锁逻辑值，显示不缩放）
+        const boardW = GAME_CONSTANTS.COLS * newBlockSize;
+        const boardH = GAME_CONSTANTS.ROWS * newBlockSize;
+        this.mainCanvas.width = boardW * dpr;
+        this.mainCanvas.height = boardH * dpr;
+        this.mainCanvas.style.width = boardW + 'px';
+        this.mainCanvas.style.height = boardH + 'px';
+        this.mainCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+        // 调整预览画布尺寸 - 确保足够大以显示任何方块，但不超过一定大小
+        const maxPreviewSize = 150; // 预览区域的最大尺寸
+        const previewBlockSize = newBlockSize * 0.8;
+        const previewSize = Math.min(5 * previewBlockSize, maxPreviewSize);
+        this.previewSize = previewSize;
+
+        this.nextCanvas.width = previewSize * dpr;
+        this.nextCanvas.height = previewSize * dpr;
+        this.nextCanvas.style.width = previewSize + 'px';
+        this.nextCanvas.style.height = previewSize + 'px';
+        this.nextCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    drawBlock(ctx, x, y, colorIndex) {
+        const blockX = x * this.blockSize;
+        const blockY = y * this.blockSize;
+        
+        // 绘制方块主体
+        ctx.fillStyle = GAME_CONSTANTS.COLORS[colorIndex];
+        ctx.fillRect(blockX, blockY, this.blockSize, this.blockSize);
+        
+        // 绘制边框
+        ctx.strokeStyle = getThemeVar('--block-border') || 'rgba(0, 0, 0, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.strokeRect(blockX, blockY, this.blockSize, this.blockSize);
+        
+        // 绘制高光效果
+        ctx.fillStyle = getThemeVar('--block-highlight') || 'rgba(255, 255, 255, 0.2)';
+        ctx.fillRect(blockX, blockY, this.blockSize, this.blockSize / 4);
+        ctx.fillRect(blockX, blockY, this.blockSize / 4, this.blockSize);
+    }
+
+    drawBoard(board, currentPiece, isGameOver = false, score = 0) {
+        /* transform 已含 dpr，按逻辑尺寸清屏即可 */
+        this.mainCtx.clearRect(0, 0, GAME_CONSTANTS.COLS * this.blockSize, GAME_CONSTANTS.ROWS * this.blockSize);
+        
+        // 绘制网格
+        this.drawGrid();
+        
+        // 绘制已固定的方块
+        for (let y = 0; y < board.rows; y++) {
+            for (let x = 0; x < board.cols; x++) {
+                if (board.grid[y][x] !== 0) {
+                    this.drawBlock(this.mainCtx, x, y, board.grid[y][x]);
+                }
+            }
+        }
+        
+        // 绘制当前方块
+        if (currentPiece) {
+            this.drawPiece(this.mainCtx, currentPiece);
+        }
+        
+        // 如果游戏结束，绘制游戏结束画面
+        if (isGameOver) {
+            this.showGameOver(score);
+        }
+    }
+
+    drawGrid() {
+        this.mainCtx.strokeStyle = getThemeVar('--grid-border') || 'rgba(0, 0, 0, 0.1)';
+        this.mainCtx.lineWidth = 0.5;
+        
+        // 绘制水平线
+        for (let i = 0; i <= GAME_CONSTANTS.ROWS; i++) {
+            this.mainCtx.beginPath();
+            this.mainCtx.moveTo(0, i * this.blockSize);
+            this.mainCtx.lineTo(GAME_CONSTANTS.COLS * this.blockSize, i * this.blockSize);
+            this.mainCtx.stroke();
+        }
+        
+        // 绘制垂直线
+        for (let i = 0; i <= GAME_CONSTANTS.COLS; i++) {
+            this.mainCtx.beginPath();
+            this.mainCtx.moveTo(i * this.blockSize, 0);
+            this.mainCtx.lineTo(i * this.blockSize, GAME_CONSTANTS.ROWS * this.blockSize);
+            this.mainCtx.stroke();
+        }
+    }
+
+    drawPiece(ctx, piece) {
+        const shape = piece.shape;
+        
+        for (let y = 0; y < shape.length; y++) {
+            for (let x = 0; x < shape[y].length; x++) {
+                if (shape[y][x] !== 0) {
+                    this.drawBlock(ctx, piece.x + x, piece.y + y, shape[y][x]);
+                }
+            }
+        }
+    }
+
+    drawNextPiece(piece) {
+        this.nextCtx.clearRect(0, 0, this.previewSize, this.previewSize);
+        
+        if (!piece) return;
+        
+        // 使用主游戏区域方块大小的比例作为预览区块大小
+        const previewBlockSize = this.blockSize * 0.8;
+        const shape = piece.shape;
+        const width = shape[0].length;
+        const height = shape.length;
+        
+        // 计算居中位置（注意 transform 含 dpr，必须用逻辑尺寸 previewSize）
+        const offsetX = (this.previewSize - width * previewBlockSize) / 2;
+        const offsetY = (this.previewSize - height * previewBlockSize) / 2;
+        
+        // 绘制方块
+        for (let y = 0; y < shape.length; y++) {
+            for (let x = 0; x < shape[y].length; x++) {
+                if (shape[y][x] !== 0) {
+                    const blockX = offsetX + x * previewBlockSize;
+                    const blockY = offsetY + y * previewBlockSize;
+                    
+                    this.nextCtx.fillStyle = GAME_CONSTANTS.COLORS[shape[y][x]];
+                    this.nextCtx.fillRect(blockX, blockY, previewBlockSize, previewBlockSize);
+                    
+                    this.nextCtx.strokeStyle = getThemeVar('--block-border');
+                    this.nextCtx.lineWidth = 1;
+                    this.nextCtx.strokeRect(blockX, blockY, previewBlockSize, previewBlockSize);
+                    
+                    this.nextCtx.fillStyle = getThemeVar('--block-highlight') || 'rgba(255, 255, 255, 0.2)';
+                    this.nextCtx.fillRect(blockX, blockY, previewBlockSize, previewBlockSize / 4);
+                    this.nextCtx.fillRect(blockX, blockY, previewBlockSize / 4, previewBlockSize);
+                }
+            }
+        }
+    }
+
+    showGameOver(score) {
+        this.mainCtx.fillStyle = getThemeVar('--game-over-overlay') || 'rgba(0, 0, 0, 0.7)';
+        this.mainCtx.fillRect(0, 0, GAME_CONSTANTS.COLS * this.blockSize, GAME_CONSTANTS.ROWS * this.blockSize);
+        
+        this.mainCtx.font = 'bold 36px Arial';
+        this.mainCtx.fillStyle = getThemeVar('--game-over-text') || '#ffffff';
+        this.mainCtx.textAlign = 'center';
+        this.mainCtx.textBaseline = 'middle';
+        /* transform 含 dpr，居中坐标必须用逻辑尺寸（canvas.width 是设备像素） */
+        const overW = GAME_CONSTANTS.COLS * this.blockSize;
+        const overH = GAME_CONSTANTS.ROWS * this.blockSize;
+        this.mainCtx.fillText('游戏结束', overW / 2, overH / 2 - 30);
+
+        this.mainCtx.font = '24px Arial';
+        this.mainCtx.fillStyle = getThemeVar('--game-over-text') || '#ffffff';
+        this.mainCtx.fillText(`最终分数: ${score}`, overW / 2, overH / 2 + 20);
+    }
+
+    showPause() {
+        this.mainCtx.fillStyle = getThemeVar('--pause-overlay') || 'rgba(0, 0, 0, 0.5)';
+        this.mainCtx.fillRect(0, 0, GAME_CONSTANTS.COLS * this.blockSize, GAME_CONSTANTS.ROWS * this.blockSize);
+        
+        this.mainCtx.font = 'bold 36px Arial';
+        this.mainCtx.fillStyle = getThemeVar('--game-over-text') || '#ffffff';
+        this.mainCtx.textAlign = 'center';
+        this.mainCtx.textBaseline = 'middle';
+        this.mainCtx.fillText('已暂停', (GAME_CONSTANTS.COLS * this.blockSize) / 2,
+            (GAME_CONSTANTS.ROWS * this.blockSize) / 2);
+    }
+}
+
+// 游戏控制器类
+class GameController {
+    constructor(game) {
+        this.game = game;
+        this.moveDelay = 100; // 移动间隔时间（毫秒）
+        this.initialDelay = 200; // 首次移动前的延迟（毫秒）
+        
+        // 为每个方向创建单独的定时器和超时器
+        this.moveIntervals = {
+            left: null,
+            right: null,
+            down: null
+        };
+        
+        this.moveTimeouts = {
+            left: null,
+            right: null,
+            down: null
+        };
+        
+        this.keyStates = {
+            left: false,
+            right: false,
+            down: false
+        };
+        
+        this.setupEventListeners();
+    }
+
+    setupEventListeners() {
+        // 键盘按下和释放事件
+        document.addEventListener('keydown', this.handleKeyDown.bind(this));
+        document.addEventListener('keyup', this.handleKeyUp.bind(this));
+        
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const resetBtn = document.getElementById('reset-btn');
+        const difficultySelect = document.getElementById('difficulty-select');
+        
+        // 基本控制按钮
+        playPauseBtn.addEventListener('click', () => this.game.togglePlayPause());
+        resetBtn.addEventListener('click', () => this.game.reset());
+        
+        difficultySelect.addEventListener('change', () => {
+            this.game.setSpeed(parseInt(difficultySelect.value));
+        });
+
+        // D-pad 方向键
+        const upBtn = document.getElementById('up-btn');
+        const leftBtn = document.getElementById('left-btn');
+        const rightBtn = document.getElementById('right-btn');
+        const downBtn = document.getElementById('down-btn');
+        
+        // 动作按钮
+        const rotateBtn = document.getElementById('rotate-btn');
+        const dropBtn = document.getElementById('drop-btn');
+
+        // 添加单次触发按钮事件（旋转和硬降）
+        this.addButtonEvents(upBtn, () => this.game.rotatePiece());
+        this.addButtonEvents(rotateBtn, () => this.game.rotatePiece());
+        this.addButtonEvents(dropBtn, () => this.game.hardDrop());
+        
+        // 添加支持长按的按钮事件（左、右、下）
+        this.addLongPressButtonEvents(leftBtn, 'left');
+        this.addLongPressButtonEvents(rightBtn, 'right');
+        this.addLongPressButtonEvents(downBtn, 'down');
+
+        // 防止长按时触发浏览器的默认行为
+        // （排除开始/暂停钮：它无长按动作，touchstart preventDefault 会抑制 tap 合成的 click，
+        //   与重置钮同属纯点击钮，不拦截触摸默认行为）
+        document.querySelectorAll('.dpad-btn, .action-btn:not(#play-pause-btn)').forEach(button => {
+            button.addEventListener('touchstart', (e) => e.preventDefault());
+            button.addEventListener('contextmenu', (e) => e.preventDefault());
+        });
+    }
+    
+    // 普通按钮事件（单次触发）
+    addButtonEvents(button, action) {
+        if (!button) return;
+        
+        // 移动设备触摸事件
+        button.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            button.classList.add('active');
+            action();
+        });
+        
+        button.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            button.classList.remove('active');
+        });
+        
+        // 桌面点击事件
+        button.addEventListener('mousedown', (e) => {
+            button.classList.add('active');
+            action();
+        });
+        
+        button.addEventListener('mouseup', () => {
+            button.classList.remove('active');
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            button.classList.remove('active');
+        });
+    }
+    
+    // 停止指定方向的移动
+    stopMovement(direction) {
+        if (this.moveTimeouts[direction]) {
+            clearTimeout(this.moveTimeouts[direction]);
+            this.moveTimeouts[direction] = null;
+        }
+        
+        if (this.moveIntervals[direction]) {
+            clearInterval(this.moveIntervals[direction]);
+            this.moveIntervals[direction] = null;
+        }
+        
+        this.keyStates[direction] = false;
+    }
+    
+    // 停止所有方向的移动
+    stopAllMovement() {
+        ['left', 'right', 'down'].forEach(dir => {
+            this.stopMovement(dir);
+        });
+    }
+    
+    // 支持长按的按钮事件
+    addLongPressButtonEvents(button, direction) {
+        if (!button) return;
+        
+        const startMoving = () => {
+            button.classList.add('active');
+            
+            // 停止其他方向的移动
+            this.stopAllMovement();
+            
+            // 立即执行一次动作
+            this.performDirectionAction(direction);
+            
+            // 设置延迟后的持续移动
+            this.keyStates[direction] = true;
+            this.moveTimeouts[direction] = setTimeout(() => {
+                if (this.keyStates[direction]) {
+                    this.moveIntervals[direction] = setInterval(() => {
+                        this.performDirectionAction(direction);
+                    }, this.moveDelay);
+                }
+            }, this.initialDelay);
+        };
+        
+        const stopMoving = () => {
+            button.classList.remove('active');
+            this.stopMovement(direction);
+        };
+        
+        // 移动设备触摸事件
+        button.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startMoving();
+        });
+        
+        button.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            stopMoving();
+        });
+        
+        button.addEventListener('touchcancel', (e) => {
+            e.preventDefault();
+            stopMoving();
+        });
+        
+        // 桌面点击事件
+        button.addEventListener('mousedown', () => {
+            startMoving();
+        });
+        
+        button.addEventListener('mouseup', () => {
+            stopMoving();
+        });
+        
+        button.addEventListener('mouseleave', () => {
+            stopMoving();
+        });
+    }
+    
+    // 执行方向动作
+    performDirectionAction(direction) {
+        if (this.game.isPaused || this.game.isGameOver || !this.game.isGameStarted) return;
+        
+        switch (direction) {
+            case 'left':
+                this.game.moveLeft();
+                break;
+            case 'right':
+                this.game.moveRight();
+                break;
+            case 'down':
+                this.game.moveDown();
+                break;
+        }
+    }
+
+    handleKeyDown(event) {
+        if (this.game.isGameOver) return;
+        
+        switch (event.keyCode) {
+            case 37: // 左箭头
+                if (!this.keyStates.left) {
+                    // 停止其他方向的移动
+                    this.stopAllMovement();
+                    
+                    // 立即执行一次左移
+                    this.game.moveLeft();
+                    
+                    // 设置延迟后的持续移动
+                    this.keyStates.left = true;
+                    this.moveTimeouts.left = setTimeout(() => {
+                        if (this.keyStates.left) {
+                            this.moveIntervals.left = setInterval(() => {
+                                this.game.moveLeft();
+                            }, this.moveDelay);
+                        }
+                    }, this.initialDelay);
+                }
+                break;
+                
+            case 39: // 右箭头
+                if (!this.keyStates.right) {
+                    // 停止其他方向的移动
+                    this.stopAllMovement();
+                    
+                    // 立即执行一次右移
+                    this.game.moveRight();
+                    
+                    // 设置延迟后的持续移动
+                    this.keyStates.right = true;
+                    this.moveTimeouts.right = setTimeout(() => {
+                        if (this.keyStates.right) {
+                            this.moveIntervals.right = setInterval(() => {
+                                this.game.moveRight();
+                            }, this.moveDelay);
+                        }
+                    }, this.initialDelay);
+                }
+                break;
+                
+            case 40: // 下箭头
+                if (!this.keyStates.down) {
+                    // 停止其他方向的移动
+                    this.stopAllMovement();
+                    
+                    // 立即执行一次下移
+                    this.game.moveDown();
+                    
+                    // 设置延迟后的持续移动
+                    this.keyStates.down = true;
+                    this.moveTimeouts.down = setTimeout(() => {
+                        if (this.keyStates.down) {
+                            this.moveIntervals.down = setInterval(() => {
+                                this.game.moveDown();
+                            }, this.moveDelay);
+                        }
+                    }, this.initialDelay);
+                }
+                break;
+                
+            case 38: // 上箭头
+                this.game.rotatePiece();
+                break;
+                
+            case 32: // 空格键
+                this.game.hardDrop();
+                break;
+                
+            case 80: // P键
+                this.game.togglePlayPause();
+                break;
+        }
+        
+        // 防止方向键和空格键触发页面滚动
+        if ([32, 37, 38, 39, 40].includes(event.keyCode)) {
+            event.preventDefault();
+        }
+    }
+    
+    handleKeyUp(event) {
+        switch (event.keyCode) {
+            case 37: // 左箭头
+                this.stopMovement('left');
+                break;
+                
+            case 39: // 右箭头
+                this.stopMovement('right');
+                break;
+                
+            case 40: // 下箭头
+                this.stopMovement('down');
+                break;
+        }
+    }
+}
+
+// 背景音乐：Korobeiniki（俄罗斯民歌，公有领域，经典俄罗斯方块 BGM）
+// 音符序列 [频率Hz|null(休止), 拍数]，由 FleaSound.bgm 循环调度
+const TETRIS_BGM = [
+    [659.25, 1], [493.88, 0.5], [523.25, 0.5], [587.33, 1], [523.25, 0.5], [493.88, 0.5],
+    [440, 1],    [440, 0.5],    [523.25, 0.5], [659.25, 1], [587.33, 0.5], [523.25, 0.5],
+    [493.88, 1.5], [523.25, 0.5], [587.33, 1], [659.25, 1],
+    [523.25, 1], [440, 1],      [440, 2],
+    [null, 0.5], [587.33, 1],   [698.46, 0.5], [880, 1], [783.99, 0.5], [698.46, 0.5],
+    [659.25, 1.5], [523.25, 0.5], [659.25, 1], [587.33, 0.5], [523.25, 0.5],
+    [493.88, 1], [493.88, 0.5], [523.25, 0.5], [587.33, 1], [659.25, 1],
+    [523.25, 1], [440, 1],      [440, 2]
+];
+
+// 主游戏类
+class TetrisGame {
+    constructor() {
+        this.board = new Board(GAME_CONSTANTS.ROWS, GAME_CONSTANTS.COLS);
+        this.renderer = new Renderer(
+            document.getElementById('tetris-canvas'),
+            document.getElementById('next-piece-canvas'),
+            GAME_CONSTANTS.BLOCK_SIZE
+        );
+
+        this.score = 0;
+        this.highScore = this.loadHighScore();
+        this.level = 1;
+        this.lines = 0;
+        this.gameSpeed = 1000;
+        this.gameInterval = null;
+        this.isGameOver = false;
+        this.isPaused = false;
+        this.isGameStarted = false;
+        
+        this.currentPiece = null;
+        this.nextPiece = null;
+        
+        this.scoreElement = document.getElementById('score');
+        this.highScoreElement = document.getElementById('high-score');
+        this.levelElement = document.getElementById('level');
+        this.playPauseBtn = document.getElementById('play-pause-btn');
+        
+        // 显示最高分
+        if (this.highScoreElement) {
+            this.highScoreElement.textContent = this.highScore;
+        }
+        
+        // 初始化游戏控制器
+        this.controller = new GameController(this);
+
+        // 音效/背景音乐开关（两个独立开关，状态持久化在 FleaSound）
+        FleaSound.init('tetris_sound', 'tetris_music');
+        this._updateSoundIcons();
+        document.getElementById('sfx-btn')?.addEventListener('click', () => {
+            FleaSound.toggle();
+            this._updateSoundIcons();
+        });
+        document.getElementById('music-btn')?.addEventListener('click', () => {
+            const on = FleaSound.toggleBgm();
+            this._updateSoundIcons();
+            // 游戏进行中开启音乐 → 立即响起；关闭 → 序列器内部自动停止
+            if (on && this.isGameStarted && !this.isPaused && !this.isGameOver) {
+                this._startBgm();
+            }
+        });
+        
+        // 调整游戏大小以适应窗口
+        this.resizeGame(true);
+
+        // 容器尺寸变化不一定触发 window resize（如移动端地址栏收放、
+        // flex 收缩），用 ResizeObserver 兜底重算
+        if (typeof ResizeObserver !== 'undefined') {
+            const layoutTarget = document.querySelector('.game-container');
+            if (layoutTarget) {
+                this._boardRO = new ResizeObserver(() => this.resizeGame());
+                this._boardRO.observe(layoutTarget);
+            }
+        }
+
+        // 添加窗口大小变化事件监听器
+        window.addEventListener('resize', () => {
+            this.resizeGame();
+        });
+
+        // 初始化游戏
+        this.init();
+    }
+
+    // 调整游戏大小以适应棋盘容器；immediate=true 时跳过防抖立即执行
+    resizeGame(immediate) {
+        // 防抖处理
+        if (this.resizeTimeout) {
+            clearTimeout(this.resizeTimeout);
+        }
+
+        const run = () => {
+            /* 量 .game-display（宽高由外层布局固定、不随 canvas 变化，无震荡）：
+             * 说明面板固定占 1/3 宽，棋盘吃剩余；列数固定 15，
+             * 方格大小与行数随可用区域自适应，两个方向留白都不超过一个方格 */
+            const display = document.querySelector('.game-display');
+            if (!display) return;
+
+            const cs = window.getComputedStyle(display);
+            const padY = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
+            const padX = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
+            const INFO_BAR_H = 96;   // 与 CSS 竖屏高瘦屏 .game-info-panel flex-basis 同步
+            const LAYOUT_GAP = 10;   // 与 CSS .game-display gap 同步
+
+            /* 竖屏高瘦屏（媒体查询分支）：面板在棋盘下方成横条，棋盘吃满宽度；
+             * 其余场景：面板在右侧固定占 1/3（与 CSS flex-basis 33.33% 同步） */
+            const stacked = window.matchMedia(
+                '(orientation: portrait) and (min-height: 760px)').matches;
+            let availW, availH;
+            if (stacked) {
+                availW = display.clientWidth - padX;
+                availH = display.clientHeight - padY - INFO_BAR_H - LAYOUT_GAP;
+            } else {
+                const innerW = display.clientWidth - padX;
+                const panelW = Math.round(innerW / 3);
+                availW = innerW - LAYOUT_GAP - panelW;
+                availH = display.clientHeight - padY;
+            }
+            if (availW <= 0 || availH <= 0) return;
+
+            /* 固定 15 列：块大小取「宽 / 15」与「高 / 16」（保底 16 行可容纳）的较小者，
+             * 行数按剩余高度自适应且不设上限（高瘦屏吃满纵向空间，上下留白不超过一个方格） */
+            const FIXED_COLS = 15;
+            let newBlockSize = Math.floor(Math.min(
+                availW / FIXED_COLS,
+                availH / 16
+            ));
+            newBlockSize = Math.max(6, Math.min(newBlockSize, 40));
+            const cols = FIXED_COLS;
+            const rows = Math.max(16, Math.floor(availH / newBlockSize));
+
+            if (cols !== GAME_CONSTANTS.COLS || rows !== GAME_CONSTANTS.ROWS) {
+                this.applyGridSize(rows, cols);
+            }
+
+            // 调整渲染器的方块大小和画布尺寸
+            this.renderer.resize(newBlockSize);
+
+            // 重新绘制游戏画面
+            if (this.board) {
+                this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+                if (this.nextPiece) {
+                    this.renderer.drawNextPiece(this.nextPiece);
+                }
+            }
+        };
+
+        if (immediate) {
+            run();
+        } else {
+            this.resizeTimeout = setTimeout(run, 100); // 100ms的防抖延迟
+        }
+    }
+
+    // 网格尺寸自适应：更新常量并重建棋盘，重叠区域保留已固定的格子
+    applyGridSize(rows, cols) {
+        GAME_CONSTANTS.COLS = cols;
+        GAME_CONSTANTS.ROWS = rows;
+
+        const old = this.board;
+        this.board = new Board(rows, cols);
+        if (old) {
+            const minR = Math.min(old.rows, rows);
+            const minC = Math.min(old.cols, cols);
+            for (let y = 0; y < minR; y++) {
+                for (let x = 0; x < minC; x++) {
+                    this.board.grid[y][x] = old.grid[y][x];
+                }
+            }
+        }
+
+        // 当前方块安置：x 钳制进新边界，非法时逐格上移找空位，
+        // 实在放不下（堆到顶）则判游戏结束
+        if (this.currentPiece) {
+            const shapeW = this.currentPiece.shape[0].length;
+            this.currentPiece.x = Math.max(0, Math.min(this.currentPiece.x, cols - shapeW));
+            let tries = rows + 4;
+            while (!this.board.isValidMove(this.currentPiece) && tries-- > 0) {
+                this.currentPiece.y--;
+            }
+            if (!this.board.isValidMove(this.currentPiece)) {
+                this.currentPiece.x = Math.floor(cols / 2) - 1;
+                this.currentPiece.y = 0;
+                if (!this.board.isValidMove(this.currentPiece)) {
+                    this.gameOver();
+                }
+            }
+        }
+    }
+
+    init() {
+        // 获取当前选中的难度
+        const difficultySelect = document.getElementById('difficulty-select');
+        this.gameSpeed = parseInt(difficultySelect.value);
+
+        // 重置游戏状态
+        this.reset();
+    }
+
+    // ── 音效/背景音乐 ──────────────────────────────────────────
+
+    /** 游戏进行中启动背景音乐（FleaSound.bgm 内部自检音乐开关状态） */
+    _startBgm() {
+        FleaSound.bgm.start(TETRIS_BGM, { beat: 0.28, vol: 0.045 });
+    }
+
+    _stopBgm() {
+        FleaSound.bgm.stop();
+    }
+
+    _updateSoundIcons() {
+        const sfxIcon = document.querySelector('#sfx-btn i');
+        if (sfxIcon) {
+            sfxIcon.classList.toggle('fa-volume-high', FleaSound.isEnabled());
+            sfxIcon.classList.toggle('fa-volume-xmark', !FleaSound.isEnabled());
+        }
+        document.getElementById('sfx-btn')?.classList.toggle('off', !FleaSound.isEnabled());
+        document.getElementById('music-btn')?.classList.toggle('off', !FleaSound.isBgmEnabled());
+    }
+
+    generateRandomPiece() {
+        const shapeIndex = Math.floor(Math.random() * GAME_CONSTANTS.SHAPES.length);
+        const shape = GAME_CONSTANTS.SHAPES[shapeIndex];
+        const x = Math.floor(GAME_CONSTANTS.COLS / 2) - Math.floor(shape[0].length / 2);
+        
+        return new Piece(shape, x, 0);
+    }
+
+    spawnPiece() {
+        // 使用下一个方块作为当前方块
+        this.currentPiece = this.nextPiece || this.generateRandomPiece();
+        
+        // 生成新的下一个方块
+        this.nextPiece = this.generateRandomPiece();
+        
+        // 绘制下一个方块预览
+        this.renderer.drawNextPiece(this.nextPiece);
+        
+        // 检查新生成的方块是否立即碰撞（游戏结束条件）
+        if (!this.board.isValidMove(this.currentPiece)) {
+            this.gameOver();
+            return false;
+        }
+        
+        return true;
+    }
+
+    moveLeft() {
+        if (this.isPaused || this.isGameOver || !this.isGameStarted) return;
+
+        if (this.board.isValidMove(this.currentPiece, -1, 0)) {
+            this.currentPiece.x--;
+            FleaSound.move();
+            this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+        }
+    }
+
+    moveRight() {
+        if (this.isPaused || this.isGameOver || !this.isGameStarted) return;
+
+        if (this.board.isValidMove(this.currentPiece, 1, 0)) {
+            this.currentPiece.x++;
+            FleaSound.move();
+            this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+        }
+    }
+
+    moveDown() {
+        if (this.isPaused || this.isGameOver || !this.isGameStarted) return;
+        
+        if (this.board.isValidMove(this.currentPiece, 0, 1)) {
+            this.currentPiece.y++;
+            this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+            return true;
+        }
+        
+        // 如果发生碰撞，固定当前方块
+        const result = this.board.lockPiece(this.currentPiece);
+        FleaSound.lock();
+        
+        // 检查是否游戏结束
+        if (!result) {
+            this.gameOver();
+            return false;
+        }
+        
+        // 检查并清除已完成的行
+        this.clearLines();
+        
+        // 生成新方块
+        this.spawnPiece();
+        
+        return false;
+    }
+
+    rotatePiece() {
+        if (this.isPaused || this.isGameOver || !this.isGameStarted) return;
+        
+        const originalPiece = this.currentPiece.clone();
+        this.currentPiece.shape = this.currentPiece.rotate();
+        
+        // 检查旋转后是否发生碰撞，如果是则恢复原始形状
+        if (!this.board.isValidMove(this.currentPiece)) {
+            this.currentPiece = originalPiece;
+        } else {
+            FleaSound.rotate();
+        }
+        
+        this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+    }
+
+    hardDrop() {
+        if (this.isPaused || this.isGameOver || !this.isGameStarted) return;
+
+        let dropDistance = 0;
+
+        // 计算可以下落的最大距离
+        while (this.board.isValidMove(this.currentPiece, 0, dropDistance + 1)) {
+            dropDistance++;
+        }
+
+        // 应用下落
+        this.currentPiece.y += dropDistance;
+        FleaSound.drop();
+        
+        // 更新分数（每个格子2分）
+        this.updateScore(dropDistance * 2);
+        
+        // 固定方块并检查游戏是否结束
+        if (!this.lockPiece()) {
+            // 游戏结束，不再继续执行
+            this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+            return;
+        }
+        
+        // 清除完成的行并生成新方块
+        this.clearLines();
+        this.spawnPiece();
+        
+        this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+    }
+
+    lockPiece() {
+        const result = this.board.lockPiece(this.currentPiece);
+        FleaSound.lock();
+        if (!result) {
+            this.gameOver();
+            return false;
+        }
+        return true;
+    }
+
+    clearLines() {
+        const linesCleared = this.board.clearLines();
+        
+        if (linesCleared > 0) {
+            // 更新已清除的行数
+            this.lines += linesCleared;
+            FleaSound.clear(linesCleared);
+            
+            // 根据清除的行数计算分数
+            // 1行=100分，2行=300分，3行=500分，4行=800分
+            const points = [0, 100, 300, 500, 800][linesCleared];
+            this.updateScore(points * this.level);
+            
+            // 每清除10行提升一个等级
+            if (this.lines >= this.level * 10) {
+                this.levelUp();
+            }
+            
+        }
+    }
+
+    updateScore(points) {
+        this.score += points;
+        this.scoreElement.textContent = this.score;
+        
+        // 更新最高分
+        if (this.score > this.highScore) {
+            this.highScore = this.score;
+            if (this.highScoreElement) {
+                this.highScoreElement.textContent = this.highScore;
+            }
+            this.saveHighScore();
+        }
+    }
+    
+    // 加载最高分
+    loadHighScore() {
+        return GameStorage.loadHighScore();
+    }
+    
+    // 保存最高分
+    saveHighScore() {
+        GameStorage.saveHighScore(this.highScore);
+    }
+    
+    // 保存游戏进度
+    saveGameProgress() {
+        try {
+            if (!GameStorage || typeof GameStorage.saveGameProgress !== 'function') {
+                console.error('GameStorage对象或saveGameProgress方法不存在');
+                return false;
+            }
+            
+            // 创建游戏状态对象
+            const gameState = {
+                board: this.board.grid,
+                score: this.score,
+                level: this.level,
+                lines: this.lines,
+                gameSpeed: this.gameSpeed,
+                currentPiece: this.currentPiece ? {
+                    shape: this.currentPiece.shape,
+                    x: this.currentPiece.x,
+                    y: this.currentPiece.y
+                } : null,
+                nextPiece: this.nextPiece ? {
+                    shape: this.nextPiece.shape,
+                    x: this.nextPiece.x,
+                    y: this.nextPiece.y
+                } : null
+            };
+            
+            // 保存游戏状态
+            const result = GameStorage.saveGameProgress(gameState);
+            if (!result) {
+                console.warn('保存游戏进度失败');
+            }
+            return result;
+        } catch (error) {
+            console.error('保存游戏进度时出错:', error);
+            return false;
+        }
+    }
+    
+    // 加载游戏进度
+    loadGameProgress() {
+        const gameState = GameStorage.loadGameProgress();
+        if (!gameState) return false;
+        
+        try {
+            // 存档网格尺寸与当前网格不一致（窗口/设备变了）则放弃恢复
+            const saved = gameState.board;
+            if (!Array.isArray(saved) || saved.length !== this.board.rows
+                || !Array.isArray(saved[0]) || saved[0].length !== this.board.cols) {
+                console.warn('存档网格尺寸与当前不一致，放弃恢复');
+                return false;
+            }
+
+            // 恢复游戏板状态
+            this.board.grid = saved;
+            
+            // 恢复游戏状态
+            this.score = gameState.score;
+            this.level = gameState.level;
+            this.lines = gameState.lines;
+            this.gameSpeed = gameState.gameSpeed;
+            
+            // 恢复当前方块
+            if (gameState.currentPiece) {
+                this.currentPiece = new Piece(
+                    gameState.currentPiece.shape,
+                    gameState.currentPiece.x,
+                    gameState.currentPiece.y
+                );
+            }
+            
+            // 恢复下一个方块
+            if (gameState.nextPiece) {
+                this.nextPiece = new Piece(
+                    gameState.nextPiece.shape,
+                    gameState.nextPiece.x,
+                    gameState.nextPiece.y
+                );
+            }
+            
+            // 更新UI
+            this.updateScore(0);
+            this.levelElement.textContent = this.level;
+            
+            // 重新绘制游戏
+            this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+            this.renderer.drawNextPiece(this.nextPiece);
+            
+            return true;
+        } catch (error) {
+            console.error('恢复游戏进度失败:', error);
+            return false;
+        }
+    }
+
+    levelUp() {
+        this.level++;
+        this.levelElement.textContent = this.level;
+        FleaSound.levelUp();
+        
+        // 提高游戏速度
+        this.gameSpeed = Math.max(100, 1000 - (this.level - 1) * 100);
+        
+        // 更新游戏循环
+        if (this.isGameStarted && !this.isPaused) {
+            clearInterval(this.gameInterval);
+            this.gameInterval = setInterval(() => this.moveDown(), this.gameSpeed);
+        }
+    }
+
+    setSpeed(speed) {
+        this.gameSpeed = speed;
+        
+        if (this.isGameStarted && !this.isPaused) {
+            clearInterval(this.gameInterval);
+            this.gameInterval = setInterval(() => this.moveDown(), this.gameSpeed);
+        }
+    }
+
+    async togglePlayPause() {
+        // 如果游戏结束，重置并开始新游戏
+        if (this.isGameOver) {
+            this.reset();
+            await this.startGame();
+            return;
+        }
+        
+        // 如果游戏尚未开始，开始游戏
+        if (!this.isGameStarted) {
+            await this.startGame();
+            return;
+        }
+        
+        // 如果游戏已经开始，则切换暂停/继续状态
+        this.isPaused = !this.isPaused;
+        
+        if (this.isPaused) {
+            // 暂停游戏
+            clearInterval(this.gameInterval);
+            this.playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+            this._stopBgm();
+            
+            // 显示暂停消息
+            this.renderer.showPause();
+            
+            // 保存游戏进度
+            this.saveGameProgress();
+            this.showNotification('游戏已暂停并保存进度', 2000);
+        } else {
+            // 继续游戏
+            this.gameInterval = setInterval(() => this.moveDown(), this.gameSpeed);
+            this.playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+            this._startBgm();
+            this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+
+            this.showNotification('游戏继续', 1500);
+        }
+    }
+    
+    async startGame() {
+        try {
+            // 检查是否有保存的游戏进度
+            let hasProgress = false;
+            try {
+                hasProgress = !this.isGameStarted && GameStorage && GameStorage.hasGameProgress && GameStorage.hasGameProgress();
+            } catch (e) {
+                console.error('检查游戏进度时出错:', e);
+                hasProgress = false;
+            }
+            
+            if (hasProgress) {
+                // 使用await等待用户确认
+                const shouldRestore = await Dialog.confirm('检测到保存的游戏进度，是否恢复？');
+                
+                if (shouldRestore) {
+                    if (this.loadGameProgress()) {
+                        this.isGameStarted = true;
+                        this.isPaused = false;
+                        this.isGameOver = false;
+
+                        this.gameInterval = setInterval(() => this.moveDown(), this.gameSpeed);
+                        this.playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+                        this._startBgm();
+
+                        this.showNotification('游戏进度已恢复', 2000);
+                        return;
+                    }
+                } else {
+                    // 如果用户选择不恢复，则清除保存的游戏进度
+                    try {
+                        GameStorage.clearGameProgress();
+                    } catch (e) {
+                        console.error('清除游戏进度时出错:', e);
+                    }
+                }
+            }
+        
+            // 开始游戏循环
+            this.isGameStarted = true;
+            this.gameInterval = setInterval(() => this.moveDown(), this.gameSpeed);
+            this._startBgm();
+
+            // 更新按钮状态
+            this.playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+
+            // 显示通知
+            this.showNotification('游戏开始！', 1500);
+        } catch (error) {
+            console.error('启动游戏时出错:', error);
+            // 确保游戏至少能启动
+            this.isGameStarted = true;
+            this.gameInterval = setInterval(() => this.moveDown(), this.gameSpeed);
+            this._startBgm();
+            this.playPauseBtn.innerHTML = '<i class="fas fa-pause"></i>';
+        }
+    }
+
+    gameOver() {
+        this.isGameOver = true;
+        clearInterval(this.gameInterval);
+        this._stopBgm();
+        FleaSound.lose();
+        
+        // 更新按钮状态
+        this.playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        
+        // 显示游戏结束消息
+        this.renderer.drawBoard(this.board, this.currentPiece, true, this.score);
+        
+        // 删除暂存的游戏
+        GameStorage.clearGameProgress();
+        this.showNotification('游戏结束，已清除暂存游戏', 2000);
+    }
+
+    reset() {
+        // 重置游戏状态
+        this.board.reset();
+        this._stopBgm();
+        this.score = 0;
+        this.level = 1;
+        this.lines = 0;
+        this.isGameOver = false;
+        this.isPaused = false;
+        this.isGameStarted = false;
+        
+        // 更新显示
+        this.scoreElement.textContent = this.score;
+        this.levelElement.textContent = this.level;
+        
+        // 重置按钮状态
+        this.playPauseBtn.innerHTML = '<i class="fas fa-play"></i>';
+        
+        // 清除游戏循环
+        clearInterval(this.gameInterval);
+        
+        // 生成初始方块
+        this.nextPiece = this.generateRandomPiece();
+        this.currentPiece = this.generateRandomPiece();
+        
+        // 绘制游戏板和下一个方块
+        this.renderer.drawBoard(this.board, this.currentPiece, this.isGameOver, this.score);
+        this.renderer.drawNextPiece(this.nextPiece);
+    }
+
+    showNotification(message, duration = 2000) {
+        Toast.info(message, duration);
+    }
+}
+
+// 初始化游戏
+document.addEventListener('DOMContentLoaded', () => {
+    // 创建游戏实例
+    const game = new TetrisGame();
+    window.game = game; // 暴露到 window，便于调试与自动化测试
+    
+    // 主题切换功能
+    document.getElementById('theme-button').addEventListener('click', () => {
+        game.renderer.drawBoard(game.board, game.currentPiece);
+        game.renderer.drawNextPiece(game.nextPiece);
+    });
+});

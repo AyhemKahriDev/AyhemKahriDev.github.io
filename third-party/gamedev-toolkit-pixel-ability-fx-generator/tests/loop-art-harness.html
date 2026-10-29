@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><title>Loop art verification</title></head>
+<body data-status="running">
+<pre id="result">Checking seamless loops…</pre>
+<script type="module">
+import { AbilityEffect, createEffectRecipe, renderEffectFrames } from '../js/AbilityEffect.js';
+import { LOOP_MOTIFS } from '../js/engine/LoopArt.js';
+
+const failures = [];
+const samples = [];
+const size = 160;
+const framesPerLoop = 24;
+const motifKeys = Object.keys(LOOP_MOTIFS);
+if (motifKeys.length !== 50) failures.push(`expected 50 motifs, found ${motifKeys.length}`);
+const generatedMotifs = new Set(Array.from({ length: 2500 }, (_, index) =>
+    createEffectRecipe({ seed: 40000 + index }).motif));
+if (generatedMotifs.size !== 50) failures.push(`seeded generation reached only ${generatedMotifs.size} motifs`);
+
+const pixelsAt = (effect, time) => {
+    const canvas = document.createElement('canvas');
+    canvas.width = canvas.height = size;
+    const context = canvas.getContext('2d');
+    effect.draw(context, time);
+    return context.getImageData(0, 0, size, size).data;
+};
+
+const difference = (left, right) => {
+    let total = 0;
+    for (let index = 0; index < left.length; index += 1) total += Math.abs(left[index] - right[index]);
+    return total / left.length;
+};
+
+for (const [motifIndex, motif] of motifKeys.entries()) {
+    for (const seed of [1001, 2002, 3003]) {
+        const recipe = { ...createEffectRecipe({ seed: seed + motifIndex * 100, element: 'storm' }), motif };
+        const effect = new AbilityEffect(recipe);
+        const frames = Array.from({ length: framesPerLoop }, (_, index) => pixelsAt(effect, effect.duration * index / framesPerLoop));
+        const transitions = frames.map((frame, index) => difference(frame, frames[(index + 1) % frames.length]));
+        const mean = transitions.reduce((sum, value) => sum + value, 0) / transitions.length;
+        const wrap = transitions.at(-1);
+        const period = difference(frames[0], pixelsAt(effect, effect.duration));
+        const occupied = frames[0].filter((value, index) => index % 4 === 3 && value > 0).length;
+        let boundaryPixels = 0;
+        for (let y = 0; y < size; y += 1) for (let x = 0; x < size; x += 1) {
+            if (x !== 0 && x !== size - 1 && y !== 0 && y !== size - 1) continue;
+            if (frames[0][(y * size + x) * 4 + 3] > 0) boundaryPixels += 1;
+        }
+        const ratio = mean ? wrap / mean : 0;
+        if (period !== 0) failures.push(`${motif}/${seed}: first and period frame differ`);
+        if (ratio > 1.8) failures.push(`${motif}/${seed}: wrap jump is ${ratio.toFixed(2)}x normal motion`);
+        if (occupied < 20) failures.push(`${motif}/${seed}: nearly empty first frame`);
+        if (boundaryPixels) failures.push(`${motif}/${seed}: ${boundaryPixels} occupied edge pixels`);
+        samples.push({ motif, seed, occupied, period, wrapRatio: Number(ratio.toFixed(3)) });
+    }
+}
+
+const fixedRecipe = createEffectRecipe({ seed: 919191, element: 'arcane' });
+const signatures = motifKeys.map((motif) => {
+    const effect = new AbilityEffect({ ...fixedRecipe, motif });
+    const pixels = pixelsAt(effect, effect.duration * 0.22);
+    let hash = 2166136261;
+    for (const value of pixels) hash = Math.imul(hash ^ value, 16777619);
+    return hash >>> 0;
+});
+if (new Set(signatures).size !== motifKeys.length) failures.push('two motifs rendered an identical frame with the same recipe');
+
+const recipe = { ...createEffectRecipe({ seed: 4242 }), motif: 'prism' };
+const { frames } = await renderEffectFrames({ recipe, size: 128, frameCount: 24 });
+if (frames.length !== 24 || frames.some((frame) => frame.width !== 128 || frame.height !== 128)) {
+    failures.push('export dimensions or frame count are incorrect');
+}
+if (difference(frames[0].getContext('2d').getImageData(0, 0, 128, 128).data,
+    frames.at(-1).getContext('2d').getImageData(0, 0, 128, 128).data) === 0) {
+    failures.push('export repeats the first frame instead of sampling the cycle');
+}
+
+const result = { passed: failures.length === 0, motifCount: motifKeys.length,
+    generatedMotifCount: generatedMotifs.size,
+    distinctFixedSeedFrames: new Set(signatures).size, failures, samples };
+document.body.dataset.status = result.passed ? 'passed' : 'failed';
+document.querySelector('#result').textContent = JSON.stringify(result, null, 2);
+</script>
+</body>
+</html>
