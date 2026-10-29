@@ -7,7 +7,7 @@
  */
 import { mkdirSync, writeFileSync, readFileSync, readdirSync, rmSync, existsSync, cpSync, copyFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import content from '../content/games.json' with { type: 'json' };
 import generated from '../content/games.generated.json' with { type: 'json' };
 import sponsors from '../content/sponsors.json' with { type: 'json' };
@@ -176,7 +176,7 @@ function readJsonLayer(rel) {
  * nothing the harvest regenerates can overwrite hand-written curation, and the
  * overlays in content/overlays.json are applied last. See scripts/catalogue.mjs.
  */
-const GAMES = mergeCatalogue({
+export const GAMES = mergeCatalogue({
   base: content.games ?? [],
   engine: layerGames(readJsonLayer('content/engine-new.json')),
   curated: layerGames(readJsonLayer('content/curated.json')),
@@ -1184,44 +1184,169 @@ ${siteFooter()}`;
   );
 }
 
+/* --------------------------------------------------- games index paging */
+
+/**
+ * Games per page of the /games/ index.
+ *
+ * The index used to ship every tile in one document - 465 and climbing, ~550 kB
+ * of HTML, the heaviest page on the site and the one every crawl lands on. 60
+ * fills a desktop grid in about two screenfuls, is one thumb-flick on a phone,
+ * and keeps the document smaller than most of the games it links to.
+ */
+export const GAMES_PER_PAGE = 60;
+
+/** How many index pages a catalogue of `total` games needs (never fewer than one). */
+export function pageCountFor(total, perPage = GAMES_PER_PAGE) {
+  const count = Math.floor(Number(total) || 0);
+  const size = Math.floor(Number(perPage) || 0);
+  if (count <= 0) return 1;
+  return Math.max(1, Math.ceil(count / (size > 0 ? size : 1)));
+}
+
+/**
+ * Site path of page `page`.
+ *
+ * Page 1 is the canonical /games/ so the URL everyone links and the one in the
+ * sitemap is the shallow one; deeper pages are real paths, not query strings,
+ * so they are crawlable, cacheable and shareable without JavaScript.
+ */
+export function pageHref(page) {
+  const n = Math.max(1, Math.floor(Number(page) || 1));
+  return n === 1 ? '/games/' : `/games/page/${n}/`;
+}
+
+/** The absolute, self-referencing canonical URL for page `page`. */
+export function pageCanonical(page) {
+  return abs(pageHref(page));
+}
+
+/** The games on page `page`, in catalogue order. Past the end: empty. */
+export function pageSlice(games, page, perPage = GAMES_PER_PAGE) {
+  const size = Math.max(1, Math.floor(Number(perPage) || GAMES_PER_PAGE));
+  const n = Math.max(1, Math.floor(Number(page) || 1));
+  const start = (n - 1) * size;
+  return games.slice(start, start + size);
+}
+
+/**
+ * The compact catalogue the browser fetches for search: exactly four fields.
+ *
+ * The tiles in the document are only this page; search has to reach the whole
+ * catalogue, so it needs id, title, category and accent - enough to match a
+ * game and draw a result - and nothing else. Keywords, taglines and
+ * descriptions would triple the payload for no visible gain.
+ */
+export function catalogEntries(games) {
+  return games.map((g) => ({ i: g.id, t: g.title, c: g.category, a: g.accent }));
+}
+
+/**
+ * /games/catalog.json as a string.
+ *
+ * `<` is escaped to \u003c. The payload used to be inlined in a <script>
+ * block, where a game titled "…</script>" would have ended it early; it is a
+ * fetched file now, but the escaping costs 0 bytes after gzip and means the
+ * build can never emit JSON that breaks a document.
+ */
+export function catalogJson(games) {
+  return JSON.stringify(catalogEntries(games)).replace(/</g, '\\u003c');
+}
+
+/**
+ * Server-rendered page links.
+ *
+ * Rendered twice per page - above and below the grid - because walking 60
+ * tiles to reach the bottom of the list is a long scroll on a phone. Real
+ * anchors, so the whole catalogue is reachable with JavaScript off.
+ */
+export function pagerHtml(page, pages, opts = {}) {
+  const total = Math.max(1, Math.floor(Number(pages) || 1));
+  const at = Math.min(Math.max(1, Math.floor(Number(page) || 1)), total);
+  const numbers = [];
+  for (let n = 1; n <= total; n++) {
+    numbers.push(
+      n === at
+        ? `<li><a href="${pageHref(n)}" aria-current="page">${n}</a></li>`
+        : `<li><a href="${pageHref(n)}">${n}</a></li>`,
+    );
+  }
+  const prev =
+    at > 1
+      ? `<a class="pager-step" href="${pageHref(at - 1)}" rel="prev"><span aria-hidden="true">‹</span> Prev</a>`
+      : `<span class="pager-step is-off" aria-hidden="true"><span>‹</span> Prev</span>`;
+  const next =
+    at < total
+      ? `<a class="pager-step" href="${pageHref(at + 1)}" rel="next">Next <span aria-hidden="true">›</span></a>`
+      : `<span class="pager-step is-off" aria-hidden="true">Next <span>›</span></span>`;
+  return `<nav class="pager"${opts.id ? ` id="${opts.id}"` : ''} data-pager aria-label="Game pages">
+  ${prev}
+  <ol class="pager-list">${numbers.join('')}</ol>
+  ${next}
+</nav>`;
+}
+
 function buildGamesIndex() {
   const total = GAMES.length;
+  const perPage = GAMES_PER_PAGE;
+  const pages = pageCountFor(total, perPage);
   const byCategory = CATEGORIES.map((c) => ({
     ...c,
     games: GAMES.filter((g) => g.category === c.id),
   })).filter((c) => c.games.length);
 
-  const sections = byCategory
-    .map(
-      (c) => `<section class="section cat-block" data-category="${esc(c.id)}" data-name="${esc(
-        c.title.toLowerCase(),
-      )}">
-    <div class="section-head">
-      <h2>${esc(c.title)}</h2>
-      <span class="pill">${c.games.length} game${c.games.length === 1 ? '' : 's'}</span>
-    </div>
-    ${gameTiles(c.games)}
-  </section>`,
-    )
-    .join('');
-
   const chips = [
-    `<button class="chip is-on" type="button" data-cat-chip="all" aria-pressed="true">Everything <b>${total}</b></button>`,
-    ...byCategory.map(
-      (c) =>
-        `<button class="chip" type="button" data-cat-chip="${esc(c.id)}" aria-pressed="false">${esc(
-          c.title.replace(/ Games$/, ''),
-        )} <b>${c.games.length}</b></button>`,
-    ),
+    `<button class="chip is-on" type="button" data-cat-chip="all" data-cat-title="everything" aria-pressed="true">Everything <b>${total}</b></button>`,
+    ...byCategory.map((c) => {
+      const label = c.title.replace(/ Games$/, '');
+      return `<button class="chip" type="button" data-cat-chip="${esc(c.id)}" data-cat-title="${esc(
+        label,
+      )}" aria-pressed="false">${esc(label)} <b>${c.games.length}</b></button>`;
+    }),
   ].join('');
 
-  const body = `${siteHeader('/games/')}
+  const categoryList = byCategory.map((c) => c.title.toLowerCase()).join(', ');
+
+  /** Deeper pages are discovered from page 1 and from each other. */
+  const pageUrls = [];
+
+  for (let page = 1; page <= pages; page++) {
+    const slice = pageSlice(GAMES, page, perPage);
+    const from = (page - 1) * perPage + 1;
+    const to = from + slice.length - 1;
+    const isFirst = page === 1;
+
+    const title = isFirst
+      ? `All ${total} free browser games — the full arcade | ${SITE.name}`
+      : `All ${total} free browser games — page ${page} of ${pages} | ${SITE.name}`;
+    const description = isFirst
+      ? `Browse all ${total} free browser games on ${SITE.name}: ${categoryList}. Instant play, no download, no sign-up.`
+      : `Games ${from}–${to} of ${total} free browser games on ${SITE.name}, page ${page} of ${pages}. Instant play, no download, no sign-up.`;
+
+    const head = [
+      page > 1 ? `<link rel="prev" href="${esc(pageCanonical(page - 1))}">` : '',
+      page < pages ? `<link rel="next" href="${esc(pageCanonical(page + 1))}">` : '',
+    ]
+      .filter(Boolean)
+      .join('\n');
+
+    const pager = pages > 1 ? pagerHtml(page, pages) : '';
+
+    const body = `${siteHeader('/games/')}
 <main class="wrap" id="main">
   <section class="hero" style="padding-bottom:8px">
     <div>
-      <p class="kicker"><i></i>${total} games · ${byCategory.length} categories · all free</p>
-      <h1>Every game in the arcade</h1>
-      <p class="lede">No download, no sign-up, no paywall. Search by name, filter by category, or just press the random button and see what happens.</p>
+      <p class="kicker"><i></i>${
+        isFirst
+          ? `${total} games · ${byCategory.length} categories · all free`
+          : `Page ${page} of ${pages} · games ${from}–${to} of ${total}`
+      }</p>
+      <h1>${isFirst ? 'Every game in the arcade' : `All games — page ${page} of ${pages}`}</h1>
+      <p class="lede">${
+        isFirst
+          ? 'No download, no sign-up, no paywall. Search by name, filter by category, or just press the random button and see what happens.'
+          : `The same arcade, split across ${pages} pages so it opens fast. Search reaches all ${total} games, whichever page they live on.`
+      }</p>
       <form class="filter-bar" role="search" onsubmit="return false">
         <input id="game-filter" class="filter-input" type="search" name="q" placeholder="Search ${total} games…"
                autocomplete="off" spellcheck="false" aria-label="Search games by name"
@@ -1237,36 +1362,56 @@ function buildGamesIndex() {
       <p id="filter-status" class="filter-status" role="status" aria-live="polite"></p>
     </div>
   </section>
-  <div id="game-sections">${sections}</div>
+  <div id="game-sections" data-catalog="/games/catalog.json">
+    ${pages > 1 ? pagerHtml(page, pages, { id: 'game-pager-top' }) : ''}
+    <section class="section" id="index-tiles" data-page="${page}">
+      <div class="section-head">
+        <h2>${isFirst ? `Showing ${from}–${to} of ${total}` : `Games ${from}–${to}`}</h2>
+        <span class="pill">page ${page} of ${pages}</span>
+      </div>
+      ${gameTiles(slice)}
+    </section>
+    <div class="grid" id="sorted-grid" hidden></div>
+    ${pager}
+  </div>
   <div class="empty" id="filter-empty" hidden>
     <b>No game matches that.</b>
     Try a shorter word, or <a href="/games/">clear the filter</a>.
   </div>
-
+${
+  isFirst
+    ? `
   <section class="section" id="recent-section">
     <div class="section-head">
       <h2>Pick up where you left off</h2>
       <span class="pill">on this device</span>
     </div>
     <div class="hscroll" aria-live="polite"></div>
-  </section>
+  </section>`
+    : ''
+}
 </main>
-<script id="af-catalog-json" type="application/json">${JSON.stringify(
-    GAMES.map((g) => ({ i: g.id, t: g.title, c: g.category, a: g.accent })),
-  ).replace(/</g, '\\u003c')}</script>
 ${siteFooter()}`;
 
-  write(
-    'games/index.html',
-    layout({
-      title: `All ${total} free browser games — the full arcade | ${SITE.name}`,
-      description: `Browse all ${total} free browser games on ${SITE.name}: ${byCategory
-        .map((c) => c.title.toLowerCase())
-        .join(', ')}. Instant play, no download, no sign-up.`,
-      canonical: abs('/games/'),
-      body,
-    }),
-  );
+    write(
+      isFirst ? 'games/index.html' : `games/page/${page}/index.html`,
+      layout({
+        title,
+        description,
+        canonical: pageCanonical(page),
+        head,
+        body,
+      }),
+    );
+
+    if (!isFirst) pageUrls.push(pageCanonical(page));
+  }
+
+  // The whole catalogue in four fields per game, fetched on the first
+  // keystroke rather than shipped with the page.
+  write('games/catalog.json', catalogJson(GAMES));
+
+  return { total, perPage, pages, urls: pageUrls };
 }
 
 function buildAdvertise() {
@@ -1409,10 +1554,13 @@ function main() {
     urls.push({ loc: abs(`/daily/${d}/answers/`), lastmod: d });
   }
 
-  buildSitemap(urls);
   buildRobots();
   buildCredits();
-  buildGamesIndex();
+  // The index is paged, so it is built before the sitemap that lists its pages.
+  const index = buildGamesIndex();
+  for (const loc of index.urls) urls.push({ loc, lastmod: today });
+
+  buildSitemap(urls);
   buildNotFound();
   buildAdvertise();
 
@@ -1423,4 +1571,13 @@ function main() {
   );
 }
 
-main();
+/**
+ * Run only when executed, never on import.
+ *
+ * tests/index-paging.test.js imports the paging helpers from this module, and
+ * an unguarded main() would build the whole site - and rewrite dist/ - as a
+ * side effect of running the tests.
+ */
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
+  main();
+}
