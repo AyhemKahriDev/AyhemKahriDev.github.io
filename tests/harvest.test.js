@@ -188,7 +188,11 @@ test('preflight accepts index.html plus a LICENSE file', (t) => {
   assert.equal(verdict.ok, true);
   assert.equal(verdict.reason, 'ok');
   assert.ok(verdict.files.includes('index.html'));
-  assert.deepEqual(calls, [['api', 'repos/someone/snake/contents/']]);
+  // One cheap call per repo, and it is the whole-tree probe: the entry may be
+  // docs/index.html, so preflight asks for every path at once instead of a
+  // root listing that cannot see it.
+  assert.equal(calls.length, 1, 'preflight must answer with one API call');
+  assert.match(calls[0][1], /^repos\/someone\/snake\/git\/trees\/[^/]+\?recursive=1$/);
 
   // No index.html, no licence: both are refusals, with distinct reasons.
   const noLicence = makePreflight({
