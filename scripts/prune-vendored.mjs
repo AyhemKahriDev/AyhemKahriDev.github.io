@@ -26,7 +26,9 @@ const JUNK_EXT = new Set([
   '.psd', '.ai', '.xcf', '.sketch', '.fig',
   '.map', '.yml', '.yaml', '.toml', '.lock', '.log',
   '.exe', '.dmg', '.msi', '.swf', '.jar', '.class',
-  '.pyc', '.o', '.obj', '.wasm.map',
+  // NOT .obj: in a game repo that is a Wavefront 3D asset, not a compiler
+  // object file. Deleting them broke breathmint-phalange-gaiden.
+  '.pyc', '.o', '.wasm.map',
 ]);
 
 const JUNK_DIR = new Set([
@@ -43,7 +45,9 @@ const KEEP_FILE = /^(licen[cs]e|copying|notice|unlicense|arcadefork-notice)(\.|$
 export function pruneVendored(dir) {
   const stats = { removed: 0, bytes: 0 };
   walk(dir, stats);
-  pruneUnreferencedMedia(dir, stats);
+  // No reachability pass on media: clumsy-bird loads its BGM by concatenating
+  // a filename at runtime, so "not mentioned in any text file" is not the same
+  // as "unused". Extension and directory rules only - they cannot lie.
   return stats;
 }
 
@@ -75,51 +79,6 @@ function walk(dir, stats) {
       rmSync(path, { force: true });
       stats.removed += 1;
     }
-  }
-}
-
-/** Delete media over 1 MB that no HTML/JS/CSS/JSON in the same game mentions. */
-function pruneUnreferencedMedia(dir, stats) {
-  const text = [];
-  const media = [];
-  const collect = (current) => {
-    let entries;
-    try {
-      entries = readdirSync(current, { withFileTypes: true });
-    } catch {
-      return;
-    }
-    for (const entry of entries) {
-      const path = join(current, entry.name);
-      if (entry.isDirectory()) {
-        collect(path);
-        continue;
-      }
-      const ext = extname(entry.name).toLowerCase();
-      const size = statSync(path).size;
-      if (TEXT_EXT.has(ext) && size < 4 * 1024 * 1024) text.push(path);
-      else if (MEDIA_EXT.has(ext) && size > 1024 * 1024) media.push(path);
-    }
-  };
-  collect(dir);
-  if (!media.length) return;
-
-  const haystack = text
-    .map((p) => {
-      try {
-        return readFileSync(p, 'utf8');
-      } catch {
-        return '';
-      }
-    })
-    .join('\n');
-
-  for (const path of media) {
-    const name = basename(path);
-    if (haystack.includes(name)) continue;
-    stats.bytes += statSync(path).size;
-    rmSync(path, { force: true });
-    stats.removed += 1;
   }
 }
 

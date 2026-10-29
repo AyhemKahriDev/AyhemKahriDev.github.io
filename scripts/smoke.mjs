@@ -12,6 +12,7 @@ import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
 import { findChrome } from './chrome.mjs';
+import { mergeCatalogue } from './catalogue.mjs';
 import { generateWordBoard, dateSeed, todayISO } from '../src/shared/daily.js';
 import { themeForDate } from '../src/shared/wordlists.js';
 
@@ -42,14 +43,26 @@ async function waitForServer() {
 const TODAY = todayISO();
 
 /** Every embedded (third-party) game gets checked in a real browser. */
-const contentMain = JSON.parse(
-  readFileSync(new URL('../content/games.json', import.meta.url), 'utf8'),
-);
-const contentGen = existsSync(new URL('../content/games.generated.json', import.meta.url))
-  ? JSON.parse(readFileSync(new URL('../content/games.generated.json', import.meta.url), 'utf8'))
-  : { games: [] };
+const layer = (name) =>
+  existsSync(new URL(`../content/${name}`, import.meta.url))
+    ? JSON.parse(readFileSync(new URL(`../content/${name}`, import.meta.url), 'utf8')).games ?? []
+    : [];
+/**
+ * The same merge the site builder uses. Before this, smoke read only
+ * games.json + games.generated.json, so a page whose id had been claimed by a
+ * first-party engine game (breakout) was still expected to contain an iframe
+ * and failed a gate the site had passed.
+ */
+const catalogue = mergeCatalogue({
+  base: layer('games.json'),
+  engine: layer('engine-new.json'),
+  curated: layer('curated.json'),
+  published: layer('harvest-published.json'),
+  generated: layer('games.generated.json'),
+  overlays: JSON.parse(readFileSync(new URL('../content/overlays.json', import.meta.url), 'utf8')).games ?? {},
+});
 
-const embedGames = [...contentMain.games, ...contentGen.games].filter((g) => g.embed);
+const embedGames = catalogue.filter((g) => g.embed);
 
 const PAGES = [
   { path: '/', name: 'home', expectCanvas: false },
