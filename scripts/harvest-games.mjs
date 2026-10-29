@@ -265,6 +265,14 @@ function sweep() {
             `  sweep: ${calls} calls, ${seen.size} candidates (${q} / ${lic} / p${page})\n`,
           );
         }
+        // A deep sweep is hours of API calls. Without a checkpoint, a killed
+        // run loses every candidate it found - so persist as we go.
+        if (calls % 50 === 0) {
+          writeJson(
+            join(work, 'candidates.json'),
+            [...seen.values()].sort((a, b) => b.stars - a.stars),
+          );
+        }
         const raw = ghSearch([
           'api',
           `search/repositories?q=${encodeURIComponent(`${q} license:${lic} stars:>2`)}&per_page=100&page=${page}&sort=stars`,

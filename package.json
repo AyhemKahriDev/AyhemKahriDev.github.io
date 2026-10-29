@@ -9,6 +9,8 @@
     "build": "vite build && node scripts/build-site.mjs",
     "preview": "npm run build && wrangler dev",
     "typecheck": "tsc --noEmit",
+    "test": "node --test tests/",
+    "test:watch": "node --test --watch tests/",
     "daily": "node scripts/daily.mjs",
     "vendor:games": "node scripts/vendor-games.mjs",
     "harvest": "node scripts/harvest-games.mjs all",
