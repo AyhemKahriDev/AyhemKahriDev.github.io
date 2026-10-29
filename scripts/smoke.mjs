@@ -106,7 +106,18 @@ async function main() {
   const failures = [];
   const waived = [];
 
-  for (const target of PAGES) {
+  /**
+   * One pass over the given pages. Returns the failures it collected.
+   *
+   * Split out so the whole pass can be re-run for the pages that failed: on a
+   * loaded CI runner a page can miss its iframe inside the settle window and
+   * pass 30 seconds later. A page that fails twice is broken; one that fails
+   * once is a slow machine. Deleting good games over runner noise is exactly
+   * how 719 working games were destroyed once already.
+   */
+  const runPass = async (targets) => {
+  const start = failures.length;
+  for (const target of targets) {
     let page = null;
     try {
       page = await browser.newPage();
@@ -310,6 +321,21 @@ async function main() {
       protocolTimeout: 90_000,
     });
   }
+  }
+  return failures.slice(start);
+  };
+
+  await runPass(PAGES);
+  const retryTargets = failures
+    .map((f) => PAGES.find((p) => p.path === f.path))
+    .filter(Boolean);
+  if (retryTargets.length) {
+    console.log(`\nretrying ${retryTargets.length} failed page(s) once`);
+    const first = failures.splice(0, failures.length);
+    await runPass(retryTargets);
+    for (const f of first) {
+      if (!failures.some((g) => g.path === f.path)) console.log(`FLAKY ${f.path} (passed on the retry)`);
+    }
   }
 
   // Functional check: drag across a real hidden word and assert it registers.
