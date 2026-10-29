@@ -591,6 +591,92 @@ export function familyFor(catalog, game) {
   return null;
 }
 
+/**
+ * A game's copy in one locale: everything a page says about it.
+ *
+ * content/games.json is English data - one tagline, one description, one set of
+ * steps and one FAQ per game, all written in English and rewritten by the
+ * harvest - so a translated chrome over it still reads as English on /fr/ and
+ * /ar/. `families` in content/i18n/*.json holds the same four fields translated
+ * per genre, which is what a localised page shows instead.
+ *
+ * The order is deliberate:
+ *
+ *   1. English gets the game's own words. They name the thing ("the board wraps
+ *      at the edges"); a genre template only generalises, which would be a
+ *      regression on the pages the catalogue was written for.
+ *   2. Any other locale gets the template for the resolved family. A game no
+ *      genre claims resolves to `families.generic`, written to be true of any
+ *      browser game rather than false about this one - so it is used, not the
+ *      English sentence a French reader cannot read.
+ *   3. No template anywhere (a catalog without `families`): the English values.
+ *      An untranslated sentence beats a blank one, a dotted key or "undefined".
+ *
+ * Never returns a hole - every field is a non-empty string or a non-empty list,
+ * so a caller can render the result without checking it first. The title is not
+ * part of it: a game's name is a proper noun and stays as it is in every tree.
+ */
+export function gameCopy(catalog, game, locale) {
+  const g = game ?? {};
+  const asked = String(locale ?? catalog?.locale ?? DEFAULT_LOCALE).trim().toLowerCase();
+  const id = LOCALES.some((l) => l.id === asked) ? asked : DEFAULT_LOCALE;
+  const text = (v) => (typeof v === 'string' && v.trim() ? v : '');
+  const stepsOf = (list) =>
+    (Array.isArray(list) ? list : []).map(text).filter((s) => s.trim().length > 3);
+  const answersOf = (list) =>
+    (Array.isArray(list) ? list : [])
+      .filter((f) => f && text(f.q) && text(f.a))
+      .map((f) => ({ q: text(f.q).trim(), a: text(f.a).trim() }));
+  const firstSentence = (v) => (String(v ?? '').split(/(?<=[.!?])\s+/)[0] ?? '').trim();
+
+  const title = text(g.title).trim() || text(g.id).trim();
+  const ownDescription = text(g.description);
+  const own = {
+    tagline: text(g.tagline).trim() || firstSentence(ownDescription) || title,
+    description: ownDescription || text(g.tagline).trim() || title,
+    howToPlay: stepsOf(g.howToPlay),
+    faq: answersOf(g.faq),
+  };
+
+  const family = familyFor(catalog, game) ?? catalog?.families?.generic ?? null;
+  const familySteps = family ? stepsOf(family.howToPlay) : [];
+  const familyFaq = family ? answersOf(family.faq) : [];
+  const familyCopy = family
+    ? {
+        tagline: text(family.tagline).trim(),
+        description: text(family.description).trim(),
+        howToPlay: familySteps,
+        faq: familyFaq,
+      }
+    : null;
+
+  if (id !== DEFAULT_LOCALE && familyCopy) {
+    // Per field, not all-or-nothing: a template missing its FAQ still gives the
+    // page translated steps instead of throwing the whole copy away.
+    return {
+      tagline: familyCopy.tagline || own.tagline,
+      description: familyCopy.description || own.description,
+      howToPlay: familyCopy.howToPlay.length ? familyCopy.howToPlay : own.howToPlay,
+      faq: familyCopy.faq.length ? familyCopy.faq : own.faq,
+    };
+  }
+
+  // English, or a locale with no template to offer.
+  const defaultSteps = ['game.howToDefault1', 'game.howToDefault2', 'game.howToDefault3']
+    .map((key) => t(catalog, key, { title: title || 'this game' }))
+    .filter((s) => typeof s === 'string' && s.trim());
+  return {
+    tagline: own.tagline,
+    description: own.description,
+    howToPlay: own.howToPlay.length
+      ? own.howToPlay
+      : familySteps.length
+        ? familySteps
+        : defaultSteps,
+    faq: own.faq.length ? own.faq : familyFaq,
+  };
+}
+
 /* --------------------------------------------------------------- URLs */
 
 /**

@@ -27,7 +27,7 @@ import {
   alternatesFor,
   categoryTitle,
   categoryDescription,
-  familyFor,
+  gameCopy,
 } from './i18n.mjs';
 import {
   generateWordBoard,
@@ -336,24 +336,19 @@ const themeName = (theme) => {
  * The catalogue used to hold objects where strings belong, which rendered
  * as "[object Object]" on every game page. Anything that is not a usable
  * sentence is dropped here, and a page never renders an empty list.
+ *
+ * The lines come from the copy `gameCopy` resolved for this tree: the game's
+ * own steps in English, the genre template outside it. English keeps the
+ * stricter length cut because the catalogue's own lines are prose, while a
+ * translated template line can be short and still be a sentence.
  */
-function howToLines(game) {
-  const list = Array.isArray(game.howToPlay) ? game.howToPlay : [];
-  const lines = list
+function howToLines(copy, game) {
+  const min = L.id === DEFAULT_LOCALE ? 12 : 3;
+  const lines = (Array.isArray(copy?.howToPlay) ? copy.howToPlay : [])
     .filter((s) => typeof s === 'string')
     .map((s) => s.trim())
-    .filter((s) => s.length > 12);
-  // A genre template in the catalog is a translation of the steps for this
-  // kind of game. It only outranks the game's own text outside English: the
-  // English catalogue already has the specific, hand-written steps and a
-  // generic template would be a regression.
-  const family = familyFor(L.catalog, game);
-  const fromFamily = Array.isArray(family?.howToPlay)
-    ? family.howToPlay.filter((s) => typeof s === 'string' && s.trim().length > 3)
-    : [];
-  if (L.id !== DEFAULT_LOCALE && fromFamily.length) return fromFamily.slice(0, 5);
+    .filter((s) => s.length > min);
   if (lines.length) return lines.slice(0, 5);
-  if (fromFamily.length) return fromFamily.slice(0, 5);
   return [
     translate(L.catalog, 'game.howToDefault1', { title: game.title }),
     translate(L.catalog, 'game.howToDefault2', { title: game.title }),
@@ -361,6 +356,33 @@ function howToLines(game) {
   ];
 }
 
+/**
+ * A game's copy for the tree being built, resolved once per game.
+ *
+ * A game page, its tile on the index and the rail inside the game all ask for
+ * the same four fields, and the homepage carries all 464 games, so the family
+ * lookup is memoised per tree: the catalogue is English data and the genre
+ * template is the localised version of it (see gameCopy in scripts/i18n.mjs).
+ */
+const copyCache = new Map();
+function copyFor(game) {
+  const key = `${L.id}\u0000${game?.id ?? ''}`;
+  const hit = copyCache.get(key);
+  if (hit) return hit;
+  const copy = gameCopy(L.catalog, game, L.id);
+  copyCache.set(key, copy);
+  return copy;
+}
+
+/**
+ * The game with its localised tagline and description attached - the shape
+ * shell.mjs and cleanTagline read. Titles, ids, categories, accents and credit
+ * are left alone: a name is a proper noun, not prose.
+ */
+function localGame(game) {
+  const copy = copyFor(game);
+  return { ...game, tagline: copy.tagline, description: copy.description };
+}
 
 /** Write a page into the active locale's tree: 'index.html' -> /fr/index.html. */
 function write(relPath, html) {
@@ -695,7 +717,7 @@ function gameTiles(ids, opts = {}) {
       <div class="thumb">${gameIcon(g.id, g.accent, g.category)}</div>
       ${g.credit ? `<span class="badge">${tn('tile.openSource')}</span>` : ''}
       <h3>${esc(g.title)}</h3>
-      <p>${esc(cleanTagline(g))}</p>
+      <p>${esc(cleanTagline(localGame(g)))}</p>
       ${cat ? `<span class="tag">${esc(catShort(cat))}</span>` : ''}
     </a>`;
     })
@@ -1095,19 +1117,11 @@ function buildGamePage(game) {
   )
     .filter((g) => g.id !== game.id)
     .slice(0, 6);
-  // Outside English, a genre template supplies the FAQ in the reader's
-  // language. The game's own answer text is English catalogue copy and stays
-  // as the fallback: better an English answer than no answer.
-  const family = familyFor(L.catalog, game);
-  const familyFaq = Array.isArray(family?.faq)
-    ? family.faq.filter((f) => f && typeof f.q === 'string' && typeof f.a === 'string')
-    : [];
-  const faq =
-    L.id !== DEFAULT_LOCALE && familyFaq.length
-      ? familyFaq
-      : (Array.isArray(game.faq) ? game.faq : []).filter(
-          (f) => f && typeof f.q === 'string' && typeof f.a === 'string',
-        );
+  // Everything the page says about the game in prose: its own words in
+  // English, the genre template for this locale outside it. The title is not
+  // in here - a name is a proper noun and stays as it is.
+  const copy = copyFor(game);
+  const faq = copy.faq;
   const jsonLd = [
     {
       '@context': 'https://schema.org',
@@ -1115,7 +1129,7 @@ function buildGamePage(game) {
       name: game.title,
       url: pageUrl(path),
       inLanguage: L.id,
-      description: game.description,
+      description: copy.description,
       genre: cat ? catTitle(cat) : 'Arcade',
       gamePlatform: 'Web Browser',
       applicationCategory: 'Game',
@@ -1152,7 +1166,11 @@ function buildGamePage(game) {
   ];
   const isEmbed = Boolean(game.embed);
   const shellOpts = { related, sponsor: sponsorBanner(game.category) };
-  const shell = localiseShell(isEmbed ? embedShell(game, shellOpts) : gameShell(game, shellOpts), game);
+  const shellGame = localGame(game);
+  const shell = localiseShell(
+    isEmbed ? embedShell(shellGame, shellOpts) : gameShell(shellGame, shellOpts),
+    game,
+  );
   const body = `${shellWithSwitcher(shell, path)}
 <section class="wrap prose" style="padding-bottom:48px" id="about">
   <nav class="crumbs" aria-label="${tn('nav.breadcrumb')}">
@@ -1161,7 +1179,7 @@ function buildGamePage(game) {
     )}</a><span>/</span><span>${esc(game.title)}</span>
   </nav>
   <h1 style="margin-top:18px">${tn('game.h1', { title: game.title })}</h1>
-  <p>${esc(game.description)}</p>
+  <p>${esc(copy.description)}</p>
   ${
     game.credit
       ? `<p class="credit-line">${rich('game.credit', {
@@ -1172,7 +1190,7 @@ function buildGamePage(game) {
       : ''
   }
   <h2>${tn('game.howTo', { title: game.title })}</h2>
-  <ul>${howToLines(game).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
+  <ul>${howToLines(copy, game).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
   <h2>${tn('game.faq')}</h2>
   <div class="faq">${faq
     .map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`)
@@ -1186,7 +1204,7 @@ ${isEmbed ? '' : `<script type="module" src="${hostBundle}"></script>`}
     `games/${game.id}/index.html`,
     layout({
       title: `${game.title} — ${plain('game.titleSuffix')} | ${SITE.name}`,
-      description: plain('game.metaDesc', { title: game.title, desc: game.description }),
+      description: plain('game.metaDesc', { title: game.title, desc: copy.description }),
       path,
       body,
       bodyClass: 'is-game',
