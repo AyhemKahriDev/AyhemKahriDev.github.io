@@ -989,12 +989,14 @@ ${urls.map((u) => `  <url><loc>${esc(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.la
 }
 
 function buildRobots() {
+  // SITE.baseUrl already ends in a slash ("https://arcadefork.pages.dev/"),
+  // so appending "/sitemap.xml" produced a doubled slash in the live file.
   write(
     'robots.txt',
     `User-agent: *
 Allow: /
 
-Sitemap: ${SITE.baseUrl}/sitemap.xml
+Sitemap: ${SITE.baseUrl.replace(/\/+$/, '')}/sitemap.xml
 `,
   );
 }
