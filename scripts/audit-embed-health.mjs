@@ -24,6 +24,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
 import { findChrome as findChromeImpl } from './chrome.mjs';
+import { mergeCatalogue } from './catalogue.mjs';
 import { judgeGame } from './embed-health.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -40,12 +41,30 @@ const port = Number(process.env.AUDIT_PORT ?? 4181);
  */
 const liveOrigin = process.env.AUDIT_ORIGIN?.replace(/\/+$/, '') ?? null;
 
-const curated = JSON.parse(readFileSync(join(root, 'content/games.json'), 'utf8'));
-const generatedPath = join(root, 'content/games.generated.json');
-const generated = existsSync(generatedPath)
-  ? JSON.parse(readFileSync(generatedPath, 'utf8'))
-  : { games: [] };
-const GAMES = [...curated.games, ...(generated.games ?? generated)];
+/**
+ * The same merge the site builder uses.
+ *
+ * Reading only games.json + games.generated.json meant this gate tested a
+ * catalogue the site does not publish: the engine game `breakout` owns that id
+ * now, so the audit demanded a third-party page that the build correctly never
+ * copied and reported it DEAD.
+ */
+const layerOf = (name) => {
+  const file = join(root, 'content', name);
+  if (!existsSync(file)) return [];
+  return JSON.parse(readFileSync(file, 'utf8')).games ?? [];
+};
+const overlays = existsSync(join(root, 'content/overlays.json'))
+  ? JSON.parse(readFileSync(join(root, 'content/overlays.json'), 'utf8')).games ?? {}
+  : {};
+const GAMES = mergeCatalogue({
+  base: layerOf('games.json'),
+  engine: layerOf('engine-new.json'),
+  curated: layerOf('curated.json'),
+  published: layerOf('harvest-published.json'),
+  generated: layerOf('games.generated.json'),
+  overlays,
+});
 
 function findChrome() {
   return findChromeImpl();
@@ -284,12 +303,41 @@ async function main() {
       }
     }),
   );
+  /**
+   * Second chance for anything that came back dead.
+   *
+   * On a loaded runner a game can miss its first frame inside the 2.2 s settle
+   * window and look dead - one run reported nine, the next reported one, and
+   * neither list repeated. A gate that flips its verdict between runs is worse
+   * than no gate, so a dead game is re-checked once on a fresh page and only
+   * the games that fail twice are reported. The check itself is unchanged.
+   */
+  const deadIds = results.filter((r) => r.verdict === 'DEAD').map((r) => r.id);
+  if (deadIds.length) {
+    for (const [n, id] of deadIds.entries()) {
+      const target = targets.find((t) => t.id === id);
+      if (!target) continue;
+      await check(target, 100000 + n);
+      const verdicts = results.filter((r) => r.id === id);
+      const last = verdicts[verdicts.length - 1];
+      if (last?.verdict === 'ok') {
+        // Drop the failed attempt entirely: a game that passes on the second
+        // look is not a finding, and keeping it marked FLAKY would inflate the
+        // published count by one per retry.
+        const idx = results.indexOf(verdicts[0]);
+        results.splice(idx, 1);
+        last.flaky = true;
+      }
+    }
+  }
+
   results.sort((a, b) => a.order - b.order);
 
   await browser.close().catch(() => undefined);
   server?.kill();
 
   const dead = results.filter((r) => r.verdict === 'DEAD');
+  const flaky = results.filter((r) => r.flaky);
   const warned = results.filter((r) => r.warnings?.length);
   if (process.argv.includes('--json')) {
     const strip = (r) => {
@@ -301,7 +349,8 @@ async function main() {
     );
   } else {
     console.log(
-      `audit-embed-health: ${results.length} embedded games, ${dead.length} dead, ${warned.length} with warnings`,
+      `audit-embed-health: ${results.length} embedded games, ${dead.length} dead, ${warned.length} with warnings` +
+        (flaky.length ? ` (${flaky.length} passed a second attempt)` : ''),
     );
     for (const d of dead) {
       console.log(`  DEAD ${d.id} (${d.src})`);
