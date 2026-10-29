@@ -1,0 +1,15 @@
+{
+  "repo": "CGGTeam/Lode-Runner",
+  "stars": 1,
+  "licence": "MIT",
+  "sizeKB": 400,
+  "pushedAt": "2018-03-24T03:50:45Z",
+  "description": "",
+  "defaultBranch": "master",
+  "owner": "CGGTeam",
+  "slug": "cggteam-lode-runner",
+  "dest": "third-party/cggteam-lode-runner",
+  "readme": "# Projet 01 - Lode Runner\n### Cours Programmation 3D\n\n### Auteurs:\n - Antoine Brassard-Lahey\n - Simon Boyer\n - Michael-John Sakellaropoulos\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.htm"
+}

@@ -1,8 +1,0 @@
-<RCC>
-    <qresource prefix="/theme">
-        <file>Resoueces/theme/black.qss</file>
-        <file>Resoueces/theme/default.qss</file>
-        <file>Resoueces/theme/gray.qss</file>
-        <file>Resoueces/theme/yellow.qss</file>
-    </qresource>
-</RCC>

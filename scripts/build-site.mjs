@@ -184,6 +184,34 @@ const GAMES = mergeCatalogue({
   generated: generated.games ?? [],
   overlays: readJsonLayer('content/overlays.json').games ?? {},
 });
+/**
+ * Drop any game whose embedded files are not on disk.
+ *
+ * Validation deletes games that do not play, but a catalogue layer written
+ * before that run can still reference one - which shipped a page whose iframe
+ * 404s. The build is the last place this can be caught cheaply, and a missing
+ * page is better than a broken one.
+ */
+const vendored = GAMES.filter((game) => {
+  const src = game.embed?.src;
+  if (!src) return true;
+  const rel = src.replace(/^\//, '').split('?')[0];
+  // Vendored games link filenames with spaces percent-encoded; the file on
+  // disk is the decoded name, so an encoded check dropped five working games.
+  let decoded = rel;
+  try {
+    decoded = decodeURIComponent(rel);
+  } catch {
+    /* malformed escape: fall through with the raw path */
+  }
+  return existsSync(join(root, rel)) || existsSync(join(root, decoded));
+});
+if (vendored.length !== GAMES.length) {
+  console.log(`arcadefork: dropped ${GAMES.length - vendored.length} game(s) whose files are gone`);
+}
+GAMES.length = 0;
+GAMES.push(...vendored);
+
 const CATEGORIES = content.categories.filter((c) => GAMES.some((g) => g.category === c.id));
 
 const PAST_DAYS = 30;

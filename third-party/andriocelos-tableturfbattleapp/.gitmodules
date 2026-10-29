@@ -1,9 +1,0 @@
-[submodule "TableturfBattleClient/qrcodejs"]
-	path = TableturfBattleClient/qrcodejs
-	url = https://github.com/davidshimjs/qrcodejs.git
-[submodule "TableturfBattleClient/mobile-drag-drop"]
-	path = TableturfBattleClient/mobile-drag-drop
-	url = https://github.com/timruffles/mobile-drag-drop.git
-[submodule "TableturfBattleClient/js-untar"]
-	path = TableturfBattleClient/js-untar
-	url = https://github.com/InvokIT/js-untar

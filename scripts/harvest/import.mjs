@@ -430,12 +430,27 @@ function main() {
     return total;
   };
   const tooHeavy = new Set();
+  const missing = new Set();
   for (const record of vendored) {
     const dir = join(root, 'third-party', record.slug);
-    if (existsSync(dir) && dirSize(dir) > MAX_GAME_BYTES) tooHeavy.add(record.slug);
+    if (!existsSync(dir)) {
+      // A later validation run deleted it as dead; publishing it would ship a
+      // page whose iframe 404s (audit-links caught exactly that).
+      missing.add(record.slug);
+      continue;
+    }
+    // The entry path lives in .harvested.json, written by vendor. Guessing
+      // `index.html` here marked 887 nested-entry games as missing and dropped
+      // them; the marker file is the honest test for "still on disk".
+    if (!existsSync(join(dir, '.harvested.json'))) {
+      missing.add(record.slug);
+      continue;
+    }
+    if (dirSize(dir) > MAX_GAME_BYTES) tooHeavy.add(record.slug);
   }
-  const publishable = validated.filter((v) => !tooHeavy.has(v.slug));
+  const publishable = validated.filter((v) => !tooHeavy.has(v.slug) && !missing.has(v.slug));
   if (tooHeavy.size) console.log(`import: skipped ${tooHeavy.size} game(s) over the 10 MB budget`);
+  if (missing.size) console.log(`import: skipped ${missing.size} game(s) whose files validation has since deleted`);
 
   // Titles and ids the rest of the catalogue already publishes. Without this,
   // a harvested "Snake" collides with the one already on the site and the

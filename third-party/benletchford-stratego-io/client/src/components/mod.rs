@@ -1,9 +1,0 @@
-pub mod board;
-pub mod connection;
-pub mod game;
-pub mod grid;
-pub mod home;
-pub mod loading;
-pub mod overlay;
-pub mod piece;
-pub mod setup;
