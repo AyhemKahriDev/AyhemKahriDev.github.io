@@ -105,7 +105,7 @@ is lost on the next sweep. Curation belongs in a layer above it
 
 ## The games
 
-**465 games in 9 categories** — 13 built on the arcadefork engine, 452 vendored
+**464 games in 9 categories** — 13 built on the arcadefork engine, 451 vendored
 from open-source repositories. The count in this line is the only one that goes
 stale: `npm run build` prints the live figure.
 

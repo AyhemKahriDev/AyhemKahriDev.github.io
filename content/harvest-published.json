@@ -8538,50 +8538,6 @@
       ]
     },
     {
-      "id": "pixel-fabian-loading",
-      "title": "Loading",
-      "tagline": "A quick game to pick up and play in the browser.",
-      "description": "Browser game build 3 during the Ludum Dare 50 GameJam. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
-      "accent": "hsl(357 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/pixel-fabian-loading/dist/index.html"
-      },
-      "credit": {
-        "author": "pixel-fabian",
-        "licence": "GPL-3.0",
-        "source": "https://github.com/pixel-fabian/loading"
-      },
-      "keywords": [
-        "loading game",
-        "play loading online",
-        "free loading",
-        "online quick game",
-        "sandbox game"
-      ],
-      "howToPlay": [
-        "Tap or click to start, then follow the prompts inside the game.",
-        "Move with the arrow keys, or use the on-screen pad.",
-        "Swipe on a phone to send the arrow keys the game expects."
-      ],
-      "faq": [
-        {
-          "q": "Is Loading free to play?",
-          "a": "Yes. Loading is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Loading work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "mumuy-pacman",
-        "phoboslab-underrun"
-      ]
-    },
-    {
       "id": "starciad-starzombiechase",
       "title": "Star Zombie Chase",
       "tagline": "A quick game to pick up and play in the browser.",
