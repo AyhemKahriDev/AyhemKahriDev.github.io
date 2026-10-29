@@ -2,6 +2,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { candidates, generateSudoku, solve } from '../src/shared/sudoku.js';
 import { applyFirstClick, countsFor, floodFrom, generateMines, neighbours } from '../src/shared/minesweeper.js';
+import { SIZE, movesFor, scramble, solveByToggling, toggle } from '../src/shared/lightsout.js';
+import { GAP, padDuration, sequence, startLength } from '../src/shared/simon.js';
+import { roundSeconds, wordQueue, wpm } from '../src/shared/typing.js';
 
 const rows = (grid) => Array.from({ length: 9 }, (_, r) => grid.slice(r * 9, r * 9 + 9));
 const cols = (grid) => Array.from({ length: 9 }, (_, c) => Array.from({ length: 9 }, (_, r) => grid[r * 9 + c]));
@@ -80,4 +83,77 @@ test('floodFrom opens the empty region and its numbered border', () => {
   assert.ok(opened.length > 0 && opened.length < 81);
   assert.ok(!opened.includes(40), 'the mine itself is never opened');
   for (const i of opened) assert.ok(ring[i] === 0 || ring[i] > 0);
+});
+
+/* ------------------------------------------------------------- lights out */
+
+test('scramble builds its board from its own move list, and repeats for a seed', () => {
+  const seed = 4242;
+  const moves = movesFor(seed);
+  assert.equal(moves.length, 8 + (seed % 6));
+
+  const expected = new Array(SIZE * SIZE).fill(false);
+  for (const index of moves) {
+    const next = toggle(expected, index);
+    for (let i = 0; i < next.length; i++) expected[i] = next[i];
+  }
+  assert.deepEqual(scramble(seed), expected);
+  assert.deepEqual(scramble(seed), scramble(seed));
+  assert.notDeepEqual(scramble(seed), scramble(seed + 1));
+});
+
+test('toggle flips a cell and its orthogonal neighbours only, and cancels itself', () => {
+  const off = new Array(SIZE * SIZE).fill(false);
+  const once = toggle(off, 12);
+  const lit = once.map((v, i) => (v ? i : -1)).filter((i) => i >= 0);
+  assert.deepEqual(lit.sort((a, b) => a - b), [7, 11, 12, 13, 17]);
+
+  const twice = toggle(once, 12);
+  assert.deepEqual(twice, off);
+});
+
+test('every scrambled lights-out board can be toggled back to all off', () => {
+  for (let seed = 0; seed < 25; seed++) {
+    const { solved, board } = solveByToggling(scramble(seed));
+    assert.equal(solved, true, `seed ${seed} was not solvable`);
+    assert.ok(board.every((v) => !v), `seed ${seed} still had a light on`);
+  }
+});
+
+/* ----------------------------------------------------------------- simon */
+
+test('simon sequences are deterministic, bounded and the right length', () => {
+  const seq = sequence(2026, 12);
+  assert.equal(seq.length, 12);
+  assert.deepEqual(seq, sequence(2026, 12));
+  assert.notDeepEqual(seq, sequence(2027, 12));
+  for (const pad of seq) assert.ok(Number.isInteger(pad) && pad >= 0 && pad <= 3, `bad pad ${pad}`);
+});
+
+test('simon starts longer and plays faster as the difficulty rises', () => {
+  assert.equal(startLength('easy'), 3);
+  assert.equal(startLength('hard'), 5);
+  assert.ok(padDuration('easy') > padDuration('normal'));
+  assert.ok(padDuration('normal') > padDuration('hard'));
+  assert.ok(GAP > 0);
+});
+
+/* ---------------------------------------------------------------- typing */
+
+test('the typing queue is 20 unique 4-8 letter words, stable per seed', () => {
+  const words = wordQueue(77, 20);
+  assert.equal(words.length, 20);
+  assert.equal(new Set(words).size, 20);
+  for (const word of words) {
+    assert.ok(word.length >= 4 && word.length <= 8, `${word} is outside 4-8 letters`);
+  }
+  assert.deepEqual(words, wordQueue(77, 20));
+  assert.notDeepEqual(words, wordQueue(78, 20));
+});
+
+test('typing round length and words-per-minute follow the difficulty', () => {
+  assert.ok(roundSeconds('easy') > roundSeconds('normal'));
+  assert.ok(roundSeconds('normal') > roundSeconds('hard'));
+  assert.equal(wpm(250, 60), 50);
+  assert.equal(wpm(0, 60), 0);
 });
