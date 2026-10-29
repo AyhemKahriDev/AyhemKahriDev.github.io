@@ -24,6 +24,7 @@ import {
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { slugify } from './filters.mjs';
+import { pruneVendored } from '../prune-vendored.mjs';
 
 const run = promisify(execFile);
 
@@ -208,6 +209,10 @@ export async function vendorAll(candidates, options = {}) {
           break;
         }
       }
+
+      // Prune before committing: the repo is the deploy. APKs, PSDs, READMEs,
+      // CI files and unreferenced multi-megabyte media never reach git.
+      pruneVendored(dest);
 
       const licence = candidate.licence ?? candidate.license?.spdx_id ?? 'UNKNOWN';
       const owner = candidate.owner ?? repo.split('/')[0];

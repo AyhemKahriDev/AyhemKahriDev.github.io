@@ -16,6 +16,7 @@ import { gameIcon, iconSprite, glyph, brandMark, tileAccent } from './icons.mjs'
 import { cleanTagline, creditLicence } from './content-utils.mjs';
 import { sanitizeHtml } from './sanitize-embed.mjs';
 import { mergeCatalogue, layerGames } from './catalogue.mjs';
+import { pruneVendored } from './prune-vendored.mjs';
 import {
   generateWordBoard,
   boardAnswers,
@@ -1053,6 +1054,8 @@ function copyThirdParty() {
   mkdirSync(destRoot, { recursive: true });
 
   let copied = 0;
+  let prunedFiles = 0;
+  let prunedBytes = 0;
   const fixups = { refresh: 0, topTarget: 0, topNav: 0, rel: 0, files: 0 };
   for (const name of wanted) {
     const from = join(src, name);
@@ -1060,6 +1063,12 @@ function copyThirdParty() {
     const to = join(destRoot, name);
     cpSync(from, to, { recursive: true });
     copied++;
+    // Drop what a browser can never load (APKs, PSDs, READMEs, CI files,
+    // unreferenced multi-megabyte media) so the deploy - and the repo - carry
+    // the game, not the project around it.
+    const pruned = pruneVendored(to);
+    prunedFiles += pruned.removed;
+    prunedBytes += pruned.bytes;
     // Neutralise anything that could navigate us out of the arcade.
     for (const file of htmlFilesIn(to)) {
       const raw = readFileSync(file, 'utf8');
@@ -1079,6 +1088,12 @@ function copyThirdParty() {
       `arcadefork: sanitised ${fixups.files} vendored pages ` +
         `(${fixups.topTarget} target=_top, ${fixups.topNav} top-navigation, ` +
         `${fixups.refresh} meta refresh, ${fixups.rel} rel=noopener)`,
+    );
+  }
+  if (prunedFiles) {
+    console.log(
+      `arcadefork: pruned ${prunedFiles} non-web files ` +
+        `(${(prunedBytes / 1048576).toFixed(1)} MB) from vendored games`,
     );
   }
   return copied;

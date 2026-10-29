@@ -1,4 +1,5 @@
 import content from '../content/games.json';
+import engineNew from '../content/engine-new.json';
 import sponsors from '../content/sponsors.json';
 import { createEngineBundle } from './engine';
 import { attachPointer } from './engine/input';
@@ -49,7 +50,14 @@ function telegram(): TelegramWebApp | undefined {
 }
 
 const gameId = document.body.dataset.game ?? '';
-const meta = content.games.find((g) => g.id === gameId) as GameMeta | undefined;
+/**
+ * Engine games live in two layers: the originals in content/games.json and the
+ * six added in content/engine-new.json. The page's metadata must come from the
+ * same union the site builder used, or a new game renders as "Game unavailable"
+ * while its page, copy and tile all exist.
+ */
+const catalogue = [...content.games, ...engineNew.games] as GameMeta[];
+const meta = catalogue.find((g) => g.id === gameId);
 const spec: GameSpec | undefined = getGame(gameId);
 
 const canvas = document.getElementById('game') as HTMLCanvasElement | null;

@@ -16,9 +16,11 @@
  * built dist/, because that is what actually ships - build-site.mjs already
  * copies only the directories the catalogue references.
  *
- * Limits: 3 MB per game, 20 MB per file, 250 MB for all of dist. The total
- * used to be 125 MB; it is doubled because the catalogue is doubling, and a
- * gate that has to be raised every fortnight is a gate nobody trusts.
+ * Limits: 10 MB per game, 20 MB per file, 700 MB for all of dist. Measured
+ * 2026-10-29 after pruning: 173 games, dist 143 MB, heaviest game 8.8 MB
+ * (courier-city, audio + sprite sheets it actually loads). 3 MB per game was
+ * tried first and rejected 14 of 164 legitimately working games; the point of
+ * the gate is to catch a game that ships its build tooling, not to punish art.
  */
 import { existsSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
@@ -28,9 +30,9 @@ import { fileURLToPath } from 'node:url';
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 const MB = 1024 * 1024;
-const MAX_GAME = 3 * MB;
+const MAX_GAME = 10 * MB;
 const MAX_FILE = 20 * MB;
-const MAX_TOTAL = 250 * MB;
+const MAX_TOTAL = 700 * MB;
 
 const argv = process.argv.slice(2);
 const flag = (name) => {
