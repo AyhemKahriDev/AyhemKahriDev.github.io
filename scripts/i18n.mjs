@@ -22,10 +22,12 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
  *
  * `prefix` is the URL tree (`''` is the root), `hreflang` is the value in the
  * alternate links, `dir` is the writing direction of the page, and `ogLocale`
- * is the Open Graph spelling (`fr_FR`, not `fr`).
+ * is the Open Graph spelling (`fr_FR`, not `fr`). English is `en_GB`: the copy
+ * is British ("licence", "optimisation"), and Open Graph is the one place a
+ * crawler reads the variant rather than just the language.
  */
 export const LOCALES = [
-  { id: 'en', prefix: '', name: 'English', hreflang: 'en', dir: 'ltr', ogLocale: 'en_US' },
+  { id: 'en', prefix: '', name: 'English', hreflang: 'en', dir: 'ltr', ogLocale: 'en_GB' },
   { id: 'fr', prefix: '/fr', name: 'Français', hreflang: 'fr', dir: 'ltr', ogLocale: 'fr_FR' },
   { id: 'ar', prefix: '/ar', name: 'العربية', hreflang: 'ar', dir: 'rtl', ogLocale: 'ar_AR' },
 ];
