@@ -1929,6 +1929,165 @@ td a {
   color: var(--paper-3);
 }
 
+/* ----------------------------------------------------- index pager */
+
+/* Real links, not a script: the whole catalogue stays walkable with
+   JavaScript off, and every page is a URL a crawler can follow. */
+.pager {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 28px 0 4px;
+}
+
+.pager-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pager-list a,
+.pager-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  min-width: 40px;
+  height: 40px;
+  padding: 0 13px;
+  border: 1px solid var(--hair);
+  border-radius: var(--r-pill);
+  background: var(--panel);
+  color: var(--paper-2);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  transition:
+    color var(--t-fast),
+    border-color var(--t-fast),
+    background var(--t-fast);
+}
+
+.pager-list a:hover,
+.pager-step:hover {
+  color: var(--paper);
+  border-color: var(--hair-2);
+  background: var(--panel-2);
+}
+
+.pager-list a[aria-current='page'] {
+  color: var(--paper);
+  border-color: var(--signal-line);
+  background: var(--signal-soft);
+  font-weight: 600;
+}
+
+.pager-step {
+  padding: 0 15px;
+}
+
+/* The top pager belongs to the filter bar, not to the section below it:
+   tighter margins keep controls and results reading as one cluster. */
+#game-pager-top {
+  margin: 12px 0 0;
+}
+
+#index-tiles {
+  padding-top: 22px;
+}
+
+/* "Showing 1–60 of 465" is a caption, not a second headline: the page's h1 is
+   already above it, and at --t-xl it read as a competing title. */
+#index-tiles .section-head h2 {
+  font-size: var(--t-lg);
+  letter-spacing: -0.02em;
+}
+
+.pager-step.is-off {
+  opacity: 0.38;
+}
+
+/* One thumb on a phone: targets stay 42px, and the row keeps Prev and Next
+   beside the numbers instead of stacking into three lines. A very long arcade
+   scrolls the numbers sideways rather than pushing the grid down. */
+@media (max-width: 560px) {
+  .pager {
+    flex-wrap: nowrap;
+    gap: 6px;
+    justify-content: space-between;
+  }
+
+  .pager-list {
+    flex: 1 1 auto;
+    min-width: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .pager-list::-webkit-scrollbar {
+    display: none;
+  }
+
+  .pager-step {
+    flex: 0 0 auto;
+  }
+
+  .pager-list a,
+  .pager-step {
+    height: 42px;
+  }
+}
+
+/* A hidden result grid and a hidden page section must actually be gone: the
+   .grid rule sets display, which beats the [hidden] default. */
+.pager[hidden],
+.grid[hidden],
+#index-tiles[hidden] {
+  display: none !important;
+}
+
+/* Results whose full tile is on another page. The compact card keeps the
+   tile's shape so a mixed result set still reads as one grid. */
+.tile-initial {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  border-radius: 16px;
+  font-family: var(--f-display);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ink);
+  background: linear-gradient(
+    160deg,
+    color-mix(in srgb, var(--glow) 82%, #fff) 0%,
+    color-mix(in srgb, var(--glow) 46%, #000) 100%
+  );
+  box-shadow: 0 8px 18px color-mix(in srgb, var(--glow) 28%, transparent);
+  opacity: 0.92;
+  transition: transform var(--t-mid) var(--e-spring);
+}
+
+.tile:hover .tile-initial {
+  transform: translateY(-2px) scale(1.05);
+}
+
+/* A result tile has no tagline, so its category label sits at the bottom of
+   the card, level with the labels on the fuller cards next to it. */
+.tile-remote .tag {
+  margin-top: auto;
+  padding-top: 10px;
+}
+
 .cat-block {
   padding-top: 34px;
 }

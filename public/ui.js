@@ -275,22 +275,70 @@
     /* rendering recents is optional */
   }
 
+  /* -------------------------------------------------- catalogue data */
+  /**
+   * The compact catalogue behind search: /games/catalog.json.
+   *
+   * It used to be inlined in the page, so every visitor - and every crawler -
+   * downloaded all 465 titles to type one letter. It is fetched on the first
+   * keystroke instead (never on load), kept in memory for the session, and a
+   * failure is survivable: the caller falls back to the tiles on this page.
+   */
+  var catalogCache = null;
+  var catalogRequest = null;
+  var catalogBroken = false;
+
+  function catalogUrl() {
+    var host = document.getElementById('game-sections');
+    return (host && host.getAttribute('data-catalog')) || '/games/catalog.json';
+  }
+
+  function loadCatalog() {
+    if (catalogCache) return Promise.resolve(catalogCache);
+    if (catalogRequest) return catalogRequest;
+    if (catalogBroken || !window.fetch) {
+      catalogBroken = true;
+      return Promise.reject(new Error('no catalogue'));
+    }
+    catalogRequest = fetch(catalogUrl(), { credentials: 'same-origin' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('catalogue ' + res.status);
+        return res.json();
+      })
+      .then(function (list) {
+        if (!Array.isArray(list)) throw new Error('catalogue is not a list');
+        catalogCache = list;
+        catalogRequest = null;
+        return list;
+      })
+      .catch(function (err) {
+        catalogBroken = true;
+        catalogRequest = null;
+        throw err;
+      });
+    return catalogRequest;
+  }
+
+  /** Hand the catalogue to `done`, or null when it cannot be had. */
+  function withCatalog(done) {
+    if (catalogCache) return done(catalogCache);
+    if (catalogBroken) return done(null);
+    loadCatalog().then(done, function () {
+      done(null);
+    });
+  }
+
   /* -------------------------------------------------- random game */
-  function randomHref(scope) {
+  function randomHref(scope, entries) {
     var pool = [];
-    var data = document.getElementById('af-catalog-json');
-    if (data) {
-      try {
-        pool = JSON.parse(data.textContent)
-          .filter(function (e) {
-            return !scope || e.c === scope;
-          })
-          .map(function (e) {
-            return '/games/' + encodeURIComponent(e.i || e) + '/';
-          });
-      } catch (err) {
-        pool = [];
-      }
+    if (entries && entries.length) {
+      pool = entries
+        .filter(function (e) {
+          return !scope || e.c === scope;
+        })
+        .map(function (e) {
+          return '/games/' + encodeURIComponent(e.i) + '/';
+        });
     }
     if (!pool.length) {
       pool = Array.prototype.slice
@@ -319,8 +367,14 @@
         var chipCat = chip && chip.getAttribute('data-cat-chip');
         var scope =
           rand.getAttribute('data-scope') || (chipCat && chipCat !== 'all' ? chipCat : null);
-        var href = randomHref(scope);
-        if (href) location.href = href;
+        // The page holds 60 tiles, the arcade holds hundreds: ask the
+        // catalogue first, so "Random" is random across everything. If it is
+        // already in memory this is synchronous; if the fetch fails, the
+        // visible tiles are still a fair pool.
+        withCatalog(function (entries) {
+          var href = randomHref(scope, entries);
+          if (href) location.href = href;
+        });
       });
     }
   } catch (e) {
@@ -328,125 +382,220 @@
   }
 
   /* ------------------------------------------------- game browser */
+  /**
+   * Search, category chips and sort over the whole catalogue.
+   *
+   * The document now holds one page of tiles (60), so a filter that only hid
+   * nodes would quietly stop finding anything past page 1 - the one thing a
+   * search box must never do. Matching runs over the fetched catalogue, and
+   * the result set is drawn into a grid of its own: a hit that is already on
+   * this page is cloned (real icon, real tagline), a hit from another page
+   * gets a compact result tile that links to the same game.
+   *
+   * With JavaScript off none of this runs and the pager still reaches every
+   * page. With the catalogue unreachable the browser degrades to filtering
+   * this page's tiles and says so in the status line.
+   */
   try {
     var input = document.getElementById('game-filter');
-    var blocks = Array.prototype.slice.call(document.querySelectorAll('.cat-block'));
-    if (input && blocks.length) {
+    var host = document.getElementById('game-sections');
+    if (input && host) {
       var status = document.getElementById('filter-status');
       var empty = document.getElementById('filter-empty');
       var chips = Array.prototype.slice.call(document.querySelectorAll('[data-cat-chip]'));
       var sortSel = document.getElementById('sort-games');
-      var tiles = [];
-      var expanded = {};
-      var COLLAPSE_AT = 12;
-      var flat = document.createElement('div');
-      flat.className = 'grid';
-      flat.id = 'sorted-grid';
-      flat.hidden = true;
+      var pageSection = document.getElementById('index-tiles');
+      var pageGrid = pageSection && pageSection.querySelector('.grid');
+      var pagers = Array.prototype.slice.call(document.querySelectorAll('[data-pager]'));
+      var pageTiles = pageGrid ? Array.prototype.slice.call(pageGrid.querySelectorAll('.tile')) : [];
 
-      blocks.forEach(function (block, bi) {
-        block.__bi = bi;
-        var grid = block.querySelector('.grid');
-        var own = Array.prototype.slice.call(block.querySelectorAll('.tile'));
-        own.forEach(function (t, i) {
-          t.__home = grid;
-          t.__idx = bi * 1000 + i;
-          t.__bi = bi;
-          t.__extra = i >= COLLAPSE_AT;
-          tiles.push(t);
-        });
-        if (own.length > COLLAPSE_AT) {
-          var more = document.createElement('button');
-          more.type = 'button';
-          more.className = 'more-btn';
-          more.textContent = 'Show all ' + own.length;
-          more.addEventListener('click', function () {
-            expanded[bi] = true;
-            render();
-          });
-          grid.parentNode.insertBefore(more, grid.nextSibling);
+      // Category id -> the word a player reads on the chip.
+      var catName = {};
+      chips.forEach(function (c) {
+        var id = c.getAttribute('data-cat-chip');
+        var label = c.getAttribute('data-cat-title');
+        if (!label) {
+          var b = c.querySelector('b');
+          label = c.textContent;
+          if (b) label = label.replace(b.textContent, '');
         }
+        catName[id] = String(label || id).replace(/\s+/g, ' ').trim();
       });
 
-      var state = { q: '', cat: 'all', sort: 'default' };
+      // This page's tiles by href, so a hit that is already here can be cloned
+      // instead of re-drawn, and the served order can be restored after a sort.
+      var tileByHref = {};
+      pageTiles.forEach(function (t) {
+        var href = t.getAttribute('href');
+        if (href) tileByHref[href] = t;
+      });
 
-      function matches(t) {
-        if (state.cat !== 'all' && t.getAttribute('data-cat') !== state.cat) return false;
-        if (!state.q) return true;
-        var hay = (t.getAttribute('data-name') || '') + ' ' + (t.getAttribute('data-kw') || '');
+      var flat = document.getElementById('sorted-grid');
+      if (!flat) {
+        flat = document.createElement('div');
+        flat.className = 'grid';
+        flat.id = 'sorted-grid';
+        flat.hidden = true;
+        host.appendChild(flat);
+      }
+
+      var state = { q: '', cat: 'all', sort: 'default' };
+      var pageSorted = false;
+
+      function hrefFor(id) {
+        return '/games/' + encodeURIComponent(id) + '/';
+      }
+
+      function everyWord(hay) {
         return state.q.split(/\s+/).every(function (word) {
-          return hay.indexOf(word) !== -1;
+          return !word || hay.indexOf(word) !== -1;
         });
       }
 
+      function matchesEntry(e) {
+        if (state.cat !== 'all' && e.c !== state.cat) return false;
+        if (!state.q) return true;
+        return everyWord((e.t + ' ' + e.c + ' ' + (catName[e.c] || '')).toLowerCase());
+      }
+
+      function matchesTile(t) {
+        if (state.cat !== 'all' && t.getAttribute('data-cat') !== state.cat) return false;
+        if (!state.q) return true;
+        return everyWord(
+          (t.getAttribute('data-name') || '') + ' ' + (t.getAttribute('data-kw') || ''),
+        );
+      }
+
+      function byTitle(a, b) {
+        return state.sort === 'az' ? a.localeCompare(b) : b.localeCompare(a);
+      }
+
+      /**
+       * A result tile for a game whose full tile is on another page.
+       *
+       * Built with DOM calls rather than innerHTML: the catalogue is fetched
+       * data, and a title must never be able to inject markup here.
+       */
+      function remoteTile(e) {
+        var a = document.createElement('a');
+        a.className = 'tile tile-remote';
+        a.setAttribute('href', hrefFor(e.i));
+        a.setAttribute('data-cat', e.c || '');
+        a.setAttribute('data-name', String(e.t || '').toLowerCase());
+        if (e.a) {
+          a.style.setProperty('--tile-accent', e.a);
+          a.style.setProperty('--glow', e.a);
+        }
+        var thumb = document.createElement('div');
+        thumb.className = 'thumb';
+        thumb.setAttribute('aria-hidden', 'true');
+        var initial = document.createElement('span');
+        initial.className = 'tile-initial';
+        initial.textContent = String(e.t || '?').charAt(0).toUpperCase();
+        thumb.appendChild(initial);
+        var title = document.createElement('h3');
+        title.textContent = e.t || e.i;
+        var tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = catName[e.c] || e.c || '';
+        a.appendChild(thumb);
+        a.appendChild(title);
+        a.appendChild(tag);
+        return a;
+      }
+
+      function drawResults(list) {
+        var frag = document.createDocumentFragment();
+        list.forEach(function (e) {
+          var here = tileByHref[hrefFor(e.i)];
+          var node = here ? here.cloneNode(true) : remoteTile(e);
+          node.hidden = false;
+          // The clone is drawn immediately; it must not wait for a reveal
+          // observer that only ever watched the original.
+          node.classList.remove('reveal');
+          node.classList.remove('in');
+          frag.appendChild(node);
+        });
+        flat.innerHTML = '';
+        flat.appendChild(frag);
+        flat.hidden = list.length === 0;
+      }
+
       function render() {
+        var filtering = Boolean(state.q) || state.cat !== 'all';
+        var crossPage = filtering && Boolean(catalogCache);
         var hits = 0;
-        if (state.sort === 'default') {
-          if (flat.parentNode) flat.parentNode.removeChild(flat);
-          blocks.forEach(function (block) {
-            var grid = block.querySelector('.grid');
-            var visible = 0;
-            var filtering = Boolean(state.q) || state.cat !== 'all';
-            tiles.forEach(function (t) {
-              if (t.__home !== grid) return;
-              var hit = matches(t);
-              if (hit) hits++;
-              var hidden = !hit || (!filtering && !expanded[t.__bi] && t.__extra);
-              t.hidden = hidden;
-              if (!hidden) visible++;
+
+        if (crossPage) {
+          var list = catalogCache.filter(matchesEntry);
+          if (state.sort !== 'default') {
+            list = list.slice().sort(function (a, b) {
+              return byTitle(String(a.t || ''), String(b.t || ''));
             });
-            block.hidden = visible === 0;
-            var moreBtn = block.querySelector('.more-btn');
-            if (moreBtn) moreBtn.hidden = filtering || Boolean(expanded[block.__bi]);
-          });
-          // put every tile back in its original order
-          blocks.forEach(function (block) {
-            var grid = block.querySelector('.grid');
-            tiles
-              .filter(function (t) {
-                return t.__home === grid;
-              })
-              .sort(function (a, b) {
-                return a.__idx - b.__idx;
-              })
-              .forEach(function (t) {
-                grid.appendChild(t);
-              });
-          });
+          }
+          drawResults(list);
+          hits = list.length;
+          if (pageSection) pageSection.hidden = true;
         } else {
-          blocks.forEach(function (block) {
-            block.hidden = true;
+          flat.innerHTML = '';
+          flat.hidden = true;
+          if (pageSection) pageSection.hidden = false;
+
+          var shown = filtering ? pageTiles.filter(matchesTile) : pageTiles;
+          pageTiles.forEach(function (t) {
+            t.hidden = filtering && shown.indexOf(t) === -1;
           });
-          if (!flat.parentNode) document.getElementById('game-sections').appendChild(flat);
-          flat.hidden = false;
-          var out = tiles.filter(matches);
-          out.sort(function (a, b) {
-            var an = a.getAttribute('data-name') || '';
-            var bn = b.getAttribute('data-name') || '';
-            return state.sort === 'az' ? an.localeCompare(bn) : bn.localeCompare(an);
-          });
-          hits = out.length;
-          out.forEach(function (t) {
-            t.hidden = false;
-            flat.appendChild(t);
-          });
+
+          // The served order by default, A to Z on request. Only touched when
+          // it has to change: a name filter just hides tiles.
+          if (pageGrid) {
+            var order = (filtering ? shown : pageTiles).slice();
+            var sorting = state.sort !== 'default';
+            if (sorting) {
+              order.sort(function (a, b) {
+                return byTitle(
+                  a.getAttribute('data-name') || '',
+                  b.getAttribute('data-name') || '',
+                );
+              });
+              pageSorted = true;
+            }
+            if (sorting || (pageSorted && !filtering)) {
+              order.forEach(function (t) {
+                pageGrid.appendChild(t);
+              });
+              if (!sorting) pageSorted = false;
+            }
+          }
+          hits = filtering ? shown.length : pageTiles.length;
         }
 
+        // Page links browse the unfiltered catalogue; a filtered result set
+        // already spans every page, so the pager would be a dead end.
+        pagers.forEach(function (p) {
+          p.hidden = crossPage;
+        });
         if (empty) empty.hidden = hits !== 0;
+
         if (status) {
           var bits = [];
-          if (state.q || state.cat !== 'all') {
+          if (filtering) {
             bits.push(hits + ' game' + (hits === 1 ? '' : 's'));
             if (state.q) bits.push('matching “' + input.value.trim() + '”');
-            if (state.cat !== 'all') bits.push('in ' + state.cat);
+            if (state.cat !== 'all') bits.push('in ' + (catName[state.cat] || state.cat));
+            if (crossPage) bits.push('· all ' + catalogCache.length + ' games');
+            else if (catalogBroken) bits.push('· catalogue unavailable, this page only');
+            else bits.push('· this page, loading the rest');
           }
           status.textContent = bits.join(' ');
         }
+
         chips.forEach(function (c) {
           var on = c.getAttribute('data-cat-chip') === state.cat;
           c.setAttribute('aria-pressed', String(on));
           c.classList.toggle('is-on', on);
         });
+
         try {
           var url = new URL(location.href);
           if (state.q) url.searchParams.set('q', input.value.trim());
@@ -459,15 +608,27 @@
         }
       }
 
+      // The page draws first, then the catalogue completes it. One keystroke
+      // paints instantly from the 60 tiles here and re-paints once the whole
+      // arcade arrives - no spinner, no waiting on the network to type.
+      function refresh() {
+        render();
+        if (state.q || state.cat !== 'all') {
+          withCatalog(function () {
+            render();
+          });
+        }
+      }
+
       input.addEventListener('input', function () {
         state.q = input.value.trim().toLowerCase();
-        render();
+        refresh();
       });
 
       chips.forEach(function (c) {
         c.addEventListener('click', function () {
           state.cat = c.getAttribute('data-cat-chip');
-          render();
+          refresh();
         });
       });
 
@@ -487,19 +648,33 @@
           input.value = q0;
           state.q = q0.trim().toLowerCase();
         }
-        if (cat0 && chips.some(function (c) { return c.getAttribute('data-cat-chip') === cat0; })) {
+        if (cat0 && Object.prototype.hasOwnProperty.call(catName, cat0)) {
           state.cat = cat0;
         }
       } catch (e) {
         /* no URL API, no deep link */
       }
 
-      // Always paint once: this is what applies the 12-per-category collapse
-      // on a cold load, not only when a filter is present.
-      render();
+      // Always paint once: the pager and the chips reflect the served page,
+      // not only a filtered one.
+      refresh();
+
+      // On a phone the number strip is narrower than eight pills, so page 8
+      // would start life scrolled out of view. Centre the current page; the
+      // strip is still swipeable, this only saves the first gesture.
+      pagers.forEach(function (nav) {
+        var here = nav.querySelector('[aria-current="page"]');
+        var list = nav.querySelector('.pager-list');
+        if (!here || !list) return;
+        var lr = list.getBoundingClientRect();
+        var hr = here.getBoundingClientRect();
+        if (hr.left < lr.left || hr.right > lr.right) {
+          list.scrollLeft += hr.left - lr.left - (lr.width - hr.width) / 2;
+        }
+      });
     }
   } catch (e) {
-    /* the page still lists every game without filtering */
+    /* the page still lists a page of games, and the pager still works */
   }
 
   /* ---------------------------------------------------- shortcuts */
