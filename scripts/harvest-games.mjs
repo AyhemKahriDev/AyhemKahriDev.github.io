@@ -10,16 +10,25 @@
  *
  * Every phase writes a JSON report to .harvest/ so phases can be resumed.
  * Only games that pass the browser gate are ever published.
+ *
+ * Knobs (environment variable or --flag, the flag wins):
+ *   HARVEST_FAMILY=arcade,puzzle   genre slices to search (default: all)
+ *   HARVEST_TARGET=650             stop sweeping once there are enough candidates
+ *   HARVEST_PAGES=2                search depth per query/licence
+ *   HARVEST_CALLS=400              hard cap on search API calls
+ *   HARVEST_LIMIT=650              max repos to vendor in this run
+ *   HARVEST_CONCURRENCY=8          parallel downloads (default 6)
+ *
+ * Search, filtering, preflight and vendoring live in scripts/harvest/ so they
+ * can be sliced across runs and tested without touching the network.
  */
 import { execFileSync } from 'node:child_process';
 import {
-  cpSync,
   existsSync,
   mkdirSync,
   readdirSync,
   readFileSync,
   rmSync,
-  statSync,
   writeFileSync,
 } from 'node:fs';
 import { join, dirname } from 'node:path';
@@ -27,10 +36,70 @@ import { fileURLToPath } from 'node:url';
 import { homedir } from 'node:os';
 import { judgeGame } from './embed-health.mjs';
 import { findChrome } from './chrome.mjs';
+import { queriesFor } from './harvest/queries.mjs';
+import {
+  SEARCH_LICENCES,
+  dedupeCandidates,
+  normaliseRepo,
+  shouldAccept,
+  slugify,
+} from './harvest/filters.mjs';
+import { makePreflight } from './harvest/preflight.mjs';
+import { vendorAll } from './harvest/vendor.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const work = join(root, '.harvest');
 const thirdParty = join(root, 'third-party');
+
+const PHASES = new Set(['sweep', 'vendor', 'validate', 'generate', 'all']);
+
+/**
+ * One parser for the phase and the `--flag=value` knobs.
+ *
+ * The phase CLI is the contract (`node scripts/harvest-games.mjs vendor`);
+ * flags are an alternative to the HARVEST_* environment variables, so a
+ * parallel slice can be labelled on the command line and still inherit the
+ * budget from the shell.
+ */
+function parseCli(argv) {
+  const flags = {};
+  let phase = 'all';
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg.startsWith('--')) {
+      const eq = arg.indexOf('=');
+      if (eq !== -1) {
+        flags[arg.slice(2, eq)] = arg.slice(eq + 1);
+      } else if (argv[i + 1] && !argv[i + 1].startsWith('-')) {
+        flags[arg.slice(2)] = argv[++i];
+      } else {
+        flags[arg.slice(2)] = 'true';
+      }
+    } else if (PHASES.has(arg)) {
+      phase = arg;
+    }
+  }
+  return { phase, flags };
+}
+
+const CLI = parseCli(process.argv.slice(2));
+
+/** Flag first, then the matching HARVEST_* variable, then the default. */
+function setting(flag, env, fallback) {
+  const raw = CLI.flags[flag] ?? process.env[env];
+  return raw === undefined || raw === '' ? fallback : raw;
+}
+
+function settingNumber(flag, env, fallback, { min = 0, max = Number.MAX_SAFE_INTEGER } = {}) {
+  const n = Number(setting(flag, env, fallback));
+  if (!Number.isFinite(n)) return fallback;
+  return Math.min(max, Math.max(min, Math.floor(n)));
+}
+
+/** The search families this run is allowed to walk. */
+function familiesInPlay() {
+  return setting('family', 'HARVEST_FAMILY', 'all');
+}
 
 /**
  * Repositories that must never be published.
@@ -46,11 +115,6 @@ const BLOCKED = new Set(
   ).map((r) => normaliseRepo(r)),
 );
 
-/** Repositories are compared without punctuation or case. */
-function normaliseRepo(repo) {
-  return String(repo).toLowerCase().replace(/[^a-z0-9]/g, '');
-}
-
 /**
  * Per-game overrides, keyed by catalogue id.
  *
@@ -60,127 +124,6 @@ function normaliseRepo(repo) {
  */
 const OVERRIDES = readJson(join(root, 'content/overrides.json'), { games: {} }).games ?? {};
 mkdirSync(work, { recursive: true });
-
-/**
- * Permissive licences are straightforward. Copyleft licences are also usable
- * here because the vendored copy ships with its original licence and the
- * corresponding source is published in this repository - which is exactly what
- * those licences require. AGPL is excluded: it carries extra obligations for
- * network-served modifications we do not want to take on.
- */
-const ALLOWED_LICENCE = new Map([
-  ['MIT', 'MIT'],
-  ['CC0-1.0', 'CC0-1.0'],
-  ['Apache-2.0', 'Apache-2.0'],
-  ['BSD-3-Clause', 'BSD-3-Clause'],
-  ['BSD-2-Clause', 'BSD-2-Clause'],
-  ['ISC', 'ISC'],
-  ['Unlicense', 'Unlicense'],
-  ['0BSD', '0BSD'],
-  ['GPL-3.0', 'GPL-3.0'],
-  ['GPL-2.0', 'GPL-2.0'],
-  ['LGPL-3.0', 'LGPL-3.0'],
-  ['LGPL-2.1', 'LGPL-2.1'],
-  ['MPL-2.0', 'MPL-2.0'],
-]);
-
-/** Words that suggest a repo is actually a game, not a library or a demo. */
-const GAME_WORDS = [
-  'game', 'games', 'puzzle', 'arcade', 'shooter', 'platformer', 'maze', 'tetris',
-  'snake', 'pacman', 'pac-man', 'solitaire', 'card', 'cards', 'quiz', 'trivia',
-  'tower', 'roguelike', 'rogue-like', 'rpg', 'sandbox', 'board', 'match', 'merge',
-  '2048', 'breakout', 'invaders', 'flappy', 'runner', 'doodle', 'asteroid', 'brick',
-  'word search', 'sudoku', 'mahjong', 'checkers', 'chess', 'pinball', 'arkanoid',
-  'ball', 'jump', 'clicker', 'idle', 'tycoon', 'coloring', 'colouring', 'memory',
-];
-
-/** A generic "game" word is too weak - these are specific genres/mechanics. */
-const STRONG_GAME_WORDS = [
-  'puzzle', 'arcade', 'shooter', 'shmup', 'platformer', 'maze', 'tetris', 'snake',
-  'pacman', 'pac-man', 'solitaire', 'klondike', 'spider solitaire', 'freecell',
-  'quiz', 'trivia', 'tower defense', 'towerdefence', 'roguelike', 'rogue-like',
-  'breakout', 'arkanoid', 'invaders', 'flappy', 'endless runner', 'asteroid',
-  'word search', 'wordsearch', 'wordle', 'hangman', 'sudoku', 'mahjong', 'nonogram',
-  'picross', 'bubble shooter', 'match-3', 'match 3', '2048', 'pinball', 'ping pong',
-  'doodle jump', 'flappy bird', 'angry birds', 'cut the rope', 'fruit ninja',
-  'snake game', 'brick breaker', 'space invaders', 'pong', 'golf game', 'solitaire game',
-  'card game', 'board game', 'card table', 'dice', 'slot machine', 'casino',
-  'racing game', 'car game', 'bike game', 'helicopter', 'zombie', 'tower blocks',
-  'sokoban', 'block puzzle', 'tile match', 'jewel', 'bejeweled', 'crossword',
-  'pixel game', 'retro game', 'classic game', 'arcade game', 'video game',
-];
-
-const SKIP_WORDS = [
-  'framework', 'library', 'boilerplate', 'starter', 'template', 'tutorial',
-  'course', 'awesome', 'curated', 'list of', 'roadmap', 'cheatsheet', 'toolkit',
-  'sdk', 'api wrapper', 'react component', 'theme', 'cli', 'editor', 'wallpaper',
-  'icon set', 'font', 'plugin', 'extension', 'vscode', 'atom plugin', 'webpack',
-  'babel', 'polyfill', 'css framework', 'learning', 'learn ', 'course', 'practice',
-  'exercise', 'cheatsheet', 'interview', 'portfolio', 'resume', 'marketing',
-];
-
-const QUERIES = [
-  'topic:html5-game',
-  'topic:html5',
-  'topic:javascript-game',
-  'topic:canvas-game',
-  'topic:web-game',
-  'topic:browser-game',
-  'topic:game language:JavaScript',
-  'topic:game language:HTML',
-  'topic:arcade-game',
-  'topic:puzzle-game',
-  'topic:casual-game',
-  'topic:card-game',
-  'topic:board-game',
-  'topic:strategy-game',
-  'topic:platformer',
-  'topic:roguelike',
-  'topic:shmup',
-  'topic:gamejam',
-  'topic:js13k',
-  'topic:tetris',
-  'topic:snake-game',
-  'topic:maze-game',
-  'topic:quiz-game',
-  'topic:trivia-game',
-  'topic:html5-canvas',
-  'topic:webgame',
-  'topic:2d-game',
-  'topic:pixel-art-game',
-  'topic:retro-games',
-  'topic:classic-games',
-  'topic:hypercasual',
-  'topic:js-game',
-  'topic:vanilla-js',
-  'topic:interactive',
-  'topic:game-development',
-  'topic:game-dev',
-  'topic:canvas',
-  'topic:browser',
-  'topic:html5-game-engine',
-  'topic:javascript-project',
-  'topic:mini-game',
-  'html5 game in:name',
-  'html5 game in:description',
-  'browser game in:description',
-  'canvas game in:description',
-  'javascript game in:description',
-  'web game in:description',
-  'mini game in:description',
-  'html5 canvas game in:description',
-  'play online in:description game',
-  'game in:name javascript',
-  'game in:name canvas',
-  'game in:name html5',
-  'webgame in:name',
-  'mini-game in:name',
-  'browser-game in:name',
-  'canvas-game in:name',
-  'vanilla javascript game in:description',
-  'built with canvas in:description',
-  'no dependencies game in:description',
-];
 
 function gh(args) {
   try {
@@ -237,42 +180,50 @@ function sweep() {
   // Candidates found by an earlier sweep are kept: a deep sweep is meant to
   // accumulate across runs, and overwriting the file threw away every repo the
   // previous run had already paid API calls for.
-  const previous = readJson(join(work, 'candidates.json'), []);
+  const previous = dedupeCandidates(readJson(join(work, 'candidates.json'), []));
   const seen = new Map(previous.map((c) => [c.repo, c]));
-  let queries = 0;
+  const queries = queriesFor(familiesInPlay());
+  let answered = 0;
   let calls = 0;
+  let added = 0;
 
-  // A sweep is bounded on purpose. The full matrix below is 60+ queries x 9
-  // licences x 10 pages, which is thousands of search calls at 30/minute and
-  // looks like a hang. HARVEST_TARGET stops as soon as there is enough new
-  // material, HARVEST_PAGES limits depth, and HARVEST_CALLS caps the API.
-  const target = Math.max(0, Number(process.env.HARVEST_TARGET ?? 0) || 0);
-  const maxPages = Math.max(1, Number(process.env.HARVEST_PAGES ?? 10) || 10);
-  const maxCalls = Math.max(0, Number(process.env.HARVEST_CALLS ?? 0) || 0);
+  // A sweep is bounded on purpose: 130+ queries x 9 licences x 10 pages is
+  // thousands of search calls at 30/minute and looks like a hang.
+  // HARVEST_TARGET stops as soon as there is enough material, HARVEST_PAGES
+  // limits depth, HARVEST_CALLS caps the API, and HARVEST_FAMILY picks which
+  // genre slices to walk.
+  const target = settingNumber('target', 'HARVEST_TARGET', 0);
+  const maxPages = settingNumber('pages', 'HARVEST_PAGES', 10, { min: 1, max: 100 });
+  const maxCalls = settingNumber('calls', 'HARVEST_CALLS', 0);
   const already = new Set(existsSync(thirdParty) ? readdirSync(thirdParty) : []);
   // Repos already judged unusable (no root index.html or no licence file):
   // they used to be re-downloaded and re-rejected on every run.
   const skipped = new Set(readJson(join(work, 'skipped.json'), []));
 
-  for (const q of QUERIES) {
-    for (const lic of ['mit', 'cc0-1.0', 'apache-2.0', 'bsd-3-clause', 'isc', 'gpl-3.0', 'gpl-2.0', 'lgpl-3.0', 'mpl-2.0']) {
-      for (const page of Array.from({ length: maxPages }, (_, i) => i + 1)) {
-        if (maxCalls && calls >= maxCalls) break;
-        if (target && seen.size >= target) break;
+  // A deep sweep is hours of API calls. Without a checkpoint, a killed run
+  // loses every candidate it found - so persist as we go.
+  const checkpoint = () => {
+    writeJson(
+      join(work, 'candidates.json'),
+      [...seen.values()].sort((a, b) => b.stars - a.stars),
+    );
+  };
+
+  const outOfBudget = () =>
+    (maxCalls > 0 && calls >= maxCalls) || (target > 0 && seen.size >= target);
+
+  for (const q of queries) {
+    for (const lic of SEARCH_LICENCES) {
+      for (let page = 1; page <= maxPages; page++) {
+        if (outOfBudget()) break;
         calls++;
         if (calls % 25 === 0) {
           process.stderr.write(
             `  sweep: ${calls} calls, ${seen.size} candidates (${q} / ${lic} / p${page})\n`,
           );
         }
-        // A deep sweep is hours of API calls. Without a checkpoint, a killed
-        // run loses every candidate it found - so persist as we go.
-        if (calls % 50 === 0) {
-          writeJson(
-            join(work, 'candidates.json'),
-            [...seen.values()].sort((a, b) => b.stars - a.stars),
-          );
-        }
+        if (calls % 50 === 0) checkpoint();
+
         const raw = ghSearch([
           'api',
           `search/repositories?q=${encodeURIComponent(`${q} license:${lic} stars:>2`)}&per_page=100&page=${page}&sort=stars`,
@@ -281,6 +232,7 @@ function sweep() {
         // instead of spending most of its budget waiting for a reset.
         execFileSync('sleep', ['2.1']);
         if (!raw) break;
+
         let payload = {};
         try {
           payload = JSON.parse(raw);
@@ -289,34 +241,34 @@ function sweep() {
         }
         const items = payload.items ?? [];
         if (!items.length) break;
-        queries++;
+        answered++;
+
         for (const r of items) {
           if (seen.has(r.full_name)) continue;
-          const spdx = r.license?.spdx_id ?? null;
-          if (!spdx || !ALLOWED_LICENCE.has(spdx)) continue;
-          if (!r.size || r.size > 6000) continue;
-          const text = `${r.full_name} ${r.description ?? ''}`.toLowerCase();
-          if (SKIP_WORDS.some((w) => text.includes(w))) continue;
-          if (!STRONG_GAME_WORDS.some((w) => text.includes(w))) continue;
+          // On the block list: it can never be published, so it is not a
+          // candidate - no point spending a download on it later.
+          if (BLOCKED.has(normaliseRepo(r.full_name))) continue;
           if (already.has(slugify(r.full_name))) continue;
           if (skipped.has(r.full_name)) continue;
+          // Licence, size, "looks like a library/tutorial" and the game
+          // signal all live in one pure, tested function.
+          if (!shouldAccept(r)) continue;
           seen.set(r.full_name, {
             repo: r.full_name,
             stars: r.stargazers_count ?? 0,
-            licence: spdx,
+            licence: r.license?.spdx_id ?? null,
             sizeKB: r.size,
             pushedAt: r.pushed_at ?? '',
             description: (r.description ?? '').trim(),
             defaultBranch: r.default_branch ?? 'main',
             owner: r.owner?.login ?? r.full_name.split('/')[0],
           });
+          added++;
         }
       }
-      if (maxCalls && calls >= maxCalls) break;
-      if (target && seen.size >= target) break;
+      if (outOfBudget()) break;
     }
-    if (maxCalls && calls >= maxCalls) break;
-    if (target && seen.size >= target) break;
+    if (outOfBudget()) break;
   }
 
   const list = [...seen.values()].sort((a, b) => b.stars - a.stars);
@@ -332,142 +284,81 @@ function sweep() {
   }
 
   writeJson(join(work, 'candidates.json'), list);
-  console.log(`sweep: ${queries} queries, ${calls} API calls -> ${list.length} new candidates`);
+  console.log(
+    `sweep: ${answered} queries answered, ${calls} API calls -> ${list.length} candidates (+${added} new)`,
+  );
   return list;
 }
 
 /* ------------------------------------------------------------ vendor */
 
-function slugify(repo) {
-  return repo
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 60);
-}
+async function vendor() {
+  const candidates = dedupeCandidates(readJson(join(work, 'candidates.json'), []));
+  if (!candidates.length) {
+    console.log('vendor: no candidates in .harvest/candidates.json - run sweep first');
+    return [];
+  }
 
-function vendor() {
-  const candidates = readJson(join(work, 'candidates.json'), []);
   const curated = new Set(
     readJson(join(root, 'content/games.json'), { games: [] }).games
       .map((g) => g.credit?.source)
       .filter(Boolean)
       .map((u) => u.replace('https://github.com/', '').replace(/\/$/, '')),
   );
-  const results = [];
-  const noIndex = readJson(join(work, 'skipped.json'), []);
 
-  for (const c of candidates) {
-    if (curated.has(c.repo)) continue;
-    const slug = slugify(c.repo);
-    const dest = join(thirdParty, slug);
-    if (existsSync(join(dest, '.harvested.json'))) {
-      results.push(readJson(join(dest, '.harvested.json'), c));
-      continue;
-    }
+  const slugOf = (c) => c.slug || slugify(c.repo);
+  const isDone = (c) => existsSync(join(thirdParty, slugOf(c), '.harvested.json'));
+  // Repos preflight already refused (no root index.html, no licence) are not
+  // pending: retrying them would spend part of a small HARVEST_LIMIT on work
+  // that is known to be wasted.
+  const refused = new Set(readJson(join(work, 'skipped.json'), []));
+  const allowed = candidates.filter((c) => !curated.has(c.repo));
+  const pending = allowed.filter((c) => !isDone(c) && !refused.has(c.repo));
 
-    const raw = gh(['api', `repos/${c.repo}/contents/`]);
-    if (!raw) continue;
-    let files = [];
-    try {
-      files = JSON.parse(raw);
-    } catch {
-      continue;
-    }
-    if (!Array.isArray(files)) continue;
-    const names = files.map((f) => f.name);
-    const hasIndex = names.includes('index.html');
-    const licenseFile = names.find((n) => /^licen[cs]e(\.|$)/i.test(n));
-    if (!hasIndex || !licenseFile) {
-      // Remember it, so the next sweep does not spend candidates on a repo
-      // that can never be served as a game page.
-      noIndex.push(c.repo);
-      continue;
-    }
+  // HARVEST_LIMIT is a *download* budget: only repos that still need vendoring
+  // count against it, so a resumed run never spends its allowance on repos
+  // that are already on disk.
+  const limit = settingNumber('limit', 'HARVEST_LIMIT', 0);
+  const batch = limit > 0 ? pending.slice(0, limit) : pending;
+  // Already-vendored repos ride along so vendored.json stays the full picture
+  // validate() expects; vendorAll reuses their metadata without a download.
+  const queue = [...allowed.filter(isDone), ...batch];
 
-    // Pull the repo. Reuse a cached tarball when there is one, so a second
-    // validation pass does not re-download everything.
-    const tgz = join(work, `${slug}.tgz`);
-    if (!existsSync(tgz) || stat(tgz) < 2000) {
-      try {
-        execFileSync(
-          'curl',
-          [
-            '-sL', '-m', '180',
-            `https://codeload.github.com/${c.repo}/tar.gz/refs/heads/${c.defaultBranch}`,
-            '-o', tgz,
-          ],
-          { stdio: 'ignore' },
-        );
-      } catch {
-        continue;
-      }
-    }
-    if (!existsSync(tgz) || stat(tgz) < 2000) continue;
+  const concurrency = settingNumber('concurrency', 'HARVEST_CONCURRENCY', 6, { min: 1, max: 32 });
+  const preflight = makePreflight({ gh, cachePath: join(work, 'preflight.json') });
 
-    const tmp = join(work, `x-${slug}`);
-    rmSync(tmp, { recursive: true, force: true });
-    mkdirSync(tmp, { recursive: true });
-    try {
-      execFileSync('tar', ['xzf', tgz, '-C', tmp, '--strip-components=1'], { stdio: 'ignore' });
-    } catch {
-      rmSync(tmp, { recursive: true, force: true });
-      continue;
-    }
+  console.log(
+    `vendor: ${queue.length} repos queued (${pending.length} pending, limit ${limit || 'none'}), concurrency ${concurrency}`,
+  );
 
-    rmSync(dest, { recursive: true, force: true });
-    mkdirSync(dest, { recursive: true });
-    for (const entry of readdirSync(tmp)) {
-      if (entry === '.git' || entry === 'node_modules') continue;
-      cpSync(join(tmp, entry), join(dest, entry), { recursive: true });
-    }
-    rmSync(tmp, { recursive: true, force: true });
+  let tick = 0;
+  const { vendored, skipped, failed } = await vendorAll(queue, {
+    concurrency,
+    thirdPartyDir: thirdParty,
+    workDir: work,
+    preflight,
+    onProgress: ({ total, status, slug, reason }) => {
+      tick += 1;
+      const note = status === 'skipped' || status === 'failed' ? ` (${reason})` : '';
+      process.stderr.write(`\r  ${tick}/${total}  ${status}${note} ${slug}   `);
+    },
+  });
 
-    // Readme for real content.
-    let readme = '';
-    for (const n of ['README.md', 'readme.md', 'README', 'Readme.md']) {
-      const p = join(dest, n);
-      if (existsSync(p)) {
-        readme = readFileSync(p, 'utf8');
-        break;
-      }
-    }
+  const newly = vendored.filter((v) => v.reused !== true).length;
+  const clean = vendored.map(({ reused, ...meta }) => meta);
 
-    const meta = {
-      ...c,
-      slug,
-      dest: `third-party/${slug}`,
-      readme: readme.slice(0, 6000),
-      licenceFile: licenseFile,
-    };
-    writeJson(join(dest, '.harvested.json'), meta);
-    writeFileSync(
-      join(dest, 'ARCADEFORK-NOTICE.md'),
-      `# ${c.repo} - vendored third-party game
+  writeJson(join(work, 'vendored.json'), clean);
+  // Remember preflight rejections so the next sweep does not spend candidates
+  // on a repo that can never be served as a game page.
+  writeJson(
+    join(work, 'skipped.json'),
+    [...new Set([...readJson(join(work, 'skipped.json'), []), ...skipped.map((s) => s.repo)])],
+  );
 
-- **Repository:** https://github.com/${c.repo}
-- **Author:** ${c.owner}
-- **Licence:** ${c.licence} (see ${licenseFile} in this folder)
-- **Vendored by:** arcadefork (Ayhem Kahri)
-
-The original ${c.licence} licence text ships in this folder and applies to its contents.
-`,
-    );
-    results.push(meta);
-    process.stdout.write(`\r  vendored ${results.length}/${candidates.length} (${slug})   `);
-  }
-  writeJson(join(work, 'vendored.json'), results);
-  writeJson(join(work, 'skipped.json'), [...new Set(noIndex)]);
-  console.log(`\nvendor: ${results.length} repos vendored into third-party/`);
-  return results;
-}
-
-function stat(p) {
-  try {
-    return statSync(p).size;
-  } catch {
-    return 0;
-  }
+  process.stderr.write('\n');
+  for (const f of failed) console.error(`  failed ${f.repo}: ${f.reason}`);
+  console.log(`vendor: ${newly} vendored, ${skipped.length} skipped, ${failed.length} failed`);
+  return clean;
 }
 
 /* ---------------------------------------------------------- validate */
@@ -1013,10 +904,13 @@ function generate() {
 
 /* ------------------------------------------------------------- main */
 
-const phase = process.argv[2] ?? 'all';
+// The phase contract is unchanged: `node scripts/harvest-games.mjs vendor`.
+// --family/--limit/--concurrency/--pages/--calls/--target mirror the HARVEST_*
+// variables, with the flag winning when both are present.
+const phase = CLI.phase;
 
 if (phase === 'sweep' || phase === 'all') sweep();
-if (phase === 'vendor' || phase === 'all') vendor();
+if (phase === 'vendor' || phase === 'all') await vendor();
 if (phase === 'validate' || phase === 'all') await validate();
 if (phase === 'generate' || phase === 'all') generate();
 
