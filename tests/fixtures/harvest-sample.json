@@ -1,0 +1,138 @@
+{
+  "_comment": "Authoring fixture for tests/import.test.js. Twelve solved harvest records, shaped like .harvest/vendored.json entries with the browser verdict folded in. It deliberately contains one dead game, two repos that produce the same normalised title, and a family (tetris) with more members than the tests' capPerFamily of 3.",
+  "entries": [
+    {
+      "slug": "alpha-tetris",
+      "repo": "Alpha/tetris",
+      "owner": "Alpha",
+      "stars": 1200,
+      "licence": "MIT",
+      "title": "Block Drop",
+      "family": "tetris",
+      "description": "A falling-block puzzle game with a clean canvas renderer.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "beta-tetris",
+      "repo": "Beta/tetris-js",
+      "owner": "Beta",
+      "stars": 800,
+      "licence": "GPL-3.0",
+      "title": "Tetris JS",
+      "family": "tetris",
+      "description": "The classic tetromino stacker, written in plain JavaScript.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "gamma-blocks",
+      "repo": "Gamma/blocks",
+      "owner": "Gamma",
+      "stars": 400,
+      "licence": "MIT",
+      "title": "Block Drop",
+      "family": "tetris",
+      "description": "Another falling-block game, this one with a different colour palette and a much longer description than the original Block Drop so the enrichment tiebreak has something to weigh.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "delta-tetromino",
+      "repo": "Delta/tetromino",
+      "owner": "Delta",
+      "stars": 300,
+      "licence": "Apache-2.0",
+      "title": "Tetromino",
+      "family": "tetris",
+      "description": "Seven shapes, one well, endless blocks.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "epsilon-stack",
+      "repo": "Epsilon/stack",
+      "owner": "Epsilon",
+      "stars": 200,
+      "licence": "MIT",
+      "title": "Stack Attack",
+      "family": "tetris",
+      "description": "A stacker that plays more like a falling-block puzzle than a tower builder.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "zeta-snake",
+      "repo": "Zeta/snake",
+      "owner": "Zeta",
+      "stars": 900,
+      "licence": "ISC",
+      "title": "Snake",
+      "family": "snake",
+      "description": "Eat, grow, do not bite yourself.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "eta-snake-reloaded",
+      "repo": "Eta/snake-reloaded",
+      "owner": "Eta",
+      "stars": 350,
+      "licence": "MIT",
+      "title": "Snake Reloaded",
+      "family": "snake",
+      "description": "The snake game again, with neon colours and sound.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "theta-sudoku",
+      "repo": "Theta/sudoku",
+      "owner": "Theta",
+      "stars": 500,
+      "licence": "MIT",
+      "title": "Sudoku",
+      "family": "puzzle",
+      "description": "A grid of numbers that wants filling.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "iota-2048",
+      "repo": "Iota/2048",
+      "owner": "Iota",
+      "stars": 700,
+      "licence": "MIT",
+      "title": "2048 Merge",
+      "family": "puzzle",
+      "description": "Slide tiles, merge twos, chase the 2048 tile.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "kappa-racer",
+      "repo": "Kappa/racer",
+      "owner": "Kappa",
+      "stars": 150,
+      "licence": "CC0-1.0",
+      "title": "Neon Racer",
+      "family": "racing",
+      "description": "A top-down racer that never ends.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "lambda-wordle",
+      "repo": "Lambda/wordle",
+      "owner": "Lambda",
+      "stars": 250,
+      "licence": "MIT",
+      "title": "Wordle Clone",
+      "family": "word",
+      "description": "Six guesses, five letters.",
+      "verdict": "pass"
+    },
+    {
+      "slug": "mu-broken",
+      "repo": "Mu/broken-game",
+      "owner": "Mu",
+      "stars": 999999,
+      "licence": "MIT",
+      "title": "Broken Game",
+      "family": "arcade",
+      "description": "This one loads nothing at all - the canvas never paints and its main script 404s.",
+      "verdict": "dead",
+      "reason": "1 missing script or stylesheet; nothing playable"
+    }
+  ]
+}
