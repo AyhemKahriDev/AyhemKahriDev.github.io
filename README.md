@@ -7,22 +7,28 @@ Free browser arcade. Many games, many categories, **zero running cost**.
 - **Optional, never required:** `arcadefork.com` (also free to register: `.net` `.io` `.gg` `.games` `.fun`)
 
 No accounts, no tracking walls, no paywalls, and **no purchase is required at any
-point**. Every game is one HTML file's worth of JavaScript — the whole runtime is
-**~14 kB gzipped**.
+point**. Ten games are built on the arcadefork engine; the other 243 are
+open-source projects vendored with their own licences. The engine bundle — the
+code that boots a first-party game — is **24.9 kB gzipped** (75 kB raw). A
+vendored game ships what its author wrote and none of our code.
 
 ---
 
 ## Quick start
 
 ```bash
-npm install
+npm ci                 # install exactly what the lockfile pins
 npm run dev            # vite dev server
+npm test               # 91 node:test cases - the catalogue and harvest rules, no browser
 npm run build          # -> dist/ (static site, deployable as-is)
-npm run serve:dist     # serve dist/ locally on :4178
+npm run audit          # content, links, embeds, assets, size, then live game health
 npm run smoke          # headless-chrome smoke test of every page + game
-npm run audit          # links, embeds, assets and a live check of every game
+npm run serve:dist     # serve dist/ locally on :4178
 npm run daily          # print today's puzzle and answers
 ```
+
+How a game gets into the catalogue, end to end: **[docs/HARVEST.md](docs/HARVEST.md)**.
+Conventions that bind any automated contributor: **[AGENTS.md](AGENTS.md)**.
 
 ---
 
@@ -66,22 +72,44 @@ src/
   games/         one file per game
   host.ts        boots a game: canvas, HUD, overlays, share, keyboard
 content/
-  games.json     single source of truth for titles, copy, FAQ, keywords
+  games.json              engine games + the category list (hand-written)
+  engine-new.json         newer engine games, a separate layer for a clean merge
+  curated.json            hand-picked third-party entries
+  harvest-published.json  machine-curated harvest output (import.mjs writes it)
+  games.generated.json    legacy harvest output, rewritten by `npm run harvest`
+  overlays.json           category/title/copy patches, applied last, by id
+  blocked.json            repos that must never be published again
+  overrides.json          per-game embed fixes for the harvest
 scripts/
   build-site.mjs static site generator
+  catalogue.mjs  merges the catalogue layers
+  harvest/       the harvest pipeline - see docs/HARVEST.md
   daily.mjs      print today's puzzle (used by the content pipeline)
   smoke.mjs      headless browser test
   serve-dist.mjs static server
 ```
 
-`content/games.json` drives both the site builder and the in-game registry, so a
-game's SEO copy and its runtime can never disagree.
+`scripts/catalogue.mjs` merges five catalogue layers by id — earlier layer wins —
+then applies `content/overlays.json` as a sixth, last layer of patches, and the
+site builder and the in-game registry both read the result, so a game's SEO copy
+and its runtime cannot disagree. An overlay that patches an id no layer produced
+is a build error rather than a silent no-op, so a renamed game cannot keep its old
+copy unnoticed.
+
+The rule that matters for anyone editing curation: **`content/games.generated.json`
+is machine-owned.** The harvest rewrites it wholesale, so hand-written copy there
+is lost on the next sweep. Curation belongs in a layer above it
+(`content/curated.json`) or in `content/overlays.json`.
 
 ---
 
 ## The games
 
-**Original** — built on the arcadefork engine:
+**253 games in 9 categories** — 10 built on the arcadefork engine, 243 vendored
+from open-source repositories.
+
+**Original** — built on the arcadefork engine (`content/games.json` and
+`content/engine-new.json`):
 
 | Game | Category | What it is |
 |---|---|---|
@@ -89,59 +117,65 @@ game's SEO copy and its runtime can never disagree.
 | 2048 Merge | Puzzle | Slide and merge tiles toward 2048 |
 | Neon Snake | Arcade | Classic snake, edges wrap so runs stay long |
 | Memory Match | Brain | Find all the pairs in as few moves as possible |
+| Daily Sudoku | Puzzle | Date-seeded grid with one solution |
+| Minesweeper | Brain | Classic minefield, flag and clear |
+| Neon Breakout | Arcade | Brick breaker with a phosphor palette |
+| Lights Out | Puzzle | Toggle the grid until every light is off |
+| Simon Says | Brain | Repeat a growing colour-and-tone sequence |
+| Typing Sprint | Word | Type the falling words before they land |
 
-**Open source** — vendored verbatim with their original licences, credited on
-[/credits/](https://arcadefork.pages.dev/credits/): The Evolution of Trust, Loopy
-(Nicky Case, CC0), Javascript Tetris (Jake Gordon, MIT), Pacman (mumuy, MIT),
-plus a larger catalogue harvested from GitHub.
+**Open source** — 243 repositories vendored verbatim with their original
+licences, credited on [/credits/](https://arcadefork.pages.dev/credits/) with a
+link back to each source. Three were hand-picked and live in `content/games.json`
+next to the engine games (The Evolution of Trust and Loopy by Nicky Case, CC0;
+Javascript Tetris by Jake Gordon, MIT); the rest arrive through the harvest below.
 
 ### The harvest pipeline
 
 ```bash
-npm run harvest          # sweep -> vendor -> validate -> generate
+npm run harvest                                       # sweep -> vendor -> validate -> generate
+node scripts/harvest/batch.mjs --target 500 --batch 250   # rounds of vendor -> validate -> import
 ```
 
-`scripts/harvest-games.mjs` runs four phases:
+`scripts/harvest-games.mjs` runs four phases, each writing a report to
+`.harvest/` so a killed run resumes instead of starting over:
 
 | Phase | What it does |
 |---|---|
-| `sweep` | 60+ GitHub searches across game topics and naming conventions. Filters to permissive **and copyleft** licences (GPL/LGPL/MPL are fine here because the vendored copy ships its original licence and this repository is the corresponding source), then to repos that are actually games rather than libraries or tutorials. |
-| `vendor` | Downloads each repo, keeps the original `LICENSE`, writes an `ARCADEFORK-NOTICE.md` crediting author, licence and source, re-encodes oversized audio and localises any external resource the game hotlinks. |
-| `validate` | **The quality gate.** Loads each vendored game in headless Chrome. It must actually paint or present a real interface, and must not have same-origin resource failures. Failures are deleted, not published. |
-| `generate` | Writes `content/games.generated.json`: unique title, description, keywords, how-to-play and FAQ per game, derived from the repo README so the copy is real rather than templated. |
+| `sweep` | 124 GitHub search queries across 8 genre families (arcade, puzzle, word, action, board, racing, strategy, sandbox), each crossed with 9 licences, filtered by `scripts/harvest/filters.mjs`: a licence on the allowlist (permissive **and** copyleft — GPL/LGPL/MPL are fine because the vendored copy ships its original licence and this repository is the corresponding source), a plausible size, a game signal in the name or description, and nothing that says library, tutorial, framework, portfolio — or firmware. |
+| `vendor` | One `git/trees?recursive=1` call per repo discovers the entry HTML (`docs/index.html`, `dist/index.html`, a root `game.html`, ...; see `scripts/harvest/entry.mjs`). Passing repos are downloaded concurrently, pruned of files a browser can never use, and shipped with their `LICENSE` plus an `ARCADEFORK-NOTICE.md` crediting author, licence and source. |
+| `validate` | **The quality gate.** Opens each vendored game in headless Chrome, several at a time, and judges it with the same `judgeGame()` the post-build audit uses. It must paint or present a real interface, and must not have a missing script, a fatal JS error or a 4xx page. Failures are deleted, not published. |
+| `generate` | Rewrites `content/games.generated.json` from the survivors. No hand-written copy goes in there — it is the one file a harvest overwrites. |
 
-A full sweep is 60+ queries × 9 licences × 10 pages — thousands of search calls
-at 30/minute, which looks like a hang and burns the API budget for nothing. The
-sweep is therefore bounded, and the budget is the knob:
+A full sweep is 124 queries × 9 licences × 10 pages: thousands of search calls at
+30/minute, which looks like a hang and burns the API budget for nothing. It is
+therefore bounded, and the budget is the knob:
 
 ```bash
 HARVEST_TARGET=40 HARVEST_PAGES=3 HARVEST_CALLS=120 npm run harvest
 ```
 
-`HARVEST_TARGET` stops as soon as there are enough new candidates, `HARVEST_PAGES`
-limits page depth, `HARVEST_CALLS` caps the API outright, and repos already in
+`HARVEST_TARGET` stops once there are enough new candidates, `HARVEST_PAGES` limits
+page depth, `HARVEST_CALLS` caps the API outright, and repos already in
 `third-party/` are skipped. A sweep that finds nothing now fails loudly: `gh()`
-used to return `''` on any error, so an unauthenticated run "succeeded" with an
-empty catalogue. Phases are still resumable (`sweep`, `vendor`, `validate`,
-`generate`) and report to `.harvest/`.
+returns `''` on any error, so an unauthenticated run used to "succeed" with an
+empty catalogue.
 
-The build only copies games the catalogue references, so a harvest run in
-progress can never publish a game that has not passed the gate. The smoke test
-loads every published game in a real browser on every run.
+The build only copies games the catalogue references, so a harvest run in progress
+can never publish a game that has not passed the gate. The smoke test and
+`npm run audit:health` then load every published game in a real browser, which is
+how games that only break inside the delivered iframe get caught.
 
-Rough numbers: 700 candidates swept across 60+ GitHub queries, 301 vendored,
-**every one judged in a real browser** — 162 passed, 101 rejected for blank
-frames / missing scripts / fatal errors, 3 kept for a later pass, and 7 more
-cut by the smoke test for only failing inside the iframe they are actually
-delivered in. The gate is the point — a broken game or a near-duplicate page
-is worse than fewer games.
+The catalogues are capped, not just filtered: `import.mjs` publishes at most 80
+games per genre family when the batch driver runs it (40 is the importer's own
+default), at most `--budget` new pages per run, collapses duplicate titles to one
+page, and refuses any game without a passing browser verdict. 14 repositories are
+on `content/blocked.json` — vendored, opened in a browser and rejected (a landing
+page rather than a game, or a build step a browser cannot run) — so they cannot
+come back on the next sweep.
 
-Of the 162 that passed the harvest gate, five turned out to be unusable when
-they were actually played (a landing page rather than a game, or a game that
-needs a build step) and are now on `content/blocked.json`. The rest are
-repaired by `npm run fix:embeds` and re-checked in a browser by
-`npm run audit:health`, which is how the 31 games that shipped broken were
-found and fixed.
+Full detail, including the cost of each knob and what to do when a batch stops
+making progress: **[docs/HARVEST.md](docs/HARVEST.md)**.
 
 ---
 
@@ -154,8 +188,15 @@ The whole point is that this is cheap. Budget: **under two hours per game**.
    `shareCard`, and set `this.result` when the round ends.
 2. Register it in `src/games/index.ts`.
 3. Add its metadata to `content/games.json` (title, description, keywords,
-   how-to-play, FAQ, accent colour, category).
-4. `npm run build && npm run smoke`.
+   how-to-play, FAQ, accent colour, category). A game added later as part of a
+   merge goes in `content/engine-new.json` instead, which is the same shape in a
+   separate layer.
+4. `npm test && npm run audit:content && npm run build && npm run smoke`.
+
+A harvested game needs none of that: `import.mjs` writes its metadata into
+`content/harvest-published.json`. If a harvested entry needs a better category, a
+cleaner title or player-facing copy, patch it in `content/overlays.json` by id —
+never in `content/games.generated.json`, which the harvest rewrites.
 
 Optional metadata both shells understand: `"mobile": "native"` when the game
 already handles touch itself (no pad, no swipe interception), and
@@ -347,7 +388,8 @@ check runs in CI with the other audits.
   category chips, A→Z / Z→A sorting, a live count in an `aria-live` region and
   an honest empty state.
 - Categories wider than twelve games collapse behind a "Show all N" button, so
-  the page opens as a menu rather than a 110-tile wall.
+  the page opens as a menu rather than a 253-tile wall. The tiles are still in
+  the HTML: the collapse only hides them, so search needs no request.
 - "Random" respects the category you are looking at.
 
 ### Offline
@@ -518,20 +560,27 @@ into the spec, and post.
 | Command | What it does |
 |---|---|
 | `npm run dev` | Vite dev server |
+| `npm test` | 91 `node:test` cases: catalogue merge, harvest rules, copy, import. No browser, ~150 ms |
+| `npm run typecheck` | `tsc --noEmit` |
 | `npm run build` | Bundle + generate the static site into `dist/` |
 | `npm run serve:dist` | Serve `dist/` on :4178 |
-| `npm run smoke` | Headless Chrome test: every page, every game, SEO assertions |
-| `npm run check:mobile` | Phone viewport: pad, swipe → arrow, scroll lock, no pull-to-refresh |
-| `npm run audit` | The full gate: links, embed rules, asset resolution, live game health |
+| `npm run audit` | The full gate: `audit:content`, `audit:links`, `audit:embeds`, `audit:assets`, `audit:size`, `audit:health` |
+| `npm run audit:content` | Developer jargon in player copy, duplicate titles, an overlay pointing at a missing id, a broken `robots.txt` |
 | `npm run audit:links` | Every internal link and every sitemap URL resolves to a real file |
 | `npm run audit:embeds` | No embedded game is a personal page or can navigate out of the arcade |
 | `npm run audit:assets` | Every script, style and asset a published game asks for exists |
+| `npm run audit:size` | 10 MB per game, 20 MB per file, 700 MB for all of `dist/` |
 | `npm run audit:health` | Every published game loads, starts and paints in a real browser |
+| `npm run smoke` | Headless Chrome test: every page, every game, SEO assertions |
+| `npm run check:mobile` | Phone viewport: pad, swipe → arrow, scroll lock, no pull-to-refresh |
+| `npm run themes` | Every text/background pair in all 9 themes is at least WCAG AA |
+| `npm run harvest` | sweep → vendor → validate → generate (see [docs/HARVEST.md](docs/HARVEST.md)) |
+| `node scripts/harvest/batch.mjs --target 500 --batch 250` | Rounds of vendor → validate → import until the catalogue hits the target |
+| `npm run vendor:games` | Download and refresh the vendored open-source games |
 | `npm run fix:embeds` | Repair the vendored games (see below) |
 | `npm run package:itch` | Standalone zip per game for itch.io / Poki / CrazyGames |
-| `npm run typecheck` | `tsc --noEmit` |
+| `npm run deploy` | `build` then `wrangler deploy` |
 | `npm run daily` | Print today's puzzle + answers |
-| `npm run vendor:games` | Download and refresh the vendored open-source games |
 | `npm run og:image` | Re-render the social preview card |
 
 The health check also runs against the live site, so production can be
@@ -541,9 +590,7 @@ verified without a deploy:
 AUDIT_ORIGIN=https://arcadefork.pages.dev npm run audit:health
 ```
 
-It checks four games at a time (`AUDIT_JOBS=8` to go wider). On a 15-game
-sample that is 27 s serially versus 7 s with four workers; the full sweep of
-the whole catalogue takes about two minutes. Any gate needs
+It checks four games at a time (`AUDIT_JOBS=8` to go wider). Any gate needs
 Chrome; `scripts/chrome.mjs` finds a cached headless shell, a system Chrome or
 `CHROME_PATH`, and the message when it finds none includes the one-line
 install command.
@@ -562,19 +609,25 @@ looks fine in a screenshot and is broken when you press play is worse than no
 page at all, so every game is checked in a real browser before it ships.
 
 ```bash
-npm run build && npm run audit
+npm test && npm run build && npm run audit && npm run smoke
 ```
 
 | Check | What it catches |
 |---|---|
+| `test` | A catalogue merge that drops a layer, a preflight rule that accepts a repo with no licence, an importer that publishes a dead game or breaks the per-family cap. No browser needed |
+| `audit:content` | Developer jargon in player-facing copy, two games sharing a title, an overlay patching an id no layer produced, a `robots.txt` with no sitemap |
 | `audit:links` | A link to a page that was never built, a sitemap URL with no page |
 | `audit:embeds` | An embedded game that is really the author's homepage, a donation wall, a crypto payment page or a shop selling its own source code |
 | `audit:assets` | A game whose script, style or image does not exist - the game cannot run |
+| `audit:size` | A game shipping its build tooling: 10 MB per game, 20 MB per file, 700 MB for all of `dist/` |
 | `audit:health` | A game that loads but never paints, throws a JavaScript error, or waits behind a start screen nobody can find |
 | `smoke` | Every page of the site: one `h1`, a title, a description, a canonical, valid JSON-LD, a working board |
+| `themes` | A theme whose text does not reach WCAG AA on its own background (108 pairs, 9 themes) |
+| `check:mobile` | Pull-to-refresh still enabled, a swipe that scrolls instead of steering, a pad too small for a thumb |
 
-All of them run in CI before a deploy, so a broken game cannot reach the
-live site.
+CI runs `typecheck`, `build`, `audit`, `smoke` and `themes` before every deploy,
+so a broken game cannot reach the live site. `npm test` and `check:mobile` are
+not in the workflow yet - run them yourself before a commit.
 
 ### Repairing a vendored game
 
