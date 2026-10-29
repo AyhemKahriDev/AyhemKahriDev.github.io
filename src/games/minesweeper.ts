@@ -43,6 +43,14 @@ class Minesweeper implements GameInstance {
     return { cell, x: (this.ctx.width - cell * this.cols) / 2, y: (this.ctx.height - cell * this.rows) / 2 + 16 };
   }
 
+  /** On-canvas flag toggle: the copy promises a mode button, and a phone has no F key. */
+  private modeRect() {
+    const g = this.geo();
+    const w = 168;
+    const h = 28;
+    return { x: (this.ctx.width - w) / 2, y: Math.max(2, g.y - 60), w, h };
+  }
+
   private indexAt(p: Vec2): number {
     const g = this.geo();
     const c = Math.floor((p.x - g.x) / g.cell);
@@ -61,6 +69,12 @@ class Minesweeper implements GameInstance {
 
   pointerDown(p: Vec2): void {
     if (this.over) return;
+    const m = this.modeRect();
+    if (p.x >= m.x && p.x <= m.x + m.w && p.y >= m.y && p.y <= m.y + m.h) {
+      this.flagMode = !this.flagMode;
+      this.ctx.audio.play('tap', { gain: 0.3 });
+      return;
+    }
     const i = this.indexAt(p);
     if (i < 0) return;
     if (!this.started) {
@@ -144,11 +158,16 @@ class Minesweeper implements GameInstance {
         drawFitCenter(ctx, String(this.counts[i]), x + g.cell / 2, y + g.cell / 2, g.cell - 8, g.cell * 0.55, 800);
       }
     }
+    const m = this.modeRect();
+    fillRound(ctx, m.x, m.y, m.w, m.h, 8, this.flagMode ? this.ctx.accent : PANEL_2, GRID_LINE);
+    ctx.fillStyle = this.flagMode ? '#08090a' : TEXT;
+    drawFitCenter(ctx, `FLAG MODE: ${this.flagMode ? 'ON' : 'OFF'}`, m.x + m.w / 2, m.y + m.h / 2, m.w - 16, 13, 800);
+
     ctx.fillStyle = MUTED;
     setFont(ctx, 12, 600);
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(`PRESS F TO ${this.flagMode ? 'STOP' : 'START'} FLAGGING · FIRST CLICK IS ALWAYS SAFE`, this.ctx.width / 2, g.y - 18);
+    ctx.fillText('FIRST CLICK IS ALWAYS SAFE · F OR TAP TO FLAG', this.ctx.width / 2, g.y - 18);
   }
 
   shareCard(ctx: CanvasRenderingContext2D, w: number, h: number): void {
