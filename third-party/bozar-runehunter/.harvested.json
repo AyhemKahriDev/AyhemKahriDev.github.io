@@ -1,0 +1,15 @@
+{
+  "repo": "Bozar/runeHunter",
+  "stars": 28,
+  "licence": "MIT",
+  "sizeKB": 264,
+  "pushedAt": "2018-05-16T01:31:27Z",
+  "description": "A coffee break roguelike game written in JS. Explore the dungeon, collect 3 runes and escape alive.",
+  "defaultBranch": "master",
+  "owner": "Bozar",
+  "slug": "bozar-runehunter",
+  "dest": "third-party/bozar-runehunter",
+  "readme": "# Rune Hunter\n\n![image](https://github.com/Bozar/runeHunter/blob/master/doc/youWin.png)\n\nRune Hunter is a coffee break Roguelike game written in Javascript with [rot.js](https://github.com/ondras/rot.js). Explore the dungeon, stay away from ghosts, and collect 3 runes as quickly as possible.\n\nPlay the game [on-line](https://bozar.github.io/runeHunter/).\n\n## Your Goal\n\n* Explore the dungeon and collect treasure.\n* Make sacrifice at the altar to get a rune.\n* Collect 3 runes to beat the game.\n\n## Tips\n\n* The more you carry, the more turns it takes to move 1 step.\n* You cannot drop the rune.\n* A satisified ghost needs more time to reappear.\n\n## Keybindings\n\n* Move: arrow keys, hjkl\n* Pick up: Space\n* Drop the skull/coin/gem: s/c/g, 1/2/3\n* Print the seed in the browser console: d\n* Switch the wizard mode: ~\n\nWizard mode:\n\n* Switch the fog of war: f\n* Create a/an skull/coin/gem/altar: S/C/G/A\n* Print the current turn in the browser console: t\n\n## Miscellaneous\n\nSearch `Game._devSeed` in `scripts/game.js` to manually set a seed.\n\n`doc/designNote.pdf` is the paper prototype I made for Rune Hunter.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

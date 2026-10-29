@@ -1,0 +1,15 @@
+{
+  "repo": "IgorRozani/flappy-bird",
+  "stars": 47,
+  "licence": "MIT",
+  "sizeKB": 173,
+  "pushedAt": "2018-11-07T19:11:08Z",
+  "description": "A Flappy Bird game in Phaser 3",
+  "defaultBranch": "master",
+  "owner": "IgorRozani",
+  "slug": "igorrozani-flappy-bird",
+  "dest": "third-party/igorrozani-flappy-bird",
+  "readme": "# Flappy Bird ![Flappy Bird](img/favicon.png) \nA Flappy Bird game in [Phaser 3](https://phaser.io/).\n\n[Check it live!](https://igorrozani.github.io/flappy-bird)\n\n## Table of Contents\n* [Game screenshots](#game-screenshots)\n* [Assets](#assets)\n* [How to](#how-to)\n    * [Run it](#run-it)\n    * [Generate documentation](#generate-documentation)\n* [Wiki](#wiki)\n* [License](#license)\n\n\n## Game screenshots\n![Main menu](img/print01.png)\n\n*Main menu*\n\n\n![Playing](img/print02.png)\n\n*Playing*\n\n![Game over screen](img/print03.png)\n\n*Game over*\n\n## Assets\nThe assets used in this project came from the project [FlapPyBird](https://github.com/sourabhv/FlapPyBird) created by [Sourabh Verma](https://github.com/sourabhv).\n\n## How to \n\n### Run it\n1. Clone this repository or click Download ZIP in right panel and extract it \n```\ngit clone https://github.com/IgorRozani/flappy-bird.git \n```\n2. Install [Http-Server](https://www.npmjs.com/package/http-server)\n```\nnpm install http-server -g\n```\n3. Run the http-server from the repository's directory\n```\nhttp-server\n``` \n\n### Generate documentation\n1. Install [documentation.js](http://documentation.js.org/)\n```\nnpm install -g documentation\n```\n2. Generate game.js documentation\n```\ndocumentation build js/game.js -f md > docs/game.md\n```\n\n## Wiki\nWe have a wiki, [check it](https://github.com/IgorRozani/flappy-bird/wiki/Wiki).\n\n## License\n\n[MIT License](http://opensource.org/licenses/MIT)\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

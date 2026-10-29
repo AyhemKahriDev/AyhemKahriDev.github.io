@@ -1,0 +1,15 @@
+{
+  "repo": "kavun/flabbybox",
+  "stars": 12,
+  "licence": "MIT",
+  "sizeKB": 500,
+  "pushedAt": "2014-02-28T13:20:43Z",
+  "description": "phaser flappy bird clone",
+  "defaultBranch": "master",
+  "owner": "kavun",
+  "slug": "kavun-flabbybox",
+  "dest": "third-party/kavun-flabbybox",
+  "readme": "#flabbybox\nflappy bird clone based on [lessmilk.com Phaser flappy bird clone](http://blog.lessmilk.com/how-to-make-flappy-bird-in-html5-1/) with some added bonuses like\n- minor [juicyness](https://www.youtube.com/watch?v=Fy0aCDmgnxg)\n- improved scoring\n- easily hackable local storage high score\n- full width/height scaling\n- playable on mobile\n\n##[Play](http://kavun.github.io/flabbybox)\n\n##Installation\n```\nnpm install\nbower install\ngulp\n```",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

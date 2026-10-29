@@ -1,0 +1,15 @@
+{
+  "repo": "Daffabot/dps-calc",
+  "stars": 12,
+  "licence": "Apache-2.0",
+  "sizeKB": 227,
+  "pushedAt": "2024-06-04T01:45:05Z",
+  "description": "DPS Calculator use for general shooter game By Daffabot",
+  "defaultBranch": "main",
+  "owner": "Daffabot",
+  "slug": "daffabot-dps-calc",
+  "dest": "third-party/daffabot-dps-calc",
+  "readme": "# DPS Calculator Javascript\nApp Damage Per Second Calculator Javascript created and developed by Daffa Ahmad Ibrahim\n\n![displayDPS](https://www.daffabot.my.id/dps-calc/img/displaydps.png)\n\n## Demo\nYou can <a href=\"https://www.daffabot.my.id/dps-calc\">Click here</a> for demo.\n\n## How to install\n1. Clone repository\n```bash\ngit clone https://github.com/Daffabot/dps-calc.git\n```\n2. Open dps-calc/index.html file in your browser\n\n## Example Usage\n```javascript\nfunction count(){\n    //Variable declaration\n    let magazine = document.getElementById(\"magazine\").value;\n    let rps = document.getElementById(\"rps\").value;\n    let reload = document.getElementById(\"reload\").value;\n    let damagebasic = document.getElementById(\"damagebasic\").value;\n    let projectiles = document.getElementById(\"projectiles\").value;\n    let chan = document.getElementById(\"chan\").value;\n    let multi = document.getElementById(\"multi\").value;\n    let effvalue = document.getElementById(\"effvalue\").value;\n    let period = document.getElementById(\"period\").value;\n    let eleper = document.getElementById(\"eleper\").value;\n    let elevalue = document.getElementById(\"elevalue\").value;\n    //Counting process\n    let crit = (Number(magazine) * (Number(chan) / Number(100))) * ((Number(damagebasic) * Number(multi)) - Number(damagebasic));\n    let effect = Number(effvalue) / Number(period);\n    let element = Number(elevalue) * (Number(magazine) * (Number(eleper) / Number(100)));\n    let total = (((Number(magazine) * Number(damagebasic)) + Number(crit) + Number(element)) / ((Number(magazine) / Number(rps)) + Number(reload))) * Number(projectiles);\n    let dps = Number(total) + Number(effect);\n    if (dps){\n        //Use code to output results\n    }\n    }\n```\n\n## Collaborators\nFeel free to contribute! You can collaborate with us.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

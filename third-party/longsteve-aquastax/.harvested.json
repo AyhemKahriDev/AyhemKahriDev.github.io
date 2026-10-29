@@ -1,0 +1,15 @@
+{
+  "repo": "LongSteve/aquastax",
+  "stars": 13,
+  "licence": "MIT",
+  "sizeKB": 1574,
+  "pushedAt": "2019-01-16T09:37:08Z",
+  "description": "Remake of AquaStax, the 2007 mobile puzzle game",
+  "defaultBranch": "master",
+  "owner": "LongSteve",
+  "slug": "longsteve-aquastax",
+  "dest": "third-party/longsteve-aquastax",
+  "readme": "# aquastax\nThis is the repo for my remake of AquaStax, a 2007 mobile puzzle game.\n\n![Splash Screen](/reference/aquastax_anim_01_240x320_efigs.gif?raw=true \"\")\n\nThe game will use the Cocos2d-JS framework, and be coded in Javascript, with possibly some old Java tools.\n\nI will be live streaming the work I do on this project on Thursdays at 4pm UK time:\n\n- [twitch.tv/l0ngsteve](https://twitch.tv/l0ngsteve)\n\nStream Archive\n\nCheck out all the stream videos at [Fix My Bugs Blog](http://www.longsteve.com/fixmybugs/?page_id=889)\n\n# License\n\nMIT License\n\nCopyright (c) 2017 Steve Longhurst\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "selenebun/towerdefense",
+  "stars": 57,
+  "licence": "MIT",
+  "sizeKB": 1713,
+  "pushedAt": "2020-12-07T23:53:17Z",
+  "description": "Simple tower defense game in p5.js",
+  "defaultBranch": "main",
+  "owner": "selenebun",
+  "slug": "selenebun-towerdefense",
+  "dest": "third-party/selenebun-towerdefense",
+  "readme": "# towerdefense\nSimple tower defense game in p5.js that can be played\n[here](https://rsaihe.github.io/towerdefense/).\n\nYou can also make and edit custom maps using this\n[map editor](https://rsaihe.github.io/td-editor/). Instructions are located on\nthe Github [repo](https://github.com/rsaihe/td-editor/).\n\n### Controls:\n* Esc to deselect tower\n* Left and right brackets to change map size (will reset game!)\n* Mouse to place a tower\n* Spacebar to pause\n* 0-9 to select a tower to place\n* F to toggle FPS display\n* G to toggle god mode\n* H to toggle displaying enemy health bars\n* M to import and load map string (will reset game!)\n* P to toggle display particle effects (turning them off helps with lag)\n* Q to toggle towers firing\n* R to reset game\n* S to sell selected tower\n* U to upgrade selected tower\n* V to mute sound volume\n* W to toggle delay between waves\n* X to export map string (copies to clipboard)\n* Z to return to default zoom level (will reset game!)\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

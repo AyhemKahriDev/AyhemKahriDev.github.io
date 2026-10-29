@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta chrset="UTF 8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <title>DPS Calculator General - Daffabot</title>
+    <link rel="stylesheet" href="./css/index.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" crossorigin="anonymous">
+  </head>
+  <body>
+    <h2>DPS CALCULATOR</h2>
+    <h3>Damage Per Second use for general shooter game</h3>
+
+    <h4>Magazine Size: <input type="number" id="magazine" min="0" /></h4>
+
+    <h4>Round Per Second: <input type="number" id="rps" min="0" /></h4>
+
+    <h4>Reload Time (Second): <input type="number" id="reload" min="0" /></h4>
+
+    <h4>Damage Per Bullet: <input type="number" id="damagebasic" /></h4>
+
+    <h4>Projectiles: <input type="number" id="projectiles" min="0" value="1" /></h4>
+    <hr />
+    <h3>(optional)</h3>
+
+    <h4>Chance Crit %: <input type="number" id="chan" min="1" value="100" /></h4>
+
+    <h4>(Crit) Multiplier Of Base Damage: <input type="number" id="multi" min="1" value="1" /> X Base Damage</h4>
+
+    <h4>Effect Damage: <input type="number" id="effvalue" /> Damage/ <input type="number" id="period" min="1" value="1" placeholder="1" required />Second</h4>
+
+    <h4>Chance Element %: <input type="number" id="eleper" min="1" value="100" /></h4>
+
+    <h4>Element Damage: <input type="number" id="elevalue" /></h4>
+
+    <button id="display" class="fas" type="button" onclick="display()">Count</button>
+    <button id="clear" class="fas" type="button" onclick="cleared()">Clear All</button>
+    <button id="save" class="fas" type="button" onclick="readWindow.alert('Nama senjata anda', 'Simpan Data Senjata')">Save</button>
+    <button id="deleteSave" class="fas" type="button" onclick="deleted()">Delete All Save</button>
+    <button id="donate" class="fas" type="button" onclick="donate()">Donate</button>
+
+    <br /><br />
+    <div id="showinputhere"></div>
+    <br />
+    <h4>Senjata yang tersimpan</h4>
+    <div id="outputDiv"></div>
+    <script src="./js/index.js" defer type="module"></script>
+  </body>
+</html>

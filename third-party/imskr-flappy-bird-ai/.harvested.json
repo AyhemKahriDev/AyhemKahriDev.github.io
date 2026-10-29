@@ -1,0 +1,15 @@
+{
+  "repo": "imskr/Flappy-Bird-AI",
+  "stars": 43,
+  "licence": "MIT",
+  "sizeKB": 5588,
+  "pushedAt": "2019-03-24T02:24:54Z",
+  "description": "Artificial Intelligence based Flappy Bird Game",
+  "defaultBranch": "master",
+  "owner": "imskr",
+  "slug": "imskr-flappy-bird-ai",
+  "dest": "third-party/imskr-flappy-bird-ai",
+  "readme": "# Flappy-Bird-AI :baby_chick:\nArtificial Intelligence based Flappy Bird Game\n\n## LIVE: https://imskr.github.io/Flappy-Bird-AI/\n\n<p align=\"center\">\n  <img src=\"assets/game.PNG\" height=\"350\">\n</p>\n\n<p align=\"center\">\n  <sub>Created by <a href=\"https://github.com/imskr\"><strong>Shubham Kumar</strong></a>\n</p>\n\n<p align=\"center\">\n<a href=\"https://github.com/imskr/Flappy-Bird-AI/blob/master/LICENSE\">\n    <img src=\"https://img.shields.io/badge/License-MIT-orange.svg?longCache=true\" alt=\"License\">\n</a>\n  \n<a href=\"https://github.com/imskr\">\n    <img src=\"https://cdn.rawgit.com/sindresorhus/awesome/d7305f38d29fed78fa85652e3a63e154dd8e8829/media/badge.svg\" alt=\"awesome\">\n</a>\n\n<a href=\"https://github.com/imskr/Flappy-Bird-AI/stargazers\">\n    <img src=\"https://img.shields.io/github/stars/imskr/Flappy-Bird-AI.svg?style=social\" alt=\"Stargazers\">\n</a>\n</p> \n\n<hr noshade>\n\n### Libraries\n\n* **Processing.js**\n* **Javascript**\n\n### Explanation\nThis Project uses neural-network & genetic algorithm for bird's brain.\n\n![nn](assets/nn.png)\n\n* **Uses Genetic Algorithm explained** [here](https://medium.com/code-to-express/demystifying-genetic-algorithm-a91a57bd8c53)\n\n### References\n* **The Coding Train** [NN](https://github.com/CodingTrain/Toy-Neural-Network-JS)\n* **Demystifying RL** [Intel](https://www.intel.ai/demystifying-deep-reinforcement-learning/#gs.0lgpgr)\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

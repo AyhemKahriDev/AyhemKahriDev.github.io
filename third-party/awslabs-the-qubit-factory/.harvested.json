@@ -1,0 +1,15 @@
+{
+  "repo": "awslabs/the-qubit-factory",
+  "stars": 45,
+  "licence": "Apache-2.0",
+  "sizeKB": 5306,
+  "pushedAt": "2024-11-25T22:19:13Z",
+  "description": "A puzzle/construction game about quantum computing.",
+  "defaultBranch": "main",
+  "owner": "awslabs",
+  "slug": "awslabs-the-qubit-factory",
+  "dest": "third-party/awslabs-the-qubit-factory",
+  "readme": "<figure style=\"height: 300px; margin: 10px; padding: 10px\">\n<img src=\"images/QFlogotext.png\" alt=\"Construction Phase\" height=\"300\" align=\"left\">\n</figure>\n<br clear=\"left\">\n\nA puzzle/construction game about manipulating **qubits** (quantum bits) to solve challenges involving quantum technology and computation. \n\n* Play in your browser: [www.qubitfactory.io](https://www.qubitfactory.io/)\n* Learn more on the wiki: [github.com/awslabs/the-qubit-factory/wiki](https://github.com/awslabs/the-qubit-factory/wiki)\n* Youtube channel: [www.youtube.com/@TheQubitFactory](https://www.youtube.com/@TheQubitFactory)\n\n## Disclaimer: \n_The Qubit Factory_ is set within a fictional reality about robots doing robotty things in a robot factory. The character dialog contained within, written wholly by developer Glen Evenbly, is intended to be humorous and satirical. The opinions, views and practices of characters from within _The Qubit Factory_ do not reflect those of the developers or the developers' employer. \n\n## License:\n_The Qubit Factory_ is licensed under Apache 2.0.",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

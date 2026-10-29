@@ -1,0 +1,15 @@
+{
+  "repo": "mumuy/pacman",
+  "stars": 1647,
+  "licence": "MIT",
+  "sizeKB": 124,
+  "pushedAt": "2026-05-07T13:15:20Z",
+  "description": "基于HTML5的吃豆人游戏 - 经典游戏开发样例_Pacman based on HTML5",
+  "defaultBranch": "master",
+  "owner": "mumuy",
+  "slug": "mumuy-pacman",
+  "dest": "third-party/mumuy-pacman",
+  "readme": "# Pacman 吃豆游戏\n\n- 项目演示(DEMO)地址：https://passer-by.com/pacman/\n\n### 版权\n本游戏由 [passer-by.com](https://passer-by.com/) 制作，请尊重作者，引用请注明来源。\n\n功能\n\n- [x] 地图绘制\n- [x] 玩家控制\n- [x] NPC根据玩家坐标实时自动寻径\n- [x] 吃豆积分系统\n- [x] 能量豆功能\n- [x] 多关卡(共12关)\n- [ ] 特殊物品记分\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

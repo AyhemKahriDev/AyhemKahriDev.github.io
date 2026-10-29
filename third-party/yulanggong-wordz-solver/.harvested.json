@@ -1,0 +1,15 @@
+{
+  "repo": "yulanggong/Wordz-Solver",
+  "stars": 12,
+  "licence": "MIT",
+  "sizeKB": 2598,
+  "pushedAt": "2022-05-29T12:21:55Z",
+  "description": "A word puzzle solver for Wordle, Boggle, WordzUp, wordoid and more.",
+  "defaultBranch": "master",
+  "owner": "yulanggong",
+  "slug": "yulanggong-wordz-solver",
+  "dest": "third-party/yulanggong-wordz-solver",
+  "readme": "# Wordz Solver\r\n\r\nA word puzzle solver for *Wordle*, *Boggle*, *WordzUp!*, *wordoid!* and more.\r\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

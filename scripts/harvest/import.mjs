@@ -222,6 +222,8 @@ export function importGames({
   validated = [],
   capPerFamily = 40,
   budget = 500,
+  existingTitles = [],
+  existingIds = [],
   copyFor = copyModule?.copyFor ?? defaultCopy,
   familyFor = copyModule?.familyFor ?? defaultFamilyOf,
   categoryFor = categoryModule?.categoryFor ?? defaultCategory,
@@ -261,7 +263,16 @@ export function importGames({
   // Ids are derived from the repo, so they can be built without knowing about
   // the rest of the catalogue; a collision (two repos that slugify the same)
   // still has to be broken, or one page would overwrite the other.
-  const usedIds = new Set();
+  const usedIds = new Set(existingIds);
+  /**
+   * Titles already published by another catalogue layer. Two repos called
+   * "Snake" are two different games: disambiguate with the author rather than
+   * dropping one, or the site ships two pages with the same name (and the
+   * content gate fails the build).
+   */
+  const normalise = (s) =>
+    String(s ?? '').toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+  const takenTitles = new Set([...existingTitles].map(normalise));
   const games = [];
   const families = new Map();
 
@@ -279,9 +290,19 @@ export function importGames({
       categoryFor(`${record.repo} ${record.description ?? ''} ${record.title}`.toLowerCase()) || 'arcade',
     );
 
+    let title = String(copy.title);
+    if (takenTitles.has(normalise(title))) {
+      const owner = String(record.owner ?? record.repo.split('/')[0] ?? '')
+        .replace(/[^a-z0-9]+/gi, ' ')
+        .trim()
+        .replace(/\b\w/g, (c) => c.toUpperCase());
+      if (owner) title = `${title} (${owner})`;
+    }
+    takenTitles.add(normalise(title));
+
     games.push({
       id,
-      title: String(copy.title),
+      title,
       tagline: String(copy.tagline ?? '').slice(0, 90),
       description: String(copy.description ?? ''),
       category,
@@ -350,7 +371,15 @@ function main() {
     process.exit(1);
   }
 
-  const games = importGames({ vendored, validated, capPerFamily, budget });
+  // Titles and ids the rest of the catalogue already publishes. Without this,
+  // a harvested "Snake" collides with the one already on the site and the
+  // content gate fails the build after a successful import.
+  const layer = (p) => readJson(join(root, p), { games: [] }).games ?? [];
+  const existing = [...layer('content/games.json'), ...layer('content/engine-new.json'), ...layer('content/curated.json'), ...layer('content/games.generated.json')];
+  const existingTitles = existing.map((g) => g.title);
+  const existingIds = existing.map((g) => g.id);
+
+  const games = importGames({ vendored, validated, capPerFamily, budget, existingTitles, existingIds });
   const passedCount = validated.filter((v) => v?.verdict === 'pass').length;
 
   mkdirSync(dirname(out), { recursive: true });

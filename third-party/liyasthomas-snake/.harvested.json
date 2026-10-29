@@ -1,0 +1,15 @@
+{
+  "repo": "liyasthomas/snake",
+  "stars": 18,
+  "licence": "MIT",
+  "sizeKB": 16,
+  "pushedAt": "2021-01-16T01:57:00Z",
+  "description": "🐍 Snakes! Snakes everywhere!",
+  "defaultBranch": "master",
+  "owner": "liyasthomas",
+  "slug": "liyasthomas-snake",
+  "dest": "third-party/liyasthomas-snake",
+  "readme": "\n# Snake\n\n### Snakes! Snakes everywhere! by [Liyas Thomas](https://github.com/liyasthomas)\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

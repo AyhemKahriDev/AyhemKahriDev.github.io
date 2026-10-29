@@ -1,0 +1,15 @@
+{
+  "repo": "omackenzie/Doodle-Jump-in-JS",
+  "stars": 12,
+  "licence": "MIT",
+  "sizeKB": 830,
+  "pushedAt": "2021-06-12T07:51:53Z",
+  "description": "A version of Doodle Jump created in Javascript.",
+  "defaultBranch": "master",
+  "owner": "omackenzie",
+  "slug": "omackenzie-doodle-jump-in-js",
+  "dest": "third-party/omackenzie-doodle-jump-in-js",
+  "readme": "# Doodle-Jump-in-JS\nA version of Doodle Jump created in Javascript.\nGithub Pages link: https://omackenzie.github.io/Doodle-Jump-in-JS/\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

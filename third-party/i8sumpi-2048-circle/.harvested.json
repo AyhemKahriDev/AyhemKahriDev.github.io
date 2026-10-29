@@ -1,0 +1,15 @@
+{
+  "repo": "i8sumPi/2048-circle",
+  "stars": 11,
+  "licence": "MIT",
+  "sizeKB": 63,
+  "pushedAt": "2021-01-18T23:58:00Z",
+  "description": "Use the arrow keys to move the tiles. When two tiles with the same number collide, they will merge into their sum. Try to get the 2048 tile!",
+  "defaultBranch": "master",
+  "owner": "i8sumPi",
+  "slug": "i8sumpi-2048-circle",
+  "dest": "third-party/i8sumpi-2048-circle",
+  "readme": "# 2048-circle\nFor those of you who love the game 2048, please check out my new variation: **[2048 Circle](http://kiraprograms.com/2048-circle)**! \n\nThere are a ton of variations on the game (in fact, the game itself is a variation of 1024), however none have experimented with a non-square board. When the board is a circle, the game becomes just a bit harder to predict, so there is no simple strategy. \n\nI made this game from scratch, not by forking the original game. If you are interested in making your own 2048 variation, check out the code!\n\nCheck out the [product hunt](https://www.producthunt.com/posts/2048-circle) page for more info!\n",
+  "licenceFile": "LICENSE.txt",
+  "validated": true
+}
