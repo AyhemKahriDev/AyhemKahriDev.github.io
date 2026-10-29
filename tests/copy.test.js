@@ -7,6 +7,7 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import {
   DEV_JARGON,
   FAMILIES,
@@ -271,4 +272,177 @@ test('FAMILIES categories agree with CATEGORY_BY_FAMILY', () => {
       `${f.id} disagrees: ${CATEGORY_BY_FAMILY[f.id]} vs ${f.category}`,
     );
   }
+});
+
+/* ------------------------------------------------------------------ titles */
+
+/**
+ * The live catalogue, as it was published before this module learned to read
+ * repository names: the left-hand side is what a player saw on the games
+ * index, the right-hand side is the title the page should carry. All but
+ * `tv-show-explorer` (a slug from the current harvest batch) are repositories
+ * listed in content/harvest-published.json.
+ */
+const LIVE_TITLES = [
+  ['stefanweck/dungeongeneration', 'Dungeon Generation'],
+  ['Bozar/cursedSouls', 'Cursed Souls'],
+  ['cxong/DrunkenViking', 'Drunken Viking'],
+  ['selenebun/towerdefense', 'Tower Defence'],
+  ['Ideosorter/ideosorter.github.io', 'Ideosorter'],
+  ['tv-show-explorer', 'TV Show Explorer'],
+  ['moar-tech/spacerocks', 'Space Rocks'],
+  ['Milchreis/Snake3D', 'Snake 3D'],
+  ['Milchreis/tinydefence2', 'Tiny Defence 2'],
+  ['dag7dev/JSQuizee', 'Quizee'],
+  ['omackenzie/Doodle-Jump-in-JS', 'Doodle Jump'],
+  ['i8sumPi/2048-circle', '2048 Circle'],
+  ['bburky/blocktoblock', 'Block to Block'],
+  ['omar-mazen/weatherio', 'Weather'],
+  ['awslabs/the-qubit-factory', 'The Qubit Factory'],
+  ['johannruiz/Daytona-USA-Web', 'Daytona USA'],
+];
+
+test('cleanTitle splits camelCase and PascalCase into words', () => {
+  assert.equal(cleanTitle('Bozar/cursedSouls'), 'Cursed Souls');
+  assert.equal(cleanTitle('cxong/DrunkenViking'), 'Drunken Viking');
+  assert.equal(cleanTitle('audioslayer/NanoArcade'), 'Nano Arcade');
+  assert.equal(cleanTitle('dgatewood/ShapeCrush'), 'Shape Crush');
+  assert.equal(cleanTitle('someone/neonSnakeDeluxe'), 'Neon Snake Deluxe');
+});
+
+test('cleanTitle splits letter and digit boundaries without breaking acronyms', () => {
+  assert.equal(cleanTitle('someone/2048Game'), '2048 Game');
+  assert.equal(cleanTitle('Milchreis/Snake3D'), 'Snake 3D');
+  assert.equal(cleanTitle('i8sumPi/2048-circle'), '2048 Circle');
+});
+
+test('cleanTitle strips pages, host and branch furniture', () => {
+  assert.equal(cleanTitle('Ideosorter/ideosorter.github.io'), 'Ideosorter');
+  assert.equal(cleanTitle('someone/cursed-souls-github-io'), 'Cursed Souls');
+  assert.equal(cleanTitle('someone/cursed-souls-gh-pages'), 'Cursed Souls');
+  assert.equal(cleanTitle('iliagrigorevdev/quoridor-web'), 'Quoridor');
+  assert.equal(cleanTitle('someone/snake-game-web'), 'Snake');
+  assert.equal(cleanTitle('someone/tetris-master'), 'Tetris');
+  assert.equal(cleanTitle('someone/tetris-main'), 'Tetris');
+  assert.equal(cleanTitle('pixel/neon-snake-deluxe'), 'Neon Snake Deluxe');
+});
+
+test('cleanTitle drops the author prefix a repository repeats', () => {
+  assert.equal(
+    cleanTitle('bocaletto-luca/bocaletto-luca-monopoly-multiplayer'),
+    'Monopoly Multiplayer',
+  );
+  assert.equal(cleanTitle('bocaletto-luca/arkanoid'), 'Arkanoid');
+});
+
+test('cleanTitle splits run-together lowercase names against the game vocabulary', () => {
+  assert.equal(cleanTitle('stefanweck/dungeongeneration'), 'Dungeon Generation');
+  assert.equal(cleanTitle('selenebun/towerdefense'), 'Tower Defence');
+  assert.equal(cleanTitle('moar-tech/spacerocks'), 'Space Rocks');
+  assert.equal(cleanTitle('bburky/blocktoblock'), 'Block to Block');
+  assert.equal(cleanTitle('someone/cursedsouls'), 'Cursed Souls');
+  // No two-word split exists, so the name stays whole and only the first
+  // letter is upper-cased.
+  assert.equal(cleanTitle('James-Livesey/bytle'), 'Bytle');
+  assert.equal(cleanTitle('RainerWessOS/Daddelkiste'), 'Daddelkiste');
+});
+
+test('cleanTitle keeps acronyms upper-case and uses British spelling', () => {
+  assert.equal(cleanTitle('tv-show-explorer'), 'TV Show Explorer');
+  assert.equal(cleanTitle('RichLewis007/AI-Pong-game'), 'AI Pong');
+  assert.equal(cleanTitle('someone/flappy-birds-ai'), 'Flappy Birds AI');
+  assert.equal(cleanTitle('x/snake-hd'), 'Snake HD');
+  assert.equal(cleanTitle('x/tower-defence-3d'), 'Tower Defence 3D');
+});
+
+test('cleanTitle produces the 16 live titles the index needs', () => {
+  for (const [repo, expected] of LIVE_TITLES) {
+    assert.equal(cleanTitle(repo), expected, `${repo} should read as "${expected}"`);
+  }
+});
+
+test('cleanTitle never leaves repository furniture in a title', () => {
+  for (const [repo, expected] of LIVE_TITLES) {
+    assert.ok(!/\bgithub\b/i.test(expected), `${repo} leaks github`);
+    assert.ok(!/\b(?:io|com)$/i.test(expected), `${repo} ends in a host suffix`);
+    assert.ok(!/[.,;:!?]$/.test(expected), `${repo} ends in punctuation`);
+    assert.ok(expected.split(' ').length <= 6, `${repo} is too long`);
+    assert.ok(!/^[a-z]/.test(expected), `${repo} is not capitalised`);
+  }
+  // Two real words are the target; one-word names have no better split.
+  const multiword = LIVE_TITLES.filter(([, title]) => title.includes(' '));
+  assert.ok(multiword.length >= 12, 'most of the live catalogue has a two-word title');
+});
+
+/* --------------------------------------------------------- descriptions */
+
+test('every family carries its own 60-200 character description template', () => {
+  assert.equal(FAMILIES.length, 29);
+  const templates = FAMILIES.map((family) => family.description(''));
+  assert.equal(new Set(templates).size, templates.length, 'two families share a sentence');
+
+  for (const family of FAMILIES) {
+    assert.equal(typeof family.description, 'function', `${family.id} needs a description`);
+    const text = family.description('Test Game');
+    assert.equal(text, family.description('Test Game'), `${family.id} is not deterministic`);
+    assert.ok(text.length >= 60, `${family.id} description is ${text.length} chars`);
+    assert.ok(text.length <= 200, `${family.id} description is ${text.length} chars`);
+    assert.ok(!text.includes('!'), `${family.id} shouts: ${text}`);
+    assert.ok(!DEV_JARGON.test(text), `${family.id} leaks jargon: ${text}`);
+    assert.ok(!/\b(?:color|favorite|gray|center|defense|offense)\b/i.test(text), `${family.id} is not British: ${text}`);
+    // "States what the player does": a second-person or imperative verb.
+    assert.ok(
+      /\b(?:steer|drop|move|slide|swap|fill|deal|pair|guess|scan|answer|type|place|take|run|tap|find|hold|keep|turn|walk|read|eat|return|shoot|fight|clear|set)\b/i.test(
+        text,
+      ),
+      `${family.id} never says what the player does: ${text}`,
+    );
+  }
+});
+
+test('cleanDescription falls back to the family sentence, not one shared line', () => {
+  assert.equal(cleanDescription(''), FAMILIES.find((f) => f.id === 'generic').description(''));
+  const snake = FAMILIES.find((f) => f.id === 'snake').description('');
+  const board = FAMILIES.find((f) => f.id === 'board').description('');
+  assert.notEqual(snake, board);
+  // A repo description that is only a fragment is not card copy.
+  assert.equal(cleanDescription('A snake game.'), snake);
+});
+
+test('a usable repository description wins over the family template', () => {
+  const repoText =
+    'A fast snake game where you eat glowing pellets, grow longer and dodge your own tail.';
+  const out = copyFor({ title: 'Neon Snake Deluxe', repo: 'pixel/neon-snake-deluxe', description: repoText, family: 'snake' });
+  assert.match(out.description, /glowing pellets/);
+  assert.ok(out.description.length >= 60 && out.description.length <= 200);
+
+  // Junk descriptions lose to the template: too short, "built with X", dev
+  // language, or copy a previous run already generated.
+  const template = FAMILIES.find((f) => f.id === 'snake').description('');
+  for (const junk of [
+    'A snake game.',
+    'A snake game built with canvas.',
+    'npm install snakepkg and run the dev server',
+    template,
+  ]) {
+    const fallback = copyFor({ title: 'Snake', repo: 'x/snake', description: junk, family: 'snake' });
+    assert.equal(fallback.description, template, `"${junk}" should not become card copy`);
+  }
+});
+
+test('copyFor returns the cleaned title and does not churn', () => {
+  const out = copyFor({
+    title: 'Dungeongeneration',
+    repo: 'stefanweck/dungeongeneration',
+    description: '',
+    family: 'roguelike',
+  });
+  assert.equal(out.title, 'Dungeon Generation');
+  assert.equal(
+    copyFor({ title: 'Dungeongeneration', repo: 'stefanweck/dungeongeneration', description: '', family: 'roguelike' })
+      .description,
+    out.description,
+    'the same record must produce the same copy',
+  );
+  assert.ok(!/Math\.random/.test(readFileSync(new URL('../scripts/harvest/copy.mjs', import.meta.url), 'utf8')));
 });
