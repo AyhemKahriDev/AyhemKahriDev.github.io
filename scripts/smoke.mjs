@@ -326,15 +326,18 @@ async function main() {
   };
 
   await runPass(PAGES);
+  // Per-page failures are recorded as { page }, harness/SEO ones as { path }.
+  // Keying only on `path` matched nothing, so the retry silently never ran.
+  const failurePath = (f) => f.path ?? f.page;
   const retryTargets = failures
-    .map((f) => PAGES.find((p) => p.path === f.path))
+    .map((f) => PAGES.find((p) => p.path === failurePath(f)))
     .filter(Boolean);
   if (retryTargets.length) {
     console.log(`\nretrying ${retryTargets.length} failed page(s) once`);
     const first = failures.splice(0, failures.length);
     await runPass(retryTargets);
     for (const f of first) {
-      if (!failures.some((g) => g.path === f.path)) console.log(`FLAKY ${f.path} (passed on the retry)`);
+      if (!failures.some((g) => failurePath(g) === failurePath(f))) console.log(`FLAKY ${failurePath(f)} (passed on the retry)`);
     }
   }
 
