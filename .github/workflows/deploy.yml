@@ -7,6 +7,13 @@ on:
     # 00:10 UTC every day: refresh the rolling daily-puzzle window.
     - cron: '10 0 * * *'
   workflow_dispatch:
+    inputs:
+      skip_smoke:
+        description: >-
+          Publish without the smoke gate (hotfix only). Typecheck, tests, build,
+          audit and theme contrast still run and are still fatal.
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -18,6 +25,17 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    # 90 minutes, sized from measurement rather than guessed:
+    #   smoke was measured at ~8 min at 168 games and scales ~linearly with the
+    #   catalogue, so 480 s / 168 = ~2.9 s per game; at the 500-game target that
+    #   is ~24 min. `audit:health` drives the same embed set through a browser,
+    #   so budget ~10 min for it at 500. Fixed cost around those two (checkout,
+    #   npm ci, Chrome download plus up to 3 retries, typecheck, unit tests,
+    #   build, themes, artifact upload, push) is ~7 min. Total ~41 min at 500
+    #   games; x2 headroom for a slow runner leaves 90.
+    # 90 < the 360-minute default, so a hang fails in 1.5 h with its log
+    # attached instead of burning the full 6 h.
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -47,13 +65,55 @@ jobs:
           echo "channel lookup is down; installing a pinned build instead"
           install chrome-headless-shell@156.0.8078.47
       - run: npm run typecheck
+      # Unit tests are ~0.2 s and catch catalogue/copy regressions before the
+      # browser gates, which cost minutes. Cheapest gate goes first.
+      - name: Unit tests
+        run: npm test
       - run: npm run build
       # The gate. A broken game, a dead link or a page that no longer parses
       # must never reach a deploy.
       - name: Audit
         run: npm run audit
+      # The same fatal gate as before, but teed to a log so a failure leaves
+      # evidence, and the screenshots smoke already writes are captured too.
+      # pipefail keeps `tee` from masking the exit status: a red run still
+      # fails the step.
       - name: Smoke test
-        run: npm run smoke
+        id: smoke
+        # Skips ONLY on a manual run with skip_smoke=true; on push/schedule the
+        # input is absent (null), which is not true, so the gate runs.
+        if: ${{ inputs.skip_smoke != true }}
+        # Below the 90-minute job budget, so a hung browser fails the step and
+        # still reaches the upload step below instead of being cancelled by the
+        # job timeout.
+        timeout-minutes: 45
+        run: |
+          set -euo pipefail
+          mkdir -p .smoke-report
+          # Runs on every exit path, including a red `npm run smoke`. The log
+          # is already streaming to .smoke-report via tee; this adds the shots.
+          keep_shots() {
+            rc=$?
+            if [ "$rc" -ne 0 ]; then
+              cp .smoke/*.png .smoke-report/ 2>/dev/null || true
+            fi
+            exit "$rc"
+          }
+          trap keep_shots EXIT
+          npm run smoke 2>&1 | tee .smoke-report/smoke.log
+      # always() so this runs when smoke failed or timed out. The job still
+      # fails: no step uses continue-on-error.
+      - name: Upload smoke diagnostics
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: smoke-diagnostics
+          path: .smoke-report
+          if-no-files-found: ignore
+          retention-days: 3
+      - name: Note skipped smoke gate
+        if: ${{ inputs.skip_smoke == true }}
+        run: echo "::warning::smoke gate skipped by workflow_dispatch input skip_smoke=true"
 
       # Colour is a token tree here, so a theme can be checked without a
       # browser - and a theme nobody can read must never reach the menu.
@@ -64,7 +124,9 @@ jobs:
           name: dist
           path: dist
           retention-days: 1
+      # Explicit success(): a red gate above must never publish.
       - name: Publish to gh-pages
+        if: ${{ success() }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -83,6 +145,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
+    timeout-minutes: 15
+    permissions:
+      contents: read
     env:
       CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
       CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
