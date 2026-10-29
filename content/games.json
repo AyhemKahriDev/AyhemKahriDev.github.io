@@ -42,6 +42,24 @@
       "title": "Sandbox & Tools",
       "description": "Open-ended toys for playing with ideas. No score, no timer, just make something.",
       "accent": "#5AD8FF"
+    },
+    {
+      "id": "classics",
+      "title": "Classics",
+      "description": "Pong, Breakout, Space Invaders and the cabinets they came from. Same rules, no quarters.",
+      "accent": "#FF6B6B"
+    },
+    {
+      "id": "racing",
+      "title": "Racing Games",
+      "description": "Top-down and side-scrolling racers you can steer with two thumbs.",
+      "accent": "#FFB020"
+    },
+    {
+      "id": "table",
+      "title": "Table Games",
+      "description": "Board and card games with no setup: sudoku, solitaire, mahjong, ludo, go.",
+      "accent": "#B98CFF"
     }
   ],
   "games": [

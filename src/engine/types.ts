@@ -5,7 +5,26 @@ export interface Vec2 {
 
 export type Difficulty = 'easy' | 'normal' | 'hard';
 
-export type CategoryId = 'word' | 'puzzle' | 'arcade' | 'brain' | 'kids' | 'io';
+/**
+ * Must match every `content/games.json` -> `categories[].id`, plus the ids the
+ * catalogue patches games into via `content/overlays.json`.
+ *
+ * `kids` and `io` were aspirational names that no game ever used and no
+ * category page ever rendered; `strategy`, `sandbox`, `classics`, `racing` and
+ * `table` are real catalogue sections. A union that lies about the data is
+ * worse than no union: it lets a game claim a category the builder then drops
+ * from the nav without a type error.
+ */
+export type CategoryId =
+  | 'word'
+  | 'puzzle'
+  | 'arcade'
+  | 'brain'
+  | 'strategy'
+  | 'sandbox'
+  | 'classics'
+  | 'racing'
+  | 'table';
 
 export interface HudLine {
   label: string;
