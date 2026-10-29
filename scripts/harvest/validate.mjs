@@ -11,6 +11,16 @@
  * from scripts/embed-health.mjs - the same rule the post-build audit uses, so
  * a game cannot pass here and be dead on the live site.
  *
+ * A game that passes that paint verdict is then clicked into, with the same
+ * judgement smoke makes before a deploy (scripts/harvest/click-test.mjs): the
+ * page is loaded again in the same browser, focused, sent the arrow keys,
+ * Space, Enter and two clicks, and read back. Painting is not playing - a game
+ * that throws on its first keypress, fails a WASM MIME check or opens a socket
+ * to a server a static host cannot have was passing this gate and being
+ * published. An interaction failure is `dead` with the reason prefixed
+ * `interaction:`, so it is deleted like any other dead game. It costs about
+ * 1.5 s per game on top of the paint settle, which the pool absorbs.
+ *
  * Why a pool: a game needs ~2.2 s of settle time after load, and almost all of
  * that is waiting, not computing. At 500 games one page at a time is ~40
  * minutes; six pages in one browser brings it to ~10. One browser, many pages,
@@ -43,6 +53,7 @@ import puppeteer from 'puppeteer-core';
 
 import { findChrome } from '../chrome.mjs';
 import { judgeGame } from '../embed-health.mjs';
+import { clickTest } from './click-test.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const thirdParty = join(root, 'third-party');
@@ -187,12 +198,18 @@ async function getBrowser() {
   return launching;
 }
 
-/** A page that spins forever must not stall the run. */
+/**
+ * A page that spins forever must not stall the run.
+ *
+ * The timer is cleared when the race settles: a finished probe must not leave
+ * a pending 25 s timer holding the process open after the last game.
+ */
 function withTimeout(promise, ms, what) {
-  return Promise.race([
-    promise,
-    new Promise((_, reject) => setTimeout(() => reject(new Error(`${what} timed out`)), ms)),
-  ]);
+  let timer;
+  const expiry = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error(`${what} timed out`)), ms);
+  });
+  return Promise.race([promise, expiry]).finally(() => clearTimeout(timer));
 }
 
 /* --------------------------------------------------------------- probe */
@@ -288,13 +305,77 @@ async function probe(slug, entry = 'index.html') {
 
     // One rule for "is this a working game?", shared with the post-build audit.
     const verdict = judgeGame({ failed, jsErrors, status, probe: result });
+    if (!verdict.ok) {
+      return { verdict: 'dead', reason: verdict.reasons.join('; ').slice(0, 160) };
+    }
+
+    // The paint verdict only says the page loaded. Smoke - the gate that runs
+    // before a deploy - also clicks into the game and fails on what the first
+    // keypress does, and it kept finding games this gate had passed. So the
+    // same judgement runs here, before a game is ever imported: a game that
+    // crashes on the first key must be deleted now, not after it is published.
+    const interaction = await interact(slug, entry);
+    if (!interaction.ok) {
+      return {
+        verdict: 'dead',
+        reason: `interaction: ${interaction.reasons.join('; ').slice(0, 160)}`,
+        clickTest: 'fail',
+      };
+    }
+
     return {
-      verdict: verdict.ok ? 'pass' : 'dead',
-      reason: verdict.ok ? (verdict.warnings[0] ?? '') : verdict.reasons.join('; ').slice(0, 160),
+      verdict: 'pass',
+      reason: verdict.warnings[0] ?? '',
+      clickTest: 'pass',
     };
   } finally {
     // Closing a page whose target the browser already dropped throws; that is
     // not a finding about the game.
+    await page.close().catch(() => {});
+  }
+}
+
+/**
+ * Click into a game that has already passed the paint verdict.
+ *
+ * A second page in the same browser: the paint page carries listeners and has
+ * had keys pressed at it, and the click test needs a fresh document to be
+ * honest about what a player gets when the page loads and they touch it.
+ *
+ * Failures are separated the way judgeSlug separates them - a dead browser is
+ * raised so the run retries and a harness hiccup stays inconclusive rather
+ * than deleting a good game, while a page that stops answering player input is
+ * a finding about the game.
+ */
+async function interact(slug, entry) {
+  const b = await getBrowser();
+  const page = await b.newPage();
+  // smoke's viewport, not the paint gate's 1024x768: the phone layout is what
+  // players get, and a handler that throws only at 412px is still a game that
+  // dies in a player's hands (selenebun-towerdefense throws `reading '19'`
+  // only at this width).
+  await page.setViewport({ width: 412, height: 860, deviceScaleFactor: 2 });
+  try {
+    return await withTimeout(
+      clickTest({ page, url: encodeURI(`${origin}/third-party/${slug}/${entry}`) }),
+      25000,
+      'click test',
+    );
+  } catch (err) {
+    const message = String(err?.message ?? err);
+    if (CONNECTION_DEAD.test(message) || !isAlive(browser)) throw err;
+    if (/timed out/i.test(message)) {
+      // Six keys, two clicks, 1.2 s of settle and a read-back is seconds of
+      // ordinary work; a page still not answering after 25 s is wedged for a
+      // player too.
+      return {
+        ok: false,
+        reasons: [`the game stopped answering player input (${message.slice(0, 60)})`],
+        probe: {},
+      };
+    }
+    throw err;
+  } finally {
     await page.close().catch(() => {});
   }
 }
@@ -382,6 +463,9 @@ async function main() {
         repo: v.repo,
         verdict: 'pass',
         reason: prior?.reason || 'already validated in an earlier pass',
+        // Games validated before the click test existed carry no clickTest
+        // field; one that does keeps it, so the importer still sees it.
+        ...(prior?.clickTest ? { clickTest: prior.clickTest } : {}),
       });
       continue;
     }
@@ -405,11 +489,20 @@ async function main() {
   async function worker() {
     while (next < targets.length) {
       const v = targets[next++];
-      const { verdict, reason } = await judgeSlug(v, { verbose });
+      const judged = await judgeSlug(v, { verbose });
+      const { verdict, reason } = judged;
       counts[verdict]++;
       done++;
 
-      resultsBySlug.set(v.slug, { slug: v.slug, repo: v.repo, verdict, reason: reason ?? '' });
+      resultsBySlug.set(v.slug, {
+        slug: v.slug,
+        repo: v.repo,
+        verdict,
+        reason: reason ?? '',
+        // Only a game the click test actually ran on carries this: an
+        // inconclusive record must not look like a passed interaction.
+        ...(judged.clickTest ? { clickTest: judged.clickTest } : {}),
+      });
 
       const dir = join(thirdParty, v.slug);
       if (verdict === 'pass') {

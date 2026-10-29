@@ -255,7 +255,14 @@ export function importGames({
 
   // Only a passing verdict from a real browser is publishable. A record with
   // no verdict at all is not "probably fine" - it was never opened.
-  const passed = (validated ?? []).filter((v) => v?.verdict === 'pass' && v.slug);
+  //
+  // "Pass" has two halves: the page painted, and the page survived the first
+  // input. A record carrying clickTest: 'fail' was seen crashing the moment it
+  // was touched, so it is not publishable even though it painted - that is the
+  // gap that shipped 20 games which passed this gate and died on the first key.
+  const passed = (validated ?? []).filter(
+    (v) => v?.verdict === 'pass' && v.clickTest !== 'fail' && v.slug,
+  );
 
   const records = [];
   for (const verdict of passed) {
@@ -461,7 +468,10 @@ function main() {
   const existingIds = existing.map((g) => g.id);
 
   const games = importGames({ vendored, validated: publishable, capPerFamily, budget, existingTitles, existingIds });
-  const passedCount = validated.filter((v) => v?.verdict === 'pass').length;
+  // Counted the same way importGames filters, or a click-test failure would be
+  // reported as a duplicate or a family cap - the accounting would hide the
+  // reason a game did not appear.
+  const passedCount = validated.filter((v) => v?.verdict === 'pass' && v.clickTest !== 'fail').length;
 
   mkdirSync(dirname(out), { recursive: true });
   writeFileSync(
