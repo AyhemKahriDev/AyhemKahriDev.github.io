@@ -1,0 +1,16 @@
+{
+  "repo": "libhide/p5-snake",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 95,
+  "pushedAt": "2017-06-26T18:40:55Z",
+  "description": "Snake using p5.js! Fun!",
+  "defaultBranch": "gh-pages",
+  "owner": "libhide",
+  "slug": "libhide-p5-snake",
+  "dest": "third-party/libhide-p5-snake",
+  "readme": "# Snake!\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

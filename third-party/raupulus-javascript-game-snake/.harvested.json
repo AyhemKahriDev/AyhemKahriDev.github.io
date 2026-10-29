@@ -1,0 +1,16 @@
+{
+  "repo": "raupulus/javascript-game-snake",
+  "stars": 1,
+  "licence": "GPL-3.0",
+  "sizeKB": 201,
+  "pushedAt": "2023-03-19T03:16:04Z",
+  "description": "Game of Classic Snake writer in Javascript. El clásico juego de la Serpiente que come manzanas escrito en javascript orientado a objetos, documentando funciones y pasos. Para estudio y aprendizaje más que para jugar. Esto es un mirror de: https://gitlab.com/raupulus/snake-game-javascript",
+  "defaultBranch": "main",
+  "owner": "raupulus",
+  "slug": "raupulus-javascript-game-snake",
+  "dest": "third-party/raupulus-javascript-game-snake",
+  "readme": "# Snake_Javascript\nGame of Classic Snake writer in Javascript\n\nEl Clásico Juego de la serpiente que come manzanas mientras que a su vez la serpiente crece de tamaño, esta vez escrito en Javascript.\n\nLa realización de este juego es más para fines educativos que para lograr tener el juego en si 100% funcional y libre de fallos. Con esto quiero decir que lo realizo para practicar y a su vez lo dejo para que otros puedan reutilizarlo para el fin que prefieran (mientras se respete autoría y licencia libre GPLv3).\n\n![Previsualización de Juego Snake](preview.png)\n\n\n## Tecnologías\nTodo el desarrollo del juego está escrito en Javascript Puro, sin usar ningún tipo de librería o framework. Aunque exista la librería jquery no es utilizada más allá de para lo que la use bootstrap.\n\nCada clase se divide en un archivo distinto conteniendo las siguientes:\n- Manzana\n- Mapa\n- Player\n- Score\n- Serpiente\n\nLas funciones puedes encontrarlas en el archivo **funciones.js** y el desarrollo del juego está disponible en **juego.js**\n\nHa sido redactado lo más documentado y legible posible, aún así reporta cualquier *sugerencia* o *error* que puedas notar.\n\n\n## Objetivos o Instrucciones\nEl objetivo principal del juego es ir comiendo manzanas para acumular puntos (cada manzana puede valer entre 5 y 15 puntos) y subir de nivel, cada nivel traerá las siguientes características:\n- Aumenta la velocidad de juego levemente\n- Aumenta en 100 puntos de recompensa por subir de nivel\n- Cada nivel tiene 1 manzana más que el anterior\n\n\n## Licencia\nProyecto bajo [Licencia GPLv3](href=\"https://www.gnu.org/licenses/gpl-3.0-standalone.html) Adjunta en el [repositorio](https://github.com/raupulus/javascript-game-snake/blob/master/LICENSE) también.\n\nLicencia libre con reconocimiento de autoría y proyectos derivados bajo las mismas condiciones y licencia.\n\n\n## Autor\nNombre  → Raúl Caro Pastorino\n\nWEB     → https://raupulus.dev\n\nNick    → @raupulus\n\nTwitter → https://twitter.com/raupulus\n\nEmail   → public@raupulus.dev\n\nGitHub  → https://github.com/raupulus\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

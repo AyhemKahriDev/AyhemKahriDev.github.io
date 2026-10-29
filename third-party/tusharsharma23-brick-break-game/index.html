@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Brick Break</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="canvas.css"/>
+        <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    </head>
+    <body background = "images/canvasPageBg.jpg">
+        <div class = "gamePage" align = "center"> 
+            <div class="levels">
+                   <p id="level"></p>
+            </div>
+            <div class="initScore" >
+                <div class = "scores">
+                    <p id="score"></p>
+                </div>
+                <div class ="lives2">
+                    <p id="lives"></p>
+                </div>
+            </div>
+            <div>
+                <div class = gameCanvas>
+                    <canvas id="game_canvas" width="480" height="320"></canvas>
+                    <script type="text/javascript" src="game_dynamics.js"></script>
+                </div>
+            </div>
+            <div>
+                <div class = gameInfo>  <!-- change size of this div before change in canvas -->
+                    <h3>Controls-</h3>
+                    <p>
+                        1. Use arrow key <img src="images/arrowLeft.png" height="13" width="16"> <img src="images/arrowRight.png" height="13" width="16">to move paddle left right.<br>
+                        2. Press space to pause the game.<br>
+                        3. Press enter key <img src="images/enterKey.png" height = "16" width="16"> to exit<br>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

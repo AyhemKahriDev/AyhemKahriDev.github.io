@@ -1,0 +1,16 @@
+{
+  "repo": "mentorelshani/mentorelshani.github.io",
+  "stars": 0,
+  "licence": "Apache-2.0",
+  "sizeKB": 2449,
+  "pushedAt": "2026-05-05T15:51:56Z",
+  "description": "Dot Game",
+  "defaultBranch": "master",
+  "owner": "mentorelshani",
+  "slug": "mentorelshani-mentorelshani-github-io",
+  "dest": "third-party/mentorelshani-mentorelshani-github-io",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

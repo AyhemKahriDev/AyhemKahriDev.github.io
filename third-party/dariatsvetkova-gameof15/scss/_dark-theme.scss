@@ -1,0 +1,175 @@
+.dark {
+
+    background-color: map-get($background, "dark");
+    color: $white;
+
+    .screen-reader-text:active, .screen-reader-text:focus {
+        background-color: $white;
+        border: 0.3em solid $blue-3;
+    }    
+
+    .nav-shadow {
+        box-shadow: map-get($nav-shadow, "dark");
+    }
+
+    nav {
+        background: $blue-1;
+    }
+
+    .nav-overlay {
+        background-color: rgba(3, 117, 137, 0.88);
+        box-shadow: map-get($menu-overlay-shadow, "dark");    
+
+        .menu-item {
+            text-shadow: map-get($h-shadow, "dark");
+        }
+    }
+
+    .kofi-button {
+        box-shadow: 4px 4px 6px 0px rgba(65, 56, 50, 1),
+                   -2px -2px 6px 0px rgba(251, 249, 248, 0.34) !important;
+
+        &:hover, &:focus {
+            background-color: $blue-2 !important;
+        }
+    }
+
+    .menu-button {
+        .hamburger {
+            &, &::before, &::after {
+                background: darken($blue-1, 2%);
+                box-shadow: map-get($menu-shadow, "dark");
+            }
+        }
+
+        &:focus {
+            .hamburger {
+                &, &::before, &::after {
+                    background: $blue-3;
+                }
+            }
+        }
+
+    }
+
+    .theme-button {
+        .theme-oval {
+            background: $blue-1;
+            box-shadow: map-get($menu-oval-shadow, "dark");
+        }
+
+        .theme-circle {
+            left: -0.2em;
+            background-position: top ((1.7em - 1.5em) / 2) left ((1.7em - 1.5em) / 2);
+            background-size: 1.5em;
+            background-image: url(../images/moon.svg);
+    
+            box-shadow: map-get($h-shadow, "dark");
+
+            &:focus {
+                box-shadow: map-get($focus-shadow, "dark");
+            }
+        }
+    }
+
+    h1 {
+        text-shadow: map-get($h-shadow, "dark");
+
+        .accent {
+            @include accent-shadow-dark;
+        }
+    }
+
+    .background {
+        box-shadow: map-get($background-shadow, "dark");
+    }
+
+    .tiles-container {
+
+        .tile {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.86) 0%, rgba(255, 255, 255, 0.15) 72.92%), $beige-2;
+            box-shadow: map-get($tile-shadow, "dark");
+
+            &-text {
+                @include accent-shadow-dark;
+            }
+        }
+
+        .correct-tile {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.63) 0%, rgba(255, 255, 255, 0.1) 55.22%), $blue-2;
+        }
+    }
+
+    .field:focus {
+        @for $n from 1 through 15 {
+            #t#{$n} {
+                animation: 2s 1 focus-disappear-dark;
+                @include tile-focus-shadow-dark;    
+            }
+        }
+    }
+
+    .buttons {
+        .btn {
+            box-shadow: map-get($button-shadow, "dark"); 
+
+            &:active {
+                box-shadow: map-get($button-active-shadow, "dark");
+            }
+
+            &-solved {
+                background-color: $blue-3;
+                &:hover, &:focus {
+                    background-color: $blue-2;
+                }
+                &-active {
+                    box-shadow: map-get($button-active-shadow, "dark");
+                }
+            }
+
+            &-scramble {
+                background-color: $peach-2;
+                &:hover, &:focus {
+                    background-color: $peach-1;
+                }
+            }
+        }
+    }
+
+    a {
+        color: $blue-4;
+        &:hover, &:focus {
+            color: $blue-3;
+        }
+    }
+
+    footer {
+        background-color: $black;
+    }
+
+    .win-alert {
+        &-active {
+            background-color: $blue-2;
+
+            .cross {
+                &, &::before {
+                    background-color: lighten($blue-2, 7%);
+                    box-shadow: map-get($menu-shadow, "dark");
+                }
+            }
+    
+            .btn {
+                background-color: $peach-2;
+                box-shadow: map-get($button-shadow, "dark");
+
+                &:hover, &:focus {
+                    background-color: $peach-1;
+                }
+
+                &:active {
+                    box-shadow: map-get($button-active-shadow, "dark");
+                }
+            }
+        }
+    }
+}

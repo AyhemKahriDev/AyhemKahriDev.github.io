@@ -1,0 +1,65 @@
+body
+{
+  overflow:hidden;
+  background:#000;
+}
+
+#wrapper
+{
+  position:absolute;
+  background:#444;
+  left:0px;
+  top:0px;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+
+canvas
+{
+  position:absolute;
+  left:0px;
+  top:0px;
+  width:1280px;
+  height:720px;
+
+  padding:0px;
+  margin:0px;
+  overflow:hidden;
+
+  image-rendering:-moz-crisp-edges;
+  image-rendering:-webkit-crisp-edges;
+  image-rendering:pixelated;
+  image-rendering:crisp-edges;
+
+  z-index:1;
+}
+
+#course
+{
+  background:rgb(17,34,102);
+  background:radial-gradient(circle, rgba(17,34,102,1) 35%, rgba(3,17,75,1) 100%);
+
+  z-index:1;
+}
+
+#canvas
+{
+  z-index:2;
+}
+
+#threedee
+{
+  z-index:3;
+}
+
+#hud
+{
+  z-index:4;
+}
+
+#fx
+{
+  z-index:5;
+}
+

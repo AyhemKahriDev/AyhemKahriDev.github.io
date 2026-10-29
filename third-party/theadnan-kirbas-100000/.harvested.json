@@ -1,0 +1,16 @@
+{
+  "repo": "TheAdnan/Kirbas-100000",
+  "stars": 3,
+  "licence": "Apache-2.0",
+  "sizeKB": 1860,
+  "pushedAt": "2018-10-29T07:35:23Z",
+  "description": "HTML5 Game with Phaser.js",
+  "defaultBranch": "master",
+  "owner": "TheAdnan",
+  "slug": "theadnan-kirbas-100000",
+  "dest": "third-party/theadnan-kirbas-100000",
+  "readme": "# *Kirba's 100 000*\n### Kirba's journey to find 100 000 jobs for his people\n\nKirba is Kirby's adorable cousin who got into Politics, despite the disapproval of his parents.<br>\nOne day, Kirba has got himself into trouble because he made a promise he was sure he can't keep, but now the people he made the promises to, sweared that he is going to get in trouble if he doesn't fulfill his promise.<br>\nHelp Kirba make his dream come true. **To make bosna liveable again**.<br>\n**Disclaimer**: *All characters and incidents portrayed in this game are entirely fictitious. No identification with actual persons, places and products is not intended and completely coincidental.*<br>\n<br>\n<br>\n![alt text](https://github.com/TheAdnan/Kirba-s-100000/blob/master/images/kirba_init.png \"kirba\")\n*The game is still in development. If you'd like to contribute, create a new branch and get starting.*\n![alt text](https://github.com/TheAdnan/Kirba-s-100000/blob/master/images/kirba_init.png \"kirba\")\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

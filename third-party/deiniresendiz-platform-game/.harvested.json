@@ -1,0 +1,16 @@
+{
+  "repo": "deiniresendiz/Platform-Game",
+  "stars": 3,
+  "licence": "GPL-3.0",
+  "sizeKB": 834,
+  "pushedAt": "2018-09-24T12:40:50Z",
+  "description": "game made with GDevelop.",
+  "defaultBranch": "master",
+  "owner": "deiniresendiz",
+  "slug": "deiniresendiz-platform-game",
+  "dest": "third-party/deiniresendiz-platform-game",
+  "readme": "\n\n<h1 align=\"center\">Platform Game</h1>\n<p align=\"center\">\n    Is an example of a basic platformer (Mario-like) game made with GDevelop.\n</p>\n\n## Screenshots\n\n<p align=\"center\">\n    <img src=\"https://github.com/netxbax/Platform-Game/blob/master/img/img3.png\" width=\"60%\">\n</p>\n\n<p align=\"center\">\n    <img src=\"https://github.com/netxbax/Platform-Game/blob/master/img/img2.png\" width=\"60%\">\n</p>\n\n<p align=\"center\">\n    <img src=\"https://github.com/netxbax/Platform-Game/blob/master/img/img1.png\" width=\"60%\">\n</p>\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "build/index.html",
+  "validated": true
+}

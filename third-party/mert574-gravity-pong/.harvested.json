@@ -1,0 +1,16 @@
+{
+  "repo": "mert574/gravity-pong",
+  "stars": 1,
+  "licence": "MIT",
+  "sizeKB": 29,
+  "pushedAt": "2026-10-21T06:28:24Z",
+  "description": "A pong game with gravity using only JS/Canvas.",
+  "defaultBranch": "master",
+  "owner": "mert574",
+  "slug": "mert574-gravity-pong",
+  "dest": "third-party/mert574-gravity-pong",
+  "readme": "# Gravity Pong\n\nA browser paddle game built with JavaScript and Canvas. Keep a gravity-driven\nball in play and compete against a computer-controlled opponent.\n\n## Run locally\n\nUse Node.js 22.18 or newer.\n\n```sh\nnpm install\nnpm start\n```\n\nOpen the local URL printed by the server. Press a key to start each round and\nuse Left/Right to move your paddle.\n\n## Demo\n[Play now](https://mert574.github.io/gravity-pong/)\n\n## License\n\nGame code is licensed under [MIT](LICENSE).\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

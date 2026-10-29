@@ -1,0 +1,16 @@
+{
+  "repo": "KeiferJoel/keysprint-typing-test",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 24,
+  "pushedAt": "2026-09-07T02:05:08Z",
+  "description": "⌨️ KeySprint is a modern typing speed test built with HTML, CSS, and Vanilla JavaScript. Practice your typing skills with real-time feedback, multiple timer modes, live WPM, CPM, accuracy, error tracking, an animated countdown, LocalStorage support, and a responsive dark-themed interface.",
+  "defaultBranch": "main",
+  "owner": "KeiferJoel",
+  "slug": "keiferjoel-keysprint-typing-test",
+  "dest": "third-party/keiferjoel-keysprint-typing-test",
+  "readme": "# ⌨️ KeySprint\n\n> Improve your typing speed and accuracy with a clean and modern typing test built using **HTML, CSS, and Vanilla JavaScript**.\n\n---\n\n## ✨ Features\n\n* ⌨️ Real-time typing test\n* 🟢 Correct and 🔴 incorrect character highlighting\n* ⏱️ 30-second countdown timer\n* 📊 Live statistics\n\n  * Words Per Minute (WPM)\n  * Accuracy\n  * Errors\n* 📈 Animated progress bar\n* 🔄 Restart the test with a new random text\n* 📱 Responsive design for desktop, tablet, and mobile\n\n---\n\n## 🛠️ Built With\n\n* HTML5\n* CSS3\n* JavaScript (Vanilla)\n\nNo frameworks or external libraries were used.\n\n---\n\n## 📂 Project Structure\n\n```text\nkeysprint/\n│\n├── index.html\n├── README.md\n├── LICENSE\n│\n└── assets/\n    ├── css/\n    │   └── style.css\n    ├── js/\n    │   └── script.js\n    └── data/\n        └── texts.js\n```\n\n---\n\n## 🚀 Getting Started\n\n1. Clone this repository.\n\n```bash\ngit clone https://github.com/KeiferJoel/keysprint.git\n```\n\n2. Open the project folder.\n\n3. Run `index.html` in your favorite web browser.\n\nNo installation or dependencies are required.\n\n---\n\n## 🎯 What I Learned\n\nThis project helped me practice:\n\n* DOM Manipulation\n* Event Handling\n* Timers (`setInterval`)\n* JavaScript Arrays\n* String Comparison\n* CSS Layouts\n* Responsive Design\n* UI Development\n\n---\n\n## 🔮 Future Improvements\n\n* Multiple timer options\n* Typing history\n* Best score tracking\n* Local storage\n* Sound effects\n* Difficulty levels\n* Multiple languages\n* Zen mode\n* Local leaderboard\n\n---\n\n## 👨‍💻 Author\n\n**Keifer Joel**\n\nComputer Systems Engineering Student passionate about building modern, responsive, and user-friendly web applications.\n\n* 🌐 LinkedIn: https://www.linkedin.com/in/joel-pichardo/\n* 💻 GitHub: https://github.com/KeiferJoel\n\n---\n\n## ⭐ Support\n\nIf you like this project, consider giving it a **⭐ Star** on GitHub. It helps support my work and motivates me to continue building open-source projects.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

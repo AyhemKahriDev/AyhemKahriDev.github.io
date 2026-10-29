@@ -1,0 +1,16 @@
+{
+  "repo": "Yonle/FruitShot",
+  "stars": 2,
+  "licence": "BSD-3-Clause",
+  "sizeKB": 407,
+  "pushedAt": "2025-07-25T10:40:44Z",
+  "description": "HTML5 Fruit shooting game",
+  "defaultBranch": "master",
+  "owner": "Yonle",
+  "slug": "yonle-fruitshot",
+  "dest": "third-party/yonle-fruitshot",
+  "readme": "# Fruit Shotting\nHTML5 Fruit shooting game\n\n## How to play\n- Shoot as many fruits as possible\n- Avoid bombs until you shoot a star\n- Avoid nuclear at all cost\n\n## Lore\n\n> *Every fruit you shoot is possessed. The skulls are the true form.*\n> *You were never harvesting fruit. You were liberating the curse.*\n\n## License\n\nCopyright 2024 Yonle <yonle@lecturify.net>\n\nRedistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:\n\n1. Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.\n\n2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.\n\n3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.\n\nTHIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS \"AS IS\" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.\n\n## NOTICE\nAll assets in this repository was being used with **no commercial use** goal.\n\n- Tom's scream is retrieved from one of Tom & Jerry's show. Copyright Turner Entertainment (Warner Bros).\n\n- Gun for Lui.wav by martian -- https://freesound.org/s/182271/ -- License: Creative Commons 0\n- metal hit low glass bowl 4.mp3 by ascap -- https://freesound.org/s/242380/ -- License: Attribution NonCommercial 4.0\n- Explosion.mp3 by WaveAdventurer -- https://freesound.org/s/93741/ -- License: Attribution 4.0\n- Retro video game sfx - Bonus by OwlStorm -- https://freesound.org/s/404770/ -- License: Creative Commons 0\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

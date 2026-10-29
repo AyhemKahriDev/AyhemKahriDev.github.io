@@ -1,0 +1,15 @@
+{
+  "repo": "mvasilkov/neatness2022",
+  "stars": 30,
+  "licence": "GPL-3.0",
+  "sizeKB": 313,
+  "pushedAt": "2023-03-05T09:40:15Z",
+  "description": "The Neatness (js13kGames 2022)",
+  "defaultBranch": "master",
+  "owner": "mvasilkov",
+  "slug": "mvasilkov-neatness2022",
+  "dest": "third-party/mvasilkov-neatness2022",
+  "readme": "# [The Neatness][1]\n\n**Disclaimer:**\n\nThe author of this work does not condone the repackaging of \"The Neatness\" as any kind of NFT or blockchain-related technology. The use of this work for such purposes is not supported by the author and may result in unintended consequences, including hospitalization, disability or permanent damage. Consider yourself disclaimed.\n\n***\n\n> A walk through life, however thorough,<br>\n> Ends on a hill a bit too steep.<br>\n> Bear witness, not to strife and sorrow, –<br>\n> Bare neatness of eternal sleep.<br>\n\nWritten by Mark Vasilkov for js13kGames in 2022.\n\nIf you feel it's too easy, try the Coil levels from the\nlevel select screen. They are cursedly hard.\n(If you don't have Coil, append `#coil` to the URL.)\n\nFor best experience on Android, use the 'Add to Home screen'\nfeature. Seriously, it's amazing how much better the game runs\nif started from that shortcut.\n\nThank you for playing!\n\nReleased under the [GNU General Public License version 3][2]\n\n[1]: https://github.com/mvasilkov/neatness2022\n[2]: https://www.gnu.org/licenses/gpl-3.0.en.html\n\n## Acknowledgements\n\n*The Neatness* is inspired by\n\n* *The Looker* by Bradley Lovell\n* *The Witness* by Jonathan Blow\n\nThe following data structures and algorithms\nwere harmed in the making of this game:\n\n* Digital differential analyzer (DDA) based on\n  [Raycasting tutorial][ack1] by [Lode Vandevenne][ack2]\n    * Explained beautifully by [OneLoneCoder][ack3] in his video\n      [Super Fast Ray Casting in Tiled Worlds using DDA][ack4]\n* Scanline flood fill inspired by Pavel Kukov's q-floodfill\n    * Which in turn cites\n      [QuickFill: An Efficient Flood Fill Algorithm][ack5]\n      by John R. Shaw\n* Priority queue by [Francis Stokes][ack6] aka LowLevelJavaScript,\n  see [Implementing A Generic Priority Queue][ack7]\n* `A*` based on the excellent\n  [Introduction to the `A*` Algorithm][ack8] by [Amit Patel][ack9]\n\nUpdated implementations of all of these are available in [natlib][natlib].\n\n[ack1]: https://lodev.org/cgtutor/raycasting.html\n[ack2]: https://github.com/lvandeve\n[ack3]: https://github.com/OneLoneCoder\n[ack4]: https://youtu.be/NbSee-XM7WA\n[ack5]: https://www.codeproject.com/Articles/6017/QuickFill-An-Efficient-Flood-Fill-Algorithm\n[ack6]: https://github.com/LowLevelJavaScript\n[ack7]: https://youtu.be/M6OW0KNkhhs\n[ack8]: https://www.redblobgames.com/pathfinding/a-star/introduction.html\n[ack9]: https://github.com/redblobgames\n[natlib]: https://github.com/mvasilkov/natlib\n",
+  "licenceFile": "LICENSE",
+  "entry": "out/index.html"
+}

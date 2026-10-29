@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="author" content="Amelia Clarke">
+    <title>Combat</title>
+    <link href="style.css" rel="stylesheet">
+
+    <script src="scripts/lib/p5.min.js" defer></script>
+    <script src="scripts/lib/p5.sound.min.js" defer></script>
+    <script src="scripts/utils.js" defer></script>
+
+    <script src="scripts/tiles.js" defer></script>
+    <script src="scripts/map.js" defer></script>
+
+    <script src="scripts/templates.js" defer></script>
+    <script src="scripts/entity.js" defer></script>
+    <script src="scripts/bullet.js" defer></script>
+    <script src="scripts/item.js" defer></script>
+    <script src="scripts/tank.js" defer></script>
+
+    <script src="scripts/particle.js" defer></script>
+    <script src="scripts/particle_system.js" defer></script>
+
+    <script src="scripts/tank_ai.js" defer></script>
+    <script src="scripts/weapon.js" defer></script>
+
+    <script src="scripts/game.js" defer></script>
+  </head>
+  <body>
+    <div id="game"></div>
+
+    <div id="sidebar">
+      <header>
+        <h1>Combat</h1>
+      </header>
+
+      <main>
+        <p id="wave"></p>
+        <p id="armor"></p>
+        <p id="tanks"></p>
+        
+        <div id="debug">
+          <p id="fps"></p>
+          <p id="avgfps"></p>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

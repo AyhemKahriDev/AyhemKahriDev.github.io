@@ -1,0 +1,16 @@
+{
+  "repo": "nupamore/MCS-Engine",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 9,
+  "pushedAt": "2020-03-23T07:26:09Z",
+  "description": "Mini html5 Canvas Sprite game Engine",
+  "defaultBranch": "master",
+  "owner": "nupamore",
+  "slug": "nupamore-mcs-engine",
+  "dest": "third-party/nupamore-mcs-engine",
+  "readme": "# MCS-Engine\nMini html5 Canvas Sprite game Engine  \nused : http://nupamore.github.io/findTheSun\n\n---\n## Sprite()\n### field\n- Setting\n  - id\n  - tag  \n    - player - 키보드연결  \n    - background - 카메라로 이동되지 않음\n  - width\n  - height\n  - moveSpeed - 이동속도\n- Switch\n  - gravity - 중력가속도\n  - static - 충돌시 밀려남\n  - collision - 충돌감지\n- State\n  - x\n  - y\n  - ax - 가속도\n  - ay\n  - crash - 충돌상태\n  - jump - 점프상태\n  - state - 방향상태\n\n### method\n- start( callback )  \n  draw() 가 호출될 때 callback 호출  \n\n- update( callback )  \n  0.01초마다 callback 호출  \n\n- renderer( callback )  \n  프레임마다 callback 호출  \n\n- onCrash( callback( direction, target ) )  \n  - 충돌시 callback 호출  \n  - direction - 충돌한 방향  \n  - target - 충돌한 물체\n\n\n- emitCrash( direction, target )  \n  충돌이벤트를 발생시킴  \n\n- animate( img, width, height, state{} , frame, collider[])   \n  스프라이트의 애니메이션을 설정한다.  \n  - img - Image() 오브젝트\n  - width, height - 프레임 한 장의 크기\n  - state = { left, leftRun, leftJump, right, rightRun, rightJump }  \n    해당 상태의 라인 번호\n  - frame - 상태 하나의 프레임 개수\n  - collider - 충돌범위보다 더 크게 그리기 [위,오른쪽,아래,왼쪽]\n\n\n- draw( x, y )  \n  해당 좌표에 그리기를 시작함\n\n- dead()  \n  그리기 중단\n\n- onDead( callback )  \n  그리기가 중단되었을 때 callback 호출\n\n- setInterval( callback, time )  \n  그리기가 중단되었을 때 자동으로 interval 해제\n\n- remove( string )  \n  기본 설정을 삭제( starts, updates, renderers, crashes, deads, intervals )\n\n---\n## Camera\n### field\n  - x\n  - y\n  - target - 카메라의 기준이 되는 sprite 지정  \n  - marginX, marginY - 카메라 자동이동 보정\n\n### method\n  - set( x, y ) - 해당 좌표로 카메라 이동\n\n---\n\n## BGM\n\n---\n",
+  "licenceFile": "LICENSE",
+  "entry": "example.html",
+  "validated": true
+}

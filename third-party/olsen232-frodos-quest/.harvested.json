@@ -1,0 +1,16 @@
+{
+  "repo": "olsen232/frodos-quest",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 5253,
+  "pushedAt": "2023-04-18T08:47:43Z",
+  "description": "A Hobbit's Adventure Game, in \"1980s Sierra On-Line\" style",
+  "defaultBranch": "master",
+  "owner": "olsen232",
+  "slug": "olsen232-frodos-quest",
+  "dest": "third-party/olsen232-frodos-quest",
+  "readme": "# frodos-quest\nA Hobbit's Adventure Game, in \"1980s Sierra On-Line\" style\n\nPlayable at https://olsen232.github.io/frodos-quest/\n",
+  "licenceFile": "LICENSE",
+  "entry": "docs/index.html",
+  "validated": true
+}

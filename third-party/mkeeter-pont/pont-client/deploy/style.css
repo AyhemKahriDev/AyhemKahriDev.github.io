@@ -1,0 +1,396 @@
+:root {
+    --dark0: #1d2021;
+    --dark1: #3c3836;
+    --dark2: #504945;
+    --dark3: #665c54;
+    --dark4: #7c6f64;
+
+    --light4: #a89984;
+    --light3: #bdae93;
+    --light2: #d5c4a1;
+    --light1: #ebdbb2;
+    --light0: #fbf1c7;
+
+    --yellow: #ff5;
+    --orange: #fa5;
+    --violet: #c7f;
+    --blue: #5cf;
+    --green: #5e5;
+    --red: #f55;
+    --dark-red: #922;
+}
+
+body {
+    font-family: Lato, sans-serif;
+    font-size: 16px;
+    color: var(--dark2);
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: var(--light1);
+}
+
+div.information {
+    font-size: 20px;
+}
+
+input {
+    font-family: Lato, sans-serif;
+    font-size: 16px;
+    background-color: var(--light0);
+    border:1px solid var(--dark4);
+    padding: 10px;
+    margin-left: 10px;
+}
+
+/*  Shows an error if you connect to an invalid room */
+div#err_div {
+    color: var(--red);
+}
+span#err_span {
+    margin-left: 10px;
+}
+
+/*  Make the 'Room:' text unselectable to make copy-pasting easier */
+.noselect {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/*  Welcome to... the chat zone */
+div#chat_input_div {
+    display:flex;
+    flex-direction: row;
+    margin-top: 10px;
+}
+input#chat_input {
+    min-width: 0px;
+    flex: 1;
+}
+div#chat_name {
+    padding-top: 10px;
+}
+div#chat_msgs {
+    height: 100px;
+    overflow-y: auto;
+    border:1px solid var(--dark4);
+    background-color: var(--light0);
+    padding: 10px;
+}
+div#chat_div {
+    display: flex;
+    flex-direction: column;
+    overflow-x: auto;
+}
+#chat_msgs span {
+    margin-left: 5px;
+}
+p.msg {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
+/*  Button to join the game */
+button {
+    color: var(--dark2);
+    background-color: var(--light0);
+    border:1px solid var(--dark4);
+    border-radius: 5px;
+    transition: border-radius 0.1s;
+}
+
+form button {
+    border-radius: 5px;
+    transition: border-radius 0.1s;
+    padding: 10px 20px;
+    font-family: Lato, sans-serif;
+    font-size: 16px;
+}
+
+span#revhash {
+    font-family: Inconsolata, "Courier New", monospace;
+}
+span#room_name {
+    margin-left: 10px;
+    font-family: Inconsolata, "Courier New", monospace;
+}
+
+form:invalid button {
+    color: var(--dark4);
+    background-color: var(--light1);
+}
+
+button.disabled {
+    color: var(--dark4);
+    background-color: var(--light1);
+    pointer-events: none;
+}
+
+/*  Only change button radius on hover for devices that support it
+ *  (otherwise, they get hovered on click, which is weird) */
+@media (hover: hover) {
+    form:not(:invalid) button:hover {
+        border-radius: 15px;
+    }
+    button.gameplay:hover {
+        border-radius: 15px;
+    }
+}
+
+/*  Main game div */
+div#game {
+    display: grid;
+    column-gap: 20px;
+}
+
+/* List of players */
+table#score_table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+}
+th {
+    border-bottom: 1px solid var(--dark4);
+    padding-bottom: 4px;
+}
+tr.player-row td {
+    padding: 4px;
+}
+tr.player-row i {
+    visibility: hidden;
+}
+tr.player-row.active i {
+    visibility: visible;
+}
+tr.disconnected {
+    color: var(--dark4);
+}
+
+/*  Tiles on the board */
+g.placed rect.tile {
+    fill: var(--dark3);
+    stroke-width: 0.5;
+    stroke: var(--dark4);
+}
+/* Last played tile */
+g.played rect.tile {
+    fill: var(--dark0);
+    stroke: var(--light4);
+}
+div#svg_div.nyt g.piece rect.tile {
+    fill: var(--dark3);
+}
+g.piece rect.tile {
+    fill: var(--dark1);
+    stroke-width: 0.5;
+    stroke: var(--dark4);
+}
+g.invalid rect.tile {
+    fill: var(--dark-red);
+    stroke: var(--red);
+}
+g.piece {
+    pointer-events: auto;
+}
+rect.shadow {
+    fill: var(--light1);
+    stroke-width: 0.5;
+    stroke: var(--light2);
+}
+rect#pan_rect {
+    fill: none;
+    pointer-events: all;
+}
+g.shape-orange .color {
+    fill: var(--orange);
+}
+.shape-yellow .color {
+    fill: var(--yellow);
+}
+g.shape-green .color {
+    fill: var(--green);
+}
+g.shape-red .color {
+    fill: var(--red);
+}
+g.shape-blue .color {
+    fill: var(--blue);
+}
+g.shape-purple .color {
+    fill: var(--violet);
+}
+
+.corner {
+    visibility: hidden;
+}
+div.colorblind .corner {
+    visibility: visible;
+}
+
+/*  Buttons to submit your play */
+button.gameplay {
+    color: var(--dark1);
+    position: absolute;
+    height: 10%;
+    width: 10%;
+    font-size: 4vw;
+}
+button.gameplay:disabled {
+    color: var(--dark4);
+    background-color: var(--light1);
+    pointer-events: none;
+}
+button#reject_button {
+    left: 100%;
+    top: 100%;
+    transform: translateY(-100%) translateX(-100%);
+}
+button#accept_button {
+    left: 100%;
+    top: 100%;
+    transform: translateY(-100%) translateX(-210%);
+}
+
+div#exchange_div {
+    position: absolute;
+    border:1px solid var(--dark4);
+    background-color: var(--light0);
+    height: 10%;
+    width: 27.5%;
+    top: calc(100%);
+    left: 0%;
+    transform: translateY(-100%) translateX(178%);
+
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+div#exchange_div.disabled {
+    color: var(--dark4);
+    background-color: var(--light1);
+}
+div#svg_div.nyt div#exchange_div {
+    color: var(--dark4);
+    background-color: var(--light1);
+}
+
+div#exchange_div p {
+    text-align: center;
+    margin: 0;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+}
+div#count_div {
+    padding-top: 4px;
+    padding-bottom: 20px;
+}
+div#count_div p {
+    color: var(--dark4);
+    text-align: center;
+    border-top: 1px solid var(--dark4);
+    margin: 0px;
+    padding-top: 5px;
+}
+
+/*  This is only used for layout things */
+svg#dummy {
+    width: 100%;
+    pointer-events: none;
+}
+
+/*  Main game board */
+svg#game_svg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    left: 0px;
+    top: 0px;
+    pointer-events: none;
+}
+
+/*  Background divs to create nice sharp rectangles */
+div.background {
+    position: absolute;
+    border:1px solid var(--dark4);
+    background-color: var(--light0);
+}
+div#hand {
+    left: 0px;
+    top: calc(100%);
+    transform: translateY(-100%);
+    width: calc(47.5%);
+    height: 10%;
+}
+div#board {
+    left: 0px;
+    top: 0px;
+    width: calc(100%);
+    height: calc(87.5%);
+}
+
+div#svg_div {
+    margin-bottom: 10px;
+    position: relative;
+    touch-action: none;
+}
+
+/* Two-column layout */
+@media only screen and (min-width: 750px) {
+    div#game {
+        grid-template-columns: 2fr 1fr;
+    }
+    div#chat_div {
+        grid-column: 1 / span 2;
+    }
+    button.gameplay {
+        font-size: 3vw;
+    }
+}
+
+/* Three-column layout */
+@media only screen and (min-width: 1200px) {
+    div#svg_div {
+        margin-bottom: 0px;
+    }
+    button.gameplay {
+        font-size: 2vw;
+    }
+    div#game {
+        grid-template-columns: 2fr 1fr 1fr;
+    }
+    div#chat_msgs {
+        display:flex;
+        flex-direction: column;
+        flex: 1 0 auto;
+    }
+    div#chat_div {
+        grid-column: 3;
+    }
+}
+
+div#footer p {
+    margin-bottom: 0;
+    margin-top: 0.5em;
+    color: var(--dark4);
+}
+
+div#footer a.padded {
+    margin-right: 20px;
+}
+
+a {
+    color: var(--dark4);
+}
+
+/******************************************************************************/
+
+svg.example {
+    width: 75%;
+    height: 250px;
+    border:1px solid var(--dark4);
+    background-color: var(--light0);
+}

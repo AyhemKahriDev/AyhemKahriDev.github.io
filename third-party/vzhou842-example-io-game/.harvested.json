@@ -1,0 +1,16 @@
+{
+  "repo": "vzhou842/example-.io-game",
+  "stars": 454,
+  "licence": "MIT",
+  "sizeKB": 980,
+  "pushedAt": "2023-11-01T19:14:50Z",
+  "description": "An example multiplayer (.io) web game.",
+  "defaultBranch": "master",
+  "owner": "vzhou842",
+  "slug": "vzhou842-example-io-game",
+  "dest": "third-party/vzhou842-example-io-game",
+  "readme": "<h1 align=\"center\">\n    <img alt=\"An Example .io Game\" title=\"An Example .io Game\" src=\"https://github.com/vzhou842/example-.io-game/blob/master/public/assets/icon.svg\" width=\"140\"> <br />\n    An Example .io Game\n</h1>\n<h4 align=\"center\">\n  <a href=\"https://example-io-game.victorzhou.com\">https://example-io-game.victorzhou.com</a>\n</h4>\n\n<p align=\"center\">\n  <a href=\"https://travis-ci.com/vzhou842/example-.io-game\">\n    <img src=\"https://travis-ci.com/vzhou842/example-.io-game.svg?branch=master\" alt=\"Build Status\"></img>\n  </a>\n</p>\n\nAn example multiplayer (.io) web game. Read the walkthrough: [**How to Build a Multiplayer (.io) Web Game**](https://victorzhou.com/blog/build-an-io-game-part-1/).\n\nBuilt with [Node.js](https://nodejs.org/), [socket.io](https://socket.io/), and [HTML5 Canvas](https://www.w3schools.com/html/html5_canvas.asp).\n\nTo see this code with [Flow](https://flow.org/) typing, visit the [flow branch](https://github.com/vzhou842/example-.io-game/tree/flow).\n\n## Development\n\nTo get started, make sure you have Node and NPM installed. Then,\n\n```bash\n$ npm install\n$ npm run develop\n```\n\non your local machine.\n\nTo run the project in a production setting, simply\n\n```bash\n$ npm install\n$ npm run build\n$ npm start\n```\n\n## Tests\n\nTo run the tests for this this project, simply\n\n```bash\n$ npm install\n$ npm test\n```\n",
+  "licenceFile": "LICENSE",
+  "entry": "src/client/html/index.html",
+  "validated": true
+}

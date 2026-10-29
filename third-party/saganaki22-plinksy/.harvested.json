@@ -1,0 +1,16 @@
+{
+  "repo": "Saganaki22/Plinksy",
+  "stars": 6,
+  "licence": "Apache-2.0",
+  "sizeKB": 77,
+  "pushedAt": "2025-03-18T22:55:52Z",
+  "description": "A sleek, modern take on the classic Plinko game featuring realistic physics, engaging betting mechanics, and a polished dark mode UI. Built with vanilla JavaScript and advanced CSS animations.",
+  "defaultBranch": "main",
+  "owner": "Saganaki22",
+  "slug": "saganaki22-plinksy",
+  "dest": "third-party/saganaki22-plinksy",
+  "readme": "# 🎮 Plinksy - Virtual Betting Game\n\nA modern, engaging virtual betting game inspired by Plinko, built with pure JavaScript and advanced CSS animations. Experience the thrill of watching your bets cascade through a mesmerizing field of pegs to multiply your winnings potentially!\n\n![image](https://github.com/user-attachments/assets/a4a519c1-f663-484e-b55d-470fe067e339)\n\n\n## ✨ Features\n\n- **Sleek Dark Mode Interface**: Modern dark theme UI with carefully crafted color schemes\n- **Real-time Physics**: Smooth ball-dropping mechanics with realistic bouncing animations\n- **Dynamic Betting System**:\n  - Flexible bet amounts\n  - Quick bet modifiers (Half, Double, All-in)\n  - Auto-betting functionality\n  - Formatted number display with comma separators\n- **Interactive Elements**:\n  - Glowing pegs on ball contact\n  - Visual feedback on multiplier hits\n  - Responsive design that adapts to window size\n- **Performance Tracking**:\n  - Balance history graph\n  - Recent results panel\n  - Maximum potential win display\n- **Polished UI Components**:\n  - Gradient buttons with hover effects\n  - Smooth animations and transitions\n  - Message queue system for notifications\n  - Shadow effects for depth perception\n\n## 🏗️ Architecture\n\n### Frontend Technologies\n- **HTML5**: Semantic structure and canvas elements\n- **CSS3**:\n  - CSS Variables for theme consistency\n  - Flexbox for responsive layouts\n  - Advanced animations and transitions\n  - Linear gradients for modern UI elements\n  - Box shadows for depth\n- **Vanilla JavaScript**:\n  - ES6+ features\n  - Physics-based animations\n  - Event-driven architecture\n  - Modular function organization\n\n### Design Patterns\n- **Component-Based Structure**: Modular code organization for maintainability\n- **Event-Driven Programming**: Reactive UI updates based on user actions\n- **State Management**: Centralized game state handling\n- **Message Queue System**: Organized notification display\n- **Responsive Design**: Fluid layouts that adapt to different screen sizes\n\n## 🚀 Getting Started\n\n1. Clone the repository\n2. Open `index.html` in a modern web browser\n3. Start placing bets and watch the physics-based gameplay in action!\n\n## 🎯 Potential Future Enhancements\n\n- Sound effects and background music\n- User accounts and persistence\n- Global leaderboards\n- Additional betting strategies\n- Multiple theme options\n\n## 🏷️ Tags\n\n#gaming #betting #javascript #html5 #css3 #webgame #plinko #physics #animation #darkmode\n\n![og-image](https://github.com/user-attachments/assets/f922fde1-6ec2-45db-ad78-5309e19298c8)\n\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "Ojaswy/Blastar",
+  "stars": 79,
+  "licence": "GPL-3.0",
+  "sizeKB": 201,
+  "pushedAt": "2024-04-20T17:07:59Z",
+  "description": "Blastar is the game created by Elon Musk.",
+  "defaultBranch": "master",
+  "owner": "Ojaswy",
+  "slug": "ojaswy-blastar",
+  "dest": "third-party/ojaswy-blastar",
+  "readme": "# Play Blastar!\n\nYou can play Blastar [here](https://ojaswy.github.io/Blastar/).\n \n## About Blastar\n\nBlastar was a game written by Elon Musk in 1984 (at the age of 12).\nThe source code was published in a magazine and he received $500 for it.\nAshlee Vance's [Elon Musk:Tesla, SpaceX and the Quest for a Fantastic Future](https://www.amazon.in/Elon-Musk-SpaceX-Fantastic-Future/dp/0062301233) includes a reproduction\nof the page from the publication where it appeared. \nThis version is based on that listing.\n\nElon has since moved beyond 8-bit spaceships.\n\n###### This information is taken from [here](https://blastar-1984.appspot.com/)\n\n![](https://github.com/Ojaswy/Blastar/blob/master/img/blastar.PNG)\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

@@ -1,0 +1,16 @@
+{
+  "repo": "msakuta/farmsim",
+  "stars": 12,
+  "licence": "MIT",
+  "sizeKB": 176,
+  "pushedAt": "2018-08-25T13:51:26Z",
+  "description": "A HTML5 2-D Gardening Simulator Game project",
+  "defaultBranch": "no-pixi",
+  "owner": "msakuta",
+  "slug": "msakuta-farmsim",
+  "dest": "third-party/msakuta-farmsim",
+  "readme": "farmsim\n=======\n\nA HTML5 2-D Gardening Simulator Game project\n\nTry it now!\nhttps://msakuta.github.io/farmsim/farmsim.html\n\n\nFeatures\n--------\n\nThis project focuses on the accuracy of reproducing experience in\ngardening with home-grown vegetables (based on my personal experience).\nIt does not try to simulate large scale farms.\nIn particular, your Working Force is very limited, so you need to plan accordingly to succeed with high quality products.\n\nThe quality of crops affects the selling price, so you want to keep the quality\nhigh for sustainable gardening business.\nThe crops will degrade over time, so if you spend too much time to grow them,\nthey may have no profit in the market.\nYou need to grow crops fully before harvesting and selling them.\n\n\nCrops\n-----\n\n### Potatoes\n\n![Potato tuber](assets/potatoSeed.png)\n\nPotatoes are basic product which many home gardeners try first.\nThey have high yield and easy to grow, but you have to watch out for Potato Pests\nwhich reduces quality of crops in a sequential planting (monoculture).\n\n### Corns\n\n![Corns](assets/corn4.png)\n\nCorns are very popular, easy to grow crops.\nThey can grow with low humidity and robust against pests.\nThe drawback is that they require high amount of fertility in the soil, which means you may need to fertilize the soil for successful gardening.\nThey are also sold in a lower price than potatoes.\n\n\nPrerequisites\n-------------\n\nThis game uses pure JavaScript, no additional plugins are required on your side.\nYou need a decent browser though.\n\nThe game state is saved into your browser, which is entirely in the client side.\nIf you want to continue playing with a different device, you'll need to serialize the game state\nand copy it to another device.\n\n\nLibraries\n---------\n\nThis project uses i18next JavaScript library.\n",
+  "licenceFile": "LICENSE",
+  "entry": "farmsim.html",
+  "validated": true
+}

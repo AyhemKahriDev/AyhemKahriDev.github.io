@@ -1,0 +1,16 @@
+{
+  "repo": "michelebucelli/xonix-js",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 62,
+  "pushedAt": "2021-01-16T15:54:31Z",
+  "description": "A JavaScript clone of the classic Xonix game",
+  "defaultBranch": "master",
+  "owner": "michelebucelli",
+  "slug": "michelebucelli-xonix-js",
+  "dest": "third-party/michelebucelli-xonix-js",
+  "readme": "# xonix-js\nA tiny JavaScript clone of the [classic Xonix game](https://en.wikipedia.org/wiki/Xonix).\nUses [Github corners](https://github.com/tholman/github-corners) by [Tim Holman](https://github.com/tholman).\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

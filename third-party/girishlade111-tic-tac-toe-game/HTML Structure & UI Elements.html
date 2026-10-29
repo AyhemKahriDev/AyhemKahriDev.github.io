@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Neon Tic-Tac-Toe</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron :wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="bg-particles"></canvas>
+
+  <div id="game-container">
+    <header>
+      <h1>Neon Tic-Tac-Toe</h1>
+      <div class="scoreboard">
+        <div class="avatar X">X</div>
+        <span id="score-X">0</span> <span>-</span>
+        <span id="score-O">0</span>
+        <div class="avatar O">O</div>
+      </div>
+      <div class="controls">
+        <button id="reset-button">🔄 Reset</button>
+        <button id="undo-button">↩ Undo</button>
+        <label><input type="checkbox" id="mystery-toggle"> Mystery Mode</label>
+        <label><input type="checkbox" id="sound-toggle" checked> Sounds</label>
+      </div>
+    </header>
+
+    <main>
+      <div id="progress-bar">
+        <div class="progress-fill"></div>
+      </div>
+      <div id="board">
+        <!-- 9 .cell elements will be injected by JS -->
+      </div>
+      <div id="victory-screen">
+        <h2 id="victory-message"></h2>
+        <button id="play-again">Play Again</button>
+      </div>
+    </main>
+  </div>
+
+  <canvas id="win-particles" class="fullscreen"></canvas>
+
+  <script src="game.js"></script>
+</body>
+</html>

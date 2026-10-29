@@ -1,0 +1,16 @@
+{
+  "repo": "alexconner-79/super-claudio-brothers",
+  "stars": 2,
+  "licence": "MIT",
+  "sizeKB": 108,
+  "pushedAt": "2026-06-21T11:57:28Z",
+  "description": "A Claude-themed Mario-style platformer — built entirely in a single HTML file",
+  "defaultBranch": "main",
+  "owner": "alexconner-79",
+  "slug": "alexconner-79-super-claudio-brothers",
+  "dest": "third-party/alexconner-79-super-claudio-brothers",
+  "readme": "# Super Claudio Brothers\n\nA Claude Code skill that generates a unique Mario-style platformer every time you run it. Pick a theme, and it builds you a custom game with its own colour palette, level layout, enemy style, and Claudio costume.\n\n![Title Screen](screenshots/title-screen.png)\n\n## Get started\n\nRun this in your terminal to install:\n\n```bash\ngit clone https://github.com/alexconner-79/super-claudio-brothers.git ~/super-claudio-brothers && cp -r ~/super-claudio-brothers/skills/super-claudio-brothers ~/.claude/skills/\n```\n\nThen run `/super-claudio-brothers` in Claude Code.\n\nTo update to the latest version:\n\n```bash\ncd ~/super-claudio-brothers && git pull && cp -r skills/super-claudio-brothers ~/.claude/skills/\n```\n\nYou'll get five options: Classic Claudio (the original, launches instantly) or four randomly generated themes. Pick one, type your own, and the skill builds your game in seconds. Every version is different.\n\n## How it works\n\nThe game engine lives in `template.html` with a replaceable theme block. The skill generates ~40 lines of themed JS (colours, level params, costume, background art) and injects them with `sed`. It never reads the 54KB template into context, so generation is fast and cheap.\n\n## The game\n\nYou play as Claudio, stomping gremlins across an overworld and underground zone. Question blocks, tokens, pipes, a checkpoint, power-ups (System Prompt makes you big, stars give invincibility), three lives, and a global leaderboard.\n\nSingle HTML file. Vanilla JS, Canvas 2D, Web Audio API for all sound. No dependencies, no build step. Open `index.html` in any browser to play the original.\n\n### Controls\n\n| Key | Action |\n|-----|--------|\n| Arrow keys / WASD | Move |\n| Up / Z / Space | Jump |\n| Shift | Run |\n| Down (on pipe) | Enter/exit underground |\n| P | Pause |\n| L | Leaderboard |\n\n## Project structure\n\n```\nindex.html          # The original playable game\ntemplate.html       # Engine with replaceable THEME block\nschema.sql          # Supabase leaderboard schema\nskills/             # Claude Code skill for themed generation\nscreenshots/        # README images\nCLAUDE.md           # Project context for Claude Code\n```\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

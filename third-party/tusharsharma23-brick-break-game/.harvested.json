@@ -1,0 +1,16 @@
+{
+  "repo": "TusharSharma23/Brick-Break-Game",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 4377,
+  "pushedAt": "2019-04-26T14:36:27Z",
+  "description": "A simple javascript game",
+  "defaultBranch": "master",
+  "owner": "TusharSharma23",
+  "slug": "tusharsharma23-brick-break-game",
+  "dest": "third-party/tusharsharma23-brick-break-game",
+  "readme": "# Brick-Break-Game\nA simple javascript game\nall the controls are given inside game page\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

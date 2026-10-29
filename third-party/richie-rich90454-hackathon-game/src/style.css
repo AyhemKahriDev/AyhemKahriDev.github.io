@@ -1,0 +1,312 @@
+:root{
+    --primary-color: #28465C;
+    --accent-color: #1C94E9;
+}
+@font-face{
+    font-family: "Noto Sans";
+    src: url("/NotoSans-VariableFont_wdth_wght.ttf");
+    font-weight: 1 1000;
+    font-display: swap;
+}
+@font-face{
+    font-family: "EB Garamond";
+    src: url("/EBGaramond-VariableFont_wght.ttf");
+    font-weight: 1 1000;
+    font-display: swap;
+}
+body{
+    margin: 0;
+    padding: 0;
+    font-family: "Noto Sans", sans-serif;
+    background-color: #000;
+    color: #FFF;
+    font-size: clamp(14px, 2.7vw, 16px);
+    touch-action: none;
+    overflow-x: hidden;
+    overflow-y: hidden;
+}
+#page-title{
+    font-family: "Noto Sans", sans-serif;
+    margin: 0;
+    padding: clamp(1rem, 2.2vh, 1.5rem) 0;
+    text-align: center;
+    background-color: var(--primary-color);
+    font-size: clamp(1.5rem, 4.8vw, 2rem);
+    color: #FFF;
+    width: 100vw;
+}
+#game-container{
+    font-family: "Noto Sans", sans-serif;
+    display: flex;
+    justify-content: center;
+    background-color: #000;
+    height: calc(100vh - clamp(4rem, 10vh, 6rem) - env(safe-area-inset-top, 0) - env(safe-area-inset-bottom, 0));
+}
+canvas{
+    font-family: "Noto Sans", sans-serif;
+    display: block;
+    margin: 0 auto;
+    background: #000;
+    width: 100vw;
+    height: 100%;
+}
+footer{
+    display: none;
+    font-family: "EB Garamond";
+    width: 100vw;
+    color: #FFF;
+    background-color: var(--primary-color);
+    text-align: center;
+    font-size: clamp(.8rem, 2.7vw, 1rem);
+    bottom: env(safe-area-inset-bottom, 0);
+    padding: clamp(.5rem, 1vh, 1rem) env(safe-area-inset-left, 0) clamp(.5rem, 1vh, 1rem) env(safe-area-inset-right, 0);
+    position: fixed;
+    z-index: 1002;
+}
+#controls{
+    font-family: "EB Garamond";
+    position: fixed;
+    top: calc(clamp(6rem, 15vh, 8rem) + env(safe-area-inset-top, 0));
+    left: calc(clamp(.5rem, 2vw, 1rem) + env(safe-area-inset-left, 0));
+    background: rgba(0, 0, 0, .7);
+    padding: clamp(.5rem, 2vw, 1rem);
+    border-radius: clamp(.4rem, 1vw, .5rem);
+    border: 1px solid var(--accent-color);
+    max-width: clamp(10rem, 24.8vw, 15rem);
+    z-index: 1001;
+}
+#controls h3{
+    font-family: "EB Garamond";
+    margin-top: 0;
+    color: var(--accent-color);
+    font-size: clamp(.9rem, 2.7vw, 1.2rem);
+}
+p{
+    font-family: "EB Garamond";
+    margin: clamp(.2rem, .5vh, .3rem) 0;
+    font-size: clamp(.7rem, 2vw, .9rem);
+}
+#touch-controls{
+    position: fixed;
+    bottom: calc(2rem + env(safe-area-inset-bottom, 0));
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: clamp(.5rem, 2vw, 1rem);
+    background: rgba(0, 0, 0, .7);
+    padding: clamp(.5rem, 1vh, .75rem);
+    border-radius: clamp(.4rem, 1vw, .5rem);
+    z-index: 1003;
+}
+#touch-controls button{
+    flex: none;
+    width: clamp(3rem, 8vw, 4rem);
+    height: clamp(3rem, 8vw, 4rem);
+    font-size: clamp(1rem, 3vw, 1.3rem);
+    border-radius: 50%;
+    background: var(--accent-color);
+    color: #FFF;
+    transition: transform .2s;
+    border: none;
+}
+#touch-controls button:hover{
+    transform: scale(1.1);
+}
+.modal{
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, .9);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modal-content{
+    background: var(--primary-color);
+    padding: clamp(1rem, 2.7vw, 1.5rem);
+    border-radius: clamp(.5rem, 1.4vw, .75rem);
+    border: 2px solid var(--accent-color);
+    max-width: clamp(15rem, 80vw, 25rem);
+    text-align: left;
+}
+.modal-content h2{
+    color: var(--accent-color);
+    margin-top: 0;
+    font-family: "EB Garamond";
+    font-size: clamp(1.2rem, 4vw, 1.5rem);
+}
+#startButton, #restartButton{
+    background: var(--accent-color);
+    color: #FFF;
+    border: none;
+    padding: clamp(.6rem, 2.2vh, .8rem) clamp(1rem, 2.7vw, 1.5rem);
+    border-radius: clamp(.3rem, 1vw, .4rem);
+    cursor: pointer;
+    font-size: clamp(.9rem, 2.7vw, 1.2rem);
+    margin-top: clamp(.8rem, 2.2vh, 1rem);
+    width: 100%;
+}
+#startButton:hover, #restartButton:hover{
+    opacity: .8;
+}
+.modal-content ul{
+    padding-left: clamp(.8rem, 2vw, 1rem);
+}
+.modal-content li{
+    font-family: "EB Garamond";
+    font-size: clamp(.8rem, 2.7vw, 1rem);
+    margin: clamp(.3rem, 1vh, .5rem) 0;
+}
+input{
+    font-family: "EB Garamond";
+}
+button{
+    font-family: "EB Garamond";
+    font-weight: bold;
+}
+header{
+    position: relative;
+    width: 100vw;
+    margin: 0 auto;
+}
+.notice{
+    font-family: "EB Garamond";
+    margin: auto;
+    text-align: center;
+    background-color: var(--primary-color);
+    color: #FFF;
+    font-size: clamp(.7rem, 2vw, .9rem);
+    padding: clamp(.3rem, 1vh, .5rem) 0;
+}
+a{
+    color: var(--accent-color);
+}
+@media (max-width: 768px){
+    #page-title{
+        font-size: clamp(1rem, 4vw, 1.5rem);
+        padding: clamp(.5rem, 1.5vh, .8rem) 0;
+    }
+    #controls{
+        font-size: clamp(.6rem, 1.8vw, .8rem);
+        padding: clamp(.4rem, 1.4vw, .6rem);
+        max-width: clamp(8rem, 20vw, 12rem);
+        top: calc(clamp(4rem, 12.2vh, 6rem) + env(safe-area-inset-top, 0));
+        left: calc(clamp(.3rem, 1vw, .5rem) + env(safe-area-inset-left, 0));
+    }
+    #touch-controls{
+        display: flex;
+        bottom: calc(clamp(1.5rem, 4vh, 2.7rem) + env(safe-area-inset-bottom, 0));
+        padding: clamp(.4rem, 1vh, .6rem) env(safe-area-inset-left, 0) clamp(.4rem, 1vh, .6rem) env(safe-area-inset-right, 0);
+    }
+    #touch-controls button{
+        font-size: clamp(.8rem, 2.7vw, 1rem);
+        padding: clamp(.5rem, 1.5vh, .7rem) 0;
+        min-width: clamp(2rem, 8vw, 2.7rem);
+        min-height: clamp(2rem, 8vw, 2.7rem);
+    }
+    footer{
+        font-size: clamp(.7rem, 2vw, .9rem);
+        padding: clamp(.3rem, .8vh, .5rem) env(safe-area-inset-left, 0) clamp(.3rem, .8vh, .5rem) env(safe-area-inset-right, 0);
+    }
+    .modal-content{
+        max-width: clamp(12rem, 84.8vw, 20rem);
+        padding: clamp(.6rem, 2vw, 1rem);
+    }
+    .modal-content h2{
+        font-size: clamp(1rem, 3.8vw, 1.2rem);
+    }
+    .modal-content button{
+        font-size: clamp(.8rem, 2.7vw, 1rem);
+        padding: clamp(.5rem, 1.5vh, .7rem) clamp(.8rem, 2vw, 1rem);
+    }
+    .modal-content li{
+        font-size: clamp(.7rem, 2vw, .9rem);
+    }
+    .notice{
+        font-size: clamp(.6rem, 1.8vw, .8rem);
+        padding: clamp(.2rem, .8vh, .4rem) 0;
+    }
+}
+@media (max-width: 480px){
+    #page-title{
+        font-size: clamp(.8rem, 3.8vw, 1.2rem);
+        padding: clamp(.3rem, 1vh, .5rem) 0;
+    }
+    #controls{
+        font-size: clamp(.5rem, 1.4vw, .7rem);
+        max-width: clamp(6rem, 18vw, 10rem);
+        padding: clamp(.3rem, 1vw, .5rem);
+        top: calc(clamp(3rem, 10vh, 5rem) + env(safe-area-inset-top, 0));
+        left: calc(clamp(.2rem, .8vw, .4rem) + env(safe-area-inset-left, 0));
+    }
+    #touch-controls{
+        display: flex;
+        bottom: calc(clamp(1rem, 3vh, 2rem) + env(safe-area-inset-bottom, 0));
+        padding: clamp(.3rem, .8vh, .5rem) env(safe-area-inset-left, 0) clamp(.3rem, .8vh, .5rem) env(safe-area-inset-right, 0);
+    }
+    #touch-controls button{
+        font-size: clamp(.7rem, 2vw, .9rem);
+        padding: clamp(.4rem, 1vh, .6rem) 0;
+        min-width: clamp(1.8rem, 7vw, 2.2rem);
+        min-height: clamp(1.8rem, 7vw, 2.2rem);
+    }
+    footer{
+        font-size: clamp(.6rem, 1.8vw, .8rem);
+        padding: clamp(.2rem, .6vh, .4rem) env(safe-area-inset-left, 0) clamp(.2rem, .6vh, .4rem) env(safe-area-inset-right, 0);
+    }
+    .modal-content{
+        max-width: clamp(10rem, 90vw, 18rem);
+        padding: clamp(.5rem, 1.4vw, .8rem);
+    }
+    .modal-content h2{
+        font-size: clamp(.8rem, 2.7vw, 1rem);
+    }
+    .modal-content button{
+        font-size: clamp(.7rem, 2vw, .9rem);
+        padding: clamp(.4rem, 1vh, .6rem) clamp(.6rem, 1.4vw, .8rem);
+    }
+    .modal-content li{
+        font-size: clamp(.6rem, 1.8vw, .8rem);
+    }
+    .notice{
+        font-size: clamp(.5rem, 1.4vw, .7rem);
+        padding: clamp(.1rem, .6vh, .3rem) 0;
+    }
+}
+button{
+    transition: all .5s ease-in-out;
+    cursor: pointer;
+}
+button:hover{
+    transform: scale(1.05);
+}
+#controls-toggle{
+    position: fixed;
+    bottom: calc(6rem + env(safe-area-inset-bottom, 0));
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1004;
+    opacity: .1;
+    transition: all .5s ease-in-out;
+}
+#controls-toggle:hover{
+    opacity: .8;
+}
+#controls-toggle button{
+    background: var(--accent-color);
+    color: #fff;
+    border: none;
+    padding: .5rem 1rem;
+    border-radius: .4rem;
+    font-size: clamp(.8rem, 2.5vw, 1rem);
+    cursor: pointer;
+    transition: opacity .3s;
+}
+@media (hover: none){
+    #controls-toggle{
+        opacity: .8;
+    }
+}

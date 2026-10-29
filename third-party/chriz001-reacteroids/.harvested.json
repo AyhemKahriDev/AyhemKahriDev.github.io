@@ -1,0 +1,15 @@
+{
+  "repo": "chriz001/Reacteroids",
+  "stars": 357,
+  "licence": "CC0-1.0",
+  "sizeKB": 87,
+  "pushedAt": "2024-08-08T11:40:07Z",
+  "description": "A implementation of the classic Asteroids game using React and Canvas in es6",
+  "defaultBranch": "master",
+  "owner": "chriz001",
+  "slug": "chriz001-reacteroids",
+  "dest": "third-party/chriz001-reacteroids",
+  "readme": "# Reacteroids\nA implementation of the classic Asteroids game using React and Canvas in es6\n\nThis was built with using the react transform boilerplate from\nhttps://github.com/gaearon/react-transform-boilerplate\n\n## Demo\n\nhttp://chriz001.github.io/Reacteroids/\n\n## Install\n\nnpm install\nnpm start\n\n## Play\n\nOpen http://localhost:3000\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

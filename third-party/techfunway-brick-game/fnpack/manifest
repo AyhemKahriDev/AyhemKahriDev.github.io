@@ -1,0 +1,31 @@
+appname                    = techfunway-brick-game
+version                    = 0.1.0
+display_name               = 方块游戏机
+desc                       = """
+复古掌上方块游戏机 49 合 1：完整复刻经典掌机全系玩法——方块家族 6 款（经典/挑战B/豪华五格骨牌/暴雨/冲刺/盲盒）、贪吃蛇 3 款、赛车 3 款、打飞机 2 款、坦克 2 款、打砖块 2 款、数字拼图 3 款、记忆翻牌 2 款、飞碟射击 2 款、接宝 2 款、推箱子 2 款、导弹拦截 2 款、青蛙过河 2 款，另有 2048、扫雷、贪吃豆、点灯、汉诺塔、月面着陆、黑白棋、迷宫寻宝、拉霸机等 16 款全新小游戏。
+
+霓虹像素画面 + CRT 扫描线、行消除粒子爆裂、屏幕震动与浮动连击特效；WebAudio 实时合成 8bit 芯片音效与双声部芯片音乐（俄罗斯方块 Korobeiniki 主题曲等 5 首）；0-9 速度选择、DAS 连发移动、踢墙旋转、每游戏独立最高分存档。
+
+桌面键盘与手机触屏双适配：虚拟方向键 + A/B 按键，屏幕滑动手势，手机横屏自动切换左右布局，支持全屏与「添加到主屏幕」PWA 独立运行，按键震动触感（可开关）。
+"""
+source                     = thirdparty
+platform                   = x86
+maintainer                 = 科技智趣坊
+maintainer_url             = https://github.com/TechFunWay/brick-game
+distributor                = 科技智趣坊
+distributor_url            = https://techfunway.wycto.cn
+os_min_version             = 1.0.0
+ctl_stop                   = true
+desktop_uidir              = ui
+desktop_applaunchname      = techfunway-brick-game.main
+service_port               = 8908
+checkport                  = false
+disable_authorization_path = false
+changelog                  = """
+v0.1.0：
+- 首次发布：49 款游戏（33 款经典玩法 + 16 款全新小品），霓虹像素画面 + 8bit 芯片音乐，桌面键盘与手机触屏双适配
+- 纯静态前端 + Go 静态服务，默认端口 8908，安装/运行时均可自定义；无数据库，解压即用
+- 飞牛 fnOS 双架构安装包（x86 / arm）：统一网关入口，桌面图标点开即玩
+- 多平台发行：Linux / macOS（amd64、arm64）、Windows amd64，以及多架构 Docker 镜像
+- 微信扫码赞赏入口（品牌栏 ♥），赞赏完全自愿；匿名支持计数可用 `-disable-stats` 或 `DISABLE_STATS=1` 关闭
+"""

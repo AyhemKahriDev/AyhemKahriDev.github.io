@@ -1,0 +1,14 @@
+# 构建产物
+brick-game
+release/
+server/brick-game
+
+# AI 助手
+AGENTS.md
+.workbuddy/
+
+# 杂项
+.idea/
+.DS_Store
+node_modules/
+*.log

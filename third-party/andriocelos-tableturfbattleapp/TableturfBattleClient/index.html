@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8"/>
+		<base href="https://tableturf.andriocelos.net/"/>
+		<script>
+			baseUrl = window.location.toString().replace(/\/(?:index.html|deckeditor|game\/[^/]*|replay\/[^/]*)$/, '/');
+			document.getElementsByTagName('base')[0].href = baseUrl;
+		</script>
+		<title>Tableturf Battle</title>
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/external/apple-touch-icon.png">
+		<link rel="icon" type="image/webp" sizes="32x32" href="assets/external/favicon-32x32.webp">
+		<link rel="icon" type="image/webp" sizes="16x16" href="assets/external/favicon-16x16.webp">
+		<link rel="manifest" href="assets/site.webmanifest">
+		<link rel="stylesheet" href="tableturf.css"/>
+		<script src="config/config.js"></script>
+		<script src="qrcodejs/qrcode.js"></script>
+		<script src="mobile-drag-drop/release/index.min.js"></script>
+		<script src="js-untar/build/dist/untar.js"></script>
+		<script>
+			// Enable a polyfill for drag/drop support on mobile Firefox.
+			MobileDragDrop.polyfill({ dragImageTranslateOverride: MobileDragDrop.scrollBehaviourDragImageTranslateOverride });
+		</script>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta property="og:type" content="website"/>
+		<meta name="title" property="og:title" content="Tableturf Battle"/>
+		<meta name="description" property="og:description" content="(Beta) An unofficial simulator for Tableturf Battle from Splatoon 3. Play online with friends using any in-game cards!"/>
+		<meta property="og:url" content="https://tableturf.andriocelos.net/"/>
+		<meta name="theme-color" content="#0c92f2" data-react-helmet="true"/>
+	</head>
+	<body>
+		<div id="noJSPage">This application requires JavaScript.</div>
+		<svg id="cardDisplayAssets">
+			<defs>
+				<clipPath id="cardBorder">
+					<rect x="19" y="20" width="404" height="576" rx="18" ry="18"/>
+				</clipPath>
+				<linearGradient id='rareGradient' gradientUnits="userSpaceOnUse" x1="29.2%" y1='21.5%' x2="55.5%" y2="15.7%" spreadMethod='reflect'>
+					<stop offset='0%' stop-color='#FBFFCC'/>
+					<stop offset='100%' stop-color='#E0AE12'/>
+				</linearGradient>
+				<linearGradient id='freshGradient' gradientUnits="userSpaceOnUse" x1="17.5%" y1="-2.5%" x2="83.5%" y2="32%">
+					<stop offset='0%' stop-color='#FF93DD'/>
+					<stop offset='20%' stop-color='#FEF499'/>
+					<stop offset='50%' stop-color='#C9448A'/>
+					<stop offset='75%' stop-color='#1EFBC3'/>
+					<stop offset='95%' stop-color='#FD97DB'/>
+					<stop offset='100%' stop-color='#FFBAC2'/>
+				</linearGradient>
+			</defs>
+		</svg>
+		<div id="preGamePage" hidden>
+			<div id="logoBanner"><img title="Tableturf Battle" alt="Tableturf Battle logo" id="logo" src="assets/external/logo.webp"></div>
+			<h1>Tableturf Battle</h1>
+			<form id="preGameForm">
+				<p><label for="nameBox">Choose a nickname: <input type="text" id="nameBox" required minlength="1" maxlength="20"/></label></p>
+				<div id="preGameDefaultSection">
+					<button type="submit" id="preGameImplicitSubmitButton" tabindex="-1"></button>
+					<p>
+						<button type="submit" id="newGameButton">Create a room</button>
+						<button type="button" id="newGameSetupButton">More options</button>
+					</p>
+					<p>
+						<label for="gameIDBox">Enter a game link or ID to join a game:<br/>
+						<input type="text" id="gameIDBox" placeholder="Game link or ID"/></label>
+						<button type="submit" id="joinGameButton">Join game</button>
+						<button type="submit" id="spectateGameButton">Spectate</button>
+					</p>
+				</div>
+				<div id="preGameJoinSection" hidden>
+					<p>
+						<button type="submit" id="joinGameButton2">Join game</button>
+						<button type="submit" id="spectateGameButton2">Spectate</button>
+					</p>
+					<a id="preGameBackButton" href="../..">Create or join a different room</a>
+				</div>
+				<p>
+					<a id="preGameDeckEditorButton" href="deckeditor">Edit decks</a> |
+					<a id="preGameGalleryButton" href="cardlist">Card list</a> |
+					<a id="preGameReplayButton" href="replay">Replay</a> |
+					<a id="preGameSettingsButton" href="settings">Settings</a> |
+					<a id="preGameHelpButton" href="help">Help</a>
+				</p>
+				<div id="preGameLoadingSection" class="loadingContainer" hidden>
+					<div class="loadingSpinner"></div> <span id="preGameLoadingLabel"></span>
+				</div>
+			</form>
+			<footer>
+				<p>This website is not affiliated with Nintendo. All product names, logos, and brands are property of their respective owners.</p>
+				<p><a href="https://github.com/AndrioCelos/TableturfBattleApp">GitHub</a><span id="discordSection"> | <a id="discordLink">Discord</a></span></p>
+			</footer>
+		</div>
+		<div id="lobbyPage" hidden>
+			<section id="lobbyPlayerListSection">
+				<p>Other players can join using a link to this page.<br/>
+					<button type="button" id="shareLinkButton">Share link</button><button type="button" id="showQrCodeButton">Show QR code</button></p>
+				<ul id="playerList"></ul>
+				<h3>Game rules</h3>
+				<label for="lobbyTimeLimitBox">
+					Turn time limit:
+					<input type="number" id="lobbyTimeLimitBox" min="10" max="120" step="10" placeholder="None"/>
+					<span id="lobbyTimeLimitUnit">seconds</span>
+				</label>
+				<label for="lobbyAllowUpcomingCardsBox">
+					<input type="checkbox" id="lobbyAllowUpcomingCardsBox"/> Allow upcoming cards
+				</label>
+				<label for="lobbyAllowCustomCardsBox">
+					<input type="checkbox" id="lobbyAllowCustomCardsBox"/> Allow custom cards
+				</label>
+			</section>
+			<section id="lobbySelectedStageSection">
+				<h3>Stage</h3>
+			</section>
+			<section id="lobbyStageSection" hidden>
+				<form id="stageSelectionForm" hidden>
+					<div id="stageSelectionFormHeader">
+						<h3 id="stagePrompt">Vote for the stage.</h3>
+						<div class="submitButtonContainer">
+							<button type="submit" id="submitStageButton" disabled>Submit</button>
+							<div class="loadingContainer" hidden>
+								<div class="loadingSpinner"></div>
+							</div>
+						</div>
+					</div>
+					<div id="stageList">
+						<button type="button" id="stageRandomButton" class="stageRandom">Random</button>
+					</div>
+					<div id="stageListLoadingSection"><div class="loadingSpinner"></div> Loading stages...</div>
+				</form>
+				<form id="strikeOrderSelectionForm" hidden>
+					<h3 id="stagePrompt">Do you want to strike first or second?</h3>
+					<button type="submit" data-strike-index="0">Strike first</button>
+					<button type="submit" data-strike-index="1">Strike second</button>
+				</form>
+			</section>
+			<div id="lobbyDeckSection" hidden>
+				<h3>Choose your deck.</h3>
+				<form id="deckSelectionForm">
+					<div class="submitButtonContainer">
+						<button type="submit" id="submitDeckButton" disabled>Submit</button>
+						<div class="loadingContainer">
+							<div class="loadingSpinner"></div>
+						</div>
+					</div>
+					<div id="lobbyDeckList" class="deckList"></div>
+				</form>
+			</div>
+			<dialog id="qrCodeDialog">
+				<form method="dialog">
+					<p>Scan this QR code to join the game.</p>
+					<div id="qrCode"></div>
+					<button type="submit">Close</button>
+				</form>
+			</dialog>
+		</div>
+		<div id="gamePage" hidden>
+			<div class="playerBar" data-index="1">
+				<div class="result"></div>
+				<div class="wins" title="Battles won">0</div>
+				<div class="name">Player 2</div>
+				<div class="specialPoints">&nbsp;</div>
+				<div class="playerStats">
+					<div class="statSpecialPoints">
+						<div class="statLabel">Special points</div>
+						<div class="statValue">0</div>
+					</div>
+					<div class="statPasses">
+						<div class="statLabel">Turns passed</div>
+						<div class="statValue">0</div>
+					</div>
+				</div>
+			</div>
+			<div class="playerBar" data-index="3">
+				<div class="result"></div>
+				<div class="wins" title="Battles won">0</div>
+				<div class="name">Player 4</div>
+				<div class="specialPoints">&nbsp;</div>
+				<div class="playerStats">
+					<div class="statSpecialPoints">
+						<div class="statLabel">Special points</div>
+						<div class="statValue">0</div>
+					</div>
+					<div class="statPasses">
+						<div class="statLabel">Turns passed</div>
+						<div class="statValue">0</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="gameControls">
+				<div id="debugColour" hidden>
+					<table>
+						<tr>
+							<th>Colour</th>
+							<th>H</th>
+							<th>S</th>
+							<th>L</th>
+							<th>RGB</th>
+						</tr>
+						<tr>
+							<td>1i</td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="0" id="colH0I" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="0" id="colS0I" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="0" id="colL0I" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="0" data-index="0" id="colRGB0I" value="#ecf901"/></td>
+						</tr>
+						<tr>
+							<td>1s</td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="1" id="colH0S" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="1" id="colS0S" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="1" id="colL0S" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="0" data-index="1" id="colRGB0S" value="#fa9e00"/></td>
+						</tr>
+						<tr>
+							<td>1a</td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="2" id="colH0A" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="2" id="colS0A" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="0" data-index="2" id="colL0A" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="0" data-index="2" id="colRGB0A" value="#f9f91f"/></td>
+						</tr>
+
+						<tr>
+							<td>2i</td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="0" id="colH1I" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="0" id="colS1I" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="0" id="colL1I" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="1" data-index="0" id="colRGB1I" value="#4a5cfc"/></td>
+						</tr>
+						<tr>
+							<td>2s</td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="1" id="colH1S" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="1" id="colS1S" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="1" id="colL1S" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="1" data-index="1" id="colRGB1S" value="#01edfe"/></td>
+						</tr>
+						<tr>
+							<td>2a</td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="2" id="colH1A" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="2" id="colS1A" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="1" data-index="2" id="colL1A" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="1" data-index="2" id="colRGB1A" value="#d5e1e1"/></td>
+						</tr>
+
+						<tr>
+							<td>3i</td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="0" id="colH2I" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="0" id="colS2I" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="0" id="colL2I" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="2" data-index="0" id="colRGB2I" value="#f906e0"/></td>
+						</tr>
+						<tr>
+							<td>3s</td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="1" id="colH2S" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="1" id="colS2S" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="1" id="colL2S" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="2" data-index="1" id="colRGB2S" value="#8006f9"/></td>
+						</tr>
+						<tr>
+							<td>3a</td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="2" id="colH2A" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="2" id="colS2A" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="2" data-index="2" id="colL2A" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="2" data-index="2" id="colRGB2A" value="#ebb4fd"/></td>
+						</tr>
+
+						<tr>
+							<td>4i</td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="0" id="colH3I" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="0" id="colS3I" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="0" id="colL3I" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="3" data-index="0" id="colRGB3I" value="#06f994"/></td>
+						</tr>
+						<tr>
+							<td>4s</td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="1" id="colH3S" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="1" id="colS3S" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="1" id="colL3S" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="3" data-index="1" id="colRGB3S" value="#06f906"/></td>
+						</tr>
+						<tr>
+							<td>4a</td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="2" id="colH3A" min="0" max="359"/></td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="2" id="colS3A" min="0" max="100"/>%</td>
+							<td><input type="number" autocomplete="off" data-player="3" data-index="2" id="colL3A" min="0" max="100"/>%</td>
+							<td><input type="text"   autocomplete="off" data-player="3" data-index="2" id="colRGB3A" value="#b4fdc7"/></td>
+						</tr>
+					</table>
+				</div>
+				<div id="cardHint" hidden></div>
+				<div id="handContainer"></div>
+
+				<div id="playRow">
+					<button type="button" id="passButton" class="gameButton">Pass</button>
+					<button type="button" id="specialButton" class="gameButton">Special Attack</button>
+				</div>
+				<div id="spectatorRow">
+					<a id="leaveButton" href="#">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+							<path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"/>
+						</svg>
+						Exit
+					</a>
+					<button id="replayPreviousGameButton" class="gameButton replayButton">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-backward-fill" viewBox="0 0 16 16">
+							<path d="M.5 3.5A.5.5 0 0 0 0 4v8a.5.5 0 0 0 1 0V8.753l6.267 3.636c.54.313 1.233-.066 1.233-.697v-2.94l6.267 3.636c.54.314 1.233-.065 1.233-.696V4.308c0-.63-.693-1.01-1.233-.696L8.5 7.248v-2.94c0-.63-.692-1.01-1.233-.696L1 7.248V4a.5.5 0 0 0-.5-.5z"/>
+						</svg>
+						Previous game
+					</button>
+					<button id="replayPreviousButton" class="gameButton replayButton">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-rewind-fill" viewBox="0 0 16 16">
+							<path d="M8.404 7.304a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L8.404 7.304Z"/>
+							<path d="M.404 7.304a.802.802 0 0 0 0 1.392l6.363 3.692c.52.302 1.233-.043 1.233-.696V4.308c0-.653-.713-.998-1.233-.696L.404 7.304Z"/>
+						</svg>
+						Previous turn
+					</button>
+					<button id="replayNextButton" class="gameButton replayButton">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-fast-forward-fill" viewBox="0 0 16 16">
+							<path d="M7.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C.713 12.69 0 12.345 0 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z"/>
+							<path d="M15.596 7.304a.802.802 0 0 1 0 1.392l-6.363 3.692C8.713 12.69 8 12.345 8 11.692V4.308c0-.653.713-.998 1.233-.696l6.363 3.692Z"/>
+						</svg>
+						Next turn
+					</button>
+					<button id="replayNextGameButton" class="gameButton replayButton">
+						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-skip-forward-fill" viewBox="0 0 16 16">
+							<path d="M15.5 3.5a.5.5 0 0 1 .5.5v8a.5.5 0 0 1-1 0V8.753l-6.267 3.636c-.54.313-1.233-.066-1.233-.697v-2.94l-6.267 3.636C.693 12.703 0 12.324 0 11.693V4.308c0-.63.693-1.01 1.233-.696L7.5 7.248v-2.94c0-.63.693-1.01 1.233-.696L15 7.248V4a.5.5 0 0 1 .5-.5z"/>
+						</svg>
+						Next game
+					</button>
+					<button id="shareReplayLinkButton" class="gameButton">Copy replay link</button>
+					<button id="flipButton" class="gameButton">Change view</button>
+				</div>
+				<button id="nextGameButton" class="gameButton">Next game</button>
+			</div>
+
+			<div class="playerBar" data-index="2">
+				<div class="result"></div>
+				<div class="wins" title="Battles won">0</div>
+				<div class="name">Player 3</div>
+				<div class="specialPoints">&nbsp;</div>
+				<div class="playerStats">
+					<div class="statSpecialPoints">
+						<div class="statLabel">Special points</div>
+						<div class="statValue">0</div>
+					</div>
+					<div class="statPasses">
+						<div class="statLabel">Turns passed</div>
+						<div class="statValue">0</div>
+					</div>
+				</div>
+			</div>
+			<div class="playerBar" data-index="0">
+				<div class="result"></div>
+				<div class="wins" title="Battles won">0</div>
+				<div class="name">Player 1</div>
+				<div class="specialPoints">&nbsp;</div>
+				<div class="playerStats">
+					<div class="statSpecialPoints">
+						<div class="statLabel">Special points</div>
+						<div class="statValue">0</div>
+					</div>
+					<div class="statPasses">
+						<div class="statLabel">Turns passed</div>
+						<div class="statValue">0</div>
+					</div>
+				</div>
+			</div>
+
+			<div id="showDeckContainer" hidden>
+				<div id="showDeck">
+					<ul id="showDeckList"></ul>
+					<div>
+						<button type="button" id="showDeckCloseButton" class="gameButton">Close</button>
+					</div>
+				</div>
+			</div>
+
+			<div id="testControls">
+				<div id="testControlsHeader" class="testControls">
+					<button type="button" id="testDeckButton" class="gameButton">Deck</button>
+					<button type="button" id="testAllCardsButton" class="gameButton">All cards</button>
+				</div>
+				<div id="testDeckContainer" class="testControls">
+					<button id="testAllCardsMobileButton">All cards</button>
+					<div id="testDeckList"></div>
+				</div>
+				<div id="testAllCardsContainer" class="testControls" hidden>
+					<div id="testAllCardsHeader">
+						<label for="testAllCardsListSortBox">
+							Sort by
+							<select id="testAllCardsListSortBox" autocomplete="off"></select>
+						</label>
+						<input type="text" id="testAllCardsListFilterBox" placeholder="Filter"/>
+					</div>
+					<div id="testAllCardsList" class="cardListGrid"></div>
+				</div>
+				<div id="testControlsFooter" class="testControls">
+					<button type="button" id="testUndoButton" class="gameButton">Undo</button>
+					<button type="button" id="testBackButton" class="gameButton">End test</button>
+				</div>
+			</div>
+			<div id="testCardListBackdrop" hidden></div>
+
+			<div id="timeSection">
+				<div id="turnNumberContainer" hidden>
+					<p>Turns left</p>
+					<div id="turnNumberLabel">12</div>
+				</div>
+				<div id="timeContainer">
+					<div id="timeContainerContent">
+						<svg viewBox="0 0 100 100">
+							<path fill-rule="evenodd" d="M 50,0 a 50 50 360 1 1 0,100 a 50 50 360 1 1 0,-100 z M 40,10 h 20 v 30 h 30 v 20 h -50 z"/>
+						</svg>
+						<div id="timeLabel">69</div>
+					</div>
+				</div>
+			</div>
+			<div id="scoreSection">
+				<div class="pointsContainer" data-index="1"><span class="points">69</span><span class="pointsToContainer">&rarrhk; <span class="pointsTo">60</span></span><span class="pointsDelta">+1</span></div>
+				<div class="pointsContainer" data-index="3"><span class="points">69</span><span class="pointsToContainer">&rarrhk; <span class="pointsTo">60</span></span><span class="pointsDelta">+1</span></div>
+				<div class="pointsContainer" data-index="2"><span class="points">69</span><span class="pointsToContainer">&rarrhk; <span class="pointsTo">60</span></span><span class="pointsDelta">+1</span></div>
+				<div class="pointsContainer" data-index="0"><span class="points">69</span><span class="pointsToContainer">&rarrhk; <span class="pointsTo">60</span></span><span class="pointsDelta">+1</span></div>
+			</div>
+			<div id="boardSection">
+				<table id="gameBoard" tabindex="0"></table>
+				<div id="redrawModal" hidden>
+					<div id="redrawBox">
+						<p>Redraw your starting hand?</p>
+						<p><button type="button" id="redrawNoButton" data-redraw="false">Hold steady</button></p>
+						<p><button type="button" id="redrawYesButton" data-redraw="true">Redraw</button></p>
+					</div>
+				</div>
+			</div>
+
+			<div id="gameButtonsContainer">
+				<button id="rotateLeftButton" title="Rotate card anticlockwise (Shift+R)">&cularr;</button>
+				<button id="rotateRightButton" title="Rotate card clockwise (R)">&curarr;</button>
+				<button id="gameDeckButton" title="Show deck (D)">&#x1F0A0;</button>
+			</div>
+
+			<div class="playContainer" data-index="1"></div>
+			<div class="playContainer" data-index="3"></div>
+			<div class="playContainer" data-index="2"></div>
+			<div class="playContainer" data-index="0"></div>
+
+			<div id="playHint" hidden></div>
+
+			<div id="testPlacementList"></div>
+		</div>
+		<div id="deckListPage" hidden>
+			<section id="deckEditorDeckListSection">
+				<a id="deckListBackButton" href=".">Back</a>
+				<h3>Deck list</h3>
+				<button id="deckExportAllButton">Export all</button>
+				<div id="deckList" class="deckList">
+				</div>
+				<div id="addDeckControls">
+					<button id="newDeckButton">New deck</button>
+					<button id="importDeckButton">Import deck</button>
+				</div>
+			</section>
+			<section id="deckEditorDeckViewSection">
+				<a id="deckViewBackButton" href="#">Back</a>
+				<h3 id="deckName">&nbsp;</h3>
+				<button id="deckViewMenuButton" class="menuButton">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+					</svg>
+				</button>
+				<div id="deckViewMenu" class="menu">
+					<button type="button" id="deckListTestButton" disabled>Test</button>
+					<button type="button" id="deckExportButton" disabled>Export</button>
+					<button type="button" id="deckCopyButton" disabled>Copy</button>
+					<button type="button" id="deckSleevesButton" disabled>Sleeves</button>
+					<button type="button" id="deckEditButton" disabled>Edit</button>
+					<button type="button" id="deckRenameButton" disabled>Rename</button>
+					<button type="button" id="deckDeleteButton" class="danger" disabled>Delete</button>
+				</div>
+				<div class="deckSizeContainer"><div class="sizeLabel">Total</div> <div id="deckViewSize">0</div></div>
+				<div id="deckCardListView">
+				</div>
+			</section>
+			<dialog id="deckSleevesDialog">
+				<form id="deckSleevesForm" method="dialog">
+					<section id="deckSleevesList">
+						<input type="radio" name="deckSleeves" id="deckSleeve0" value="0"/><label for="deckSleeve0"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve1" value="1"/><label for="deckSleeve1"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve2" value="2"/><label for="deckSleeve2"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve3" value="3"/><label for="deckSleeve3"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve4" value="4"/><label for="deckSleeve4"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve5" value="5"/><label for="deckSleeve5"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve6" value="6"/><label for="deckSleeve6"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve7" value="7"/><label for="deckSleeve7"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve8" value="8"/><label for="deckSleeve8"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve9" value="9"/><label for="deckSleeve9"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve10" value="10"/><label for="deckSleeve10"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve11" value="11"/><label for="deckSleeve11"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve12" value="12"/><label for="deckSleeve12"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve13" value="13"/><label for="deckSleeve13"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve14" value="14"/><label for="deckSleeve14"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve15" value="15"/><label for="deckSleeve15"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve16" value="16"/><label for="deckSleeve16"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve17" value="17"/><label for="deckSleeve17"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve18" value="18"/><label for="deckSleeve18"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve19" value="19"/><label for="deckSleeve19"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve20" value="20"/><label for="deckSleeve20"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve21" value="21"/><label for="deckSleeve21"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve22" value="22"/><label for="deckSleeve22"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve23" value="23"/><label for="deckSleeve23"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve24" value="24"/><label for="deckSleeve24"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve25" value="25"/><label for="deckSleeve25"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve26" value="26"/><label for="deckSleeve26"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve27" value="27"/><label for="deckSleeve27"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve28" value="28"/><label for="deckSleeve28"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve29" value="29"/><label for="deckSleeve29"></label>
+						<input type="radio" name="deckSleeves" id="deckSleeve30" value="30"/><label for="deckSleeve30"></label>
+					</section>
+					<section id="deckSleevesFormButtons">
+						<button type="submit" id="deckSleevesOkButton">Select</button>
+						<button type="submit" id="deckSleevesCancelButton">Cancel</button>
+					</section>
+				</form>
+			</dialog>
+			<dialog id="deckImportDialog">
+				<form id="deckImportForm" method="dialog">
+					<label for="deckImportTextButton">
+						<input type="radio" id="deckImportTextButton" name="deckImportMethod"/>
+						Import from a Tableturf Battle simulator
+					</label>
+					<section id="deckImportTextSection">
+						<textarea id="deckImportTextBox" rows="4" cols="45" autocomplete="off" placeholder="Paste the export string here."></textarea>
+						<button type="submit" id="deckImportOkButton">OK</button>
+					</section>
+					<label for="deckImportScreenshotButton">
+						<input type="radio" id="deckImportScreenshotButton" name="deckImportMethod"/>
+						Import from screenshots
+					</label>
+					<section id="deckImportScreenshotSection">
+						<input type="file" id="deckImportFileBox" accept="image/*" multiple autocomplete="off"/>
+						<div>
+							<button type="button" id="deckImportScreenshotInstructionsButton">Show instructions</button>
+							<div id="deckImportScreenshotInstructions" hidden>
+								<ol>
+									<li>In <em>Splatoon 3</em>, open the main menu with X, select the Status tab, the Tableturf Battle section, then Card List.</li>
+									<li>Enter the Edit Deck menu with Y.</li>
+									<li>Move the cursor to the deck you want to import.</li>
+									<li>Take a screenshot using the capture button on your controller.<br/>If you have an external capture device, you can alternatively take a screenshot that way.</li>
+									<li>Repeat steps 3 and 4 for each deck you want to import.</li>
+								</ol>
+								<label for="deckImportScreenshotInstructionsButtonPC">
+									<input type="radio" id="deckImportScreenshotInstructionsButtonPC" name="deckImportScreenshotMethod"/>
+									Download screenshots using a PC
+								</label>
+								<label for="deckImportScreenshotInstructionsButtonMobile">
+									<input type="radio" id="deckImportScreenshotInstructionsButtonMobile" name="deckImportScreenshotMethod"/>
+									Download screenshots using a mobile device
+								</label>
+								<ol id="deckImportScreenshotInstructionsPC" start="6" hidden>
+									<li>Go to System Settings, then select Data Management, then Manage Screenshots and Videos, then Copy to PC via USB Connection.</li>
+									<li>Connect a USB cable to your PC and the USB-C port on the bottom of your Nintendo Switch.</li>
+									<li>The Nintendo Switch Album is now accessible in This PC or Devices in your file manager. Click Browse below and select the screenshots you created.</li>
+								</ol>
+								<ol id="deckImportScreenshotInstructionsMobile" start="6" hidden>
+									<li>In the Album, select one of the screenshots you created.</li>
+									<li>Enter the Editing and Posting menu with A, then select Send to Smart Device.</li>
+									<li>Follow the prompts to download the screenshots on your mobile device.<br/>On Android devices, it may be necessary to turn off mobile data.</li>
+								</ol>
+							</div>
+						</div>
+					</section>
+					<div id="deckImportErrorBox" class="error" hidden></div>
+					<button type="submit" id="deckImportCancelButton">Cancel</button>
+				</form>
+			</dialog>
+			<dialog id="deckExportDialog">
+				<form method="dialog">
+					<textarea id="deckExportTextBox" readonly rows="24" cols="45"></textarea>
+					<div>
+						<button type="button" id="deckExportCopyButton">Copy</button>
+						<button type="submit">Close</button>
+					</div>
+				</form>
+			</dialog>
+		</div>
+		<div id="deckEditPage" hidden>
+			<section id="deckEditorDeckEditPage">
+				<h3 id="deckName2">Deck</h3>
+				<button id="deckEditMenuButton" class="menuButton">
+					<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-list" viewBox="0 0 16 16">
+						<path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
+					</svg>
+				</button>
+				<div id="deckEditMenu" class="menu">
+					<button type="button" id="deckSortButton">Sort</button>
+					<button type="button" id="deckTestButton">Test</button>
+					<button type="button" id="deckSaveButton">Save</button>
+					<button type="button" id="deckCancelButton">Cancel</button>
+				</div>
+				<div class="deckSizeContainer"><div class="sizeLabel">Total</div> <div id="deckEditSize">0</div></div>
+				<div id="deckCardListEdit">
+				</div>
+			</section>
+			<section id="deckEditorCardListSection">
+				<div id="cardListHeader">
+					<a id="deckCardListBackButton" href="#">Back</a>
+					<h3>All cards</h3>
+					<label for="cardListSortBox">
+						Sort by
+						<select id="cardListSortBox" autocomplete="off"></select>
+					</label>
+					<input type="text" id="cardListFilterBox" placeholder="Filter"/>
+				</div>
+				<div id="cardList" class="cardListGrid"></div>
+				<button id="deckEditorRemoveButton">Cut from deck</button>
+			</section>
+			<div id="deckEditorCardListBackdrop"></div>
+		</div>
+		<div id="galleryPage" hidden>
+			<header>
+				<a id="galleryBackButton" href=".">Back</a>
+				<label for="gallerySortBox">
+					Sort by
+					<select id="gallerySortBox" autocomplete="off"></select>
+				</label>
+				<input type="text" id="galleryFilterBox" placeholder="Filter"/>
+				<button id="galleryNewCustomCardButton">New custom card</button>
+				<label for="galleryChecklistBox"><input type="checkbox" id="galleryChecklistBox" autocomplete="off"/>Checklist</label>
+				Bits to complete: <span id="bitsToCompleteField"></span>
+			</header>
+			<main id="galleryCardList">
+			</main>
+			<dialog id="galleryCardDialog">
+				<div id="galleryCardEditor" hidden>
+					<textarea type="text" id="galleryCardEditorName" placeholder="Card name"></textarea>
+					<div id="galleryCardEditorGrid"></div>
+					<div id="galleryCardEditorImageToolbar" class="galleryCardEditorToolbar">
+						<input type="file" id="galleryCardEditorImageFile" accept="image/*" autocomplete="off"/>
+						<button id="galleryCardEditorImageSelectButton">Choose image</button>
+						<button id="galleryCardEditorImageClearButton">Clear</button>
+						<footer>(The image will not be seen by other players.)</footer>
+					</div>
+					<div id="galleryCardEditorColoursToolbar" class="galleryCardEditorToolbar">
+						Colours:
+						<input type="color" id="galleryCardEditorColour1"/>
+						<input type="color" id="galleryCardEditorColour2"/>
+						<select id="galleryCardEditorColourPresetBox"></select>
+					</div>
+					<div id="galleryCardEditorRarityToolbar" class="galleryCardEditorToolbar">
+						<label for="galleryCardEditorRarityBox">Rarity: <select id="galleryCardEditorRarityBox"></select></label>
+					</div>
+					<div id="galleryCardEditorSpecialCost">
+						<label for="galleryCardEditorSpecialCostDefaultBox"><input type="checkbox" id="galleryCardEditorSpecialCostDefaultBox" checked/>Default</label>
+					</div>
+				</div>
+				<form method="dialog">
+					<button type="button" id="galleryCardEditorEditButton">Edit</button>
+					<button type="button" id="galleryCardEditorSubmitButton">Save</button>
+					<button type="button" id="galleryCardEditorDeleteButton">Delete</button>
+					<button type="button" id="galleryCardEditorSnapshotButton">Snapshot</button>
+					<button type="submit" id="galleryCardEditorCancelButton">Cancel</button>
+				</form>
+				<dialog id="galleryCardDeleteDialog">
+					<div></div>
+					<form method="dialog">
+						<button type="submit" id="galleryCardEditorDeleteYesButton">Delete</button>
+						<button type="submit">Cancel</button>
+					</form>
+				</dialog>
+			</dialog>
+		</div>
+		<dialog id="testStageSelectionDialog">
+			<h3>Select a stage.</h3>
+			<form id="testStageSelectionForm" method="dialog">
+				<div id="testStageSelectionList"></div>
+				<button type="submit">Cancel</button>
+			</form>
+		</dialog>
+		<dialog id="gameSetupDialog">
+			<form id="gameSetupForm" method="dialog">
+				<div id="preGameDefaultSection">
+					<p>
+						<label for="maxPlayersBox">
+							Player limit:
+							<select id="maxPlayersBox">
+								<option value="2">2 players</option>
+								<option value="3">3 players</option>
+								<option value="4">4 players</option>
+							</select>
+						</label>
+					</p>
+					<p>
+						<label for="turnTimeLimitBox">
+							Turn time limit:
+							<input type="number" id="turnTimeLimitBox" min="10" max="120" step="10" placeholder="None"/>
+							<span id="turnTimeLimitUnit">seconds</span>
+						</label>
+					</p>
+					<p>
+						<label for="goalWinCountBox">
+							Format:
+							<select id="goalWinCountBox">
+								<option value="">Single game</option>
+								<option value="1">First to 1 (replay draws)</option>
+								<option value="2">First to 2</option>
+								<option value="3">First to 3</option>
+								<option value="4">First to 4</option>
+							</select>
+						</label>
+					</p>
+					<p>
+						<label for="gameSetupAllowUpcomingCardsBox"><input type="checkbox" id="gameSetupAllowUpcomingCardsBox" checked/> Allow upcoming cards</label>
+						<label for="gameSetupAllowCustomCardsBox"><input type="checkbox" id="gameSetupAllowCustomCardsBox"/> Allow custom cards</label>
+					</p>
+					<p>Stage selection:</p>
+					<table>
+						<tr>
+							<td><label for="stageSelectionRuleFirstBox">First battle:</label></td>
+							<td>
+								<select id="stageSelectionRuleFirstBox">
+									<option value="Vote">Vote</option>
+									<option value="Random">Random/Fixed</option>
+									<option value="Strike">Strike</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="stageSelectionRuleAfterWinBox">After a win:</label></td>
+							<td>
+								<select id="stageSelectionRuleAfterWinBox">
+									<option value="Inherit">Same method as the first battle</option>
+									<option value="Same">Repeat stage of the last battle</option>
+									<option value="Vote">Vote</option>
+									<option value="Random">Random/Fixed</option>
+									<option value="Counterpick">Counterpick</option>
+									<option value="Strike">Strike</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td><label for="stageSelectionRuleAfterDrawBox">After a draw:</label></td>
+							<td>
+								<select id="stageSelectionRuleAfterDrawBox">
+									<option value="Inherit">Same method as the first battle</option>
+									<option value="Same">Repeat stage of the last battle</option>
+									<option value="Vote">Vote</option>
+									<option value="Random">Random/Fixed</option>
+									<option value="Strike">Strike</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td></td>
+							<td>
+								<label for="gameSetupForceSameDeckAfterDrawBox"><input type="checkbox" id="gameSetupForceSameDeckAfterDrawBox"/> Force same decks</label>
+							</td>
+						</tr>
+					</table>
+					<p>Stage switch:</p>
+					<div id="stageSwitch"></div>
+					<label for="gameSetupSpectateBox"><input type="checkbox" id="gameSetupSpectateBox"/> Create as a spectator</label>
+					<p>
+						<button type="submit" id="gameSetupSubmitButton">Create room</button>
+						<button type="submit">Back</button>
+					</p>
+				</div>
+			</form>
+		</dialog>
+		<dialog id="errorDialog">
+			<div id="errorMessage"></div>
+			<form id="errorDialogForm" method="dialog">
+				<button type="submit">OK</button>
+			</form>
+		</dialog>
+		<dialog id="helpDialog">
+			<h2>Controls</h2>
+			<section id="helpControls">
+				<article>
+					<h3>Keyboard</h3>
+					<table>
+						<tr><th>Move card:</th><td>Arrow keys</td></tr>
+						<tr><th>Rotate clockwise:</th><td>R</td></tr>
+						<tr><th>Rotate anticlockwise:</th><td>Shift+R</td></tr>
+						<tr><th>Confirm:</th><td>Enter</td></tr>
+						<tr><th>Deselect card:</th><td>Backspace</td></tr>
+						<tr><th>Pass:</th><td>P</td></tr>
+						<tr><th>Special attack:</th><td>S</td></tr>
+						<tr><th>Show deck:</th><td>D</td></tr>
+					</table>
+				</article>
+				<article>
+					<h3>Mouse</h3>
+					<table>
+						<tr><th>Move card:</th><td>Pointer</td></tr>
+						<tr><th>Rotate clockwise:</th><td>Right click or wheel down</td></tr>
+						<tr><th>Rotate anticlockwise:</th><td>Wheel up</td></tr>
+						<tr><th>Confirm:</th><td>Left click</td></tr>
+					</table>
+				</article>
+				<article>
+					<h3>Touch</h3>
+					<table>
+						<tr><th>Move card:</th><td>Drag anywhere on the board</td></tr>
+						<tr><th>Rotate clockwise:</th><td>Tap &curarr;</td></tr>
+						<tr><th>Rotate anticlockwise:</th><td>Tap &cularr;</td></tr>
+						<tr><th>Confirm:</th><td>Tap anywhere on the board</td></tr>
+					</table>
+				</article>
+			</section>
+			<footer>
+				<form method="dialog">
+					<button type="submit">OK</button>
+				</form>
+			</footer>
+		</dialog>
+		<dialog id="settingsDialog">
+			<div id="settingsMessage"></div>
+			<form id="settingsDialogForm" method="dialog">
+				<p><label for="optionsColourLock"><input type="checkbox" id="optionsColourLock" checked/> Colour lock</label></p>
+				<p>
+					Preferred colours &ndash;
+					<label for="optionsColourGoodBox">Good guy:
+						<select id="optionsColourGoodBox">
+							<option value="red">Red</option>
+							<option value="orange">Orange</option>
+							<option value="yellow">Yellow</option>
+							<option value="limegreen">Lime</option>
+							<option value="green">Green</option>
+							<option value="turquoise">Turquoise</option>
+							<option value="blue">Blue</option>
+							<option value="purple">Purple</option>
+							<option value="magenta">Magenta</option>
+						</select>
+					</label>
+					<label for="optionsColourBadBox">Bad guy:
+						<select id="optionsColourBadBox">
+							<option value="red">Red</option>
+							<option value="orange">Orange</option>
+							<option value="yellow">Yellow</option>
+							<option value="limegreen">Lime</option>
+							<option value="green">Green</option>
+							<option value="turquoise">Turquoise</option>
+							<option value="blue">Blue</option>
+							<option value="purple">Purple</option>
+							<option value="magenta">Magenta</option>
+						</select>
+					</label>
+				</p>
+				<p><label for="optionsTurnNumberStyle">Turn number style: <select id="optionsTurnNumberStyle"><option value="remaining" selected>Turns remaining</option><option value="absolute">Turn number</option></select></label></p>
+				<p><label for="optionsSpecialWeaponSorting">Special weapon card sorting: <select id="optionsSpecialWeaponSorting"><option value="First" selected>First</option><option value="Last">Last</option><option value="InOrder">In order</option></select></label></p>
+				<button type="submit">Close</button>
+			</form>
+		</dialog>
+		<script src="build/tsbuild.js"></script>
+	</body>
+</html>

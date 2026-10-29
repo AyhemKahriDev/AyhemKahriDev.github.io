@@ -1,0 +1,16 @@
+{
+  "repo": "m1chtv/t-rex-mich-runner",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 164,
+  "pushedAt": "2024-02-19T12:57:49Z",
+  "description": "the t-rex runner game extracted from chromium",
+  "defaultBranch": "main",
+  "owner": "m1chtv",
+  "slug": "m1chtv-t-rex-mich-runner",
+  "dest": "third-party/m1chtv-t-rex-mich-runner",
+  "readme": "# t-rex-mich-runner\nthe trex runner game extracted from chrome offline err page.\n\n![mich](https://github.com/m1chtv/t-rex-mich-runner/assets/72360802/7130bb98-23cf-41d6-a6be-55b424dc4798)\n\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

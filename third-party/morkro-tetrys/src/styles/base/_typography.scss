@@ -1,0 +1,24 @@
+body {
+	font-family: $default-font-stack;
+	color: $normal-text;
+
+	&.fonts-loaded {
+		font-family: $source-code-pro;
+	}
+}
+
+h1 {
+	margin: 0;
+	color: $special-text;
+}
+
+p {
+	font-size: 120%;
+	line-height: 160%;
+	color: $normal-text;
+}
+
+a {
+	color: $link-text;
+	text-decoration: none;
+}

@@ -1,0 +1,16 @@
+{
+  "repo": "Manerr/Pyxio",
+  "stars": 0,
+  "licence": "Apache-2.0",
+  "sizeKB": 27,
+  "pushedAt": "2024-03-28T13:55:21Z",
+  "description": "A 13kb fitting, not-finished and retro looking  HTML5 game",
+  "defaultBranch": "main",
+  "owner": "Manerr",
+  "slug": "manerr-pyxio",
+  "dest": "third-party/manerr-pyxio",
+  "readme": "# Pyxio is:\n### A 13kb fitting, not-finished and **retro** looking **HTML5** **game**\n\n#### Since it's not finished, it's not really playable (but veryting works, note that!).\n\n### Features:\n\n- [x] Running\n- [x] Responsive\n- [x] Retro looking ( 64*64 pixels ) , thus lightweight -> it weights less than 13kb \n- [ ] Has a gameplay\n- [ ] Multiple levels\n- [ ] Soundtrack -> it'd be really hard to add a soundtrack from a casual audio file -> I'm currently working on webaudio based sound engine that'll, maybe a day, be alive.   \n\n### Screenshot:\n\n<img src=\"https://github.com/Manerr/Pyxio/assets/56446246/07685ffd-aa08-461b-892b-b4604c9ae601\" alt=\"screenshot\" width=\"200\"/>\n\n\n### Feel free to use under Apache 2.0 conditions : [https://www.apache.org/licenses/LICENSE-2.0](https://www.apache.org/licenses/LICENSE-2.0) \n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

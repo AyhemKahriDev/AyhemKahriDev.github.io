@@ -1,0 +1,31 @@
+[
+  {
+    "stepTitle": "卸载 方块游戏机",
+    "items": [
+      {
+        "type": "tips",
+        "helpText": "应用即将卸载。游戏无服务端数据，运行日志与端口配置默认保留在应用数据目录中，卸载后仍可手动找回；如需彻底清除，请选择删除。"
+      },
+      {
+        "type": "tips",
+        "helpText": "各设备的游戏最高分保存在浏览器本地（localStorage），与应用卸载无关，如需清除请在浏览器中清除站点数据。"
+      },
+      {
+        "type": "radio",
+        "field": "wizard_delete_data",
+        "label": "是否删除运行数据（日志、端口配置）",
+        "initValue": "false",
+        "options": [
+          {
+            "label": "保留运行数据（推荐）",
+            "value": "false"
+          },
+          {
+            "label": "删除运行数据（日志、端口配置）",
+            "value": "true"
+          }
+        ]
+      }
+    ]
+  }
+]

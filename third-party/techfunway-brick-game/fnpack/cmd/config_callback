@@ -1,0 +1,15 @@
+#!/bin/bash
+
+### 用户在应用设置页修改环境变量后调用
+
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+. "${SCRIPT_DIR}/port_config"
+
+configure_port "${wizard_service_port:-}"
+
+# 端口变更立即生效
+if [ -f "${SCRIPT_DIR}/main" ]; then
+    bash "${SCRIPT_DIR}/main" restart
+fi
+
+exit 0

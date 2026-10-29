@@ -1,0 +1,15 @@
+{
+  "repo": "liona24/wasm-tetris",
+  "stars": 79,
+  "licence": "MIT",
+  "sizeKB": 349,
+  "pushedAt": "2023-03-03T00:54:04Z",
+  "description": "A simple tetris clone using Rust and WebAssembly",
+  "defaultBranch": "master",
+  "owner": "liona24",
+  "slug": "liona24-wasm-tetris",
+  "dest": "third-party/liona24-wasm-tetris",
+  "readme": "<div align=\"center\">\n\n  <h1><code>wasm-tetris</code></h1>\n\n  <strong>A simple tetris clone built using <a href=\"https://github.com/rustwasm/wasm-pack\">wasm-pack</a>.</strong>\n  <p><strong>Demo available at <a href=\"https://liona24.github.io/wasm-tetris/\">https://liona24.github.io/wasm-tetris/</a></strong></p>\n</div>\n\n# Tetris\n\n## Preview\n\n<p align=\"center\"><img src=\"preview.png\"></p>\n\n## Usage\n\nIn order to run this demo you will need Rust and `wasm-pack` along side npm (check the section below).\n\nTo build the demo and run it in your browser:\n\n```\n$ wasm-pack build\n$ cd www\n$ npm install\n$ npm run start\n```\n\nControls are W A S D\n\n# The Template Used\n\n## About\n\n[**📚 Read this template tutorial! 📚**][template-docs]\n\nThis template is designed for compiling Rust libraries into WebAssembly and\npublishing the resulting package to NPM.\n\nBe sure to check out [other `wasm-pack` tutorials online][tutorials] for other\ntemplates and usages of `wasm-pack`.\n\n[tutorials]: https://rustwasm.github.io/docs/wasm-pack/tutorials/index.html\n[template-docs]: https://rustwasm.github.io/docs/wasm-pack/tutorials/npm-browser-packages/index.html\n\n## 🚴 Usage\n\n### 🐑 Use `cargo generate` to Clone this Template\n\n[Learn more about `cargo generate` here.](https://github.com/ashleygwilliams/cargo-generate)\n\n```\ncargo generate --git https://github.com/rustwasm/wasm-pack-template.git --name my-project\ncd my-project\n```\n\n### 🛠️ Build with `wasm-pack build`\n\n```\nwasm-pack build\n```\n\n### 🔬 Test in Headless Browsers with `wasm-pack test`\n\n```\nwasm-pack test --headless --firefox\n```\n\n### 🎁 Publish to NPM with `wasm-pack publish`\n\n```\nwasm-pack publish\n```\n\n## 🔋 Batteries Included\n\n* [`wasm-bindgen`](https://github.com/rustwasm/wasm-bindgen) for communicating\n  between WebAssembly and JavaScript.\n* [`console_error_panic_hook`](https://github.com/rustwasm/console_error_panic_hook)\n  for logging panic messages to the developer console.\n* [`wee_alloc`](https://github.com/rustwasm/wee_alloc), an allocator optimized\n  for small code size.\n",
+  "licenceFile": "LICENSE",
+  "entry": "www/index.html"
+}

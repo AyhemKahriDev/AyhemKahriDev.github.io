@@ -1,0 +1,27 @@
+[
+  {
+    "stepTitle": "升级 方块游戏机",
+    "items": [
+      {
+        "type": "tips",
+        "helpText": "升级仅替换游戏程序与静态资源，日志与端口配置保留。升级过程中游戏服务会短暂中断。"
+      },
+      {
+        "type": "tips",
+        "helpText": "各设备的游戏最高分保存在浏览器本地（localStorage），升级不会丢失。"
+      },
+      {
+        "type": "text",
+        "field": "wizard_service_port",
+        "label": "服务端口（1024-65535，留空保持当前端口）",
+        "initValue": "",
+        "rules": [
+          {
+            "pattern": "^$|^[0-9]{4,5}$",
+            "message": "请输入 1024-65535 之间的端口号，或留空保持当前端口"
+          }
+        ]
+      }
+    ]
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "repo": "S-SUJAN-S/serpentine-game",
+  "stars": 1,
+  "licence": "MIT",
+  "sizeKB": 58,
+  "pushedAt": "2026-04-20T10:48:43Z",
+  "description": "🐍 A fast-paced 3D snake game built with Three.js — WebGL graphics, 3 difficulty levels, mobile joystick support, persistent high scores. Play free in browser.",
+  "defaultBranch": "main",
+  "owner": "S-SUJAN-S",
+  "slug": "s-sujan-s-serpentine-game",
+  "dest": "third-party/s-sujan-s-serpentine-game",
+  "readme": "# 🐍 Serpentine — 3D Snake Game\n\nA fast-paced 3D snake game built with Three.js and vanilla JavaScript.\nNo frameworks, no installs — runs entirely in the browser.\n\n🎮 **[Play Now → serpentine-game.netlify.app](https://serpentine-game.netlify.app)**\n\n![GitHub deployments](https://img.shields.io/github/deployments/S-SUJAN-S/serpentine-game/github-pages?label=GitHub%20Pages&style=flat-square)\n![HTML](https://img.shields.io/badge/built%20with-HTML5%20%2B%20Three.js-orange?style=flat-square)\n![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)\n\n---\n\n## 🎮 Play Online\n\n| Platform | Link |\n|----------|------|\n| 🟢 Netlify | [serpentine-game.netlify.app](https://serpentine-game.netlify.app) |\n| 🟢 GitHub Pages | [s-sujan-s.github.io/serpentine-game](https://s-sujan-s.github.io/serpentine-game) |\n\n---\n\n## ✨ Features\n\n- 🎯 3 difficulty levels — Easy, Medium, Hard\n- 🏆 Persistent high scores per difficulty\n- 📱 Mobile support — Joystick, Swipe and Mouse controls\n- ✨ WebGL 3D graphics with particle effects\n- 🎖️ Achievement system with milestone toasts\n- 📊 Score history and session stats\n- ⚡ Zero dependencies — pure HTML + JS\n\n---\n\n## 🕹️ Controls\n\n| Input | Action |\n|-------|--------|\n| Mouse | Guide snake |\n| WASD / Arrow Keys | Keyboard control |\n| Space | Pause / Resume |\n| R | Restart |\n| T | Toggle walls |\n| M | Switch control mode |\n| ESC | Settings |\n| ` (backtick) | Debug overlay |\n\n---\n\n## 🛠️ Tech Stack\n\n| Technology | Purpose |\n|------------|---------|\n| [Three.js r128](https://threejs.org/) | 3D WebGL rendering |\n| Vanilla JavaScript ES6+ | Game logic |\n| HTML5 + CSS3 | Structure & styling |\n| localStorage | Persistent high scores |\n\n---\n\n## 🚀 Run Locally\n\nJust open `index.html` in any modern browser. No server needed.\n\n```bash\ngit clone https://github.com/S-SUJAN-S/serpentine-game.git\ncd serpentine-game\n# Open index.html in your browser\n```\n\n---\n\n## 📁 Project Structure\n\n```\nserpentine-game/\n└── index.html    # Entire game — single file\n```\n\n---\n\n## 🤝 Contributing\n\nPull requests are welcome! Feel free to open an issue for bugs or suggestions.\n\n---\n\n## 📄 License\n\nThis project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.\n\n---\n\n<p align=\"center\">Made with ❤️ using Three.js by <a href=\"https://github.com/S-SUJAN-S\">S-SUJAN-S</a></p>\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

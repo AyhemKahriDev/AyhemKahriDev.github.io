@@ -1,0 +1,16 @@
+{
+  "repo": "dieselinc/dieselroids",
+  "stars": 2,
+  "licence": "MIT",
+  "sizeKB": 367,
+  "pushedAt": "2025-12-16T11:54:40Z",
+  "description": "A tribute to the 1979 arcade classic ASTEROIDS 🎮👾",
+  "defaultBranch": "main",
+  "owner": "dieselinc",
+  "slug": "dieselinc-dieselroids",
+  "dest": "third-party/dieselinc-dieselroids",
+  "readme": "# 🚀 DIESELROIDS: A Tribute to the 1979 Arcade Classic\n\n![DIESELROIDS Logo](preview.png)\n\n## 🕹️ Play Now!\n**Play the game instantly in your browser:**\n[https://dieselinc.github.io/dieselroids/](https://dieselinc.github.io/dieselroids/)\n\n---\n\n### 🌟 About DIESELROIDS\nA faithful, 100% browser-based tribute to the legendary 1979 vector arcade game, ASTEROIDS.\n\n**The promise:** No microtransactions. No ads. Just pure, unfiltered vector arcade action.\n\n### ⚙️ Controls\n| Action | Desktop Key | Mobile Control |\n| :--- | :--- | :--- |\n| **Rotate Left** | Left Arrow (←) | Left Side Button (◄) |\n| **Rotate Right** | Right Arrow (→) | Right Side Button (►) |\n| **Thrust** | Up Arrow (↑) | Center Right Button (▲) |\n| **Brake** | Down Arrow (↓) | (None) |\n| **Fire Laser** | Spacebar | Left Button (● FIRE) |\n| **Hyperspace** | SHIFT | Center Left Button (⚡ HYPER) |\n\n---\n\n### 🛠️ Technical Notes\n* **Built with:** HTML5 Canvas & Web Audio API\n* **Style:** Authentic 1px vector line rendering\n* **Audio:** Procedurally synthesized sound effects (Laser, Explosion, Thrust, UFO)\n* **Open Source:** View the source code [here](https://github.com/dieselinc/dieselroids).\n\n---\n*(A 2025 project by DIESEL INC.)*",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

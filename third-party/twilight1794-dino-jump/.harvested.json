@@ -1,0 +1,16 @@
+{
+  "repo": "twilight1794/dino-jump",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 3463,
+  "pushedAt": "2024-04-30T20:24:06Z",
+  "description": "Port libre y de código abierto del famoso juego del dinosaurio de Chrome, con diversos añadidos",
+  "defaultBranch": "master",
+  "owner": "twilight1794",
+  "slug": "twilight1794-dino-jump",
+  "dest": "third-party/twilight1794-dino-jump",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

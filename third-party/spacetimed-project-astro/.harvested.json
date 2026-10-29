@@ -1,0 +1,16 @@
+{
+  "repo": "spacetimed/Project-Astro",
+  "stars": 1,
+  "licence": "GPL-3.0",
+  "sizeKB": 275,
+  "pushedAt": "2022-09-14T06:38:52Z",
+  "description": "A 2D HTML5 browser game that tests ability usage and mouse aim. Languages used include JavaScript, CSS, and HTML5.",
+  "defaultBranch": "master",
+  "owner": "spacetimed",
+  "slug": "spacetimed-project-astro",
+  "dest": "third-party/spacetimed-project-astro",
+  "readme": "# Project-Astro\n\nProject Astro is a game that is made in <b>JavaScript/HTML5/CSS</b>. The game is drawn on an <b>HTML5</b> Canvas element.\n\nThis project was intended to strengthen my understanding of HTML5 game animations. The `main.js` file contains roughly 1000 lines, powering _everything_ in the game, from visual animations to physics.\n\nCurrently the game features no sound, although sound is expected to be added eventually.\n\n-----\n## Preview\n![Preview Image](/game/images/preview.png)\n\n**Play the game now through GitHub Pages:**\n**https://spacetimed.github.io/Project-Astro/**\n\n-----\n## How To Play\n### **Movement**\nUse standard keyboard controls to move your player:\n\n<kbd>W</kbd> + <kbd>A</kbd> + <kbd>S</kbd> + <kbd>D</kbd>\n\n\n### **Abilities**\n**<img src=\"game/images/asteroid.png\" width=\"16\" height=\"16\"/> Asteroid:** \nA high damage skill shot on a 2 second cooldown.\n\n**<img src=\"game/images/beam.png\" width=\"16\" height=\"16\"/> Laser:** \nA tracking-based laser powered by energy that drains upon use, and rebuilds over time.\n\n### **Levels**\nThere are 7 levels, with overall speed of both players increasing per level.\n\n### **Goal**\nThe goal of Project Astro is to beat all 7 levels as fast as possible. Levels rapidly become more difficult, as overall speed intensifies. Timing and precision of ability usage becomes increasingly more important as levels progress.\n\n-----\n## Browser Compatibility\n\nAs of **September 2021**, Project Astro has only been tested in _**Google Chrome,  Version 92.0.4515.159**_. \n\nMulti-browser compatibility is not a priority at the moment, as the library is still under initial development.\n\nThe game is expected to work in most modern browsers that support _HTML5 Canvas elements_.\n\n-----\n## Credits\nAll images and code in the game were created by me, although I referenced <b>MDN Web Docs</b> occasionally to learn about different built-in functions of JavaScript/CSS/HTML5. \n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

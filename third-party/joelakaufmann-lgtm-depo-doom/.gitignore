@@ -1,0 +1,17 @@
+# OS cruft
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# Node (used only for local tooling/tests; the game itself has no build step)
+node_modules/
+package-lock.json
+
+# Local scratch
+*.local.*
+dist/
+tmp/

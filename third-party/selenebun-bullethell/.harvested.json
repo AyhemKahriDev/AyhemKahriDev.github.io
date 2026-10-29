@@ -1,0 +1,16 @@
+{
+  "repo": "selenebun/bullethell",
+  "stars": 49,
+  "licence": "MIT",
+  "sizeKB": 571,
+  "pushedAt": "2020-12-07T23:13:29Z",
+  "description": "A bullet hell game programmed using HTML5 and JS.",
+  "defaultBranch": "main",
+  "owner": "selenebun",
+  "slug": "selenebun-bullethell",
+  "dest": "third-party/selenebun-bullethell",
+  "readme": "# bullethell\nA bullet hell game in HTML5 and JS, using the p5.js library. You can play it\n[here](https://rsaihe.github.io/bullethell).\n\n### Arrow Key Controls\n* Arrow keys to move.\n* Z to fire.\n* X to slow down time.\n* C to use a bomb to clear the screen of bullets.\n* P to pause.\n\n### WASD Controls\n* WASD to move.\n* B to fire.\n* N to slow down time.\n* M to use a bomb to clear the screen of bullets.\n* P to pause.\n\n#### Debugging controls\n* F to toggle FPS display.\n* G to toggle low graphics settings for slower computers.\n* H to toggle displaying hitboxes.\n* T to toggle black background.\n* Y to toggle rendering stars.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

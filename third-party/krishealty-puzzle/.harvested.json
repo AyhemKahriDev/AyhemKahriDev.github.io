@@ -1,0 +1,16 @@
+{
+  "repo": "krishealty/puzzle",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 5665,
+  "pushedAt": "2024-05-22T02:54:55Z",
+  "description": "Classic and responsive 15 tile puzzle game entirely with HTML, CSS and JAVASCRIPT. Make your own puzzle with the built-in editor.",
+  "defaultBranch": "main",
+  "owner": "krishealty",
+  "slug": "krishealty-puzzle",
+  "dest": "third-party/krishealty-puzzle",
+  "readme": "<div align=\"center\"> <img src=\"gif/1.gif\"></div>\n\n# [Classic Puzzle Maker](https://krishealty.github.io/puzzle/example.html)\n\nA simple implementation of the classic mini-game Fifteen Sliding Puzzle, using HTML DOM document elements and without using Canvas or third party libraries. \n\nWhen mixing a picture, random replacement of slots is not used, only natural mixing by moving a free slot, thanks to this, an error is excluded, due to which the puzzle may not be assembled.\n\nBy solving the puzzle, you can move several blocks in a column and a row in one move. You can set controls for the GamePad and keyboard.\n\nThe engine code is very flexible for modifications, has many settings and can be integrated into any web page or web app.\n\nThanks [krystal carpintieri](https://www.krystalcarpintieri.com/home/puzzle-animated-gifs) for all the gifs.\n\n> Editor: https://krishealty.github.io/puzzle/\n\n> Demo: https://krishealty.github.io/puzzle/example.html\n\n<br/>\n\n<div align=\"center\"> <img src=\"gif/2.gif\"></div>\n\n# Editor and Demo\n\nYou can upload your image, set parameters and generate an html file with the game and your image. You can use the resulting file on your website or directly on your device, or you can modify it yourself, change the parameters, or write your own script that will run after the game is finished.\n\nTry online editor: [Puzzle](https://krishealty.github.io/puzzle/)\n\nTry demo: [Demo](https://krishealty.github.io/puzzle/example.html)\n\nEditor features\n- Automatic style adaptation based on image dimensions\n- Proportional division of an image into blocks\n- Building / exporting HTML file with the game\n- Moving multiple blocks in one move\n- Drag and Drop upload image\n\n[![Simple 15 puzzle game maker for HTML ](https://user-images.githubusercontent.com/13263198/137487556-f4ccb712-7d6f-4178-baee-9473e0352db5.gif)](https://krishealty.github.io/puzzle/)\n\n<div align=\"center\"> <img src=\"gif/3.gif\"></div>\n<div align=\"center\"> <img src=\"gif/4.gif\"></div>\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

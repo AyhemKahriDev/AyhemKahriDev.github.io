@@ -1,0 +1,15 @@
+.Subaction-Wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 3em;
+  padding: 0.5em;
+}
+
+.Subaction-Wrapper button {
+  background: var(--button-gray);
+}
+
+.Subaction-Wrapper button:hover {
+  background: var(--button-gray-highlight);
+}

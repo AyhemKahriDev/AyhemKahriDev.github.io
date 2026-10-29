@@ -1,0 +1,380 @@
+/* Touchline — arcade soccer.
+   The pitch is a fixed-aspect stage that letterboxes inside the viewport, so
+   every overlay on top of it is sized in container units (cqh/cqw) rather than
+   viewport units: vw/vh would measure a box the stage does not occupy. */
+
+:root {
+  --bg: #0b0e13;
+  --panel: #141a22;
+  --panel-2: #1b232d;
+  --line: #2b3441;
+  --text: #e6edf3;
+  --dim: #97a3b2;
+  --accent: #4ade80;
+  --accent-2: #f5d442;
+  --radius: 14px;
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  background: radial-gradient(120% 90% at 50% 0%, #16202b 0%, var(--bg) 60%);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  overflow: hidden;
+  -webkit-text-size-adjust: 100%;
+}
+
+#app {
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: max(8px, env(safe-area-inset-top)) 8px max(8px, env(safe-area-inset-bottom));
+}
+
+#stage {
+  position: relative;
+  width: 100%;
+  max-width: calc((100dvh - 20px) * 1200 / 760);
+  aspect-ratio: 1200 / 760;
+  container-type: size;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: #0d1117;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 55%), 0 0 0 1px rgb(255 255 255 / 6%);
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+#pitch { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+/* --------------------------------------------------------------------- HUD */
+
+#hud {
+  position: absolute;
+  top: 2.2cqh;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: clamp(9px, 3.5cqh, 16px);
+  pointer-events: none;
+  width: min(62cqw, 560px);
+}
+
+.board {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.6em;
+  padding: 0.35em 0.7em;
+  background: rgb(10 14 20 / 78%);
+  border: 1px solid rgb(255 255 255 / 10%);
+  border-radius: 0.6em;
+  backdrop-filter: blur(6px);
+}
+
+.board .side { display: flex; align-items: center; gap: 0.45em; font-weight: 700; letter-spacing: 0.06em; }
+.board .side.away { justify-content: flex-end; }
+.board .chip { width: 0.85em; height: 0.85em; border-radius: 0.2em; box-shadow: inset 0 0 0 1px rgb(0 0 0 / 45%); }
+.board .score { font-variant-numeric: tabular-nums; font-weight: 800; font-size: 1.3em; letter-spacing: 0.04em; }
+.board .score i { opacity: 0.45; font-style: normal; margin: 0 0.18em; }
+.board .clock {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+  gap: 0.5em;
+  font-variant-numeric: tabular-nums;
+  color: var(--dim);
+  font-size: 0.78em;
+}
+.board .clock em { font-style: normal; opacity: 0.7; }
+
+.possession {
+  height: 0.32em;
+  margin: 0.3em auto 0;
+  width: 70%;
+  border-radius: 999px;
+  background: var(--away-kit, #e5484d);
+  overflow: hidden;
+}
+.possession i { display: block; height: 100%; background: var(--home-kit, #2f7dfb); }
+
+/* ------------------------------------------------------------------ banner */
+
+#banner {
+  position: absolute;
+  top: 38%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  pointer-events: none;
+  text-shadow: 0 4px 18px rgb(0 0 0 / 70%);
+}
+#banner strong {
+  display: block;
+  font-size: clamp(20px, 11cqh, 76px);
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  line-height: 1;
+}
+#banner span { display: block; margin-top: 0.4em; font-size: clamp(10px, 3.4cqh, 18px); color: #dbe4ee; }
+#banner.pop { animation: pop 420ms cubic-bezier(.2,1.4,.4,1); }
+@keyframes pop { from { transform: translate(-50%, -50%) scale(0.7); opacity: 0; } }
+
+/* --------------------------------------------------------------- playerbar */
+
+#playerbar {
+  position: absolute;
+  left: 2.4cqw;
+  bottom: 2.6cqh;
+  display: flex;
+  align-items: center;
+  gap: 0.6em;
+  font-size: clamp(9px, 3.2cqh, 15px);
+  background: rgb(10 14 20 / 72%);
+  border: 1px solid rgb(255 255 255 / 9%);
+  border-radius: 0.55em;
+  padding: 0.35em 0.6em;
+  pointer-events: none;
+}
+#playerbar .who { display: flex; align-items: center; gap: 0.45em; font-weight: 600; }
+#playerbar .who b {
+  display: grid;
+  place-items: center;
+  min-width: 1.6em;
+  height: 1.6em;
+  border-radius: 0.35em;
+  background: var(--home-kit, #2f7dfb);
+  color: #fff;
+  font-size: 0.85em;
+}
+#playerbar .stamina, #playerbar .charge {
+  display: block; width: 6em; height: 0.45em; border-radius: 999px;
+  background: rgb(255 255 255 / 14%); overflow: hidden;
+}
+#playerbar .stamina i { display: block; height: 100%; background: var(--accent); transition: width 90ms linear; }
+#playerbar .charge i { display: block; height: 100%; background: var(--accent-2); }
+
+/* --------------------------------------------------------- touch controls */
+
+#touch { position: absolute; inset: 0; pointer-events: none; }
+#touch .stick {
+  position: absolute;
+  left: 3cqw;
+  bottom: 10cqh;
+  width: min(26cqh, 130px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgb(255 255 255 / 8%);
+  border: 1px solid rgb(255 255 255 / 16%);
+  pointer-events: auto;
+  display: grid;
+  place-items: center;
+}
+#touch .knob {
+  width: 42%; height: 42%; border-radius: 50%;
+  background: rgb(255 255 255 / 55%);
+  transition: transform 60ms linear;
+}
+#touch .buttons {
+  position: absolute;
+  right: 3cqw;
+  bottom: 8cqh;
+  display: flex;
+  gap: 0.6em;
+  align-items: flex-end;
+  pointer-events: auto;
+}
+.tbtn {
+  font: inherit;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #0b0e13;
+  border: none;
+  border-radius: 999px;
+  width: min(20cqh, 96px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  line-height: 1.1;
+  font-size: clamp(9px, 2.8cqh, 14px);
+  background: var(--accent-2);
+  box-shadow: 0 6px 16px rgb(0 0 0 / 40%);
+}
+.tbtn.pass { background: #7dd3fc; }
+.tbtn small { display: block; font-size: 0.72em; font-weight: 600; opacity: 0.7; }
+.tbtn.pressed { transform: scale(0.94); filter: brightness(0.9); }
+
+#pausebtn {
+  position: absolute;
+  top: 2.2cqh;
+  right: 2.4cqw;
+  width: 2.6em; height: 2.6em;
+  font: inherit; font-size: clamp(9px, 3cqh, 15px); font-weight: 800; letter-spacing: 0.1em;
+  color: var(--text);
+  background: rgb(10 14 20 / 72%);
+  border: 1px solid rgb(255 255 255 / 12%);
+  border-radius: 0.5em;
+  cursor: pointer;
+}
+#pausebtn:hover { background: rgb(24 32 42 / 90%); }
+
+/* --------------------------------------------------------------- overlays */
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 3cqh;
+  background: rgb(6 9 13 / 74%);
+  backdrop-filter: blur(7px);
+  z-index: 5;
+  overflow: auto;
+}
+.overlay[hidden] { display: none !important; }
+
+.card {
+  width: min(74cqw, 520px);
+  background: linear-gradient(180deg, var(--panel-2), var(--panel));
+  border: 1px solid var(--line);
+  border-radius: 1em;
+  padding: clamp(12px, 3.4cqh, 24px);
+  font-size: clamp(10px, 3.1cqh, 15px);
+  box-shadow: 0 20px 50px rgb(0 0 0 / 55%);
+}
+.card.small { width: min(52cqw, 380px); text-align: center; }
+
+.card h1 {
+  margin: 0 0 0.6em;
+  font-size: 2.1em;
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.card h1 span {
+  display: block;
+  margin-top: 0.35em;
+  font-size: 0.33em;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.card h2 { margin: 0 0 0.6em; font-size: 1.5em; }
+
+.row { margin-bottom: 0.7em; }
+.row.split { display: flex; gap: 0.8em; }
+.row.split > div { flex: 1; }
+.row label {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6em;
+  margin-bottom: 0.35em;
+  font-size: 0.78em;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--dim);
+}
+.row label b { color: var(--text); letter-spacing: 0.04em; font-weight: 600; }
+
+.teams { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.35em; }
+.teams button {
+  font: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35em;
+  padding: 0.42em 0.2em;
+  border-radius: 0.5em;
+  border: 1px solid var(--line);
+  background: rgb(255 255 255 / 4%);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.86em;
+}
+.teams button .dot { width: 0.8em; height: 0.8em; border-radius: 0.25em; }
+.teams button.on { border-color: var(--accent); background: rgb(74 222 128 / 12%); }
+.teams button:disabled { opacity: 0.35; cursor: not-allowed; }
+
+.segmented { display: flex; border: 1px solid var(--line); border-radius: 0.5em; overflow: hidden; }
+.segmented button {
+  flex: 1;
+  font: inherit;
+  font-size: 0.86em;
+  padding: 0.45em 0.2em;
+  border: none;
+  background: transparent;
+  color: var(--dim);
+  cursor: pointer;
+}
+.segmented button.on { background: var(--accent); color: #06210f; font-weight: 700; }
+
+.primary, .ghost {
+  font: inherit;
+  width: 100%;
+  padding: 0.62em 1em;
+  border-radius: 0.6em;
+  cursor: pointer;
+  font-weight: 700;
+  margin-top: 0.5em;
+}
+.primary { border: none; background: var(--accent); color: #06210f; font-size: 1.05em; }
+.primary:hover { filter: brightness(1.08); }
+.ghost { border: 1px solid var(--line); background: transparent; color: var(--dim); }
+.ghost:hover { color: var(--text); border-color: var(--dim); }
+
+.help { margin-top: 1em; font-size: 0.85em; color: var(--dim); }
+.help summary { cursor: pointer; color: var(--text); }
+.help ul { margin: 0.6em 0; padding-left: 1.1em; line-height: 1.7; }
+.help p { margin: 0.4em 0 0; line-height: 1.5; }
+kbd {
+  display: inline-block;
+  padding: 0.1em 0.4em;
+  border: 1px solid var(--line);
+  border-bottom-width: 2px;
+  border-radius: 0.3em;
+  background: rgb(255 255 255 / 6%);
+  color: var(--text);
+  font: 600 0.9em ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.ftscore { font-size: 2.4em; font-weight: 900; margin: 0.1em 0 0.3em; font-variant-numeric: tabular-nums; }
+.scorers {
+  list-style: none;
+  margin: 0 0 0.8em;
+  padding: 0 0.2em;
+  color: var(--dim);
+  font-size: 0.9em;
+  line-height: 1.7;
+  /* A high-scoring match must not push the buttons off the stage. */
+  max-height: 26cqh;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.scorers li span { color: var(--text); }
+
+@media (pointer: coarse) and (orientation: portrait) {
+  #stage::after {
+    content: 'Turn your phone sideways for a bigger pitch';
+    position: absolute;
+    left: 50%;
+    bottom: 1.5cqh;
+    transform: translateX(-50%);
+    font-size: clamp(8px, 3cqh, 13px);
+    color: var(--dim);
+    background: rgb(10 14 20 / 80%);
+    padding: 0.3em 0.7em;
+    border-radius: 999px;
+    pointer-events: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #banner.pop { animation: none; }
+}

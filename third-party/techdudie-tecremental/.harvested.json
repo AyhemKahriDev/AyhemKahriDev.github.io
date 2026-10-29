@@ -1,0 +1,16 @@
+{
+  "repo": "TechDudie/tecremental",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 88,
+  "pushedAt": "2022-02-24T16:54:06Z",
+  "description": "Tecremental is a technology-based incremental game.",
+  "defaultBranch": "main",
+  "owner": "TechDudie",
+  "slug": "techdudie-tecremental",
+  "dest": "third-party/techdudie-tecremental",
+  "readme": "# tecremental\nTecremental is a technology-based incremental game.\n\nPlayable at:\n\nhttps://techdudie.github.io/tecremental\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

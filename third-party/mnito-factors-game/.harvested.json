@@ -1,0 +1,16 @@
+{
+  "repo": "mnito/factors-game",
+  "stars": 20,
+  "licence": "MIT",
+  "sizeKB": 263,
+  "pushedAt": "2021-09-26T19:00:57Z",
+  "description": "The 🐐 of fun math games",
+  "defaultBranch": "main",
+  "owner": "mnito",
+  "slug": "mnito-factors-game",
+  "dest": "third-party/mnito-factors-game",
+  "readme": "# Factors Game\n\nThe 🐐 of fun math games, twisting the very rules of math and increasingly challenging your skills\n\n### Screenshot\n\n![Screenshot of level 2 of Factors Game](/etc/screenshots/level-2-night-rainbow-screenshot.png?raw=true \"Level 2\")\n\n## The Concept\n\n### The Goal\nMove your number down through the number board to get as close to 1 as possible.\n\n### The Rules\n * If your number encounters a factor, it will be divided by that factor.\n * All other numbers will add to your number.\n\n### The Caveat\n\nThe levels are procedurally generated, so you may not be able to get to 1 on some levels. However, these levels further challenge you to find the best solution: the lowest number with the least amount of moves. Your overarching goal is to keep your average as low as possible.\n\n### Basic Initialization\n\nGet your canvas and go!\n\n```javascript\nvar canvas = document.getElementById('myCanvas');\nFactorsGame.init(canvas).start();\n```\n\n### Author\n\nMichael P. Nitowski <[mpnitowski@gmail.com](mailto:mpnitowski@gmail.com)>\n    (Twitter: [@mikenitowski](https://twitter.com/mikenitowski),\n     Web: [mnito.co](http://mnito.co))\n\n### License\n\nFactors Game is licensed under the [MIT license](/LICENSE \"License of Factors Game\").\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

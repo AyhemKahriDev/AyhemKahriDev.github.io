@@ -1,0 +1,253 @@
+/* -- COLOUR PALETTE -- */
+
+$beige-3: rgba(204, 176, 153, 1); //CCB099
+$beige-2: rgba(185, 144, 118, 1); //B99076
+
+$peach-1: rgba(248, 90, 52, 1); //F85A34
+$peach-2: rgba(246, 148, 124, 1); //F6947C
+$peach-3: rgba(255, 200, 187, 1); //FFC8BB
+$peach-4: rgba(253, 223, 216, 1); //FDDFD8
+
+$blue-1: rgba(3, 117, 137, 1); //037589
+$blue-2: rgba(23, 170, 195, 1); //17AAC3
+$blue-3: rgba(70, 201, 224, 1); //46C9E0
+$blue-4: rgba(196, 245, 251, 1); //C4F5FB
+
+$black: rgba(65, 56, 50, 1); //413832
+$grey-1: rgba(122, 115, 110, 1); //7A736E
+$grey-2: rgba(189, 186, 184, 1); //BDBAB8
+$white: rgba(251, 249, 248, 1); //FBF9F8
+
+
+/* -- RESPONSIVE -- */
+
+$mobile: 700px;
+
+@mixin mobile {
+    @media screen and (max-width: $mobile) {
+        @content;
+    }
+}
+
+@mixin field-size {
+    width: 320px;
+    height: 320px;
+    
+    @include mobile {
+        width: 272px;
+        height: 272px;            
+    }
+}
+
+@mixin tiles-background-size {
+    width: 356px;
+    height: 356px;
+    padding: 1em;
+    
+    @include mobile {
+        width: 304px;
+        height: 304px;
+        padding: 1em;            
+    }
+}
+
+@mixin tile-size {
+    width: 80px;
+    height: 80px;
+    
+    @include mobile {
+        width: 68px;
+        height: 68px;
+    }
+}
+
+
+/* -- COLOUR THEME VARIABLES -- */
+
+$background: (
+    "light": rgba(253, 223, 216, 0.75),
+    "dark": rgba(3, 117, 137, 1)
+);
+
+@mixin accent-shadow-light {
+    background-color: darken($peach-1, 13%);
+    color: transparent;
+    text-shadow: 3px 3px 3px rgba(251, 249, 248, 0.25);
+    -webkit-background-clip: text;
+            background-clip: text;
+}
+
+@mixin accent-shadow-dark {
+    background-color: darken($peach-1, 13%);
+    color: transparent;
+    text-shadow: 3px 3px 3px rgba(251, 249, 248, 0.18);
+    -webkit-background-clip: text;
+            background-clip: text;
+}
+
+@mixin tile-focus-shadow-light {
+    @keyframes focus-disappear-light {
+
+        0% {
+            box-shadow: 4px 4px 6px 2px rgba(65, 56, 50, 0.18),
+                        0 0 15px rgba(246, 148, 124, 0.1);
+        }
+
+        5% {
+            box-shadow: 4px 4px 6px 2px rgba(65, 56, 50, 0.18),
+                        0 0 15px $peach-2;
+        }
+
+        40% {
+            box-shadow: 4px 4px 6px 2px rgba(65, 56, 50, 0.18),
+                        0 0 15px $peach-2;
+        }
+
+        100% {
+            box-shadow: 4px 4px 6px 2px rgba(65, 56, 50, 0.18),
+                        0 0 15px rgba(58, 40, 36, 0.01);
+        }
+    }    
+}
+
+@mixin tile-focus-shadow-dark {
+    @keyframes focus-disappear-dark {
+
+        0% {
+            box-shadow: 3px 3px 6px 1px rgba(65, 56, 50, 0.82),
+                        -1px -1px 6px 0px rgba(251, 249, 248, 0.3),
+                        2px 2px 4px 0px rgba(251, 249, 248, 0.2) inset,
+                        0 0 15px rgba(196, 245, 251, 0.1); //$blue-4
+        }
+
+        5% {
+            box-shadow: 3px 3px 6px 1px rgba(65, 56, 50, 0.82),
+                        -1px -1px 6px 0px rgba(251, 249, 248, 0.3),
+                        2px 2px 4px 0px rgba(251, 249, 248, 0.2) inset,
+                        0 0 15px rgba(196, 245, 251, 0.7);
+        }
+
+        40% {
+            box-shadow: 3px 3px 6px 1px rgba(65, 56, 50, 0.82),
+                        -1px -1px 6px 0px rgba(251, 249, 248, 0.3),
+                        2px 2px 4px 0px rgba(251, 249, 248, 0.2) inset,
+                        0 0 15px rgba(196, 245, 251, 0.7);
+        }
+
+        100% {
+            box-shadow: 3px 3px 6px 1px rgba(65, 56, 50, 0.82),
+                        -1px -1px 6px 0px rgba(251, 249, 248, 0.3),
+                        2px 2px 4px 0px rgba(251, 249, 248, 0.2) inset,
+                        0 0 15px rgba(196, 245, 251, 0.01);
+        }
+    }    
+}
+
+
+/* -- SHADOWS -- */
+
+$nav-shadow: (
+    "light": 0 4px 6px rgba(65, 56, 50, 0.2),
+    "dark": 0 4px 6px rgba(65, 56, 50, 0.82)    
+);
+
+$menu-shadow: (
+    "light": (inset -1px -1px 3px rgba(251, 249, 248, 0.92), 
+            inset 2px 1px 2px rgba(65, 56, 50, 0.25)),
+    "dark": (3px 3px 3px 0px rgba(65, 56, 50, 0.96) inset,
+            -1px -1px 3px 0px rgba(251, 249, 248, 0.46) inset)
+); 
+
+$menu-oval-shadow: (
+    "light": (inset -1px -1px 3px rgba(251, 249, 248, 0.92),
+            inset 3px 3px 3px rgba(65, 56, 50, 0.25)),
+    "dark": (3px 3px 3px 0px rgba(65, 56, 50, 0.96) inset,
+            -1px -1px 3px 0px rgba(251, 249, 248, 0.46) inset)
+);
+
+$h-shadow: (
+    "light": (-2px -2px 6px rgba(251, 249, 248, 0.34),
+            4px 4px 6px rgba(65, 56, 50, 0.3)),
+    "dark": (4px 4px 6px rgba(65, 56, 50, 1),
+            -2px -2px 6px rgba(251, 249, 248, 0.34))
+);
+
+$focus-shadow: (
+    "light": (4px 4px 6px rgba(65, 56, 50, 0.3),
+            0 0 15px $peach-2),
+    "dark": (4px 4px 6px rgba(65, 56, 50, 0.3),
+            0 0 15px $blue-4)
+);
+
+$tile-shadow: (
+    "light": 4px 4px 6px 2px rgba(65, 56, 50, 0.18),
+    "dark": (3px 3px 6px 1px rgba(65, 56, 50, 0.82),
+            -1px -1px 6px 0px rgba(251, 249, 248, 0.3),
+            2px 2px 4px 0px rgba(251, 249, 248, 0.2) inset)
+);
+
+$background-shadow: (
+    "light": (-10px -10px 10px 4px rgba(251, 249, 248, 0.94) inset,
+            10px 10px 10px 4px rgba(90, 61, 42, 0.25) inset),
+    "dark": (-10px -10px 10px 4px rgba(251, 249, 248, 0.35) inset,
+            10px 10px 10px 4px rgba(90, 61, 42, 0.35) inset)
+);
+
+$button-shadow: (
+    "light": (-2px -2px 6px rgba(251, 249, 248, 0.8), 
+            4px 4px 6px rgba(65, 56, 50, 0.3)),
+    "dark": (4px 4px 6px 0px rgba(65, 56, 50, 1),
+            -2px -2px 6px 0px rgba(251, 249, 248, 0.34))
+);
+
+$button-active-shadow: (
+    "light": (-1px -1px 3px rgba(251, 249, 248, 0.8), 
+            1px 1px 2px rgba(65, 56, 50, 0.3)),
+    "dark": (1px 1px 2px 0px rgba(65, 56, 50, 1),
+            -1px -1px 3px 0px rgba(251, 249, 248, 0.34))
+);
+
+$menu-overlay-shadow: (
+    "light": 12px 12px 12px rgba(65, 56, 50, 0.3),
+    "dark": 0px 0px 12px 0px rgba(65, 56, 50, 0.82)
+);
+
+
+/* -- ANIMATION -- */
+
+@mixin elem-transition {
+    transition: all 0.3s ease-in-out;
+}
+
+@mixin hamburger-shrink {
+    transition: transform 0.3s ease-in-out,
+                width 0.2s ease-in-out, 
+                height 0.2s ease-in-out;
+}
+
+@mixin cross-unshrink {
+    transition: transform 0.3s ease-in-out,
+                width 0.2s ease-in-out, 
+                height 0.2s ease-in-out;
+}
+
+@mixin tile-move {
+    transition: left 0.4s cubic-bezier(.67,-0.19,.27,1.2),
+                top 0.4s cubic-bezier(.67,-0.19,.27,1.2),
+                background-color 0.2s cubic-bezier(1,0,0,1),
+                width 0.4s cubic-bezier(.67,-0.19,.27,1.2),
+                height 0.4s cubic-bezier(.67,-0.19,.27,1.2);
+    
+    &-text {
+        transition: opacity 0.4s cubic-bezier(.67,-0.19,.27,1.2);
+    }
+}
+
+@mixin theme-change {
+    transition: background-color 0.4s ease-in-out,
+                color 0.4s ease-in-out;
+}
+
+@mixin theme-toggle-move {
+    transition: left 0.4s ease-in-out;
+}

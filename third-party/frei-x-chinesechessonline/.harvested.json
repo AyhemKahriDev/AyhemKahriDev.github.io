@@ -1,0 +1,16 @@
+{
+  "repo": "frei-x/ChineseChessOnline",
+  "stars": 36,
+  "licence": "MIT",
+  "sizeKB": 5742,
+  "pushedAt": "2020-05-07T01:51:29Z",
+  "description": "一款canvas版中国象棋游戏,支持高清图像/canvas响应式设计/ 实时对战/棋谱功能/在线聊天。A Canvas version of the Chinese chess game, supporting high-definition images / Canvas responsive design / real-time combat / chess spectrum function / online chat",
+  "defaultBranch": "gh-pages",
+  "owner": "frei-x",
+  "slug": "frei-x-chinesechessonline",
+  "dest": "third-party/frei-x-chinesechessonline",
+  "readme": "在线地址 :\ngithub-pages:\nhttps://frei-x.github.io/ChineseChessOnline/\ngitee-pages:\nhttp://stringify.gitee.io/chinesechessonline/\n\n# ChineseChessOnline\n\n中国象棋 online\n\n### 主要功能\n\n1. canvas 响应式设计 适配全分辨率 , 即使是是手表. (如果您手动修改屏幕,刷新即可)\n2. 前端棋子走法规则检测 + 后端防作弊棋子规则检测\n3. 多人房间功能 ，房间列表实时更新，每个房间两人对弈实时同步\n4. 落子 起子、绝杀的声音系统\n5. 绝杀检测\n6. 棋谱记录功能（记录所有回合走法）\n7. 实时聊天功能\n8. 用户信息系统\n    > 感谢您的 star!\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,29 @@
+{
+	"name": "Tiles Puzzle",
+	"short_name": "Tiles Puzzle",
+	"description": "Play Tiles Puzzle in your browser, choose any image, and solve the sliding tile puzzle offline.",
+	"start_url": "./",
+	"display": "standalone",
+	"background_color": "#102017",
+	"theme_color": "#163126",
+	"icons": [
+		{
+			"src": "image/icons/tiles_puzzle32.png",
+			"sizes": "32x32",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "image/icons/tiles_puzzle128.png",
+			"sizes": "128x128",
+			"type": "image/png",
+			"purpose": "any"
+		},
+		{
+			"src": "image/icons/tiles_puzzle256.png",
+			"sizes": "256x256",
+			"type": "image/png",
+			"purpose": "any"
+		}
+	]
+}

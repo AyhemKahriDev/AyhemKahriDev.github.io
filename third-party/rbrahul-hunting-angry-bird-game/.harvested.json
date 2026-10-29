@@ -1,0 +1,16 @@
+{
+  "repo": "rbrahul/hunting-angry-bird-game",
+  "stars": 2,
+  "licence": "GPL-3.0",
+  "sizeKB": 20,
+  "pushedAt": "2017-08-18T05:31:07Z",
+  "description": "Use the unique powers of the Gun and Bullet to destroy the greedy Angry Birds! Here Life of angry birds are in danger.",
+  "defaultBranch": "master",
+  "owner": "rbrahul",
+  "slug": "rbrahul-hunting-angry-bird-game",
+  "dest": "third-party/rbrahul-hunting-angry-bird-game",
+  "readme": "# Hunting Angry Bird 😊\nUse the unique powers of the Gun and Bullet to destroy the greedy Angry Birds! Here Life of angry birds are in danger.\n\n## Live view\n[Demo Preview](http://rbrahul.github.io/hunting-angry-bird-game/)\n\n## Nota Bene\nThis game is under development. Many levels will be added contineously \n\n**Developed with ❤️ using Javascript, Jquery, HTML, CSS**\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

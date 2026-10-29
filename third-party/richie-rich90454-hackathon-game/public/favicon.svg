@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Hackathon Game logo">
+  <defs>
+    <linearGradient id="hg-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#354f8c"/>
+      <stop offset="100%" stop-color="#4466a2"/>
+    </linearGradient>
+    <radialGradient id="hg-orb" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#d80203"/>
+      <stop offset="5%" stop-color="#d10506"/>
+      <stop offset="10%" stop-color="#c6090c"/>
+      <stop offset="15%" stop-color="#bb0d12"/>
+      <stop offset="20%" stop-color="#b01217"/>
+      <stop offset="25%" stop-color="#9e141a"/>
+      <stop offset="30%" stop-color="#941a21"/>
+      <stop offset="35%" stop-color="#8b1f29"/>
+      <stop offset="40%" stop-color="#80232e"/>
+      <stop offset="45%" stop-color="#752835"/>
+      <stop offset="50%" stop-color="#6c2c3a"/>
+      <stop offset="55%" stop-color="#603140"/>
+      <stop offset="60%" stop-color="#543546"/>
+      <stop offset="65%" stop-color="#493a4c"/>
+      <stop offset="70%" stop-color="#3c3e52"/>
+      <stop offset="75%" stop-color="#324358"/>
+      <stop offset="77.5%" stop-color="#364e63"/>
+      <stop offset="80%" stop-color="#466072"/>
+      <stop offset="82.5%" stop-color="#4b6477"/>
+      <stop offset="85%" stop-color="#486274"/>
+      <stop offset="90%" stop-color="#3d586c"/>
+      <stop offset="95%" stop-color="#334f64"/>
+      <stop offset="100%" stop-color="#325077"/>
+    </radialGradient>
+  </defs>
+  <rect width="512" height="512" fill="url(#hg-bg)"/>
+  <circle cx="256" cy="256" r="256" fill="url(#hg-orb)"/>
+  <path d="M256 158.0L354.0 256L256 354.0L158.0 256Z" fill="none" stroke="#140507" stroke-width="14.8"/>
+</svg>

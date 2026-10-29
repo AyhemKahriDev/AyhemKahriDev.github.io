@@ -1,0 +1,16 @@
+{
+  "repo": "bensoille/W02_JavaScript_clientside_mim_game",
+  "stars": 0,
+  "licence": "Apache-2.0",
+  "sizeKB": 39,
+  "pushedAt": "2017-03-16T13:12:07Z",
+  "description": "Un jeu de Mim codé en javascript, côté client",
+  "defaultBranch": "master",
+  "owner": "bensoille",
+  "slug": "bensoille-w02-javascript-clientside-mim-game",
+  "dest": "third-party/bensoille-w02-javascript-clientside-mim-game",
+  "readme": "# jeuDeMimCoteClient\nUn jeu de Mim codé en javascript, côté client\n\n[Voir la démo](https://bensoille.github.io/W02_JavaScript_clientside_mim_game/)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

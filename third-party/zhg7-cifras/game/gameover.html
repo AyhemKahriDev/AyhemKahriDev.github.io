@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifras: fin de juego</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="stylesheet" href="styles/gameover.css">
+    <script src="scripts/gameover.js" defer></script>
+    <script src="scripts/audio.js" defer></script>
+</head>
+
+<body>
+    <div id="gameover">
+        <nav>
+            <label class="switch" id="audio-control">
+                <input type="checkbox" hidden autocomplete="off">
+                <span class="slider"></span>
+            </label>
+        </nav>
+        <header>
+            <h1 id="title">Fin&nbsp;de&nbsp;juego</h1>
+        </header>
+        <section class="results">
+            <header id="info-help">Jugador / Resultado <span id="target-number"></span> / Puntuación / Ver operaciones
+            </header>
+            <div class="players">
+                <div class="player" id="player1">
+                    <div class="icon_border">
+                        <svg id="player1_icon" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" class="bi bi-person-fill game-over-player-icon" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                        </svg>
+                        <h2 class="game-over-player-name"></h2>
+                        <ol class="operation-log">
+                        </ol>
+                    </div>
+                    <div class="result">
+                        <span class="player-result"></span>
+                    </div>
+                    <div class="score">
+                        <span class="player-score"></span><span id="score-text">   ptos.</span>
+                    </div>
+                    <button class="view-operations click hover" type="button">👀</button>
+                </div>
+                <div class="player" id="player2">
+                    <div class="icon_border">
+                        <svg id="player2_icon" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" class="bi bi-person-fill game-over-player-icon" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                        </svg>
+                        <h2 class="game-over-player-name"></h2>
+                        <ol class="operation-log">
+                        </ol>
+                    </div>
+                    <div class="result">
+                        <span class="player-result"></span> 
+                    </div>
+                    <div class="score">
+                        <span class="player-score"></span><span id="score-text">   ptos.</span>
+                    </div>
+                    <button class="view-operations click hover" type="button">👀</button>
+                </div>
+            </div>
+        </section>
+        <section class="buttons">
+            <button class="action-button click hover" type="button" id="play-btn">Volver a jugar</button>
+            <button class="action-button click hover" type="button" id="ranking-btn">Ir al ranking</button>
+            <button class="action-button click hover" type="button" id="home-btn">Ir al inicio</button>
+        </section>
+        <section>
+            <div class="overlay" id="overlay"></div>
+            <div id="operation-log-modal" class="modal">
+                <button class="modal-close-btn click hover" id="operation-log-close-btn">
+                    <div class="leftright"></div>
+                    <div class="rightleft"></div>
+                </button>
+                <h1>Operaciones de <span id="player-log"></span></h1>
+                <ol id="operation-log">
+                    <span>No ha hecho nada.</span>
+                </ol>
+            </div>
+        </section>
+        <aside>
+            <div class="overlay" id="winner-overlay"></div>
+            <div class="winner-screen">
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <div class="confetti"></div>
+                <span class="game-message">¡Ha ganado
+                    <span id="winner"></span>!</span>
+                <p>Pulsa dos veces en cualquier parte para ver los resultados.</p>
+            </div>
+        </aside>
+        <aside>
+            <div id="falling-operators">
+                <div>+</div>
+                <div>-</div>
+                <div>÷</div>
+                <div>×</div>
+                <div>÷</div>
+                <div>+</div>
+                <div>-</div>
+                <div>×</div>
+            </div>
+        </aside>
+    </div>
+    <audio id="soundtrack" loop="true" preload="auto">
+        <source src="assets/audio/soundtrack.ogg" type="audio/ogg">
+    </audio>
+    <audio id="switch-sound" preload="auto">
+        <source src="assets/audio/switch.wav" type="audio/wav">
+    </audio>
+    <audio id="click-sound" preload="auto">
+        <source src="assets/audio/click.wav" type="audio/wav">
+    </audio>
+    <audio id="hover-sound" preload="auto">
+        <source src="assets/audio/hover.wav" type="audio/wav">
+      </audio>
+</body>
+
+</html>

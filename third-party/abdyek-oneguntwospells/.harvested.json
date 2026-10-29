@@ -1,0 +1,16 @@
+{
+  "repo": "abdyek/oneGunTwoSpells",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 1658,
+  "pushedAt": "2020-06-12T23:06:44Z",
+  "description": "A simple game on web browser",
+  "defaultBranch": "master",
+  "owner": "abdyek",
+  "slug": "abdyek-oneguntwospells",
+  "dest": "third-party/abdyek-oneguntwospells",
+  "readme": "# oneGunTwoSpells\nHello Everyone!!\nThis is my first canvas game. I have been trying to learn game algorithm without any game engine.\nThe goal of this game is to die after your rival because everyone will die some day.\n\nFirsly, choose your favorite colors with your move keys. if you're ready to fight, press your fire key\n\n## Game Info\n### Goal\nKill your rival\n### Controls\nPlayer 1\n* Move Up - W\n* Move Left - A\n* Move Down - S\n* Move Right - D\n* Fire - F\n\nPlayer 2\n* Move - Arrow Keys\n* Fire - *\n\nPlay now! [abdyek.github.io/oneGunTwoSpells](https://abdyek.github.io/oneGunTwoSpells/oneGunTwoSpells)\n",
+  "licenceFile": "LICENSE",
+  "entry": "oneGunTwoSpells.html",
+  "validated": true
+}

@@ -1,0 +1,380 @@
+@import url('fonts.css');
+@import url('fallingops.css');
+
+html,
+body {
+    background-color: #011627;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-image: url("../assets/img/wave.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Inconsolata';
+}
+
+#random {
+    width: 500px;
+    padding: 100px;
+    background-color: #0b2942;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    z-index: 3;
+}
+
+#numbers {
+    margin-top: 20px;
+    background-color: #d6deeb;
+    border-radius: 10px;
+    padding: 50px;
+    display: flex;
+    gap: 30px;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    gap: 12px;
+}
+
+.switch {
+    position: relative;
+    width: 48px;
+    height: 28px;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: grey;
+    transition: .4s;
+    border-radius: 28px;
+}
+
+.slider::before {
+    position: absolute;
+    content: url("../assets/img/volume-mute.svg");
+    height: 20px;
+    width: 20px;
+    left: 6px;
+    bottom: 3.5px;
+    background-color: #d6deeb;
+    transition: .4s;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+}
+
+input:checked+.slider {
+    background-color: #82aaff;
+}
+
+input:checked+.slider::before {
+    transform: translateX(16px);
+    content: url("../assets/img/volume-on.svg");
+}
+
+#back-btn {
+    width: 68px;
+    height: 28px;
+    border: none;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 0.8em;
+    font-family: inherit;
+    font-weight: 600;
+    position: relative;
+    cursor: pointer;
+    transition: .2s;
+}
+
+#back-btn span {
+    margin-right: 20px;
+    transition: .2s;
+
+}
+
+#back-btn img {
+    position: absolute;
+    transform: translateX(20px);
+    height: 18px;
+    width: 18px;
+    padding: 2.5px;
+    display: grid;
+    place-items: center;
+    transition: .2s;
+}
+
+#back-btn:hover {
+    background-color: #80cbc4;
+    color: transparent;
+}
+
+#back-btn:hover img {
+    transform: scale(1.25);
+}
+
+.flipbox {
+    background-color: transparent;
+    width: 100px;
+    height: 100px;
+    perspective: 1000px;
+}
+
+.flipbox-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.4s;
+    transform-style: preserve-3d;
+}
+
+.flip {
+    transform: rotateX(180deg);
+}
+
+.flipbox-front {
+    font-size: 1.15em;
+}
+
+.flipbox-back {
+    font-size: 2.5em;
+}
+
+.flipbox-front,
+.flipbox-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    border-radius: 5px;
+    user-select: none;
+}
+
+.flipbox-front {
+    background-color: #0b253a;
+    color: #d6deeb;
+    cursor: pointer;
+    overflow: hidden;
+}
+
+#flipbox-placeholder::before {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: 'Generar número';
+    transition: .3s;
+}
+
+#flipbox-placeholder::after {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 90px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '🎲';
+    font-size: 3em;
+    transition: .3s;
+}
+
+.flipbox-front:hover #flipbox-placeholder::before {
+    top: -100px;
+}
+
+.flipbox-front:hover #flipbox-placeholder::after {
+    top: 0;
+    animation: shaking 1s ease infinite;
+
+}
+
+@keyframes shaking {
+    30% {
+        transform: scale(1.2);
+    }
+
+    40%,
+    60% {
+        transform: rotate(-20deg) scale(1.2);
+    }
+
+    50% {
+        transform: rotate(20deg) scale(1.2);
+    }
+
+    70% {
+        transform: rotate(0deg) scale(1.2);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+
+.flipbox-back {
+    background-color: #084d81;
+    color: #eeeeee;
+    transform: rotateX(180deg);
+}
+
+#numbers-list {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 15px;
+}
+
+div.number {
+    background-color: #baacff;
+    width: 75px;
+    height: 48px;
+    font-size: 2.75em;
+    font-weight: bold;
+    border-radius: 10px;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 5px 5px 0px 0px #836cf6;
+    overflow: hidden;
+    user-select: none;
+}
+
+.rotate {
+    animation: rotate 0.5s ease;
+}
+
+@keyframes rotate {
+    0% {
+        transform-origin: left bottom;
+        transform: rotate(90deg);
+        opacity: 0;
+    }
+
+    100% {
+        transform-origin: left bottom;
+        transform: rotate(0);
+        opacity: 1;
+    }
+}
+
+.modal {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #d6deeb;
+    border-radius: 4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    z-index: 5;
+}
+
+.overlay {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 4;
+    cursor: not-allowed;
+}
+
+.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+#target-number span {
+    font-size: 2.5em;
+}
+
+.progress {
+    margin-top: 5px;
+    border-radius: 5px;
+    width: 250px;
+    height: 24px;
+    background-color: whitesmoke;
+}
+
+.bar {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    background-color: #82aaff;
+    animation: timer-countdown 5s linear 1 forwards;
+    animation-play-state: paused;
+}
+
+@keyframes timer-countdown {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+@media (max-width: 500px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    #random {
+        height: 100%;
+    }
+
+    #numbers {
+        margin-top: 80px;
+        width: 300px;
+    }
+
+}

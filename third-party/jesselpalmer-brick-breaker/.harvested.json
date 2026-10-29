@@ -1,0 +1,16 @@
+{
+  "repo": "jesselpalmer/brick-breaker",
+  "stars": 2,
+  "licence": "MIT",
+  "sizeKB": 103,
+  "pushedAt": "2021-08-11T00:51:50Z",
+  "description": "A remake of the classic game Breakout",
+  "defaultBranch": "master",
+  "owner": "jesselpalmer",
+  "slug": "jesselpalmer-brick-breaker",
+  "dest": "third-party/jesselpalmer-brick-breaker",
+  "readme": "# Brick Breaker\r\nA remake of the classic game Breakout.\r\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html",
+  "validated": true
+}

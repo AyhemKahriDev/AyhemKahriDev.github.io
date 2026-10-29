@@ -1,0 +1,16 @@
+{
+  "repo": "bdero/ocean-breeze",
+  "stars": 2,
+  "licence": "GPL-3.0",
+  "sizeKB": 5777,
+  "pushedAt": "2017-04-25T01:43:49Z",
+  "description": "A game where you sail your boat across the ocean while avoiding rocks.",
+  "defaultBranch": "master",
+  "owner": "bdero",
+  "slug": "bdero-ocean-breeze",
+  "dest": "third-party/bdero-ocean-breeze",
+  "readme": "# [Ocean Breeze](https://bdero.itch.io/ocean-breeze)\n\nThis project was completed for entry in a [game jam](https://itch.io/jam/qazijam9point5/rate/137952).\nI wasn't even sure what the project was going to be until a couple of days in. The code is therefore a huge mess!\n\n## Screenshots\n\n![Animated screenshot 1](screenshots/animated0.gif)\n![Animated screenshot 2](screenshots/animated1.gif)\n![Still screenshot 1](screenshots/screenshot0.png)\n![Still screenshot 2](screenshots/screenshot1.png)\n\n## License\n\nCopyright (C) 2017  Brandon DeRosier\n\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program.  If not, see <http://www.gnu.org/licenses/>.\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

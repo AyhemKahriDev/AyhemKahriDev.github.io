@@ -1,0 +1,15 @@
+{
+  "repo": "AndrioCelos/TableturfBattleApp",
+  "stars": 47,
+  "licence": "MIT",
+  "sizeKB": 3716,
+  "pushedAt": "2025-08-20T12:41:21Z",
+  "description": "A Splatoon 3 fan project providing a web app version of the Tableturf Battle minigame",
+  "defaultBranch": "main",
+  "owner": "AndrioCelos",
+  "slug": "andriocelos-tableturfbattleapp",
+  "dest": "third-party/andriocelos-tableturfbattleapp",
+  "readme": "# Tableturf Battle\n\nThis is a Web application and backend that simulates the [Tableturf Battle](https://splatoonwiki.org/wiki/Tableturf_Battle) minigame from [_Splatoon 3_](https://splatoon.nintendo.com/).\n\nThis application is under development and should be considered an early access release.\n\n_Splatoon_ is © Nintendo. This is a fan project and is not affiliated with Nintendo. All product names, logos, and brands are property of their respective owners.\n\n## Screenshots\n\n![Game page screenshot](images/screenshot1.png)\n\n![Game page screenshot](images/screenshot2.png)\n\n![Replay screenshot](images/screenshot3.png)\n\n![Deck test screenshot](images/screenshot4.png)\n",
+  "licenceFile": "license.md",
+  "entry": "TableturfBattleClient/index.html"
+}

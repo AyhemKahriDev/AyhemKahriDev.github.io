@@ -1,0 +1,16 @@
+{
+  "repo": "zhg7/cifras",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 3528,
+  "pushedAt": "2025-11-08T15:13:11Z",
+  "description": "Mental math game",
+  "defaultBranch": "main",
+  "owner": "zhg7",
+  "slug": "zhg7-cifras",
+  "dest": "third-party/zhg7-cifras",
+  "readme": "[<img width=\"16\" height=\"11\" alt=\"es\" alt=\"README español\" src=\"https://github.com/user-attachments/assets/0d656660-90f4-4d18-af50-476fe3e05d2c\" />](https://github.com/zhg7/cifras/blob/main/README.es.md) [Español](https://github.com/zhg7/cifras/blob/main/README.es.md)\n\n# <img src=\"https://github.com/zhg7/cifras/blob/main/game/assets/img/logo.svg\" width=\"48px\"></img> Cifras\nCifras is a mental math game for two players based on the Spanish TV show [*Cifras y letras*](https://es.wikipedia.org/wiki/Cifras_y_letras).\n\n> [!NOTE]\n> The UI is only available in Spanish.\n\n## Game logic\n**Six random numbers** (from 1 to 10, 25, 50, 75 and 100) are generated along with a **target number** (from 101 to 999). Players must perform arithmetic operations with these numbers and get a result that is equal to or as close as possible to the target number. Each player has 1 minute to perform the operations.\n\nThe winner is the player who obtains the exact target number or, if not possible, the player who comes closest to it.\n\n## Game rules\n1. Numbers cannot be reused.\n2. Only the result of the last operation performed is taken into account.\n3. Negative results or results with decimals are not allowed.\n4. No points will be awarded for the ranking if no operation is performed.\n\n## How to play\nFirst, players must enter their names and can optionally choose a colour. Next, they will have to manually generate the six numbers to start the game.\n\nOn desktop browsers, operations are performed by dragging and dropping numbers and operators. On mobile devices, players must tap on the desired element and tap again where they want to drop it.\n\n![BrSDpvj](https://github.com/user-attachments/assets/9eea3e47-ecf8-41d4-8bfe-645ec9507ea9)\n\nThe numbers are **swappable**, meaning that we can drop one on top of another and the one that was in that place will move to the position that the other one had. In the case of the operator, it will be replaced by the new one we drop.\n\nAs soon as the three spaces in the operations area are occupied, the corresponding operation will be executed automatically.\n\n## Scoring system\nPlayers can check their points in the ranking (in descending order).\n* 10 points if the exact target number is obtained.\n* 1 point less for each number difference between the result and the target (a maximum of 9 points can be lost).\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

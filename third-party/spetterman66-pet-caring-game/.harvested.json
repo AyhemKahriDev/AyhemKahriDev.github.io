@@ -1,0 +1,16 @@
+{
+  "repo": "spetterman66/pet-caring-game",
+  "stars": 2,
+  "licence": "Apache-2.0",
+  "sizeKB": 1702,
+  "pushedAt": "2026-05-02T12:23:35Z",
+  "description": "Take care of your pet. Feed, play, and clean up after it.",
+  "defaultBranch": "main",
+  "owner": "spetterman66",
+  "slug": "spetterman66-pet-caring-game",
+  "dest": "third-party/spetterman66-pet-caring-game",
+  "readme": "# 🐶Pet Caring Game\n## 📝Description\nThis is a pet caring game. You can feed, play, and clean your pet. You can also check your pet's status and see how your pet is doing. Sort of a virtual Tamagotchi.\n## 📷Screenshot\n![image](screenshots/pet_caring_game.png)\n## 📃Features\n- A large collection of pets to choose from\n- If you don't know what pet to choose, you can let the game choose a random pet for you\n- You can feed, play, and clean your pet\n- You can export your game data to a file and import it back, so you can continue playing from where you left off\n- It's an installable PWA (Progressive Web App), so you can install it on your device and play it offline\n- It's made in vanilla ES6 JavaScript, with no external libraries or frameworks. Just clone the repo and host it on a server, and it will work :D\n## 🌐Browser Compatibility\n- Chrome 31+ (yes, you read that correctly!)\n- Firefox 27+. In Firefox 33+, service workers are disabled by default, but it can be enabled in \"about:config\" by setting \"dom.serviceWorkers.enabled\" to \"true\"\n- Safari 9+\n- Opera 10+ (Presto rendering engine) with TLS 1.2 enabled. With Opera versions based on the Chromium/Blink rendering engine, the same rules for Chrome apply\n- IE 11 with \"Check for publisher's certificate revocation\" and \"Check for server certificate revocation\" disabled\n\nIt might work on other browsers, but I haven't tested it on them.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

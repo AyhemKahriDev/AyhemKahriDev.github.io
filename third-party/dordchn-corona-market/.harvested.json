@@ -1,0 +1,16 @@
+{
+  "repo": "dordchn/corona-market",
+  "stars": 11,
+  "licence": "GPL-3.0",
+  "sizeKB": 1778,
+  "pushedAt": "2022-03-21T14:25:21Z",
+  "description": "Web game created during the coronavirus pandemic. The game's goal is to buy groceries without getting infected with the virus.",
+  "defaultBranch": "master",
+  "owner": "dordchn",
+  "slug": "dordchn-corona-market",
+  "dest": "third-party/dordchn-corona-market",
+  "readme": "# Corona Market\nCoronaMarket is an open source game created during the coronavirus pandemic.  \nThe goal of the game is to buy groceries without getting infected with the virus.  \n\n## How to play\nThe game is available **[here](https://dordchn.github.io/corona-market/)**.  \nTo play locally, clone the repository and start a local server (e.g. `python3 -m http.server`).\n\n## Screenshots\n![screenshot](res/screenshot1.png)\n\n## Custom levels\n[todo]\n\n## Credits\n- Game created by [Dor Cohen](https://github.com/dordchn).  \n- Sound effects & music obtained from [zapsplat](https://www.zapsplat.com).  \n- Icons made by [Freepik](https://www.flaticon.com/authors/freepik) from [www.flaticon.com](https://www.flaticon.com/).\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

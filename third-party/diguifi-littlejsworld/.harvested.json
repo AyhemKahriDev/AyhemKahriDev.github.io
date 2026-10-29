@@ -1,0 +1,16 @@
+{
+  "repo": "diguifi/littlejsworld",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 77,
+  "pushedAt": "2026-06-21T16:31:41Z",
+  "description": "🎮 Simple game made in pure JavaScript",
+  "defaultBranch": "master",
+  "owner": "diguifi",
+  "slug": "diguifi-littlejsworld",
+  "dest": "third-party/diguifi-littlejsworld",
+  "readme": "# Little JS World\nA simple game made in JavaScript and HTML 5 Canvas\n\nplay at: [littlejsworld](https://diguifi.github.io/littlejsworld/)\n\n## About\nThis game was made entirely from scratch as **a way for me to learn JavaScript** (you'll notice I didn't use prototypes, nor class sugar syntax, that's because I didn't even know how to properly implement objects in js back when I made this project, so **please** don't take this implementation as an example on how to properly implement a game in js).  \n\nYour goal is to reach the blue square and avoiding the red squares, using the arrows on your keyboard.  \nTheres also some motivational sentences to help you through it :)\n\nHave fun!\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

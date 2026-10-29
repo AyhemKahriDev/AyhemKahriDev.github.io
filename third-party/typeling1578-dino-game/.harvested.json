@@ -1,0 +1,16 @@
+{
+  "repo": "typeling1578/dino-game",
+  "stars": 2,
+  "licence": "MPL-2.0",
+  "sizeKB": 143,
+  "pushedAt": "2022-05-04T17:06:25Z",
+  "description": "The Dino game extracted from chromium offline error page.",
+  "defaultBranch": "main",
+  "owner": "typeling1578",
+  "slug": "typeling1578-dino-game",
+  "dest": "third-party/typeling1578-dino-game",
+  "readme": "# Dino game\nThe Dino game extracted from chromium offline error page.\n\nSee the source code from chromium: https://source.chromium.org/chromium/chromium/src/+/main:components/neterror/resources/\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

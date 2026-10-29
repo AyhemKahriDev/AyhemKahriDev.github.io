@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <title>FruitShot</title>
+  <meta name="description" content="HTML5 Fruit shooting game">
+</head>
+<style>
+  * {
+    margin: 0;
+    user-select: none;
+    --moz-user-select: none;
+  }
+  
+  body {
+    color: black;
+    background: transparent;
+    font-family: sans-serif;
+  }
+
+  p, h1 {
+    padding: 0;
+    margin: 0;
+  }
+
+  #desc {
+    position: fixed;
+    font-size: 45px;
+    margin: 0;
+    padding: 0;
+    z-index: 3;
+    user-select: none;
+    --moz-user-select: none;
+    visibility: hidden;
+  }
+  
+  #gameover {
+    position: fixed;
+    z-index: 3;
+    background: red;
+    color: black;
+    visibility: hidden;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  #gameover #text {
+    margin-top: 50vh;
+    text-align: center;
+  }
+
+  #sc {
+    visibility: hidden;
+  }
+
+  #loading {
+    position: fixed;
+  }
+
+  #warning {
+    padding: 10px;
+    border: solid 5px red;
+    color: black;
+    background: yellow;
+  }
+</style>
+
+<body>
+  <!-- <button style="position: fixed; top: 0; left: 0; border: solid 1px; background: white;" onclick="newFruit()">New Fruit</button><span style="position: fixed; top: 0; left: 75px;">Click the fruits!</span> --->
+  <!--- <h1 id="fruit">🍌</h1> --->
+  <div id="loading">
+    <h1>FruitShot</h1>
+    <p>HTML5 Fruit shooting game</p><br>
+    <ul>
+      <li>Shoot as many fruits as you can</li>
+      <li>Shot 🌟 to shoot 💣</li>
+      <li>Don't shoot 💣 without shooting 🌟!</li>
+      <li>Don't shoot or even hover ☢️!</li>
+    </ul><br>
+    <div id="warning">
+      <p><strong>Warning:</strong> Contains lightning effects.<br>If you're prone to seizures, <strong>do not proceed.</strong></p>
+    </div>
+    <p><span id="loadedaudios">0</span>/<span id="availableaudios">0</span> Audios loaded....</p>
+  </div>
+  <span id="desc">💥</span>
+  <div id="gameover">
+    <div id="text">
+      <h1>GAME OVER</h1>
+    </div>
+  </div>
+  <div id="sc">
+    <span style="z-index: 3; position: fixed; bottom: 10px; left: 10px;">
+      💣: <b><span id="bombscore">0</span></b><br>
+      ☠️: <b><span id="skullscore">0</span></b><br>
+      🍉: <b><span id="score">0</span></b>
+    </span>
+    <a style="z-index: 3; color: black; position: fixed; bottom: 10px; right: 10px;" href="https://github.com/Yonle/FruitShot">Source code</a>
+  </div>
+</body>
+<script src="audio.js"></script>
+<script src="logic.js"></script>
+
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Hackathon Game - Free Elemental Reaction Game in Your Browser</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Hackathon Game is a free browser game where you pilot a core orb through a scrolling fantasy world, absorb elemental orbs and chain elemental reactions to reach 10,000 points. Play instantly, no install.">
+        <meta name="keywords" content="Hackathon Game, elemental reaction game, free browser game, fantasy game, orb collecting game, Genshin Impact inspired reactions, play game online, Richard's Blogs">
+        <meta name="author" content="Richard's Blogs">
+        <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+        <meta name="theme-color" content="#28465C">
+        <meta name="color-scheme" content="dark">
+        <link rel="canonical" href="https://hg.richardsblogs.com">
+        <meta property="og:type" content="website">
+        <meta property="og:locale" content="en_US">
+        <meta property="og:site_name" content="Richard's Blogs">
+        <meta property="og:title" content="Hackathon Game - A Wonder and Fantasy Game">
+        <meta property="og:description" content="Join the Journey in Hackathon Game, a free browser game where you collect elemental orbs and chain reactions to score points. Play now on Richard's Blogs!">
+        <meta property="og:url" content="https://hg.richardsblogs.com">
+        <meta property="og:image" content="https://hg.richardsblogs.com/favicon-512.png">
+        <meta property="og:image:type" content="image/png">
+        <meta property="og:image:width" content="512">
+        <meta property="og:image:height" content="512">
+        <meta property="og:image:alt" content="Hackathon Game logo: a glowing red core orb inside a diamond">
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:title" content="Hackathon Game - A Wonder and Fantasy Game">
+        <meta name="twitter:description" content="Join the Journey in Hackathon Game, a free browser game where you collect elemental orbs and perform reactions to score points. Play now!">
+        <meta name="twitter:image" content="https://hg.richardsblogs.com/favicon-512.png">
+        <meta name="twitter:image:alt" content="Hackathon Game logo: a glowing red core orb inside a diamond">
+        <meta name="twitter:site" content="@RichardsBlogs">
+        <link rel="icon" href="favicon.svg" type="image/svg+xml">
+        <link rel="icon" href="favicon.ico" sizes="48x48">
+        <link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+        <link rel="icon" href="favicon-16.png" sizes="16x16" type="image/png">
+        <link rel="mask-icon" href="safari-pinned-tab.svg" color="#d80203">
+        <link rel="apple-touch-icon" href="apple-touch-icon.png">
+        <link rel="manifest" href="site.webmanifest">
+        <script type="application/ld+json">
+            {
+                "@context": "https://schema.org",
+                "@type": "VideoGame",
+                "@id": "https://hg.richardsblogs.com/#game",
+                "name": "Hackathon Game",
+                "alternateName": "Hackathon Game - A Wonder and Fantasy Game",
+                "description": "Hackathon Game is a free browser game where you pilot a core orb through a scrolling fantasy world, absorb elemental orbs and chain elemental reactions to reach 10,000 points.",
+                "url": "https://hg.richardsblogs.com",
+                "image": [
+                    "https://hg.richardsblogs.com/favicon-512.png",
+                    "https://hg.richardsblogs.com/favicon-192.png"
+                ],
+                "screenshot": "https://hg.richardsblogs.com/favicon-512.png",
+                "gamePlatform": ["Web Browser", "Windows", "macOS", "Linux", "Android", "iOS"],
+                "operatingSystem": "Any modern browser with Web Audio support",
+                "browserRequirements": "Requires JavaScript and a browser with HTML5 canvas and Web Audio support.",
+                "applicationCategory": "Game",
+                "genre": ["Arcade Game", "Casual Game", "Fantasy Game", "Elemental Reaction Game"],
+                "playMode": "SinglePlayer",
+                "inLanguage": "en",
+                "keywords": "elemental reaction game, free browser game, fantasy game, orb collecting, arcade game",
+                "isAccessibleForFree": true,
+                "isFamilyFriendly": true,
+                "typicalAgeRange": "All Ages",
+                "softwareVersion": "1.0.0",
+                "datePublished": "2025-05-30",
+                "dateModified": "2026-10-05",
+                "offers": {
+                    "@type": "Offer",
+                    "price": "0",
+                    "priceCurrency": "USD",
+                    "availability": "https://schema.org/InStock"
+                },
+                "potentialAction": {
+                    "@type": "PlayAction",
+                    "target": "https://hg.richardsblogs.com/"
+                },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "Richard's Blogs",
+                    "url": "https://www.richardsblogs.com"
+                },
+                "author": {
+                    "@type": "Person",
+                    "name": "richie-rich90454",
+                    "url": "https://www.richardsblogs.com"
+                }
+            }
+        </script>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <h1 id="page-title">Hackathon Game - A Wonder and Fantasy Game</h1>
+            <p class="notice">Free to play in your browser. Absorb elemental orbs, chain reactions, reach 10,000 points: <a href="rules.html">Rules &amp; how to play</a></p>
+            <p class="notice">&copy; 2025 Richard's Blogs | All Rights Reserved</p>
+            <p class="notice">Main site: <a href="https://www.richardsblogs.com" target="_blank" rel="noopener">www.richardsblogs.com</a></p>
+        </header>
+        <main>
+        <div id="game-container">
+            <canvas id="gameCanvas" width="1280" height="720" aria-label="Hackathon Game play area" role="img">Hackathon Game is a canvas game: guide the glowing core orb to absorb elemental orbs and chain reactions. Use W and S to move up and down, minus and plus to change speed, and reach 10,000 points to win.</canvas>
+        </div>
+        <div id="controls">
+            <h3>Controls</h3>
+            <p>w/s/&uarr;/&darr;/swipe up/swipe down: Move along y-axis</p>
+            <p>-/a/: Decrease Max Speed</p>
+            <p>=/+/d : Increase Max Speed</p>
+            <h3>Statistics</h3>
+            <p id="cursor-speed">Speed: </p>
+            <p id="cursor-max-speed">Max: </p>
+            <p id="cursor-score">Score: </p>
+        </div>
+        </main>
+        <footer aria-label="Footer"></footer>
+        <div id="controls-toggle">
+            <button id="toggleControlsBtn" aria-label="Toggle game controls" aria-expanded="false" aria-controls="touch-controls">Show Controls</button>
+        </div>
+        <div id="touch-controls" role="region" aria-label="Touch controls">
+            <button id="upBtn" aria-label="Move up">&uarr;</button>
+            <button id="downBtn" aria-label="Move down">&darr;</button>
+            <button id="slowerBtn" aria-label="Decrease speed">-</button>
+            <button id="fasterBtn" aria-label="Increase speed">+</button>
+        </div>
+        <div id="startModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="startModalTitle">
+            <div class="modal-content">
+                <h2 id="startModalTitle" style="text-align: center;">Welcome to Hackathon Game!</h2>
+                <p>Collect elemental orbs to perform reactions and score points!</p>
+                <p>Rules and a guide to the game: <a href="rules.html">Rules</a></p>
+                <ul>
+                    <li>Use W/S to move vertically</li>
+                    <li>Use +/- or A/D to adjust speed</li>
+                    <li>Combine elements for reaction bonuses</li>
+                    <li>Reach 10,000 points to win</li>
+                </ul>
+                <button id="startButton" aria-label="Begin the Journey">Begin the Journey with Wonder!</button>
+            </div>
+        </div>
+        <div id="endModal" class="modal" style="display: none;" role="dialog" aria-modal="true" aria-labelledby="endModalTitle">
+            <div class="modal-content">
+                <h2 id="endModalTitle">Journey Complete!</h2>
+                <p>Congratulations! You have reached 10,000 points!</p>
+                <h3>Game Metrics</h3>
+                <p id="total-score"></p>
+                <p id="time-taken">Time Taken: </p>
+                <h3>Reactions Performed</h3>
+                <ul id="reaction-list"></ul>
+                <button id="restartButton" aria-label="Play again">Play Again</button>
+            </div>
+        </div>
+        <script type="module" src="script.ts"></script>
+    </body>
+</html>

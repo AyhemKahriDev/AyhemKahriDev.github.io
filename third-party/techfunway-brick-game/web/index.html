@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#12102b">
+<title>BRICK GAME 方块游戏机 · 超越经典版</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect x='4' y='4' width='11' height='11' rx='2' fill='%2300e5ff'/><rect x='17' y='4' width='11' height='11' rx='2' fill='%23ff2d78'/><rect x='4' y='17' width='11' height='11' rx='2' fill='%23ffd60a'/><rect x='17' y='17' width='11' height='11' rx='2' fill='%2330ff8e'/></svg>">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<meta name="apple-mobile-web-app-title" content="方块游戏机">
+<link rel="stylesheet" href="css/style.css?v=0.1.0">
+</head>
+<body>
+<div id="bg-fx" aria-hidden="true">
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+  <div class="stars"></div>
+</div>
+
+<div id="console" role="application" aria-label="方块游戏机">
+  <!-- 顶部品牌条 -->
+  <div class="brand-bar">
+    <div class="brand-eye"></div>
+    <div class="brand-title">
+      <span class="brand-cn">方块游戏机</span>
+      <span class="brand-en">BRICK GAME · SUPER DELUXE</span>
+    </div>
+    <button class="brand-love" id="btnSupport" aria-label="支持作者" title="支持作者">&#10084;</button>
+    <div class="brand-spikes"><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
+
+  <!-- 屏幕 -->
+  <div class="bezel">
+    <div class="bezel-inner">
+      <canvas id="screen" width="300" height="500" aria-label="游戏屏幕"></canvas>
+      <div class="screen-glare"></div>
+      <div class="power-led" id="powerLed" title="POWER"></div>
+    </div>
+  </div>
+
+  <!-- 功能小按钮 -->
+  <div class="fn-row">
+    <button class="fn-btn" id="btnSound" data-fn="sound" aria-label="声音开关"><span>♪</span><label>SOUND</label></button>
+    <button class="fn-btn" id="btnPause" data-fn="pause" aria-label="暂停"><span>‖</span><label>PAUSE</label></button>
+    <button class="fn-btn" id="btnReset" data-fn="reset" aria-label="回到菜单"><span>⟲</span><label>RESET</label></button>
+    <button class="fn-btn" id="btnFull" data-fn="fullscreen" aria-label="全屏"><span>⛶</span><label>FULL</label></button>
+    <button class="fn-btn" id="btnVibe" data-fn="vibe" aria-label="震动开关"><span>〰</span><label>VIBE</label></button>
+  </div>
+
+  <!-- 触控区 -->
+  <div class="ctrl-area">
+    <div class="dpad" id="dpad">
+      <button class="pad pad-up" data-action="up" aria-label="上"></button>
+      <button class="pad pad-left" data-action="left" aria-label="左"></button>
+      <div class="pad-center"><i></i><i></i><i></i><i></i></div>
+      <button class="pad pad-right" data-action="right" aria-label="右"></button>
+      <button class="pad pad-down" data-action="down" aria-label="下"></button>
+    </div>
+    <div class="ab-row">
+      <button class="round-btn btn-b" data-action="b" aria-label="B键"><span>B</span></button>
+      <button class="round-btn btn-a" data-action="a" aria-label="A键 旋转"><span>A</span></button>
+      <div class="rotate-hint">ROTATE ↻</div>
+    </div>
+  </div>
+
+  <div class="shell-footer">
+    <span class="foot-logo">CLASSIC<span>GAMES</span></span>
+    <span class="foot-tip">桌面：方向键移动 · Z/↑ 旋转 · 空格速降 · Enter 暂停 · Esc 菜单<br>手机：方向键 / A 旋转 / 屏幕滑动同样有效</span>
+  </div>
+</div>
+
+<script src="js/font.js?v=0.1.0"></script>
+<script src="js/audio.js?v=0.1.0"></script>
+<script src="js/screen.js?v=0.1.0"></script>
+<script src="js/input.js?v=0.1.0"></script>
+<script src="js/games/tetris.js?v=0.1.0"></script>
+<script src="js/games/snake.js?v=0.1.0"></script>
+<script src="js/games/racer.js?v=0.1.0"></script>
+<script src="js/games/shooter.js?v=0.1.0"></script>
+<script src="js/games/tank.js?v=0.1.0"></script>
+<script src="js/games/frogger.js?v=0.1.0"></script>
+<script src="js/games/breakout.js?v=0.1.0"></script>
+<script src="js/games/puzzle.js?v=0.1.0"></script>
+<script src="js/games/memory.js?v=0.1.0"></script>
+<script src="js/games/saucer.js?v=0.1.0"></script>
+<script src="js/games/catch.js?v=0.1.0"></script>
+<script src="js/games/sokoban.js?v=0.1.0"></script>
+<script src="js/games/missile.js?v=0.1.0"></script>
+<script src="js/games/minis_puzzle.js?v=0.1.0"></script>
+<script src="js/games/minis_arcade.js?v=0.1.0"></script>
+<script src="js/games/minis_board.js?v=0.1.0"></script>
+<script src="js/games/minis_board2.js?v=0.1.0"></script>
+<script src="js/games/minis_fun.js?v=0.1.0"></script>
+<script src="js/support.js?v=0.1.0"></script>
+<script src="js/main.js?v=0.1.0"></script>
+</body>
+</html>

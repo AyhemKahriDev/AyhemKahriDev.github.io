@@ -1,0 +1,16 @@
+{
+  "repo": "jorgesanux/ex-snake-game",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 24,
+  "pushedAt": "2024-06-08T05:35:39Z",
+  "description": "This project is an implementation of the classic snake game in JavaScript.",
+  "defaultBranch": "main",
+  "owner": "jorgesanux",
+  "slug": "jorgesanux-ex-snake-game",
+  "dest": "third-party/jorgesanux-ex-snake-game",
+  "readme": "# EX Snake Game\n\nThis project is an implementation of the classic snake game in JavaScript. The snake game is an arcade game where the player controls a snake, which moves around the board. The goal of the game is to eat the food that appears in different places on the board. Each time the snake eats, it grows in length. The game ends when the snake collides with the edges of the board or with its own body.\n\n## Table of Contents\n\n1. [Features](#features)\n2. [Installation](#installation)\n3. [Usage](#usage)\n4. [Code Structure](#code-structure)\n5. [Contributing](#contributing)\n6. [License](#license)\n\n## Features\n\n- Classic snake gameplay: Control a snake that grows in length as it eats food.\n- Collision detection: The game ends when the snake collides with the edges of the board or with its own body.\n- Random food placement: Food appears in random locations on the board.\n- Score tracking: The game keeps track of the number of food items eaten.\n\n## Installation\n\nTo install and run this project, follow these steps:\n\n1. Clone the repository to your local machine using `git clone`.\n2. Open the `index.html` file in your browser.\n\n## Usage\n\nTo play the game, use the arrow keys to control the direction of the snake. Try to eat as much food as possible without colliding.\n\n## Code Structure\n\nThe game code is organized into several classes:\n\n- `Point`: Represents a point in a two-dimensional coordinate system.\n- `Food`: Represents a food item in the game.\n- `Snake`: Represents the snake in the game.\n- `Board`: Represents the game board.\n- `GameDrawer`: Responsible for drawing the game on the canvas.\n- `SnakeGame`: Represents the game itself, including the game logic and the main game loop.\n\nEach of these classes has its own methods that are used to implement the game logic.\n\n## Contributing\n\nContributions are welcome. Please open an issue to discuss what you would like to change. Please make sure to update tests as appropriate.\n\n## License\n\nThis project is licensed under the GNU General Public License v3.0. See the `LICENSE` file for details.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

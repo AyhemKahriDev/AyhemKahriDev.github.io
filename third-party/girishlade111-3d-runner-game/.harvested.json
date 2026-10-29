@@ -1,0 +1,16 @@
+{
+  "repo": "girishlade111/3D-runner-game",
+  "stars": 0,
+  "licence": "CC0-1.0",
+  "sizeKB": 12,
+  "pushedAt": "2026-10-02T15:27:53Z",
+  "description": "Browser-based 3D endless runner game built with Three.js — dodge obstacles, chase high scores",
+  "defaultBranch": "main",
+  "owner": "girishlade111",
+  "slug": "girishlade111-3d-runner-game",
+  "dest": "third-party/girishlade111-3d-runner-game",
+  "readme": "# 3D Runner Game\n\nA fast-paced 3D endless runner game built with **Three.js**, playable entirely in the browser — no install, no build step.\n\n## Features\n\n- 3D endless runner with smooth forward motion and obstacle dodging\n- Lateral movement controls for precise steering\n- Score tracking with animated SVG score overlay\n- Restart support — jump back in instantly after a crash\n- Sound effects for a more immersive run\n- Fullscreen responsive canvas, works on desktop and mobile viewports\n\n## Tech Stack\n\n- HTML5 / CSS3 / JavaScript (single-file game)\n- [Three.js](https://threejs.org/) (v0.146.0 via CDN) for 3D rendering\n\n## Quick Start\n\n1. Clone the repo:\n   ```bash\n   git clone https://github.com/girishlade111/3D-runner-game.git\n   cd 3D-runner-game\n   ```\n2. Open `index.html` directly in a browser, or serve it locally:\n   ```bash\n   npx serve .\n   ```\n3. Use the on-screen instructions / arrow keys to steer, dodge obstacles, and chase a high score.\n\n## Project Structure\n\n```\n3D-runner-game/\n├── index.html        # The full game (playable)\n├── 3D runner.html    # Original game file\n├── LICENSE\n└── README.md\n```\n\n## Deploy Notes\n\nStatic site with zero build requirements — the game runs from `index.html` and pulls Three.js from a CDN. Deployed via GitHub Pages from the `main` branch.\n\n## License\n\nSee [LICENSE](LICENSE).\n\n---\n\nBuilt by Girish Lade — https://ladestack.in\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

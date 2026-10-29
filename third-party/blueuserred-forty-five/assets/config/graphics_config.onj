@@ -1,0 +1,149 @@
+import "imports/colors.onj" as color;
+
+bufferTime: 0.5,
+
+enemyChargeAnimation: {
+    xCharge: -7.0,
+    yCharge: 0.0,
+    duration: 0.5,
+    interpolation: "swing"
+},
+
+icons: {
+    burning: {
+        icon: "burning_icon",
+        scale: 0.6
+    },
+    poison: {
+        icon: "poison_icon",
+        scale: 0.6
+    },
+    fireResistance: {
+        icon: "burning_icon",
+        scale: 0.6
+    },
+    bewitched: {
+        icon: "bewitched_icon",
+        scale: 0.6
+    },
+    wardOfTheWitch: {
+        icon: "burning_icon",
+        scale: 0.6
+    },
+    wrathOfTheWitch: {
+        icon: "burning_icon",
+        scale: 0.6
+    },
+    shield: {
+        icon: "shield_icon",
+        scale: 0.6
+    }
+},
+
+encounterModifiers: {
+    rain: {
+        icon: "encounter_modifier_rain",
+        displayName: "Rain",
+        description: "Status effects don't work"
+    },
+    frost: {
+        icon: "encounter_modifier_frost",
+        displayName: "Frost",
+        description: "The revolver doesn't turn. Everlasting doesn't work."
+    },
+    bewitchedMist: {
+        icon: "encounter_modifier_bewitched_mist",
+        displayName: "Bewitched Mist",
+        description: "Revolver rotations are inverted"
+    },
+    lookalike: {
+        icon: "encounter_modifier_lookalike",
+        displayName: "Lookalike",
+        description: "Whenever you place a bullet in the revolver, you get a copy of it in your hand"
+    },
+    moist: {
+        icon: "encounter_modifier_moist",
+        displayName: "Moist",
+        description: "Every bullet in the revolver loses one damage every time it turns"
+    },
+    steelNerves: {
+        icon: "encounter_modifier_steel_nerves",
+        displayName: "Steel Nerves",
+        description: "The revolver shoots automatically every ten seconds"
+    }
+},
+
+encounterModifierAssets: [
+    "encounter_modifier_frost", "encounter_modifier_rain", "encounter_modifier_moist",
+    "encounter_modifier_steel_nerves", "encounter_modifier_lookalike", "encounter_modifier_bewitched_mist"
+],
+
+encounterBackgrounds: [
+    {
+        biome: "wasteland",
+        isDark: false,
+        background: "game_screen_background_wasteland"
+    },
+    {
+        biome: "bewitched_forest",
+        isDark: true,
+        background: "game_screen_background_bewitched_forest"
+    },
+],
+
+damageOverlay: {
+    duration: 1.5,
+    fadeIn: 0.0,
+    fadeOut: 0.5,
+    overlay: "hit_overlay"
+},
+
+cardText: {
+    font: "card_character",
+    fontScale: 1.5,
+    colorsForDarkCard: {
+        normal: color.white,
+        increase: color.green,
+        decrease: color.red,
+    },
+    colorsForLightCard: {
+        normal: color.black,
+        increase: color.darkGreen,
+        decrease: color.red,
+    },
+    savedSymbol: "card_symbol_saved",
+    notSavedSymbol: "card_symbol_not_saved",
+},
+
+keySelect: {
+    drawable: "key_select_frame"
+},
+
+keySelectUsedAssets: [
+    "key_select_frame"
+],
+
+shootPostProcessor: {
+    name: "shoot_shader",
+    duration: 0.9
+},
+
+enemyGravestone: {
+    texture: "enemy_gravestone",
+    scale: 0.3,
+},
+
+gameUsedAssets: [
+    "shoot_shader", "red_wing", "transparent_black_texture", "white_texture",
+    "red_wing", "vignette_shader", "hit_overlay", "burning_icon", "poison_icon", "enemy_gravestone", "bewitched_icon",
+    "player_turn_banner", "enemy_turn_banner", "normal_bullet", "shield_icon", "insult_icon", "enemy_texture",
+    "card_character", "game_screen_background_bewitched_forest", "game_screen_background_wasteland"
+],
+
+revolverSlotIcons: {
+    "1": "revolver_slot_icon_1",
+    "2": "revolver_slot_icon_2",
+    "3": "revolver_slot_icon_3",
+    "4": "revolver_slot_icon_4",
+    "5": "revolver_slot_icon_5",
+},

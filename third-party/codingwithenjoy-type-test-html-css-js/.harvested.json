@@ -1,0 +1,16 @@
+{
+  "repo": "CodingWithEnjoy/Type-Test-HTML-CSS-JS",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 12,
+  "pushedAt": "2023-04-13T09:10:33Z",
+  "description": "تست سرعت تایپ | Type Test Game 🚀😉",
+  "defaultBranch": "main",
+  "owner": "CodingWithEnjoy",
+  "slug": "codingwithenjoy-type-test-html-css-js",
+  "dest": "third-party/codingwithenjoy-type-test-html-css-js",
+  "readme": "<h2 align=\"center\">تست سرعت تایپ | Type Test Game 🚀😉</h2>\n\n###\n\n<h4 align=\"center\">دمو | Demo 😁<br><br>https://codingwithenjoy.github.io/Type-Test-HTML-CSS-JS</h4>\n\n###\n\n<p align=\"left\"></p>\n\n###\n\n<div align=\"center\">\n  <img height=\"350\" src=\"https://user-images.githubusercontent.com/113675029/224484782-a5754f1e-a8bb-4d10-9ba9-4e7f3edb8a56.png\"  />\n</div>\n\n###\n\n<p align=\"left\"></p>\n\n###\n\n<div align=\"center\">\n  <img height=\"350\" src=\"https://user-images.githubusercontent.com/113675029/224484833-a1f1c38f-b49c-40e7-ac2d-21bad43adb6f.png\"  />\n</div>\n\n###\n\n<p align=\"left\"></p>\n\n###\n\n<p align=\"left\"></p>\n\n###\n\n<div align=\"center\">\n  <a href=\"https://www.instagram.com/codingwithenjoy/\" target=\"_blank\">\n    <img src=\"https://raw.githubusercontent.com/maurodesouza/profile-readme-generator/master/src/assets/icons/social/instagram/default.svg\" width=\"52\" height=\"40\" alt=\"instagram logo\"  />\n  </a>\n  <a href=\"https://www.youtube.com/@codingwithenjoy\" target=\"_blank\">\n    <img src=\"https://raw.githubusercontent.com/maurodesouza/profile-readme-generator/master/src/assets/icons/social/youtube/default.svg\" width=\"52\" height=\"40\" alt=\"youtube logo\"  />\n  </a>\n  <a href=\"mailto:codingwithenjoy@gmail.com\" target=\"_blank\">\n    <img src=\"https://raw.githubusercontent.com/maurodesouza/profile-readme-generator/master/src/assets/icons/social/gmail/default.svg\" width=\"52\" height=\"40\" alt=\"gmail logo\"  />\n  </a>\n  <a href=\"https://twitter.com/codingwithenjoy\" target=\"_blank\">\n    <img src=\"https://raw.githubusercontent.com/maurodesouza/profile-readme-generator/master/src/assets/icons/social/twitter/default.svg\" width=\"52\" height=\"40\" alt=\"twitter logo\"  />\n  </a>\n</div>\n\n###\n\n<p align=\"left\"></p>\n\n###\n\n<h4 align=\"center\">توسعه داده شده توسط برنامه نویسی با لذت</h4>\n\n###\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,75 @@
+{
+  "name": "phaser3-multiplayer-with-physics",
+  "version": "1.1.0",
+  "description": "Phaser 3 - Real-Time Multiplayer Game with MatterJS Physics",
+  "homepage": "https://github.com/yandeu/phaser3-multiplayer-with-physics#readme",
+  "main": "server.js",
+  "scripts": {
+    "start": "npm run dev",
+    "dev": "npm-run-all --parallel server client physics stats",
+    "server": "npm-run-all --parallel server:*",
+    "server:webpack": "webpack --config webpack/webpack.server.cjs --watch",
+    "server:nodemon": "nodemon dist/server/server.js",
+    "stats": "webpack --config webpack/webpack.stats.cjs --watch",
+    "client": "webpack --config webpack/webpack.client.cjs --watch",
+    "physics": "webpack --config webpack/webpack.physics.cjs --watch",
+    "build": "webpack --config webpack/webpack.client.prod.cjs && webpack --config webpack/webpack.physics.prod.cjs && webpack --config webpack/webpack.server.cjs && webpack --config webpack/webpack.stats.prod.cjs",
+    "serve": "node dist/server/server.js",
+    "prettier": "prettier --write 'src/**/*.ts'",
+    "docker:start": "npm i --only=production && npm run serve",
+    "docker:publish": "npm run build && docker-compose up -d --build",
+    "docker:up": "docker-compose up -d --build",
+    "postinstall": "webpack --config webpack/webpack.server.cjs && webpack --config webpack/webpack.stats.cjs && webpack --config webpack/webpack.client.cjs && webpack --config webpack/webpack.physics.cjs"
+  },
+  "author": {
+    "name": "Yannick Deubel",
+    "url": "https://github.com/yandeu"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yandeu/phaser3-multiplayer-with-physics.git"
+  },
+  "template": {
+    "name": "phaser3-multiplayer-with-physics",
+    "description": "This game is based on the phaser3-multiplayer-with-physics",
+    "url": "https://github.com/yandeu/phaser3-multiplayer-with-physics",
+    "author": "Yannick Deubel (https://github.com/yandeu)"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@geckos.io/phaser-on-nodejs": "^1.2.8",
+    "axios": "^1.2.1",
+    "compression": "^1.7.4",
+    "express": "^4.17.1",
+    "helmet": "^3.23.1",
+    "moment": "^2.27.0",
+    "phaser": "3.55.2",
+    "pidusage": "^2.0.20",
+    "socket.io": "^2.3.0",
+    "socket.io-client": "^2.3.0",
+    "source-map-support": "^0.5.19",
+    "uuid": "^8.1.0"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.7.0",
+    "@types/express": "^4.17.6",
+    "@types/helmet": "^0.0.47",
+    "@types/matter-js": "^0.14.4",
+    "@types/node": "^18",
+    "@types/pidusage": "^2.0.1",
+    "@types/socket.io": "^2.1.8",
+    "@types/socket.io-client": "^1.4.33",
+    "@types/uuid": "^3.4.9",
+    "copy-webpack-plugin": "^11.0.0",
+    "html-webpack-plugin": "^5.5.0",
+    "nodemon": "^2.0.20",
+    "npm-run-all": "^4.1.5",
+    "object-sizeof": "^1.6.0",
+    "ts-loader": "^9.4.2",
+    "typescript": "^4.9.4",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-merge": "^5.8.0",
+    "webpack-node-externals": "^3.0.0"
+  }
+}

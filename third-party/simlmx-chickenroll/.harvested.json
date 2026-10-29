@@ -1,0 +1,15 @@
+{
+  "repo": "simlmx/chickenroll",
+  "stars": 35,
+  "licence": "MIT",
+  "sizeKB": 2892,
+  "pushedAt": "2026-06-08T23:31:20Z",
+  "description": "Online game inspired from the classic board game Can't Stop.",
+  "defaultBranch": "main",
+  "owner": "simlmx",
+  "slug": "simlmx-chickenroll",
+  "dest": "third-party/simlmx-chickenroll",
+  "readme": "# [Chicken Roll][lff]\n\nOnline game inspired from the classic board game [Can't Stop][wiki].\n\nPlay it at [`lefun.fun`][lff].\n\n\n## Legacy version\n\nThe original version built with [`boardgame.io`][bgio] is not online anymore but the code is still on the `boardgame.io` branch of this repo.\n\n\n[lff]: https://lefun.fun\n[wiki]: https://en.wikipedia.org/wiki/Can%27t_Stop_(board_game)\n[bgio]: https://boardgame.io\n",
+  "licenceFile": "LICENSE",
+  "entry": "ui/index.html"
+}

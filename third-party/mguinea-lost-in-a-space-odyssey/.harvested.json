@@ -1,0 +1,16 @@
+{
+  "repo": "mguinea/lost-in-a-space-odyssey",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 1023,
+  "pushedAt": "2017-09-12T21:10:56Z",
+  "description": "Entry HTML5 game for js13k 2017 compo. Desktop category.",
+  "defaultBranch": "master",
+  "owner": "mguinea",
+  "slug": "mguinea-lost-in-a-space-odyssey",
+  "dest": "third-party/mguinea-lost-in-a-space-odyssey",
+  "readme": "# Lost in a space odyssey\n---\n![](https://img.shields.io/badge/js13kGames-2017-b12a34.svg) ![](https://img.shields.io/badge/version-%23desktop-yellow.svg)\n## Synopsis\n## Context\n### Inspiration\n# The Game\n\n## Data Structures\nTo save space I have used tuples with commented indexes.\n\nFor an entity, the main structure is:\n- 0 position x\n- 1 position y\n- 2 angle (expressed in radians)\n- 3 radius\n\n### Tools I used\n- http://www.superflashbros.net/as3sfxr/\n\n### References\n- https://coderwall.com/p/iygcpa/gameloop-the-correct-way\n- https://developer.mozilla.org/es/docs/Web/API/WebGL_API/Tutorial/Using_shaders_to_apply_color_in_WebGL\n- https://flatuicolors.com/\n- http://paletton.com/\n- https://github.com/Rajawali/Rajawali/issues/520\n\n### Requirements\n\n#### Building for source\n```sh\n$ gulp build\n```\n\n### Todos\n - Write MORE Tests\n - Add Night Mode\n\nLicense\n----\n\nMIT\n\n[//]: # (These are reference links used in the body of this note and get stripped out when the markdown processor does its job. There is no need to format nicely because it shouldn't be seen. Thanks SO - http://stackoverflow.com/questions/4823468/store-comments-in-markdown-syntax)\n\n\n   [dill]: <https://github.com/joemccann/dillinger>\n   [git-repo-url]: <https://github.com/joemccann/dillinger.git>\n   [john gruber]: <http://daringfireball.net>\n   [df1]: <http://daringfireball.net/projects/markdown/>\n   [markdown-it]: <https://github.com/markdown-it/markdown-it>\n   [Ace Editor]: <http://ace.ajax.org>\n   [node.js]: <http://nodejs.org>\n   [Twitter Bootstrap]: <http://twitter.github.com/bootstrap/>\n   [jQuery]: <http://jquery.com>\n   [@tjholowaychuk]: <http://twitter.com/tjholowaychuk>\n   [express]: <http://expressjs.com>\n   [AngularJS]: <http://angularjs.org>\n   [Gulp]: <http://gulpjs.com>\n\n   [PlDb]: <https://github.com/joemccann/dillinger/tree/master/plugins/dropbox/README.md>\n   [PlGh]: <https://github.com/joemccann/dillinger/tree/master/plugins/github/README.md>\n   [PlGd]: <https://github.com/joemccann/dillinger/tree/master/plugins/googledrive/README.md>\n   [PlOd]: <https://github.com/joemccann/dillinger/tree/master/plugins/onedrive/README.md>\n   [PlMe]: <https://github.com/joemccann/dillinger/tree/master/plugins/medium/README.md>\n   [PlGa]: <https://github.com/RahulHP/dillinger/blob/master/plugins/googleanalytics/README.md>\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

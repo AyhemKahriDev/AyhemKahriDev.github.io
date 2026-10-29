@@ -1,0 +1,16 @@
+{
+  "repo": "VolkanSah/Jump-and-run",
+  "stars": 1,
+  "licence": "GPL-3.0",
+  "sizeKB": 68,
+  "pushedAt": "2025-10-07T19:45:57Z",
+  "description": "Simple Jump & Run game. I was borred :D",
+  "defaultBranch": "main",
+  "owner": "VolkanSah",
+  "slug": "volkansah-jump-and-run",
+  "dest": "third-party/volkansah-jump-and-run",
+  "readme": "# Jump - Jump! \n##### learning game metrics\n### If i think & get bored. its so stupid, but helps by .... 🤔\nSimple Game in HTML, CSS, JS\n\nhttps://volkansah.github.io/Jump-and-run/\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>极速跑酷</title>
+  <link rel="stylesheet" href="style.css?v=12">
+</head>
+<body>
+  <canvas id="game"></canvas>
+
+  <div id="debug" class="hidden"></div>
+
+  <div id="hud" class="hidden">
+    <div class="hud-top">
+      <div class="hud-left">
+        <div class="score-line"><span id="score">0</span></div>
+        <div class="sub-line">距离 <span id="dist">0</span> m</div>
+      </div>
+      <div class="hud-right">
+        <div class="sub-line">最高 <span id="best">0</span></div>
+        <div class="sub-line">金币 <span id="coins">0</span></div>
+        <div id="lives" class="sub-line hidden">命×0</div>
+      </div>
+    </div>
+    <div id="combo" class="hidden">连击 x2</div>
+    <div id="fx" class="hidden"></div>
+    <button id="btn-mute" class="icon-btn" title="声音开关">声音</button>
+    <button id="btn-pause" class="icon-btn" title="暂停">暂停</button>
+  </div>
+
+  <div id="menu" class="panel">
+    <h1>极速跑酷</h1>
+    <p class="tagline">无尽轨道 · 躲避障碍 · 收集金币</p>
+    <div class="controls">
+      <div>← → 或 A D　换道</div>
+      <div>↑ 或 空格　跳跃</div>
+      <div>↓ 或 S　滑铲</div>
+      <div>手机端滑动操作</div>
+    </div>
+    <button id="btn-start" class="primary">开始游戏</button>
+  </div>
+
+  <div id="over" class="panel hidden">
+    <h2>撞上了</h2>
+    <div class="over-stats">
+      <div>得分 <span id="final-score">0</span></div>
+      <div>距离 <span id="final-dist">0</span> m</div>
+      <div>金币 <span id="final-coins">0</span></div>
+    </div>
+    <div id="new-best" class="hidden">新纪录！</div>
+    <button id="btn-restart" class="primary">再来一次</button>
+  </div>
+
+  <div id="pause" class="panel hidden">
+    <h2>暂停</h2>
+    <button id="btn-resume" class="primary">继续</button>
+  </div>
+
+  <script src="js/config.js?v=12"></script>
+  <script src="js/audio.js?v=12"></script>
+  <script src="js/input.js?v=12"></script>
+  <script src="js/world.js?v=12"></script>
+  <script src="js/render.js?v=12"></script>
+  <script src="js/game.js?v=12"></script>
+  <script src="js/main.js?v=12"></script>
+</body>
+</html>

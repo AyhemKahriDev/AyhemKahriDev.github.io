@@ -1,0 +1,16 @@
+{
+  "repo": "girishlade111/Tic-Tac-Toe-game",
+  "stars": 0,
+  "licence": "CC0-1.0",
+  "sizeKB": 14,
+  "pushedAt": "2026-10-02T14:40:28Z",
+  "description": "Tic-Tac-Toe game",
+  "defaultBranch": "main",
+  "owner": "girishlade111",
+  "slug": "girishlade111-tic-tac-toe-game",
+  "dest": "third-party/girishlade111-tic-tac-toe-game",
+  "readme": "# 🎮 Neon Tic-Tac-Toe\n\n> A glowing, dark-neon themed Tic-Tac-Toe game for the browser with particle effects, scoreboard, undo, and a \"Mystery Mode\" twist. 100% client-side — no backend, no build step, no dependencies.\n\n## ✨ Features\n\n- **Neon dark theme** — glowing board, animated background particle canvas, victory particle burst\n- **2-player local play** — X vs O on a classic 3×3 board\n- **Scoreboard** — running X/O scores with neon avatars\n- **Undo** — step back through move history\n- **Mystery Mode** — checkbox-enabled twist that hides moves for extra challenge\n- **Sound effects** — toggleable in-game sounds (Web Audio, no assets)\n- **Move timer / progress bar** — visual turn indicator\n- **Victory screen** — animated win overlay with \"Play Again\"\n\n## 🛠 Tech Stack\n\n- **HTML5** — semantic game structure (`HTML Structure & UI Elements.html`)\n- **CSS3** — DarkNeon theme, glow effects, responsive layout (`CSS Styling with DarkNeon Theme.css`)\n- **Vanilla JavaScript** — game engine: board state, win detection, move history, particles (`JavaScript Game Logic & Features.js`)\n- **Google Fonts** — Orbitron (futuristic typeface)\n\n## 🚀 Quick Start\n\nNo build, no install. Just open the page:\n\n```bash\n# Clone and open\ngit clone https://github.com/girishlade111/Tic-Tac-Toe-game.git\ncd Tic-Tac-Toe-game\n# open index.html in any modern browser\n```\n\nOr serve locally for the cleanest experience:\n\n```bash\nnpx serve .\n```\n\n## 📁 Project Structure\n\n```\nTic-Tac-Toe-game/\n├── index.html                     # Deployable entry point (web-safe copy)\n├── styles.css                     # Deployable copy of the DarkNeon CSS\n├── game.js                        # Deployable copy of the game engine JS\n├── HTML Structure & UI Elements.html   # Original HTML source\n├── CSS Styling with DarkNeon Theme.css # Original stylesheet source\n├── JavaScript Game Logic & Features.js  # Original game engine source\n├── User Guide                     # Gameplay guide\n├── LICENSE\n└── README.md\n```\n\nThe original sources (files with descriptive names) are kept as-is for reference;\n`index.html`, `styles.css`, and `game.js` are the web-deployable copies served by GitHub Pages.\n\n## 🌐 Deployment\n\nStatic site — deployed via **GitHub Pages** from the `main` branch root (`/`).\n\n---\n\n**Built by Girish Lade** — [https://ladestack.in](https://ladestack.in)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

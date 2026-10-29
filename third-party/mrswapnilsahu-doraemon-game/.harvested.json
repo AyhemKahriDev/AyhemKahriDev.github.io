@@ -1,0 +1,16 @@
+{
+  "repo": "mrswapnilsahu/Doraemon-Game",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 510,
+  "pushedAt": "2017-10-26T11:33:56Z",
+  "description": "This game is built using html,css and Javascript and I also used some bootstrap for designing.There are two folders in this repository one is demo and other one is final.In demo there is a game with the basic layout but its working and the other folder i.e.,in final folder there is a complete game.",
+  "defaultBranch": "master",
+  "owner": "mrswapnilsahu",
+  "slug": "mrswapnilsahu-doraemon-game",
+  "dest": "third-party/mrswapnilsahu-doraemon-game",
+  "readme": "# Doraemon-Game\nThis game is built using html,css and Javascript and I also used some bootstrap for designing.There are two folders in this repository one is demo and other one is final.In demo there is a game with the basic layout but its working and the other folder i.e.,in final folder there is a complete game.\n",
+  "licenceFile": "LICENSE",
+  "entry": "final/index.html",
+  "validated": true
+}

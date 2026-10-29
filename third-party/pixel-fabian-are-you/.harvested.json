@@ -1,0 +1,16 @@
+{
+  "repo": "pixel-fabian/are-you",
+  "stars": 4,
+  "licence": "GPL-3.0",
+  "sizeKB": 2171,
+  "pushedAt": "2022-04-26T19:37:42Z",
+  "description": "A browser game build with phaser 3 during Brackeys GameJam 2022.1.",
+  "defaultBranch": "main",
+  "owner": "pixel-fabian",
+  "slug": "pixel-fabian-are-you",
+  "dest": "third-party/pixel-fabian-are-you",
+  "readme": "# Are you?\n\n![GitHub](https://img.shields.io/github/license/pixel-fabian/are-you?style=flat-square)\n![GitHub top language](https://img.shields.io/github/languages/top/pixel-fabian/are-you?style=flat-square)\n![GitHub release (latest by date)](https://img.shields.io/github/v/release/pixel-fabian/are-you?style=flat-square)\n\n---\n\n[![Are You title image](dist/assets/img/are-you_title.jpg)](https://pixel-fabian.itch.io/are-you)\n\n... in the attic? in the cellar? You just don't know. And what's there, in your face? And what are all those other... where? This ... what? This is not real! What are those? What are you?\n\nYou need to orient yourself. You need to find out. Things are not what they seem. You should stand still, just for a bit, before trying to move.\n\nA game by: lupercalia & pixel-fabian\n\nCreated during [Brackeys Game Jam 2022.1](https://itch.io/jam/brackeys-7)\n\nBuild with [phaser 3](https://phaser.io/)\n\n## Play\n\n> Play on [itch.io](https://pixel-fabian.itch.io/are-you)\n\n### Controls:\n\n- move: WASD\n- interact: E or Q\n\n### Survival hints\n\n- Don't move for now! Start slow. Be sure!\n- Find the clover, u will need luck!\n- Collect all 3 photos to uncover who you are.\n\n## Edit or play localy\n\n1. Clone or download this repository\n2. Open `dist/index_standalone.html` with a webserver\n\n## License\n\n### Code\n\nAre you? - A browser game -\nCopyright (C) 2022 pixel-fabian & lupercalia\n\nThis program is free software: you can redistribute it and/or modify\nit under the terms of the GNU General Public License as published by\nthe Free Software Foundation, either version 3 of the License, or\n(at your option) any later version.\n\nThis program is distributed in the hope that it will be useful,\nbut WITHOUT ANY WARRANTY; without even the implied warranty of\nMERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the\nGNU General Public License for more details.\n\nYou should have received a copy of the GNU General Public License\nalong with this program. If not, see <https://www.gnu.org/licenses/>.\n\n### Assets\n\n- Sprites and sound effects: pixel-fabian & lupercalia CC-BY-SA 4.0\n- Font: BitPotion by Joeb Rogers (CC-BY)\n",
+  "licenceFile": "LICENSE",
+  "entry": "dist/index.html",
+  "validated": true
+}

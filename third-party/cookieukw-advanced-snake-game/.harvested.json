@@ -1,0 +1,16 @@
+{
+  "repo": "cookieukw/Advanced-Snake-Game",
+  "stars": 2,
+  "licence": "MIT",
+  "sizeKB": 77,
+  "pushedAt": "2024-02-15T20:27:29Z",
+  "description": "Advanced Snake Game",
+  "defaultBranch": "main",
+  "owner": "cookieukw",
+  "slug": "cookieukw-advanced-snake-game",
+  "dest": "third-party/cookieukw-advanced-snake-game",
+  "readme": "# Advanced-Snake-Game\n\nA game made in html using Canvas.\nThis code was initially based on [another code](https://gist.github.com/straker/ff00b4b49669ad3dec890306d348adc4),\nI would like to thank [Steven Lambert](https://gist.github.com/straker) therefore.\n\n\nThis version has the following improvements:\n<p>\n\n- The snake doesn't die when colliding with itself<p>\n- Now snake adjusts itself to grid, block and canvas size. It spawns on the other side regardless of canvas or block size<p>\n- There is another apple that spawns, if the snake eats it, it shrinks in size<p>\n- Mobile controls <p>\n- The snake is colored(the head has a unique color)<p>\n- The snake spawns at a random location and in a random direction<p>\n- Point count<p>\n- Better organization of codes and variables <p>\n---\n[demo](https://snake-ukw.vercel.app)\n---\n  ![sample](https://user-images.githubusercontent.com/65344982/170846061-c1b9ad7e-4b56-46cc-9909-b4ae303b2081.png)\n<p>\n<p>\nnote: translator's english\n\n<br>\n<br>\n<br>\n<samp>\n<h2 align=\"center\"> Open Source </h2>\n<sub><a align=\"center\">Copyright © 2022 CookieUkw.</a></sub> </p>\n <a align=\"center\"> MIT license</a></p>\n</p>\n</samp>\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

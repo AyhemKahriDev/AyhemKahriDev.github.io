@@ -1,0 +1,16 @@
+{
+  "repo": "import-this/supercold",
+  "stars": 22,
+  "licence": "BSD-3-Clause",
+  "sizeKB": 2067,
+  "pushedAt": "2017-05-17T15:34:22Z",
+  "description": "A simple 2D HTML5 game with the clever mechanics of SUPERHOT.",
+  "defaultBranch": "master",
+  "owner": "import-this",
+  "slug": "import-this-supercold",
+  "dest": "third-party/import-this-supercold",
+  "readme": "SUPERCOLD\n=========\n\nA simple 2D HTML5 game with the clever mechanics of [SUPERHOT](http://superhotgame.com/).\n\n[You can play it here!](https://import-this.github.io/supercold/)\n\nMade with [Phaser](http://phaser.io/).\n\n## License\nSUPERCOLD is released under the [BSD 3-Clause License](https://github.com/import-this/supercold/blob/master/LICENSE).\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

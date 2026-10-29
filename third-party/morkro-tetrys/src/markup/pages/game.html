@@ -1,0 +1,40 @@
+{% extends "layouts/default.html" %}
+
+{% set view_name = "game" %}
+{% set view_id = "play" %}
+{% set view_icon = "gameboy" %}
+
+{% block header %}
+	{{ super() }}
+	<div class="game-current-score">
+		<strong>Score:</strong> <span>0</span>
+	</div>
+{% endblock %}
+
+{% block main %}
+	<section class="tetrys-game">
+		<canvas id="game"></canvas>
+	</section>
+{% endblock %}
+
+{% block footer %}
+	<footer>
+		<ul class="tetrys-controls">
+			<li>
+				<button role="button" data-action="TETROMINO_MOVE_LEFT" class="shadow">
+					<svg><use xlink:href="#arrow-left"></use></svg>
+				</button>
+			</li>
+			<li>
+				<button role="button" data-action="TETROMINO_ROTATE" class="shadow">
+					<svg><use xlink:href="#arrow-turn"></use></svg>
+				</button>
+			</li>
+			<li>
+				<button role="button" data-action="TETROMINO_MOVE_RIGHT" class="shadow">
+					<svg><use xlink:href="#arrow-right"></use></svg>
+				</button>
+			</li>
+		</ul>
+	</footer>
+{% endblock %}

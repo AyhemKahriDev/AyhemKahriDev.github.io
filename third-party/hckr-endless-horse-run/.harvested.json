@@ -1,0 +1,16 @@
+{
+  "repo": "hckr/endless-horse-run",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 360,
+  "pushedAt": "2020-07-06T16:53:59Z",
+  "description": "A game in which a horse runs endlessly",
+  "defaultBranch": "master",
+  "owner": "hckr",
+  "slug": "hckr-endless-horse-run",
+  "dest": "third-party/hckr-endless-horse-run",
+  "readme": "# Endless horse run\nA game in which a horse runs endlessly.\n\n## Controls\n* Use spacebar to jump. The longer you hold, the longer the jump will be.\n* Use P to pause/unpause the game.\n\n## [Play it online!][1]\n\nWorks also on smartphones.\n\n[![screenshot](screenshot.png)][1]\n\n[1]: https://hckr.github.io/endless-horse-run\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

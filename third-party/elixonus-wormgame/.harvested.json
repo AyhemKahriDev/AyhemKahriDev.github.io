@@ -1,0 +1,16 @@
+{
+  "repo": "Elixonus/wormgame",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 3622,
+  "pushedAt": "2026-08-09T19:27:49Z",
+  "description": "A slither.io-like game made in javascript with the canvas API.",
+  "defaultBranch": "main",
+  "owner": "Elixonus",
+  "slug": "elixonus-wormgame",
+  "dest": "third-party/elixonus-wormgame",
+  "readme": "# wormgame 🐍\n\n![Wallpaper](wallpaper.png)\n\nA slither.io-like game made in javascript with the canvas API.\n\n![Screenshot 1](./screenshot1.png)\n\n## Controls\n\n`A` - Turn the player snake left.\n\n`D` - Turn the player snake right.\n\n`M` - Toggle minimap overlay.\n\n`G` - Toggle graphics performance mode.\n\n`I` - Toggle visual debug inspection mode.\n\n`(COMMA)` - Slow down the global time scale of the game.\n\n`(DOT)` - Speed up the global time scale of the game.\n\n`(LEFT MOUSE)` - Cycle the camera to the previous worm.\n\n`(RIGHT MOUSE)` - Cycle the camera to the next worm.\n\n## Designed features\n\nWhen a worm eats a food particle, the tail grows slowly in length.\n\nThe worms blink randomly from time to time.\n\nWhen worms are closer to each other, they become happier.\n\nWhen worms pass over the end of the map, they die and change appearance.\n\nSome of the worms are very detailed in shape.\n\n![Screenshot 2](./screenshot2.png)\n\n![Screenshot 3](./screenshot3.png)\n\n## Algorithm\n\n| Node Number | Node Order | Node Significance |\n| ----------- | ---------- | ----------------- |\n| 0           | First      | Head              |\n| 1           | Second     | Body              |\n| 2           | Third      | Body              |\n| 3           | Fourth     | Body              |\n| 4           | Fifth      | Body              |\n\nDerivative (second) of rotation of `Node Number` `0` is either controlled by player input or an AI algorithm.\n\n`Node Number` `0` moves with a certain speed in the direction of the worm.\n\n`Node Number` `n + 1` moves in the relative direction of `Node Number` `n` while keeping a constant distance and where `n` is any valid `Node Number` except `0`.\n\n## Debug Mode\n\nShows placement of the nodes as well as their vector direction.\n\nHighlights which food energy AI are looking at any given time as well as their target direction.\n\n![Screenshot 4](./screenshot4.png)\n\nLabels minimap offscreen energies that are not required to be rendered for optimization.\n\n![Screenshot 5](./screenshot5.png)\n\n## Challenges\n\nPreventing the nodes from getting too close together and forming a knot after turning for a while.\n\nMaintaining a playable framerate which was solved by rendering objects only that are close to the camera and those that are visible on the minimap.\n",
+  "licenceFile": "LICENSE",
+  "entry": "wormgame/index.html",
+  "validated": true
+}

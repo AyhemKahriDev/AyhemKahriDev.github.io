@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Lode Runner</title>
+
+    <style>
+        html,
+        body {
+            height: 100%;
+        }
+
+        #dos {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+    <!-- js-dos style sheet -->
+    <link rel="stylesheet" href="./js-dos.css">
+
+    <!-- js-dos -->
+    <script src="./js-dos.js"></script>
+
+    <!-- Hammer.js for gesture handling -->
+    <script src="./hammer.min.js"></script>
+
+</head>
+
+<body>
+
+    <div id="dos" style="width: 100%; height: 100%"></div>
+
+    <script type="text/javascript">
+
+        // Get the container element
+        var el = document.getElementById("dos");
+
+        // Initialize Hammer.js on the container
+        var hm = new Hammer.Manager(el);
+
+        // Initialize js-dos instance
+        const dosInstance = Dos(el, {
+            url: "./lr.jsdos",
+            pathPrefix: "./emulators/",
+            theme: "dark",
+            kiosk: false,
+            autoStart: true,
+            noCursor: true,
+            noCloud: true,
+            noNetworking: true,
+            onEvent: (event, arg) => {
+                console.log("Event", event, arg);
+                if (event === "ci-ready") {
+                    window.ci = arg;
+                }
+            },
+        });
+
+        // Key codes for gesture mapping
+        const KEY_ENT = 257;
+        const KEY_F1 = 290;
+        const KEY_F2 = 291;
+        const KEY_P2 = 322;
+        const KEY_P4 = 324;
+        const KEY_P5 = 325;
+        const KEY_P6 = 326;
+        const KEY_P8 = 328;
+
+        // Prevent default touch actions like scrolling and refreshing
+        el.addEventListener('touchmove', function (e) {
+            e.preventDefault();
+        }, { passive: false });
+
+        hm.add(new Hammer.Tap({ event: "singletap", taps: 1 }));
+
+        hm.on("singletap", function (e) {
+            var rect = el.getBoundingClientRect();
+            var centerX = rect.left + rect.width / 2.0;
+            var centerY = rect.top + rect.height / 2.0;
+            var x = e.center.x - centerX;
+            var y = e.center.y - centerY;
+            var r = Math.min(rect.width, rect.height) / 2.0;
+
+            var k = KEY_ENT;
+            if (x * x + y * y < r * r) {
+                k = KEY_ENT;
+            } else if (x < 0) {
+                k = KEY_F1;
+            } else {
+                k = KEY_F2;
+            }
+            window.ci.sendKeyEvent(k, true);
+            window.ci.sendKeyEvent(k, false);
+        });
+
+
+        hm.add(new Hammer.Pan({ event: "pan" }));
+        hm.get("pan").set({ direction: Hammer.DIRECTION_ALL });
+
+        var lastPan = "none";
+
+        hm.on("panstart panend pancancel", function (e) {
+            lastPan = "none";
+        });
+
+        hm.on("panleft panright panup pandown", function (e) {
+
+            if (e.type == lastPan) {
+                return;
+            }
+
+            lastPan = e.type;
+
+            var k = KEY_P5;
+            switch (e.type) {
+                case "panleft":
+                    k = KEY_P4;
+                    break;
+                case "panright":
+                    k = KEY_P6;
+                    break;
+                case "panup":
+                    k = KEY_P8;
+                    break;
+                case "pandown":
+                    k = KEY_P2;
+                    break;
+                default:
+                    k = KEY_P5;
+                    break;
+            }
+
+            window.ci.sendKeyEvent(k, true);
+            window.ci.sendKeyEvent(k, false);
+        });
+
+    </script>
+</body>
+
+</html>

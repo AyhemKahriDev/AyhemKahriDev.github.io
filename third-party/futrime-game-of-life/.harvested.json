@@ -1,0 +1,16 @@
+{
+  "repo": "futrime/game-of-life",
+  "stars": 3,
+  "licence": "Apache-2.0",
+  "sizeKB": 303,
+  "pushedAt": "2020-10-27T12:39:56Z",
+  "description": "Probably one of the most fantastic but pratical demo of Conway's Game of Life, based on Javascript, Canvas and dat.GUI.",
+  "defaultBranch": "main",
+  "owner": "futrime",
+  "slug": "futrime-game-of-life",
+  "dest": "third-party/futrime-game-of-life",
+  "readme": "# Conway's Game of Life\n\nEnglish [简体中文](README.zh.md)\n\nProbably one of the most fantastic but pratical demo of Conway's Game of Life, based on Javascript, Canvas and dat.GUI.\n\n[DEMO](https://futrime.github.io/Game-of-Life/)\n\nWarning: This DEMO is only available out of Mainland China, if you are currently in Mainland China, please refer to [Chinese README](README.zh.md).\n\n#### Description\n\nConway's Game of Life is a computer game based on a kind of Cellular Automatons invented by the British mathematician John Horton Conway in 1970, and proved Turing complete. It originally appeared in Martin Gordon's \"Math Game\" column in Scientific American in October 1970. The principle is very simple, that is, there are several cells living on a two-dimensional plane, and its surviving or not at the next moment depends on the existence of cells in the surrounding 8 grids. The specific rules are as follows:\n\n* If 2 cells surrounded, keep the latest status.\n* If 3 cells surrounded, the cell comes to live (or keep alive).\n* If equals to or less than 1 cell or equals to or more than 4 cells, it dies.\n\nThe plane is theoretically infinity, but due to the device restrictions, it can only be large as possible. This repo is a Web program of Conway's Game of Life, based on pure Canvas and dat.GUI.\n\n#### Instructions\n\n* Not interested in configurate the repo manually, you can straighly open [the online DEMO](https://futrime.github.io/Game-of-Life/).\n\n1. Modify the parameters beginning with *const* in `script.js`.\n1. Run `index.html`, adjust on the panel top-right.\n1. Choose a pattern and place it on the map.\n\n#### Customized Collection HOW TO\n\nCollection is a collection of patterns, which can be loaded when starting this game and placed on the map.\n\nYou can follow the instructions in `collection.js` to create your own Collection, and insert it in `index.html` following its guide and modified parameter `collection` in `script.js`.\n\nYou can also follow the instructions in `translator.py`, create your own Plaintext files(.cells) and use `translator.py` to transfer it to Collection script.\n\nPlease don't try opening `all.js`, it might be too large for your device to handle.\n\n#### Contribution\n\n1.  Fork the repository\n2.  Create feature/xxx branch\n3.  Commit your code\n4.  Create Pull Request\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

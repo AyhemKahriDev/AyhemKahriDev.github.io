@@ -1,0 +1,16 @@
+{
+  "repo": "jesselpalmer/hangman",
+  "stars": 2,
+  "licence": "MIT",
+  "sizeKB": 128,
+  "pushedAt": "2016-03-12T17:00:49Z",
+  "description": "A remake of the classic game Hangman",
+  "defaultBranch": "master",
+  "owner": "jesselpalmer",
+  "slug": "jesselpalmer-hangman",
+  "dest": "third-party/jesselpalmer-hangman",
+  "readme": "hangman\n=======\n\nHTML5 version of Hangman.\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

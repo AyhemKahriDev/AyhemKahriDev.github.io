@@ -1,0 +1,16 @@
+{
+  "repo": "shahbajtahershezan/Color-Match-Brick-Breaker",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 125,
+  "pushedAt": "2025-10-11T10:51:23Z",
+  "description": "A colorful twist on the classic brick breaker game where the ball must match the brick color to break it. Built with HTML5 Canvas and JavaScript.",
+  "defaultBranch": "main",
+  "owner": "shahbajtahershezan",
+  "slug": "shahbajtahershezan-color-match-brick-breaker",
+  "dest": "third-party/shahbajtahershezan-color-match-brick-breaker",
+  "readme": "# 🎯 Color Match Brick Breaker\n\n![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)\n![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)\n![Canvas](https://img.shields.io/badge/Canvas-2C3E50?logo=html5&logoColor=white)\n\nA modern, feature-rich brick breaker game with a unique color-matching twist. Built with pure HTML5 Canvas and JavaScript for smooth, responsive gameplay.\n\n## 🎮 Features\n\n- **Color Matching Mechanics** - Ball must match brick color to break it\n- **Multiple Power-ups** - Speed boost, multi-ball, and wider paddle\n- **Dynamic Gameplay** - Ball changes color after breaking bricks\n- **Responsive Design** - Works on desktop and mobile devices\n- **Beautiful Visuals** - Smooth animations, glow effects, and modern UI\n- **Score Tracking** - Real-time score display and game statistics\n\n## 🕹️ How to Play\n\n### Controls\n- `A/D` keys - Fast paddle movement\n- `Arrow Keys` - Normal paddle movement  \n- `R` key - Restart game when game over\n\n### Game Rules\n1. Break bricks by matching the ball color with the brick color\n2. Each broken brick increases your score by 10 points\n3. Collect power-ups that drop from broken bricks\n4. Don't let the ball pass below your paddle\n5. Clear all bricks to win the game\n\n### Power-ups\n- 🔴 **Red** - Speed boost (30% increase)\n- 🟢 **Green** - Multi-ball (doubles active balls)\n- 🔵 **Blue** - Wider paddle (lasts 20 seconds)\n\n## 🚀 Quick Start\n\n### Play Online\nVisit the live demo: [GitHub Pages Link]\n\n### Run Locally\n1. Clone the repository:\n```bash\ngit clone https://github.com/your-username/color-match-brick-breaker.git\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

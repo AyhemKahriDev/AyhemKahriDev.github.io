@@ -1,0 +1,15 @@
+body{
+    margin: 0;
+    padding: 0;
+}
+#svg-ball, #svg-brick {
+    display: none;
+}
+#gameScreen, .game-details {
+    border: 2px solid black;
+    margin: 10px;
+    float: left;
+}
+.game-details {
+    padding: 10px;
+}

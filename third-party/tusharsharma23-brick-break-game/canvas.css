@@ -1,0 +1,84 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 26 Mar, 2019, 9:06:38 PM
+    Author     : Tushar
+*/
+
+* {
+    padding: 0;
+    margin: 0;
+}
+canvas {
+    background: #eee;
+    display: block;
+    margin: 0 auto;
+    background:url('images/canvasBg.jpg');
+}
+
+p {
+	font-size: 16px;
+}
+
+.gamePage {
+	
+	
+}
+
+.gameCanvas{
+	margin: auto;
+	width: 480px;   
+        border: 5px solid ;
+}
+
+.gameInfo{
+    
+    margin-top: 20px;
+    font-family: sans-serif; 
+    width: 480px;
+    background-color: #ebf9a9;
+    justify-content: flex-start;
+    border: 5px solid ;
+    
+}
+
+.scores{
+    position: relative;
+    float: left;
+    width: min-content;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    border: 5px solid;
+    padding: 5px;
+    color: white;
+}
+
+.levels{
+    position: relative;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
+    border: 5px solid;
+    width: max-content;
+    padding: 10px;
+    color: white;
+}
+
+.lives2{
+    position: relative;
+    float: right;
+    width: min-content;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 10px;
+    border: 5px solid;
+    padding: 5px;
+    color: white;
+}
+
+.initScore{
+    width: 480px;
+    display: inline-block;
+    
+}

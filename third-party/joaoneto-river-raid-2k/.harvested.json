@@ -1,0 +1,16 @@
+{
+  "repo": "joaoneto/river-raid-2k",
+  "stars": 12,
+  "licence": "MIT",
+  "sizeKB": 3920,
+  "pushedAt": "2022-09-02T20:14:54Z",
+  "description": "It is an intuitive remake of River Raid game, the motivation is just having fun coding",
+  "defaultBranch": "main",
+  "owner": "joaoneto",
+  "slug": "joaoneto-river-raid-2k",
+  "dest": "third-party/joaoneto-river-raid-2k",
+  "readme": "# River Raid 2k\n\nIt's a intuitive remake *game* of [River Raid](https://en.wikipedia.org/wiki/River_Raid).\nThe motivation is just fun in coding, there is no commercial purpose.\n\nLive Preview: https://joaoneto.github.io/river-raid-2k/\n\nFeatures:\n1. Nice decouple, (not for performance)\n1. Pseudo-engine based on Unity classes\n1. Infinite and procedural map loop\n1. Sprites pixel matrix to base64 images\n1. Colisions detection in sprite width / height\n\nEnjoy ;)\n\n![preview](/preview.gif?raw=true)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

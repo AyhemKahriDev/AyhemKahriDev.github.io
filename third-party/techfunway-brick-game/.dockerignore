@@ -1,0 +1,12 @@
+.git
+.idea
+dev
+release
+fnpack
+scripts
+*.fpk
+*.md
+docker-compose*.y*ml
+Makefile
+VERSION
+app.json

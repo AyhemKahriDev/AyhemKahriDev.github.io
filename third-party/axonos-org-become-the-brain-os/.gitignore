@@ -1,0 +1,6 @@
+.ci-tmp/
+.git-tmp/
+.axon-v*/
+.axon-v*-clean/
+.DS_Store
+node_modules/

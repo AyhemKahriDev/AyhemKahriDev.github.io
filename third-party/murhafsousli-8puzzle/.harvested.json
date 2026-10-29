@@ -1,0 +1,15 @@
+{
+  "repo": "MurhafSousli/8puzzle",
+  "stars": 44,
+  "licence": "GPL-3.0",
+  "sizeKB": 5701,
+  "pushedAt": "2016-11-20T10:42:32Z",
+  "description": "8-Puzzle Game 🕹",
+  "defaultBranch": "master",
+  "owner": "MurhafSousli",
+  "slug": "murhafsousli-8puzzle",
+  "dest": "third-party/murhafsousli-8puzzle",
+  "readme": "# 8-Puzzle Game\n\n<p align=\"center\"><img style=\"text-align: center;\" src=\"src/assets/cover.png?raw=true\"></p>\n8-puzzle game is a sliding puzzle that consists of a frame of numbered square tiles in random order with one tile missing.\n\nThe object of the puzzle is to place the tiles in order (see diagram) by making sliding moves that use the empty space.\n\nThis project was intentionally programmed to solve the n-puzzle problem with artificial inelegance algorithms.\n\nPowered by Angular2\n\n - Checkout the [Memory Game](https://murhafsousli.github.io/memory/)\n\n## Author\n\n **[Murhaf Sousli](http://murhafsousli.com)**\n\n - [github/murhafsousli](https://github.com/MurhafSousli)\n - [twitter/murhafsousli](https://twitter.com/MurhafSousli)\n\n## License\n\n[![AUR](https://img.shields.io/aur/license/yaourt.svg?style=flat-square)](/LICENSE)",
+  "licenceFile": "LICENSE",
+  "entry": "src/index.html"
+}

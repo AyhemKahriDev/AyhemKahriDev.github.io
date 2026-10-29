@@ -1,0 +1,16 @@
+{
+  "repo": "mert574/one-more-jump",
+  "stars": 2,
+  "licence": "MIT",
+  "sizeKB": 2709,
+  "pushedAt": "2026-10-21T06:28:22Z",
+  "description": "A vertical platform-jumping browser game built with JavaScript and Canvas.",
+  "defaultBranch": "master",
+  "owner": "mert574",
+  "slug": "mert574-one-more-jump",
+  "dest": "third-party/mert574-one-more-jump",
+  "readme": "# One More Jump\nA vertical platform-jumping browser game inspired by Doodle Jump, built with\nJavaScript and Canvas without a game library. Jump between scrolling platforms and earn points for\nlanding on them.\n\n## Usage\nUse Node.js 22.18 or newer.\n\n```sh\nnpm install\nnpm start\n```\n\nUse A/D or Left/Right to move. Press Space, W or Up to start and jump;\npress again in the air for a double jump. S or Down moves downward.\n\n## Demo\n[Play Now](https://mert574.github.io/one-more-jump/)\n\n## License\n\nGame code, `img/background.svg` and the generated audio in `sound/` are licensed\nunder [MIT](LICENSE). Regenerate the audio with `python sound/generate.py`.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

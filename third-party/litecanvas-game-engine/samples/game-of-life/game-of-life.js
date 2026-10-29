@@ -1,0 +1,122 @@
+litecanvas()
+
+function createGrid(w, h) {
+    let grid = []
+
+    for (let y = 0; y < h; y++) {
+        grid.push([])
+
+        for (let x = 0; x < w; x++) {
+            grid[y].push(randi(0, 1))
+        }
+    }
+
+    return grid
+}
+
+function nextState(currentState, converter) {
+    let nextState = createGrid(currentState[0].length, currentState.length)
+
+    for (let y = 0; y < currentState.length; y++) {
+        for (let x = 0; x < currentState[y].length; x++) {
+            nextState[y][x] = converter(currentState, x, y)
+        }
+    }
+
+    return nextState
+}
+
+function countNeighbors(state, x, y) {
+    let count = 0
+
+    for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
+            if (i == 0 && j == 0) {
+                continue
+            }
+
+            let sY = (state.length + y + i) % state.length
+            let sX = (state[0].length + x + j) % state[0].length
+
+            if (state[sY][sX] == 1) {
+                count++
+            }
+        }
+    }
+
+    return count
+}
+
+function habitability(state, x, y) {
+    let neighbors = countNeighbors(state, x, y)
+
+    if (state[y][x] == 0 && neighbors == 3) {
+        return 1
+    }
+
+    if (state[y][x] == 1 && (neighbors < 2 || neighbors > 3)) {
+        return 0
+    }
+
+    return state[y][x]
+}
+
+function init() {
+    framerate(1)
+
+    rows = 20
+    cols = 20
+
+    cellSize = 25
+
+    board = createGrid(cols, rows)
+
+    lastUpdated = 0
+
+    mode = 'play'
+}
+
+function update(dt) {
+    if (mode == 'play') {
+        board = nextState(board, (state, x, y) => {
+            return habitability(state, x, y)
+        })
+    }
+}
+
+function draw() {
+    cls(3)
+
+    for (let y = 0; y < board.length; y++) {
+        for (let x = 0; x < board[y].length; x++) {
+            let sx = x * cellSize
+            let sy = y * cellSize
+
+            if (mode == 'edit') {
+                rect(sx, sy, cellSize, cellSize, 2)
+            }
+
+            if (board[y][x]) {
+                rectfill(sx + 1, sy + 1, cellSize - 2, cellSize - 2, 0)
+            }
+        }
+    }
+
+    rect(136, H - 62, mode.length * 16 + 30, 52, 1)
+    textfont('monospace')
+    text(18, H - 49, 'MODE: ', 0)
+    text(144, H - 49, mode, 0)
+}
+
+function tapped(x, y) {
+    if (x > 0 && x < cellSize * (cols + 1) && y > 0 && y < cellSize * (rows + 1)) {
+        let row = floor(y / cellSize)
+        let col = floor(x / cellSize)
+
+        board[row][col] = 1 - board[row][col]
+    }
+
+    if (10 <= x - 126 && x - 126 <= 10 + mode.length * 16 + 30 && H - 62 <= y && y <= H - 10) {
+        mode = mode == 'play' ? 'edit' : 'play'
+    }
+}

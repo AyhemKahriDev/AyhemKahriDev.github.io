@@ -1,0 +1,15 @@
+{
+  "repo": "Lallassu/badsanta",
+  "stars": 103,
+  "licence": "MIT",
+  "sizeKB": 5751,
+  "pushedAt": "2016-12-23T08:37:21Z",
+  "description": "BadSanta - Multiplayer HTML5 Game (http://santa.qake.se)",
+  "defaultBranch": "master",
+  "owner": "Lallassu",
+  "slug": "lallassu-badsanta",
+  "dest": "third-party/lallassu-badsanta",
+  "readme": "# Bad Santa\nBad Santa - Multiplayer HTML5 Game (http://santa.qake.se) made with phaser and nodejs.\n\nPlay here: http://santa.qake.se\n\n# Howto\nDevelopment environment\n\n    bower install --development\n    npm install --development\n    grunt\nProduction\n\n    grunt dist\nCreates a \"dist\" directory with everything needed.\n\nThere is also a dockerfile to be used for creating docker containers for the server to run in.\n    \n\n# Sreenshots \n\n![ScreenShot](http://santa.qake.se/img/s1.png)\n![ScreenShot](http://santa.qake.se/img/s2.png)\n![ScreenShot](http://santa.qake.se/img/s3.png)\n![ScreenShot](http://santa.qake.se/img/s4.png)\n\n# License\nMIT\n\n\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

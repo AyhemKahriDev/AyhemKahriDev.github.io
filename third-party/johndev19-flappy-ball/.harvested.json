@@ -1,0 +1,16 @@
+{
+  "repo": "JohnDev19/Flappy-Ball",
+  "stars": 2,
+  "licence": "MIT",
+  "sizeKB": 82,
+  "pushedAt": "2024-10-29T02:57:20Z",
+  "description": "Flappy Ball is an HTML5 canvas game inspired by the classic Flappy Bird. In this game, players control a bouncing ball, navigating it through obstacles while collecting power-ups and aiming for a high score.",
+  "defaultBranch": "main",
+  "owner": "JohnDev19",
+  "slug": "johndev19-flappy-ball",
+  "dest": "third-party/johndev19-flappy-ball",
+  "readme": "# Flappy Ball Game\n\n## Description\n\nFlappy Ball is an HTML5 canvas game inspired by the classic Flappy Bird. In this game, players control a bouncing ball, navigating it through obstacles while collecting power-ups and aiming for a high score.\n\n![Demo](flappyball1.jpg)\n![Demo](flappyball2.jpg)\n\n## Features\n\n- Canvas-based gameplay\n- Ball physics with gravity and bounce effects\n- Progressive difficulty increase\n- Power-up system with two types: Invincibility and Slow Motion\n- Level progression\n- High score tracking with local storage\n- Pause functionality\n- Particle effects for enhanced visual experience\n\n## How to Play\n\n1. Click the \"Start Game\" button to begin.\n2. Use the following controls to make the ball jump:\n   - Click or tap the screen\n   - Press the spacebar\n   - Touch the screen (on mobile devices)\n3. Navigate the ball through gaps in the obstacles.\n4. Collect power-ups to gain temporary advantages:\n   - Gold star: Invincibility\n   - Blue star: Slow Motion\n5. Avoid hitting obstacles or the ground/ceiling.\n6. Try to achieve the highest score possible!\n\n## Setup and Running\n\n1. Clone this repository to your local machine.\n2. Open the `index.html` file in a modern web browser.\n3. No additional setup or installation is required!\n\n## Technologies Used\n\n- HTML5\n- CSS3\n- JavaScript (ES6+)\n- HTML5 Canvas API\n\n## Game Mechanics\n\n- The ball constantly falls due to gravity.\n- Obstacles move from right to left.\n- Hitting an obstacle or the ground/ceiling ends the game.\n- Score increases by successfully passing obstacles.\n- Every 10 points, the level increases, and the game gets faster.\n- Power-ups provide temporary abilities:\n  - Invincibility: Pass through obstacles without collision.\n  - Slow Motion: Slows down the game speed for easier navigation.\n\n## Future Enhancements\n\n- Multiple ball skins\n- Online leaderboard\n- Additional power-up types\n- Background music and sound effects\n- Mobile-optimized touch controls\n\n## Contributing\n\nContributions, issues, and feature requests are welcome! Feel free to check [issues page](https://github.com/JohnDev19/Flappy-Ball/issues) if you want to contribute.\n\n## License\n\nThis project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.\n\n## Acknowledgments\n\n- Inspired by the classic Flappy Bird game\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

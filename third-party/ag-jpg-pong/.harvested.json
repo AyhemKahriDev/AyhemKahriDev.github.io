@@ -1,0 +1,16 @@
+{
+  "repo": "AG-jpg/pong",
+  "stars": 0,
+  "licence": "CC0-1.0",
+  "sizeKB": 4775,
+  "pushedAt": "2021-01-23T14:40:01Z",
+  "description": "Pong game in Javascript",
+  "defaultBranch": "main",
+  "owner": "AG-jpg",
+  "slug": "ag-jpg-pong",
+  "dest": "third-party/ag-jpg-pong",
+  "readme": "# pong\nPong game in Javascript\n",
+  "licenceFile": "LICENSE",
+  "entry": "pong.html",
+  "validated": true
+}

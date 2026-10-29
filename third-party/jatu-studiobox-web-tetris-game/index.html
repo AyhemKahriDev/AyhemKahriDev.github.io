@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Silkscreen&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/b71181a14c.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Tetris Game</title>
+</head>
+
+<body>
+    <div class="grid-container">
+        <div class="grid-item playing-area"><canvas id="canvas" width="300" height="600"></canvas></div>
+        <div class="grid-item grid-next-tetris">
+            <fieldset class="group-body">
+                <legend class="group-title">Next:</legend>
+                <div class="next-tetris-canvas">
+                    <canvas id="nextShapeCanvas" width="140" height="140"> </canvas>
+                </div>
+            </fieldset>
+            <fieldset class="group-body">
+                <legend class="group-title">Score:</legend>
+                <div class="score-text" id="scoreText">0</div>
+            </fieldset>
+            <fieldset class="group-body">
+                <legend class="group-title">Speed:</legend>
+                <div class="speed-text">Level <span id="speedText">0</span></div>
+            </fieldset>
+            <div class="button-area">
+                <button id="btnRefresh" type="button" title="Re-start"><i class="fa-solid fa-retweet"></i> <u>R</u>e-start</button>
+            </div>
+            <div class="button-area">
+                <button id="btnOpenSetttings" type="button" title="Settings"><i class="fa-solid fa-gear"></i> S<u>e</u>ttings</button>
+            </div>
+            <div class="button-area">
+                <button id="btnOpenController" type="button" title="Control"><i class="fa-solid fa-gamepad"></i> <u>C</u>ontrol</button>
+            </div>
+            <div class="button-area">
+                <button id="btnOpenAbout" type="button" title="About"><i class="fa-solid fa-circle-info"></i> <u>A</u>bout</button>
+            </div>
+        </div>
+    </div>
+    <!-- The Modal -->
+    <div id="modalSettings" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <fieldset class="modal-group-body">
+                <legend class="group-title modal-title"><i class="fa-solid fa-gear"></i> Settings:</legend>
+                <div>
+                    <!-- <i class="fa-solid fa-caret-right"></i> -->
+                    <div class="modal-item setting-item">
+                        <i class="fa-solid fa-caret-right"></i> 
+                        <label for="gameSpeed">Game speed:</label> 
+                        <span class="game-speed-item">1</span> 
+                        <span class="game-speed-item">2</span> 
+                        <span class="game-speed-item">3</span> 
+                        <span class="game-speed-item">4</span> 
+                        <span class="game-speed-item">5</span> 
+                    </div>
+                    <div class="modal-item setting-item"><i class="fa-solid fa-caret-right"></i> Other 1</div>
+                    <div class="modal-item setting-item"><i class="fa-solid fa-caret-right"></i> Other 2</div>
+                    <div class="modal-footer">* Press save button to use new setting values, then game will be re-start</div>
+                </div>
+            </fieldset>
+            <div class="modal-footer-area">
+                <button id="btnSaveSettings" type="button" title="Save"><i class="fa-solid fa-floppy-disk"></i> <u>S</u>ave</button>
+                <button id="btnCloseSettings" type="button" title="Exit"><i class="fa-solid fa-circle-xmark"></i> E<u>x</u>it</button>
+            </div>
+        </div>
+    </div>
+    <div id="modalController" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <fieldset class="modal-group-body">
+                <legend class="group-title modal-title"><i class="fa-solid fa-gamepad"></i>controller:</legend>
+                <div>
+                    <div class="modal-item"><span class="control-button"><i class="fa-solid fa-up-long"></i></span> - rotate <i class="fa-solid fa-rotate-right"></i></div>
+                    <div class="modal-item"><span class="control-button"><i class="fa-solid fa-right-long"></i></span> - move right</div>
+                    <div class="modal-item"><span class="control-button"><i class="fa-solid fa-left-long"></i></span> - move left</div>
+                    <div class="modal-item"><span class="control-button"><i class="fa-solid fa-down-long"></i></span> - move down</div>
+                    <div class="modal-item"><span class="control-button">D</span> - rotate <i class="fa-solid fa-rotate-right"></i></div>
+                    <div class="modal-item"><span class="control-button">S</span> - rotate <i class="fa-solid fa-rotate-left"></i></div>
+                    <div class="modal-item"><span class="control-button">R</span> - Re-start</div>
+                    <div class="modal-item"><span class="control-button control-button-big">Space bar</span> - pause/continue</div>
+                </div>
+            </fieldset>
+            <div class="modal-footer-area">
+                <button id="btnCloseController" type="button" title="Exit"><i class="fa-solid fa-circle-xmark"></i> E<u>x</u>it</button>
+            </div>
+        </div>
+    </div>
+    <div id="modalAbout" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <fieldset class="modal-group-body">
+                <legend class="group-title modal-title"><i class="fa-solid fa-circle-info"></i>About:</legend>
+                <div class="about-content">
+                    <div class="about-item">Web Tetris Game by Jatu-StudioBox.</div>
+                    <div class="about-item"><i class="fa-brands fa-github"></i> GitHub - <a href="https://github.com/jatu-studiobox/web-tetris-game" id="linkGitHub" alt="GitHub" target="_blank" rel="noopener noreferrer">https://github.com/jatu-studiobox/web-tetris-game</a> [Click link or press Enter]</div>
+                </div>
+            </fieldset>
+            <div class="modal-footer-area">
+                <button id="btnCloseAbout" type="button" title="Exit"><i class="fa-solid fa-circle-xmark"></i> E<u>x</u>it</button>
+            </div>
+        </div>
+    </div>
+    <img id="image" src="rotations.png" class="imageTemplate" title="image temp" />
+    <script src="tetris.js"></script>
+</body>
+
+</html>

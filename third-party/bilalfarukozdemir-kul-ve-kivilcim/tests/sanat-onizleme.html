@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<title>Siluet önizleme</title>
+<style>
+  body { margin:0; padding:24px; background:#0d0b09; color:#ece4db;
+         font-family: ui-sans-serif, system-ui, sans-serif; }
+  h1 { font-size:18px; font-weight:400; letter-spacing:.06em; margin:0 0 4px;
+       font-family: Georgia, serif; }
+  p.not { color:#6d6259; font-size:12px; margin:0 0 20px; }
+  .izgara { display:grid; grid-template-columns:repeat(auto-fill,minmax(132px,1fr)); gap:10px; }
+  .hucre { background:
+             radial-gradient(ellipse at 50% 88%, rgba(249,115,22,.10), transparent 62%),
+             linear-gradient(180deg,#181310,#100c0a);
+           border:1px solid #33291f; border-radius:10px; padding:10px 6px 8px;
+           display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .hucre .ad { font-size:10.5px; color:#9c9188; text-align:center; line-height:1.3; }
+  .hucre .id { font-size:9px; color:#5c534b; }
+  .kutu { height:112px; display:grid; place-items:end center; }
+  .zemin { width:70%; height:7px; border-radius:50%; margin-top:-6px;
+           background:radial-gradient(ellipse,rgba(0,0,0,.75),transparent 72%); }
+</style>
+</head>
+<body>
+<h1>Kül ve Kıvılcım — siluet önizleme</h1>
+<p class="not">Her düşman oyundaki paleti ve ölçeğiyle. Zemin gölgesi ve kor ışığı oyundakiyle aynı.</p>
+<div class="izgara" id="izgara"></div>
+
+<script src="../js/ui/sanat.js"></script>
+<script>
+  var izgara = document.getElementById('izgara');
+  var adlar = {
+    oyuncu: 'Kıvılcım Taşıyıcı (oyuncu)'
+  };
+  Object.keys(SANAT.esleme).forEach(function (id) {
+    var e = SANAT.esleme[id];
+    var h = document.createElement('div');
+    h.className = 'hucre';
+    h.innerHTML = '<div class="kutu">' + SANAT.svg(id, { boy: 96 }) + '</div>' +
+                  '<div class="zemin"></div>' +
+                  '<div class="ad">' + (adlar[id] || id) + '</div>' +
+                  '<div class="id">' + e[0] + ' · ' + e[1] + ' · ×' + e[2] + '</div>';
+    izgara.appendChild(h);
+  });
+</script>
+</body>
+</html>

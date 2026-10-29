@@ -1,0 +1,16 @@
+{
+  "repo": "emanuelefavero/canvas-game",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 4461,
+  "pushedAt": "2023-03-26T04:37:43Z",
+  "description": "A mini game built with html canvas, vanilla javascript and css",
+  "defaultBranch": "main",
+  "owner": "emanuelefavero",
+  "slug": "emanuelefavero-canvas-game",
+  "dest": "third-party/emanuelefavero-canvas-game",
+  "readme": "# Canvas Game\n\nThis is a simple game that I made with canvas, css and javascript. Grab as many coin as you can and avoid the walls.\n\n## Live Demo\n\n- [Play Now](https://emanuelefavero.github.io/canvas-game/)\n\n#### Screenshot\n\n<img src=\"screenshot.jpg\" alt=\"screenshot\" width=\"300\">\n\n## How to play\n\n- Desktop: Use the arrow keys or WASD keys to move the player\n- Mobile: Swipe to move the player\n\n## How to run the game locally\n\n- Clone the repository\n- Open the `index.html` file in your browser\n\n## License\n\n- [MIT](LICENSE.md)\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Play Tiles Puzzle in your browser – choose any image and solve the sliding tile puzzle." />
+  <meta name="theme-color" content="#132238" />
+  <meta name="AUTHOR" content="Oliver Merkel" />
+  <meta name="COPYRIGHT" content="Oliver Merkel" />
+  <title>Tiles Puzzle</title>
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="image/icons/tiles_puzzle128.png" />
+  <link rel="stylesheet" href="css/tiles_puzzle.css" />
+</head>
+<body>
+  <div class="app-shell">
+
+    <header id="app-header" class="app-header">
+      <button id="btn-menu" class="icon-btn" type="button" aria-label="Open menu" aria-controls="side-panel">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20" aria-hidden="true">
+          <rect y="3" width="20" height="2" rx="1"/>
+          <rect y="9" width="20" height="2" rx="1"/>
+          <rect y="15" width="20" height="2" rx="1"/>
+        </svg>
+      </button>
+      <div class="header-copy">
+        <span id="app-header-title">Tiles Puzzle</span>
+        <span id="app-header-subtitle">Slide the tiles to restore the image.</span>
+      </div>
+      <span id="app-header-badge" class="header-badge">4×4</span>
+    </header>
+
+    <main id="app-content">
+
+      <section id="view-game" class="view view-game">
+        <div class="board-stage">
+
+          <div class="board-left">
+            <div class="upload-section">
+              <label for="imageInput" class="upload-label">Select Image</label>
+              <input type="file" id="imageInput" accept="image/*" />
+              <small class="privacy-note">🔒 Your image stays on your device — nothing is uploaded.</small>
+            </div>
+            <h1 id="gameTitle" class="game-title">15-Puzzle Game</h1>
+            <div class="puzzle" id="puzzle"></div>
+          </div>
+
+          <aside class="board-sidebar">
+            <div class="game-status-card">
+              <p id="status" role="status" aria-live="polite" aria-atomic="true">Please select an image</p>
+            </div>
+            <div class="moves-card">
+              <p id="moves">Moves: 0</p>
+              <div class="best-scores">
+                <p id="bestMovesToday">Today: —</p>
+                <p id="bestMovesAllTime">All time: —</p>
+              </div>
+            </div>
+            <p id="keyboard-hint" class="hint-text">⌨️ Arrow keys/WASD move, R reshuffles, ? help</p>
+            <button type="button" id="resetBtn" class="btn" disabled>Shuffle Again</button>
+          </aside>
+
+        </div>
+      </section>
+
+      <section id="view-rules" class="view view-page" hidden>
+        <h2>Rules</h2>
+        <p>Slide the tiles to restore the original image. Click or tap a tile to move it towards the empty space.</p>
+
+        <details open>
+          <summary>Goal</summary>
+          <p>Arrange all tiles in the correct order — left to right, top to bottom — leaving the empty space in the bottom-right corner.</p>
+        </details>
+
+        <details>
+          <summary>Moving Tiles</summary>
+          <p>Click any tile in the same row or column as the empty space to slide it. Arrow keys and WASD work too.</p>
+        </details>
+
+        <details>
+          <summary>Line Shift</summary>
+          <p>Hold Shift and press an arrow key (or W/A/S/D) to slide an entire row or column at once — counts as one move.</p>
+        </details>
+
+        <details>
+          <summary>Keyboard Shortcuts</summary>
+          <ul class="text-list">
+            <li>Arrow keys / WASD — move adjacent tile into the empty space</li>
+            <li>Shift + Arrow / WASD — shift an entire row or column</li>
+            <li>R — reshuffle the puzzle</li>
+            <li>? — show shortcut reminder</li>
+          </ul>
+        </details>
+
+        <details>
+          <summary>Difficulty</summary>
+          <p>Choose a grid size in Options: 3×3 (8-Puzzle), 4×4 (15-Puzzle), or 5×5 (24-Puzzle).</p>
+        </details>
+
+        <button class="btn btn-back" type="button" data-nav-back="game">Back</button>
+      </section>
+
+      <section id="view-options" class="view view-page" hidden>
+        <h2>Options</h2>
+        <p class="hint-text">Grid size and number overlay take effect immediately. Seed applies on next shuffle.</p>
+
+        <form id="options-form" class="options-form">
+
+          <fieldset>
+            <legend>Grid Size</legend>
+            <div class="diff-row">
+              <button type="button" class="diff-btn btn" data-size="3" aria-pressed="false">3×3</button>
+              <button type="button" class="diff-btn btn active" data-size="4" aria-pressed="true">4×4</button>
+              <button type="button" class="diff-btn btn" data-size="5" aria-pressed="false">5×5</button>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Display</legend>
+            <button type="button" id="numberToggleBtn" class="btn btn-secondary" aria-pressed="false">🔢 Show tile numbers</button>
+          </fieldset>
+
+          <fieldset>
+            <legend>Shuffle Seed</legend>
+            <div class="seed-row">
+              <input id="seedInput" type="text" placeholder="optional" aria-label="Shuffle seed" />
+              <button type="button" id="seedApplyBtn" class="btn btn-secondary">Apply</button>
+              <button type="button" id="seedClearBtn" class="btn btn-secondary" title="Clear shuffle seed" aria-label="Clear shuffle seed">Clear</button>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Best Scores</legend>
+            <div class="highscore-grid" aria-live="polite">
+              <p>Today: <strong id="bestMovesTodayOpts">—</strong></p>
+              <button class="btn btn-secondary" id="resetBestBtn" type="button">Reset</button>
+            </div>
+          </fieldset>
+
+        </form>
+
+        <button class="btn btn-secondary" id="resetSettingsBtn" type="button">Reset All Settings</button>
+        <button class="btn" id="btn-options-ok" type="button">OK</button>
+      </section>
+
+      <section id="view-about" class="view view-page" hidden>
+        <h2>About Tiles Puzzle</h2>
+        <p>A browser-first sliding-tile puzzle. Choose any image and rearrange the tiles to restore it.</p>
+        <h3>Legal</h3>
+        <figure class="diagram author-diagram">
+          <img src="image/oliver_garda_ferrata_colodri_arco.jpg" alt="Oliver Merkel" />
+          <figcaption>
+            Oliver Merkel,
+            <a rel="license noopener noreferrer" href="http://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank">cc-by-nc-nd 4.0</a>.
+          </figcaption>
+        </figure>
+        <p>
+          Copyright &copy; 2026<br />
+          <em>@author</em> Oliver Merkel, Merkel(dot)Oliver(at)web(dot)de.
+        </p>
+        <p>All source code in this edition is released under the MIT License.</p>
+        <p>This implementation uses no third-party runtime libraries.</p>
+        <button class="btn btn-back" type="button" data-nav-back="game">Back</button>
+      </section>
+
+    </main>
+  </div>
+
+  <div id="panel-overlay" hidden></div>
+
+  <nav id="side-panel" aria-label="Main navigation">
+    <p class="panel-title">Tiles Puzzle</p>
+    <ul class="panel-nav">
+      <li><button id="btn-panel-close" type="button">Close</button></li>
+      <li><div class="panel-divider"></div></li>
+      <li><button id="nav-new" type="button">New Game</button></li>
+      <li><button id="nav-install" type="button" hidden>Install App</button></li>
+      <li><button id="nav-rules" type="button">Rules...</button></li>
+      <li><button id="nav-options" type="button">Options...</button></li>
+      <li><button id="nav-about" type="button">About...</button></li>
+    </ul>
+  </nav>
+
+  <canvas id="celebrationCanvas" class="celebration-canvas" aria-hidden="true"></canvas>
+
+  <script type="module" src="js/tiles_puzzle.js"></script>
+</body>
+</html>

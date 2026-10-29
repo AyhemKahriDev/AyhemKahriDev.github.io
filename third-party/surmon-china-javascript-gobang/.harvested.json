@@ -1,0 +1,16 @@
+{
+  "repo": "surmon-china/javascript-gobang",
+  "stars": 8,
+  "licence": "MIT",
+  "sizeKB": 20,
+  "pushedAt": "2019-05-11T10:20:31Z",
+  "description": "⚫Javascript gobang game",
+  "defaultBranch": "master",
+  "owner": "surmon-china",
+  "slug": "surmon-china-javascript-gobang",
+  "dest": "third-party/surmon-china-javascript-gobang",
+  "readme": "# javascript-gobang\nJavascript gobang game.\n\n- [dom - example](https://surmon-china.github.io/javascript-gobang/gobang.dom.html)\n- [canvas - example](https://surmon-china.github.io/javascript-gobang/gobang.canvas.html)\n",
+  "licenceFile": "LICENSE",
+  "entry": "gobang.canvas.html",
+  "validated": true
+}

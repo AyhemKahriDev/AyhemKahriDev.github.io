@@ -1,0 +1,17 @@
+{
+  "name": "one-more-jump",
+  "version": "1.0.0",
+  "description": "A vertical platform-jumping browser game built with JavaScript and Canvas.",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "devDependencies": {
+    "serve": "14.2.6"
+  },
+  "scripts": {
+    "start": "serve ."
+  },
+  "author": "IRL",
+  "license": "MIT"
+}

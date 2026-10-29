@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Super Claudio Brothers</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:#000; display:flex; justify-content:center; align-items:center; height:100dvh; overflow:hidden; font-family:monospace; }
+  canvas { display:block; image-rendering:pixelated; max-width:100vw; max-height:100dvh; object-fit:contain; }
+</style>
+</head>
+<body>
+<canvas id="game"></canvas>
+<script>
+const canvas = document.getElementById('game');
+const ctx = canvas.getContext('2d');
+const W = 800, H = 500;
+canvas.width = W; canvas.height = H;
+function fitCanvas() {
+  const scaleX = window.innerWidth / W, scaleY = window.innerHeight / H;
+  const s = Math.min(scaleX, scaleY);
+  canvas.style.width = (W * s) + 'px';
+  canvas.style.height = (H * s) + 'px';
+}
+fitCanvas();
+window.addEventListener('resize', fitCanvas);
+
+// ── Storage (Supabase global leaderboard) ────────────────────────────────────
+const SUPABASE_URL  = 'https://qvanzkhckhluiikjmupx.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF2YW56a2hja2hsdWlpa2ptdXB4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE5MDQ4NDMsImV4cCI6MjA5NzQ4MDg0M30.hRuJnIaQu6TaP2Pu-EWuS5_-6JYQk9lfAo-_dwu7Kqk';
+const SB_HEADERS = { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` };
+
+async function getLeaderboard() {
+  try {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/scores?order=score.desc&limit=10`, { headers: SB_HEADERS });
+    return res.ok ? await res.json() : [];
+  } catch { return []; }
+}
+
+async function submitScore(initials, score) {
+  const clean = initials.toUpperCase().slice(0,3);
+  await fetch(`${SUPABASE_URL}/rest/v1/scores`, {
+    method: 'POST',
+    headers: { ...SB_HEADERS, 'Content-Type': 'application/json', Prefer: 'return=minimal' },
+    body: JSON.stringify({ initials: clean, score }),
+  });
+  const top10 = await getLeaderboard();
+  const allRes = await fetch(`${SUPABASE_URL}/rest/v1/scores?order=score.desc&select=initials,score`, { headers: SB_HEADERS });
+  const all = allRes.ok ? await allRes.json() : [];
+  const rank = all.findIndex(e => e.initials === clean && e.score === score) + 1;
+  return { rank: rank || all.length, top10 };
+}
+
+// ── Colours ───────────────────────────────────────────────────────────────────
+const C = {
+  sky:'#0d1117', ground:'#1a1a2e', groundTop:'#2a2a4e',
+  cloud:'#1e2d4a', cloudText:'#3a5a8a',
+  brick:'#4a3020', brickLine:'#3a2010',
+  qBlock:'#E87722', pipe:'#0a3d3d', pipeTrim:'#0f5555',
+  // Claude avatar colours
+  claudeBody:'#c1714a',   // terracotta
+  claudeDark:'#a85a35',   // shadow/ear
+  claudeEye:'#1a1008',    // near-black eyes
+  claudeLeg:'#c1714a',
+  gremlin:'#cc2222', gremlinEye:'#fff',
+  token:'#f0c040', tokenIn:'#c09000',
+  flagPole:'#888', star:'#ffee00',
+};
+
+// ── Draw Claudio avatar ───────────────────────────────────────────────────────
+// Pixel grid: 8-wide × 10-tall logical units, scaled to fit w×h
+// Layout (based on the sprite):
+//  Row 0-1:  blank (ears appear mid-height)
+//  Row 1-6:  main head block
+//  Row 6-7:  ear nubs at sides (cols 0 and 7)
+//  Rows 2-4: eyes (two black squares, cols 2-3 and 5-6)
+//  Row 7-10: two legs (cols 2-3 and 5-6)
+function drawClaudio(x, y, w, h, facing, frame, big) {
+  const s = w / 8; // scale unit
+
+  ctx.save();
+  ctx.translate(x + w/2, y + h/2);
+  if (facing === -1) ctx.scale(-1, 1);
+  ctx.translate(-w/2, -h/2);
+
+  // Head body — full rectangle rows 0-6 (6 units tall), cols 0-7
+  const headH = s * 6;
+  ctx.fillStyle = C.claudeBody;
+  ctx.fillRect(0, 0, w, headH);
+
+  // Slight shadow on bottom of head for depth
+  ctx.fillStyle = C.claudeDark;
+  ctx.fillRect(0, headH - s*0.5, w, s*0.5);
+
+  // Ear nubs — small squares sticking out left and right at mid-head (row 2.5–4)
+  ctx.fillStyle = C.claudeDark;
+  ctx.fillRect(-s, s*2, s, s*1.5);      // left ear
+  ctx.fillRect(w,  s*2, s, s*1.5);      // right ear
+
+  // Eyes — two dark squares
+  // Left eye: cols 1.5–2.5, rows 1.5–3
+  // Right eye: cols 4.5–5.5, rows 1.5–3
+  const eyeW = s * 1.2, eyeH = s * 1.4;
+  const eyeY = s * 1.5;
+  ctx.fillStyle = C.claudeEye;
+  ctx.fillRect(s*1.4, eyeY, eyeW, eyeH);
+  ctx.fillRect(s*4.4, eyeY, eyeW, eyeH);
+
+  // Eye glint
+  ctx.fillStyle = 'rgba(255,255,255,0.3)';
+  ctx.fillRect(s*1.5, eyeY+s*0.15, s*0.4, s*0.4);
+  ctx.fillRect(s*4.5, eyeY+s*0.15, s*0.4, s*0.4);
+
+  // Walk animation — legs shift slightly
+  const legOff = (frame === 1) ? s*0.3 : (frame === 2 ? -s*0.3 : 0);
+  const legY = headH;
+  const legH = h - headH;
+
+  // Left leg (cols 1.5–3)
+  ctx.fillStyle = C.claudeLeg;
+  ctx.fillRect(s*1.5, legY + (legOff > 0 ? legOff : 0), s*1.5, legH - Math.abs(legOff));
+
+  // Right leg (cols 4.5–6)
+  ctx.fillStyle = C.claudeLeg;
+  ctx.fillRect(s*4.5, legY + (legOff < 0 ? -legOff : 0), s*1.5, legH - Math.abs(legOff));
+
+  // Big mode: orange outline glow
+  if (big) {
+    ctx.strokeStyle = '#ff9944';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(0.5, 0.5, w-1, headH-1);
+  }
+
+  ctx.restore();
+}
+
+// Mini version for HUD
+function drawClaudioMini(x, y) {
+  ctx.save();
+  ctx.translate(x, y);
+  ctx.scale(0.6, 0.6);
+  drawClaudio(0, 0, 24, 30, 1, 0, false);
+  ctx.restore();
+}
+
+// ── Audio ─────────────────────────────────────────────────────────────────────
+let audioCtx = null;
+function getAudio() { if(!audioCtx) audioCtx=new(window.AudioContext||window.webkitAudioContext)(); return audioCtx; }
+function playTone(f1,f2,dur,wave='square',vol=0.12) {
+  try {
+    const a=getAudio(), o=a.createOscillator(), g=a.createGain();
+    o.connect(g); g.connect(a.destination);
+    o.type=wave; o.frequency.setValueAtTime(f1,a.currentTime);
+    if(f2!==f1) o.frequency.linearRampToValueAtTime(f2,a.currentTime+dur);
+    g.gain.setValueAtTime(vol,a.currentTime);
+    g.gain.exponentialRampToValueAtTime(0.001,a.currentTime+dur);
+    o.start(a.currentTime); o.stop(a.currentTime+dur);
+  } catch(e){}
+}
+function playSound(t) {
+  if(t==='jump')    playTone(300,600,0.12,'square',0.12);
+  if(t==='token')   playTone(700,1100,0.14,'sine',0.1);
+  if(t==='stomp')   playTone(250,80,0.1,'square',0.15);
+  if(t==='death'){
+    const notes=[[494,0.15],[440,0.15],[392,0.15],[349,0.15],[330,0.2],[262,0.4]];
+    let t0=0; notes.forEach(([f,d])=>{setTimeout(()=>playTone(f,f*0.7,d,'square',0.14),t0*1000);t0+=d;});
+  }
+  if(t==='bump')    playTone(180,140,0.08,'square',0.1);
+  if(t==='break')   playTone(300,100,0.15,'square',0.18);
+  if(t==='pause')   playTone(400,400,0.1,'sine',0.08);
+  if(t==='powerup') [261,294,329,392,523].forEach((f,i)=>setTimeout(()=>playTone(f,f,0.1,'sine',0.1),i*60));
+  if(t==='gameover'){
+    const notes=[[392,0.25],[349,0.25],[330,0.25],[294,0.3],[0,0.15],[262,0.2],[247,0.2],[0,0.1],[220,0.3],[196,0.5],[131,0.7]];
+    let t0=0; notes.forEach(([f,d])=>{if(f)setTimeout(()=>playTone(f,f*0.85,d,'sawtooth',0.13),t0*1000);t0+=d;});
+  }
+  if(t==='complete'){
+    const notes=[[523,0.12],[523,0.12],[0,0.12],[523,0.12],[0,0.12],[392,0.12],[523,0.18],[659,0.18],[0,0.06],[784,0.2],[0,0.1],[523,0.15],[659,0.15],[784,0.25],[1046,0.4]];
+    let t0=0; notes.forEach(([f,d])=>{if(f)setTimeout(()=>playTone(f,f,d*0.9,'square',0.12),t0*1000);t0+=d;});
+  }
+}
+
+// ── BGM (8-bit, C major) ──────────────────────────────────────────────────────
+let bgmPlaying = false, bgmNodes = null, bgmMaster = null;
+function startBGM() {
+  if (bgmPlaying) return;
+  const a = getAudio();
+  if (a.state === 'suspended') a.resume();
+
+  bgmMaster = a.createGain();
+  bgmMaster.gain.value = 1;
+  bgmMaster.connect(a.destination);
+
+  const C4=262,D4=294,E4=330,F4=349,G4=392,A4=440,B4=494,C5=523,E5=659,G5=784;
+  const melody = [
+    C4,C4,0,C4,0,E4,G4,0, G4,0,0,0,E4,0,0,0,
+    C4,0,0,E4,0,G4,A4,0, G4,0,E4,0,F4,E4,D4,0,
+    C5,0,G4,0,E4,0,0,G4, A4,0,F4,0,G4,0,E4,0,
+    C4,0,D4,0,B4,0,A4,0, G4,0,E4,0,C4,0,0,0,
+  ];
+  const C3=131,E3=165,F3=175,G3=196,A3=220;
+  const bass = [
+    C3,0,G3,0,C3,0,G3,0, E3,0,G3,0,E3,0,G3,0,
+    F3,0,A3,0,F3,0,A3,0, G3,0,C3,0,G3,0,C3,0,
+    C3,0,E3,0,G3,0,E3,0, F3,0,A3,0,G3,0,E3,0,
+    A3,0,F3,0,G3,0,E3,0, C3,0,G3,0,C3,0,0,0,
+  ];
+  const bpm = 160, stepTime = 60 / bpm / 2;
+  const loopLen = melody.length * stepTime;
+  const master = bgmMaster;
+
+  function scheduleLoop(startAt) {
+    for (let i = 0; i < melody.length; i++) {
+      const t = startAt + i * stepTime;
+      if (melody[i]) {
+        const o = a.createOscillator(), g = a.createGain();
+        o.type = 'square'; o.frequency.value = melody[i];
+        o.connect(g); g.connect(master);
+        g.gain.setValueAtTime(0.06, t);
+        g.gain.setValueAtTime(0.06, t + stepTime * 0.8);
+        g.gain.linearRampToValueAtTime(0, t + stepTime * 0.95);
+        o.start(t); o.stop(t + stepTime);
+      }
+      if (bass[i]) {
+        const o = a.createOscillator(), g = a.createGain();
+        o.type = 'triangle'; o.frequency.value = bass[i];
+        o.connect(g); g.connect(master);
+        g.gain.setValueAtTime(0.07, t);
+        g.gain.setValueAtTime(0.07, t + stepTime * 0.8);
+        g.gain.linearRampToValueAtTime(0, t + stepTime * 0.95);
+        o.start(t); o.stop(t + stepTime);
+      }
+    }
+    return startAt + loopLen;
+  }
+
+  let nextEnd = scheduleLoop(a.currentTime + 0.05);
+  const iv = setInterval(() => {
+    if (!bgmPlaying) { clearInterval(iv); return; }
+    if (a.currentTime > nextEnd - 1) {
+      nextEnd = scheduleLoop(nextEnd);
+    }
+  }, 200);
+  bgmNodes = { interval: iv };
+  bgmPlaying = true;
+}
+function stopBGM() {
+  if (!bgmPlaying) return;
+  bgmPlaying = false;
+  if (bgmNodes && bgmNodes.interval) clearInterval(bgmNodes.interval);
+  bgmNodes = null;
+  if (bgmMaster) { bgmMaster.disconnect(); bgmMaster = null; }
+}
+
+// ── Input ─────────────────────────────────────────────────────────────────────
+const keys={};
+document.addEventListener('keydown',e=>{keys[e.code]=true; keys[e.key]=true;});
+document.addEventListener('keyup',e=>{keys[e.code]=false; keys[e.key]=false;});
+
+// ── Level ─────────────────────────────────────────────────────────────────────
+const TILE=32, LEVEL_W=150, LEVEL_H=30; // rows 0-15 overworld, 17-29 underground
+
+// Entrance pipe: cols 20-21, overworld. Press Down while standing on it to enter underground.
+// Exit pipe:     cols 62-63, underground row 22. Press Down to emerge at col 64 overworld.
+const ENTRANCE_PIPE_COL = 20;
+const EXIT_PIPE_COL     = 62;
+const EXIT_SURFACE_COL  = 65; // where Claudio pops out on the surface
+
+const RAW = [
+// ── OVERWORLD (rows 0-15) ────────────────────────────────────────────────────
+  '                                                                                                                                                      ',//0
+  '                                                                                                                                                      ',//1
+  '                                                                                                                                                      ',//2
+  '                                                                                                                                                      ',//3
+  '                                                                                                                                                      ',//4
+  '                                                                                                                                                      ',//5
+  '                   Q       Q Q Q                    B B B             Q Q                                  B B B B                                    ',//6
+  '                                    B   B                                        GGGGG        GGGGG                  GGGG         GGGG                ',//7
+  '         C C C        C C      C          C C   C C       C  C  C  C       C C         C C         C C  C      C C       C  C C       C   C C C      ',//8
+  '      GGGGGGGGG    G  GGGG   GGG        GGGGG GGGGG     GGG GGG GGG     GGGGG       GGGGG       GGGGG GGG   GGGGG     GGGGGGGGG     GGG             G',//9
+  '                                                                                                                                                      ',//10
+  '                                                                                                                                                      ',//11
+  'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',//12
+  'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',//13
+  'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',//14
+  'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG  GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',//15
+// ── BUFFER ROW 16 ─────────────────────────────────────────────────────────────
+  '                                                                                                                                                      ',//16
+// ── UNDERGROUND (rows 17-29) ─────────────────────────────────────────────────
+// 9-tile-tall playable corridor. Ceiling row 17, floor rows 27-29.
+// Exit pipe at cols 62-63 sits in rows 22-24 (pressed down to surface at col 65).
+// Atmosphere: packed tokens, lots of Q-blocks, underground platforms, no sky.
+  'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',//17 ceiling
+  '  Q   Q   Q     Q Q     Q   Q     Q   Q Q   Q     Q   Q Q   Q     Q   Q     Q Q   Q     Q   Q Q   Q     Q   Q Q   Q     Q   Q     Q Q   Q     Q   Q',//18 q-blocks near ceiling
+  '                                                                                                                                                      ',//19
+  'C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C',//20 token floor
+  '                    GGGGG           GGGGGGG             GGGGG           GGGGGGG           GGGGG             GGGGG           GGGGGGG           GGGGG   ',//21 mid platforms
+  '                                                                                                                                                      ',//22
+  '                                                                                                                                                      ',//23
+  '      GGGGGGG                GGGGGGG               GGGGGGG               GGGGGGG               GGGGGGG               GGGGGGG               GGGGGGG   ',//24 lower platforms
+  '                                                                                                                                                      ',//25
+  'C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C C',//26 token floor 2
+  'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',//27 floor
+  'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',//28
+  'GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG',//29
+];
+
+let tileMap=[], gremlins=[], tokens=[], blocks=[], powerups=[], particles=[], popups=[];
+let flagX=0;
+const CHECKPOINT_COL=75;
+let checkpointX=0, checkpointReached=false;
+
+function buildLevel() {
+  tileMap=[]; gremlins=[]; tokens=[]; blocks=[]; powerups=[]; particles=[]; popups=[];
+
+  for(let r=0;r<LEVEL_H;r++){
+    tileMap.push([]);
+    const line=RAW[r]||'';
+    for(let c=0;c<LEVEL_W;c++){
+      const ch=line[c]||' ';
+      if(ch==='G') tileMap[r].push('G');
+      else if(ch==='B') tileMap[r].push('B');
+      else if(ch==='Q'){ tileMap[r].push('Q'); blocks.push({tx:c,ty:r,hasItem:Math.random()<0.35?'powerup':'token',used:false,bumpTimer:0}); }
+      else tileMap[r].push(' ');
+    }
+  }
+
+  // Overworld tokens
+  const tokenRow = RAW[8]||'';
+  for(let c=0;c<LEVEL_W;c++){
+    if(tokenRow[c]==='C') tokens.push({x:c*TILE+8,y:8*TILE+8,w:16,h:16,collected:false,animT:0});
+  }
+  [3,4,5,6,18,19,22,30,45,75,90,108,120,135].forEach(c=>
+    tokens.push({x:c*TILE+8,y:11*TILE+8,w:16,h:16,collected:false,animT:0})
+  );
+
+  // Underground tokens (rows 20 and 26)
+  [20,26].forEach(r=>{
+    const row=RAW[r]||'';
+    for(let c=0;c<LEVEL_W;c+=2){
+      if(row[c]==='C') tokens.push({x:c*TILE+8,y:r*TILE+8,w:16,h:16,collected:false,animT:0,underground:true});
+    }
+  });
+
+  // Entrance pipe: cols 20-21, overworld rows 9-12 (3 tiles tall above ground)
+  for(let rr=9;rr<=12;rr++){ tileMap[rr][ENTRANCE_PIPE_COL]='P'; tileMap[rr][ENTRANCE_PIPE_COL+1]='P'; }
+
+  // Exit pipe: cols 62-63, underground rows 22-24
+  for(let rr=22;rr<=24;rr++){ tileMap[rr][EXIT_PIPE_COL]='P'; tileMap[rr][EXIT_PIPE_COL+1]='P'; }
+
+  // Other overworld pipes
+  [[48,10,2],[70,10,2],[95,10,2],[115,10,2]].forEach(([col,row,h])=>{
+    for(let rr=row;rr<row+h;rr++){ tileMap[rr][col]='P'; tileMap[rr][col+1]='P'; }
+  });
+
+  // Overworld gremlins
+  [[10,11],[28,11],[38,8],[55,11],[68,8],[80,11],[98,11],[112,8],[125,11],[140,11]].forEach(([c,r])=>{
+    gremlins.push({x:c*TILE,y:r*TILE-24,w:28,h:24,vx:-1.2,vy:0,onGround:false,dead:false,flatTimer:0,wobble:0,underground:false});
+  });
+
+  // Underground gremlins
+  [[15,26],[35,26],[55,23],[78,26],[100,23],[120,26],[140,26]].forEach(([c,r])=>{
+    gremlins.push({x:c*TILE,y:r*TILE-24,w:28,h:24,vx:-1.0,vy:0,onGround:false,dead:false,flatTimer:0,wobble:0,underground:true});
+  });
+
+  flagX = 146*TILE;
+  checkpointX = CHECKPOINT_COL*TILE;
+}
+
+function isSolid(t){ return t==='G'||t==='B'||t==='Q'||t==='P'||t==='U'; }
+function tileAt(px,py){
+  const c=Math.floor(px/TILE), r=Math.floor(py/TILE);
+  if(r<0||r>=LEVEL_H||c<0||c>=LEVEL_W) return 'G';
+  if(!underground && r>=16) return ' ';
+  if(underground && r<16) return ' ';
+  return tileMap[r][c]||' ';
+}
+
+// ── Player ────────────────────────────────────────────────────────────────────
+let player={}, camX=0, score=0, lives=3, timer=400, timerTick=0;
+let powered=false, starTimer=0;
+
+function resetPlayer(){
+  player={x:2*TILE,y:9*TILE,w:24,h:30,vx:0,vy:0,onGround:false,facing:1,
+          walking:false,walkFrame:0,walkTick:0,dead:false,deathTimer:0,invincible:0,spinAngle:0};
+  powered=false; starTimer=0;
+  underground=false; camY=0; camYTarget=0; pipeTransition=null; entrancePipeHintTimer=0;
+}
+
+function resolvePlayerCollision(){
+  const p=player;
+  p.x+=p.vx;
+  const hpts=[[p.x,p.y+2],[p.x+p.w-1,p.y+2],[p.x,p.y+p.h-4],[p.x+p.w-1,p.y+p.h-4]];
+  for(const [px,py] of hpts){
+    if(isSolid(tileAt(px,py))){
+      if(p.vx>0) p.x=Math.floor(px/TILE)*TILE-p.w;
+      if(p.vx<0) p.x=Math.floor(px/TILE)*TILE+TILE;
+      p.vx=0; break;
+    }
+  }
+  if(p.x<0){p.x=0;p.vx=0;}
+  p.y+=p.vy; p.onGround=false;
+  if(p.vy<0){
+    const hd=[[p.x+3,p.y],[p.x+p.w-4,p.y]];
+    for(const [px,py] of hd){
+      const t=tileAt(px,py);
+      if(isSolid(t)){
+        p.y=Math.floor(py/TILE)*TILE+TILE; p.vy=1;
+        hitBlock(Math.floor(px/TILE),Math.floor(py/TILE)); break;
+      }
+    }
+  }
+  if(p.vy>=0){
+    const ft=[[p.x+3,p.y+p.h],[p.x+p.w-4,p.y+p.h]];
+    for(const [px,py] of ft){
+      if(isSolid(tileAt(px,py))){
+        p.y=Math.floor(py/TILE)*TILE-p.h; p.vy=0; p.onGround=true; break;
+      }
+    }
+  }
+}
+
+function hitBlock(tx,ty){
+  const t=tileMap[ty]&&tileMap[ty][tx];
+  if(t==='Q'){
+    const blk=blocks.find(b=>b.tx===tx&&b.ty===ty&&!b.used);
+    if(blk){ blk.used=true; blk.bumpTimer=10; tileMap[ty][tx]='U';
+      if(blk.hasItem==='token'){ score+=10; addPopup(tx*TILE,ty*TILE,'+10'); playSound('token'); }
+      else { spawnPowerup(tx*TILE,(ty-1)*TILE); playSound('powerup'); }
+    } else playSound('bump');
+  } else if(t==='B'){
+    if(powered){ tileMap[ty][tx]=' '; playSound('break'); spawnBricks(tx*TILE,ty*TILE); }
+    else playSound('bump');
+  }
+}
+
+function spawnPowerup(x,y){ powerups.push({x,y,w:24,h:24,vy:-2,vx:1.5,onGround:false,collected:false}); }
+function spawnBricks(x,y){ for(let i=0;i<6;i++) particles.push({x:x+16,y:y+16,vx:(Math.random()-0.5)*6,vy:-Math.random()*8-2,life:30,color:C.brick}); }
+function addPopup(x,y,text){ popups.push({x,y,text,life:50}); }
+
+// ── State machine ─────────────────────────────────────────────────────────────
+let state='title', titleFrame=0, titleClaudioX=-50;
+// ── Underground zone ──────────────────────────────────────────────────────────
+let underground = false;      // are we in the underground?
+let camY = 0;                 // vertical camera offset (0=overworld, 16*TILE=underground)
+let camYTarget = 0;
+let pipeTransition = null;    // {type:'enter'|'exit', timer, fromY, toY}
+// A "hint" label above the entrance pipe
+let entrancePipeHintTimer = 0;
+let completeTimer=0;
+let leaderboardData=[], playerRank=0, pendingScore=0;
+let nameChars=['A','A','A'], nameCursor=0;
+let titleWalkFrame=0, titleWalkTick=0;
+
+function startGame(){
+  score=0; lives=3; timer=400; timerTick=0; checkpointReached=false;
+  buildLevel(); resetPlayer(); camX=0; state='playing';
+  startBGM();
+}
+
+function killPlayer(){
+  if(player.dead||starTimer>0) return;
+  player.dead=true; player.deathTimer=110; player.vy=-11; player.vx=0;
+  powered=false; stopBGM(); playSound('death');
+}
+
+// ── Update ────────────────────────────────────────────────────────────────────
+function update(){
+  if(state==='title'){
+    titleFrame++;
+    titleClaudioX+=1.5; if(titleClaudioX>W+60) titleClaudioX=-50;
+    titleWalkTick++; if(titleWalkTick>8){titleWalkTick=0;titleWalkFrame=(titleWalkFrame+1)%3;}
+    if(keys['Enter']||keys['Space']){keys['Enter']=false;keys['Space']=false; startGame();}
+    if(keys['KeyL']||keys['l']){keys['KeyL']=false; state='leaderboard'; loadLeaderboard();}
+    return;
+  }
+  if(state==='leaderboard'||state==='leaderboard_result'){
+    if(keys['Enter']||keys['Escape']){keys['Enter']=false;keys['Escape']=false; state='title';}
+    return;
+  }
+  if(state==='gameover'){
+    stopBGM();
+    if(keys['Enter']){keys['Enter']=false; state='title';}
+    return;
+  }
+  if(state==='nameentry'){ handleNameEntry(); return; }
+  if(state==='complete'){
+    completeTimer++;
+    if(completeTimer>150){state='nameentry'; nameCursor=0; nameChars=['A','A','A'];}
+    return;
+  }
+  if(state==='paused'){
+    if(keys['KeyP']||keys['p']){keys['KeyP']=false;keys['p']=false; state='playing'; startBGM(); playSound('pause');}
+    return;
+  }
+  if(keys['KeyP']||keys['p']){keys['KeyP']=false;keys['p']=false; state='paused'; stopBGM(); playSound('pause'); return;}
+
+  timerTick++; if(timerTick>=40){timerTick=0; timer=Math.max(0,timer-1);}
+  if(timer===0) killPlayer();
+
+  updatePlayer();
+  updateGremlins();
+  updateTokens();
+  updatePowerups();
+  particles=particles.filter(p=>{p.x+=p.vx;p.y+=p.vy;p.vy+=0.4;p.life--;return p.life>0;});
+  popups=popups.filter(p=>{p.y-=0.5;p.life--;return p.life>0;});
+  for(const b of blocks) if(b.bumpTimer>0) b.bumpTimer--;
+
+  // ── Pipe transition animation ─────────────────────────────────────────────
+  if(pipeTransition){
+    pipeTransition.timer--;
+    // Smoothly scroll camY during transition
+    const progress = 1 - pipeTransition.timer / pipeTransition.duration;
+    camY = pipeTransition.fromY + (pipeTransition.toY - pipeTransition.fromY) * Math.min(1, progress * 1.4);
+    if(pipeTransition.timer <= 0){
+      camY = pipeTransition.toY;
+      pipeTransition = null;
+      player.invincible = 80; // grace period on arrival
+    }
+    return; // freeze gameplay during transition
+  }
+
+  // ── Check for pipe entry (Down key near entrance pipe) ──────────────────
+  // Classic Mario mechanic: stand next to pipe on ground, press Down to enter.
+  if(!underground && player.onGround && (keys['ArrowDown']||keys['KeyS'])){
+    const px = player.x + player.w/2;
+    const pipeLeft  = ENTRANCE_PIPE_COL * TILE - 4;
+    const pipeRight = (ENTRANCE_PIPE_COL + 2) * TILE + 4;
+    if(px > pipeLeft && px < pipeRight){
+      keys['ArrowDown']=false; keys['KeyS']=false;
+      underground = true;
+      camYTarget = 17 * TILE - 40;
+      player.x = ENTRANCE_PIPE_COL * TILE;
+      player.y = 26 * TILE - player.h;
+      player.vx = 0; player.vy = 0;
+      pipeTransition = { timer:60, duration:60, fromY:0, toY:camYTarget };
+      playSound('powerup');
+      return;
+    }
+  }
+
+  // ── Check for pipe exit (Down key near exit pipe, underground) ────────────
+  if(underground && player.onGround && (keys['ArrowDown']||keys['KeyS'])){
+    const px = player.x + player.w/2;
+    const pipeLeft  = EXIT_PIPE_COL * TILE - 4;
+    const pipeRight = (EXIT_PIPE_COL + 2) * TILE + 4;
+    if(px > pipeLeft && px < pipeRight){
+      keys['ArrowDown']=false; keys['KeyS']=false;
+      underground = false;
+      player.x = EXIT_SURFACE_COL * TILE;
+      player.y = 11 * TILE - player.h;
+      player.vx = 2; player.vy = 0;
+      pipeTransition = { timer:60, duration:60, fromY:camYTarget, toY:0 };
+      camYTarget = 0;
+      playSound('powerup');
+      return;
+    }
+  }
+
+  // ── Hint timer: show "↓ Enter" above entrance pipe when player is near ────
+  const nearEntrance = !underground && Math.abs(player.x - ENTRANCE_PIPE_COL*TILE) < 80;
+  if(nearEntrance) entrancePipeHintTimer = 90;
+  else if(entrancePipeHintTimer>0) entrancePipeHintTimer--;
+
+  // ── Camera ────────────────────────────────────────────────────────────────
+  const tx=player.x-W*0.30;
+  camX+=(tx-camX)*0.12;
+  camX=Math.max(0,Math.min(LEVEL_W*TILE-W,camX));
+
+  // Pit death — different bounds per zone
+  const pitBound = underground ? 30*TILE+50 : 16*TILE+50;
+  if(!player.dead&&player.y>pitBound) killPlayer();
+
+  if(player.dead){
+    player.deathTimer--; player.spinAngle=(player.spinAngle||0)+0.2;
+    player.y+=player.vy; player.vy+=0.45;
+    if(player.deathTimer<=0){
+      lives--; if(lives<=0){stopBGM(); playSound('gameover'); state='gameover';return;}
+      buildLevel(); resetPlayer();
+      if(checkpointReached){ player.x=checkpointX; camX=Math.max(0,checkpointX-W*0.3); }
+      else { camX=0; }
+      camY=0; camYTarget=0; underground=false;
+      pipeTransition=null; timer=400; timerTick=0;
+      startBGM();
+    }
+    return;
+  }
+
+  if(!underground && !checkpointReached && player.x+player.w>checkpointX){
+    checkpointReached=true; playSound('powerup');
+    addPopup(checkpointX, 8*TILE, 'CHECKPOINT!');
+  }
+
+  if(!underground && player.x+player.w>flagX&&player.x<flagX+20){
+    const timeBonus=timer*5; score+=timeBonus;
+    addPopup(player.x,player.y-30,`+${timeBonus} TIME!`);
+    pendingScore=score; playSound('complete'); stopBGM();
+    state='complete'; completeTimer=0;
+  }
+
+  starTimer=Math.max(0,starTimer-1);
+  if(player.invincible>0) player.invincible--;
+}
+
+function updatePlayer(){
+  const p=player; if(p.dead) return;
+
+  const running = keys['ShiftLeft']||keys['ShiftRight']||keys['Shift'];
+  const topSpeed    = running ? 5.2 : 3.4;   // gentler max speeds
+  const accelGround = running ? 0.55 : 0.42;  // gradual build-up on ground
+  const accelAir    = 0.28;                   // less control in the air
+  const frictionGround = 0.82;               // smooth deceleration, not a hard stop
+  const frictionAir    = 0.96;               // nearly no drag in air — momentum carries
+
+  const left  = keys['ArrowLeft'] ||keys['KeyA'];
+  const right = keys['ArrowRight']||keys['KeyD'];
+
+  if(left||right){
+    const dir   = right ? 1 : -1;
+    const accel = p.onGround ? accelGround : accelAir;
+    // Extra kick when changing direction on the ground so it doesn't feel sluggish
+    if(p.onGround && Math.sign(p.vx) !== 0 && Math.sign(p.vx) !== dir){
+      p.vx *= 0.7; // gentle skid rather than instant reversal
+    }
+    p.vx += dir * accel;
+    p.facing = dir;
+    p.walking = true;
+  } else {
+    p.walking = false;
+    // Apply friction only — let momentum naturally bleed off
+    p.vx *= p.onGround ? frictionGround : frictionAir;
+    if(Math.abs(p.vx) < 0.08) p.vx = 0;
+  }
+
+  // Clamp to top speed (allow slight overshoot when skidding)
+  p.vx = Math.max(-topSpeed, Math.min(topSpeed, p.vx));
+
+  // Jump — variable height: tap for short hop, hold for full arc
+  const wantJump = keys['ArrowUp']||keys['KeyW']||keys['KeyZ']||keys['z']||keys['Space'];
+  if(wantJump && p.onGround){
+    p.vy = powered ? -13.5 : -12.2;
+    p.jumping = true;
+    playSound('jump');
+    keys['ArrowUp']=false;keys['KeyW']=false;keys['KeyZ']=false;keys['z']=false;keys['Space']=false;
+  }
+  // Variable jump: releasing jump early cuts upward velocity
+  if(!wantJump && p.vy < -4 && p.jumping){
+    p.vy *= 0.78;
+  }
+  if(p.onGround) p.jumping = false;
+
+  // Gravity — slightly lighter on the way up for floatier arc
+  const gravity = p.vy < 0 ? 0.45 : 0.62;
+  p.vy += gravity;
+  if(p.vy > 15) p.vy = 15;
+
+  resolvePlayerCollision();
+
+  // Walk animation speed tied to actual horizontal speed
+  if(p.walking && p.onGround && Math.abs(p.vx) > 0.3){
+    const animRate = Math.max(3, 10 - Math.abs(p.vx) * 1.2); // faster steps when running
+    p.walkTick++;
+    if(p.walkTick > animRate){ p.walkTick=0; p.walkFrame=(p.walkFrame+1)%3; }
+  } else {
+    p.walkFrame = 0; p.walkTick = 0;
+  }
+}
+
+function updateGremlins(){
+  for(const g of gremlins){
+    if(!!g.underground !== underground) continue; // skip gremlins in other zone
+    if(g.dead){g.flatTimer--;continue;}
+    g.wobble=(g.wobble+0.15)%(Math.PI*2);
+    g.vy+=0.55; if(g.vy>16) g.vy=16;
+    g.x+=g.vx;
+    const front=g.vx>0?g.x+g.w+1:g.x-1;
+    if(isSolid(tileAt(front,g.y+g.h-4))) g.vx=-g.vx;
+    const edge=g.vx>0?g.x+g.w:g.x;
+    if(!isSolid(tileAt(edge,g.y+g.h+4))&&g.onGround) g.vx=-g.vx;
+    g.y+=g.vy; g.onGround=false;
+    if(isSolid(tileAt(g.x+4,g.y+g.h))||isSolid(tileAt(g.x+g.w-4,g.y+g.h))){
+      g.y=Math.floor((g.y+g.h)/TILE)*TILE-g.h; g.vy=0; g.onGround=true;
+    }
+    if(g.y>LEVEL_H*TILE+50){g.dead=true;g.flatTimer=0;}
+    if(!player.dead&&overlap(player,g)){
+      if(starTimer>0){
+        g.dead=true;g.flatTimer=30;score+=100;addPopup(g.x,g.y,'+100');playSound('stomp');
+      } else if(player.vy>0&&player.y+player.h<g.y+g.h*0.55){
+        g.dead=true;g.flatTimer=30;player.vy=-9;score+=100;addPopup(g.x,g.y,'+100');playSound('stomp');
+      } else if(player.invincible<=0){
+        if(powered){powered=false;player.invincible=90;player.h=30;playSound('bump');}
+        else killPlayer();
+      }
+    }
+  }
+}
+
+function updateTokens(){
+  for(const t of tokens){
+    if(t.collected) continue;
+    t.animT=(t.animT||0)+0.1;
+    const inUG = !!t.underground;
+    if(inUG !== underground) continue; // only collide in current zone
+    if(!player.dead&&overlap(player,t)){
+      t.collected=true; score+=10; playSound('token'); addPopup(t.x,t.y-8,'+10');
+    }
+  }
+}
+
+function updatePowerups(){
+  for(const pu of powerups){
+    if(pu.collected) continue;
+    pu.vy+=0.4; if(pu.vy>10) pu.vy=10;
+    pu.x+=pu.vx; pu.y+=pu.vy;
+    if(isSolid(tileAt(pu.x+4,pu.y+pu.h))||isSolid(tileAt(pu.x+pu.w-4,pu.y+pu.h))){
+      pu.y=Math.floor((pu.y+pu.h)/TILE)*TILE-pu.h; pu.vy=0;
+    }
+    if(isSolid(tileAt(pu.vx>0?pu.x+pu.w:pu.x-1,pu.y+4))) pu.vx=-pu.vx;
+    if(!player.dead&&overlap(player,pu)){
+      pu.collected=true; powered=true; player.h=42; player.y-=12;
+      score+=50; addPopup(player.x,player.y-20,'SYSTEM PROMPT!'); playSound('powerup');
+    }
+  }
+}
+
+function overlap(a,b){ return a.x<b.x+b.w&&a.x+a.w>b.x&&a.y<b.y+b.h&&a.y+a.h>b.y; }
+
+// ── Name entry ────────────────────────────────────────────────────────────────
+let lastKeyTime=0;
+function handleNameEntry(){
+  const now=Date.now(); if(now-lastKeyTime<150) return;
+  if(keys['ArrowRight']&&nameCursor<2){nameCursor++;lastKeyTime=now;}
+  if(keys['ArrowLeft']&&nameCursor>0){nameCursor--;lastKeyTime=now;}
+  if(keys['ArrowUp']){nameChars[nameCursor]=nextChar(nameChars[nameCursor],1);lastKeyTime=now;}
+  if(keys['ArrowDown']){nameChars[nameCursor]=nextChar(nameChars[nameCursor],-1);lastKeyTime=now;}
+  if(keys['Enter']){
+    keys['Enter']=false;
+    submitScore(nameChars.join(''),pendingScore).then(result=>{
+      leaderboardData=result.top10; playerRank=result.rank; state='leaderboard_result';
+    });
+    lastKeyTime=now;
+  }
+}
+function nextChar(c,dir){
+  const chars='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  return chars[(chars.indexOf(c)+dir+chars.length)%chars.length];
+}
+async function loadLeaderboard(){
+  const lb=await getLeaderboard(); leaderboardData=lb.slice(0,10);
+}
+
+// ── Draw ──────────────────────────────────────────────────────────────────────
+function draw(){
+  ctx.fillStyle=C.sky; ctx.fillRect(0,0,W,H);
+  if(state==='title')             { drawTitle(); return; }
+  if(state==='gameover')          { drawGameOver(); return; }
+  if(state==='leaderboard')       { drawLeaderboard(null,null); return; }
+  if(state==='leaderboard_result'){ drawLeaderboard(leaderboardData,playerRank); return; }
+  if(state==='nameentry')         { drawNameEntry(); return; }
+
+  ctx.save();
+  ctx.translate(-Math.floor(camX), -Math.floor(camY));
+  drawBg(); drawTiles(); drawTokens(); drawPowerups();
+  drawGremlins(); drawPlayerSprite(); drawParticles(); drawCheckpoint(); drawFlag(); drawPopups();
+  drawPipeHint(); drawZoneLabel();
+  ctx.restore();
+  drawHUD();
+  if(state==='paused')   drawPaused();
+  if(state==='complete') drawComplete();
+}
+
+function drawBg(){
+  if(underground || (pipeTransition && pipeTransition.toY > 0)){
+    // Underground atmosphere: dark fill with glowing dots
+    const ug_y = 17 * TILE;
+    ctx.fillStyle = '#080810';
+    ctx.fillRect(Math.floor(camX), ug_y, W+2, 13*TILE);
+    // Ambient glow spots on ceiling
+    const seedX = Math.floor(camX/80);
+    for(let i=0;i<12;i++){
+      const gx = ((seedX+i)*137 % LEVEL_W) * TILE;
+      const gy = ug_y + 8 + (i%3)*8;
+      ctx.fillStyle = `rgba(0,200,180,${0.03+0.03*(i%3)})`;
+      ctx.beginPath(); ctx.arc(gx, gy, 18+i%10, 0, Math.PI*2); ctx.fill();
+    }
+    return;
+  }
+  // Overworld clouds
+  const cx=Math.floor(camX*0.4);
+  [50,220,420,640,860,1100,1350,1620,1900,2200,2550,2900,3300,3700,4100].forEach((x,i)=>{
+    drawCloud(x-(cx%4500),40+[20,0,30,10,5,25,15,0,20,30,10,5,25,15,20][i]);
+  });
+}
+function drawCloud(x,y){
+  ctx.fillStyle=C.cloud;
+  ctx.fillRect(x+8,y+8,32,16); ctx.fillRect(x,y+16,56,16); ctx.fillRect(x+8,y+24,48,8);
+  ctx.fillStyle=C.cloudText; ctx.font='bold 11px monospace'; ctx.textAlign='center';
+  ctx.fillText('...',x+28,y+22); ctx.textAlign='left';
+}
+
+function drawTiles(){
+  const s=Math.max(0,Math.floor(camX/TILE)-1), e=Math.min(LEVEL_W,Math.ceil((camX+W)/TILE)+1);
+  for(let r=0;r<LEVEL_H;r++) for(let c=s;c<e;c++){
+    const t=tileMap[r][c], tx=c*TILE, ty=r*TILE;
+    if(t==='G') drawGround(tx,ty);
+    else if(t==='B') drawBrick(tx,ty);
+    else if(t==='Q'||t==='U') drawQ(tx,ty,t==='U',c,r);
+    else if(t==='P') drawPipe(tx,ty,c,r);
+  }
+}
+function drawGround(x,y){
+  ctx.fillStyle=C.ground; ctx.fillRect(x,y,TILE,TILE);
+  ctx.fillStyle=C.groundTop; ctx.fillRect(x,y,TILE,5);
+  ctx.strokeStyle='#3a3a6e'; ctx.lineWidth=1; ctx.strokeRect(x+.5,y+.5,TILE-1,TILE-1);
+}
+function drawBrick(x,y){
+  ctx.fillStyle=C.brick; ctx.fillRect(x,y,TILE,TILE);
+  ctx.fillStyle=C.brickLine;
+  ctx.fillRect(x,y+TILE/2-1,TILE,2); ctx.fillRect(x,y,1,TILE);
+  ctx.fillRect(x+TILE/2+4,y,1,TILE/2-1); ctx.fillRect(x+TILE/2-4,y+TILE/2,1,TILE/2);
+}
+function drawQ(x,y,used,col,row){
+  const blk=blocks.find(b=>b.tx===col&&b.ty===row);
+  let off=0; if(blk&&blk.bumpTimer>0) off=-Math.sin((10-blk.bumpTimer)/10*Math.PI)*7;
+  ctx.fillStyle=used?'#3a3a55':C.qBlock; ctx.fillRect(x,y+off,TILE,TILE);
+  if(!used){ctx.fillStyle='#f0a040'; ctx.fillRect(x+2,y+off+2,TILE-4,4);}
+  ctx.fillStyle=used?'#666':'#fff'; ctx.font='bold 18px monospace'; ctx.textAlign='center';
+  ctx.fillText(used?'·':'?',x+TILE/2,y+off+TILE-8); ctx.textAlign='left';
+  ctx.strokeStyle=used?'#333':'#aa4400'; ctx.lineWidth=1.5; ctx.strokeRect(x+.5,y+off+.5,TILE-1,TILE-1);
+}
+function drawPipe(x,y,col,row){
+  const above=row>0?tileMap[row-1][col]:' ', isTop=(above!=='P');
+  if(isTop){
+    const isEntrance = !underground && col===ENTRANCE_PIPE_COL;
+    const isExit     =  underground && col===EXIT_PIPE_COL;
+    ctx.fillStyle = (isEntrance||isExit) ? '#0f6655' : C.pipeTrim;
+    ctx.fillRect(x-3,y,TILE+6,TILE);
+    ctx.fillStyle = (isEntrance||isExit) ? '#0a4a3a' : C.pipe;
+    ctx.fillRect(x,y+5,TILE,TILE-5);
+    if(isEntrance||isExit){
+      // Glowing cyan ring
+      ctx.strokeStyle='#0ff'; ctx.lineWidth=2;
+      ctx.shadowColor='#0ff'; ctx.shadowBlur=8;
+      ctx.strokeRect(x-2.5,y+0.5,TILE+5,TILE-1);
+      ctx.shadowBlur=0;
+    }
+    ctx.fillStyle='#0ff'; ctx.font='bold 9px monospace'; ctx.textAlign='center';
+    ctx.fillText(isEntrance?'↓ ↓':isExit?'↑ ↑':'>_',x+TILE/2,y+15); ctx.textAlign='left';
+  } else {
+    ctx.fillStyle=C.pipe; ctx.fillRect(x,y,TILE,TILE);
+    ctx.fillStyle=C.pipeTrim; ctx.fillRect(x+2,y,4,TILE); ctx.fillRect(x+TILE-6,y,4,TILE);
+  }
+}
+
+function drawTokens(){
+  for(const t of tokens){
+    if(t.collected) continue;
+    const inUG = !!t.underground;
+    if(inUG !== underground) continue; // only draw tokens for current zone
+    const bob=Math.sin((t.animT||0))*3;
+    drawHex(t.x,t.y+bob,8);
+  }
+}
+function drawHex(x,y,r){
+  ctx.fillStyle=C.token; ctx.beginPath();
+  for(let i=0;i<6;i++){const a=i/6*Math.PI*2-Math.PI/2; if(i===0)ctx.moveTo(x+Math.cos(a)*r,y+Math.sin(a)*r); else ctx.lineTo(x+Math.cos(a)*r,y+Math.sin(a)*r);}
+  ctx.closePath(); ctx.fill();
+  ctx.fillStyle=C.tokenIn; ctx.beginPath();
+  for(let i=0;i<6;i++){const a=i/6*Math.PI*2-Math.PI/2; if(i===0)ctx.moveTo(x+Math.cos(a)*(r/2),y+Math.sin(a)*(r/2)); else ctx.lineTo(x+Math.cos(a)*(r/2),y+Math.sin(a)*(r/2));}
+  ctx.closePath(); ctx.fill();
+}
+
+function drawPowerups(){
+  for(const pu of powerups){
+    if(pu.collected) continue;
+    ctx.fillStyle='#cc44cc'; ctx.fillRect(pu.x,pu.y,pu.w,pu.h);
+    ctx.fillStyle='#fff'; ctx.font='bold 7px monospace'; ctx.textAlign='center';
+    ctx.fillText('SYS',pu.x+pu.w/2,pu.y+10); ctx.fillText('PRG',pu.x+pu.w/2,pu.y+20); ctx.textAlign='left';
+    ctx.strokeStyle='#ff88ff'; ctx.lineWidth=1.5; ctx.strokeRect(pu.x+.5,pu.y+.5,pu.w-1,pu.h-1);
+  }
+}
+
+function drawGremlins(){
+  // only draw gremlins in current zone
+  for(const g of gremlins){
+    if(!!g.underground !== underground) continue; // wrong zone
+    if(g.dead&&g.flatTimer<=0) continue;
+    if(g.dead){
+      ctx.globalAlpha=g.flatTimer/30; ctx.fillStyle=C.gremlin;
+      ctx.fillRect(g.x,g.y+g.h-6,g.w,6);
+      ctx.fillStyle='#fff'; ctx.font='bold 9px monospace'; ctx.textAlign='center';
+      ctx.fillText('xx',g.x+g.w/2,g.y+g.h-1); ctx.textAlign='left'; ctx.globalAlpha=1; continue;
+    }
+    const w=Math.sin(g.wobble)*2;
+    ctx.fillStyle=C.gremlin; ctx.beginPath();
+    ctx.ellipse(g.x+g.w/2,g.y+g.h/2+w,g.w/2,g.h/2,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle=C.gremlinEye;
+    ctx.fillRect(g.x+5,g.y+5+w,7,7); ctx.fillRect(g.x+g.w-12,g.y+5+w,7,7);
+    ctx.fillStyle='#111';
+    ctx.fillRect(g.x+7,g.y+7+w,3,3); ctx.fillRect(g.x+g.w-10,g.y+7+w,3,3);
+    ctx.fillStyle='#aa1111';
+    ctx.fillRect(g.x+2,g.y+g.h-5+w,8,5); ctx.fillRect(g.x+g.w-10,g.y+g.h-5+w,8,5);
+  }
+}
+
+function drawPlayerSprite(){
+  const p=player;
+  if(p.dead){
+    ctx.save();
+    ctx.translate(p.x+p.w/2, p.y+p.h/2);
+    ctx.rotate(p.spinAngle||0);
+    drawClaudio(-p.w/2,-p.h/2,p.w,p.h,1,0,powered);
+    ctx.restore(); return;
+  }
+  if(p.invincible>0&&Math.floor(p.invincible/4)%2===0) return;
+  if(starTimer>0&&Math.floor(starTimer/4)%2===0){ctx.shadowColor=C.star;ctx.shadowBlur=12;}
+  drawClaudio(p.x,p.y,p.w,p.h,p.facing,p.walkFrame,powered);
+  ctx.shadowBlur=0;
+}
+
+function drawCheckpoint(){
+  const cx=checkpointX;
+  ctx.fillStyle=checkpointReached?'#E87722':'#888';
+  ctx.fillRect(cx+6,6*TILE,4,6*TILE);
+  ctx.fillStyle=checkpointReached?'#E87722':'#555';
+  ctx.fillRect(cx+10,6*TILE,22,14);
+  ctx.fillStyle='#fff'; ctx.font='bold 10px monospace';
+  ctx.fillText('½',cx+14,6*TILE+11);
+  ctx.fillStyle='#888'; ctx.fillRect(cx,12*TILE,16,8);
+}
+
+function drawFlag(){
+  ctx.fillStyle=C.flagPole; ctx.fillRect(flagX+6,3*TILE,4,9*TILE);
+  ctx.fillStyle='#44cc44'; ctx.fillRect(flagX+10,3*TILE,30,20);
+  ctx.fillStyle='#fff'; ctx.font='bold 14px monospace'; ctx.fillText('✓',flagX+14,3*TILE+17);
+  ctx.fillStyle='#888'; ctx.fillRect(flagX,12*TILE,16,8);
+}
+
+function drawParticles(){
+  for(const p of particles){
+    ctx.fillStyle=p.color; ctx.globalAlpha=p.life/(p.size?25:30);
+    const s=p.size||6; ctx.fillRect(p.x-s/2,p.y-s/2,s,s);
+  }
+  ctx.globalAlpha=1;
+}
+function drawPopups(){
+  for(const p of popups){
+    ctx.globalAlpha=p.life/50; ctx.fillStyle='#fff'; ctx.font='bold 13px monospace';
+    ctx.textAlign='center'; ctx.fillText(p.text,p.x,p.y); ctx.textAlign='left';
+  }
+  ctx.globalAlpha=1;
+}
+
+function drawPipeHint(){
+  // "↓ Enter" hint above entrance pipe when player is nearby
+  if(underground || entrancePipeHintTimer <= 0 || pipeTransition) return;
+  const px = ENTRANCE_PIPE_COL * TILE + TILE;
+  const py = 10 * TILE - 10;
+  const alpha = Math.min(1, entrancePipeHintTimer / 30);
+  ctx.globalAlpha = alpha;
+  ctx.fillStyle = '#0ff';
+  ctx.font = 'bold 11px monospace';
+  ctx.textAlign = 'center';
+  // pulsing arrow
+  const bob = Math.sin(Date.now()*0.006)*3;
+  ctx.fillText('↓  enter pipe', px, py + bob);
+  ctx.globalAlpha = 1;
+  ctx.textAlign = 'left';
+}
+
+function drawZoneLabel(){
+  // "THE TOKEN MINES" sign in the underground entrance area
+  if(!underground && !pipeTransition) return;
+  const signX = ENTRANCE_PIPE_COL * TILE - 30;
+  const signY = 19 * TILE + 8;
+  ctx.fillStyle = 'rgba(0,200,180,0.18)';
+  ctx.fillRect(signX - 4, signY - 16, 220, 24);
+  ctx.fillStyle = '#0ee';
+  ctx.font = 'bold 13px monospace';
+  ctx.fillText('⬇  THE TOKEN MINES  ⬇', signX, signY);
+}
+
+function drawHUD(){
+  ctx.fillStyle='rgba(0,0,0,0.55)'; ctx.fillRect(0,0,W,36);
+  // Mini Claudio in HUD
+  ctx.save(); ctx.translate(8,4); ctx.scale(0.55,0.55); drawClaudio(0,0,24,30,1,0,powered); ctx.restore();
+  ctx.fillStyle='#E87722'; ctx.font='bold 11px monospace';
+  ctx.fillText('TOKENS',30,14); ctx.fillStyle='#fff'; ctx.font='bold 15px monospace';
+  ctx.fillText(String(score).padStart(6,'0'),30,30);
+  ctx.fillStyle='#E87722'; ctx.font='bold 11px monospace';
+  ctx.fillText('ATTEMPTS',W/2-52,14);
+  // Heart Claudios
+  for(let i=0;i<3;i++){
+    if(i<lives){ ctx.save(); ctx.translate(W/2-40+i*22,4); ctx.scale(0.5,0.5); drawClaudio(0,0,24,30,1,0,false); ctx.restore(); }
+    else { ctx.fillStyle='#334'; ctx.fillRect(W/2-40+i*22,4,12,16); }
+  }
+  ctx.fillStyle='#E87722'; ctx.font='bold 11px monospace';
+  ctx.fillText('WORLD',W-155,14); ctx.fillStyle='#fff'; ctx.font='bold 11px monospace';
+  ctx.fillText(underground?'1-1 UG':'1-1',W-152,30);
+  ctx.fillStyle='#E87722'; ctx.font='bold 11px monospace';
+  ctx.fillText('TIME',W-65,14);
+  ctx.fillStyle=timer<60?'#ff4444':'#fff'; ctx.font='bold 15px monospace';
+  ctx.fillText(String(timer).padStart(3,'0'),W-62,30);
+}
+
+// ── Screens ───────────────────────────────────────────────────────────────────
+function drawTitle(){
+  ctx.fillStyle=C.sky; ctx.fillRect(0,0,W,H);
+  ctx.save(); drawCloud(60,55); drawCloud(270,75); drawCloud(520,45); drawCloud(670,85); ctx.restore();
+  ctx.fillStyle=C.ground; ctx.fillRect(0,H-70,W,70);
+  ctx.fillStyle=C.groundTop; ctx.fillRect(0,H-70,W,7);
+
+  // Walking Claudio on title screen
+  ctx.save();
+  ctx.translate(titleClaudioX, H-70-34);
+  drawClaudio(0,0,28,34,1,titleWalkFrame,false);
+  ctx.restore();
+
+  // Big Claudio on right side of title
+  ctx.save(); ctx.translate(W-140,H/2-120); drawClaudio(0,0,80,96,1,Math.floor(titleFrame/20)%3,false); ctx.restore();
+
+  ctx.fillStyle='#E87722'; ctx.font='bold 40px monospace'; ctx.textAlign='center';
+  ctx.shadowColor='#ff6600'; ctx.shadowBlur=14;
+  ctx.fillText('SUPER CLAUDIO',W/2-40,H/2-75);
+  ctx.fillText('BROTHERS',W/2-40,H/2-27);
+  ctx.shadowBlur=0;
+  ctx.fillStyle='#556'; ctx.font='13px monospace';
+  ctx.fillText('A metaphor for how Claude actually works',W/2-40,H/2+2);
+  if(Math.floor(titleFrame/22)%2===0){
+    ctx.fillStyle='#E87722'; ctx.font='bold 15px monospace';
+    ctx.fillText('PRESS ENTER TO START',W/2-40,H/2+42);
+  }
+  ctx.fillStyle='#445'; ctx.font='12px monospace';
+  ctx.fillText('Press L to view global leaderboard',W/2-40,H/2+68);
+  ctx.fillStyle='#334'; ctx.font='11px monospace';
+  ctx.fillText('← → Move   ↑/Z Jump   Shift Run   P Pause',W/2-40,H-20);
+  ctx.textAlign='left';
+}
+
+function drawGameOver(){
+  ctx.fillStyle='rgba(0,0,0,0.88)'; ctx.fillRect(0,0,W,H);
+  // Sad upside-down Claudio
+  ctx.save(); ctx.translate(W/2,H/2-90); ctx.rotate(Math.PI);
+  drawClaudio(-18,-22,36,44,1,0,false); ctx.restore();
+  ctx.fillStyle='#cc2222'; ctx.font='bold 32px monospace'; ctx.textAlign='center';
+  ctx.fillText('CONTEXT LIMIT REACHED',W/2,H/2-20);
+  ctx.fillStyle='#fff'; ctx.font='18px monospace';
+  ctx.fillText(`Tokens Collected: ${score}`,W/2,H/2+18);
+  ctx.fillStyle='#556'; ctx.font='12px monospace';
+  ctx.fillText('(Try a larger context window)',W/2,H/2+42);
+  ctx.fillStyle='#E87722'; ctx.font='bold 14px monospace';
+  if(Math.floor(Date.now()/500)%2===0) ctx.fillText('PRESS ENTER TO RETRY',W/2,H/2+75);
+  ctx.textAlign='left';
+}
+
+function drawComplete(){
+  ctx.fillStyle='rgba(0,0,30,0.72)'; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='#44cc44'; ctx.font='bold 28px monospace'; ctx.textAlign='center';
+  ctx.shadowColor='#00ff88'; ctx.shadowBlur=10;
+  ctx.fillText('RESPONSE COMPLETE!',W/2,H/2-30);
+  ctx.shadowBlur=0;
+  ctx.fillStyle='#fff'; ctx.font='16px monospace';
+  ctx.fillText(`Score: ${pendingScore||score}`,W/2,H/2+10);
+  ctx.fillStyle='#667'; ctx.font='13px monospace';
+  ctx.fillText('Saving to global leaderboard...',W/2,H/2+40);
+  ctx.textAlign='left';
+}
+
+function drawNameEntry(){
+  ctx.fillStyle='rgba(0,0,20,0.96)'; ctx.fillRect(0,0,W,H);
+  // Celebrating Claudio
+  ctx.save(); ctx.translate(W/2-120,H/2-80);
+  const bounce=Math.abs(Math.sin(Date.now()*0.005))*10;
+  drawClaudio(0,-bounce,40,48,1,Math.floor(Date.now()/100)%3,false);
+  ctx.restore();
+  ctx.fillStyle='#E87722'; ctx.font='bold 22px monospace'; ctx.textAlign='center';
+  ctx.fillText('RESPONSE COMPLETE!',W/2,H/2-70);
+  ctx.fillStyle='#fff'; ctx.font='16px monospace';
+  ctx.fillText(`Your score: ${pendingScore}`,W/2,H/2-40);
+  ctx.fillStyle='#aaa'; ctx.font='13px monospace';
+  ctx.fillText('Enter your initials',W/2,H/2-10);
+  for(let i=0;i<3;i++){
+    const x=W/2-55+i*52, y=H/2+45;
+    ctx.fillStyle=nameCursor===i?'#E87722':'#223';
+    ctx.fillRect(x-20,y-38,40,48);
+    if(nameCursor===i){ctx.strokeStyle='#E87722';ctx.lineWidth=2;ctx.strokeRect(x-20,y-38,40,48);}
+    ctx.fillStyle='#fff'; ctx.font='bold 28px monospace'; ctx.textAlign='center';
+    ctx.fillText(nameChars[i],x,y);
+    if(nameCursor===i){
+      ctx.fillStyle='#E87722'; ctx.font='12px monospace';
+      ctx.fillText('▲',x,y-42); ctx.fillText('▼',x,y+18);
+    }
+  }
+  ctx.fillStyle='#556'; ctx.font='12px monospace'; ctx.textAlign='center';
+  ctx.fillText('← → select   ↑ ↓ change   Enter confirm',W/2,H/2+100);
+  ctx.textAlign='left';
+}
+
+function drawLeaderboard(data,rank){
+  const lb=data||leaderboardData;
+  ctx.fillStyle='rgba(0,0,20,0.97)'; ctx.fillRect(0,0,W,H);
+  // Row of tiny Claudios at top
+  for(let i=0;i<10;i++){
+    ctx.save(); ctx.translate(60+i*70,8); ctx.scale(0.45,0.45);
+    drawClaudio(0,0,24,30,i%2===0?1:-1,i%3,false); ctx.restore();
+  }
+  ctx.fillStyle='#E87722'; ctx.font='bold 24px monospace'; ctx.textAlign='center';
+  ctx.shadowColor='#ff6600'; ctx.shadowBlur=10;
+  ctx.fillText('GLOBAL LEADERBOARD',W/2,62);
+  ctx.shadowBlur=0;
+  ctx.fillStyle='#445'; ctx.font='12px monospace';
+  ctx.fillText('Top Token Collectors Worldwide',W/2,82);
+  ctx.fillStyle='#445'; ctx.font='bold 11px monospace'; ctx.textAlign='left';
+  ctx.fillText('RANK',W/2-220,106); ctx.fillText('NAME',W/2-158,106);
+  ctx.fillText('SCORE',W/2+82,106); ctx.fillText('DATE',W/2+162,106);
+  ctx.fillStyle='#334'; ctx.fillRect(W/2-228,110,456,1);
+  if(lb.length===0){
+    ctx.fillStyle='#445'; ctx.font='14px monospace'; ctx.textAlign='center';
+    ctx.fillText('No scores yet. Be the first!',W/2,200);
+  } else {
+    lb.slice(0,10).forEach((entry,i)=>{
+      const y=128+i*28, isP=rank&&(i+1===rank);
+      ctx.fillStyle=isP?'rgba(232,119,34,0.12)':(i%2===0?'rgba(255,255,255,0.02)':'transparent');
+      ctx.fillRect(W/2-228,y-18,456,24);
+      const medals=['🥇','🥈','🥉'];
+      ctx.fillStyle=i<3?['#ffd700','#c0c0c0','#cd7f32'][i]:(isP?'#E87722':'#667');
+      ctx.font=`bold ${isP?'14':'12'}px monospace`; ctx.textAlign='left';
+      ctx.fillText(i<3?medals[i]:`#${i+1}`,W/2-218,y);
+      // Tiny Claudio next to name
+      ctx.save(); ctx.translate(W/2-162,y-14); ctx.scale(0.38,0.38);
+      drawClaudio(0,0,24,30,1,0,false); ctx.restore();
+      ctx.fillStyle=isP?'#E87722':'#ccc'; ctx.font=`bold ${isP?'14':'12'}px monospace`;
+      ctx.fillText(entry.initials,W/2-148,y);
+      ctx.fillStyle=isP?'#ff9944':'#fff';
+      ctx.fillText(String(entry.score).padStart(6,'0'),W/2+82,y);
+      ctx.fillStyle='#445'; ctx.font='11px monospace';
+      ctx.fillText(entry.date||'',W/2+162,y);
+    });
+  }
+  if(rank){
+    ctx.fillStyle='rgba(232,119,34,0.1)'; ctx.fillRect(W/2-228,H-88,456,38);
+    ctx.fillStyle='#E87722'; ctx.font='bold 14px monospace'; ctx.textAlign='center';
+    ctx.fillText(`You ranked #${rank} globally with ${pendingScore} tokens`,W/2,H-63);
+  }
+  ctx.fillStyle='#E87722'; ctx.font='bold 13px monospace'; ctx.textAlign='center';
+  if(Math.floor(Date.now()/600)%2===0) ctx.fillText('PRESS ENTER TO CONTINUE',W/2,H-28);
+  ctx.textAlign='left';
+}
+
+function drawPaused(){
+  ctx.fillStyle='rgba(0,0,0,0.62)'; ctx.fillRect(0,0,W,H);
+  // Claudio frozen mid-jump in pause screen
+  ctx.save(); ctx.translate(W/2-14,H/2-80);
+  drawClaudio(0,0,28,34,1,1,powered); ctx.restore();
+  ctx.fillStyle='#E87722'; ctx.font='bold 28px monospace'; ctx.textAlign='center';
+  ctx.fillText('PAUSED',W/2,H/2+10);
+  ctx.fillStyle='#fff'; ctx.font='13px monospace';
+  ctx.fillText('Press P to resume',W/2,H/2+38);
+  ctx.textAlign='left';
+}
+
+// ── Loop ──────────────────────────────────────────────────────────────────────
+buildLevel();
+(function loop(){ update(); draw(); requestAnimationFrame(loop); })();
+</script>
+</body>
+</html>

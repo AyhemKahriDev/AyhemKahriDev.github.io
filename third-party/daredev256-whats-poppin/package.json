@@ -1,0 +1,24 @@
+{
+  "name": "whats-poppin",
+  "version": "0.17.2",
+  "description": "Bubble pop game with cultural sauce — match, combo, dominate",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx serve . -l 3333",
+    "test": "vitest run"
+  },
+  "keywords": [
+    "game",
+    "bubble-pop",
+    "phaser3"
+  ],
+  "author": "DareDev256",
+  "license": "MIT",
+  "type": "commonjs",
+  "dependencies": {
+    "phaser": "^3.90.0"
+  },
+  "devDependencies": {
+    "vitest": "^4.1.0"
+  }
+}

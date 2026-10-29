@@ -1,0 +1,16 @@
+{
+  "repo": "import-this/notbot",
+  "stars": 2,
+  "licence": "BSD-3-Clause",
+  "sizeKB": 23,
+  "pushedAt": "2016-11-22T15:04:32Z",
+  "description": "A kind of multitasking game.",
+  "defaultBranch": "master",
+  "owner": "import-this",
+  "slug": "import-this-notbot",
+  "dest": "third-party/import-this-notbot",
+  "readme": "# notbot\nA fast-paced interactive puzzle game.\n\n[You can play it here!](https://import-this.github.io/notbot/)\n\n## License\nnotbot is released under the [BSD 3-Clause License](https://github.com/import-this/notbot/blob/master/LICENSE).\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

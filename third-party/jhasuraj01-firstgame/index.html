@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+    <!-- Prevent Search engine to index my website -->
+    <meta name="robots" content="noindex">
+    <meta name="googlebot" content="noindex">
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+    <img src="./assets/images/svg_ball.svg" alt="ball" id="svg-ball">
+    <img src="./assets/images/brick.svg" alt=brick"  id="svg-brick">
+    <canvas id="gameScreen" width="800" height="600"></canvas>
+    <details class="game-details">
+        <summary>Handles</summary>
+        <p><kbd>left Arrow</kbd> - move paddle to left;</p>
+        <p><kbd>right Arrow</kbd> - move paddle to right;</p>
+        <p><kbd>spacebar</kbd> - start the game;</p>
+        <p><kbd>p (small alphabet)</kbd> - pause/unpause game;</p>
+    </details>
+    <script src="./js/detectCollision.js"></script>
+    <script src="./js/ball.js"></script>
+    <script src="./js/brick.js"></script>
+    <script src="./js/levels.js"></script>
+    <script src="./js/input.js"></script>
+    <script src="./js/paddle.js"></script>
+    <script src="./js/game.js"></script>
+    <script src="./js/index.js"></script>
+</body>
+
+</html>

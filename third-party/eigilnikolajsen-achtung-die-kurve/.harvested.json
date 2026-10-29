@@ -1,0 +1,16 @@
+{
+  "repo": "eigilnikolajsen/achtung-die-kurve",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 105,
+  "pushedAt": "2025-04-12T10:01:22Z",
+  "description": "Javascript remake of the Flash game \"Achtung, die Kurve!\"",
+  "defaultBranch": "main",
+  "owner": "eigilnikolajsen",
+  "slug": "eigilnikolajsen-achtung-die-kurve",
+  "dest": "third-party/eigilnikolajsen-achtung-die-kurve",
+  "readme": "# Achtung, die Kurve!\n\nRevived HTML5 and Javascript version of the Flash game \"Achtung, die Kurve!\" (beware, (of) the curve!). Hope you enjoy!\n\n[https://achtung.life](https://achtung.life)\n\nLicence: MIT\n",
+  "licenceFile": "LICENCE",
+  "entry": "index.html",
+  "validated": true
+}

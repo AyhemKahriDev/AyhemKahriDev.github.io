@@ -1,0 +1,500 @@
+@import url('fonts.css');
+@import url('fallingops.css');
+
+html,
+body {
+    background-color: #011627;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    background-image: url("../assets/img/wave.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    font-family: 'Inconsolata';
+    flex-direction: column;
+}
+
+#start {
+    height: 450px;
+    width: 500px;
+    padding: 100px;
+    padding-top: 75px;
+    background-color: #0b2942;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    z-index: 3;
+    counter-reset: player;
+}
+
+#players {
+    height: 300px;
+    background-color: #d6deeb;
+    border-radius: 10px;
+    padding: 50px;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+nav {
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 0;
+    gap: 25px;
+}
+
+.switch {
+    position: relative;
+    width: 48px;
+    height: 28px;
+}
+
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: grey;
+    transition: .4s;
+    border-radius: 28px;
+}
+
+.slider::before {
+    position: absolute;
+    content: url("../assets/img/volume-mute.svg");
+    height: 20px;
+    width: 20px;
+    left: 6px;
+    bottom: 3.5px;
+    background-color: #d6deeb;
+    transition: .4s;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+}
+
+input:checked+.slider {
+    background-color: #82aaff;
+}
+
+input:checked+.slider::before {
+    transform: translateX(16px);
+    content: url("../assets/img/volume-on.svg");
+}
+
+#back-btn {
+    width: 68px;
+    height: 28px;
+    border: none;
+    border-radius: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    font-size: 0.8em;
+    font-family: inherit;
+    font-weight: 600;
+    position: relative;
+    cursor: pointer;
+    transition: .2s;
+}
+
+#back-btn span {
+    margin-right: 20px;
+    transition: .2s;
+
+}
+
+#back-btn img {
+    position: absolute;
+    transform: translateX(27.5px);
+    height: 18px;
+    width: 18px;
+    padding: 2.5px;
+    display: grid;
+    place-items: center;
+    transition: .2s;
+}
+
+#back-btn:hover {
+    background-color: #80cbc4;
+    color: transparent;
+}
+
+#back-btn:hover img {
+    transform: scale(1.25);
+}
+
+.player {
+    margin: 15px;
+}
+
+.player .icon_border {
+    font-size: 1.25em;
+
+}
+
+.player .icon_border::before {
+    counter-increment: player;
+    content: counter(player);
+    position: absolute;
+    font-weight: 800;
+    display: grid;
+    place-items: center;
+}
+
+input {
+    width: 175px;
+}
+
+fieldset {
+    position: relative;
+}
+
+label {
+    position: absolute;
+    top: 15%;
+    left: 15px;
+    transition: all 0.15s ease-out 0s;
+    margin-left: 1.5px;
+}
+
+input:focus+label,
+input:not(:placeholder-shown)+label {
+    top: -10.75px;
+    font-size: 90%;
+}
+
+.message {
+    display: flex;
+    font-size: 1.15em;
+    user-select: none;
+}
+
+.message img {
+    margin: 0;
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+}
+
+.player {
+    display: flex;
+    flex-direction: row;
+}
+
+.icon_border {
+    position: relative;
+    text-align: center;
+}
+
+.icon_border h2 {
+    margin: 0;
+}
+
+
+#player1_icon,
+#player2_icon {
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+
+}
+
+#play-btn {
+    width: 230px;
+}
+
+.button-wrapper {
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+input {
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+fieldset {
+    border: none;
+    font-weight: bold;
+}
+
+
+figure {
+    display: flex;
+    align-items: center;
+    z-index: 2;
+}
+
+
+#title {
+    margin-top: 0;
+    color: #d6deeb;
+    font-size: 72px;
+    font-weight: bold;
+    display: block;
+    border-right: 4px solid;
+    width: 5ch;
+    animation: typing 2s steps(5), blink .5s infinite step-end alternate;
+    overflow: hidden;
+    cursor: default;
+    user-select: none;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+}
+
+
+@keyframes blink {
+    50% {
+        border-color: transparent;
+    }
+}
+
+figure {
+    display: flex;
+    flex-wrap: wrap;
+    position: relative;
+}
+
+img {
+    height: 120px;
+    margin-right: 15px;
+}
+
+.action-button {
+    width: 100px;
+    padding: 10px;
+    font-size: 24px;
+    margin: 15px;
+    border: none;
+    background-color: #084d81;
+    box-shadow: 0 7px 0 #03355c;
+    color: #d6deeb;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    transition: all 0.15s ease-in-out;
+    z-index: 2;
+    font-family: inherit;
+    font-weight: bold;
+}
+
+.action-button:active {
+    box-shadow: 0 4px 0 #021e33;
+    transform: translateY(3.5px);
+}
+
+.action-button:hover {
+    color: rgba(255, 255, 255, 1);
+}
+
+#confirm-play-btn {
+    height: 45px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: none;
+    transform: none;
+}
+
+
+#confirm-play-btn::before {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: 'Sí';
+    transition: .3s;
+}
+
+#confirm-play-btn::after {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '▶';
+    font-size: 1.45em;
+    transition: .3s;
+}
+
+#confirm-play-btn:hover::before {
+    top: -60px;
+}
+
+#confirm-play-btn:hover::after {
+    top: 0;
+    background-color: #357a38;
+}
+
+
+.action-button:hover img {
+    animation: shaking 1s ease infinite;
+}
+
+.menu-icon {
+    height: 32px;
+
+}
+
+.modal {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    position: absolute;
+    top: 10px;
+    left: 0;
+    right: 0;
+    max-width: 300px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #d6deeb;
+    border-radius: 4px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+    z-index: 5;
+}
+
+.overlay {
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.3);
+    z-index: 4;
+}
+
+.modal-close-btn {
+    position: absolute;
+    right: 35px;
+    top: 0px;
+    font-size: 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.modal-close-btn:hover .leftright {
+    transform: rotate(-45deg);
+    background-color: #ef5350;
+}
+
+.modal-close-btn:hover .rightleft {
+    transform: rotate(45deg);
+    background-color: #ef5350;
+}
+
+.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.leftright {
+    height: 4px;
+    width: 30px;
+    position: absolute;
+    margin-top: 24px;
+    background-color: #0b2942;
+    border-radius: 2px;
+    transform: rotate(45deg);
+    transition: all .3s ease-in;
+}
+
+.rightleft {
+    height: 4px;
+    width: 30px;
+    position: absolute;
+    margin-top: 24px;
+    background-color: #0b2942;
+    border-radius: 2px;
+    transform: rotate(-45deg);
+    transition: all .3s ease-in;
+}
+
+.error-shake {
+    animation: error-shake .5s 1 linear;
+}
+
+@keyframes error-shake {
+    0% {
+        transform: translateX(10px);
+    }
+
+    20% {
+        transform: translateX(-10px);
+    }
+
+    40% {
+        transform: translateX(5px);
+    }
+
+    60% {
+        transform: translateX(-5px);
+    }
+
+    80% {
+        transform: translateX(3px);
+    }
+
+    100% {
+        transform: translateX(0px);
+    }
+}
+
+
+@media (max-width: 760px) {
+
+    #menu {
+        width: 400px;
+    }
+}
+
+@media (max-width: 500px) {
+
+    html,
+    body {
+        overflow: hidden;
+    }
+
+    #start {
+        height: 100%;
+    }
+
+    #players {
+        height: 335px;
+        width: 300px;
+    }
+
+
+}

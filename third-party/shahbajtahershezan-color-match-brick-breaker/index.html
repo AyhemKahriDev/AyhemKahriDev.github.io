@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Color Match Brick Breaker</title>
+       <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎯 Color Match Brick Breaker</h1>
+            <div class="game-stats">
+                <div class="score">Score: <span id="score">0</span></div>
+                <div id="activePowerUps" class="power-ups-display">No active power-ups</div>
+            </div>
+        </header>
+        
+        <div class="game-area">
+            <div class="game-container">
+                <canvas id="gameCanvas" width="800" height="500"></canvas>
+                
+                <div id="gameOver" class="game-over hidden">
+                    <h2 id="gameOverTitle">Game Over!</h2>
+                    <p>Final Score: <span id="finalScore">0</span></p>
+                    <p>Press <kbd>R</kbd> to restart</p>
+                </div>
+            </div>
+            
+            <div class="controls-sidebar">
+                <div class="controls-panel">
+                    <h3>🎮 Controls</h3>
+                    <div class="control-group">
+                        <div class="control-item">
+                            <kbd>A</kbd> <kbd>D</kbd>
+                            <span>Fast Movement</span>
+                        </div>
+                        <div class="control-item">
+                            <kbd>←</kbd> <kbd>→</kbd>
+                            <span>Normal Movement</span>
+                        </div>
+                        <div class="control-item">
+                            <kbd>R</kbd>
+                            <span>Restart Game</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="power-ups-panel">
+                    <h3>⚡ Power Ups</h3>
+                    <div class="power-up-list">
+                        <div class="power-up-item">
+                            <div class="power-up-color red"></div>
+                            <div class="power-up-info">
+                                <strong>Speed Boost</strong>
+                                <small>+30% ball speed</small>
+                            </div>
+                        </div>
+                        <div class="power-up-item">
+                            <div class="power-up-color green"></div>
+                            <div class="power-up-info">
+                                <strong>Multi-Ball</strong>
+                                <small>Double active balls</small>
+                            </div>
+                        </div>
+                        <div class="power-up-item">
+                            <div class="power-up-color blue"></div>
+                            <div class="power-up-info">
+                                <strong>Wider Paddle</strong>
+                                <small>Lasts 20 seconds</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="game-rules">
+                    <h3>📋 Game Rules</h3>
+                    <ul>
+                        <li>Break bricks by matching colors</li>
+                        <li>Ball changes color after breaking bricks</li>
+                        <li>Collect power-ups for special abilities</li>
+                        <li>Don't let balls pass the paddle!</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+<script src="game.js"></script>
+</body>
+</html>

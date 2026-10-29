@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en-US">
+    <head>
+        <link href="dist/style.css" rel="stylesheet" type="text/css">
+        <title>Coffee-pong</title>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <h1>Coffee-pong</h1>
+        <canvas id="PongCanvas" width="700" height="500"></canvas>
+        <script type="application/javascript" src="dist/pong.js"></script>
+        <div id="dev-tools" style="display: none;">
+            <div class="block">
+                <label for="paddle1">paddle1</label><br>
+                <input type="number" id=paddle1 name="paddle1" value="225">
+            </div>
+            <div class="block">
+                <label for="paddle2">paddle2</label><br>
+                <input type="number" id=paddle2 name="paddle2" value="225">
+            </div>
+            <div class="block">
+                <label for="ball_x">ball_x</label><br>
+                <input type="number" id=ball_x name="ball_x" value="345">
+            </div>
+            <div class="block">
+                <label for="ball_y">ball_y</label><br>  
+                <input type="number" id=ball_y name="ball_y" value="245">
+            </div>
+            <div class="block">
+                <label for="ball_x_speed">ball_x_speed</label><br>  
+                <input type="number" id=ball_x_speed name="ball_x_speed" value="4">
+            </div>
+            <div class="block">
+                <label for="ball_y_speed">ball_y_speed</label><br>  
+                <input type="number" id=ball_y_speed name="ball_y_speed" value="4">
+            </div>
+            <br>
+            <div class="block">
+                <div class="key" id="p1up">W</div>
+                <div class="key" id="p1down">S</div>
+            </div>
+            <div class="block">
+                <div class="key" id="p2up">↑</div>
+                <div class="key" id="p2down">↓</div>
+            </div>
+            <button onclick="debugDraw()">Render</button>
+        </div>
+    </body>
+</html>

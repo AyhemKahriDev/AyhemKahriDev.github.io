@@ -1,0 +1,16 @@
+{
+  "repo": "AdrienAudouard/FootballGame",
+  "stars": 1,
+  "licence": "Apache-2.0",
+  "sizeKB": 564,
+  "pushedAt": "2018-03-21T18:34:03Z",
+  "description": "",
+  "defaultBranch": "master",
+  "owner": "AdrienAudouard",
+  "slug": "adrienaudouard-footballgame",
+  "dest": "third-party/adrienaudouard-footballgame",
+  "readme": "# HTML5 FootballGame\n\nA HTML 5 football game inspired by [Soccer Stars by MiniClip](https://www.miniclip.com/games/soccer-stars-mobile/fr/)\n\n![Screen](img/screenshots/screen.png)\n\n## Running\n\n* Run ``` webpack ```\n* Open ``` index.html ```\n\n## Rules\n* One shoot by turn\n* A goal is scored when a ball enter in a goal\n\n## Features\n\n* Change the colors of each players by clicking the flags\n* Change the shooting power by adjusting the gage on the left\n* Colors are saved in cookies\n* Can restart all the game\n* Can enabled and disable the sound\n\n## Author\n\n* **Adrien Audouard** - [RidazFluent](https://github.com/RidazFluent)\n\n## Licence\n\nThis project is licensed, see the [LICENSE.md](LICENSE.md) file for details\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

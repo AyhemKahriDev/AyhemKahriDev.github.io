@@ -1,0 +1,128 @@
+﻿<!DOCTYPE HTML>
+<html lang="es">
+<head>
+    <title>Dino Jump</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+    <link rel="icon" type="image/svg" href="/svg/favicon.svg" />
+    <meta name="author" content="Giovanni Alfredo Garciliano Díaz" />
+    <meta name="copyright" content="© 2017 Giovanni Alfredo Garciliano Díaz" />
+    <meta name="robots" content="index, follow" />
+    <meta name="description" content="Un port libre y de código abierto en HTML/CSS/JavaScript del juego del dinosaurio de Chrome" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=yes" />
+    <meta charset="utf-8">
+    <script src="js/main.js" type="text/javascript"></script>
+</head>
+<body id="body">
+    <header>
+        <h1>Dino Jump</h1>
+    </header>
+    
+    <aside id="jsrequired">
+        <p>Bien, parece que vuestro navegador no soporta JavaScript, o lo tenés deshabilitado. Habilítalo, o <a href="https://www.mozilla.org/es-MX/firefox/new/">descarga un navegador libre, seguro y actualizado que soporta JavaScript.</a></p>
+    </aside>
+    <aside id="cssrequired">
+        <p>Bien, parece que vuestro navegador no soporta CSS, o lo tenés deshabilitado. Habilítalo, o <a href="https://www.mozilla.org/es-MX/firefox/new/">descarga un navegador libre, seguro y actualizado que soporta CSS.</a></p>
+    </aside>
+
+    <article id="firstarticle">
+        <h2>Acerca del juego</h2>
+        <section>
+            <h3>Qué es</h3>
+            <p><mark>Dino Jump</mark> es un pequeño videojuego libre y de código abierto basado en el famoso <a href="img/juego-google-chrome.jpeg"><i>easter egg</i> de Google Chrome</a>, con la diferencia de que éste juego lo podrás jugar en cualquier navegador que soporte JavaScript. Además, tiene algunos añadidos que creemos te encantarán.</p>
+        </section>
+        <section>
+            <h3>Cómo jugar</h3>
+            <p>Es muy sencillo, solo tienes que seleccionar un paisaje y un personaje, y luego pulsas el botón «<span class="button-html">A jugar!</span>»</p>
+        </section>
+        <section>
+            <h3>Empieza a jugar</h3>
+            <form action="game.php" method="GET" id="modojuego">
+            <!-- Aquí se selecciona el paisaje -->
+                <fieldset>
+                    <legend>Selecciona el paisaje:</legend>
+                    <input type="radio" name="paisaje" value="desierto" id="desierto" /><label for="desierto">Desierto</label>
+                    <input type="radio" name="paisaje" value="sabana" id="sabana" /><label for="sabana">Sabana</label>
+                </fieldset>
+            <!-- Aquí se selecciona el personaje -->
+                <fieldset>
+                    <legend>Selecciona el personaje:</legend>
+                    <input type="radio" name="personaje" value="rex" id="rex" /><label for="rex">Rex</label>
+                    <input type="radio" name="personaje" value="bunny" id="bunny" /><label for="bunny">Bunny</label>
+                </fieldset>
+                <input type="button" name="jugar" value="A jugar!" id="ajugar" />
+            </form>
+        </section>
+    </article>
+
+    <article>
+        <h2>Acerca de los creadores</h2>
+        <section class="creador">
+        	<img src="img/giobeatle1794.jpg" alt="Giovanni Foto" title="Giovanni" class="creador" />
+            <h3>Giovanni Alfredo Garciliano Díaz</h3>
+            <p class="descripcion">Me gusta la programación, los idiomas e Internet.</p>
+            <p class="trabajo">He desarrollado el sitio en HTML/CSS/JS, y he escrito el soundtrack.</p>
+            <p class="facebook"><img src="img/fb.svg" class="social-icon" alt="Fb Icon"/>  <a href="https://www.facebook.com/giobeatle1794">Giovanni Alfredo Garciliano Díaz</a></p>
+            <p class="github"><img src="img/github.svg" class="social-icon"  alt="GitHub Icon"/> <a href="https://github.com/giobeatle1794">giobeatle1794</a></p>
+        </section>
+        <section class="creador">
+            <img src="img/leo.jpg" alt="Leo Foto" title="Leonardo" class="creador" />
+            <h3>Leonardo Esaú Acosta García</h3>
+            <p class="descripcion">Me gusta escuchar música, leer y navegar en Internet.</p>
+            <p class="trabajo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet quam ultricies, iaculis nibh.</p>
+            <p class="facebook"><img src="img/fb.svg" class="social-icon" alt="Fb Icon"/>  <a href="https://www.facebook.com/profile.php?id=100003440126955">Leonardo García</a></p>
+            <p class="github"><img src="img/github.svg" class="social-icon"  alt="GitHub Icon"/> <a href="https://github.com/LeonardoEsau">LeonardoEsau</a></p>
+        </section>
+        <section class="creador">
+            <img src="img/erick1.jpg" alt="Erick 1 Foto" title="Erick 1" class="creador" />
+            <h3>Erick Alberto Frías Cámara</h3>
+            <p class="descripcion">Fanático del campismo, la natación y la electricidad. También leer mangas. </p>
+            <p class="trabajo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet quam ultricies, iaculis nibh.</p>
+            <p class="facebook"><img src="img/fb.svg" class="social-icon" alt="Fb Icon"/>  <a href="https://www.facebook.com/alberto.frias.927">Alberto Frias</a></p>
+            <p class="github"><img src="img/github.svg" class="social-icon"  alt="GitHub Icon"/> <a href="https://github.com/arickalberto">arickalberto</a></p>
+        </section>
+        <section class="creador">
+            <img src="img/erick2.jpg" alt="Erick 2 Foto" title="Erick 2" class="creador" />
+            <h3>Erick Jhoan Flores Hernández</h3>
+            <p class="descripcion">Me gusta dibujar, el anime y escuchar música.</p>
+            <p class="trabajo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet quam ultricies, iaculis nibh.</p>
+            <p class="facebook"><img src="img/fb.svg" class="social-icon" alt="Fb Icon"/>  <a href="https://www.facebook.com/profile.php?id=100010443757381">Erick Hernández</a></p>
+            <p class="github"><img src="img/github.svg" class="social-icon"  alt="GitHub Icon"/> <a href="https://github.com/erickzom">erickzom</a></p>
+        </section>
+        <section class="creador">
+            <img src="img/ulices.jpg" alt="Ulices Foto" title="Ulises" class="creador" />
+            <h3>Ulices González Alejo</h3>
+            <p class="descripcion">Me gusta dibujar, el diseño gráfico, la arquitectura y Clash Royale</p>
+            <p class="trabajo">Lorem ipsum dolor sit ame, consectetur adipiscing elit. Nam sit amet quam ultricies, iaculis nibh.</p>
+            <p class="facebook"><img src="img/fb.svg" class="social-icon" alt="Fb Icon"/>  <a href="https://www.facebook.com/profile.php?id=100013302734811">Ulices Gonzalez</a></p>
+            <p class="github"><img src="img/github.svg" class="social-icon"  alt="GitHub Icon"/> <a href="https://github.com/gonzalezplay">gonzalezplay</a></p>
+        </section>
+        <section class="creador">
+            <img src="img/jaime.png" alt="Jaime Foto" title="Jaime" class="creador" />
+            <h3>Jaime Pecero Casasnovas</h3>
+            <p class="descripcion">Me gusta dibujar, y eschuchar música.</p>
+            <p class="trabajo">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sit amet quam ultricies, iaculis nibh.</p>
+            <p class="facebook"><img src="img/fb.svg" class="social-icon" alt="Fb Icon"/>  <a href="https://www.facebook.com/jaime.pecerocasasnovas">Jaime Pecero Casasnovas</a></p>
+        </section>
+    </article>
+    
+    <article>
+        <h2>Miscelánea</h2>
+        <section>
+            <h3>Si deseas colaborar...</h3>
+            <p>...puedes hacerlo. Tienes a tu disposición el código fuente en <a href="https://github.com/giobeatle1794/dino-jump">GitHub</a>, podés descargarlo, modificarlo, usarlo libremente y enviarnos tus mejoras y sugerencias. ¡Todos son bienvenidos!</p>
+        </section>
+        <section>
+            <h3>Enviar sugerencias/comentarios/amenazas de muerte</h3>
+            <p>También eres bienvenido a hacerlo. Puedes hacerlo por distintas vías. Preferimos que los envíes a la dirección de correo <a href="mailto:giobeatle10@gmail.com">giobeatle10@gmail.com</a>, aunque también puedes hacerlo a nuestros perfiles personales citados anteriormente. ¡Todo es bienvenido igualmente!</p>
+        </section>
+    </article>
+
+    <footer>
+        <p>Hecho con <img src="img/amor.svg" alt="amor" id="amor" /> desde México.</p>
+        <p><a href="http://jigsaw.w3.org/css-validator/check/referer"><img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="¡CSS Válido!" /></a></p>
+        <p>Este juego está publicado bajo la <a rel="license" href="https://www.gnu.org/licenses/gpl.html">GNU GPLv3</a>, así como este sitio web.</p>
+        <p>Copyright © 2017 Giovanni Alfredo Garciliano Díaz</p>
+    </footer>
+    <audio src="ogg/Dino_Jump_Track.ogg" autoplay loop preload="auto"></audio>
+</body>
+</html>

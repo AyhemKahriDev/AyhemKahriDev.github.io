@@ -1,0 +1,16 @@
+{
+  "repo": "thewickedkarma/move-the-numbers",
+  "stars": 1,
+  "licence": "GPL-3.0",
+  "sizeKB": 26,
+  "pushedAt": "2021-04-23T09:51:33Z",
+  "description": "Move number box to arrange the puzzle.",
+  "defaultBranch": "main",
+  "owner": "thewickedkarma",
+  "slug": "thewickedkarma-move-the-numbers",
+  "dest": "third-party/thewickedkarma-move-the-numbers",
+  "readme": "# move-the-numbers\nMove number box to arrange the puzzle.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,16 @@
+{
+  "repo": "jontymorris/Cowboy-Shooter",
+  "stars": 0,
+  "licence": "Apache-2.0",
+  "sizeKB": 104,
+  "pushedAt": "2019-10-09T01:59:52Z",
+  "description": "A 2d cowboy shooter made in Javascript",
+  "defaultBranch": "master",
+  "owner": "jontymorris",
+  "slug": "jontymorris-cowboy-shooter",
+  "dest": "third-party/jontymorris-cowboy-shooter",
+  "readme": "# Cowboy-Shooter\nA simple topdown cowboy shooter for the browser.\n\nThis is a simple, two player, top down shooter that I made in my free time. The game is made in basic HTML, CSS and Javascript.\n\nContributions are welcome if you want to help out.\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

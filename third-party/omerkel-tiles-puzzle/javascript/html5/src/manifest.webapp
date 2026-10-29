@@ -1,0 +1,22 @@
+{
+	"version": "1.0",
+	"name": "Tiles Puzzle",
+	"description": "Play Tiles Puzzle with your own images as a sliding tile puzzle.",
+	"launch_path": "/index.html",
+	"orientation": "landscape-primary",
+	"icons": {
+		"32": "/image/icons/tiles_puzzle32.png",
+		"48": "/image/icons/tiles_puzzle48.png",
+		"60": "/image/icons/tiles_puzzle60.png",
+		"64": "/image/icons/tiles_puzzle64.png",
+		"90": "/image/icons/tiles_puzzle90.png",
+		"120": "/image/icons/tiles_puzzle120.png",
+		"128": "/image/icons/tiles_puzzle128.png",
+		"256": "/image/icons/tiles_puzzle256.png"
+	},
+	"developer": {
+		"name": "Oliver Merkel",
+		"url": "https://github.com/OMerkel/tiles_puzzle"
+	},
+	"installs_allowed_from": ["*"]
+}

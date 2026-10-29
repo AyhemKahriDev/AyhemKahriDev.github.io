@@ -1,0 +1,16 @@
+{
+  "repo": "pi-kei/deshgram-roller",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 1284,
+  "pushedAt": "2019-04-12T10:11:51Z",
+  "description": "Game prototype using Phaser. Roll the deshgram by manipulation on axes",
+  "defaultBranch": "master",
+  "owner": "pi-kei",
+  "slug": "pi-kei-deshgram-roller",
+  "dest": "third-party/pi-kei-deshgram-roller",
+  "readme": "# deshgram-roller\nGame prototype using Phaser. Roll the deshgram by manipulation on axes. Press on any axis and release on any other axis to manipulate. Try [online](http://deshgrammer.ru/deshgram-roller/) (old prototype) or try an actual game made with this prototype [online](https://computers-dont-compost.itch.io/deshgram-roller)\n\n## Font\nFont used in game is from [ffonts.net](https://webfonts.ffonts.net/04b03.font)\n\n## License\n[MIT](https://github.com/pi-kei/deshgram-roller/blob/master/LICENSE)\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html",
+  "validated": true
+}

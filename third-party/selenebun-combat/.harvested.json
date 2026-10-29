@@ -1,0 +1,16 @@
+{
+  "repo": "selenebun/combat",
+  "stars": 9,
+  "licence": "MIT",
+  "sizeKB": 348,
+  "pushedAt": "2020-12-07T23:39:30Z",
+  "description": "A single- and multiplayer combat game programmed in Javascript using p5.js",
+  "defaultBranch": "main",
+  "owner": "selenebun",
+  "slug": "selenebun-combat",
+  "dest": "third-party/selenebun-combat",
+  "readme": "# combat\nA single- and multiplayer combat game programmed in Javascript using p5.js,\nplayable [here](https://rsaihe.github.io/combat/).\n\n### Controls\n* Mouse to aim, click to fire\n* F to toggle showing the framerate\n* H to toggle showing hitboxes\n* WASD or arrow keys to move\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

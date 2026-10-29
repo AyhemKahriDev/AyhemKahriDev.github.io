@@ -1,0 +1,16 @@
+{
+  "repo": "jhasuraj01/firstGame",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 22,
+  "pushedAt": "2019-12-26T19:25:25Z",
+  "description": "An introduction to game development, basic and simple!",
+  "defaultBranch": "master",
+  "owner": "jhasuraj01",
+  "slug": "jhasuraj01-firstgame",
+  "dest": "third-party/jhasuraj01-firstgame",
+  "readme": "# firstGame\n\nAn introduction to game development, basic and simple!\n\n[CLICK HERE TO PLAY](https://the-suraj.github.io/firstGame/)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

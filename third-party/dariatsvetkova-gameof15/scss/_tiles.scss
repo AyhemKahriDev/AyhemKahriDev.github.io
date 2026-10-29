@@ -1,0 +1,124 @@
+.field {
+    
+    position: relative;
+    margin: 2em auto;
+    @include field-size;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    @include theme-change;
+}
+
+.background {
+
+    position: absolute;
+    top: 0;
+    left: 0;
+
+    @include tiles-background-size;
+    margin: -1em;
+    border-radius: 1.4em;
+
+    span {
+        display: inline-block;
+        margin: 0;
+        background: transparent;
+        @include tile-size;
+
+        position: absolute;
+
+        @for $y from 0 through 3 {
+            @for $x from 0 through 3 {
+                &:nth-child(#{4 * $y + $x + 1}) {
+                    top: 18px + 80px * $y;
+                    left: 18px + 80px * $x;
+
+                    @include mobile {
+                        top: 16px + 68px * $y;
+                        left: 16px + 68px * $x;
+                    }
+                }    
+            }
+        }
+    }
+}
+
+.tiles-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include field-size;
+    margin: 0;
+    padding: 0;
+
+    .tile {
+        margin: 0;
+        @include tile-size;
+
+        position: absolute;
+
+        @for $y from 0 through 3 {
+            @for $x from 0 through 3 {
+                &:nth-child(#{4 * $y + $x + 1}) {
+                    top: 80px * $y;
+                    left: 80px * $x;
+
+                    @include mobile {
+                        top: 68px * $y;
+                        left: 68px * $x;
+                    }
+                }    
+            }
+        }
+
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0.89em;
+
+        @include tile-move;
+    
+        &-text {
+            margin: 0;
+            padding: 0;
+            user-select: none;
+
+            font-family: Fredoka One, Arial, Helvetica, sans-serif;
+            line-height: 120%;
+            text-align: center;
+            color: $peach-1;
+
+            font-size: 2.78em;
+            opacity: 1;
+
+            @include mobile {
+                font-size: 2.63em;
+            }
+        }
+
+        &-load:nth-child(n) {
+            left: 8.2em;
+            top: 8.2em;
+        
+            width: 0.1em;
+            height: 0.1em;
+            
+            .tile-text {
+                opacity: 0;
+            }
+        }
+    }
+    
+    .empty-tile {
+        background: transparent !important;
+        box-shadow: none !important;
+    }
+    
+    .moving-tile {
+        box-shadow: none;
+    }
+}

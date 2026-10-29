@@ -1,0 +1,21 @@
+# Bağımlılık yok, derleme yok — burası çoğunlukla boş kalmalı.
+
+# İşletim sistemi
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editör / araç yapılandırması
+.vscode/
+.idea/
+.claude/
+*.swp
+*~
+
+# Node (yalnızca testler için kullanılırsa)
+node_modules/
+npm-debug.log*
+
+# Yerel geçici çıktılar
+/tmp/
+*.local.json

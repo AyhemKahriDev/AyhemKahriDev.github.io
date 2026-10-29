@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hangman Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="app-shell">
+    <section class="game-card">
+      <div class="game-layout">
+        <section class="scene-panel">
+          <div id="stageCard" class="stage-card" aria-hidden="true">
+            <svg class="hangman-scene" viewBox="0 0 360 360" role="presentation">
+              <line class="gallows-line" x1="18" y1="332" x2="290" y2="332"></line>
+              <line class="gallows-line" x1="56" y1="44" x2="56" y2="332"></line>
+              <line class="gallows-line" x1="56" y1="44" x2="208" y2="44"></line>
+              <line class="gallows-line" x1="56" y1="44" x2="90" y2="78"></line>
+              <line class="rope-line" x1="208" y1="44" x2="208" y2="88"></line>
+
+              <g class="hangman-stick">
+                <circle class="hangman-part" data-step="1" cx="208" cy="110" r="20"></circle>
+                <line class="hangman-part" data-step="2" x1="208" y1="130" x2="208" y2="194"></line>
+                <line class="hangman-part" data-step="3" x1="208" y1="146" x2="176" y2="176"></line>
+                <line class="hangman-part" data-step="4" x1="208" y1="146" x2="240" y2="176"></line>
+                <line class="hangman-part" data-step="5" x1="208" y1="194" x2="180" y2="230"></line>
+                <line class="hangman-part" data-step="6" x1="208" y1="194" x2="236" y2="230"></line>
+              </g>
+            </svg>
+          </div>
+        </section>
+
+        <section class="info-panel">
+          <header class="top-bar">
+            <div class="stats">
+              <div class="stat-card">
+                <span class="stat-label">Current Level</span>
+                <span id="levelDisplay" class="stat-value">1 / 100</span>
+              </div>
+              <div class="stat-card">
+                <span class="stat-label">Difficulty</span>
+                <span id="difficultyDisplay" class="stat-value difficulty-chip" data-tier="easy">Easy</span>
+              </div>
+            </div>
+
+            <div class="progress-rail" aria-hidden="true">
+              <div id="progressFill" class="progress-fill"></div>
+            </div>
+          </header>
+
+          <section class="word-card">
+            <p id="statusMessage" class="status-message">Choose a letter to begin.</p>
+            <div id="wordDisplay" class="word-display" aria-live="polite"></div>
+
+            <div id="hintPanel" class="hint-panel hidden">
+              <span class="hint-label">Hint</span>
+              <p id="hintText" class="hint-text"></p>
+            </div>
+
+            <div class="guess-row">
+              <span>Incorrect guesses</span>
+              <strong><span id="mistakesDisplay" class="guess-count">0</span> / 6</strong>
+            </div>
+
+            <div class="controls">
+              <button id="actionButton" class="action-button hidden" type="button"></button>
+            </div>
+          </section>
+
+          <section class="keyboard-panel">
+            <div id="keyboard" class="keyboard"></div>
+          </section>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

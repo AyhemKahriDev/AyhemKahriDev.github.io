@@ -1,0 +1,16 @@
+{
+  "repo": "stackoverprof/amongus-grafkom",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 2729,
+  "pushedAt": "2021-09-11T16:56:48Z",
+  "description": "[ GAME ] Pure javascript canvas. Among-us game animation you can try just now",
+  "defaultBranch": "master",
+  "owner": "stackoverprof",
+  "slug": "stackoverprof-amongus-grafkom",
+  "dest": "third-party/stackoverprof-amongus-grafkom",
+  "readme": "# amongus-grafkom\n[ GAME ] Pure javascript canvas. Among-us game animation you can try just now\n\n![](https://screenshotapi.net/api/v1/screenshot?url=amongus-grafkom.now.sh&width=1366&height=768&output=image&delay=3000)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

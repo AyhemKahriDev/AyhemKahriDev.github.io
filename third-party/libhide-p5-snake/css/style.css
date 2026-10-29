@@ -1,0 +1,40 @@
+body {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  display: block;
+  margin: 100px auto;
+}
+
+#overlay {
+  display: none;
+  margin: 0;
+  background-color: #eee;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  color: #444;
+}
+
+#overlay p {
+  display: table-cell;
+  vertical-align: middle;
+  opacity: 0.6;
+  margin: 0;
+  padding: 0;
+  max-width: 50%;
+  font-size: 1.2em;
+  text-align: center;
+}
+
+@media screen and (max-width: 660px) {
+  canvas {
+    margin: 0;
+  }
+
+  #overlay {
+    display: table;
+  }
+}

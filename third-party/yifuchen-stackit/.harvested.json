@@ -1,0 +1,15 @@
+{
+  "repo": "YifuChen/StackIt",
+  "stars": 37,
+  "licence": "MIT",
+  "sizeKB": 3279,
+  "pushedAt": "2020-01-31T01:43:03Z",
+  "description": "A web game built on THREE.JS and React.js",
+  "defaultBranch": "master",
+  "owner": "YifuChen",
+  "slug": "yifuchen-stackit",
+  "dest": "third-party/yifuchen-stackit",
+  "readme": "# **Stack.io**\n\n> A WebGL game built on THREE.js and React\n>\n> This was a small project (version 1.0) that I initiated for my computer graphics course. The inspiration comes from a mobil game that I played a lot when several years ago, and I wonder if I can create it with `THREE.js`. Version 1.0 is functional, but totally not maintainable. So for version 2.0, the project is completely rewritten, with modern web dev tools like `webpack`, `node.js`, `React` and `Redux`, etc. Hope you enjoy the game!:sunglasses:\n>\n> - [ENTER GAME HERE(1.0)](https://acw101.github.io/StackIt)\n>\n> - Version 2.0 coming soon:\n>\n>   Integration: `React.js` and `redux`\n>\n>   Backend: `Firebase` - handle user login and data storage\n\n![menu](./src/assets/img/menu.png)\n\n## Game Rules\n\nThe goal is to stack up blocks as high as possible. Be careful! If the new brick is not landing perfectly on the top of stack, the excessive portion out of top brick's border will disappear! If you totally miss the top brick, game over.\n\n\n\n## Frameworks and Libraries\n\n**React**\n\n**Redux**\n\n**THREE.js & Physijs**\n\nThis is the cornerstone for the game itself, and it's a powerful tool for desgining WebGL comtent with ease.\n\n**Firebase**\n\nFirebase offers clean and simple APIs to persist data, and deploy web apps. And it also offers other useful features like user login and authentication.\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "src/index.html"
+}

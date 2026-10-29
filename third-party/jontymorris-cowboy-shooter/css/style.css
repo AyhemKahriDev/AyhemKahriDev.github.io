@@ -1,0 +1,29 @@
+#resources {
+    display: none;
+}
+
+#container {
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+#viewport {
+  height: 100%;
+  width: 100%;
+}
+
+#controls {
+  bottom: 20%;
+  left: 20%;
+
+
+  position: absolute;
+  width: 50%;
+  text-align: center;
+  height: 50%;
+}
+
+#controls button{
+    width:100%;
+}

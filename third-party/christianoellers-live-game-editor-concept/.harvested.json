@@ -1,0 +1,16 @@
+{
+  "repo": "ChristianOellers/Live-Game-Editor-Concept",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 34,
+  "pushedAt": "2020-11-26T18:32:50Z",
+  "description": "Live Game Editor – Conceptual and experimental tool to live-test canvas-based 2D games from existing game object instances. Demo with hit-testing and visual styles.",
+  "defaultBranch": "main",
+  "owner": "ChristianOellers",
+  "slug": "christianoellers-live-game-editor-concept",
+  "dest": "third-party/christianoellers-live-game-editor-concept",
+  "readme": "[![Live Game Editor Concept](teaser.png)](https://christianoellers.github.io/Live-Game-Editor-Concept)\n\n# Live game editor – Concept\n\n- [About](#about)\n- [Features](#features)\n- [Examples](#examples)\n\n<br>\n\n---\n\n## About\n\nA proof of concept about how a 'live' game editor and debugger can work with HTML canvas. The game objects have a simple hit test interaction: Enemies will change their border colour if hit.\n\nThis is just a tech demo. There is no browser/device optimization or error checking and the code 'style' is pretty much happy hardcoding ;)\n\n<br><br>\n\n## Features\n\n- Add interactive elements to the scene\n- Play/pause the animation\n- Change the view style\n\n<br><br>\n\n## Examples\n\nFind the live version here:\n\n- [Live demo »](https://christianoellers.github.io/Live-Game-Editor-Concept)\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "src/index.html",
+  "validated": true
+}

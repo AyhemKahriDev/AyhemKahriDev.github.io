@@ -1,0 +1,16 @@
+{
+  "repo": "minecraft8997/McLordChess-frontend",
+  "stars": 4,
+  "licence": "Apache-2.0",
+  "sizeKB": 48,
+  "pushedAt": "2023-02-19T18:21:55Z",
+  "description": "Client side of the McLord Chess game",
+  "defaultBranch": "main",
+  "owner": "minecraft8997",
+  "slug": "minecraft8997-mclordchess-frontend",
+  "dest": "third-party/minecraft8997-mclordchess-frontend",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

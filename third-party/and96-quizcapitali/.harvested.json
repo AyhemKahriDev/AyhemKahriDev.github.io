@@ -1,0 +1,16 @@
+{
+  "repo": "And96/QuizCapitali",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 36,
+  "pushedAt": "2025-08-21T15:00:20Z",
+  "description": "Gioco online in italiano per indovinare le capitali del mondo. Gratuito, senza registrazione e senza pubblicità.",
+  "defaultBranch": "main",
+  "owner": "And96",
+  "slug": "and96-quizcapitali",
+  "dest": "third-party/and96-quizcapitali",
+  "readme": "# 🌍 Quiz Capitali \n\n📌 Gioco online in italiano per indovinare le capitali del mondo. \n\n⚡ Gratuito, senza registrazione e senza pubblicità.\n\nhttps://and96.github.io/QuizCapitali/\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "19WAS85/old-school-racing",
+  "stars": 58,
+  "licence": "Apache-2.0",
+  "sizeKB": 499,
+  "pushedAt": "2020-06-29T16:12:03Z",
+  "description": "A pseudo3d old school racing game made with pure Javascript.",
+  "defaultBranch": "master",
+  "owner": "19WAS85",
+  "slug": "19was85-old-school-racing",
+  "dest": "third-party/19was85-old-school-racing",
+  "readme": "Old School Racing\n=================\n\nA pseudo3d old school racing game made with pure Javascript.\n\nIt was made to be a racing game platform, to create any kind of race as the golden age of fun.\n\nCheck a demo version with a random generated track and seven cpu cars (with a really dumb intelligence):\n\n * [http://19was85.github.io/old-school-racing/](http://19was85.github.io/old-school-racing/)\n\nCreating a Race\n---------------\n\n    // create new track\n    var track = new Track('Test Track');\n\n    // add the first segment of the track, white, for the start line\n    track.addSegments(1, { color: 0xEEEEEE });\n\n    // add 80 segments (a stright)\n    track.addSegments(80);\n\n    // add a right curve with a up hill\n    track.addSegments(20, { curve: -0.5, hill: -0.1 });\n\n    // add a tree in the 10th segment at 500px (right)\n    track.addObject(10, 'assets/tree.png', 500);\n\n    // create a car to player\n    var playerCar = new Car('assets/sidewinder.png');\n\n    // create a car to cpu\n    var cpuCar = new Car('assets/sidewinder.png');\n\n    // create a race\n    var race = new Race(track, [playerCar, cpuCar]);\n\n    // create a render to show the race in the screen\n    var render = new RaceRender(race);\n\n    // create keyboard control to player car\n    var keyboard = new KeyboardControl(playerCar);\n\n    // create a basic cpu control to other car\n    var cpuControl = new BasicCPUControl(cpuCar);\n\nNext Steps\n----------\n\n * Create unit test;\n * Improve performance;\n * Improve race;\n * Improve design.\n\nHow to Contribute?\n------------------\n\n 1. `npm run watch` to generate a development version of main js;\n 2. Use the index.html as your sandbox;\n 3. `npm run build` to generate the final version of main js.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

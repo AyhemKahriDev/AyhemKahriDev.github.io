@@ -1,0 +1,16 @@
+{
+  "repo": "knadh/wordpluck",
+  "stars": 54,
+  "licence": "MIT",
+  "sizeKB": 77,
+  "pushedAt": "2023-05-23T09:50:33Z",
+  "description": "A browser based typing game in Javascript. Revived from a 2012 project.",
+  "defaultBranch": "master",
+  "owner": "knadh",
+  "slug": "knadh-wordpluck",
+  "dest": "third-party/knadh-wordpluck",
+  "readme": "# word pluck\nA browser based typing game. Dusted out from a project from 2012. Uses CreateJS (an ancient version) to render game elements.\n\n[![screenshot](images/screenshot.png)](https://wordpluck.netlify.com)\n\n\n## Demo\n[Play word pluck online](https://wordpluck.netlify.com)\n\nLicensed under the MIT license.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

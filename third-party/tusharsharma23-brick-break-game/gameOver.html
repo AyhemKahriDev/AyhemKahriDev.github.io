@@ -1,0 +1,85 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+         <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+    
+	<style type="text/css">
+
+	    body{
+	    	background-size: 100%;
+	    	color: white;
+
+        }
+        button{
+        background: url(/images/blank.jpeg) no-repeat;
+    	border-radius: 10px;
+    	padding: 15px;
+    	margin: 20px;
+    	font-size: 15px;
+    	font-family: 'Press Start 2P', cursive;
+		}
+		.gameOver{
+			width: 520px;
+			text-align: center;
+			border: 2px solid;
+                         font-size: 30px;
+    font-family: 'Press Start 2P', cursive;
+                        margin: 100px; 
+            color: white;
+		}
+		.extras {
+            display: inline-block;
+			width: 600px;
+		}
+
+
+		.left {
+			position: relative;
+                         font-size: 30px;
+    font-family: 'Press Start 2P', cursive;
+			float: left;
+
+		}
+
+		.right {
+			position: relative;
+			float:  right;
+		}
+		.credit { 
+			font-size: 10px;
+
+		 }
+	</style>
+</head>
+<body background="images/homepage.jpg">
+	<div align="center">
+		<div class="gameOver">
+                    <p class="gameOverText" id="game_over_part"></p>
+		</div>
+
+		<div class="extras">
+			<div class="left">
+				<div>
+					<p>SCORE</p>
+					<h2 id="score_at_end"></h2>
+				</div>
+				<div>
+					<p class = "credit">created by -</p>
+					<p class="credit">Tushar(40420902716)</p>
+					<p class="credit">Vishal(05820902716)</p>
+					<p class = "credit">Amit(40320902716)</p>
+				</div> 
+			</div>
+
+
+			<div class="right" >
+				<img id = "gameStatus" src="" >
+			</div>
+		</div>
+	</div>
+    <script type="text/javascript" src="gameOver.js"></script>
+</body>
+</html>

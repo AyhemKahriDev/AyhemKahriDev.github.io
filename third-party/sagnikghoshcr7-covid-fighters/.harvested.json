@@ -1,0 +1,16 @@
+{
+  "repo": "sagnikghoshcr7/Covid-Fighters",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 173,
+  "pushedAt": "2020-12-20T12:43:17Z",
+  "description": "An Interactive Game",
+  "defaultBranch": "main",
+  "owner": "sagnikghoshcr7",
+  "slug": "sagnikghoshcr7-covid-fighters",
+  "dest": "third-party/sagnikghoshcr7-covid-fighters",
+  "readme": "# Covid-Fighters\nAn Interactive Game\n\n![](https://github.com/sagnikghoshcr7/images/blob/master/Covid%20Fighters.gif)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

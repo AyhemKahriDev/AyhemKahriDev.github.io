@@ -1,0 +1,16 @@
+{
+  "repo": "sinc0115/scramble",
+  "stars": 0,
+  "licence": "Apache-2.0",
+  "sizeKB": 18,
+  "pushedAt": "2020-10-16T00:05:38Z",
+  "description": "Scramble word game. Unscramble to win!",
+  "defaultBranch": "master",
+  "owner": "sinc0115",
+  "slug": "sinc0115-scramble",
+  "dest": "third-party/sinc0115-scramble",
+  "readme": "# Scramble Game\nScramble word game. Unscramble to win!\n\n## Created using: \n* Vue.js\n* localstorage\n* HTML\n* CSS\n* Bootstrap\n\n## What it does:\nBy leveraging a JS shuffle function, an array of words is scrambled and shown to the user. The user's points, passes, and strikes are stored in the game object and displayed to the user. All key game information is stored using localstorage, so that the user can pick up on their game later. \n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

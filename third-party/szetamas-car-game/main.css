@@ -1,0 +1,80 @@
+body
+{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 1.5rem;
+	background-color:#3399ff;
+}
+a, a:visited, a:active, a:hover
+{
+	color: black;
+}
+img
+{
+	filter: grayscale(100%);
+}
+#bg
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	border: 1px solid black;
+}
+#car
+{
+	position: absolute;
+	left: 100px;
+	top: 500px;
+}
+.anothercar
+{
+	position: absolute;
+	left: 100px;
+	top: -282px;
+}
+#divbottom
+{
+	position: absolute;
+	left: 0px;
+	top: 800px;
+	height: 300px;
+    width: 650px;
+    background-color:#3399ff;
+    color: black;
+}
+#divcentrum
+{
+	position: absolute;
+	left: 0px;
+	top: 0px;
+	height: 800px;
+    width: 650px;
+    color: white;
+    text-shadow: -4px 0 black, 0 4px black, 4px 0 black, 0 -4px black;
+}
+#out2
+{
+	text-align:center;
+}
+#menu
+{
+	height: 500px;
+    width: 650px;
+}
+.available, .soon
+{
+	font-family: 'Press Start 2P', cursive;
+	font-size: 1.5rem;
+	border: 2px solid #000000;
+}
+.available
+{
+	color: #ffffff;
+	background-color: #666666;
+}
+.soon
+{
+	color: #cccccc;
+	background-color: #888888;
+	cursor: not-allowed;
+	opacity: 0.9;
+}

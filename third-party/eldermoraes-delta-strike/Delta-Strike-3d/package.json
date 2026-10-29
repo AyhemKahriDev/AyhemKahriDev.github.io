@@ -1,0 +1,26 @@
+{
+  "name": "delta-strike-3d",
+  "version": "1.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview --host 127.0.0.1",
+    "test": "vitest run",
+    "test:browser": "playwright test",
+    "format": "prettier --write src tests 3d.html *.json *.ts README.md docs",
+    "format:check": "prettier --check src tests 3d.html *.json *.ts README.md docs"
+  },
+  "dependencies": {
+    "three": "^0.183.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.58.2",
+    "@types/three": "^0.183.0",
+    "prettier": "^3.9.6",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.18"
+  }
+}

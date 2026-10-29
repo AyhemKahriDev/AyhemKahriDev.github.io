@@ -1,0 +1,16 @@
+{
+  "repo": "iamarav/TicTacToe",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 17,
+  "pushedAt": "2020-02-05T11:11:43Z",
+  "description": "A simple TicTacToe game made with JS.",
+  "defaultBranch": "master",
+  "owner": "iamarav",
+  "slug": "iamarav-tictactoe",
+  "dest": "third-party/iamarav-tictactoe",
+  "readme": "# TicTacToe",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

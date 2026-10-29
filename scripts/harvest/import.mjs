@@ -407,9 +407,25 @@ function main() {
   const MAX_GAME_BYTES = 10 * 1024 * 1024;
   const dirSize = (dir) => {
     let total = 0;
-    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+    let entries;
+    try {
+      entries = readdirSync(dir, { withFileTypes: true });
+    } catch {
+      return 0;
+    }
+    for (const entry of entries) {
       const p = join(dir, entry.name);
-      total += entry.isDirectory() ? dirSize(p) : statSync(p).size;
+      if (entry.isDirectory()) {
+        total += dirSize(p);
+        continue;
+      }
+      // validate() deletes dead games while this runs; a file can vanish
+      // between readdir and stat, and that must not kill the import.
+      try {
+        total += statSync(p).size;
+      } catch {
+        /* vanished mid-walk */
+      }
     }
     return total;
   };

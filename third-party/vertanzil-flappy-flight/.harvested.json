@@ -1,0 +1,16 @@
+{
+  "repo": "vertanzil/Flappy-Flight",
+  "stars": 1,
+  "licence": "Apache-2.0",
+  "sizeKB": 5295,
+  "pushedAt": "2026-10-08T10:38:58Z",
+  "description": "Javascript version of Flappy Bird",
+  "defaultBranch": "master",
+  "owner": "vertanzil",
+  "slug": "vertanzil-flappy-flight",
+  "dest": "third-party/vertanzil-flappy-flight",
+  "readme": "# Flappy Flight JS\n\nA Javascript version of the popular Flappy Bird game.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

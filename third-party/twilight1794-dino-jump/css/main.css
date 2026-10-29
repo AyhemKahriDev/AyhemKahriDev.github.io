@@ -1,0 +1,162 @@
+/* Hoja de estilo para index.html */
+
+/* Fuentes */
+@font-face {
+    font-family: "Chelsea Market";
+    src: url("../fonts/chelsea.ttf");
+}
+@font-face {
+    font-family: "Redacted";
+    src: url("../fonts/redacted.ttf");
+}
+
+/* Aquí empiezan los estilos */
+body {
+    font-family: sans-serif, "Droid Sans", "Calibri";
+    font-size: 15px;
+    background-image: url("../img/bliss.jpg");
+    background-attachment: fixed;
+    background-position: 50% 50%;
+    color: white;
+    text-align: justify;
+}
+
+h1 {
+    font-family: "Chelsea Market";
+    font-weight: normal;
+}
+
+h2 {
+    text-align: center;
+    font-weight: bold;
+    font-size: 32px;
+}
+
+h3 {
+    font-size: 24px;
+}
+
+section.creador h3 {
+    font-size: 20px;
+}
+
+/* Esto es para que todo quede centrado (y de paso un fondo)*/
+article, footer, aside {
+    width: 50%;
+    padding: 20px;
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 3em;
+    margin-bottom: 3em;
+    background: rgba(0,0,0,.7);
+    border-radius: 1em;
+}
+
+/* Cabecera de arriba */
+header {
+    width: 100%;
+    text-align: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: black;
+}
+
+/* Para que el contenido no se quede abajo de la cabecera */
+#firstarticle {
+    margin-top: 6em;
+}
+
+/* Iconos de Facebook, Twitter */
+.social-icon {
+    width: 1em;
+}
+
+.social-icon:after {
+    content: " ";
+}
+
+/* Fotos de los programadores */
+img.creador {
+    width: 100px;
+    display: inline;
+    padding: .5em;
+    float: left;
+}
+
+/* Secciones de los programadores */
+section.creador {
+    border: dashed yellow 2px;
+    padding: 1em;
+    margin-top: 4px;
+}
+.trabajo {
+    font-style: italic;
+}
+
+/* Estilos de botón */
+.button-html {
+    border-radius: 3px;
+    border: 1px solid gray;
+    background: white;
+    color: black;
+    font-family: monospace;
+}
+
+/* Estilos para formularios */
+form {
+    text-align: center;
+}
+
+fieldset {
+    margin: 1em;
+}
+
+#ajugar {
+    border: none;
+    background-color: black;
+    color: white;
+    padding: 1em;
+    font-size: 1.5em;
+    border-radius: .5em;
+    position: relative;
+    box-sizing: border-box;
+    transition: all 500ms ease;
+}
+
+#ajugar:hover {
+    background-color: #3a7999;
+    color: #f2f2f2;
+    box-shadow: inset 0 0 0 3px white;
+}
+
+/* Para navegadores actualizados */
+#cssrequired {
+    display: none;
+}
+
+/* No tocar lo de abajo... */
+mark {
+    background: none;
+    font-weight: bold;
+    color: white;
+}
+
+a {
+    color: cyan;
+}
+
+/* El corazón */
+#amor {width: 1em;}
+
+/* Estilos para pantallas pequeñas */
+@media (max-width: 641px){
+
+    /* Esto es para que lo que estaba centrado ya no se centre */
+    article, footer, aside {
+        width: 96%;
+        margin-left: 2%;
+        margin-right: 2%;
+        padding: 5px;
+    }
+}

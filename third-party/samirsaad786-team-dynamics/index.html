@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Team Dynamics Puzzle</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * { box-sizing: border-box; }
+    
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(180deg, #020617, #0f172a);
+      color: #e5e7eb;
+      margin: 0;
+      padding: 1.5rem 1rem;
+      min-height: 100vh;
+    }
+    
+    h1 { 
+      color: #f8fafc; 
+      margin: 0 0 0.5rem 0;
+      font-size: 1.75rem;
+    }
+    
+    h1 + p {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      color: #cbd5e1;
+    }
+    
+    .container { 
+      max-width: 1100px; 
+      margin: auto; 
+    }
+    
+    .card {
+      background: rgba(15, 23, 42, 0.6);
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 1.25rem;
+      margin-bottom: 1.25rem;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.45);
+    }
+    
+    .pill {
+      display: inline-block;
+      background: #1e293b;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      margin-bottom: 0.75rem;
+      color: #93c5fd;
+      font-weight: 500;
+    }
+
+    .step-indicator {
+      display: inline-block;
+      background: #3b82f6;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      text-align: center;
+      line-height: 24px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+
+    .step-indicator.complete {
+      background: #22c55e;
+    }
+    
+    button {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      padding: 0.75rem 1.1rem;
+      margin: 0.4rem 0.4rem 0.4rem 0;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s;
+      font-weight: 500;
+    }
+    
+    button:hover:not(:disabled) { 
+      background: #1d4ed8;
+      transform: translateY(-1px);
+    }
+    
+    button:disabled {
+      background: #334155;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+    
+    button.secondary { background: #475569; }
+    button.secondary:hover { background: #334155; }
+    
+    select {
+      padding: 0.6rem;
+      border-radius: 8px;
+      background: #020617;
+      color: #e5e7eb;
+      border: 1px solid #334155;
+      cursor: pointer;
+      font-size: 1rem;
+      width: 100%;
+      max-width: 400px;
+    }
+    
+    .scenario-description {
+      margin-top: 1rem;
+      padding: 1rem;
+      background: rgba(30, 41, 59, 0.4);
+      border-radius: 8px;
+      color: #cbd5e1;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    
+    .role-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    
+    .slots { 
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem; 
+      margin-top: 1.5rem; 
+    }
+    
+    .slot {
+      background: rgba(2, 6, 23, 0.8);
+      border: 2px dashed #334155;
+      border-radius: 12px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      color: #94a3b8;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+    }
+    
+    .slot.filled { 
+      border-style: solid;
+      border-color: #3b82f6;
+      color: #e5e7eb;
+      background: rgba(37, 99, 235, 0.1);
+    }
+    
+    .tooltip { 
+      color: #94a3b8;
+      font-style: italic;
+      min-height: 2.5em;
+      margin-top: 0.75rem;
+      padding: 0.5rem;
+      background: rgba(30, 41, 59, 0.3);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+
+    .process-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .process-option {
+      background: rgba(30, 41, 59, 0.4);
+      border: 2px solid #334155;
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .process-option:hover {
+      border-color: #3b82f6;
+      background: rgba(37, 99, 235, 0.1);
+    }
+
+    .process-option.selected {
+      border-color: #3b82f6;
+      background: rgba(37, 99, 235, 0.15);
+    }
+
+    .process-option h4 {
+      margin: 0 0 0.5rem 0;
+      color: #f8fafc;
+      font-size: 1rem;
+    }
+
+    .process-option p {
+      margin: 0;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+    
+    .result {
+      margin-top: 1rem;
+      padding: 1.5rem;
+      border-left: 5px solid;
+      border-radius: 8px;
+      background: rgba(30, 41, 59, 0.3);
+    }
+    
+    .result strong { font-weight: 600; }
+    
+    .strong-fit { border-color: #22c55e; }
+    .weak-fit { border-color: #f59e0b; }
+    .mismatch { border-color: #ef4444; }
+    
+    .result-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    
+    .result-explanation {
+      color: #cbd5e1;
+      line-height: 1.6;
+      margin-top: 0.75rem;
+    }
+
+    .process-impact {
+      margin-top: 1.5rem;
+      padding: 1.25rem;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid #3b82f6;
+      border-radius: 8px;
+    }
+
+    .process-impact h4 {
+      margin: 0 0 0.75rem 0;
+      color: #93c5fd;
+      font-size: 1rem;
+    }
+
+    .process-impact-content {
+      color: #cbd5e1;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .process-impact-content strong {
+      color: #f8fafc;
+    }
+    
+    .actions {
+      margin-top: 1.5rem;
+      display: flex;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    
+    .belbin-note {
+      margin-top: 1rem;
+      padding: 0.85rem;
+      background: rgba(30, 41, 59, 0.3);
+      border-left: 3px solid #3b82f6;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      color: #94a3b8;
+      line-height: 1.5;
+    }
+
+    .compact-intro {
+      background: rgba(30, 41, 59, 0.3);
+      border-radius: 8px;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1rem;
+      font-size: 0.85rem;
+      line-height: 1.5;
+    }
+
+    .compact-intro summary {
+      cursor: pointer;
+      font-weight: 600;
+      color: #93c5fd;
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .compact-intro summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .compact-intro summary::before {
+      content: '▶';
+      font-size: 0.7rem;
+      transition: transform 0.2s;
+    }
+
+    .compact-intro[open] summary::before {
+      transform: rotate(90deg);
+    }
+
+    .compact-intro ol {
+      margin: 0.75rem 0 0 0;
+      padding-left: 1.25rem;
+    }
+
+    .compact-intro li {
+      margin-bottom: 0.35rem;
+      color: #cbd5e1;
+    }
+
+    /* Two-column layout for desktop */
+    @media (min-width: 768px) {
+      .two-col-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.25rem;
+      }
+
+      .full-width {
+        grid-column: 1 / -1;
+      }
+    }
+    
+    footer { 
+      text-align: center;
+      font-size: 0.85rem;
+      color: #64748b;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid #1e293b;
+    }
+
+    @media (max-width: 640px) {
+      body { padding: 1rem 0.5rem; }
+      .card { padding: 1rem; }
+      .slots { grid-template-columns: 1fr; }
+      button { padding: 0.6rem 0.85rem; font-size: 0.9rem; }
+      .process-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 1.5rem; }
+    }
+
+    @media (max-width: 767px) {
+      .two-col-container {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+
+<h1>🧩 Team Dynamics Puzzle</h1>
+<p>Explore how team roles AND team processes interact with different leadership contexts.</p>
+
+<div class="card">
+  <details class="compact-intro">
+    <summary>How to Use This Tool</summary>
+    <ol>
+      <li>Select a <strong>scenario</strong> based on the situation you're leading.</li>
+      <li>Choose <strong>three roles</strong> you believe would work best.</li>
+      <li>Select a <strong>team process</strong> for how the team will work together.</li>
+      <li>Review the outcome and experiment with different combinations.</li>
+    </ol>
+  </details>
+  
+  <div class="belbin-note">
+    <strong>About the Framework:</strong> Roles are inspired by Meredith Belbin's Team Roles. The process dimension draws from research showing that how teams interact often matters more than who's on the team. This tool helps you see how both factors work together.
+  </div>
+</div>
+
+<div class="two-col-container">
+  <div class="card">
+    <span class="pill"><span class="step-indicator">1</span>Choose Your Scenario</span>
+    <select id="scenarioSelect">
+      <option value="innovation">Innovation & Discovery</option>
+      <option value="execution">Execution & Delivery</option>
+      <option value="crisis">Crisis Management</option>
+      <option value="risk">Risk & Compliance</option>
+      <option value="turnaround">Turnaround & Restructuring</option>
+      <option value="growth">Rapid Growth & Scaling</option>
+    </select>
+    <div class="scenario-description" id="scenarioDesc"></div>
+  </div>
+
+  <div class="card">
+    <span class="pill"><span class="step-indicator" id="step2">2</span>Select Three Roles</span>
+    <div class="role-buttons">
+      <button id="btn-plant" onclick="pickRole('Plant')">🌱 Plant</button>
+      <button id="btn-implementer" onclick="pickRole('Implementer')">🛠 Implementer</button>
+      <button id="btn-coordinator" onclick="pickRole('Coordinator')">🧭 Coordinator</button>
+      <button id="btn-challenger" onclick="pickRole('Challenger')">⚠️ Challenger</button>
+      <button id="btn-finisher" onclick="pickRole('Finisher')">✅ Completer</button>
+    </div>
+    <div class="tooltip" id="tooltip">Hover over a role to learn what it contributes to a team.</div>
+
+    <div class="slots">
+      <div class="slot" id="slot1">Slot 1</div>
+      <div class="slot" id="slot2">Slot 2</div>
+      <div class="slot" id="slot3">Slot 3</div>
+    </div>
+
+    <div class="actions">
+      <button class="secondary" onclick="resetTeam()">Reset Roles</button>
+    </div>
+  </div>
+</div>
+
+<div class="card" id="processCard" style="display:none">
+  <span class="pill"><span class="step-indicator" id="step3">3</span>How Will This Team Work Together?</span>
+  <p style="color:#cbd5e1;margin-bottom:1rem;font-size:0.9rem;">Role composition is just one factor. How the team communicates and makes decisions matters just as much.</p>
+  
+  <div class="process-grid" id="processOptions"></div>
+</div>
+
+<div class="card full-width" id="outcome" style="display:none">
+  <span class="pill">Your Result</span>
+  <div id="outcomeBox" class="result">
+    <div class="result-title" id="outcomeTitle"></div>
+    <div class="result-explanation" id="explanationText"></div>
+  </div>
+  
+  <div class="process-impact" id="processImpact">
+    <h4>💡 How Your Process Choice Impacts This Team</h4>
+    <div class="process-impact-content" id="processImpactText"></div>
+  </div>
+  
+  <div class="actions">
+    <button onclick="resetAll()">Start Over</button>
+    <button class="secondary" onclick="changeProcess()">Try Different Process</button>
+  </div>
+</div>
+
+<footer>
+  <p>A reflective tool for exploring team composition and process dynamics.</p>
+  <p style="margin-top:0.5rem;">Inspired by Belbin's Team Roles and organizational psychology research. Built by Samir Saad.</p>
+</footer>
+
+</div>
+
+<script>
+const roles = {
+  Plant: "Generates original ideas and creative solutions. Thinks outside the box.",
+  Implementer: "Turns ideas into practical actions. Gets things done reliably.",
+  Coordinator: "Aligns people, priorities, and decisions. Orchestrates team efforts.",
+  Challenger: "Questions assumptions and highlights risks. Ensures critical thinking.",
+  Finisher: "Drives quality, precision, and completion. Ensures nothing falls through cracks."
+};
+
+const processOptions = {
+  innovation: [
+    { id: 'high_collab', name: 'High Collaboration', description: 'Daily syncs, open brainstorming, frequent pivots based on learning' },
+    { id: 'structured_sprints', name: 'Structured Sprints', description: 'Weekly planning, time-boxed experiments, regular retrospectives' },
+    { id: 'autonomous_sync', name: 'Autonomous + Sync Points', description: 'Individual exploration with milestone reviews and integration sessions' }
+  ],
+  execution: [
+    { id: 'clear_milestones', name: 'Clear Milestones', description: 'Defined deliverables, accountability checkpoints, minimal meetings' },
+    { id: 'daily_coordination', name: 'Daily Coordination', description: 'Standups, issue tracking, rapid problem resolution' },
+    { id: 'parallel_execution', name: 'Parallel Execution', description: 'Clear ownership, async updates, integration at key phases' }
+  ],
+  crisis: [
+    { id: 'command_control', name: 'Command & Control', description: 'Clear leader, rapid decisions, execute-then-iterate approach' },
+    { id: 'war_room', name: 'War Room Mode', description: 'All hands on deck, real-time problem solving, constant communication' },
+    { id: 'rapid_assess', name: 'Assess-Decide-Act', description: 'Quick analysis, decisive action, structured debriefs' }
+  ],
+  risk: [
+    { id: 'thorough_review', name: 'Thorough Review', description: 'Comprehensive analysis, documented decisions, stakeholder sign-offs' },
+    { id: 'peer_challenge', name: 'Peer Challenge', description: 'Red team/blue team, devil\'s advocate sessions, multi-perspective review' },
+    { id: 'systematic_audit', name: 'Systematic Audit', description: 'Checklist-driven, evidence-based, audit trail documentation' }
+  ],
+  turnaround: [
+    { id: 'transparent_brutal', name: 'Transparent & Decisive', description: 'Honest assessment, swift decisions, clear communication of changes' },
+    { id: 'stabilize_rebuild', name: 'Stabilize Then Rebuild', description: 'Stop the bleeding first, then systematic restructuring' },
+    { id: 'quick_wins', name: 'Quick Wins Strategy', description: 'Early visible improvements to build momentum and confidence' }
+  ],
+  growth: [
+    { id: 'scale_systems', name: 'Scale Through Systems', description: 'Document processes, build repeatable workflows, invest in infrastructure' },
+    { id: 'empower_delegate', name: 'Empower & Delegate', description: 'Clear ownership, decision authority, trust with accountability' },
+    { id: 'iterative_scale', name: 'Iterative Scaling', description: 'Grow incrementally, learn from each phase, adjust before expanding' }
+  ]
+};
+
+// Scenario data with process impacts - continuing from previous code
+const scenarios = {"innovation":{"name":"Innovation & Discovery","description":"You're exploring new territory—launching a new product, entering a new market, or solving an undefined problem. The path forward is unclear and requires creative thinking.","ideal":["Plant","Coordinator","Implementer"],"rationale":{"strong":"This team balances creative ideation (Plant), practical execution (Implementer), and alignment (Coordinator)—essential for innovation that ships.","weak":"Innovation needs idea generation and execution in balance. Without both, you get either dreams without delivery or action without direction.","roleExplanations":{"Plant":"generates the novel ideas needed for innovation","Implementer":"ensures ideas become tangible prototypes and experiments","Coordinator":"keeps the team aligned and prevents chaos","Challenger":"can slow innovation by overemphasizing risks too early","Finisher":"may prematurely optimize before the direction is clear"}},"processImpact":{"high_collab":{"type":"strength","label":"Amplifies creative synthesis","detail":"High collaboration allows your Plant to bounce ideas off the Implementer, with the Coordinator ensuring exploration stays productive. This creates a feedback loop where creative ideas get reality-tested quickly."},"structured_sprints":{"type":"strength","label":"Balances exploration with progress","detail":"Sprint structure gives your Plant space to ideate while ensuring the Implementer can build prototypes and the Coordinator can assess whether you're making meaningful progress."},"autonomous_sync":{"type":"weakness","label":"Risks losing creative synergy","detail":"Too much autonomy may cause your Plant to over-explore while the Implementer builds in the wrong direction. Your Coordinator will struggle to align without regular touchpoints."}}},"execution":{"name":"Execution & Delivery","description":"The path is clear—now it's about delivering on commitments, meeting deadlines, and maintaining quality. Consistency and reliability matter most.","ideal":["Implementer","Coordinator","Finisher"],"rationale":{"strong":"This team excels at systematic delivery: turning plans into action (Implementer), maintaining alignment (Coordinator), and ensuring quality completion (Finisher).","weak":"Execution requires discipline and follow-through. Without the right balance of action, coordination, and quality control, deadlines slip and standards drop.","roleExplanations":{"Implementer":"drives consistent, reliable action","Coordinator":"maintains alignment and prevents bottlenecks","Finisher":"ensures quality and complete delivery","Plant":"may introduce unnecessary complexity when clarity exists","Challenger":"can create doubt when confidence is needed"}},"processImpact":{"clear_milestones":{"type":"strength","label":"Maximizes focused execution","detail":"Clear milestones let your Implementer and Finisher work autonomously while your Coordinator handles integration. This is optimal for teams that know what they're doing."},"daily_coordination":{"type":"weakness","label":"May create coordination overhead","detail":"Daily meetings might be overkill for this well-balanced execution team. Your Coordinator could spend more time in meetings than solving real coordination problems."},"parallel_execution":{"type":"strength","label":"Efficient when dependencies are clear","detail":"This works well if your Coordinator has mapped dependencies correctly. Your Implementer and Finisher can work in parallel, syncing only when needed."}}},"crisis":{"name":"Crisis Management","description":"Something has gone wrong—a major bug, a regulatory issue, or an unexpected setback. You need to respond quickly, make tough calls, and stabilize the situation.","ideal":["Coordinator","Challenger","Implementer"],"rationale":{"strong":"Crisis demands rapid decision-making (Coordinator), critical assessment of risks (Challenger), and immediate action (Implementer)—this team delivers all three.","weak":"In crisis, you need decisive action informed by critical thinking. Without this balance, teams either act recklessly or get paralyzed by analysis.","roleExplanations":{"Coordinator":"makes rapid decisions and aligns the response","Challenger":"surfaces critical risks and prevents worse outcomes","Implementer":"executes the response quickly and reliably","Plant":"introduces complexity when speed and focus are critical","Finisher":"may slow response by focusing on perfection over speed"}},"processImpact":{"command_control":{"type":"strength","label":"Enables rapid response","detail":"Your Coordinator can make fast decisions, your Challenger can flag critical risks in real-time, and your Implementer can execute immediately. This structure prevents analysis paralysis."},"war_room":{"type":"strength","label":"Maximizes information flow","detail":"War room mode ensures your Challenger sees problems as they emerge, your Coordinator has full context for decisions, and your Implementer can pivot quickly."},"rapid_assess":{"type":"weakness","label":"May slow initial response","detail":"The structured approach might delay action when speed is critical. Your team's strength is decisive action—don't let process slow you down in the first hours."}}},"risk":{"name":"Risk & Compliance","description":"Your team needs to manage regulatory requirements, assess risk exposure, or ensure organizational compliance. Scrutiny, precision, and accountability are paramount.","ideal":["Challenger","Finisher","Coordinator"],"rationale":{"strong":"This team combines critical evaluation (Challenger), attention to detail (Finisher), and stakeholder alignment (Coordinator)—essential for managing risk without creating bottlenecks.","weak":"Risk management requires both skepticism and precision. Without both, you either miss red flags or create unnecessary friction.","roleExplanations":{"Challenger":"identifies risks, questions assumptions, and surfaces concerns","Finisher":"ensures nothing is overlooked and standards are met","Coordinator":"balances risk awareness with organizational needs","Plant":"may introduce untested ideas when proven approaches are safer","Implementer":"might move too fast without adequate controls"}},"processImpact":{"thorough_review":{"type":"strength","label":"Ensures comprehensive coverage","detail":"Your Challenger can systematically identify risks, your Finisher ensures documentation is complete, and your Coordinator manages stakeholder expectations through the process."},"peer_challenge":{"type":"strength","label":"Surfaces blind spots","detail":"Red team/blue team approach leverages your Challenger's skepticism while your Finisher ensures all findings are documented. Your Coordinator facilitates productive debate."},"systematic_audit":{"type":"weakness","label":"May become bureaucratic","detail":"Over-reliance on checklists could suppress your Challenger's intuitive risk sensing. Balance systematic rigor with critical thinking."}}},"turnaround":{"name":"Turnaround & Restructuring","description":"The organization or project is underperforming and needs a reset. You must diagnose what's broken, make difficult decisions, and rebuild quickly.","ideal":["Challenger","Coordinator","Implementer"],"rationale":{"strong":"Turnarounds need honest assessment (Challenger), decisive leadership (Coordinator), and rapid execution (Implementer)—this team can diagnose, decide, and deliver.","weak":"Restructuring fails when teams can't confront reality or act decisively. You need both clear-eyed analysis and the will to execute difficult changes.","roleExplanations":{"Challenger":"confronts uncomfortable truths about what's not working","Coordinator":"makes tough calls and realigns the team","Implementer":"executes the turnaround plan reliably","Plant":"may overcomplicate when clarity and focus are needed","Finisher":"might perfect minor details while major issues persist"}},"processImpact":{"transparent_brutal":{"type":"strength","label":"Builds trust through honesty","detail":"Your Challenger can speak hard truths, your Coordinator can make and communicate tough decisions, and your Implementer can execute changes immediately. Transparency prevents rumors."},"stabilize_rebuild":{"type":"strength","label":"Prevents additional damage","detail":"This phased approach lets your Challenger identify what's truly broken, your Implementer stops the immediate bleeding, then your Coordinator orchestrates systematic rebuilding."},"quick_wins":{"type":"weakness","label":"Risks treating symptoms","detail":"Quick wins can build momentum, but your Challenger needs to ensure you're not just putting band-aids on systemic problems. Balance visible progress with deep fixes."}}},"growth":{"name":"Rapid Growth & Scaling","description":"Demand is surging and you need to scale operations, expand the team, and maintain quality while moving fast. Systems and processes must evolve quickly.","ideal":["Implementer","Coordinator","Plant"],"rationale":{"strong":"Scaling requires operational reliability (Implementer), strategic alignment (Coordinator), and creative problem-solving (Plant) to build systems that can grow.","weak":"Growth without the right foundation leads to chaos. You need both execution capacity and innovative thinking to scale sustainably.","roleExplanations":{"Implementer":"builds reliable processes that can scale","Coordinator":"keeps expanding teams aligned and effective","Plant":"solves novel scaling challenges with creative approaches","Challenger":"can slow momentum by overanalyzing growing pains","Finisher":"may bottleneck growth by insisting on premature optimization"}},"processImpact":{"scale_systems":{"type":"strength","label":"Creates sustainable foundation","detail":"Your Implementer builds repeatable systems, your Plant designs creative solutions to scaling challenges, and your Coordinator ensures new processes are adopted effectively."},"empower_delegate":{"type":"strength","label":"Enables rapid expansion","detail":"This approach leverages your Coordinator's ability to trust and align, your Implementer's reliability, and your Plant's creative approaches to delegation and structure."},"iterative_scale":{"type":"strength","label":"Balances speed with learning","detail":"Growing in phases lets your Plant identify problems early, your Implementer refine processes before they're under stress, and your Coordinator adjust team structures thoughtfully."}}}};
+
+let chosenRoles = [];
+let selectedProcess = null;
+
+function updateScenarioDescription() {
+  const scenario = document.getElementById('scenarioSelect').value;
+  document.getElementById('scenarioDesc').innerText = scenarios[scenario].description;
+  resetTeam();
+}
+
+function pickRole(role) {
+  if (chosenRoles.includes(role)) {
+    removeRole(role);
+    return;
+  }
+  
+  if (chosenRoles.length === 3) return;
+  
+  chosenRoles.push(role);
+  updateUI();
+  
+  if (chosenRoles.length === 3) {
+    document.getElementById('step2').classList.add('complete');
+    setTimeout(showProcessOptions, 300);
+  }
+}
+
+function removeRole(role) {
+  chosenRoles = chosenRoles.filter(r => r !== role);
+  updateUI();
+  document.getElementById('outcome').style.display = 'none';
+  document.getElementById('processCard').style.display = 'none';
+  document.getElementById('step2').classList.remove('complete');
+  document.getElementById('step3').classList.remove('complete');
+  selectedProcess = null;
+}
+
+function updateUI() {
+  for (let i = 1; i <= 3; i++) {
+    const slot = document.getElementById(`slot${i}`);
+    const role = chosenRoles[i - 1];
+    
+    if (role) {
+      slot.innerText = role;
+      slot.className = 'slot filled';
+    } else {
+      slot.innerText = `Slot ${i}`;
+      slot.className = 'slot';
+    }
+  }
+  
+  Object.keys(roles).forEach(role => {
+    const btn = document.getElementById(`btn-${role.toLowerCase()}`);
+    if (chosenRoles.includes(role)) {
+      btn.style.background = '#1e293b';
+      btn.style.opacity = '0.7';
+    } else if (chosenRoles.length === 3) {
+      btn.disabled = true;
+    } else {
+      btn.disabled = false;
+      btn.style.background = '#2563eb';
+      btn.style.opacity = '1';
+    }
+  });
+}
+
+function showProcessOptions() {
+  const scenarioKey = document.getElementById('scenarioSelect').value;
+  const processCard = document.getElementById('processCard');
+  const optionsContainer = document.getElementById('processOptions');
+  
+  const options = processOptions[scenarioKey];
+  optionsContainer.innerHTML = options.map(opt => `
+    <div class="process-option" onclick="selectProcess('${opt.id}', event)">
+      <h4>${opt.name}</h4>
+      <p>${opt.description}</p>
+    </div>
+  `).join('');
+  
+  processCard.style.display = 'block';
+  processCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function selectProcess(processId, e) {
+  selectedProcess = processId;
+  
+  document.querySelectorAll('.process-option').forEach(opt => {
+    opt.classList.remove('selected');
+  });
+  // Use passed event, fall back to window.event for older browsers
+  const clickEvent = e || window.event;
+  if (clickEvent && clickEvent.target) {
+    clickEvent.target.closest('.process-option').classList.add('selected');
+  }
+  document.getElementById('step3').classList.add('complete');
+  
+  setTimeout(evaluate, 300);
+}
+
+function evaluate() {
+  const scenarioKey = document.getElementById('scenarioSelect').value;
+  const scenario = scenarios[scenarioKey];
+  const outcome = document.getElementById('outcome');
+  const box = document.getElementById('outcomeBox');
+  const title = document.getElementById('outcomeTitle');
+  const explanation = document.getElementById('explanationText');
+  const processImpact = document.getElementById('processImpact');
+  const processImpactText = document.getElementById('processImpactText');
+
+  const ideal = scenario.ideal;
+  const correctRoles = chosenRoles.filter(r => ideal.includes(r));
+  const incorrectRoles = chosenRoles.filter(r => !ideal.includes(r));
+  
+  outcome.style.display = 'block';
+  
+  let fitLevel, titleText, explanationHTML;
+  
+  if (correctRoles.length === 3) {
+    fitLevel = 'strong-fit';
+    titleText = '✓ Strong Fit';
+    explanationHTML = `<p><strong>Why this works:</strong> ${scenario.rationale.strong}</p>`;
+  } else if (correctRoles.length === 2) {
+    fitLevel = 'weak-fit';
+    titleText = '~ Weak Fit';
+    
+    let feedback = `<p><strong>Why this partially works:</strong> You have strong alignment with <strong>${correctRoles.join(' and ')}</strong>`;
+    correctRoles.forEach(role => {
+      feedback += ` — ${role} ${scenario.rationale.roleExplanations[role]}.`;
+    });
+    feedback += `</p>`;
+    
+    feedback += `<p><strong>The friction:</strong> `;
+    incorrectRoles.forEach((role, idx) => {
+      if (idx > 0) feedback += ' ';
+      feedback += `${role} ${scenario.rationale.roleExplanations[role]}.`;
+    });
+    feedback += `</p>`;
+    
+    feedback += `<p><em>Consider: What would change if you replaced ${incorrectRoles[0]} with ${ideal.find(r => !chosenRoles.includes(r))}?</em></p>`;
+    
+    explanationHTML = feedback;
+  } else {
+    fitLevel = 'mismatch';
+    titleText = '✗ Mismatch';
+    
+    let feedback = `<p><strong>Why this doesn't work well:</strong> ${scenario.rationale.weak}</p>`;
+    
+    if (correctRoles.length > 0) {
+      feedback += `<p><strong>What works:</strong> ${correctRoles.join(', ')} ${correctRoles.length === 1 ? 'is' : 'are'} appropriate for this scenario.</p>`;
+    }
+    
+    feedback += `<p><strong>What creates friction:</strong> `;
+    incorrectRoles.forEach((role, idx) => {
+      if (idx > 0) feedback += ' ';
+      feedback += `${role} ${scenario.rationale.roleExplanations[role]}.`;
+    });
+    feedback += `</p>`;
+    
+    feedback += `<p><em>The ideal combination for ${scenario.name} is: <strong>${ideal.join(', ')}</strong>.</em></p>`;
+    
+    explanationHTML = feedback;
+  }
+  
+  box.className = `result ${fitLevel}`;
+  title.innerText = titleText;
+  explanation.innerHTML = explanationHTML;
+  
+  // Add process impact analysis
+  const processData = scenario.processImpact[selectedProcess];
+  if (processData) {
+    const impactType = processData.type === 'strength' ? '✓' : '⚠️';
+    processImpactText.innerHTML = `<p><strong>${impactType} ${processData.label}:</strong> ${processData.detail}</p>`;
+  }
+  
+  outcome.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+function resetTeam() {
+  chosenRoles = [];
+  updateUI();
+  document.getElementById('outcome').style.display = 'none';
+  document.getElementById('processCard').style.display = 'none';
+  document.getElementById('step2').classList.remove('complete');
+  document.getElementById('step3').classList.remove('complete');
+  selectedProcess = null;
+}
+
+function resetAll() {
+  resetTeam();
+  document.getElementById('scenarioSelect').selectedIndex = 0;
+  updateScenarioDescription();
+}
+
+function changeProcess() {
+  selectedProcess = null;
+  document.getElementById('outcome').style.display = 'none';
+  document.getElementById('step3').classList.remove('complete');
+  
+  document.querySelectorAll('.process-option').forEach(opt => {
+    opt.classList.remove('selected');
+  });
+  
+  document.getElementById('processCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Add hover tooltips
+Object.keys(roles).forEach(role => {
+  const btn = document.getElementById(`btn-${role.toLowerCase()}`);
+  btn.addEventListener('mouseenter', () => {
+    document.getElementById('tooltip').innerText = `${role}: ${roles[role]}`;
+  });
+  btn.addEventListener('mouseleave', () => {
+    if (chosenRoles.length < 3) {
+      document.getElementById('tooltip').innerText = 'Hover over a role to learn what it contributes to a team.';
+    }
+  });
+});
+
+// Scenario change handler
+document.getElementById('scenarioSelect').addEventListener('change', updateScenarioDescription);
+
+// Initialize
+updateScenarioDescription();
+updateUI();
+</script>
+
+</body>
+</html>

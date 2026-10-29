@@ -1,0 +1,210 @@
+.nav-shadow {
+    position: sticky;
+    top: 45px;
+    z-index: 50;
+    width: 100%;
+    height: 9.4px;
+}
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 51;
+
+    @include theme-change;
+}
+
+.nav-wrapper {
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    max-width: 1200px;
+    padding: 0.2em 0.4em;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    visibility: hidden;
+    overflow: hidden;
+    transform: translateY(-100%);
+    @include elem-transition;
+
+    z-index: 53;
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    &-active {
+        visibility: visible;
+        transform: translateY(0);
+        @include elem-transition;
+    }
+
+    ul {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center; 
+        padding: 0;
+        margin: 0;
+    
+        li {
+            text-align: center;
+            transform: translateX(-100vw);
+            @include elem-transition;
+        
+            @for $m from 1 through 3 {
+                &:nth-child(#{$m}) {
+                    transition-delay: ($m * 0.2s);
+                }
+            }        
+        }
+
+        .menu-li-active {
+            transform: translateX(0);
+        }
+    }
+
+    .menu-item {
+        display: block;
+        text-transform: uppercase;
+        padding: 0.65em;
+        margin: 0.65em;
+    }
+
+    li:last-of-type {
+        .menu-item {
+            margin-bottom: 0;
+        }
+    }
+}
+
+.kofi-button {
+    &:hover, &:focus {
+        text-decoration: none !important;
+    }
+}
+
+.menu-button {
+    z-index: 54;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 48px;
+    height: 48px;    
+
+    .hamburger {
+
+        &::before, &::after {
+            content: '';
+            display: block; 
+        }
+
+        &::before {
+            position: relative;
+            top: -0.68em;
+            left: 0;
+            }
+
+        &::after {
+            position: relative;
+            top: 0.38em;
+            left: 0;
+        }
+
+        &, &::before, &::after {
+            width: 2em;
+            height: 0.3em;
+            border-radius: 3px;
+            @include hamburger-shrink;
+        }
+    }
+    
+    &:focus {
+        .hamburger {
+            &, &::before, &::after {
+                @include elem-transition;
+            }
+        }
+    }
+
+    .hamburger-active {
+        transform: rotate(-45deg);
+        width: 0.28em;
+        @include hamburger-shrink;
+
+        &::before {
+            transform: rotate(180deg) translateY(-0.68em);
+            width: 0.28em;
+            @include hamburger-shrink;
+        }
+
+        &::after {
+            width: 0px;
+            height: 0px;
+            transform: translateY(-0.38em);
+            @include hamburger-shrink;
+        }
+    }
+
+    .cross {
+        transform: rotate(-45deg);
+        width: 2em;
+        @include cross-unshrink;
+    
+        &::before {
+            transform: rotate(270deg) translateX(-0.66em);
+            width: 2em;
+            @include cross-unshrink;
+        }
+    
+        &::after {
+            width: 0px;
+            height: 0px;
+            transform: translateY(-0.38em);
+        }    
+    }
+}
+
+.theme-button {
+    display: flex;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 50px;
+    height: 48px;    
+
+    .theme-oval {
+        position: relative;
+        top: 0;
+        left: 1em;
+        width: 2.7em;
+        height: 1.3em;
+        border-radius: 12px;
+    }
+
+    .theme-circle {
+        position: relative;
+        top: 0;
+        z-index: 52;
+        cursor: pointer;
+        width: 1.7em;
+        height: 1.7em;
+        border-radius: 0.9em;
+        background: $white;
+        background-repeat: no-repeat;
+
+        @include theme-toggle-move;
+
+        &:focus {
+            @include elem-transition;
+        }
+    }
+}

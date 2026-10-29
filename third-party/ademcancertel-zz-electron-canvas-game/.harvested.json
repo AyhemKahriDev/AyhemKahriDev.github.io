@@ -1,0 +1,16 @@
+{
+  "repo": "AdemCanCertel-zz/electron-canvas-game",
+  "stars": 11,
+  "licence": "MIT",
+  "sizeKB": 18,
+  "pushedAt": "2020-11-05T18:13:50Z",
+  "description": "Electron applied html game",
+  "defaultBranch": "master",
+  "owner": "AdemCanCertel-zz",
+  "slug": "ademcancertel-zz-electron-canvas-game",
+  "dest": "third-party/ademcancertel-zz-electron-canvas-game",
+  "readme": "# ElectronJS HTML CSS Canvas Game \n\n```\ngit clone https://github.com/AdemCan0BEY/electron-canvas-game.git\n```\n**npm install**\n\n**npm start**\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

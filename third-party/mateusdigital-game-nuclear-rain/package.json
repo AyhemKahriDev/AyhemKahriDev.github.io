@@ -1,0 +1,34 @@
+{
+  "name": "nuclear-rain",
+  "description": "​The Nuclear Rain is a small Atari's homage created by mateus.digital",
+  "version": "2.0.0",
+  "build": 15,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mateusdigital/game-nuclear-rain.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mateusdigital/game-nuclear-rain/issues"
+  },
+  "homepage": "https://mateus.digital/projects/nuclear-rain",
+  "keywords": [
+    "nuclear-rain",
+    "missile-command",
+    "atari",
+    "javascript",
+    "canvas",
+    "retro",
+    "demo",
+    "demoscene",
+    "game",
+    "html5",
+    "creative-coding",
+    "mateus.digital"
+  ],
+  "author": {
+    "name": "Mateus Mesquita",
+    "email": "hello@mateus.digital",
+    "url": "https://mateus.digital"
+  },
+  "license": "GPL-3.0-or-later"
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Dot - a defensive game built in HTML5</title>
+    <link href="css/main.css" rel="stylesheet" media="screen"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:700,900" rel="stylesheet">
+</head>
+<body>
+<div id="status" class="ui"></div>
+<div id="panels">
+    <div id="message" class="ui">
+        <h2 id="title">Dot</h2>
+        <p>
+            Protect the dot from incoming red projectiles. Let green ones through.
+        </p>
+        <button id="startButton" class="start-button">Start game</button>
+    </div>
+</div>
+
+<canvas id="world"></canvas>
+<canvas id="background"></canvas>
+
+<script src="js/timbre.js"></script>
+<script src="js/dot-audio.js"></script>
+<script src="js/dot.js"></script>
+</body>
+</html>

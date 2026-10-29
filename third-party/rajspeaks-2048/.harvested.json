@@ -1,0 +1,16 @@
+{
+  "repo": "Rajspeaks/2048",
+  "stars": 1,
+  "licence": "GPL-3.0",
+  "sizeKB": 1004,
+  "pushedAt": "2022-03-25T11:55:27Z",
+  "description": "2048Mash number puzzle game.  Slide two same number tiles to merge into one. Make 2048 that way to win it!",
+  "defaultBranch": "main",
+  "owner": "Rajspeaks",
+  "slug": "rajspeaks-2048",
+  "dest": "third-party/rajspeaks-2048",
+  "readme": "# 2048Mash\n2048Mash is a modified clone of the original 2048 number puzzle game which is a very popular 4×4 square number matching game.\nIt has been developed with new look & flexible movements.\n\nNOTE: You can play it in any device you want.\n\n## Link:\n\nHosted on Netlify: [![Netlify Status](https://api.netlify.com/api/v1/badges/580e173e-b975-42f9-9c68-c491c99ba9b6/deploy-status)](https://app.netlify.com/sites/2048mash/deploys)\n\nhttps://2048mash.netlify.app\n\nOriginal one:\n\nhttps://2048game.com\n\n## Instructions: \n- Use arrow keys or W,S,A,D keys to move numbers boxes. (Desktop/Laptop) \n- In case of phone, slide numbers by touching them only.\n- Two consecutive same number boxes will be merged into one.\n- It goes like:<br>\n2 <br>\n2+2=4 <br>\n4+4=8 <br>\n8+8=16 <br>\n16+16=32 <br>\n32+32=64 <br>\n64+64=128 <br>\n128+128=256 <br>\n256+256=512 <br>\n512+512=1024 <br>\n1024+1024=2048 <br>\n2048= Final Reach & you win the game. <br>\n- Once you merged two same consecutive numbers into their sum numbers, you can't step back anymore. \n- If there is no more consecutive numbers match in any row or column then it's over!!\n\n### Tools:\nHTML, CSS, SCSS, JavaScript\n\n### Reference taken from:\n\n1. GitHub & \n2. https://2048game .com (Original 2048 game official site)\n\n### Screenshots:\n\n<img src=\"https://github.com/Rajspeaks/2048/blob/main/screenshot.png\" height=\"300px\" width=\"300px\"> <img src=\"https://github.com/Rajspeaks/2048/blob/main/screenshot2.png\" height=\"300px\" width=\"300px\"> <img src=\"https://github.com/Rajspeaks/2048/blob/main/screenshot3.png\" height=\"300px\" width=\"300px\">\n\n\n&copy; Rajdeep Das\n\nMade with ❤\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

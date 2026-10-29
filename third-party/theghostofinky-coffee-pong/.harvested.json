@@ -1,0 +1,16 @@
+{
+  "repo": "TheGhostOfInky/coffee-pong",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 63,
+  "pushedAt": "2022-01-13T02:57:18Z",
+  "description": "Pong in Coffeescript using the HTML5 canvas",
+  "defaultBranch": "main",
+  "owner": "TheGhostOfInky",
+  "slug": "theghostofinky-coffee-pong",
+  "dest": "third-party/theghostofinky-coffee-pong",
+  "readme": "# coffee-pong\n Pong in Coffeescript using the HTML5 canvas\n Heavily WIP\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

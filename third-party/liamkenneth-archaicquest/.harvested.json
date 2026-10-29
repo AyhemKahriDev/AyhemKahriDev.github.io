@@ -1,0 +1,15 @@
+{
+  "repo": "LiamKenneth/ArchaicQuest",
+  "stars": 142,
+  "licence": "MIT",
+  "sizeKB": 3425,
+  "pushedAt": "2018-02-14T12:25:14Z",
+  "description": "ArchaicQuest a Multi User Dungeon (MUD) - Text based MMORPG in C# :dragon:",
+  "defaultBranch": "master",
+  "owner": "LiamKenneth",
+  "slug": "liamkenneth-archaicquest",
+  "dest": "third-party/liamkenneth-archaicquest",
+  "readme": "# [M]edieval [I]mmersive [M]ulti User Dungeon    \n \n![MIM](http://i.imgur.com/K4YDQKG.png)\n\nA text based MMORPG inspired by the [MUDs of the 90s](https://en.wikipedia.org/wiki/DikuMUD) built in C# using ASP.net MVC, SignalR and MongoDB. Unlike a traditional MUD MIM runs in the browser instead of Telnet. Telnet support could be added so make a pull request :wink:\n\n## Prerequisities\n1. The project is using C# 6 so you will need Visual Studio 2015 or add the Roslyn compiler to [Visual Studio 2013](http://stackoverflow.com/a/33848006)\n\n2. Internet connection to connect to mongoDB\n\n## Run the site\nWith the above steps completed, hitting the start button in Visual Studio should successfully run the application. Your URL should show /Home and you should see the Create Character Wizard.\nOnce you have created a character you will be in the game. You can log in again using the same character name.\n\n## In game commands\nHere are the commands currently supported, all commands are checked using starts with which allows you to not type the whole word.\n\n- Movement using N, E, S, W, U and D\n- Get, get all, get <item> <container>\n- Drop, drop all, drop <item> <container>\n- Look, look at/in, \n- Examine\n- Smell\n- Touch\n- Taste\n- Inventory\n- Score (not fully implemented)\n- Say, ', Say to, >\n- Save\n- Quit\n- Equipment\n- Wear\n- Wield\n- Remove\n- Kill\n- Flee\n- lock, unlock\n- open, close\n\n\n## Creating Rooms, Items and [mobs](https://en.wikipedia.org/wiki/Mob_(video_gaming))\n\nTo create a room, items or mobs check the example [room](https://github.com/LiamKenneth/MIM/blob/master/MIMWebClient/Core/World/Anker/Anker.cs)\n\nOnce you have added a new room you need to open up UpdateDB.cs and add your new area methods to the area lists. Save and compile, before you run the UpdateDB.exe to update the database\nYou need to manually delete the DB records (Could add this to UpdateDB or make it update existing records).\n\nConnection details are: url: ds052968.mlab.com port: 52968 DB:mimdb username:testuser pass: password\n\n\nThat should be it, all contributions and feedback welcomed :smile:\n\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "MIMDashboard/Client/index.html"
+}

@@ -1,0 +1,31 @@
+{
+  "name": "snakke",
+  "version": "2.0.0",
+  "description": "Reading Position Indicator written in VanillaJS",
+  "main": "./src/snakke.js",
+  "scripts": {
+    "test": "gulp test"
+  },
+  "bugs": {
+    "url": "https://github.com/diogomoretti/snakke/issues"
+  },
+  "keywords": [
+    "javascript"
+  ],
+  "author": {
+    "name": "Diogo Moretti",
+    "email": "diogo.pearljam@gmail.com",
+    "url": "http://diogo.nu"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
+    "gulp-gh-pages": "^0.5.4",
+    "gulp-minify": "0.0.14",
+    "gulp-release-tasks": "0.0.3",
+    "gulp-standard": "^8.0.3",
+    "gulp-testcafe": "^0.9.1",
+    "run-sequence": "^1.2.2"
+  }
+}

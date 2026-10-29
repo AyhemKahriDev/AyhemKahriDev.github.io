@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifras: ranking</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="stylesheet" href="styles/ranking.css">
+    <script src="scripts/ranking.js" defer></script>
+    <script src="scripts/audio.js" defer></script>
+</head>
+
+<body>
+    <div id="ranking">
+        <nav>
+            <label class="switch" id="audio-control">
+                <input type="checkbox" hidden autocomplete="off">
+                <span class="slider"></span>
+            </label>
+            <button type="button" id="back-btn" class="click hover"><img src="assets/img/back.svg" alt="Volver"><span>Volver</span></button>
+        </nav>
+        <header>
+            <h1 id="title">Ranking</h1>
+        </header>
+        <section id="ranking-data">
+            <table id="ranking-table">
+                <tr>
+                    <th>Nombre</th>
+                    <th>Puntuación</th>
+                </tr>
+                <tr id="no-data"><td colspan="2">No hay datos :/</td></tr>
+            </table>
+        </section>
+        <aside>
+            <div id="falling-operators">
+                <div>+</div>
+                <div>-</div>
+                <div>÷</div>
+                <div>×</div>
+                <div>÷</div>
+                <div>+</div>
+                <div>-</div>
+                <div>×</div>
+            </div>
+        </aside>
+    </div>
+    <audio id="soundtrack" loop="true">
+        <source src="assets/audio/soundtrack.ogg" type="audio/ogg">
+    </audio>
+    <audio id="switch-sound" preload="auto">
+        <source src="assets/audio/switch.wav" type="audio/wav">
+    </audio>
+    <audio id="click-sound" preload="auto">
+        <source src="assets/audio/click.wav" type="audio/wav">
+    </audio>
+    <audio id="hover-sound" preload="auto">
+        <source src="assets/audio/hover.wav" type="audio/wav">
+    </audio>
+</body>
+
+</html>

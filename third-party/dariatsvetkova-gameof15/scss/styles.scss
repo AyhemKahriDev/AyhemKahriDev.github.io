@@ -1,0 +1,273 @@
+@import "variables";
+@import "resets";
+
+
+// ACCESSIBILITY
+
+.screen-reader-text {
+	clip: rect(1px, 1px, 1px, 1px);
+	position: absolute !important;
+	height: 1px;
+	width: 1px;
+    overflow: hidden;
+    transition: none;
+}
+
+.screen-reader-text:active, .screen-reader-text:focus {
+	clip: auto !important;
+    top: 5px;
+    left: 5px;
+    display: block;
+    height: auto;
+	width: auto;
+    padding: 1em;
+    border-radius: 1em;
+    z-index: 1000;
+    transition: none;
+}
+
+
+// GENERAL STYLES
+
+body {
+    font-size: 18px;
+    font-family: Open Sans, Arial, sans-serif;
+    font-style: normal; 
+    font-weight: normal;
+    line-height: 139%;
+
+    @include mobile {
+        font-size: 16px;
+    }
+
+    @include theme-change;
+}
+
+.no-scroll {
+    overflow: hidden;
+}
+
+@import "nav";
+
+.content-wrapper {
+    max-width: 640px;
+    text-align: center;
+    margin: 0 auto;
+}
+
+h1 {
+    margin: -0.2em auto 0.5em auto;
+    font-family: Fredoka One, Arial, Helvetica, sans-serif;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 121%;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+    font-size: 4em;
+
+    @include mobile {
+        font-size: 2.25em;
+    }
+
+    .accent {
+        position: relative;
+        color: $peach-1;
+        font-family: Mansalva;
+        font-style: normal;
+        font-weight: normal;
+        line-height: 146.5%;
+        text-transform: lowercase;
+        font-size: 1.25em;
+
+        @include mobile {
+            font-size: 1.25em;
+        }
+
+        text-shadow: none;
+    }
+    
+}
+
+@import "tiles";
+
+@mixin buttons {
+    .btn {
+        cursor: pointer;
+        width: 8.5em;
+        height: 2.7em;
+        margin: 1em;
+        font-weight: bold;
+        color: $white;
+        border-radius: 0.67em;
+
+        @include elem-transition;
+
+        &:active {
+            translate: 0.1em 0.1em;
+        }
+
+        &-solved {
+            &:hover, &:focus {
+                @include elem-transition;
+            }
+            &:active {
+                color: $blue-4;
+            }
+            &-active {
+                color: $blue-4;
+                translate: 0.1em 0.1em;
+                box-shadow: map-get($button-active-shadow, "light");
+            }
+        }
+        
+        &-scramble {
+            &:hover, &:focus {
+                @include elem-transition;
+            }
+        }
+    }
+}
+
+.buttons {
+    margin: 2.5em auto 2em auto;
+    @include buttons;
+}
+
+h2 {
+    @extend h1;
+    font-size: 2em;
+    margin: 0 auto 1.25em auto;
+
+    @include mobile {
+        font-size: 1.5em;
+    }
+}
+
+p {
+    margin-left: 20px;
+    margin-right: 20px;
+    text-align: left;
+
+    &:first-of-type {
+        margin-top: 2.5em;
+    }
+
+    &:last-of-type {
+        margin-bottom: 3.5em;
+    }
+}
+
+a {
+    font-weight: bold;
+    text-decoration: none;
+    @include elem-transition;
+
+    &:hover, &:focus {
+        @include elem-transition;
+    }
+}
+
+.anchor {
+    padding-top: 56px;
+}
+
+.nav-overlay, p, small {
+    a:hover, a:focus {
+        text-decoration: underline;
+    }
+}
+
+footer {
+    text-align: center;
+    margin: 5em 0 0 0;
+    padding: 2.5em 0 2.5em 0;
+
+    @include theme-change;
+
+    & > * {
+        display: block;
+    }
+
+    .btn {
+        margin-bottom: 2em;
+    }
+
+    small {
+        font-size: 0.85em;
+    }
+}
+
+.win-alert {
+    
+    position: relative;
+    z-index: 40;
+    visibility: hidden;
+    overflow: hidden;
+    transform: translateY(-200%) scale(0.1);
+
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    justify-content: space-between;
+    
+    width: 22em;
+    height: 15em;
+    flex: 1 0 15em;
+    margin: 1.5em -2em;
+    padding: 0.5em;
+    border-radius: 1em;
+
+    @include buttons;
+    @include elem-transition;
+
+    .alert-cross {
+
+        @extend .menu-button;
+        margin: 0.5em 0.5em 0.5em 18em;
+
+        .cross {
+            &::before {
+                content: '';
+                display: block; 
+                position: relative;
+                top: -0.68em;
+                left: 0;
+            }
+    
+            &, &::before, &::after {
+                width: 2em;
+                height: 0.3em;
+                border-radius: 3px;
+            }
+        }
+    }
+
+    .btn:nth-of-type(2) {
+        background-color: $blue-3;
+        &:hover, &:focus {
+            background-color: $blue-2;
+        }
+    }
+
+    .btn:nth-of-type(3) {
+        background-color: $peach-2;
+        &:hover, &:focus {
+            background-color: $peach-1;
+        }
+    }
+
+    #alert-text {
+        margin: 0.5em;
+        text-align: center;
+        font-weight: bold;
+    }
+
+    &-active {
+        visibility: visible;
+        transform: translateY(0) scale(1.0);
+        @include elem-transition;
+    }
+}
+
+@import "light-theme";
+@import "dark-theme";

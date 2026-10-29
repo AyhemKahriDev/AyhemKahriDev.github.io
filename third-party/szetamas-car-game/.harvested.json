@@ -1,0 +1,16 @@
+{
+  "repo": "szetamas/car_game",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 113,
+  "pushedAt": "2023-09-14T17:30:29Z",
+  "description": "It is a little car game made with jQuery.",
+  "defaultBranch": "master",
+  "owner": "szetamas",
+  "slug": "szetamas-car-game",
+  "dest": "third-party/szetamas-car-game",
+  "readme": "# car_game\nIt is a little car game.\nYou could try here:\nhttps://szetamas.great-site.net/car/car_game.html\n",
+  "licenceFile": "LICENSE",
+  "entry": "car_game.html",
+  "validated": true
+}

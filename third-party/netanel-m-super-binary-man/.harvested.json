@@ -1,0 +1,16 @@
+{
+  "repo": "Netanel-M/super-binary-man",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 146,
+  "pushedAt": "2022-06-10T09:49:55Z",
+  "description": "A javascript platformer arcade game with a binary twist",
+  "defaultBranch": "master",
+  "owner": "Netanel-M",
+  "slug": "netanel-m-super-binary-man",
+  "dest": "third-party/netanel-m-super-binary-man",
+  "readme": "# super-binary-man\nA javascript platformer game with a binary twist\n\nThis is a Javascript platformer game I'm developing as I'm studying HTML 5 technologies.\nCurrently playable albeit in early stages of development.\n\n## Install instructions\n1. First, clone the repository\n```\ngit clone https://github.com/Netanel-M/super-binary-man\n```\n\n2. Run index.html by opening it in your favorite browser.\n\n3. Alternatively visit [here](https://netanel-m.github.io/super-binary-man/) to play.\n\n## Play guide\nCurrently a binary sequence is generated at random. Push blocks from the underside to add their number to your sum. Once your sum equals the goal, your score goes up/down. Do this while avoiding enemies.\n\nConsult the image on the bottom for gameplay clarification.\n![gameplay](https://i.imgur.com/eGWEQnE.png)\n\nThis project is licensed under the GPL 3 license. View it [here](https://github.com/Netanel-M/super-binary-man/blob/master/LICENSE)\n\n[Check out my website and my tutorials!](https://netanel.xyz)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}
