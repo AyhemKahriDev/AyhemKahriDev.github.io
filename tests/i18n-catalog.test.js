@@ -4,28 +4,28 @@
  * Three hand-written catalogues (en, fr, ar) that a build step reads by key
  * cannot be allowed to drift: a missing key in one locale is a blank label on
  * a live page, and a key that exists in fr but not in ar is invisible until
- * someone loads the Arabic site. These tests pin the shape rather than the
- * wording, so translators can rewrite a sentence without touching a test.
+ * someone loads the Arabic site.
  *
- * The families come from the copy synthesiser, which is the single source of
- * truth for genre ids and English taglines, and the categories come from the
- * catalogue itself. Neither list is copied here, so adding a genre to the
- * harvest script fails this suite until all three locales carry it.
+ * The vocabulary is not decided here. `scripts/i18n.mjs` owns the key map the
+ * builder asks for, and it exports that key list; these tests fail if a
+ * catalogue is missing one of those keys, or if a catalogue carries a `strings`
+ * key the builder never asks for. Genre families are the one exception - their
+ * id list comes from the copy synthesiser, which is the single source of truth
+ * for genres - so anything outside `CATALOG_KEYS` must be under `families.`.
+ *
+ * The shape is pinned, not the wording, so a translator can rewrite a sentence
+ * without touching a test.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { FAMILIES } from '../scripts/harvest/copy.mjs';
+import { CATALOG_KEYS, LOCALES as REGISTRY, localeById } from '../scripts/i18n.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const LOCALES = ['en', 'fr', 'ar'];
-const EXPECTED = {
-  en: { name: 'English', dir: 'ltr' },
-  fr: { name: 'Français', dir: 'ltr' },
-  ar: { name: 'العربية', dir: 'rtl' },
-};
 
 const ARABIC = /[\u0600-\u06FF]/;
 
@@ -60,8 +60,9 @@ function flatten(value, path = '', out = {}) {
 
 const flat = Object.fromEntries(LOCALES.map((l) => [l, flatten(catalogs[l])]));
 const keys = Object.fromEntries(LOCALES.map((l) => [l, Object.keys(flat[l]).sort()]));
+const words = (s) => String(s).trim().split(/\s+/).length;
 
-/** Leaf strings only — the locale/name/dir header values are not prose. */
+/** Leaf strings only — nothing structural in a catalogue is prose. */
 function prose(locale, predicate = () => true) {
   return Object.entries(flat[locale])
     .filter(([path, value]) => typeof value === 'string' && predicate(path))
@@ -79,6 +80,40 @@ test('the three catalogues carry byte-identical key sets at every depth', () => 
       `${locale}.json does not match en.json: ${missing.length} missing (${missing
         .slice(0, 8)
         .join(', ')}), ${extra.length} extra (${extra.slice(0, 8).join(', ')})`,
+    );
+  }
+});
+
+test('the catalogues speak the builder vocabulary: every key the map exposes, nothing else', () => {
+  assert.ok(CATALOG_KEYS.length > 200, `expected a full key map, got ${CATALOG_KEYS.length} keys`);
+
+  for (const locale of LOCALES) {
+    const missing = CATALOG_KEYS.filter((k) => !flat[locale].hasOwnProperty(k));
+    assert.deepEqual(
+      missing,
+      [],
+      `${locale}.json is missing builder keys: ${missing.slice(0, 12).join(', ')}`,
+    );
+
+    // A key left over from an older vocabulary is dead weight that silently
+    // never renders - and it hides the fact that the real key is missing.
+    const orphans = keys[locale].filter(
+      (k) => !CATALOG_KEYS.includes(k) && !k.startsWith('families.'),
+    );
+    assert.deepEqual(
+      orphans,
+      [],
+      `${locale}.json carries keys the builder never asks for: ${orphans.slice(0, 12).join(', ')}`,
+    );
+  }
+
+  // The English side must be the map's English, byte for byte, not a copy that
+  // drifted while French was being written.
+  for (const key of CATALOG_KEYS.filter((k) => k.startsWith('strings.'))) {
+    const short = key.slice('strings.'.length);
+    assert.ok(
+      Object.prototype.hasOwnProperty.call(catalogs.en.strings, short),
+      `en.json has no strings.${short}`,
     );
   }
 });
@@ -126,6 +161,7 @@ test('every catalogue category is translated in all three locales', () => {
       `${locale}.json category ids do not match content/games.json`,
     );
     for (const id of categoryIds) {
+      assert.ok(categories[id].short.trim(), `${locale}/${id} short label is blank`);
       assert.ok(categories[id].title.trim(), `${locale}/${id} title is blank`);
       assert.ok(categories[id].description.trim(), `${locale}/${id} description is blank`);
     }
@@ -133,7 +169,14 @@ test('every catalogue category is translated in all three locales', () => {
 });
 
 test('Arabic uses Arabic punctuation and real Arabic prose', () => {
-  assert.equal(catalogs.ar.dir, 'rtl', 'ar.json must declare dir: rtl');
+  // The writing direction is registry data - the builder stamps it on <html>
+  // from LOCALES - so a catalogue cannot disagree with it.
+  assert.equal(localeById('ar').dir, 'rtl', 'the registry must build Arabic as rtl');
+  assert.ok(
+    REGISTRY.filter((l) => l.dir === 'rtl').map((l) => l.id).join(',') === 'ar',
+    'Arabic is the only right-to-left tree',
+  );
+
   const bad = prose('ar')
     .filter(([, value]) => /[?!]/.test(value))
     .map(([path, value]) => `${path}: ${value}`);
@@ -145,20 +188,30 @@ test('Arabic uses Arabic punctuation and real Arabic prose', () => {
   assert.deepEqual(latinComma, [], 'Arabic values must use ، rather than an ASCII comma');
 
   const noArabic = prose('ar')
-    .filter(([, value]) => value.trim().split(/\s+/).length > 1)
+    .filter(([, value]) => words(value) > 3)
     .filter(([, value]) => !ARABIC.test(value))
     .map(([path, value]) => `${path}: ${value}`);
   assert.deepEqual(noArabic, [], 'multi-word Arabic values must contain Arabic characters');
 });
 
-test('French prose is not a copy of the English', () => {
-  assert.equal(catalogs.fr.dir, 'ltr');
-  const copyPaste = Object.entries(flat.en)
-    .filter(([path]) => /^(families|categories)\./.test(path))
-    .filter(([, value]) => typeof value === 'string' && value.trim().split(/\s+/).length > 2)
-    .filter(([path, value]) => flat.fr[path] === value)
-    .map(([path]) => `${path}: ${flat.en[path]}`);
-  assert.deepEqual(copyPaste, [], 'these French values are identical to the English');
+test('French and Arabic prose is not a copy of the English', () => {
+  for (const locale of ['fr', 'ar']) {
+    const copyPaste = Object.entries(flat.en)
+      .filter(([path, value]) => typeof value === 'string' && words(value) > 2)
+      // Descriptions and the long sentences are the ones a lazy translation
+      // leaves in English; single words ("Contact", "Arcade") may legitimately
+      // be the same in two languages.
+      .filter(([path]) => /^(families|categories)\./.test(path) || path.endsWith('.description'))
+      .filter(([path, value]) => flat[locale][path] === value)
+      .map(([path]) => `${path}: ${flat.en[path]}`);
+    assert.deepEqual(copyPaste, [], `these ${locale} values are identical to the English`);
+
+    const sentences = Object.entries(flat.en)
+      .filter(([path, value]) => path.startsWith('strings.') && words(value) >= 8)
+      .filter(([path, value]) => flat[locale][path] === value)
+      .map(([path]) => path);
+    assert.deepEqual(sentences, [], `these ${locale} sentences are still English`);
+  }
 });
 
 test('family descriptions sit between 60 and 200 characters in every locale', () => {
@@ -173,19 +226,135 @@ test('family descriptions sit between 60 and 200 characters in every locale', ()
   }
 });
 
-test('every catalogue declares its own locale and language name', () => {
-  for (const locale of LOCALES) {
-    assert.equal(catalogs[locale].locale, locale, `${locale}.json locale field`);
-    assert.equal(catalogs[locale].name, EXPECTED[locale].name, `${locale}.json name field`);
-    assert.equal(catalogs[locale].dir, EXPECTED[locale].dir, `${locale}.json dir field`);
-  }
-  // The four meta templates are what search results and social cards show, so
-  // they must exist as templates with their placeholders intact.
-  const meta = Object.keys(flat.en).filter((k) => k.startsWith('strings.meta.'));
-  assert.ok(meta.length >= 4, 'at least four meta.* description templates are expected');
-  for (const locale of LOCALES) {
-    for (const key of meta) {
-      assert.ok(flat[locale][key].trim(), `${locale}.json is missing ${key}`);
-    }
+test('English is exactly the map the builder reads', async () => {
+  const { t, loadCatalog } = await import('../scripts/i18n.mjs');
+  const en = loadCatalog('en');
+  for (const key of CATALOG_KEYS.filter((k) => k.startsWith('strings.'))) {
+    const short = key.slice('strings.'.length);
+    assert.equal(
+      t(en, short),
+      flat.en[`strings.${short}`],
+      `en.json disagrees with the built-in map on ${short}`,
+    );
   }
 });
+
+/**
+ * The end-to-end half: a build that renders English onto a French page is the
+ * bug these catalogues exist to prevent, and only the emitted HTML can prove
+ * it is gone. Skipped when dist/ has not been built (a fresh clone, a unit
+ * test run), so `npm test` stays useful without a 90-second build.
+ */
+const ENGLISH_ONLY = [
+  // chrome
+  'Skip to content',
+  'All games',
+  'Main',
+  'Start here',
+  'Browse by',
+  'Everything',
+  'Random',
+  'Loads in about a second',
+  'Plays offline after first visit',
+  'No tracking',
+  'Play something random',
+  'Browse all',
+  'Free browser games',
+  'The arcade in numbers',
+  // ticker and stats strip
+  'ONE NEW GRID EVERY DAY',
+  'NO ACCOUNT, NO EMAIL, NO PAYWALL',
+  'MADE OF HTML',
+  'ZERO DOWNLOADS',
+  'accounts needed',
+  'new grid daily',
+  // daily card labels (the card's own heading; "Daily Word Search" is also a
+  // game title in content/games.json, so that one is checked in place below)
+  "TODAY'S TOKEN",
+  "Today's puzzle",
+  'new at midnight UTC',
+  // section heads and feature lines
+  'Why it is free',
+  'The whole cabinet',
+  'Cabinet slots',
+  'Pick up where you left off',
+  'Nothing to load first',
+  'Nothing to sign up for',
+  'Nothing to pay',
+  'Advertise',
+  // categories, as headings
+  'Word Games',
+  'Puzzle Games',
+  'Arcade Games',
+  'Brain Games',
+  'Strategy Games',
+  'Table Games',
+  'Racing Games',
+  'Sandbox & Tools',
+  // search / sort
+  'Search games by name',
+  'Sort games',
+  'Arcade order',
+];
+
+/** The heading text of the first tile whose href matches `marker`. */
+function headingAfter(html, marker) {
+  const at = html.indexOf(marker);
+  if (at < 0) return '';
+  const slice = html.slice(at, at + 20000);
+  const m = slice.match(/<h3[^>]*>([\s\S]*?)<\/h3>/);
+  return m ? m[1].replace(/<[^>]*>/g, '').trim() : '';
+}
+
+for (const locale of ['fr', 'ar']) {
+  // The home page carries the nav, the hero, the ticker, the stats row, the
+  // daily card and the category cards; the games index carries the search
+  // placeholder and the sort options. Both used to render English chrome.
+  const pages = [join(ROOT, 'dist', locale, 'index.html'), join(ROOT, 'dist', locale, 'games/index.html')];
+  const built = pages.every((p) => existsSync(p));
+
+  test(`the built /${locale}/ pages carry no English chrome`, { skip: !built }, () => {
+    for (const page of pages) {
+      const html = readFileSync(page, 'utf8');
+      const survived = ENGLISH_ONLY.filter((s) => html.includes(s));
+      // "Search 464 games" is a template, so the count is matched, not the text.
+      if (/Search \d+ games/.test(html)) survived.push('Search <count> games');
+      assert.deepEqual(
+        survived,
+        [],
+        `${page.replace(`${ROOT}/`, '')} still renders: ${survived.join(' | ')}`,
+      );
+    }
+  });
+
+  test(`the built /${locale}/ home page really is in ${locale}`, { skip: !built }, () => {
+    const html = readFileSync(pages[0], 'utf8');
+
+    const h1 = html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)?.[1] ?? '';
+    assert.ok(h1.trim(), `/${locale}/ has no <h1>`);
+    assert.ok(
+      locale === 'fr' ? /jeux/i.test(h1) : ARABIC.test(h1),
+      `the /${locale}/ <h1> is not in ${locale}: ${h1}`,
+    );
+
+    // The nine category cards are the ones that used to read "Word"/"Puzzle".
+    const headings = [...html.matchAll(/<h3[^>]*>([\s\S]*?)<\/h3>/g)].map((m) =>
+      m[1].replace(/<[^>]*>/g, '').trim(),
+    );
+    assert.ok(
+      locale === 'fr'
+        ? headings.some((h) => /Jeux de mots|Casse-tête/i.test(h))
+        : headings.some((h) => ARABIC.test(h)),
+      `the /${locale}/ category headings are not localised`,
+    );
+
+    // The daily card heading is catalogue copy; the game tile next to it keeps
+    // its English title because that is the game's name.
+    const dailyHeading = headingAfter(html, `<a class="tile" href="/${locale}/daily/`);
+    assert.ok(dailyHeading, `/${locale}/ has no daily card`);
+    assert.ok(
+      locale === 'fr' ? /mots/i.test(dailyHeading) : ARABIC.test(dailyHeading),
+      `the /${locale}/ daily card heading is not localised: ${dailyHeading}`,
+    );
+  });
+}

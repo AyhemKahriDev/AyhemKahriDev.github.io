@@ -319,6 +319,18 @@ const catShort = (c) => {
 const catDesc = (c) => categoryDescription(L.catalog, c.id, c.description);
 
 /**
+ * The name of a rotating word list, in the reader's language.
+ *
+ * The words themselves stay English - they are the puzzle - but "Retro Arcade"
+ * is chrome, and chrome is translated. An id with no catalogue entry falls
+ * back to the harvested title rather than to a dotted key.
+ */
+const themeName = (theme) => {
+  const own = L.catalog?.strings?.[`daily.theme.${theme?.id}`];
+  return typeof own === 'string' && own.trim() ? own : String(theme?.title ?? '');
+};
+
+/**
  * The "how to play" lines of a game, as plain sentences.
  *
  * The catalogue used to hold objects where strings belong, which rendered
@@ -481,11 +493,18 @@ ${script}
  * approval step and no minimum spend. An empty slot falls back to promoting
  * our own catalogue.
  */
-/** Ticket-stub stamp for today's date, e.g. "TODAY'S TOKEN · OCT 24". */
+/**
+ * Ticket-stub stamp for today's date, e.g. "TODAY'S TOKEN * OCT 24".
+ *
+ * The words come from the catalogue and the date is formatted for the page's
+ * own locale, so an Arabic stub does not read "TODAY'S TOKEN * OCT 24".
+ */
 function ticketStamp(date) {
-  const months = ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'];
-  const [, m, d] = date.split('-').map(Number);
-  return `TODAY'S TOKEN * ${months[(m || 1) - 1]} ${d || ''}`;
+  const parsed = new Date(`${date}T00:00:00Z`);
+  const stamp = Number.isNaN(parsed.getTime())
+    ? String(date ?? '')
+    : new Intl.DateTimeFormat(L.id, { month: 'short', day: 'numeric', timeZone: 'UTC' }).format(parsed);
+  return tn('home.ticket', { date: stamp });
 }
 
 function sponsorFor(category) {
@@ -541,11 +560,27 @@ function advertiseSlots(count = 2) {
  * off, which a <select> would not.
  */
 function langSwitcher(path) {
+  // No stylesheet rule draws this nav (it lives outside the header's flex
+  // row), so the gap and the active state are inline: the three codes used to
+  // run together as "ENFRAR".
   const items = LOCALES.map((l) => {
-    const current = l.id === L.id ? ' aria-current="page"' : '';
-    return `<a href="${esc(localePath(l, path))}" data-lang="${l.id}" lang="${l.id}" title="${esc(l.name)}"${current}>${l.id.toUpperCase()}</a>`;
+    const current = l.id === L.id;
+    const style = [
+      'display:inline-block',
+      'padding:2px 7px',
+      'margin-inline-start:6px',
+      'border-radius:999px',
+      'text-decoration:none',
+      'line-height:1.6',
+      current
+        ? 'font-weight:700;outline:1.5px solid currentColor;outline-offset:1px'
+        : 'opacity:.66;font-weight:500',
+    ].join(';');
+    return `<a href="${esc(localePath(l, path))}" data-lang="${l.id}" lang="${l.id}" title="${esc(l.name)}" style="${style}"${
+      current ? ' aria-current="page"' : ''
+    }>${l.id.toUpperCase()}</a>`;
   }).join('');
-  return `<nav class="lang-switch" aria-label="${tn('a11y.lang')}" data-locale="${L.id}">${items}</nav>`;
+  return `<nav class="lang-switch" aria-label="${tn('a11y.lang')}" data-locale="${L.id}" style="display:flex;align-items:center;flex-wrap:wrap">${items}</nav>`;
 }
 
 function siteHeader(path = '/') {
@@ -756,7 +791,7 @@ function buildHome() {
       <span class="cat-dot" aria-hidden="true"></span>
       <h3>${esc(catTitle(c))}</h3>
       <p>${esc(catDesc(c))}</p>
-      <span class="cat-count">${tn(n === 1 ? 'count.games_one' : 'count.games', { count: n })} →</span>
+      <span class="cat-count">${tn(n === 1 ? 'count.games_one' : 'count.games', { count: n })} <span class="cat-arrow" aria-hidden="true">${L.dir === 'rtl' ? '←' : '→'}</span></span>
     </a>`;
   };
 
@@ -786,7 +821,7 @@ function buildHome() {
       </div>
       ${miniBoard(board)}
       <div class="hero-card-foot">
-        <span class="meta">${esc(theme.title)} · ${tn(wordCount === 1 ? 'home.words_one' : 'home.words', { count: wordCount })} · ${today}</span>
+        <span class="meta">${esc(themeName(theme))} · ${tn(wordCount === 1 ? 'home.words_one' : 'home.words', { count: wordCount })} · ${today}</span>
         <a class="btn btn-primary" href="${lp(`/daily/${today}/`)}" style="height:38px;padding:0 14px;font-size:13.5px">${tn('home.play')} ${glyph('a-arrow', 15)}</a>
       </div>
     </aside>
@@ -837,7 +872,7 @@ function buildHome() {
       <a class="tile" href="${lp(`/daily/${today}/`)}" style="--glow:var(--coin)">
         <div class="thumb">${gameIcon('wordsearch', theme.accent)}</div>
         <h3>${tn('home.daily.title')}</h3>
-        <p>${tn('home.daily.body', { theme: theme.title, date: today, count: wordCount })}</p>
+        <p>${tn('home.daily.body', { theme: themeName(theme), date: today, count: wordCount })}</p>
         <span class="tag">${tn('home.daily.tag')}</span>
       </a>
       <a class="tile" href="${lp(`/daily/${today}/answers/`)}" style="--glow:var(--coin)">
@@ -1189,7 +1224,7 @@ function buildDailyPages() {
     const theme = themeForDate(date, dateSeed(date));
     const isToday = date === today;
     hubRows.push(
-      `<tr><td><a href="${lp(`/daily/${date}/`)}">${date}</a></td><td>${esc(theme.title)}</td><td><a href="${lp(`/daily/${date}/answers/`)}">${tn('daily.answers')}</a></td>${
+      `<tr><td><a href="${lp(`/daily/${date}/`)}">${date}</a></td><td>${esc(themeName(theme))}</td><td><a href="${lp(`/daily/${date}/answers/`)}">${tn('daily.answers')}</a></td>${
         isToday ? `<td>${tn('daily.today')}</td>` : '<td></td>'
       }</tr>`,
     );
@@ -1233,9 +1268,9 @@ ${siteFooter('/daily/')}`;
     const puzzleBody = `${siteHeader(`/daily/${date}/`)}
 <main class="wrap" id="main">
   <section class="hero">
-    <span class="pill">${esc(theme.title)}</span>
+    <span class="pill">${esc(themeName(theme))}</span>
     <h1>${tn('daily.puzzle.h1', { date })}</h1>
-    <p>${tn('daily.puzzle.lede', { date, count: answers.length, theme: theme.title })}</p>
+    <p>${tn('daily.puzzle.lede', { date, count: answers.length, theme: themeName(theme) })}</p>
   </section>
   <section class="section">
     ${boardHtml(board, null)}
@@ -1264,7 +1299,7 @@ ${siteFooter(`/daily/${date}/`)}`;
       `daily/${date}/index.html`,
       layout({
         title: `${plain('daily.puzzle.title', { date })} | ${SITE.name}`,
-        description: plain('daily.puzzle.desc', { date, count: answers.length, theme: theme.title }),
+        description: plain('daily.puzzle.desc', { date, count: answers.length, theme: themeName(theme) }),
         path: `/daily/${date}/`,
         body: puzzleBody,
       }),
@@ -1283,7 +1318,7 @@ ${siteFooter(`/daily/${date}/`)}`;
     const answersBody = `${siteHeader(`/daily/${date}/answers/`)}
 <main class="wrap" id="main">
   <section class="hero">
-    <span class="pill">${esc(theme.title)}</span>
+    <span class="pill">${esc(themeName(theme))}</span>
     <h1>${tn('daily.answers.h1', { date })}</h1>
     <p>${tn('daily.answers.lede', { date, count: answers.length })}</p>
   </section>
@@ -1298,7 +1333,7 @@ ${siteFooter(`/daily/${date}/`)}`;
     <h2>${tn('daily.about')}</h2>
     <p>${rich('daily.aboutBody', {
       date,
-      theme: esc(theme.title),
+      theme: esc(themeName(theme)),
       game: esc(lp('/games/wordsearch/')),
       site: SITE.name,
       archive: esc(lp('/daily/')),
@@ -1612,8 +1647,8 @@ function buildGamesIndex() {
   })).filter((c) => c.games.length);
 
   const chips = [
-    `<button class="chip is-on" type="button" data-cat-chip="all" data-cat-title="${esc(
-      catShort({ id: 'all', title: 'Everything' }),
+    `<button class="chip is-on" type="button" data-cat-chip="all" data-cat-title="${tn(
+      'index.everything',
     )}" aria-pressed="true">${tn('index.everything')} <b>${total}</b></button>`,
     ...byCategory.map((c) => {
       const label = catShort(c);
@@ -1669,8 +1704,8 @@ function buildGamesIndex() {
                aria-describedby="filter-status">
         <select id="sort-games" class="sort-select" aria-label="${tn('index.sortLabel')}">
           <option value="default">${tn('index.sortDefault')}</option>
-          <option value="az">A → Z</option>
-          <option value="za">Z → A</option>
+          <option value="az">${tn('index.sortAZ')}</option>
+          <option value="za">${tn('index.sortZA')}</option>
         </select>
         <button class="btn" id="btn-random" type="button">${glyph('a-dice', 18)} ${tn('index.random')}</button>
       </form>
