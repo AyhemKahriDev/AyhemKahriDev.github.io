@@ -325,8 +325,8 @@
     {
       "id": "2048",
       "title": "2048",
-      "tagline": "\ud83c\udfae 2048 game developed using javascript",
-      "description": "\ud83c\udfae 2048 game developed using javascript Play 2048 instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🎮 2048 game developed using javascript",
+      "description": "🎮 2048 game developed using javascript Play 2048 instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "puzzle",
       "accent": "hsl(146 85% 62%)",
       "daily": false,
@@ -370,8 +370,8 @@
     {
       "id": "tetr-js",
       "title": "Tetr",
-      "tagline": "\ud83d\udd79\ufe0f Tetris clone in HTML5 and JavaScript",
-      "description": "\ud83d\udd79\ufe0f Tetris clone in HTML5 and JavaScript Play Tetr instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🕹️ Tetris clone in HTML5 and JavaScript",
+      "description": "🕹️ Tetris clone in HTML5 and JavaScript Play Tetr instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(359 85% 62%)",
       "daily": false,
@@ -640,8 +640,8 @@
     {
       "id": "snake-io",
       "title": "Snake Io",
-      "tagline": "\ud83d\udc0d Slither.io clone in plain Javascript",
-      "description": "\ud83d\udc0d Slither.io clone in plain Javascript Play Snake Io instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🐍 Slither.io clone in plain Javascript",
+      "description": "🐍 Slither.io clone in plain Javascript Play Snake Io instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(331 85% 62%)",
       "daily": false,
@@ -961,8 +961,8 @@
     {
       "id": "the-maze-game",
       "title": "Maze",
-      "tagline": "\ud83c\udff0 The Maze Game offers straightforward maze navigation challenges, built with Prim's & DF",
-      "description": "\ud83c\udff0 The Maze Game offers straightforward maze navigation challenges, built with Prim's & DFS Algorithms. Featuring responsive design for easy play on any device, including mobile, with intuitive on-screen controls for movement, it's ideal for quick gaming sessions, providing both casual and challenging experiences! Play",
+      "tagline": "🏰 The Maze Game offers straightforward maze navigation challenges, built with Prim's & DF",
+      "description": "🏰 The Maze Game offers straightforward maze navigation challenges, built with Prim's & DFS Algorithms. Featuring responsive design for easy play on any device, including mobile, with intuitive on-screen controls for movement, it's ideal for quick gaming sessions, providing both casual and challenging experiences! Play",
       "category": "arcade",
       "accent": "hsl(156 85% 62%)",
       "daily": false,
@@ -983,7 +983,7 @@
         "free online game"
       ],
       "howToPlay": [
-        "A fully-featured maze game: procedural mazes, difficulty levels, A\\ hints, accounts, per-user stats & progress, achievements, global leaderboards, and multiplayer \u2014 with a MongoDB-backed, Vercel-deployable API documented in Swagger."
+        "A fully-featured maze game: procedural mazes, difficulty levels, A\\ hints, accounts, per-user stats & progress, achievements, global leaderboards, and multiplayer — with a MongoDB-backed, Vercel-deployable API documented in Swagger."
       ],
       "faq": [
         {
@@ -1095,8 +1095,8 @@
     {
       "id": "2048-mahmudnibir",
       "title": "2048 puzzle",
-      "tagline": "\ud83e\udde9 2048 Web Game \u2013 A modern and responsive web-based version of the classic 2048 puzzle. B",
-      "description": "\ud83e\udde9 2048 Web Game \u2013 A modern and responsive web-based version of the classic 2048 puzzle. Built with HTML, CSS, and JavaScript, featuring smooth animations, intuitive controls, and a clean UI. Merge tiles, reach 2048, and set new high scores! Play 2048 puzzle instantly on arcadefork - no download, no sign-up, works on a",
+      "tagline": "🧩 2048 Web Game – A modern and responsive web-based version of the classic 2048 puzzle. B",
+      "description": "🧩 2048 Web Game – A modern and responsive web-based version of the classic 2048 puzzle. Built with HTML, CSS, and JavaScript, featuring smooth animations, intuitive controls, and a clean UI. Merge tiles, reach 2048, and set new high scores! Play 2048 puzzle instantly on arcadefork - no download, no sign-up, works on a",
       "category": "puzzle",
       "accent": "hsl(229 85% 62%)",
       "daily": false,
@@ -1348,11 +1348,11 @@
         "free online game"
       ],
       "howToPlay": [
-        "O famoso jogo da cobrinha em 2D no qual o seu objetivo \u00e9 comer at\u00e9 ficar enorme e acumular muitos pontos",
-        "Essas instru\u00e7\u00f5es fornecer\u00e3o uma c\u00f3pia do projeto em execu\u00e7\u00e3o na sua m\u00e1quina local.",
-        "Siga passo a passo as seguinte formas de obter o c\u00f3digo na sua m\u00e1quina local.",
-        "Inicie o repositorio na sua m\u00e1quina local utilizando as linhas de comando.",
-        "Agora os arquivos que est\u00e3o no reposit\u00f3rio remoto est\u00e3o clonados no reposit\u00f3rio local."
+        "O famoso jogo da cobrinha em 2D no qual o seu objetivo é comer até ficar enorme e acumular muitos pontos",
+        "Essas instruções fornecerão uma cópia do projeto em execução na sua máquina local.",
+        "Siga passo a passo as seguinte formas de obter o código na sua máquina local.",
+        "Inicie o repositorio na sua máquina local utilizando as linhas de comando.",
+        "Agora os arquivos que estão no repositório remoto estão clonados no repositório local."
       ],
       "faq": [
         {
@@ -1577,7 +1577,7 @@
       ],
       "howToPlay": [
         "In this browser-based version, you play against an AI opponent with adjustable difficulty levels.",
-        "Enjoy smooth animations, responsive controls, and a nostalgic arcade feel\u2014all built with HTML5, CSS3, and JavaScript.",
+        "Enjoy smooth animations, responsive controls, and a nostalgic arcade feel—all built with HTML5, CSS3, and JavaScript.",
         "Simply serve the files via an HTTP/HTTPS server (for example, using Apache) and open index.html in your browser.",
         "Game Objective: Prevent the ball from passing your paddle while trying to score against the AI.",
         "Controls: Use the arrow keys (or on-screen controls) to move your paddle up or down."
@@ -1717,9 +1717,9 @@
       "howToPlay": [
         "Recriando o jogo da cobrinha com JavaScript Digital Innovation One",
         "Curso do Bootcamp HTML Web Developer da Digital Innovation One.",
-        "J\u00e1 pensou em criar seu pr\u00f3prio jogo do zero?",
-        "Aprenda a desenvolver de forma simples o cl\u00e1ssico jogo da cobrinha (Game Snake) utilizando HTML, CSS e JavaScript.",
-        "Depois vou codific\u00e1-lo de forma responsiva."
+        "Já pensou em criar seu próprio jogo do zero?",
+        "Aprenda a desenvolver de forma simples o clássico jogo da cobrinha (Game Snake) utilizando HTML, CSS e JavaScript.",
+        "Depois vou codificá-lo de forma responsiva."
       ],
       "faq": [
         {
@@ -1740,8 +1740,8 @@
     {
       "id": "tetris-bocaletto-luca",
       "title": "Tetris Single",
-      "tagline": "Tetris Web Game Single Player is a modern, browser\u2011based remake of the timeless Tetris puz",
-      "description": "Tetris Web Game Single Player is a modern, browser\u2011based remake of the timeless Tetris puzzle game. Built using HTML5, CSS3, and JavaScript, this game offers smooth animations, responsive controls, and real\u2011time score tracking. Experience addictive gameplay as you rotate and drop falling blocks to clear complete lines\u2014",
+      "tagline": "Tetris Web Game Single Player is a modern, browser‑based remake of the timeless Tetris puz",
+      "description": "Tetris Web Game Single Player is a modern, browser‑based remake of the timeless Tetris puzzle game. Built using HTML5, CSS3, and JavaScript, this game offers smooth animations, responsive controls, and real‑time score tracking. Experience addictive gameplay as you rotate and drop falling blocks to clear complete lines—",
       "category": "puzzle",
       "accent": "hsl(237 85% 62%)",
       "daily": false,
@@ -1762,8 +1762,8 @@
         "free online game"
       ],
       "howToPlay": [
-        "Built using HTML5, CSS3, and JavaScript, this game offers smooth animations, responsive controls, and real\u2011time score tracking.",
-        "Experience addictive gameplay as you rotate and drop falling blocks to clear complete lines\u2014all without any installation.",
+        "Built using HTML5, CSS3, and JavaScript, this game offers smooth animations, responsive controls, and real‑time score tracking.",
+        "Experience addictive gameplay as you rotate and drop falling blocks to clear complete lines—all without any installation.",
         "Simply host the files on an HTTP/HTTPS server (for example, via Apache or any static hosting service) and open index.html in your browser.",
         "Arrange the falling tetrominoes to complete horizontal lines that disappear, earning you points.",
         "The game ends when the blocks stack to the top."
@@ -1856,7 +1856,7 @@
         "free online game"
       ],
       "howToPlay": [
-        "Built with HTML5, CSS3, and JavaScript, the game offers authentic gameplay with customizable options, smart AI opponents, and a responsive, modern interface that lets you play directly in your browser\u2014no installation required.",
+        "Built with HTML5, CSS3, and JavaScript, the game offers authentic gameplay with customizable options, smart AI opponents, and a responsive, modern interface that lets you play directly in your browser—no installation required.",
         "Simply host the files on any HTTP/HTTPS server (for example, using Apache or a static hosting service) and open index.html in your browser.",
         "Compete in a Texas Hold'em poker game by playing against AI opponents.",
         "Make the best hand from your two hole cards and five community cards to win the pot.",
@@ -1926,8 +1926,8 @@
     {
       "id": "poliguard",
       "title": "Poliguard",
-      "tagline": "PoliGuard is an RTS tower defense browser game. Fully open to contributions! \ud83c\udff0\ud83d\udfe7",
-      "description": "PoliGuard is an RTS tower defense browser game. Fully open to contributions! \ud83c\udff0\ud83d\udfe7 Play Poliguard instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "PoliGuard is an RTS tower defense browser game. Fully open to contributions! 🏰🟧",
+      "description": "PoliGuard is an RTS tower defense browser game. Fully open to contributions! 🏰🟧 Play Poliguard instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "strategy",
       "accent": "hsl(193 85% 62%)",
       "daily": false,
@@ -2102,8 +2102,8 @@
     {
       "id": "tv-show-explorer",
       "title": "TV Show Explorer",
-      "tagline": "TV Show Explorer \u2013 Complete Edition is a professional, full-featured web application that ",
-      "description": "TV Show Explorer \u2013 Complete Edition is a professional, full-featured web application that empowers users to explore TV shows through multiple discovery modes. This free application uses the TV Maze API to retrieve comprehensive data about TV shows\u2014including cover images, summaries, cast details, and episodes\u2014and provid",
+      "tagline": "TV Show Explorer – Complete Edition is a professional, full-featured web application that ",
+      "description": "TV Show Explorer – Complete Edition is a professional, full-featured web application that empowers users to explore TV shows through multiple discovery modes. This free application uses the TV Maze API to retrieve comprehensive data about TV shows—including cover images, summaries, cast details, and episodes—and provid",
       "category": "arcade",
       "accent": "hsl(124 85% 62%)",
       "daily": false,
@@ -2127,7 +2127,7 @@
         "All interfaces are fully paginated, ensuring that large data sets are neatly organized and explored.",
         "Users can enter a TV show name via a simple search form.",
         "The app then retrieves and displays all matching shows in a paginated grid.",
-        "An A\u2013Z horizontal menu lets users filter shows by the first letter of the show's name.",
+        "An A–Z horizontal menu lets users filter shows by the first letter of the show's name.",
         "Multiple pages are fetched to build a comprehensive dataset, and all results are paginated."
       ],
       "faq": [
@@ -2263,9 +2263,9 @@
       "howToPlay": [
         "A side-scrolling flappy-style browser game built entirely with vanilla HTML5, CSS3, and JavaScript.",
         "Originally crafted in 2013, revived and modernized in 2026.",
-        "HTML5 \u2014 Canvas rendering, semantic markup",
-        "CSS3 \u2014 Responsive layout, touch optimizations",
-        "JavaScript \u2014 Game loop, physics, audio (Web Audio API), localStorage persistence"
+        "HTML5 — Canvas rendering, semantic markup",
+        "CSS3 — Responsive layout, touch optimizations",
+        "JavaScript — Game loop, physics, audio (Web Audio API), localStorage persistence"
       ],
       "faq": [
         {
@@ -2287,7 +2287,7 @@
       "id": "snake-bocaletto-luca",
       "title": "Snake Single",
       "tagline": "Snake Web Game Single Player is a modern browser-based remake of the classic Snake game bu",
-      "description": "Snake Web Game Single Player is a modern browser-based remake of the classic Snake game built with HTML5, CSS3, and JavaScript. Enjoy smooth animations, responsive gameplay, and intuitive controls as you guide your snake to eat and grow\u2014all without installation. Developed by Bocaletto Luca. Play Snake Single instantly ",
+      "description": "Snake Web Game Single Player is a modern browser-based remake of the classic Snake game built with HTML5, CSS3, and JavaScript. Enjoy smooth animations, responsive gameplay, and intuitive controls as you guide your snake to eat and grow—all without installation. Developed by Bocaletto Luca. Play Snake Single instantly ",
       "category": "arcade",
       "accent": "hsl(262 85% 62%)",
       "daily": false,
@@ -2334,7 +2334,7 @@
       "id": "ludo",
       "title": "Ludo",
       "tagline": "Ludo Webgame is a complete web-based version of the classic board game Ludo. This project ",
-      "description": "Ludo Webgame is a complete web-based version of the classic board game Ludo. This project faithfully replicates the original game rules and board layout using a 15\u00d715 grid (each cell 40\u00d740 pixels). By Bocaletto Luca Play Ludo instantly on arcadefork - no download, no sign-up, works on any device.",
+      "description": "Ludo Webgame is a complete web-based version of the classic board game Ludo. This project faithfully replicates the original game rules and board layout using a 15×15 grid (each cell 40×40 pixels). By Bocaletto Luca Play Ludo instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(196 85% 62%)",
       "daily": false,
@@ -2355,10 +2355,10 @@
         "free online game"
       ],
       "howToPlay": [
-        "This project faithfully replicates the original game rules and board layout using a 15\u00d715 grid (each cell 40\u00d740 pixels).",
+        "This project faithfully replicates the original game rules and board layout using a 15×15 grid (each cell 40×40 pixels).",
         "Choose the number of players (2 to 4) and specify whether each player is Human or a Bot.",
         "Colors are automatically assigned in order: Red , Blue , Yellow , and Green .",
-        "The board is rendered on an HTML5 canvas with a 15\u00d715 grid (600\u00d7600 pixels).",
+        "The board is rendered on an HTML5 canvas with a 15×15 grid (600×600 pixels).",
         "Home Areas: Located at the four corners for each player's tokens (the Base)."
       ],
       "faq": [
@@ -2381,7 +2381,7 @@
       "id": "arkanoid",
       "title": "Arkanoid",
       "tagline": "Arkanoid Game is a modern browser remake of the classic brick-breaker that blends retro ch",
-      "description": "Arkanoid Game is a modern browser remake of the classic brick-breaker that blends retro charm with contemporary challenges. Developed by Bocaletto Luca, it features multi-input support (keyboard, mouse, touch, gamepad), dynamic levels, power\u2011ups, and record tracking for endless arcade fun! Play Arkanoid instantly on ar",
+      "description": "Arkanoid Game is a modern browser remake of the classic brick-breaker that blends retro charm with contemporary challenges. Developed by Bocaletto Luca, it features multi-input support (keyboard, mouse, touch, gamepad), dynamic levels, power‑ups, and record tracking for endless arcade fun! Play Arkanoid instantly on ar",
       "category": "arcade",
       "accent": "hsl(331 85% 62%)",
       "daily": false,
@@ -2402,10 +2402,10 @@
         "free online game"
       ],
       "howToPlay": [
-        "Developed by Bocaletto Luca , it features multi-input support (keyboard, mouse, touch, and gamepad), dynamic levels, configurable brick layouts, power\u2011ups, and record tracking through a PHP backend.",
+        "Developed by Bocaletto Luca , it features multi-input support (keyboard, mouse, touch, and gamepad), dynamic levels, configurable brick layouts, power‑ups, and record tracking through a PHP backend.",
         "Multi-Input Support: Utilize keyboard, mouse, touch, and gamepad controls.",
-        "Dynamic Levels: Adjustable brick layouts, ball speed multipliers, and power\u2011up probabilities.",
-        "Power\u2011Ups: Enhance gameplay with paddle boosts and shooting abilities.",
+        "Dynamic Levels: Adjustable brick layouts, ball speed multipliers, and power‑up probabilities.",
+        "Power‑Ups: Enhance gameplay with paddle boosts and shooting abilities.",
         "Record Tracking: View high scores saved via a PHP backend and JSON storage."
       ],
       "faq": [
@@ -2428,7 +2428,7 @@
       "id": "bouble",
       "title": "Bouble",
       "tagline": "Bouble Web Game Single Player is a classic arcade game where you pop colorful bubbles to s",
-      "description": "Bouble Web Game Single Player is a classic arcade game where you pop colorful bubbles to score points! Built using HTML5, CSS3, and JavaScript, this fast-paced game features smooth animations, vibrant visuals, and engaging gameplay. Developed by Bocaletto Luca \u2014 no installation required. Play Bouble instantly on arcade",
+      "description": "Bouble Web Game Single Player is a classic arcade game where you pop colorful bubbles to score points! Built using HTML5, CSS3, and JavaScript, this fast-paced game features smooth animations, vibrant visuals, and engaging gameplay. Developed by Bocaletto Luca — no installation required. Play Bouble instantly on arcade",
       "category": "arcade",
       "accent": "hsl(243 85% 62%)",
       "daily": false,
@@ -2449,7 +2449,7 @@
         "free online game"
       ],
       "howToPlay": [
-        "Enjoy vivid, animated visuals and responsive gameplay that brings back nostalgic arcade vibes\u2014all built with HTML5, CSS3, and JavaScript.",
+        "Enjoy vivid, animated visuals and responsive gameplay that brings back nostalgic arcade vibes—all built with HTML5, CSS3, and JavaScript.",
         "Simply serve the files via an HTTP/HTTPS server (for example, using Apache) and open the index.html file in your browser.",
         "Pop the colorful bubbles by clicking or tapping on them as they gradually appear on the screen.",
         "Score Points: Each popped bubble adds to your score.",
@@ -2518,8 +2518,8 @@
     {
       "id": "mahjong-solitaire",
       "title": "Mahjong Solitaire",
-      "tagline": "Mahjong Solitaire \u2013 is a modern, fully responsive single\u2011player web game that faithfully a",
-      "description": "Mahjong Solitaire \u2013 is a modern, fully responsive single\u2011player web game that faithfully adapts classic Mahjong Solitaire for the web. The game uses Mahjong tile emoji (styled in a nearly black color with decorative card frames) and dynamically generates levels. With each level clearance, extra tiles and an additional ",
+      "tagline": "Mahjong Solitaire – is a modern, fully responsive single‑player web game that faithfully a",
+      "description": "Mahjong Solitaire – is a modern, fully responsive single‑player web game that faithfully adapts classic Mahjong Solitaire for the web. The game uses Mahjong tile emoji (styled in a nearly black color with decorative card frames) and dynamically generates levels. With each level clearance, extra tiles and an additional ",
       "category": "puzzle",
       "accent": "hsl(35 85% 62%)",
       "daily": false,
@@ -2566,7 +2566,7 @@
       "id": "square-dodger",
       "title": "Square Dodger",
       "tagline": "Square Dodger Web Game Single Player is an arcade-style browser game where you control a s",
-      "description": "Square Dodger Web Game Single Player is an arcade-style browser game where you control a square to dodge falling obstacles. Built with HTML5, CSS3, and JavaScript, it features smooth animations, responsive controls, and score tracking\u2014all running in your browser. Developed by Bocaletto Luca. Play Square Dodger instantl",
+      "description": "Square Dodger Web Game Single Player is an arcade-style browser game where you control a square to dodge falling obstacles. Built with HTML5, CSS3, and JavaScript, it features smooth animations, responsive controls, and score tracking—all running in your browser. Developed by Bocaletto Luca. Play Square Dodger instantl",
       "category": "arcade",
       "accent": "hsl(131 85% 62%)",
       "daily": false,
@@ -2587,8 +2587,8 @@
         "free online game"
       ],
       "howToPlay": [
-        "The game features smooth animations, responsive controls, and high score tracking\u2014all built with HTML5, CSS3, and JavaScript.",
-        "It\u2019s designed to run entirely in your browser without any installation.",
+        "The game features smooth animations, responsive controls, and high score tracking—all built with HTML5, CSS3, and JavaScript.",
+        "It’s designed to run entirely in your browser without any installation.",
         "Simply serve the files via an HTTP/HTTPS server (e.g.",
         "Move your square to dodge falling obstacles.",
         "Every dodge increases your score, and the game speeds up over time."
@@ -2725,10 +2725,10 @@
         "free online game"
       ],
       "howToPlay": [
-        "El ahorcado en JavaScript \u2013 Programaci\u00f3n de juego",
-        "El juego est\u00e1 escrito con el lenguaje JavaScript, usando Vue.js y Bootstrap.",
+        "El ahorcado en JavaScript – Programación de juego",
+        "El juego está escrito con el lenguaje JavaScript, usando Vue.js y Bootstrap.",
         "Puedes agregar y eliminar palabras para jugar al ahorcado",
-        "Elecci\u00f3n de palabra aleatoria: cada vez que juegas se selecciona una palabra aleatoria del banco de palabras que el usuario ha registrado",
+        "Elección de palabra aleatoria: cada vez que juegas se selecciona una palabra aleatoria del banco de palabras que el usuario ha registrado",
         "Botones con letras para adivinar la palabra, mismos que se deshabilitan una vez que se ha intentado esa letra"
       ],
       "faq": [
@@ -2796,8 +2796,8 @@
     {
       "id": "tic-tac-toe",
       "title": "Tic Tac Toe",
-      "tagline": "Tetris Web Game Single Player is a modern, browser\u2011based remake of the timeless Tetris puz",
-      "description": "Tetris Web Game Single Player is a modern, browser\u2011based remake of the timeless Tetris puzzle game. Built using HTML5, CSS3, and JavaScript, this game offers smooth animations, responsive controls, and real\u2011time score tracking. Experience addictive gameplay as you rotate and drop falling blocks to clear complete lines\u2014",
+      "tagline": "Tetris Web Game Single Player is a modern, browser‑based remake of the timeless Tetris puz",
+      "description": "Tetris Web Game Single Player is a modern, browser‑based remake of the timeless Tetris puzzle game. Built using HTML5, CSS3, and JavaScript, this game offers smooth animations, responsive controls, and real‑time score tracking. Experience addictive gameplay as you rotate and drop falling blocks to clear complete lines—",
       "category": "puzzle",
       "accent": "hsl(292 85% 62%)",
       "daily": false,
@@ -2818,8 +2818,8 @@
         "free online game"
       ],
       "howToPlay": [
-        "Built using HTML5, CSS3, and JavaScript, this game offers smooth animations, responsive controls, and real\u2011time score tracking.",
-        "Experience addictive gameplay as you rotate and drop falling blocks to clear complete lines\u2014all without any installation.",
+        "Built using HTML5, CSS3, and JavaScript, this game offers smooth animations, responsive controls, and real‑time score tracking.",
+        "Experience addictive gameplay as you rotate and drop falling blocks to clear complete lines—all without any installation.",
         "Simply host the files on an HTTP/HTTPS server (for example, via Apache or any static hosting service) and open index.html in your browser.",
         "Arrange the falling tetrominoes to complete horizontal lines that disappear, earning you points.",
         "The game ends when the blocks stack to the top."
@@ -2843,8 +2843,8 @@
     {
       "id": "labyrinth",
       "title": "Labyrinth",
-      "tagline": "Welcome to Labyrinth | Maze Explorer! \ud83c\udfae This is a fun and interactive web game where play",
-      "description": "Welcome to Labyrinth | Maze Explorer! \ud83c\udfae This is a fun and interactive web game where players solve randomly generated mazes by tracing a path using the W, A, S, D keys. The maze is generated dynamically, and you can save your solved maze as PNG, JPG, or PDF. By Bocaletto Luca Play Labyrinth instantly on arcadefork - n",
+      "tagline": "Welcome to Labyrinth | Maze Explorer! 🎮 This is a fun and interactive web game where play",
+      "description": "Welcome to Labyrinth | Maze Explorer! 🎮 This is a fun and interactive web game where players solve randomly generated mazes by tracing a path using the W, A, S, D keys. The maze is generated dynamically, and you can save your solved maze as PNG, JPG, or PDF. By Bocaletto Luca Play Labyrinth instantly on arcadefork - n",
       "category": "arcade",
       "accent": "hsl(335 85% 62%)",
       "daily": false,
@@ -2935,8 +2935,8 @@
     {
       "id": "bomberman",
       "title": "Bomberman",
-      "tagline": "Bomberman Dynablaster \u2013 Single Player Edition is a modern, web-based remake of the classic",
-      "description": "Bomberman Dynablaster \u2013 Single Player Edition is a modern, web-based remake of the classic Bomberman series with a twist inspired by the Italian Dynablaster variant. The game features dynamic grid\u2011based levels, bomb mechanics that allow for chain reactions, strategic power\u2011ups, and clever enemy AI \u2013 all wrapped up in a",
+      "tagline": "Bomberman Dynablaster – Single Player Edition is a modern, web-based remake of the classic",
+      "description": "Bomberman Dynablaster – Single Player Edition is a modern, web-based remake of the classic Bomberman series with a twist inspired by the Italian Dynablaster variant. The game features dynamic grid‑based levels, bomb mechanics that allow for chain reactions, strategic power‑ups, and clever enemy AI – all wrapped up in a",
       "category": "brain",
       "accent": "hsl(283 85% 62%)",
       "daily": false,
@@ -2957,11 +2957,11 @@
         "free online game"
       ],
       "howToPlay": [
-        "The game features dynamic grid\u2011based levels, bomb mechanics that allow for chain reactions, strategic power\u2011ups, and clever enemy AI \u2013 all wrapped up in a neon-retro, arcade aesthetic that works perfectly on both desktop and mobile browsers.",
-        "Play on a 15\u00d713 grid with outer indestructible walls and inner destructible blocks.",
-        "The top\u2011left area is reserved for the player's safe starting zone.",
+        "The game features dynamic grid‑based levels, bomb mechanics that allow for chain reactions, strategic power‑ups, and clever enemy AI – all wrapped up in a neon-retro, arcade aesthetic that works perfectly on both desktop and mobile browsers.",
+        "Play on a 15×13 grid with outer indestructible walls and inner destructible blocks.",
+        "The top‑left area is reserved for the player's safe starting zone.",
         "Movement: Use the Arrow keys to move smoothly from cell to cell.",
-        "Action: Press Space to plant bombs with a 2\u2011second timer."
+        "Action: Press Space to plant bombs with a 2‑second timer."
       ],
       "faq": [
         {
@@ -3345,8 +3345,8 @@
     {
       "id": "games-master",
       "title": "Games Master",
-      "tagline": "\ud83c\udfae Open Source Games Hub \u2014 your ultimate directory of 136+ free games on GitHub! \ud83c\udf10 Browse",
-      "description": "\ud83c\udfae Open Source Games Hub \u2014 your ultimate directory of 136+ free games on GitHub! \ud83c\udf10 Browser, \ud83d\udcbb Native & \ud83d\udcf1 Mobile games all in one place. \ud83d\udd0d Search, filter by genre & platform, and jump straight in with live play links. \u2694\ufe0f RPG, \ud83d\udd79\ufe0f Arcade, \ud83e\udde9 Puzzle, \ud83d\udd2b FPS, \ud83c\udfd7\ufe0f Sandbox & more. Zero installs. Pure gaming. \u26a1 Built for ",
+      "tagline": "🎮 Open Source Games Hub — your ultimate directory of 136+ free games on GitHub! 🌐 Browse",
+      "description": "🎮 Open Source Games Hub — your ultimate directory of 136+ free games on GitHub! 🌐 Browser, 💻 Native & 📱 Mobile games all in one place. 🔍 Search, filter by genre & platform, and jump straight in with live play links. ⚔️ RPG, 🕹️ Arcade, 🧩 Puzzle, 🔫 FPS, 🏗️ Sandbox & more. Zero installs. Pure gaming. ⚡ Built for ",
       "category": "puzzle",
       "accent": "hsl(262 85% 62%)",
       "daily": false,
@@ -3367,11 +3367,11 @@
         "free online game"
       ],
       "howToPlay": [
-        "Open Source Games Hub is a searchable, filterable web directory of open source games hosted on GitHub, built with HTML5 \ud83c\udf10, CSS3 \ud83c\udfa8, and Vanilla JavaScript \u26a1 .",
+        "Open Source Games Hub is a searchable, filterable web directory of open source games hosted on GitHub, built with HTML5 🌐, CSS3 🎨, and Vanilla JavaScript ⚡ .",
         "The site lets you browse 136+ open source games by platform (Browser, Native, Mobile), genre (Arcade, RPG, Strategy, Puzzle, FPS, Sandbox, and more), or search by name.",
         "Games with live play links are highlighted so you can jump straight in.",
         "Perfect for game developers, open source enthusiasts, learners exploring game mechanics, and anyone who loves free games.",
-        "Instant filtering as you type \u2014 searches titles and descriptions"
+        "Instant filtering as you type — searches titles and descriptions"
       ],
       "faq": [
         {
@@ -3414,11 +3414,11 @@
         "free online game"
       ],
       "howToPlay": [
-        "O projeto trata-se do cl\u00e1ssico jogo da \"cobrinha\" (Snake Game) desenvolvido com JavaScript, com o objetivo de ser apresentado em um trabalho de faculdade sobre Programa\u00e7\u00e3o Orientada a Eventos.",
-        "Al\u00e9m de praticar conceitos b\u00e1sicos da linguagem.",
+        "O projeto trata-se do clássico jogo da \"cobrinha\" (Snake Game) desenvolvido com JavaScript, com o objetivo de ser apresentado em um trabalho de faculdade sobre Programação Orientada a Eventos.",
+        "Além de praticar conceitos básicos da linguagem.",
         "Esse projeto foi desenvolvido com as seguintes tecnologias:",
-        "Use as teclas direcionais do teclado para controlar a cobra e capture o m\u00e1ximo de pontos que conseguir .",
-        "Fa\u00e7a push para a sua branch: git push origin minha-feature ."
+        "Use as teclas direcionais do teclado para controlar a cobra e capture o máximo de pontos que conseguir .",
+        "Faça push para a sua branch: git push origin minha-feature ."
       ],
       "faq": [
         {
@@ -3667,8 +3667,8 @@
     {
       "id": "cam-puzzle",
       "title": "Cam Puzzle",
-      "tagline": "\ud83e\udde9 A gesture-controlled photobooth puzzle game built with JavaScript, MediaPipe, Canvas, a",
-      "description": "\ud83e\udde9 A gesture-controlled photobooth puzzle game built with JavaScript, MediaPipe, Canvas, and Web Audio. Capture photos using hand gestures, solve 3\u00d73 puzzles by pinching and dragging, save colorful polaroids, record gameplay, and download a 3-photo strip\u2014all directly in your browser. Play Cam Puzzle instantly on arcade",
+      "tagline": "🧩 A gesture-controlled photobooth puzzle game built with JavaScript, MediaPipe, Canvas, a",
+      "description": "🧩 A gesture-controlled photobooth puzzle game built with JavaScript, MediaPipe, Canvas, and Web Audio. Capture photos using hand gestures, solve 3×3 puzzles by pinching and dragging, save colorful polaroids, record gameplay, and download a 3-photo strip—all directly in your browser. Play Cam Puzzle instantly on arcade",
       "category": "puzzle",
       "accent": "hsl(228 85% 62%)",
       "daily": false,
@@ -3689,8 +3689,8 @@
         "free online game"
       ],
       "howToPlay": [
-        "PuzzleCam \u2014 Gesture Capture is an interactive hand-gesture controlled photobooth puzzle game that runs directly in the browser using JavaScript, HTML, CSS, MediaPipe, Canvas, Web Audio API, and MediaRecorder .",
-        "Instead of using a traditional camera button or keyboard controls, the player uses their hands and pinch gestures to capture a photo, solve a 3\u00d73 puzzle , and save the completed result as a polaroid-style photograph .",
+        "PuzzleCam — Gesture Capture is an interactive hand-gesture controlled photobooth puzzle game that runs directly in the browser using JavaScript, HTML, CSS, MediaPipe, Canvas, Web Audio API, and MediaRecorder .",
+        "Instead of using a traditional camera button or keyboard controls, the player uses their hands and pinch gestures to capture a photo, solve a 3×3 puzzle , and save the completed result as a polaroid-style photograph .",
         "The project runs entirely in the browser with no backend, no React, no npm, and no build process .",
         "Uses the computer's webcam through the browser.",
         "Camera access is requested through the browser's permission system."
@@ -3759,8 +3759,8 @@
     {
       "id": "block-snake-3d",
       "title": "BLOCK SNAKE 3D",
-      "tagline": "\ud83d\udc0d BLOCK SNAKE 3D is a retro-inspired 3D voxel snake game built with HTML, CSS, JavaScript",
-      "description": "\ud83d\udc0d BLOCK SNAKE 3D is a retro-inspired 3D voxel snake game built with HTML, CSS, JavaScript, and Three.js. Explore a neon voxel world, collect apples, grow your snake, use boost & jump abilities, avoid obstacles, and chase high scores with campaign, endless, desktop, and mobile gameplay modes. \ud83c\udfae\ud83c\udf4e\ud83d\ude80 Play BLOCK SNAKE 3D",
+      "tagline": "🐍 BLOCK SNAKE 3D is a retro-inspired 3D voxel snake game built with HTML, CSS, JavaScript",
+      "description": "🐍 BLOCK SNAKE 3D is a retro-inspired 3D voxel snake game built with HTML, CSS, JavaScript, and Three.js. Explore a neon voxel world, collect apples, grow your snake, use boost & jump abilities, avoid obstacles, and chase high scores with campaign, endless, desktop, and mobile gameplay modes. 🎮🍎🚀 Play BLOCK SNAKE 3D",
       "category": "arcade",
       "accent": "hsl(54 85% 62%)",
       "daily": false,
@@ -3982,8 +3982,8 @@
     {
       "id": "adoertetris-js",
       "title": "AdoerTetris",
-      "tagline": "HTML5 Tetris Game for Canvas \ud83c\udfae \uff08\u57fa\u4e8eCanvas\u7684\u4fc4\u7f57\u65af\u65b9\u5757\u6e38\u620f\uff09",
-      "description": "HTML5 Tetris Game for Canvas \ud83c\udfae \uff08\u57fa\u4e8eCanvas\u7684\u4fc4\u7f57\u65af\u65b9\u5757\u6e38\u620f\uff09 Play AdoerTetris instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "HTML5 Tetris Game for Canvas 🎮 （基于Canvas的俄罗斯方块游戏）",
+      "description": "HTML5 Tetris Game for Canvas 🎮 （基于Canvas的俄罗斯方块游戏） Play AdoerTetris instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(324 85% 62%)",
       "daily": false,
@@ -4117,8 +4117,8 @@
     {
       "id": "snek-game",
       "title": "Snek",
-      "tagline": "A clone of the game Snake in Javascript with HTML5 Canvas \ud83d\udc0d",
-      "description": "A clone of the game Snake in Javascript with HTML5 Canvas \ud83d\udc0d Play Snek instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "A clone of the game Snake in Javascript with HTML5 Canvas 🐍",
+      "description": "A clone of the game Snake in Javascript with HTML5 Canvas 🐍 Play Snek instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(246 85% 62%)",
       "daily": false,
@@ -4160,8 +4160,8 @@
     {
       "id": "virtual-weiqi-go-surround-chess",
       "title": "Virtual Weiqi Go Surround Chess",
-      "tagline": "Play Online Virtual WeiQi \u56f4\u68cb (Chinese Surround Chess), Go, Goe, Baduk, or Igo, without the",
-      "description": "Play Online Virtual WeiQi \u56f4\u68cb (Chinese Surround Chess), Go, Goe, Baduk, or Igo, without the actual board and stones. Select any size from 19x19, 9x9 and more. This world's oldest strategic chess board game will train you mentally and improve your intelligence. Uses HTML5 Canvas. Play Virtual Weiqi Go Surround Chess inst",
+      "tagline": "Play Online Virtual WeiQi 围棋 (Chinese Surround Chess), Go, Goe, Baduk, or Igo, without the",
+      "description": "Play Online Virtual WeiQi 围棋 (Chinese Surround Chess), Go, Goe, Baduk, or Igo, without the actual board and stones. Select any size from 19x19, 9x9 and more. This world's oldest strategic chess board game will train you mentally and improve your intelligence. Uses HTML5 Canvas. Play Virtual Weiqi Go Surround Chess inst",
       "category": "strategy",
       "accent": "hsl(146 85% 62%)",
       "daily": false,
@@ -4388,8 +4388,8 @@
     {
       "id": "nostalgic-snake-game",
       "title": "Nostalgic Snake",
-      "tagline": "Welcome to the Nostalgic Snake Game \u2013 a journey back to the simplicity and joy of childhoo",
-      "description": "Welcome to the Nostalgic Snake Game \u2013 a journey back to the simplicity and joy of childhood gaming! Play Nostalgic Snake instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "Welcome to the Nostalgic Snake Game – a journey back to the simplicity and joy of childhoo",
+      "description": "Welcome to the Nostalgic Snake Game – a journey back to the simplicity and joy of childhood gaming! Play Nostalgic Snake instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(64 85% 62%)",
       "daily": false,
@@ -4527,8 +4527,8 @@
     {
       "id": "js-15-puzzle",
       "title": "15 Puzzle",
-      "tagline": "Implementation of a classic Fifteen Puzzle \ud83e\udde9",
-      "description": "Implementation of a classic Fifteen Puzzle \ud83e\udde9 Play 15 Puzzle instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "Implementation of a classic Fifteen Puzzle 🧩",
+      "description": "Implementation of a classic Fifteen Puzzle 🧩 Play 15 Puzzle instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "puzzle",
       "accent": "hsl(291 85% 62%)",
       "daily": false,
@@ -4617,8 +4617,8 @@
     {
       "id": "js-snake-game",
       "title": "Snake Jogo",
-      "tagline": "\ud83d\udc0d Jogo da cobrinha com JavaScript.",
-      "description": "\ud83d\udc0d Jogo da cobrinha com JavaScript. Play Snake Jogo instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🐍 Jogo da cobrinha com JavaScript.",
+      "description": "🐍 Jogo da cobrinha com JavaScript. Play Snake Jogo instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "strategy",
       "accent": "hsl(299 85% 62%)",
       "daily": false,
@@ -4640,8 +4640,8 @@
       ],
       "howToPlay": [
         "O famoso Jogo da Cobrinha (ou Snake Game) com JavaScript.",
-        "O projeto foi desenvolvido durante o Bootcamp HTML Web Developer da Digital Innovation One , utilizando HTML5 Canvas e localStorage com JavaScript para persist\u00eancia dos dados, com implementa\u00e7\u00e3o de um sistema de pontua\u00e7\u00e3o e de recordes .",
-        "Voc\u00ea pode acessar o projeto clicando aqui.",
+        "O projeto foi desenvolvido durante o Bootcamp HTML Web Developer da Digital Innovation One , utilizando HTML5 Canvas e localStorage com JavaScript para persistência dos dados, com implementação de um sistema de pontuação e de recordes .",
+        "Você pode acessar o projeto clicando aqui.",
         "Depois disso, utilize uma ferramenta como o Live Server para criar um servidor local e executar o projeto.",
         "Para saber mais, acesse o arquivo LICENSE."
       ],
@@ -4664,8 +4664,8 @@
     {
       "id": "spinhook",
       "title": "Spinhook",
-      "tagline": "\ud83c\udfae SpinHook: A Hyper-Casual Orbit Arcade Game",
-      "description": "\ud83c\udfae SpinHook: A Hyper-Casual Orbit Arcade Game Play Spinhook instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🎮 SpinHook: A Hyper-Casual Orbit Arcade Game",
+      "description": "🎮 SpinHook: A Hyper-Casual Orbit Arcade Game Play Spinhook instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(85 85% 62%)",
       "daily": false,
@@ -4802,8 +4802,8 @@
     {
       "id": "snakegame",
       "title": "SnakeGame",
-      "tagline": "O jogo da cobrinha feita em JS \ud83d\udc01\ud83d\udc0d",
-      "description": "O jogo da cobrinha feita em JS \ud83d\udc01\ud83d\udc0d Play SnakeGame instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "O jogo da cobrinha feita em JS 🐁🐍",
+      "description": "O jogo da cobrinha feita em JS 🐁🐍 Play SnakeGame instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "strategy",
       "accent": "hsl(178 85% 62%)",
       "daily": false,
@@ -4824,11 +4824,11 @@
         "free online game"
       ],
       "howToPlay": [
-        "Projeto desenvolvido para a conclus\u00e3o do curso Recriando o jogo da cobrinha com JavaScript.",
+        "Projeto desenvolvido para a conclusão do curso Recriando o jogo da cobrinha com JavaScript.",
         "Esse projeto foi desenvolvido com as seguintes tecnologias:",
-        "Voc\u00ea controla uma cobrinha cujo objetivo \u00e9 comer o m\u00e1ximo poss\u00edvel sem se chocar com o pr\u00f3prio corpo.",
-        "Restri\u00e7\u00f5es: voc\u00ea n\u00e3o pode executar um comando contrario do sentido da sua cobra.",
-        "Ex: sua cobra esta indo para a direita, ent\u00e3o sera imposs\u00edvel executar o comando de ir para a esquerda."
+        "Você controla uma cobrinha cujo objetivo é comer o máximo possível sem se chocar com o próprio corpo.",
+        "Restrições: você não pode executar um comando contrario do sentido da sua cobra.",
+        "Ex: sua cobra esta indo para a direita, então sera impossível executar o comando de ir para a esquerda."
       ],
       "faq": [
         {
@@ -4936,8 +4936,8 @@
     {
       "id": "starstruck",
       "title": "Starstruck",
-      "tagline": "\u2b50 A tiny single-file HTML5 canvas arcade game \u2014 catch stars, chain combos, dodge asteroids",
-      "description": "\u2b50 A tiny single-file HTML5 canvas arcade game \u2014 catch stars, chain combos, dodge asteroids. Play Starstruck instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "⭐ A tiny single-file HTML5 canvas arcade game — catch stars, chain combos, dodge asteroids",
+      "description": "⭐ A tiny single-file HTML5 canvas arcade game — catch stars, chain combos, dodge asteroids. Play Starstruck instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(190 85% 62%)",
       "daily": false,
@@ -4959,10 +4959,10 @@
       ],
       "howToPlay": [
         "A tiny, fast arcade game in a single HTML file.",
-        "Move \u2014 mouse, touch, or arrow keys / WASD",
-        "Catch stars \u2014 chain them within the combo window to score up to \u00d78",
-        "Gold stars \u2014 grant a shield, or trigger a STARSTRUCK!",
-        "Dodge asteroids \u2014 a hit costs a life (or your shield)"
+        "Move — mouse, touch, or arrow keys / WASD",
+        "Catch stars — chain them within the combo window to score up to ×8",
+        "Gold stars — grant a shield, or trigger a STARSTRUCK!",
+        "Dodge asteroids — a hit costs a life (or your shield)"
       ],
       "faq": [
         {
@@ -5005,8 +5005,8 @@
         "free online game"
       ],
       "howToPlay": [
-        "Open index.html in a supported browser to start playing immediately \u2014 no build step or server required.",
-        "Use \u2191 / \u2193 to choose 1 Player or 2 Players .",
+        "Open index.html in a supported browser to start playing immediately — no build step or server required.",
+        "Use ↑ / ↓ to choose 1 Player or 2 Players .",
         "Open index.html in Chrome , Firefox , Opera , or any modern browser.",
         "Note: Some browsers block Audio autoplay or local file access.",
         "If audio does not work, try serving the files through a local HTTP server (e.g., python3 -m http.server and open http://localhost:8000 )."
@@ -5189,9 +5189,9 @@
       "howToPlay": [
         "Play against a 40-card deck, pair cards that sum to 9, and discover which demon your final score summons.",
         "Open Subdecadence.html in any modern web browser: no installation, no dependencies, no server required.",
-        "40 cards: 4 suits (\u2660 \u2665 \u2666 \u2663) \u00d7 10 values (0\u20139).",
-        "Each card is secretly bound to a Lemurian demon \u2014 hover over any revealed card to see its entity name and Mesh coordinates.",
-        "DEAL \u2014 Five cards are placed in a cross formation (Center \u00b7 West \u00b7 East \u00b7 North \u00b7 South)."
+        "40 cards: 4 suits (♠ ♥ ♦ ♣) × 10 values (0–9).",
+        "Each card is secretly bound to a Lemurian demon — hover over any revealed card to see its entity name and Mesh coordinates.",
+        "DEAL — Five cards are placed in a cross formation (Center · West · East · North · South)."
       ],
       "faq": [
         {
@@ -5567,8 +5567,8 @@
     {
       "id": "courier-city",
       "title": "Courier City",
-      "tagline": "\ud83c\udfd9\ufe0f Courier City \u2014 A GTA-inspired 3D open world browser game built with Three.js & Cannon-",
-      "description": "\ud83c\udfd9\ufe0f Courier City \u2014 A GTA-inspired 3D open world browser game built with Three.js & Cannon-ES. Walk, drive cars, fly airplanes & helicopters. Explore Taj Mahal, Eiffel Tower, Bangalore's Silk Board, Vidhana Soudha & more! No downloads \u2014 play in browser. Play Courier City instantly on arcadefork - no download, no sign-up",
+      "tagline": "🏙️ Courier City — A GTA-inspired 3D open world browser game built with Three.js & Cannon-",
+      "description": "🏙️ Courier City — A GTA-inspired 3D open world browser game built with Three.js & Cannon-ES. Walk, drive cars, fly airplanes & helicopters. Explore Taj Mahal, Eiffel Tower, Bangalore's Silk Board, Vidhana Soudha & more! No downloads — play in browser. Play Courier City instantly on arcadefork - no download, no sign-up",
       "category": "arcade",
       "accent": "hsl(59 85% 62%)",
       "daily": false,
@@ -5590,7 +5590,7 @@
       ],
       "howToPlay": [
         "A cel-shaded 3D browser game rendering seven iconic Indian cities as miniature spherical diorama worlds.",
-        "Walk on foot, drive an Auto Rickshaw, Roadster, Bullet 350, or Volvo City Bus \u2014 explore living streets, equatorial railways, and authentic regional culture directly in your browser.",
+        "Walk on foot, drive an Auto Rickshaw, Roadster, Bullet 350, or Volvo City Bus — explore living streets, equatorial railways, and authentic regional culture directly in your browser.",
         "Courier City is an interactive, browser-native 3D open-world transit simulation celebrating the pulse, architecture, and streets of India.",
         "Built entirely with WebGL and Three.js with zero heavy downloads, each city is rendered as a warm, cel-shaded cylindrical world wrapped on an equatorial transit axis.",
         "Select any city from the interactive Survey of India national boundary map, zoom in, and step down onto the pavement alongside thousands of animated pedestrians, bustling street vendors, local buses, and trains."
@@ -5614,8 +5614,8 @@
     {
       "id": "bunny",
       "title": "Bunny",
-      "tagline": "\ud83d\udc30 A tiny, cute 3D endless runner for your browser. Three.js, no build step, works on phon",
-      "description": "\ud83d\udc30 A tiny, cute 3D endless runner for your browser. Three.js, no build step, works on phones. Play Bunny instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🐰 A tiny, cute 3D endless runner for your browser. Three.js, no build step, works on phon",
+      "description": "🐰 A tiny, cute 3D endless runner for your browser. Three.js, no build step, works on phones. Play Bunny instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(166 85% 62%)",
       "daily": false,
@@ -5638,9 +5638,9 @@
       "howToPlay": [
         "A tiny, cute 3D endless runner that runs right in your browser.",
         "Hop between three lanes, jump over flowers, logs and rocks, and snag hearts, stars and bunny plushies for combos.",
-        "How to play \u00b7 Run it \u00b7 Make it yours \u00b7 How it works \u00b7 Accessibility \u00b7 Tests \u00b7 Budget \u00b7 Deploy",
+        "How to play · Run it · Make it yours · How it works · Accessibility · Tests · Budget · Deploy",
         "Lane changes land in about 75 ms and a jump lasts about half a second.",
-        "Grab treats back to back (each within 3 seconds of the last) to build a multiplier of up to 10\u00d7 ."
+        "Grab treats back to back (each within 3 seconds of the last) to build a multiplier of up to 10× ."
       ],
       "faq": [
         {
@@ -5661,8 +5661,8 @@
     {
       "id": "tetris3d",
       "title": "Tetris3d",
-      "tagline": "\ud83c\udfae 3D \u4fc4\u7f57\u65af\u65b9\u5757 \u2014 \u5f00\u6e90\u3001\u65e0\u5e7f\u544a\u3001\u96f6\u6743\u9650\u30013MB | Open-source 3D Tetris (Blockout) for Web & Android",
-      "description": "\ud83c\udfae 3D \u4fc4\u7f57\u65af\u65b9\u5757 \u2014 \u5f00\u6e90\u3001\u65e0\u5e7f\u544a\u3001\u96f6\u6743\u9650\u30013MB | Open-source 3D Tetris (Blockout) for Web & Android Play Tetris3d instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🎮 3D 俄罗斯方块 — 开源、无广告、零权限、3MB | Open-source 3D Tetris (Blockout) for Web & Android",
+      "description": "🎮 3D 俄罗斯方块 — 开源、无广告、零权限、3MB | Open-source 3D Tetris (Blockout) for Web & Android Play Tetris3d instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(234 85% 62%)",
       "daily": false,
@@ -5913,7 +5913,7 @@
       ],
       "howToPlay": [
         "Este projeto foi desenvolvido com as seguintes tecnologias:",
-        "Feito por Gabriel Costa \ud83d\udc4b\ud83c\udffe Veja meu Linkedin"
+        "Feito por Gabriel Costa 👋🏾 Veja meu Linkedin"
       ],
       "faq": [
         {
@@ -6287,7 +6287,7 @@
         "This Tetris implementation recreates the iconic tile-matching gameplay experience with smooth controls, structured game logic, and modular code design.",
         "Players control falling tetrominoes, strategically placing them to complete horizontal lines.",
         "Completed lines disappear, score increases, and the game progressively becomes more challenging.",
-        "JavaScript (ES6+) \u2013 Game logic & mechanics"
+        "JavaScript (ES6+) – Game logic & mechanics"
       ],
       "faq": [
         {
@@ -6309,7 +6309,7 @@
       "id": "snake-game-beingguru7",
       "title": "Snake built",
       "tagline": "A classic Snake game built with HTML, CSS, and JavaScript. Navigate the snake to eat food ",
-      "description": "A classic Snake game built with HTML, CSS, and JavaScript. Navigate the snake to eat food and grow longer, while avoiding collisions with walls or yourself. Fully playable in the browser\u2014no sign-in or storage required. Play Snake built instantly on arcadefork - no download, no sign-up, works on any device.",
+      "description": "A classic Snake game built with HTML, CSS, and JavaScript. Navigate the snake to eat food and grow longer, while avoiding collisions with walls or yourself. Fully playable in the browser—no sign-in or storage required. Play Snake built instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(5 85% 62%)",
       "daily": false,
@@ -6465,7 +6465,7 @@
         "This program is written in CoffeeScript.",
         "Copyright(c) 2012 hoo89 http://d.hatena.ne.jp/Hoo/ hoo89@me.com",
         "This source (in 'js' directory) licensed under the MIT license.",
-        "Empire of the Mahjong-\u9ebb\u96c0\u5e1d\u570b- http://www.ambitious-net.com/"
+        "Empire of the Mahjong-麻雀帝國- http://www.ambitious-net.com/"
       ],
       "faq": [
         {
@@ -6512,7 +6512,7 @@
         "This web-based version is built using HTML , CSS , and JavaScript and features animations, player inputs, SVG snakes and ladders, and a dynamic winner screen.",
         "Fork or clone this repository to your GitHub account.",
         "Under Source , select main branch and /root .",
-        "GitHub will generate a link \u2014 share or open that to play the game."
+        "GitHub will generate a link — share or open that to play the game."
       ],
       "faq": [
         {
@@ -6555,7 +6555,7 @@
         "free online game"
       ],
       "howToPlay": [
-        "A polished, framework-free take on retro Snake \u2014 built to feel finished, not just to work.",
+        "A polished, framework-free take on retro Snake — built to feel finished, not just to work.",
         "Snake is a solved problem, so the interesting part is everything around it: input that feels immediate, timing that stays honest across refresh rates, a deliberate visual identity, and an interface that works as well on a phone as on a desktop.",
         "The guiding standard for this project is that functional does not mean finished.",
         "Every user-facing change gets a dedicated refinement pass before it counts as done.",
@@ -6627,8 +6627,8 @@
     {
       "id": "greentendo",
       "title": "Greentendo",
-      "tagline": "\ud83c\udfae A nostalgic Game Boy simulator with Snake, Pong & Space Invaders |  Pure JavaScript |  ",
-      "description": "\ud83c\udfae A nostalgic Game Boy simulator with Snake, Pong & Space Invaders |  Pure JavaScript |  Modern CSS styling |  8-bit sounds Play Greentendo instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🎮 A nostalgic Game Boy simulator with Snake, Pong & Space Invaders |  Pure JavaScript |  ",
+      "description": "🎮 A nostalgic Game Boy simulator with Snake, Pong & Space Invaders |  Pure JavaScript |  Modern CSS styling |  8-bit sounds Play Greentendo instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "sandbox",
       "accent": "hsl(53 85% 62%)",
       "daily": false,
@@ -6721,8 +6721,8 @@
     {
       "id": "wordofday",
       "title": "Wordofday",
-      "tagline": "\u00a1Descubre el juego de preguntas retro y desaf\u00eda tus conocimientos en diversas categor\u00edas! ",
-      "description": "\u00a1Descubre el juego de preguntas retro y desaf\u00eda tus conocimientos en diversas categor\u00edas! | Discover the retro quiz game and challenge your knowledge in various categories Play Wordofday instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "¡Descubre el juego de preguntas retro y desafía tus conocimientos en diversas categorías! ",
+      "description": "¡Descubre el juego de preguntas retro y desafía tus conocimientos en diversas categorías! | Discover the retro quiz game and challenge your knowledge in various categories Play Wordofday instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "word",
       "accent": "hsl(99 85% 62%)",
       "daily": false,
@@ -6743,10 +6743,10 @@
         "free online game"
       ],
       "howToPlay": [
-        "Word of Day - \ud83d\udd79\ufe0f Juego de Preguntas Retro",
-        "Word of Day es un juego dise\u00f1ado para fan\u00e1ticos del dise\u00f1o cl\u00e1sico y los retos intelectuales.",
-        "Interfaz Retro: Dise\u00f1o inspirado en los cl\u00e1sicos con NES.css.",
-        "Mec\u00e1nicas Atractivas: Responde preguntas en diversas categor\u00edas, mejora tu racha y gana comodines estrat\u00e9gicos.",
+        "Word of Day - 🕹️ Juego de Preguntas Retro",
+        "Word of Day es un juego diseñado para fanáticos del diseño clásico y los retos intelectuales.",
+        "Interfaz Retro: Diseño inspirado en los clásicos con NES.css.",
+        "Mecánicas Atractivas: Responde preguntas en diversas categorías, mejora tu racha y gana comodines estratégicos.",
         "Modo Oscuro: Alterna entre el modo oscuro y claro para una mejor experiencia visual."
       ],
       "faq": [
@@ -6860,8 +6860,8 @@
     {
       "id": "maze-game",
       "title": "Maze 2",
-      "tagline": "\ud83d\uddfaHTML \u5728\u7ebf\u8d70\u8ff7\u5bab\u6e38\u620f",
-      "description": "\ud83d\uddfaHTML \u5728\u7ebf\u8d70\u8ff7\u5bab\u6e38\u620f Play Maze 2 instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "🗺HTML 在线走迷宫游戏",
+      "description": "🗺HTML 在线走迷宫游戏 Play Maze 2 instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(72 85% 62%)",
       "daily": false,
@@ -6905,8 +6905,8 @@
     {
       "id": "hangmanizr",
       "title": "Hangmanizr",
-      "tagline": "\u2796 Quick hangman game",
-      "description": "\u2796 Quick hangman game Play Hangmanizr instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "➖ Quick hangman game",
+      "description": "➖ Quick hangman game Play Hangmanizr instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "word",
       "accent": "hsl(353 85% 62%)",
       "daily": false,
@@ -7045,7 +7045,7 @@
       "id": "guess-the-flag",
       "title": "Guess Flag",
       "tagline": "Guess the Flag Web Game is a fun browser-based quiz where players identify countries by th",
-      "description": "Guess the Flag Web Game is a fun browser-based quiz where players identify countries by their flags. It features multiple difficulty levels, timed rounds, hints, and a responsive UI\u2014all built using HTML5, CSS3, and JavaScript. Developed by Bocaletto Luca; no installations required. Play Guess Flag instantly on arcadefo",
+      "description": "Guess the Flag Web Game is a fun browser-based quiz where players identify countries by their flags. It features multiple difficulty levels, timed rounds, hints, and a responsive UI—all built using HTML5, CSS3, and JavaScript. Developed by Bocaletto Luca; no installations required. Play Guess Flag instantly on arcadefo",
       "category": "brain",
       "accent": "hsl(126 85% 62%)",
       "daily": false,
@@ -7067,7 +7067,7 @@
       ],
       "howToPlay": [
         "Players are shown a flag image and must choose the correct country from multiple options.",
-        "With various difficulty levels, timed rounds, and helpful hints, this game provides an engaging and educational experience\u2014all running directly in your browser.",
+        "With various difficulty levels, timed rounds, and helpful hints, this game provides an engaging and educational experience—all running directly in your browser.",
         "Simply serve the files via an HTTP/HTTPS server (e.g.",
         "Apache) and open index.html in your browser.",
         "Objective: Identify the country for each displayed flag."
@@ -7275,8 +7275,8 @@
     {
       "id": "spaceguard",
       "title": "Spaceguard",
-      "tagline": "\ud83d\udc7e  Arcade Space Game written in vanilla JavaScript",
-      "description": "\ud83d\udc7e  Arcade Space Game written in vanilla JavaScript Play Spaceguard instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "👾  Arcade Space Game written in vanilla JavaScript",
+      "description": "👾  Arcade Space Game written in vanilla JavaScript Play Spaceguard instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(167 85% 62%)",
       "daily": false,
@@ -7322,8 +7322,8 @@
     {
       "id": "invasores-espaciais",
       "title": "Invasores Espaciais",
-      "tagline": "Um remake moderno do cl\u00e1ssico jogo\u00a0Space Invaders, desenvolvido com\u00a0HTML5 Canvas,\u00a0CSS3\u00a0e\u00a0J",
-      "description": "Um remake moderno do cl\u00e1ssico jogo\u00a0Space Invaders, desenvolvido com\u00a0HTML5 Canvas,\u00a0CSS3\u00a0e\u00a0JavaScript puro. Play Invasores Espaciais instantly on arcadefork - no download, no sign-up, works on any device.",
+      "tagline": "Um remake moderno do clássico jogo Space Invaders, desenvolvido com HTML5 Canvas, CSS3 e J",
+      "description": "Um remake moderno do clássico jogo Space Invaders, desenvolvido com HTML5 Canvas, CSS3 e JavaScript puro. Play Invasores Espaciais instantly on arcadefork - no download, no sign-up, works on any device.",
       "category": "arcade",
       "accent": "hsl(301 85% 62%)",
       "daily": false,
@@ -7344,11 +7344,11 @@
         "free online game"
       ],
       "howToPlay": [
-        "Totalmente responsivo, compat\u00edvel com dispositivos m\u00f3veis e com controles otimizados tanto para teclado como para touch screen.",
-        "Jogabilidade cl\u00e1ssica com gr\u00e1ficos em Canvas 2D",
-        "Sistema de pontua\u00e7\u00e3o, vidas e n\u00edveis progressivos",
-        "Suporte para controles de teclado (\u2190, \u2192, espa\u00e7o, Enter, P)",
-        "Controles t\u00e1cteis otimizados para dispositivos m\u00f3veis"
+        "Totalmente responsivo, compatível com dispositivos móveis e com controles otimizados tanto para teclado como para touch screen.",
+        "Jogabilidade clássica com gráficos em Canvas 2D",
+        "Sistema de pontuação, vidas e níveis progressivos",
+        "Suporte para controles de teclado (←, →, espaço, Enter, P)",
+        "Controles tácteis otimizados para dispositivos móveis"
       ],
       "faq": [
         {

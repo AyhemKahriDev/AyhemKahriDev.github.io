@@ -89,7 +89,7 @@ async function main() {
   await waitForServer();
   mkdirSync(shots, { recursive: true });
 
-  const browser = await puppeteer.launch({
+  let browser = await puppeteer.launch({
     executablePath: findChrome(),
     headless: 'shell',
     args: ['--no-sandbox', '--disable-dev-shm-usage', '--hide-scrollbars'],
@@ -106,182 +106,199 @@ async function main() {
   const failures = [];
 
   for (const target of PAGES) {
-    const page = await browser.newPage();
-    await page.setViewport({ width: 412, height: 860, deviceScaleFactor: 2 });
-    // A game that never settles must cost one page, not the run.
-    page.setDefaultTimeout(20_000);
-    page.setDefaultNavigationTimeout(20_000);
-
-    const errors = [];
-    const warnings = [];
-    const origin = `http://localhost:${port}`;
-    // Only failures on our own origin are build failures. Vendored games
-    // loading their own analytics, ribbons or CDNs is their business.
-    page.on('console', (m) => {
-      const text = m.text();
-      if (m.type() !== 'error') return;
-      if (/Failed to load resource/i.test(text)) return;
-      // A vendored game calling its own leaderboard backend gets a CORS
-      // error here. The game still plays, so it is a warning, not a failure.
-      if (/CORS policy|Access-Control-Allow-Origin/i.test(text)) {
-        warnings.push(`cors: ${text.slice(0, 60)}`);
-        return;
-      }
-      // A *report-only* CSP cannot block anything: the browser logs it and
-      // loads the resource. Several vendored games frame an ad or analytics
-      // page that ships one, and which of them run varies per visit, so
-      // failing on it made CI red for games that work.
-      if (/report-only Content Security Policy/i.test(text)) {
-        warnings.push(`csp-report-only: ${text.slice(0, 60)}`);
-        return;
-      }
-      errors.push(`console: ${text}`);
-    });
-    page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
-    page.on('requestfailed', (r) => {
-      if (r.url().startsWith(origin)) warnings.push(`requestfailed: ${r.url()}`);
-    });
-    page.on('response', (r) => {
-      if (r.status() >= 400 && r.url().startsWith(origin)) {
-        warnings.push(`${r.status()} ${r.url()}`);
-      }
-    });
-
-    const url = `http://localhost:${port}${target.path}`;
+    let page = null;
     try {
-      const res = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
-      if (!res || res.status() >= 400) errors.push(`status ${res?.status()}`);
-    } catch (err) {
-      errors.push(`navigation failed: ${err.message}`);
-    }
-    await sleep(400);
+      page = await browser.newPage();
+      await page.setViewport({ width: 412, height: 860, deviceScaleFactor: 2 });
+      // A game that never settles must cost one page, not the run.
+      page.setDefaultTimeout(20_000);
+      page.setDefaultNavigationTimeout(20_000);
 
-    if (target.expectIframe) {
-      // The vendored game must load inside the frame and actually paint.
-      const frame = page.frames().find((f) => f.url().includes('/third-party/'));
-      if (!frame) {
-        errors.push('third-party iframe never loaded');
-      } else {
-        await sleep(1200);
-        // Many games render only after the first input, so nudge the frame.
-        try {
-          await frame.keyboard.press('Space');
-          await frame.keyboard.press('Enter');
-          await sleep(500);
-        } catch {
-          /* the frame may not be focusable */
+      const errors = [];
+      const warnings = [];
+      const origin = `http://localhost:${port}`;
+      // Only failures on our own origin are build failures. Vendored games
+      // loading their own analytics, ribbons or CDNs is their business.
+      page.on('console', (m) => {
+        const text = m.text();
+        if (m.type() !== 'error') return;
+        if (/Failed to load resource/i.test(text)) return;
+        // A vendored game calling its own leaderboard backend gets a CORS
+        // error here. The game still plays, so it is a warning, not a failure.
+        if (/CORS policy|Access-Control-Allow-Origin/i.test(text)) {
+          warnings.push(`cors: ${text.slice(0, 60)}`);
+          return;
         }
-        const probe = await frame.evaluate(() => {
-          const canvas = document.querySelector('canvas');
-          let pixels = 0;
-          let has2d = false;
-          if (canvas) {
-            const ctx = canvas.getContext('2d');
-            if (ctx) {
-              has2d = true;
-              try {
-                const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
-                for (let i = 3; i < d.length; i += 4) if (d[i] > 0) pixels++;
-              } catch {
-                pixels = -1;
+        // A *report-only* CSP cannot block anything: the browser logs it and
+        // loads the resource. Several vendored games frame an ad or analytics
+        // page that ships one, and which of them run varies per visit, so
+        // failing on it made CI red for games that work.
+        if (/report-only Content Security Policy/i.test(text)) {
+          warnings.push(`csp-report-only: ${text.slice(0, 60)}`);
+          return;
+        }
+        errors.push(`console: ${text}`);
+      });
+      page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+      page.on('requestfailed', (r) => {
+        if (r.url().startsWith(origin)) warnings.push(`requestfailed: ${r.url()}`);
+      });
+      page.on('response', (r) => {
+        if (r.status() >= 400 && r.url().startsWith(origin)) {
+          warnings.push(`${r.status()} ${r.url()}`);
+        }
+      });
+
+      const url = `http://localhost:${port}${target.path}`;
+      try {
+        const res = await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 20000 });
+        if (!res || res.status() >= 400) errors.push(`status ${res?.status()}`);
+      } catch (err) {
+        errors.push(`navigation failed: ${err.message}`);
+      }
+      await sleep(400);
+
+      if (target.expectIframe) {
+        // The vendored game must load inside the frame and actually paint.
+        const frame = page.frames().find((f) => f.url().includes('/third-party/'));
+        if (!frame) {
+          errors.push('third-party iframe never loaded');
+        } else {
+          await sleep(1200);
+          // Many games render only after the first input, so nudge the frame.
+          try {
+            await frame.keyboard.press('Space');
+            await frame.keyboard.press('Enter');
+            await sleep(500);
+          } catch {
+            /* the frame may not be focusable */
+          }
+          const probe = await frame.evaluate(() => {
+            const canvas = document.querySelector('canvas');
+            let pixels = 0;
+            let has2d = false;
+            if (canvas) {
+              const ctx = canvas.getContext('2d');
+              if (ctx) {
+                has2d = true;
+                try {
+                  const d = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                  for (let i = 3; i < d.length; i += 4) if (d[i] > 0) pixels++;
+                } catch {
+                  pixels = -1;
+                }
               }
             }
+            const text = (document.body?.innerText ?? '').replace(/\s+/g, ' ').trim();
+            const controls = document.querySelectorAll('button, a, input, [role=button]').length;
+            // WebGL games cannot be read back through a 2D context; the context
+            // itself is the evidence that something is rendering.
+            let webgl = false;
+            if (canvas) {
+              try {
+                webgl = !!(canvas.getContext('webgl2') || canvas.getContext('webgl')) && canvas.width >= 32;
+              } catch {
+                /* no GL here */
+              }
+            }
+            return { pixels, has2d, textLen: text.length, controls, hasCanvas: !!canvas, webgl };
+          });
+          const paints = probe.pixels > 200;
+          const interactive = probe.textLen > 120 && probe.controls >= 1;
+          // A canvas plus real text is a live game even if it has not drawn yet.
+          const alive = probe.hasCanvas && probe.textLen > 60;
+
+          if (!paints && !interactive && !alive && !probe.webgl) {
+            errors.push(
+              `third-party frame looks dead (canvas ${probe.hasCanvas}, ${probe.pixels}px, text ${probe.textLen})`,
+            );
           }
-          const text = (document.body?.innerText ?? '').replace(/\s+/g, ' ').trim();
-          const controls = document.querySelectorAll('button, a, input, [role=button]').length;
-          // WebGL games cannot be read back through a 2D context; the context
-          // itself is the evidence that something is rendering.
-          let webgl = false;
+        }
+      }
+
+      if (target.path.includes('/answers/') || target.path.match(/\/daily\/\d{4}-\d{2}-\d{2}\/$/)) {
+        // The puzzle board must be a square grid, not a single tall column.
+        const board = await page.$eval('.board', (el) => {
+          const r = el.getBoundingClientRect();
+          const c0 = el.children[0]?.getBoundingClientRect();
+          return {
+            w: r.width,
+            h: r.height,
+            cellW: c0?.width ?? 0,
+            cellH: c0?.height ?? 0,
+            cols: getComputedStyle(el).gridTemplateColumns.split(' ').length,
+          };
+        });
+        if (!board.cellW || Math.abs(board.cellW - board.cellH) > 2) {
+          errors.push(`board grid broken (${JSON.stringify(board)})`);
+        }
+        if (board.h > board.w * 1.2) {
+          errors.push(`board too tall (${Math.round(board.h)}px vs ${Math.round(board.w)}px wide)`);
+        }
+      }
+
+      if (target.expectCanvas) {
+        // Start the round, then play for a moment.
+        const play = await page.$('[data-act="play"]');
+        if (!play) errors.push('no play button');
+        else {
+          await play.click();
+          await sleep(400);
+          const canvas = await page.$('#game');
           if (canvas) {
-            try {
-              webgl = !!(canvas.getContext('webgl2') || canvas.getContext('webgl')) && canvas.width >= 32;
-            } catch {
-              /* no GL here */
+            const box = await canvas.boundingBox();
+            if (box) {
+              // Swipe/drag across the middle of the board.
+              await page.mouse.move(box.x + box.width * 0.3, box.y + box.height * 0.4);
+              await page.mouse.down();
+              await page.mouse.move(box.x + box.width * 0.7, box.y + box.height * 0.4, { steps: 8 });
+              await page.mouse.up();
             }
           }
-          return { pixels, has2d, textLen: text.length, controls, hasCanvas: !!canvas, webgl };
-        });
-        const paints = probe.pixels > 200;
-        const interactive = probe.textLen > 120 && probe.controls >= 1;
-        // A canvas plus real text is a live game even if it has not drawn yet.
-        const alive = probe.hasCanvas && probe.textLen > 60;
+          await sleep(700);
 
-        if (!paints && !interactive && !alive && !probe.webgl) {
-          errors.push(
-            `third-party frame looks dead (canvas ${probe.hasCanvas}, ${probe.pixels}px, text ${probe.textLen})`,
-          );
+          const painted = await page.evaluate(() => {
+            const c = document.querySelector('#game');
+            if (!c) return 0;
+            const ctx = c.getContext('2d');
+            if (!ctx) return 0;
+            const d = ctx.getImageData(0, 0, c.width, c.height).data;
+            let nonEmpty = 0;
+            for (let i = 3; i < d.length; i += 4) if (d[i] > 0) nonEmpty++;
+            return nonEmpty;
+          });
+          if (painted < 500) errors.push(`canvas looks blank (${painted} px)`);
+
+          const hud = await page.$eval('#hud', (el) => el.textContent?.trim() ?? '');
+          if (!hud) errors.push('hud empty');
         }
       }
-    }
 
-    if (target.path.includes('/answers/') || target.path.match(/\/daily\/\d{4}-\d{2}-\d{2}\/$/)) {
-      // The puzzle board must be a square grid, not a single tall column.
-      const board = await page.$eval('.board', (el) => {
-        const r = el.getBoundingClientRect();
-        const c0 = el.children[0]?.getBoundingClientRect();
-        return {
-          w: r.width,
-          h: r.height,
-          cellW: c0?.width ?? 0,
-          cellH: c0?.height ?? 0,
-          cols: getComputedStyle(el).gridTemplateColumns.split(' ').length,
-        };
-      });
-      if (!board.cellW || Math.abs(board.cellW - board.cellH) > 2) {
-        errors.push(`board grid broken (${JSON.stringify(board)})`);
+      await page.screenshot({ path: join(shots, `${target.name}.png`), fullPage: !target.expectCanvas });
+      await page.close();
+
+      if (errors.length) {
+        failures.push({ page: target.path, errors });
+        console.log(`FAIL  ${target.path}`);
+        errors.forEach((e) => console.log(`      ${e}`));
+      } else {
+        console.log(`ok    ${target.path}`);
       }
-      if (board.h > board.w * 1.2) {
-        errors.push(`board too tall (${Math.round(board.h)}px vs ${Math.round(board.w)}px wide)`);
-      }
-    }
-
-    if (target.expectCanvas) {
-      // Start the round, then play for a moment.
-      const play = await page.$('[data-act="play"]');
-      if (!play) errors.push('no play button');
-      else {
-        await play.click();
-        await sleep(400);
-        const canvas = await page.$('#game');
-        if (canvas) {
-          const box = await canvas.boundingBox();
-          if (box) {
-            // Swipe/drag across the middle of the board.
-            await page.mouse.move(box.x + box.width * 0.3, box.y + box.height * 0.4);
-            await page.mouse.down();
-            await page.mouse.move(box.x + box.width * 0.7, box.y + box.height * 0.4, { steps: 8 });
-            await page.mouse.up();
-          }
-        }
-        await sleep(700);
-
-        const painted = await page.evaluate(() => {
-          const c = document.querySelector('#game');
-          if (!c) return 0;
-          const ctx = c.getContext('2d');
-          if (!ctx) return 0;
-          const d = ctx.getImageData(0, 0, c.width, c.height).data;
-          let nonEmpty = 0;
-          for (let i = 3; i < d.length; i += 4) if (d[i] > 0) nonEmpty++;
-          return nonEmpty;
-        });
-        if (painted < 500) errors.push(`canvas looks blank (${painted} px)`);
-
-        const hud = await page.$eval('#hud', (el) => el.textContent?.trim() ?? '');
-        if (!hud) errors.push('hud empty');
-      }
-    }
-
-    await page.screenshot({ path: join(shots, `${target.name}.png`), fullPage: !target.expectCanvas });
-    await page.close();
-
-    if (errors.length) {
-      failures.push({ page: target.path, errors });
-      console.log(`FAIL  ${target.path}`);
-      errors.forEach((e) => console.log(`      ${e}`));
-    } else {
-      console.log(`ok    ${target.path}`);
-    }
+  } catch (err) {
+    // A hung renderer must cost one page, not the run. Puppeteer raises
+    // ProtocolError when a CDP call outlives protocolTimeout, which is what a
+    // game stuck in an infinite loop does; the browser is left unusable, so it
+    // is replaced and the next page continues.
+    failures.push({ path: target.path, errors: [`harness: ${String(err?.message ?? err).slice(0, 120)}`] });
+    try { await page.close(); } catch { /* renderer is wedged */ }
+    try { await browser.close(); } catch { /* already gone */ }
+    browser = await puppeteer.launch({
+      executablePath: findChrome(),
+      headless: 'shell',
+      args: ['--no-sandbox', '--disable-dev-shm-usage', '--hide-scrollbars'],
+      protocolTimeout: 90_000,
+    });
+  }
   }
 
   // Functional check: drag across a real hidden word and assert it registers.
