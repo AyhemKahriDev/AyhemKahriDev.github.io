@@ -176,6 +176,20 @@ function ghSearch(args) {
 
 /* ------------------------------------------------------------- sweep */
 
+/**
+ * Star floor for the search query.
+ *
+ * The floor used to be hardcoded `stars:>2`, which quietly excluded the long
+ * tail where most small open-source games live: a full 60-query sweep found
+ * only 1,561 candidates, and ~1,500 of them had already been seen. GitHub's
+ * search accepts `stars:>=0`, so the floor is now a knob - the browser gate,
+ * not a popularity filter, decides what is publishable.
+ */
+function starsFilter() {
+  const min = Number(process.env.HARVEST_MIN_STARS ?? 2);
+  return Number.isFinite(min) && min > 0 ? `stars:>=${min}` : 'stars:>=0';
+}
+
 function sweep() {
   // Candidates found by an earlier sweep are kept: a deep sweep is meant to
   // accumulate across runs, and overwriting the file threw away every repo the
@@ -226,7 +240,7 @@ function sweep() {
 
         const raw = ghSearch([
           'api',
-          `search/repositories?q=${encodeURIComponent(`${q} license:${lic} stars:>2`)}&per_page=100&page=${page}&sort=stars`,
+          `search/repositories?q=${encodeURIComponent(`${q} license:${lic} ${starsFilter()}`)}&per_page=100&page=${page}&sort=stars`,
         ]);
         // 30 a minute is the cap; 2.1s a call keeps a long sweep under it
         // instead of spending most of its budget waiting for a reset.
@@ -252,7 +266,7 @@ function sweep() {
           if (skipped.has(r.full_name)) continue;
           // Licence, size, "looks like a library/tutorial" and the game
           // signal all live in one pure, tested function.
-          if (!shouldAccept(r)) continue;
+          if (!shouldAccept(r, { minStars: Number(process.env.HARVEST_MIN_STARS ?? 2) })) continue;
           seen.set(r.full_name, {
             repo: r.full_name,
             stars: r.stargazers_count ?? 0,
