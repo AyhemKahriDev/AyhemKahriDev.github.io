@@ -1,0 +1,16 @@
+{
+  "repo": "Starciad/StarZombieChase",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 49,
+  "pushedAt": "2024-08-04T14:56:03Z",
+  "description": "A small puzzle game where the objective is to escape from zombies and collect items.",
+  "defaultBranch": "main",
+  "owner": "Starciad",
+  "slug": "starciad-starzombiechase",
+  "dest": "third-party/starciad-starzombiechase",
+  "readme": "# Star Zombie Chase\n\n## Description\n\nA small experimental game made using HTML, CSS, and JS where the player must complete maps by collecting items while escaping from various zombies that pursue them relentlessly.\n\nFeel free to explore the project and investigate it in any way you find interesting. The initial concept of the game was developed in about a day.\n\n## Screenshots\n\n![SCREENSHOT_01][screenshot_01]\n\n> [!NOTE]  \n> Please note that this screenshot may occasionally not represent the current state of the game.\n\n## Links\n\nIf you're interested in seeing or playing a bit of the project, click the following link: <https://starciad.github.io/StarZombieChase/>.\n\n## How to Play\n\nTo play this game, you can use a mouse or a keyboard. If you are on a mobile device, you can use the touch screen.\n\nYour goal is to collect all the flasks scattered around the map while escaping from zombies that pursue you relentlessly. To move, click on a 3x3 area around your character. Alternatively, you can use the arrow keys to perform the same action.\n\n## Installation and Execution\n\n1. Clone the repository:\n\n    ```bash\n    git clone https://github.com/Starciad/StarZombieChase.git\n    ```\n\n2. Navigate to the project directory:\n\n    ```bash\n    cd StarZombieChase\n    ```\n\n3. Open the `index.html` file in any browser of your choice.\n\n## Contribution\n\nIf you notice any issues or would like to contribute to the project, clone the repository, create an issue, or open a PR. Your contributions will be reviewed and considered for this small project. 🤠\n\n## License\n\nThe game is currently under the MIT license. See more details [by clicking here](LICENSE.txt).\n\n<!-- IMAGES & ASSETS -->\n[screenshot_01]: ./.github/assets/screenshots/screenshot_01.webp\n",
+  "licenceFile": "LICENSE.txt",
+  "entry": "index.html",
+  "validated": true
+}

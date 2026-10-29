@@ -1,0 +1,43 @@
+[
+  {
+    "description": "Urban car map chunk",
+"height": 2,
+    "id": "urban_car",
+    "no_rotate": true,
+    "rows": [
+      "abc",
+      "w w"
+    ],
+    "tags": [
+      "urban"
+    ],
+    "terrain": {
+      "a": "TileCar",
+      "b": "TileCarMid",
+      "c": "TileCarRight",
+      "w": "TileWheel"
+    },
+    "weight": 3,
+    "width": 3
+  },
+  {
+    "description": "Urban forklift map chunk",
+"height": 2,
+    "id": "urban_forklift",
+    "no_rotate": true,
+    "rows": [
+      "a ",
+      "cb"
+    ],
+    "tags": [
+      "urban"
+    ],
+    "terrain": {
+      "a": "TileForklift",
+      "b": "TileForkliftRight",
+      "c": "TileForklift"
+    },
+    "weight": 2,
+    "width": 2
+  }
+]

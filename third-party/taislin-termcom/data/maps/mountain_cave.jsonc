@@ -1,0 +1,24 @@
+{
+  "description": "Mountain cave map chunk",
+"height": 7,
+  "id": "mountain_cave",
+  "rows": [
+    "..##.##..",
+    "########.",
+    "##....#..",
+    ".#....+..",
+    "##....#..",
+    "########.",
+    ".###.#..."
+  ],
+  "tags": [
+    "mountain"
+  ],
+  "terrain": {
+    "#": "TileCliffFace",
+    "+": "TileRubble",
+    ".": "TileGrass"
+  },
+  "weight": 1,
+  "width": 9
+}

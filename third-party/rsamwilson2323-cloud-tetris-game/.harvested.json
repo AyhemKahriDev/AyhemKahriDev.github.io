@@ -1,0 +1,16 @@
+{
+  "repo": "rsamwilson2323-cloud/tetris-game",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 8,
+  "pushedAt": "2026-03-22T13:14:45Z",
+  "description": "🧱 Falling Blocks is a classic Tetris-style game built using HTML, CSS, and JavaScript with canvas rendering. Features smooth block movement, rotation, collision detection, line clearing, scoring system, and keyboard controls. Fast, responsive gameplay with a clean grid-based design.",
+  "defaultBranch": "main",
+  "owner": "rsamwilson2323-cloud",
+  "slug": "rsamwilson2323-cloud-tetris-game",
+  "dest": "third-party/rsamwilson2323-cloud-tetris-game",
+  "readme": "# 🧱 Falling Blocks (Tetris Game)\n\nA classic Tetris-style Falling Blocks game built using HTML, CSS, and JavaScript with canvas rendering. Features smooth gameplay, block rotation, collision detection, line clearing, and score tracking with responsive keyboard controls.\n\n---\n\n## 🚀 Features\n\n- 🧱 Classic Tetris gameplay  \n- 🎮 Smooth falling block mechanics  \n- 🔄 Block rotation system  \n- ⚠️ Collision detection  \n- 🧹 Line clearing system  \n- 📊 Score tracking  \n- ⌨️ Keyboard controls  \n- ⚡ Fast and lightweight (no external libraries)  \n\n---\n\n## 🛠️ Tech Stack\n\n- HTML  \n- CSS  \n- JavaScript (Canvas API)  \n\n---\n\n## 📂 Project Structure\n\n    tetris-game/\n    │── tetris game.html\n    │── README.md\n    │── LICENSE\n\n---\n\n## 📦 Requirements\n\nNo installation required ✅  \nJust a modern web browser (Chrome, Edge, Firefox)\n\n---\n\n## ⚙️ How to Run\n\n### 1️⃣ Clone the repository\ngit clone https://github.com/rsamwilson2323-cloud/tetris-game.git\n\n### 2️⃣ Navigate into the folder\ncd tetris-game\n\n### 3️⃣ Open the project\n\nDouble click:\ntetris game.html\n\nOR use command:\n\nWindows:\nstart \"tetris game.html\"\n\nMac:\nopen \"tetris game.html\"\n\nLinux:\nxdg-open \"tetris game.html\"\n\n---\n\n## 🎯 Controls\n\n- ⬅️ Arrow Left → Move left  \n- ➡️ Arrow Right → Move right  \n\n---\n\n## 🎯 Gameplay\n\n- Blocks fall from the top  \n- Arrange them to complete full horizontal lines  \n- Completed lines are cleared  \n- Score increases for each cleared line  \n- Game ends when blocks reach the top :contentReference[oaicite:0]{index=0}  \n\n---\n\n## 🖼️ Output\n\n- Grid-based canvas gameplay  \n- Smooth animation loop  \n- Real-time score display  \n- Game Over alert with score  \n\n---\n\n## 📌 Key Functionalities\n\n- Matrix-based board system  \n- Collision detection algorithm  \n- Rotation logic for shapes  \n- Line clearing with score increment  \n- Game loop using requestAnimationFrame  \n\n---\n\n## 📌 Future Improvements\n\n- 🎵 Sound effects & background music  \n- 🎨 Better UI design & themes  \n- 📱 Mobile controls  \n- 🧠 Next block preview  \n- ⏸️ Pause / Resume feature  \n\n---\n\n## 👨‍💻 Author\n\nSam Wilson  \n\nGitHub: https://github.com/rsamwilson2323-cloud  \nLinkedIn: https://www.linkedin.com/in/sam-wilson-14b554385  \n\n---\n\n## 📄 License\n\nMIT License\n\n---\n\n## ⭐ Support\n\nIf you like this project, give it a ⭐ on GitHub!\n",
+  "licenceFile": "LICENSE",
+  "entry": "tetris game.html",
+  "validated": true
+}

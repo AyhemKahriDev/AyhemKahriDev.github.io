@@ -1,0 +1,16 @@
+{
+  "repo": "Rahix/Alien-Invaders",
+  "stars": 3,
+  "licence": "GPL-2.0",
+  "sizeKB": 2828,
+  "pushedAt": "2014-09-07T16:26:00Z",
+  "description": "This is a tower defense game where you have to protect your base against incoming UFOs. The game is written in Javascript and playable in every Web-Browser.",
+  "defaultBranch": "master",
+  "owner": "Rahix",
+  "slug": "rahix-alien-invaders",
+  "dest": "third-party/rahix-alien-invaders",
+  "readme": "Alien-Invaders\n==============\n\nThis is a tower defense game where you have to protect your base against incoming UFOs. The game is written in Javascript and playable in every Web-Browser.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

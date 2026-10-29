@@ -1,0 +1,16 @@
+{
+  "repo": "LK00100100/KeyboardFallingBlocks",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 2350,
+  "pushedAt": "2024-07-23T17:55:52Z",
+  "description": "A overly complicated game of Tetris for your browser using your entire keyboard.",
+  "defaultBranch": "master",
+  "owner": "LK00100100",
+  "slug": "lk00100100-keyboardfallingblocks",
+  "dest": "third-party/lk00100100-keyboardfallingblocks",
+  "readme": "# Keyboard Falling Blocks\n![GitHub](https://img.shields.io/github/license/LK00100100/KeyboardFallingBlocks.svg)\n![RepoSize](https://img.shields.io/github/repo-size/LK00100100/KeyboardFallingBlocks.svg)\n![GitHub stars](https://img.shields.io/github/stars/LK00100100/KeyboardFallingBlocks.svg?style=social)\n\nA overly complicated game of Tetris for your browser using your entire keyboard. This was written with an older style of Javascript.\n\nIf you'd like to contribute, check the wiki first.\n\nPlay it here:\nhttps://lk00100100.github.io/KeyboardFallingBlocks/client/index.html\n\nor on itch.io\nhttps://lk00100100.itch.io/keyboard-falling-blocks\n\nGithub: https://github.com/00100100\n\n![alt text](https://lk00100100.github.io/KeyboardFallingBlocks/client/demo.gif \"Demo\")\n\nUses the game framework provided by Pro HTML5 Games.<br />\nAuthor: Aditya Ravi Shankar<br />\nGithub: https://github.com/adityaravishankar<br />\nBuy his book, Pro HTML5 Games: http://www.adityaravishankar.com/pro-html5-games/).<br />\n\nKFB is a tetris-clone. It was made with HTML5, and javascript.\n\nMaybe there will be multiplayer in the future using node.js with the websocket API.\n\n# Client Setup\nDownload client and open index.html.\nRead the manual in ./client before you play the game.\n",
+  "licenceFile": "LICENSE",
+  "entry": "client/index.html",
+  "validated": true
+}

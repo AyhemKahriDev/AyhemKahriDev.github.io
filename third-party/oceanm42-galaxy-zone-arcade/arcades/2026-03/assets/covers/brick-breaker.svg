@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glowStrong">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes ballBounce {
+      0% { transform: translate(0, 0); }
+      25% { transform: translate(40px, -80px); }
+      50% { transform: translate(80px, 0); }
+      75% { transform: translate(40px, 80px); }
+      100% { transform: translate(0, 0); }
+    }
+    @keyframes paddleMove {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(40px); }
+      75% { transform: translateX(-40px); }
+    }
+    @keyframes powerFall {
+      0% { transform: translateY(0); opacity: 1; }
+      100% { transform: translateY(200px); opacity: 0; }
+    }
+    @keyframes brickPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.8; }
+    }
+    .ball { animation: ballBounce 2s ease-in-out infinite; }
+    .paddle { animation: paddleMove 2s ease-in-out infinite; }
+    .power { animation: powerFall 2.5s linear infinite; }
+    .bricks { animation: brickPulse 3s ease-in-out infinite; }
+  </style>
+  <rect width="300" height="400" fill="#0a0a1a"/>
+  <!-- Walls -->
+  <rect x="10" y="60" width="4" height="340" fill="#333" filter="url(#glow)"/>
+  <rect x="286" y="60" width="4" height="340" fill="#333" filter="url(#glow)"/>
+  <rect x="10" y="58" width="280" height="4" fill="#333" filter="url(#glow)"/>
+  <!-- Bricks -->
+  <g class="bricks" filter="url(#glow)">
+    <!-- Row 1 - Red -->
+    <rect x="20" y="80" width="32" height="12" rx="1" fill="#FF0044"/><rect x="56" y="80" width="32" height="12" rx="1" fill="#FF0044"/>
+    <rect x="92" y="80" width="32" height="12" rx="1" fill="#FF0044"/><rect x="128" y="80" width="32" height="12" rx="1" fill="#FF0044"/>
+    <rect x="164" y="80" width="32" height="12" rx="1" fill="#FF0044"/><rect x="200" y="80" width="32" height="12" rx="1" fill="#FF0044"/>
+    <rect x="236" y="80" width="32" height="12" rx="1" fill="#FF0044"/>
+    <!-- Row 2 - Orange -->
+    <rect x="20" y="96" width="32" height="12" rx="1" fill="#FF8800"/><rect x="56" y="96" width="32" height="12" rx="1" fill="#FF8800"/>
+    <rect x="92" y="96" width="32" height="12" rx="1" fill="#FF8800"/><rect x="128" y="96" width="32" height="12" rx="1" fill="#FF8800"/>
+    <rect x="164" y="96" width="32" height="12" rx="1" fill="#FF8800"/><rect x="200" y="96" width="32" height="12" rx="1" fill="#FF8800"/>
+    <rect x="236" y="96" width="32" height="12" rx="1" fill="#FF8800"/>
+    <!-- Row 3 - Yellow -->
+    <rect x="20" y="112" width="32" height="12" rx="1" fill="#FFDD00"/><rect x="56" y="112" width="32" height="12" rx="1" fill="#FFDD00"/>
+    <rect x="92" y="112" width="32" height="12" rx="1" fill="#FFDD00"/><rect x="128" y="112" width="32" height="12" rx="1" fill="#FFDD00"/>
+    <rect x="164" y="112" width="32" height="12" rx="1" fill="#FFDD00"/><rect x="200" y="112" width="32" height="12" rx="1" fill="#FFDD00"/>
+    <rect x="236" y="112" width="32" height="12" rx="1" fill="#FFDD00"/>
+    <!-- Row 4 - Green -->
+    <rect x="20" y="128" width="32" height="12" rx="1" fill="#00FF44"/><rect x="56" y="128" width="32" height="12" rx="1" fill="#00FF44"/>
+    <rect x="92" y="128" width="32" height="12" rx="1" fill="#00FF44"/><rect x="128" y="128" width="32" height="12" rx="1" fill="#00FF44"/>
+    <rect x="164" y="128" width="32" height="12" rx="1" fill="#00FF44"/><rect x="200" y="128" width="32" height="12" rx="1" fill="#00FF44"/>
+    <rect x="236" y="128" width="32" height="12" rx="1" fill="#00FF44"/>
+    <!-- Row 5 - Cyan -->
+    <rect x="20" y="144" width="32" height="12" rx="1" fill="#00CCFF"/><rect x="56" y="144" width="32" height="12" rx="1" fill="#00CCFF"/>
+    <rect x="92" y="144" width="32" height="12" rx="1" fill="#00CCFF"/><rect x="128" y="144" width="32" height="12" rx="1" fill="#00CCFF"/>
+    <rect x="164" y="144" width="32" height="12" rx="1" fill="#00CCFF"/><rect x="200" y="144" width="32" height="12" rx="1" fill="#00CCFF"/>
+    <rect x="236" y="144" width="32" height="12" rx="1" fill="#00CCFF"/>
+    <!-- Row 6 - Blue -->
+    <rect x="20" y="160" width="32" height="12" rx="1" fill="#4444FF"/><rect x="56" y="160" width="32" height="12" rx="1" fill="#4444FF"/>
+    <rect x="92" y="160" width="32" height="12" rx="1" fill="#4444FF"/><rect x="128" y="160" width="32" height="12" rx="1" fill="#4444FF"/>
+    <rect x="164" y="160" width="32" height="12" rx="1" fill="#4444FF"/><rect x="200" y="160" width="32" height="12" rx="1" fill="#4444FF"/>
+    <rect x="236" y="160" width="32" height="12" rx="1" fill="#4444FF"/>
+  </g>
+  <!-- Ball -->
+  <g class="ball" filter="url(#glowStrong)">
+    <circle cx="120" cy="280" r="5" fill="#ffffff"/>
+  </g>
+  <!-- Power-up capsule -->
+  <g class="power" filter="url(#glow)">
+    <rect x="195" y="180" width="16" height="8" rx="4" fill="#FF00FF" stroke="#FF88FF" stroke-width="0.5"/>
+    <text x="203" y="187" text-anchor="middle" font-family="monospace" font-size="6" fill="#fff">L</text>
+  </g>
+  <!-- Paddle -->
+  <g class="paddle" filter="url(#glowStrong)">
+    <rect x="115" y="360" width="50" height="8" rx="3" fill="#00CCFF" stroke="#88EEFF" stroke-width="0.5"/>
+  </g>
+  <!-- Title -->
+  <text x="150" y="40" text-anchor="middle" font-family="monospace" font-size="24" font-weight="bold" fill="#FF00FF" filter="url(#glowStrong)">BRICK BREAKER</text>
+  <text x="150" y="390" text-anchor="middle" font-family="monospace" font-size="11" fill="#00CCFF" opacity="0.7">ROUND 1</text>
+</svg>

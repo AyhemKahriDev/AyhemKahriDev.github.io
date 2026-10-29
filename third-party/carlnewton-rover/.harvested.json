@@ -1,0 +1,16 @@
+{
+  "repo": "carlnewton/rover",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 278,
+  "pushedAt": "2022-12-02T20:07:08Z",
+  "description": "A Sokoban type puzzle game on HTML Canvas.",
+  "defaultBranch": "master",
+  "owner": "carlnewton",
+  "slug": "carlnewton-rover",
+  "dest": "third-party/carlnewton-rover",
+  "readme": "# Rover\n\nA Sokoban type puzzle game on HTML Canvas.\n\n## Preview\n\nhttps://carlnewton.github.io/rover/\n\n## Development\n\n* Run `npm install gulp` upon first downloading the repository.\n* Make changes in the `/src` directory and run `gulp` to build `/dist/js/script.js` or run `gulp watch` to have it build each time a file is updated in the `/src` directory.\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

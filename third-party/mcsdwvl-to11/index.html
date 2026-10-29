@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>to11</title>
+
+  <link href="css/main.css" rel="stylesheet" type="text/css">
+  <link rel="shortcut icon" href="favicon.ico">
+  <link rel="apple-touch-icon" href="meta/apple-touch-icon.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+<body>
+	<div id="fb-root"></div>
+	<script>	(function (d, s, id)
+	{
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "//connect.facebook.net/en_US/all.js#xfbml=1";
+		fjs.parentNode.insertBefore(js, fjs);
+	} (document, 'script', 'facebook-jssdk'));
+	</script>
+  <div class="container">
+    <div class="heading">
+      <h1 class="title">to11</h1>
+      <div class="scores-container">
+       
+        <div class="best-container">0</div>
+        <div class="moves-container">0</div>
+		    <!-- <div class="highest-container">0</div> -->
+		    <!-- <div class="highestatmove-container">0</div> -->
+        <!-- <div class="score-container">0</div> -->
+      </div>
+    </div>
+
+    <div class="above-game">
+      <p class="game-intro">Get to <strong>1 tile!</strong></p>
+      <a class="restart-button">Restart</a>
+	  <a class="next-button">Next</a>
+	  <a class="menu-button">Menu</a>
+    </div>
+
+    <div class="game-container">
+      <div class="game-message">
+		<div class="won-medal"></div>
+        <p></p>
+		<div class="share">
+			<div class="twitter-share">
+				<div>
+					<a href="https://twitter.com/share" class="twitter-share-button" data-text="I just won a game of to11, 2048 puzzle challenge!" data-hashtags="to11">Tweet</a>
+					<script>				!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } } (document, 'script', 'twitter-wjs');</script>
+				</div>
+			</div>
+			<div class="facebook-share">
+				<div class="fb-like" data-href="http://mcsdwvl.github.io/to11/" data-width="78" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+			</div>
+		</div>
+        <div class="lower">
+	        <a class="keep-playing-button">Next Game</a>
+			<a class="retry-button">Try again</a>
+        </div>
+      </div>
+
+      <div class="grid-container">
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+        <div class="grid-row">
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+          <div class="grid-cell"></div>
+        </div>
+      </div>
+
+      <div class="tile-container">
+
+      </div>
+    </div>
+
+	<p class="medal-container">
+		<div class="medal-numbers"></div>
+		<div class="context-string">Hi</div>
+	</p>
+    <p class="game-explanation">
+      <strong class="important">How to play:</strong> Use your <strong>arrow keys</strong> to move the tiles. When two tiles with the same number touch, they <strong>merge into one!</strong>
+	  <br/>
+	  <br/>
+    </p>
+    <hr>
+	<p class="promo">
+		Get the App! <a href="https://play.google.com/store/apps/details?id=io.github.mcsdwvl.to11">Android</a> | <a href="https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=864653784&mt=8">iOS</a>
+	</p>
+	<hr>
+    <p class="boardstring-container">
+		<div class="board-array"></div>
+	</p>
+    <hr>
+    <p>Created by Matthew Vassilakos (<a href="https://twitter.com/MattVassilakos">@MattVassilakos</a>).  Based on <a href="http://gabrielecirulli.github.io/2048">2048 by Gabriele Cirulli</a>. You can <a href="mailto:matthew.vassilakos@gmail.com">email me</a>.</p>
+	<div>
+		<a href="https://twitter.com/share" class="twitter-share-button" data-text="I just won a game of to11, 2048 puzzle challenge!" data-hashtags="to11">Tweet</a>
+		<script>			!function (d, s, id) { var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https'; if (!d.getElementById(id)) { js = d.createElement(s); js.id = id; js.src = p + '://platform.twitter.com/widgets.js'; fjs.parentNode.insertBefore(js, fjs); } } (document, 'script', 'twitter-wjs');</script>
+		<br />
+		<div class="fb-like" data-href="http://mcsdwvl.github.io/to11/" data-width="78" data-layout="button_count" data-action="like" data-show-faces="false" data-share="true"></div>
+	</div>
+	
+  </div>
+
+  <script src="js/analytics.js"></script>
+  <script>window.analytics = new Analytics('UA-49710691-1', 'mcsdwvl.github.io');</script>
+  <script src="js/bind_polyfill.js"></script>
+  <script src="js/classlist_polyfill.js"></script>
+  <script src="js/animframe_polyfill.js"></script>
+  <script src="js/keyboard_input_manager.js"></script>
+  <script src="js/html_actuator.js"></script>
+  <script src="js/grid.js"></script>
+  <script src="js/tile.js"></script>
+  <script src="js/local_storage_manager.js"></script>
+  <script src="js/game_manager.js"></script>
+  <script src="js/solver.js"></script>
+  <script src="js/presolveManager.js"></script>
+  <script src="js/application.js"></script>
+  
+</body>
+</html>

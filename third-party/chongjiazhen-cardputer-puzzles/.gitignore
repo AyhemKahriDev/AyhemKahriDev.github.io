@@ -1,0 +1,43 @@
+.pio/
+*.bin
+# host test build artifacts
+*.o
+*.obj
+*.exe
+src/puzzles/input_test
+src/puzzles/input_test_run.exe
+src/puzzles/pointer_test
+src/puzzles/logic_test
+src/puzzles/startgame_test
+run_input_test.bat
+
+# brainstorming visual companion (local only)
+.superpowers/
+
+
+# machine-specific Claude notes (local)
+CLAUDE.local.md
+
+# agent execution runbooks — kept local, not public (stale once work lands; specs/ is the design record)
+docs/design/plans/
+
+# qwen agent harness scaffolding (local only)
+.qwen/
+
+# launch/marketing working note (local only)
+_shipping.md
+
+# session handoff pointer (local only)
+_prompt.md
+
+# host probe helpers + binaries (local)
+run_smear_test.sh
+run_drag_probe.sh
+src/puzzles/smear_test
+src/puzzles/drag_probe_test
+smear_test
+drag_probe_test
+
+# generated Pages output (scripts/build-site.py)
+_site/
+scripts/__pycache__/

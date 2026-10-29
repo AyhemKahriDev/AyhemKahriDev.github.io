@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Cube Hopper cover art">
+  <rect x="0" y="0" width="400" height="300" fill="#0a0a14"/>
+
+  <!-- neon border frame -->
+  <rect x="6" y="6" width="388" height="288" rx="10" fill="none" stroke="#a94dff" stroke-width="2" opacity="0.5"/>
+  <rect x="12" y="12" width="376" height="276" rx="8" fill="none" stroke="#00f0ff" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- starfield -->
+  <g fill="#eaf6ff" opacity="0.5">
+    <circle cx="40" cy="40" r="1.4"/>
+    <circle cx="70" cy="90" r="1"/>
+    <circle cx="340" cy="50" r="1.4"/>
+    <circle cx="360" cy="120" r="1"/>
+    <circle cx="30" cy="220" r="1.2"/>
+    <circle cx="365" cy="230" r="1.2"/>
+    <circle cx="200" cy="30" r="1"/>
+  </g>
+
+  <!-- 3-row isometric pyramid, apex at top -->
+  <!-- row 0: apex cube -->
+  <g>
+    <polygon points="200,96 224,110 200,124 176,110" fill="#a94dff" stroke="#eaf6ff" stroke-width="1.5" opacity="0.95"/>
+    <polygon points="176,110 200,124 200,146 176,132" fill="#6b2f96"/>
+    <polygon points="224,110 200,124 200,146 224,132" fill="#4a1f6b"/>
+  </g>
+
+  <!-- row 1: two cubes -->
+  <g>
+    <polygon points="176,142 200,156 176,170 152,156" fill="#00f0ff" stroke="#eaf6ff" stroke-width="1.5" opacity="0.95"/>
+    <polygon points="152,156 176,170 176,192 152,178" fill="#007a85"/>
+    <polygon points="176,156 200,156 200,178 176,178" fill="#00565e" opacity="0"/>
+    <polygon points="176,156 176,178 200,192 200,170" fill="#005960"/>
+
+    <polygon points="224,142 248,156 224,170 200,156" fill="#242440" stroke="#eaf6ff" stroke-width="1.5" opacity="0.95"/>
+    <polygon points="200,156 224,170 224,192 200,178" fill="#161628"/>
+    <polygon points="224,156 224,178 248,192 248,170" fill="#101020"/>
+  </g>
+
+  <!-- row 2: three cubes -->
+  <g>
+    <polygon points="152,188 176,202 152,216 128,202" fill="#242440" stroke="#eaf6ff" stroke-width="1.5" opacity="0.95"/>
+    <polygon points="128,202 152,216 152,238 128,224" fill="#161628"/>
+    <polygon points="152,202 152,224 176,238 176,216" fill="#101020"/>
+
+    <polygon points="200,188 224,202 200,216 176,202" fill="#a94dff" stroke="#eaf6ff" stroke-width="1.5" opacity="0.95"/>
+    <polygon points="176,202 200,216 200,238 176,224" fill="#6b2f96"/>
+    <polygon points="200,202 200,224 224,238 224,216" fill="#4a1f6b"/>
+
+    <polygon points="248,188 272,202 248,216 224,202" fill="#242440" stroke="#eaf6ff" stroke-width="1.5" opacity="0.95"/>
+    <polygon points="224,202 248,216 248,238 224,224" fill="#161628"/>
+    <polygon points="248,202 248,224 272,238 272,216" fill="#101020"/>
+  </g>
+
+  <!-- player, floating above apex -->
+  <circle cx="200" cy="80" r="12" fill="#eaf6ff"/>
+  <circle cx="196" cy="77" r="2" fill="#0a0a14"/>
+  <circle cx="204" cy="77" r="2" fill="#0a0a14"/>
+
+  <!-- red ball enemy -->
+  <circle cx="152" cy="216" r="8" fill="#ff3355"/>
+</svg>

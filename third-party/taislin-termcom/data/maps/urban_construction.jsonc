@@ -1,0 +1,27 @@
+{
+  "description": "Urban construction map chunk",
+  "id": "urban_construction",
+  "width": 8,
+  "height": 8,
+  "rows": [
+    "........",
+    ".aaaaaaa",
+    ".aedddca",
+    ".aedbbba",
+    ".addbbba",
+    ".addddca",
+    ".adddeca",
+    ".aaadaaa"
+  ],
+  "terrain": {
+    "b": "TileMachinery",
+    "c": "TileRubble",
+    "d": "TileSand",
+    "e": "TileStorage",
+    "a": "TileFence"
+  },
+  "tags": [
+    "urban"
+  ],
+  "weight": 2
+}

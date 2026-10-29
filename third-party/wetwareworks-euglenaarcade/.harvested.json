@@ -1,0 +1,16 @@
+{
+  "repo": "Wetwareworks/EuglenaArcade",
+  "stars": 3,
+  "licence": "GPL-3.0",
+  "sizeKB": 248,
+  "pushedAt": "2019-05-09T19:29:56Z",
+  "description": "Browser based biotic game",
+  "defaultBranch": "master",
+  "owner": "Wetwareworks",
+  "slug": "wetwareworks-euglenaarcade",
+  "dest": "third-party/wetwareworks-euglenaarcade",
+  "readme": "# EuglenaArcade\nBrowser based biotic game written in Javascript leveraging HTML5 canvas bringing the original Processing game to all desktop, tablet and smartphone devices.\n\n# Credits\nThis game is a remake of previous work by Pieter van Boheemen, Roland van Dierendonck and Christian Schultz at Waag, inspired by the work of Ingmar Riedel-Kruse at Stanford.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

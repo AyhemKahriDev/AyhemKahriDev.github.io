@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Pac-Chase — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Pac-Chase</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Pac-Man landed in my place in the fall of 1980 and by Christmas I had
+      two of them and a waiting line anyway. There was a girl named Denise,
+      maybe eleven, who kept a spiral notebook of ghost patterns — she'd
+      stand there not even playing, just watching other people lose and
+      writing down why. By '82 she could run the first board with her eyes
+      half closed. I think about that notebook every time somebody tells me
+      the ghosts are "just random." They never were.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The '25 version of this one moved everybody a whole square at a time,
+      like checkers. Worked, but it felt like checkers too. This time the
+      robots made everything glide — your guy is always somewhere between two
+      tiles, moving at a real speed in pixels per second, and the game only
+      asks "which way now?" when he crosses a tile's center. The big one is
+      the buffered turn: you can press UP a half-second before the corner and
+      the game holds onto it and fires it the instant the turn is legal.
+      That's the thing that made the real cabinet feel like it was reading
+      your mind. And each ghost got its own brain back — the red one hunts
+      you, the pink one aims ahead of you, the blue one flanks, and the
+      orange one loses his nerve up close. Same as Denise's notebook said.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Rebuild Pac-Chase on the shared engine and make it faithful. I want
+the four ghost personalities from the real game — chaser, ambusher,
+flanker, and the shy one — with the scatter/chase mode swaps where
+they all reverse direction. Movement has to be smooth between tiles,
+and buffer my turns so pressing early still takes the corner. Power
+pellets turn them blue, they flash before it wears off, eaten ghosts
+become eyes that walk home. Fruit under the ghost house, extra life
+at 10,000. Make eating dots sound like something.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The maze is one array of 31 text strings, 28 characters wide —
+        walls, dots, pellets, the ghost-house door — and I had the robots
+        prove it's left-right symmetric and fully connected before a single
+        ghost walked it.</li>
+      <li>Everybody moves at tiles-per-second speeds multiplied by the
+        engine's fixed time step, so a slow laptop and a fast one play the
+        exact same game.</li>
+      <li>At every tile center a ghost looks at its legal exits, throws out
+        the one behind it, and picks whichever is closest in a straight line
+        to its personal target square. Four different targets, four
+        different personalities — that's the whole trick.</li>
+      <li>Eating a power pellet flips the ghosts around and starts a timer
+        that gets shorter every level, and the 200-400-800-1600 chain for
+        eating them in one pellet is in there, floating numbers and all.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Pac-Chase</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

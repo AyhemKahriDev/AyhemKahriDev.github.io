@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TERMCOM - ASCII X-COM Demake</title>
+  <link href="https://fonts.googleapis.com/css2?family=Nova+Mono&family=Space+Grotesk:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    body {
+      background-color: #000000;
+      color: #aaaaaa;
+      font-family: 'Space Grotesk', 'Courier New', Courier, monospace;
+      margin: 0;
+      padding: 3em;
+      line-height: 1.5;
+      display: flex;
+      justify-content: center;
+    }
+
+    h1,
+    h2 {
+      font-family: 'Nova Mono', 'Courier New', Courier, monospace;
+    }
+
+    h1 {
+      color: #8A2BE2;
+      /* Purple */
+      border-bottom: 2px solid #8A2BE2;
+      padding-bottom: 0.5em;
+    }
+
+    h2 {
+      color: #FF8C00;
+      /* Orange */
+      margin-top: 1.5em;
+    }
+
+    a {
+      color: #FF8C00;
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      border: 1px solid #444444;
+      /* Grey */
+      padding: 2em;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0.8em;
+      }
+
+      .container {
+        padding: 1em;
+        border: none;
+      }
+    }
+
+    /* ── Language toggle ───────────────────────────────── */
+    .lang-toggle {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4em;
+      margin-bottom: 1.5em;
+      padding-bottom: 1em;
+      border-bottom: 1px solid #444444;
+    }
+
+    .lang-toggle button {
+      background: #111111;
+      color: #aaaaaa;
+      border: 1px solid #444444;
+      font-family: 'Space Grotesk', 'Courier New', Courier, monospace;
+      font-size: 0.9em;
+      padding: 0.3em 0.7em;
+      cursor: pointer;
+    }
+
+    .lang-toggle button:hover {
+      color: #FF8C00;
+      border-color: #FF8C00;
+    }
+
+    .lang-toggle button.active {
+      color: #8A2BE2;
+      border-color: #8A2BE2;
+      background: #1a0a2a;
+    }
+
+    /* ── Gallery ───────────────────────────────────────── */
+    .gallery {
+      position: relative;
+      max-width: 100%;
+      margin: 1.5em 0;
+      text-align: center;
+      overflow: hidden;
+      border: 1px solid #444;
+      border-radius: 4px;
+      background: #0a0a0a;
+    }
+
+    .gallery img {
+      display: none;
+      max-width: 100%;
+      max-height: 420px;
+      object-fit: contain;
+      margin: 0 auto;
+      cursor: zoom-in;
+    }
+
+    .gallery img.active {
+      display: block;
+    }
+
+    /* ── Lightbox ──────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.9);
+      cursor: zoom-out;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: 95vw;
+      max-height: 95vh;
+      object-fit: contain;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 16px;
+      right: 24px;
+      color: #8A2BE2;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid #444;
+      font-size: 1.8em;
+      line-height: 1;
+      cursor: pointer;
+      padding: 0.1em 0.4em;
+      border-radius: 4px;
+      font-family: monospace;
+    }
+
+    .lightbox-close:hover {
+      color: #FF8C00;
+      border-color: #FF8C00;
+    }
+
+    .gallery-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.6);
+      color: #8A2BE2;
+      border: 1px solid #444;
+      font-size: 1.5em;
+      cursor: pointer;
+      padding: 0.2em 0.6em;
+      border-radius: 4px;
+      z-index: 2;
+      font-family: monospace;
+    }
+
+    .gallery-btn:hover {
+      color: #FF8C00;
+      border-color: #FF8C00;
+    }
+
+    .gallery-prev { left: 8px; }
+    .gallery-next { right: 8px; }
+
+    .gallery-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 0;
+    }
+
+    .gallery-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #333;
+      border: none;
+      cursor: pointer;
+    }
+
+    .gallery-dot.active {
+      background: #8A2BE2;
+    }
+
+    /* ── Translated content visibility ─────────────────── */
+    .i18n {
+      display: none;
+    }
+
+    body.lang-en .i18n.lang-en,
+    body.lang-zh .i18n.lang-zh,
+    body.lang-es .i18n.lang-es,
+    body.lang-fr .i18n.lang-fr,
+    body.lang-ru .i18n.lang-ru,
+    body.lang-pt .i18n.lang-pt,
+    body.lang-ja .i18n.lang-ja,
+    body.lang-ko .i18n.lang-ko {
+      display: revert;
+    }
+  </style>
+</head>
+
+<body class="lang-en">
+  <div class="container">
+    <div class="lang-toggle" role="group" aria-label="Language">
+      <button type="button" data-lang="en">English</button>
+      <button type="button" data-lang="zh">中文</button>
+      <button type="button" data-lang="es">Español</button>
+      <button type="button" data-lang="fr">Français</button>
+      <button type="button" data-lang="ru">Русский</button>
+      <button type="button" data-lang="pt">Português</button>
+      <button type="button" data-lang="ja">日本語</button>
+      <button type="button" data-lang="ko">한국어</button>
+    </div>
+
+    <h1>TERMCOM</h1>
+
+    <div class="gallery" id="gallery">
+      <button class="gallery-btn gallery-prev" id="gprev">&#8249;</button>
+      <img src="https://raw.githubusercontent.com/taislin/termcom/master/docs/screenshots/battlescape.png" class="active" alt="Battlescape">
+      <img src="https://raw.githubusercontent.com/taislin/termcom/master/docs/screenshots/battlescape_alien.png" alt="Battlescape Alien">
+      <img src="https://raw.githubusercontent.com/taislin/termcom/master/docs/screenshots/geoscape.png" alt="Geoscape">
+      <img src="https://raw.githubusercontent.com/taislin/termcom/master/docs/screenshots/encyclopedia.png" alt="Encyclopedia">
+      <img src="https://raw.githubusercontent.com/taislin/termcom/master/docs/screenshots/plane_designer.png" alt="Plane Designer">
+      <img src="https://raw.githubusercontent.com/taislin/termcom/master/docs/screenshots/aar.png" alt="After Action Report">
+      <button class="gallery-btn gallery-next" id="gnext">&#8250;</button>
+      <div class="gallery-dots" id="gdots"></div>
+    </div>
+
+    <div class="lightbox" id="lightbox">
+      <button class="lightbox-close" id="lbclose" aria-label="Close">&times;</button>
+      <img id="lbimg" src="" alt="">
+    </div>
+
+    <p class="i18n lang-en">A roguelike-ified demake of <a href="https://en.wikipedia.org/wiki/XCOM">X-COM: UFO
+        Defense</a> <i>(1994, MicroProse)</i> rendered entirely in coloured ASCII on a terminal. Written in <a
+        href="https://go.dev/">Go</a> with <a href="https://github.com/gdamore/tcell">Tcell</a>.</p>
+    <p class="i18n lang-zh">《X-COM：UFO 防御》(1994，MicroProse) 的 Roguelike 化重制版，完全以彩色 ASCII 字符在终端中呈现。使用
+      <a href="https://go.dev/">Go</a> 语言与 <a href="https://github.com/gdamore/tcell">Tcell</a> 库编写。
+    </p>
+    <p class="i18n lang-es">Un remake tipo roguelike de <a href="https://en.wikipedia.org/wiki/XCOM">X-COM: UFO
+        Defense</a> (1994, MicroProse) renderizado enteramente en ASCII de colores en una terminal. Escrito en <a
+        href="https://go.dev/">Go</a> con <a href="https://github.com/gdamore/tcell">Tcell</a>.</p>
+    <p class="i18n lang-fr">Un remake de type roguelike de <a href="https://en.wikipedia.org/wiki/XCOM">X-COM: UFO
+        Defense</a> (1994, MicroProse) entièrement rendu en ASCII coloré dans un terminal. Écrit en <a
+        href="https://go.dev/">Go</a> avec <a href="https://github.com/gdamore/tcell">Tcell</a>.</p>
+    <p class="i18n lang-ru">Рогалик-ремейк <a href="https://en.wikipedia.org/wiki/XCOM">X-COM: UFO Defense</a> (1994,
+      MicroProse), полностью выполненный в цветном ASCII в терминале. Написан на <a href="https://go.dev/">Go</a> с
+      использованием <a href="https://github.com/gdamore/tcell">Tcell</a>.</p>
+    <p class="i18n lang-pt">Um remake estilo roguelike de <a href="https://en.wikipedia.org/wiki/XCOM">X-COM: UFO
+        Defense</a> (1994, MicroProse) renderizado inteiramente em ASCII colorido num terminal. Escrito em <a
+        href="https://go.dev/">Go</a> com <a href="https://github.com/gdamore/tcell">Tcell</a>.</p>
+    <p class="i18n lang-ja"><a href="https://en.wikipedia.org/wiki/XCOM">X-COM: UFO Defense</a> (1994, MicroProse)
+      のローグライク風リメイクで、ターミナル上で完全にカラーASCIIで描画されます。<a href="https://go.dev/">Go</a> 言語と
+      <a href="https://github.com/gdamore/tcell">Tcell</a> で書かれています。
+    </p>
+    <p class="i18n lang-ko"><a href="https://en.wikipedia.org/wiki/XCOM">X-COM: UFO Defense</a> (1994, MicroProse)의
+      로그라이크풍 리메이크로, 터미널에서 전부 컬러 ASCII로 렌더링됩니다. <a href="https://go.dev/">Go</a> 언어와 <a
+        href="https://github.com/gdamore/tcell">Tcell</a>로 작성되었습니다.</p>
+
+    <h2 class="i18n lang-en">Overview</h2>
+    <h2 class="i18n lang-zh">概览</h2>
+    <h2 class="i18n lang-es">Vista general</h2>
+    <h2 class="i18n lang-fr">Aperçu</h2>
+    <h2 class="i18n lang-ru">Обзор</h2>
+    <h2 class="i18n lang-pt">Visão geral</h2>
+    <h2 class="i18n lang-ja">概要</h2>
+    <h2 class="i18n lang-ko">개요</h2>
+
+    <p class="i18n lang-en"><strong>TERMCOM</strong> brings the classic alien invasion strategy experience to your
+      terminal. It features a complete implementation of all gameplay loops: the Geoscape (global strategy), Base
+      management, and the tactical Battlescape.</p>
+    <p class="i18n lang-zh"><strong>TERMCOM</strong>
+      将经典的异形入侵策略体验带到了您的终端。它完整实现了所有游戏循环：地球战略层（Geoscape）、基地管理以及战术战斗层（Battlescape）。</p>
+    <p class="i18n lang-es"><strong>TERMCOM</strong> lleva la clásica experiencia de estrategia de invasión alienígena
+      a tu terminal. Implementa por completo todos los bucles de juego: el Geoscape (estrategia global), la gestión de
+      bases y el Battlescape táctico.</p>
+    <p class="i18n lang-fr"><strong>TERMCOM</strong> transpose l'expérience stratégique classique d'invasion alienne
+      dans votre terminal. Il implémente intégralement toutes les boucles de jeu : le Geoscape (stratégie globale), la
+      gestion de base et le Battlescape tactique.</p>
+    <p class="i18n lang-ru"><strong>TERMCOM</strong> переносит классический опыт стратегии вторжения пришельцев в ваш
+      терминал. В игре полностью реализованы все игровые циклы: Геоскейп (глобальная стратегия), управление базой и
+      тактический Баттлскейп.</p>
+    <p class="i18n lang-pt"><strong>TERMCOM</strong> traz a clássica experiência de estratégia de invasão alienígena
+      para o seu terminal. Implementa de forma completa todos os ciclos de jogo: o Geoscape (estratégia global), a
+      gestão de base e o Battlescape táctico.</p>
+    <p class="i18n lang-ja"><strong>TERMCOM</strong>
+      は、古典的なエイリアン侵略ストラテジーの体験をターミナルに届けます。すべてのゲームループ（地球戦略のジオスケープ、基地管理、そして戦術バトルのバトルスケープ）を完全に実装しています。</p>
+    <p class="i18n lang-ko"><strong>TERMCOM</strong>은 클래식한 외계인 침공 전략 경험을 터미널로 가져옵니다. 모든 게임 루프(지구 전략인 지오스케이프, 기지 관리, 그리고
+      전술 전투인 배틀스케이프)를 완전히 구현했습니다.</p>
+
+    <h2 class="i18n lang-en">Key Features</h2>
+    <h2 class="i18n lang-zh">主要特性</h2>
+    <h2 class="i18n lang-es">Características principales</h2>
+    <h2 class="i18n lang-fr">Caractéristiques principales</h2>
+    <h2 class="i18n lang-ru">Ключевые особенности</h2>
+    <h2 class="i18n lang-pt">Principais funcionalidades</h2>
+    <h2 class="i18n lang-ja">主な特徴</h2>
+    <h2 class="i18n lang-ko">주요 기능</h2>
+
+    <ul>
+      <li class="i18n lang-en"><strong>Geoscape:</strong> Real-time global map with time compression and UFO tracking.
+      </li>
+      <li class="i18n lang-zh"><strong>地球战略层：</strong> 实时全球地图，支持时间加速与 UFO 追踪。</li>
+      <li class="i18n lang-es"><strong>GEOSCAPE:</strong> Mapa global en tiempo real con compresión de tiempo y
+        seguimiento de OVNI.</li>
+      <li class="i18n lang-fr"><strong>GÉOSCAPHE:</strong> Carte mondiale en temps réel avec compression du temps et
+        suivi des OVNI.</li>
+      <li class="i18n lang-ru"><strong>ГЕОСФЕРА:</strong> Глобальная карта в реальном времени со сжатием времени и
+        отслеживанием НЛО.</li>
+      <li class="i18n lang-pt"><strong>GEOMAPA:</strong> Mapa global em tempo real com compressão de tempo e
+        rastreamento de OVNIs.</li>
+      <li class="i18n lang-ja"><strong>ジオスケープ:</strong> 時間圧縮とUFO追跡を備えたリアルタイムの世界地図。</li>
+      <li class="i18n lang-ko"><strong>지구전략맵:</strong> 시간 압축과 UFO 추적을 갖춘 실시간 세계 지도.</li>
+
+      <li class="i18n lang-en"><strong>Battlescape:</strong> Turn-based tactical combat with Time Units, destructible
+        terrain, and line-of-sight.</li>
+      <li class="i18n lang-zh"><strong>战场画面：</strong> 含时间单位的回合制战术战斗，可破坏地形与视线机制。</li>
+      <li class="i18n lang-es"><strong>CAMPO DE BATALLA:</strong> Combate táctico por turnos con Unidades de Tiempo,
+        terreno
+        destructible y línea de visión.</li>
+      <li class="i18n lang-fr"><strong>CHAMP DE BATAILLE:</strong> Combat tactique au tour par tour avec Unités de
+        Temps,
+        terrain destructible et ligne de vue.</li>
+      <li class="i18n lang-ru"><strong>БОЕВАЯ ПОЗИЦИЯ:</strong> Пошаговые тактические бои с единицами времени,
+        разрушаемым
+        ландшафтом и линией видимости.</li>
+      <li class="i18n lang-pt"><strong>CAMPO DE BATALHA:</strong> Combate táctico por turnos com Unidades de Tempo,
+        terreno
+        destrutível e linha de visão.</li>
+      <li class="i18n lang-ja"><strong>バトルスケープ:</strong> タイムユニット、破壊可能な地形、視線判定を備えたターン制タクティカル戦闘。</li>
+      <li class="i18n lang-ko"><strong>전술전장:</strong> 타임 유닛, 파괴 가능한 지형, 시선 판정을 갖춘 턴제 전술 전투.</li>
+
+      <li class="i18n lang-en"><strong>Base Management:</strong> Build facilities, hire soldiers, and equip your
+        squad.</li>
+      <li class="i18n lang-zh"><strong>基地管理：</strong> 建造设施、招募士兵并装备你的小队。</li>
+      <li class="i18n lang-es"><strong>Gestión de Base:</strong> Construye instalaciones, recluta soldados y equipa tu
+        escuadrón.</li>
+      <li class="i18n lang-fr"><strong>Gestion de Base:</strong> Construisez des installations, recrutez des soldats et
+        équipez votre escouade.</li>
+      <li class="i18n lang-ru"><strong>Управление базой:</strong> Стройте объекты, нанимайте солдат и экипируйте отряд.
+      </li>
+      <li class="i18n lang-pt"><strong>Gestão de Base:</strong> Construa instalações, recrute soldados e equipue o seu
+        esquadrão.</li>
+      <li class="i18n lang-ja"><strong>基地管理：</strong> 施設の建設、兵士の雇用、部隊の装備。</li>
+      <li class="i18n lang-ko"><strong>기지 관리:</strong> 시설 건설, 병사 고용, 분대 장비.</li>
+
+      <li class="i18n lang-en"><strong>Deep Systems:</strong> Research alien technology, manage manufacturing, and track
+        soldier progression.</li>
+      <li class="i18n lang-zh"><strong>深度系统：</strong> 研究外星科技、管理生产线并追踪士兵成长。</li>
+      <li class="i18n lang-es"><strong>Sistemas Avanzados:</strong> Investiga tecnología alienígena, gestiona la
+        fabricación y
+        sigue el progreso de los soldados.</li>
+      <li class="i18n lang-fr"><strong>Systèmes Avancés:</strong> Recherchez la technologie alienne, gérez la
+        fabrication et
+        suivez la progression des soldats.</li>
+      <li class="i18n lang-ru"><strong>Продвинутые системы:</strong> Исследуйте инопланетные технологии, управляйте
+        производством и отслеживайте прогресс солдат.</li>
+      <li class="i18n lang-pt"><strong>Sistemas Avançados:</strong> Pesquise tecnologia alienígena, gerencie a
+        fabricação e
+        acompanhe o progresso dos soldados.</li>
+      <li class="i18n lang-ja"><strong>高度なシステム：</strong> エイリアン技術の研究、生産管理、兵士の成長の追跡。</li>
+      <li class="i18n lang-ko"><strong>심화 시스템:</strong> 외계 기술 연구, 생산 관리, 병사 성장 추적.</li>
+
+      <li class="i18n lang-en"><strong>Procedurally Generated Aliens:</strong> A roster of aliens is generated at the
+        start of each campaign, each with unique abilities, strengths, weaknesses, and weapons.</li>
+      <li class="i18n lang-zh"><strong>程序生成的外星人：</strong> 每个战役开始时生成一套外星人名单，各自拥有独特的能力、优势、弱点与武器。</li>
+      <li class="i18n lang-es"><strong>Alienígenas Generados Proceduralmente:</strong> Se genera una lista de
+        alienígenas al
+        inicio de cada campaña, cada uno con habilidades, fortalezas, debilidades y armas únicas.</li>
+      <li class="i18n lang-fr"><strong>Aliens Générés Procéduralement:</strong> Un roster d'aliens est généré au début
+        de
+        chaque campagne, chacun avec des capacités, forces, faiblesses et armes uniques.</li>
+      <li class="i18n lang-ru"><strong>Процедурно генерируемые пришельцы:</strong> На старте каждой кампании
+        генерируется
+        ростер пришельцев, каждый с уникальными способностями, сильными и слабыми сторонами и оружием.</li>
+      <li class="i18n lang-pt"><strong>Alienígenas Gerados Proceduralmente:</strong> Um rol de aliens é gerado no início
+        de
+        cada campanha, cada um com habilidades, pontos fortes, fraquezas e armas únicas.</li>
+      <li class="i18n lang-ja"><strong>プロシージャル生成エイリアン：</strong> キャンペーン開始時にエイリアンの一覧が生成され、それぞれが独自の能力・長所・弱点・武器を持つ。</li>
+      <li class="i18n lang-ko"><strong>절차적 외계인 생성:</strong> 각 캠페인 시작 시 외계인 명단이 생성되며, 각자는 고유한 능력·강점·약점·무기를 가짐.</li>
+
+      <li class="i18n lang-en"><strong>Advanced AI &amp; VFX:</strong> Intelligent alien behavior, volumetric smoke, and
+        dynamic particle effects.</li>
+      <li class="i18n lang-zh"><strong>高级AI与特效：</strong> 智能的外星人行为、体积烟雾与动态粒子特效。</li>
+      <li class="i18n lang-es"><strong>IA Avanzada y Efectos:</strong> Comportamiento alienígena inteligente, humo
+        volumétrico y efectos de partículas dinámicos.</li>
+      <li class="i18n lang-fr"><strong>IA Avancée et Effets:</strong> Comportement alien intelligent, fumée volumétrique
+        et effets de particules dynamiques.</li>
+      <li class="i18n lang-ru"><strong>Продвинутый ИИ и эффекты:</strong> Умное поведение пришельцев, объёмный дым и
+        динамические частицы.</li>
+      <li class="i18n lang-pt"><strong>IA Avançada e Efeitos:</strong> Comportamento alienígena inteligente, fumo
+        volumétrico e efeitos de partículas dinâmicos.</li>
+      <li class="i18n lang-ja"><strong>高度なAIとVFX：</strong> 知的なエイリアンの行動、体積霧、動的なパーティクル効果。</li>
+      <li class="i18n lang-ko"><strong>고급 AI 및 VFX:</strong> 지능적인 외계인 행동, 부피형 연기, 동적 파티클 효과.</li>
+    </ul>
+
+    <h2 class="i18n lang-en">Minimum Requirements</h2>
+    <h2 class="i18n lang-zh">最低配置</h2>
+    <h2 class="i18n lang-es">Requisitos mínimos</h2>
+    <h2 class="i18n lang-fr">Configuration minimale</h2>
+    <h2 class="i18n lang-ru">Минимальные требования</h2>
+    <h2 class="i18n lang-pt">Requisitos mínimos</h2>
+    <h2 class="i18n lang-ja">最小要件</h2>
+    <h2 class="i18n lang-ko">최소 사양</h2>
+
+    <p class="i18n lang-en">Something made in the last 25 years or so with a terminal, 15 MB of memory and 25 MB of
+      RAM.</p>
+    <p class="i18n lang-zh">近 25 年内制造的、带有终端的设备，15 MB 磁盘空间与 25 MB 内存即可。</p>
+    <p class="i18n lang-es">Cualquier cosa fabricada en los últimos 25 años más o menos con una terminal, 15 MB de
+      memoria y 25 MB de RAM.</p>
+    <p class="i18n lang-fr">Un appareil fabriqué il y a une vingtaine d'années avec un terminal, 15 Mo de mémoire et 25
+      Mo de RAM.</p>
+    <p class="i18n lang-ru">Любое устройство, выпущенное за последние 25 лет или около того, с терминалом, 15 МБ памяти
+      и 25 МБ ОЗУ.</p>
+    <p class="i18n lang-pt">Algo feito nos últimos 25 anos ou assim, com um terminal, 15 MB de memória e 25 MB de
+      RAM.</p>
+    <p class="i18n lang-ja">ここ25年ほどの間に作られ、ターミナルを備えたデバイスで、メモリ15 MB、RAM 25 MBがあれば動作します。</p>
+    <p class="i18n lang-ko">최근 25년 내외에 만들어진 터미널이 있는 기기, 메모리 15 MB와 RAM 25 MB면 충분합니다.</p>
+
+    <h2 class="i18n lang-en">Links</h2>
+    <h2 class="i18n lang-zh">相关链接</h2>
+    <h2 class="i18n lang-es">Enlaces</h2>
+    <h2 class="i18n lang-fr">Liens</h2>
+    <h2 class="i18n lang-ru">Ссылки</h2>
+    <h2 class="i18n lang-pt">Ligações</h2>
+    <h2 class="i18n lang-ja">リンク</h2>
+    <h2 class="i18n lang-ko">링크</h2>
+
+    <p class="i18n lang-en"><a href="https://github.com/taislin/termcom">GitHub Repository</a></p>
+    <p class="i18n lang-zh"><a href="https://github.com/taislin/termcom">GitHub 仓库</a></p>
+    <p class="i18n lang-es"><a href="https://github.com/taislin/termcom">Repositorio de GitHub</a></p>
+    <p class="i18n lang-fr"><a href="https://github.com/taislin/termcom">Dépôt GitHub</a></p>
+    <p class="i18n lang-ru"><a href="https://github.com/taislin/termcom">Репозиторий GitHub</a></p>
+    <p class="i18n lang-pt"><a href="https://github.com/taislin/termcom">Repositório no GitHub</a></p>
+    <p class="i18n lang-ja"><a href="https://github.com/taislin/termcom">GitHub リポジトリ</a></p>
+    <p class="i18n lang-ko"><a href="https://github.com/taislin/termcom">GitHub 저장소</a></p>
+
+    <p class="i18n lang-en"><a href="https://github.com/taislin/termcom/releases">Download Latest Release</a></p>
+    <p class="i18n lang-zh"><a href="https://github.com/taislin/termcom/releases">下载最新版本</a></p>
+    <p class="i18n lang-es"><a href="https://github.com/taislin/termcom/releases">Descargar la última versión</a></p>
+    <p class="i18n lang-fr"><a href="https://github.com/taislin/termcom/releases">Télécharger la dernière version</a>
+    </p>
+    <p class="i18n lang-ru"><a href="https://github.com/taislin/termcom/releases">Скачать последнюю версию</a></p>
+    <p class="i18n lang-pt"><a href="https://github.com/taislin/termcom/releases">Baixar a última versão</a></p>
+    <p class="i18n lang-ja"><a href="https://github.com/taislin/termcom/releases">最新リリースをダウンロード</a></p>
+    <p class="i18n lang-ko"><a href="https://github.com/taislin/termcom/releases">최신 릴리스 다운로드</a></p>
+
+    <p class="i18n lang-en"><a class="manual-link" href="manual.html?lang=en">Read the Manual</a></p>
+    <p class="i18n lang-zh"><a class="manual-link" href="manual.html?lang=zh">阅读手册</a></p>
+    <p class="i18n lang-es"><a class="manual-link" href="manual.html?lang=es">Leer el Manual</a></p>
+    <p class="i18n lang-fr"><a class="manual-link" href="manual.html?lang=fr">Lire le Manuel</a></p>
+    <p class="i18n lang-ru"><a class="manual-link" href="manual.html?lang=ru">Читать руководство</a></p>
+    <p class="i18n lang-pt"><a class="manual-link" href="manual.html?lang=pt">Ler o Manual</a></p>
+    <p class="i18n lang-ja"><a class="manual-link" href="manual.html?lang=ja">マニュアルを読む</a></p>
+    <p class="i18n lang-ko"><a class="manual-link" href="manual.html?lang=ko">매뉴얼 읽기</a></p>
+
+    <p class="i18n lang-en"><a class="dev-link" href="dev_guide.html">Development Guide</a></p>
+    <p class="i18n lang-zh"><a class="dev-link" href="dev_guide.html">开发指南</a></p>
+    <p class="i18n lang-es"><a class="dev-link" href="dev_guide.html">Guía de Desarrollo</a></p>
+    <p class="i18n lang-fr"><a class="dev-link" href="dev_guide.html">Guide de Développement</a></p>
+    <p class="i18n lang-ru"><a class="dev-link" href="dev_guide.html">Руководство разработчика</a></p>
+    <p class="i18n lang-pt"><a class="dev-link" href="dev_guide.html">Guia de Desenvolvimento</a></p>
+    <p class="i18n lang-ja"><a class="dev-link" href="dev_guide.html">開発ガイド</a></p>
+    <p class="i18n lang-ko"><a class="dev-link" href="dev_guide.html">개발 가이드</a></p>
+  </div>
+
+  <script>
+    (() => {
+      var LANGS = ['en', 'zh', 'es', 'fr', 'ru', 'pt', 'ja', 'ko'];
+      var TITLES = {
+        en: 'TERMCOM - ASCII X-COM Demake',
+        zh: 'TERMCOM - ASCII X-COM 重制版',
+        es: 'TERMCOM - Remake ASCII de X-COM',
+        fr: 'TERMCOM - Remake ASCII de X-COM',
+        ru: 'TERMCOM - ASCII-ремейк X-COM',
+        pt: 'TERMCOM - Remake ASCII de X-COM',
+        ja: 'TERMCOM - ASCII X-COM リメイク',
+        ko: 'TERMCOM - ASCII X-COM 리메이크'
+      };
+
+      function apply(lang) {
+        if (LANGS.indexOf(lang) < 0) lang = 'en';
+        document.body.className = 'lang-' + lang;
+        document.documentElement.lang = lang;
+        document.title = TITLES[lang] || TITLES.en;
+        var btns = document.querySelectorAll('.lang-toggle button');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].classList.toggle('active', btns[i].getAttribute('data-lang') === lang);
+        }
+        try { localStorage.setItem('termcom-lang', lang); } catch (e) { }
+      }
+
+      var saved = null;
+      try { saved = localStorage.getItem('termcom-lang'); } catch (e) { }
+      var nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
+      var initial = (saved && LANGS.indexOf(saved) >= 0) ? saved
+        : (LANGS.indexOf(nav) >= 0 ? nav : 'en');
+
+      apply(initial);
+
+      // ── Screenshot carousel ──────────────────────────────
+      var imgs = document.querySelectorAll('#gallery img');
+      var dots = document.getElementById('gdots');
+      var gIdx = 0;
+      var gTimer = null;
+
+      imgs.forEach(function (_, i) {
+        var d = document.createElement('button');
+        d.className = 'gallery-dot' + (i === 0 ? ' active' : '');
+        d.addEventListener('click', function () { showSlide(i); });
+        dots.appendChild(d);
+      });
+
+      function showSlide(n) {
+        imgs[gIdx].classList.remove('active');
+        dots.children[gIdx].classList.remove('active');
+        gIdx = (n + imgs.length) % imgs.length;
+        imgs[gIdx].classList.add('active');
+        dots.children[gIdx].classList.add('active');
+      }
+
+      function resetTimer() {
+        clearInterval(gTimer);
+        gTimer = setInterval(function () { showSlide(gIdx + 1); }, 4000);
+      }
+
+      document.getElementById('gprev').addEventListener('click', function () { showSlide(gIdx - 1); resetTimer(); });
+      document.getElementById('gnext').addEventListener('click', function () { showSlide(gIdx + 1); resetTimer(); });
+      resetTimer();
+      // ── End carousel ─────────────────────────────────────
+
+      // ── Lightbox (click image to expand) ─────────────────
+      var lightbox = document.getElementById('lightbox');
+      var lbimg = document.getElementById('lbimg');
+      var lbclose = document.getElementById('lbclose');
+
+      function openLightbox(src, alt) {
+        lbimg.src = src;
+        lbimg.alt = alt || '';
+        lightbox.classList.add('open');
+        clearInterval(gTimer);
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove('open');
+        lbimg.src = '';
+        resetTimer();
+      }
+
+      imgs.forEach(function (img) {
+        img.addEventListener('click', function () { openLightbox(this.src, this.alt); });
+      });
+
+      lightbox.addEventListener('click', function (e) {
+        if (e.target !== lbimg) { closeLightbox(); }
+      });
+      lbclose.addEventListener('click', closeLightbox);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lightbox.classList.contains('open')) { closeLightbox(); }
+      });
+      // ── End lightbox ─────────────────────────────────────
+
+      var buttons = document.querySelectorAll('.lang-toggle button');
+      for (var i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function () {
+          apply(this.getAttribute('data-lang'));
+        });
+      }
+    })();
+  </script>
+</body>
+
+</html>

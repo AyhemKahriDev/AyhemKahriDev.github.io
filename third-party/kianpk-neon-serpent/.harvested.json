@@ -1,0 +1,16 @@
+{
+  "repo": "kianPk/neon-serpent",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 7,
+  "pushedAt": "2026-10-25T20:26:40Z",
+  "description": "Neon snake arcade — speed ramp, touch controls, local high score (HTML5)",
+  "defaultBranch": "main",
+  "owner": "kianPk",
+  "slug": "kianpk-neon-serpent",
+  "dest": "third-party/kianpk-neon-serpent",
+  "readme": "# Neon Serpent\n\nArcade snake with rising speed, orb scoring, touch + keyboard controls, and local best score.\n\n[![Demo](https://img.shields.io/badge/demo-live-0f1a22?style=for-the-badge)](https://kianpk.github.io/neon-serpent/)\n[![License: MIT](https://img.shields.io/badge/license-MIT-green?style=flat-square)](./LICENSE)\n\n## Play\n\n**https://kianpk.github.io/neon-serpent/**\n\n## Controls\n\n- Desktop: Arrow keys / WASD\n- Mobile: swipe or on-screen pad\n\n## Stack\n\nVanilla JS · HTML5 Canvas/SVG · CSS · GitHub Pages\n\nNo frameworks. Runs offline once loaded.\n\n## Local\n\n```bash\npython3 -m http.server 8080 --directory docs\n# open http://localhost:8080\n```\n\n## Author\n\nOriginal game by **Kian Zarandi** ([@kianPk](https://github.com/kianPk)) · MIT\n",
+  "licenceFile": "LICENSE",
+  "entry": "docs/index.html",
+  "validated": true
+}

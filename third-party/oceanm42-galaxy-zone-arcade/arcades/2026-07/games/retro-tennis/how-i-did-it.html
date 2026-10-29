@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Retro Tennis — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Retro Tennis</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Pong didn't even have a "the" in front of it back in '72 — it was just
+      Pong, the machine, the one everybody's uncle claimed he saw first in
+      some bar. I never had an original cabinet, that thing was old news by
+      the time I opened my doors in '78, but I had three home clones bolted
+      to the counter for kids to fight over while their folks fed quarters
+      into the real games. Simplest game I ever owned and the one that
+      never, ever stopped making money.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      First time around, in '25, I had the ball moving by just nudging its
+      position every tick and hoping the computer's clock behaved. It mostly
+      did. This time the robots taught me a word — "deltaTime" — which is a
+      fancy way of saying "how much time actually passed," so the ball moves
+      the same speed whether your machine is fast or slow. They also fixed
+      the thing that used to bug me most: a ball moving fast enough could
+      just skip clean through a paddle like it wasn't there. Now it checks
+      the whole path the ball travels in a tick, not just where it lands, so
+      it always finds the paddle if the paddle's in the way. And I got to
+      put in touch buttons, and the screen shakes when you blow a point, and
+      the thing yells a little fanfare at match point. That part I did not
+      ask for. I'm keeping it anyway.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build the Pong game against our shared GZ engine. Player paddle on
+the left with up/down and W/S, AI paddle on the right that isn't
+unbeatable — give it a reaction delay and let it ease up when the
+player is behind. Ball should speed up every rally and never tunnel
+through a paddle even at high speed. First to 11 wins. Make the
+hits feel good: sound on every bounce, a screen shake when I lose
+a point, and something worth cheering at match point.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>Every bit of motion is multiplied by a fixed <code>dt</code> of
+        1/60th of a second, so the match plays at the same speed on my old
+        laptop as it does on anything newer.</li>
+      <li>The ball's path each tick is swept for the first wall or paddle it
+        actually crosses, then keeps simulating whatever time is left over —
+        that's the "no tunneling" fix.</li>
+      <li>The bounce angle comes off where the ball hits the paddle, plus a
+        little bit of whatever speed your paddle was moving at — same trick
+        the good arcade Pong boards used, near as I can tell.</li>
+      <li>The AI re-reads the ball's position on a short delay instead of
+        instantly, and that delay (and its aim) gets a little sloppier when
+        it's ahead, so it's fair without feeling like it's cheating for you.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Retro Tennis</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

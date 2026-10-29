@@ -1,0 +1,16 @@
+{
+  "repo": "Robyt3/maze",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 86,
+  "pushedAt": "2024-06-08T10:52:31Z",
+  "description": "Interactive maze, map and camouflage generation",
+  "defaultBranch": "master",
+  "owner": "Robyt3",
+  "slug": "robyt3-maze",
+  "dest": "third-party/robyt3-maze",
+  "readme": "# Maze\n\nInteractive maze, map and camouflage generation using JavaScript and HTML5 canvas.\n\n## [Live Demo](https://robyt3.github.io/maze/)\n\nGeneration must be restarted to apply settings.\n\nEnable fullscreen (F11) then restart the generation to cover the entire screen.\n\n### Controls\n\n- Space: Pause/Unpause\n- S: Single step forward\n- R: Restart generation\n- +/-: Increase/Decrease speed (hold shift to change faster)\n- H: Hide controls completely",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

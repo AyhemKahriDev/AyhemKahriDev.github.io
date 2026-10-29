@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sal's Galaxy Zone Arcade</title>
+  <meta name="description" content="16 classic arcade cabinets, rebuilt for the web. Est. 1978, remodeled 2026, Portland Oregon.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/arcade.css">
+  <style>
+    /* Homepage-only styles. Uses existing --gz-* tokens; nothing here should
+       leak into or duplicate css/arcade.css — this is the small delta the
+       shared system doesn't cover: the starfield canvas, the neon sign
+       letter-flicker, the player-card panel, and the coin-slot footer. */
+
+    #gz-starfield {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      display: block;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+
+    .gz-home-header {
+      text-align: center;
+      padding: 2.5rem 1rem 1.5rem;
+    }
+    .gz-sign {
+      font-family: var(--gz-font-display);
+      font-size: clamp(1.1rem, 4.4vw, 2.2rem);
+      letter-spacing: .06em;
+      color: var(--gz-cyan);
+      margin: 0 0 .75em;
+      line-height: 1.6;
+    }
+    .gz-sign-letter {
+      display: inline-block;
+      opacity: 0;
+      text-shadow: 0 0 6px currentColor, 0 0 18px currentColor, 0 0 2px #fff;
+      animation: gz-neon-on .05s ease-in forwards;
+      animation-delay: calc(var(--gz-i) * 55ms + 200ms);
+    }
+    .gz-sign-letter.gz-flicker { animation: gz-neon-flicker .9s steps(1,end) forwards; animation-delay: calc(var(--gz-i) * 55ms + 200ms); }
+    @keyframes gz-neon-on {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    @keyframes gz-neon-flicker {
+      0%   { opacity: 0; }
+      8%   { opacity: 1; }
+      14%  { opacity: .2; }
+      20%  { opacity: 1; }
+      28%  { opacity: .3; }
+      34%  { opacity: 1; }
+      100% { opacity: 1; }
+    }
+    .gz-home-subtitle {
+      font-size: .8rem;
+      opacity: .7;
+      letter-spacing: .04em;
+    }
+
+    .gz-home-nav {
+      display: flex;
+      justify-content: center;
+      gap: 1.6rem;
+      flex-wrap: wrap;
+      padding: 0 1rem 1.5rem;
+      font-family: var(--gz-font-display);
+      font-size: .7rem;
+    }
+    .gz-home-nav a { text-decoration: none; color: var(--gz-white); opacity: .85; }
+    .gz-home-nav a:hover, .gz-home-nav a:focus-visible { color: var(--gz-cyan); opacity: 1; text-decoration: underline; }
+
+    .gz-card-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* ---- Delivery crate (game 16) ---- */
+    .gz-crate-label {
+      position: absolute;
+      inset: 12% 8%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      font-family: var(--gz-font-display);
+      font-size: .55rem;
+      line-height: 1.7;
+      color: rgba(255,255,255,.85);
+      border: 2px dashed rgba(255,255,255,.35);
+      padding: .6rem;
+    }
+    .gz-crate-title {
+      position: absolute;
+      left: 0; right: 0; bottom: .6rem;
+      text-align: center;
+      font-family: var(--gz-font-display);
+      font-size: .6rem;
+      color: rgba(255,255,255,.6);
+      letter-spacing: .05em;
+    }
+
+    /* ---- Player card panel ---- */
+    .gz-player-panel {
+      max-width: 900px;
+      margin: 1rem auto 3rem;
+      padding: 0 1rem;
+    }
+    .gz-player-card {
+      background: var(--gz-panel);
+      border: 1px solid var(--gz-border);
+      border-radius: var(--gz-radius);
+      padding: 1.4rem 1.5rem;
+    }
+    .gz-player-title {
+      font-family: var(--gz-font-display);
+      font-size: .85rem;
+      color: var(--gz-accent);
+      margin-bottom: 1rem;
+    }
+    .gz-player-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .75rem;
+      margin-bottom: 1.2rem;
+    }
+    .gz-player-empty {
+      font-size: .85rem;
+      opacity: .7;
+    }
+    .gz-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .6rem;
+    }
+    .gz-badge {
+      font-family: var(--gz-font-display);
+      font-size: .6rem;
+      border: 1px solid var(--gz-border);
+      border-radius: 6px;
+      padding: .5rem .7rem;
+      opacity: .35;
+      background: rgba(234,246,255,.03);
+      cursor: default;
+    }
+    .gz-badge.gz-badge-lit {
+      opacity: 1;
+      border-color: var(--gz-accent);
+      color: var(--gz-accent);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--gz-accent) 40%, transparent);
+    }
+
+    /* ---- Footer / coin slot ---- */
+    .gz-home-footer {
+      text-align: center;
+      padding: 2rem 1rem 3rem;
+      font-size: .8rem;
+      opacity: .85;
+    }
+    .gz-coin-row {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+    .gz-coin-slot {
+      font-family: var(--gz-font-display);
+      font-size: .65rem;
+      background: var(--gz-panel);
+      border: 1px solid var(--gz-border);
+      border-radius: 999px;
+      padding: .6rem 1.1rem;
+      color: var(--gz-yellow);
+      cursor: pointer;
+    }
+    .gz-coin-slot:hover { border-color: var(--gz-yellow); }
+    .gz-home-tip { font-size: .75rem; opacity: .6; margin: 0 0 1rem; }
+    .gz-home-links {
+      display: flex;
+      justify-content: center;
+      gap: 1.4rem;
+      flex-wrap: wrap;
+      font-family: var(--gz-font-display);
+      font-size: .65rem;
+      margin-bottom: 1.2rem;
+    }
+    .gz-home-links a { text-decoration: none; }
+    .gz-home-links a:hover { text-decoration: underline; }
+    .gz-home-copyright { font-size: .7rem; opacity: .5; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gz-sign-letter, .gz-sign-letter.gz-flicker { animation: none !important; opacity: 1 !important; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="gz-starfield" aria-hidden="true"></canvas>
+
+  <a class="gz-sr-only" href="#gz-main">Skip to main content</a>
+
+  <header class="gz-home-header">
+    <h1 class="gz-sign" id="gz-sign" aria-label="Sal's Galaxy Zone Arcade"></h1>
+    <p class="gz-home-subtitle">Est. 1978 &middot; Remodeled 2026 &middot; Portland, Oregon</p>
+  </header>
+
+  <nav class="gz-home-nav" aria-label="Primary">
+    <a href="#gz-main">Games</a>
+    <a href="how-it-was-done.html">The Remodel</a>
+    <a href="about-sal.html">About Sal</a>
+    <a href="../../index.html">All Locations</a>
+  </nav>
+
+  <main id="gz-main">
+    <h2 class="gz-sr-only">Cabinets on the floor</h2>
+    <div class="gz-grid" id="gz-grid"></div>
+
+    <section class="gz-player-panel" aria-labelledby="gz-player-title">
+      <div class="gz-player-card">
+        <h2 class="gz-player-title" id="gz-player-title">SAL'S PLAYER CARD</h2>
+        <div id="gz-player-body"></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="gz-home-footer">
+    <div class="gz-coin-row">
+      <button type="button" class="gz-coin-slot" id="gz-coin-slot">INSERT COIN</button>
+    </div>
+    <p class="gz-home-tip">Press <kbd class="gz-kbd">ESC</kbd> in any game to come back to the floor.</p>
+    <div class="gz-home-links">
+      <a href="how-it-was-done.html">The Remodel</a>
+      <a href="about-sal.html">About Sal</a>
+      <a href="https://github.com/oceanm42/galaxy-zone-arcade" target="_blank" rel="noopener">View on GitHub</a>
+    </div>
+    <p class="gz-home-copyright">&copy; 2026 Sal's Galaxy Zone Arcade &mdash; Built with stubbornness and robots.</p>
+  </footer>
+
+  <script src="js/games-manifest.js"></script>
+  <script src="engine/gz-audio.js"></script>
+  <script src="engine/gz-scores.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "repo": "rajatkumar1011/EmojiCrush",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 15,
+  "pushedAt": "2025-10-28T13:02:09Z",
+  "description": "EmojiCrush is a sleek, futuristic web-based match-3 game console. It features a stunning glassmorphism UI, animated particle backgrounds, and generative audio effects for a fully immersive, unrealistic gaming vibe. Built with HTML, Tailwind, and JS.",
+  "defaultBranch": "main",
+  "owner": "rajatkumar1011",
+  "slug": "rajatkumar1011-emojicrush",
+  "dest": "third-party/rajatkumar1011-emojicrush",
+  "readme": "# 🎮 EmojiCrush Console  \n**URL:** [rajatkumar1.me/EmojiCrush](https://rajatkumar1.me/EmojiCrush)\n\n---\n\n## 🧩 Project Overview  \n\n**EmojiCrush Console** is a static, single-page web application that reimagines the classic **match-3** game as a **futuristic, high-tech console**.  \nIt is designed to be visually *unrealistic* and sleek, prioritizing aesthetics and a unique user experience through a combination of modern web technologies.  \n\nThe entire application is **self-contained in a single HTML file**, showcasing robust front-end development **without any backend dependencies**.\n\n---\n\n## ✨ Key Features  \n\n### 🧊 Sleek Glassmorphism UI  \n- Semi-transparent panels with **backdrop blur** and **glowing borders** create a “floating glass” effect.  \n- The main console visually hovers over an animated background.\n\n### 🌌 Dynamic Particle Background  \n- Uses **tsparticles** to generate a complex, interactive network of moving particles.  \n- Gives the page a *live* and *futuristic* atmosphere.\n\n### 🎵 Generative Audio  \n- Integrates **Tone.js** for **real-time synth-based sound effects** (swap, match, invalid move).  \n- Eliminates static audio files for a pure console-like experience.\n\n### 📱 Fully Responsive Design  \n- Built with **Tailwind CSS**, `clamp()`, and `vmin` units for fluid scaling.  \n- Perfectly adapts across all screen sizes — mobile to desktop — with **no scrollbars**.\n\n### 🧠 Robust Game Logic  \nWritten entirely in **pure JavaScript (ES6+)**, the logic handles:\n- Grid generation with no initial matches.  \n- Player input, gem selection, and swapping.  \n- Validation for adjacent-only swaps.  \n- Match detection (horizontal & vertical).  \n- Cascading matches and chain reactions.  \n- “Gravity” physics for falling gems.  \n- Automatic refilling of the board.  \n- Score tracking, move limits, and game-over modal.\n\n### 🚀 High-Tech Theming  \n- Uses the **Orbitron** Google Font for a consistent sci-fi console aesthetic.  \n\n### 🌀 Animated Transitions  \n- Smooth **CSS keyframe animations** for swaps, matches, and new gem entries.  \n- Ensures polished, visually engaging gameplay.\n\n---\n\n## 🧰 Technology Stack  \n\n| Technology | Purpose |\n|-------------|----------|\n| **HTML5** | Structural foundation of the app |\n| **Tailwind CSS (CDN)** | Styling, layout, responsiveness |\n| **JavaScript (ES6+)** | Game logic, state management, DOM manipulation |\n| **tsparticles (CDN)** | Animated particle background |\n| **Tone.js (CDN)** | Real-time sound generation |\n\n---\n\n*EmojiCrush Console* is not just a game — it’s a **demonstration of front-end power**, visual design, and creative coding in one file.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

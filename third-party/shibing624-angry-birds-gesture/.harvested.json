@@ -1,0 +1,16 @@
+{
+  "repo": "shibing624/angry-birds-gesture",
+  "stars": 4,
+  "licence": "Apache-2.0",
+  "sizeKB": 694,
+  "pushedAt": "2025-12-10T02:38:49Z",
+  "description": "Angry Birds - Gesture Control Edition. 愤怒的小鸟手势版 - 使用手势控制的网页版愤怒的小鸟游戏。",
+  "defaultBranch": "main",
+  "owner": "shibing624",
+  "slug": "shibing624-angry-birds-gesture",
+  "dest": "third-party/shibing624-angry-birds-gesture",
+  "readme": "# Angry Birds - Gesture Control Edition\n\n愤怒的小鸟手势版 - 使用手势控制的网页版愤怒的小鸟游戏。\n\n## 功能特点\n\n- 🎮 **手势控制**：通过摄像头识别手势，捏合拉动发射小鸟\n- 📱 **移动端支持**：支持触控拖拽操作，适配手机和平板\n- 🏗️ **5个关卡**：从简单到复杂的堡垒结构\n- 🎯 **物理引擎**：真实的碰撞和堆叠效果\n- 🔊 **音效反馈**：拉动和发射时的音效提示\n\n## Demo\n\nhttps://angrybirds.mulanai.com\n\n\n![](https://github.com/shibing624/angry-birds-gesture/blob/main/assets/snap-1.png)\n\n## 操作说明\n\n### 手势控制（需摄像头）\n1. **允许摄像头访问**：游戏需要使用摄像头进行手势识别\n2. **使用右手操作**：\n   - 捏合拇指和食指开始瞄准\n   - 保持捏合并拖动手势调整方向和力度\n   - 瞄准至少2秒后松开手指发射\n3. **目标**：消灭所有绿色小猪\n\n### 触控控制\n1. **点击小鸟**：在小鸟附近点击开始拖拽\n2. **拖动瞄准**：向右拖动增加力量，调整发射角度\n3. **保持2秒**：瞄准时间需达到2秒\n4. **松开发射**：释放后小鸟将向左飞出\n\n## 关卡说明\n\n| 关卡 | 小鸟数 | 结构特点 |\n|------|--------|----------|\n| 1 | 5 | 简单：两柱子+横梁+猪 |\n| 2 | 6 | 双塔+顶部连接 |\n| 3 | 7 | 石木混合+3猪 |\n| 4 | 8 | 双层城堡+4猪 |\n| 5 | 10 | 三层堡垒+6猪 |\n\n## 技术栈\n\n- **MediaPipe Hands**：手势识别\n- **Canvas 2D**：游戏渲染\n- **Web Audio API**：音效生成\n- **Touch Events**：移动端触控支持\n\n## 运行方式\n\n### 方法1：直接打开\n双击 `index.html` 文件在浏览器中打开（部分浏览器可能限制摄像头访问）。\n\n### 方法2：本地服务器（推荐）\n\n**Python:**\n```bash\npython3 -m http.server 8080\n```\n\n**Node.js:**\n```bash\n# 使用 npx\nnpx serve\n\n# 或安装 http-server\nnpm install -g http-server\nhttp-server\n```\n\n**VS Code:**\n安装 Live Server 扩展，右键 `index.html` 选择 \"Open with Live Server\"。\n\n然后访问 `http://localhost:8080`\n\n> 注意：需要使用支持 WebRTC 的现代浏览器（Chrome、Firefox、Edge、Safari等）\n\n## 设备兼容\n\n| 设备类型 | 操作方式 | 支持状态 |\n|----------|----------|----------|\n| PC（有摄像头） | 手势控制 | ✅ 完全支持 |\n| PC（无摄像头） | 鼠标拖拽 | ✅ 完全支持 |\n| 平板 | 触控拖拽 | ✅ 完全支持 |\n| 手机 | 触控拖拽 | ✅ 完全支持 |\n\n## 文件结构\n\n```\nangry-birds-gesture/\n├── index.html    # 主页面\n├── styles.css    # 样式文件（含响应式适配）\n├── game.js       # 游戏逻辑\n├── assets/       # 图片资源\n│   ├── red_bird_left.png\n│   ├── pig.png\n│   └── cloud.png\n└── README.md     # 说明文档\n```\n\n## 联系方式\n\n- **GitHub Issues**: [报告问题或功能请求](https://github.com/shibing624/angry-birds-gesture/issues)\n- **邮箱**: xuming624@qq.com\n- **微信**: xuming624（备注：姓名-公司-NLP）\n\n<p align=\"center\">\n  <img src=\"https://github.com/shibing624/WebResearcher/blob/main/docs/wechat.jpeg\" width=\"200\" />\n</p>\n\n\n## License\n\nApache License 2.0\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

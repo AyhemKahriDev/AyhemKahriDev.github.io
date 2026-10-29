@@ -4,10 +4,11 @@
  *
  *   node scripts/harvest/batch.mjs --target 500 --batch 250 --rounds 12
  *
- * Caps are 80 per family, not 40: the harvested supply is genuinely arcade-heavy
- * (snake/tetris/breakout are the most common open-source games), and a 40 cap
- * silently discards half of what passes validation. 80 still stops one family
- * from becoming the whole site.
+ * Caps are 200 per family. Measured: 205 games passed the browser gate and a
+ * cap of 80 published only 80 of them, because the supply really is arcade-heavy
+ * (snake/tetris/breakout dominate open-source games). The quality control that
+ * matters is perTitle in the importer - no game name may appear more than three
+ * times - not a blunt family cap that throws away games that actually play.
  *
  * Why rounds and not one big pass:
  *   - vendor is network-bound and resumable, so a batch per round bounds the
@@ -36,7 +37,7 @@ const flag = (name, fallback) => {
 const target = flag('target', 500);
 const batch = flag('batch', 250);
 const rounds = flag('rounds', 12);
-const caps = flag('caps', 80);
+const caps = flag('caps', 200);
 const concurrency = flag('concurrency', 8);
 const workers = flag('workers', 6);
 
@@ -72,8 +73,10 @@ for (let round = 1; round <= rounds; round++) {
     HARVEST_CONCURRENCY: String(concurrency),
   });
   // validate exits 1 when it rejected something - that is a normal outcome.
-  run(`round ${round}: validate`, 'node', ['scripts/harvest/validate.mjs', `--workers=${workers}`]);
-  run(`round ${round}: import`, 'node', ['scripts/harvest/import.mjs', `--caps=${caps}`, `--budget=${target}`]);
+  run(`round ${round}: validate`, 'node', ['scripts/harvest/validate.mjs', '--workers', String(workers)]);
+  // Flags are space-separated: the CLIs parse `--flag value`, and `--caps=80`
+  // silently fell back to the default 40, halving every round's output.
+  run(`round ${round}: import`, 'node', ['scripts/harvest/import.mjs', '--caps', String(caps), '--budget', String(target)]);
 
   const now = published();
   console.log(`round ${round}: ${now} published (+${now - previous})`);

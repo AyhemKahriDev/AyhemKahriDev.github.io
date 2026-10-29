@@ -1,0 +1,317 @@
+/* ==========================================================================
+   Galaxy Arcade — Story Page Styles
+   Shared styles for Sal's per-game narrative pages and the main story hub.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Base Reset & Layout
+   -------------------------------------------------------------------------- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #0a0a0a;
+  color: #e0e0e8;
+  font-family: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono",
+    "Menlo", "Consolas", "Monaco", monospace;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+a { color: inherit; text-decoration: none; }
+
+.story-page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* --------------------------------------------------------------------------
+   2. Navigation Bar
+   -------------------------------------------------------------------------- */
+.story-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1.25rem;
+  background: rgba(10, 10, 18, 0.9);
+  border-bottom: 1px solid rgba(0, 255, 255, 0.12);
+  flex-wrap: wrap;
+}
+
+.story-nav .nav-link {
+  font-family: "SF Mono", "Fira Code", "Menlo", "Consolas", monospace;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: #0ff;
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
+  transition: color 200ms ease, text-shadow 200ms ease;
+}
+
+.story-nav .nav-link:hover {
+  color: #fff;
+  text-shadow: 0 0 10px #0ff;
+}
+
+.story-nav .nav-sep {
+  color: #333;
+  font-size: 0.7rem;
+}
+
+/* --------------------------------------------------------------------------
+   3. Story Header
+   -------------------------------------------------------------------------- */
+.story-header {
+  text-align: center;
+  padding: 1.25rem 1rem 1rem;
+}
+
+.story-header h1 {
+  font-family: "SF Mono", "Fira Code", "Menlo", "Consolas", monospace;
+  font-size: 2rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent, #0ff);
+  text-shadow:
+    0 0 10px var(--accent, #0ff),
+    0 0 30px color-mix(in srgb, var(--accent, #0ff) 40%, transparent);
+}
+
+.story-header .story-subtitle {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+/* --------------------------------------------------------------------------
+   4. Story Body — Readable Prose
+   -------------------------------------------------------------------------- */
+.story-body {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 3rem;
+  line-height: 1.85;
+}
+
+.story-body p {
+  font-size: 0.95rem;
+  color: #c8c8d0;
+  margin-bottom: 1.25rem;
+}
+
+.story-body h2 {
+  font-family: "SF Mono", "Fira Code", "Menlo", "Consolas", monospace;
+  font-size: 1.1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--accent, #0ff);
+  text-shadow: 0 0 8px color-mix(in srgb, var(--accent, #0ff) 50%, transparent);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid color-mix(in srgb, var(--accent, #0ff) 25%, transparent);
+}
+
+/* --------------------------------------------------------------------------
+   5. Story Quote — Sal's Voice
+   -------------------------------------------------------------------------- */
+.story-quote {
+  border-left: 3px solid var(--accent, #0ff);
+  padding: 0.75rem 1.25rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #aaa;
+  font-size: 1rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-radius: 0 4px 4px 0;
+}
+
+.story-quote .quote-attr {
+  display: block;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: #666;
+  font-style: normal;
+}
+
+/* --------------------------------------------------------------------------
+   6. Story Artifact — Unique Per-Game Element
+   -------------------------------------------------------------------------- */
+.story-artifact {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.5rem 0;
+  font-family: "Courier New", "Courier", monospace;
+  position: relative;
+}
+
+.story-artifact .artifact-label {
+  position: absolute;
+  top: -0.6em;
+  left: 1rem;
+  background: #0a0a0a;
+  padding: 0 0.5rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--accent, #0ff);
+}
+
+.story-artifact pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: #999;
+}
+
+/* Artifact variations */
+.story-artifact.artifact-receipt {
+  border-style: dashed;
+  border-color: rgba(255, 255, 0, 0.15);
+}
+
+.story-artifact.artifact-letter {
+  font-style: italic;
+  border-color: rgba(255, 102, 0, 0.15);
+  background: rgba(255, 240, 220, 0.02);
+}
+
+.story-artifact.artifact-log {
+  border-color: rgba(255, 50, 50, 0.15);
+  font-size: 0.85rem;
+}
+
+.story-artifact.artifact-sign {
+  text-align: center;
+  border-color: rgba(0, 255, 128, 0.2);
+  border-width: 2px;
+}
+
+.story-artifact.artifact-sketch {
+  border-color: rgba(255, 255, 255, 0.1);
+  text-align: center;
+}
+
+/* --------------------------------------------------------------------------
+   7. ASCII Art — Full Portrait & Mini Signature
+   -------------------------------------------------------------------------- */
+.sal-ascii {
+  display: block;
+  font-family: "Courier New", "Courier", monospace;
+  font-size: 0.55rem;
+  line-height: 1.15;
+  color: #39ff14;
+  text-shadow: 0 0 6px rgba(57, 255, 20, 0.4), 0 0 20px rgba(57, 255, 20, 0.15);
+  text-align: left;
+  white-space: pre;
+  overflow-x: auto;
+  padding: 1.5rem 0;
+  margin: 1rem auto;
+  width: fit-content;
+}
+
+.sal-mini {
+  display: block;
+  font-family: "Courier New", "Courier", monospace;
+  font-size: 0.6rem;
+  line-height: 1.2;
+  color: #39ff14;
+  text-shadow: 0 0 4px rgba(57, 255, 20, 0.3);
+  text-align: left;
+  white-space: pre;
+  padding: 1rem 0;
+  margin: 2rem auto 1rem;
+  width: fit-content;
+  opacity: 0.8;
+}
+
+/* --------------------------------------------------------------------------
+   8. Story Footer
+   -------------------------------------------------------------------------- */
+.story-footer {
+  max-width: 680px;
+  margin: 0 auto 2rem;
+  padding: 1.5rem 1.5rem 0;
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.story-footer p {
+  font-size: 0.8rem;
+  color: #555;
+}
+
+.story-footer a {
+  color: #0ff;
+  text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
+  font-size: 0.85rem;
+}
+
+.story-footer a:hover {
+  color: #fff;
+}
+
+/* --------------------------------------------------------------------------
+   9. Print Styles
+   -------------------------------------------------------------------------- */
+@media print {
+  .story-nav { display: none; }
+  .sal-ascii, .sal-mini { text-shadow: none; color: #333; }
+  .story-header h1 { text-shadow: none; color: #000; }
+  body { background: #fff; color: #000; }
+  .story-body p { color: #333; }
+  .story-quote { border-left-color: #999; color: #555; }
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsive
+   -------------------------------------------------------------------------- */
+@media (max-width: 600px) {
+  .story-header h1 {
+    font-size: 1.4rem;
+    letter-spacing: 0.1em;
+  }
+
+  .story-body {
+    padding: 1rem;
+  }
+
+  .story-body p {
+    font-size: 0.9rem;
+  }
+
+  .sal-ascii {
+    font-size: 0.35rem;
+    line-height: 1.1;
+  }
+
+  .sal-mini {
+    font-size: 0.45rem;
+  }
+
+  .story-nav {
+    gap: 0.75rem;
+    padding: 0.6rem 0.75rem;
+  }
+
+  .story-nav .nav-link {
+    font-size: 0.7rem;
+  }
+
+  .story-artifact {
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .sal-ascii {
+    font-size: 0.28rem;
+  }
+}

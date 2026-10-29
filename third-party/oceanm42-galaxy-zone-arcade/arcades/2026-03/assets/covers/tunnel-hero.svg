@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <linearGradient id="dirt" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#4a3520"/>
+      <stop offset="50%" stop-color="#6b4c30"/>
+      <stop offset="100%" stop-color="#3a2510"/>
+    </linearGradient>
+  </defs>
+  <style>
+    @keyframes pump { 0%,100%{transform:scaleX(1)} 50%{transform:scaleX(1.15)} }
+    @keyframes inflate { 0%,100%{r:12} 50%{r:18} }
+    @keyframes dig { 0%,100%{transform:translateX(0)} 50%{transform:translateX(5px)} }
+    .enemy{animation:inflate 1.5s ease-in-out infinite}
+    .hero{animation:dig 1s ease-in-out infinite}
+    .pumpline{animation:pump 1.5s ease-in-out infinite}
+  </style>
+  <rect width="300" height="400" fill="#87CEEB"/>
+  <!-- Sky / surface -->
+  <rect x="0" y="0" width="300" height="60" fill="#5599cc"/>
+  <circle cx="240" cy="25" r="15" fill="#ffdd44"/>
+  <!-- Grass -->
+  <rect x="0" y="55" width="300" height="10" fill="#44aa33"/>
+  <!-- Underground dirt -->
+  <rect x="0" y="65" width="300" height="335" fill="url(#dirt)"/>
+  <!-- Dirt layers -->
+  <rect x="0" y="150" width="300" height="3" fill="#5a3a20" opacity=".4"/>
+  <rect x="0" y="250" width="300" height="3" fill="#5a3a20" opacity=".4"/>
+  <!-- Tunnels -->
+  <g fill="#1a1008">
+    <rect x="40" y="90" width="220" height="30" rx="5"/>
+    <rect x="40" y="90" width="30" height="80" rx="5"/>
+    <rect x="40" y="140" width="150" height="30" rx="5"/>
+    <rect x="160" y="140" width="30" height="80" rx="5"/>
+    <rect x="100" y="190" width="90" height="30" rx="5"/>
+    <rect x="100" y="190" width="30" height="70" rx="5"/>
+    <rect x="100" y="230" width="160" height="30" rx="5"/>
+  </g>
+  <!-- Rocks -->
+  <ellipse cx="80" cy="290" rx="12" ry="8" fill="#777" stroke="#555" stroke-width="1"/>
+  <ellipse cx="200" cy="180" rx="10" ry="7" fill="#888" stroke="#666" stroke-width="1"/>
+  <ellipse cx="250" cy="320" rx="14" ry="9" fill="#777" stroke="#555" stroke-width="1"/>
+  <!-- Hero character -->
+  <g class="hero" filter="url(#glow)">
+    <circle cx="130" cy="105" r="8" fill="#ffffff"/>
+    <rect x="126" y="113" width="8" height="12" fill="#4488ff"/>
+    <circle cx="128" cy="103" r="1.5" fill="#000"/>
+    <circle cx="133" cy="103" r="1.5" fill="#000"/>
+  </g>
+  <!-- Pump line -->
+  <line class="pumpline" x1="138" y1="105" x2="180" y2="105" stroke="#ffaa00" stroke-width="2"/>
+  <!-- Inflating enemy -->
+  <circle class="enemy" cx="200" cy="105" r="12" fill="#ff4444" filter="url(#glow)"/>
+  <circle cx="196" cy="102" r="2" fill="#fff"/>
+  <circle cx="204" cy="102" r="2" fill="#fff"/>
+  <!-- Second enemy below -->
+  <circle cx="130" cy="245" r="10" fill="#ff6644"/>
+  <circle cx="127" cy="243" r="1.5" fill="#fff"/>
+  <circle cx="133" cy="243" r="1.5" fill="#fff"/>
+  <!-- Title -->
+  <text x="150" y="385" text-anchor="middle" font-family="monospace" font-size="18" font-weight="bold" fill="#ffcc44" filter="url(#glow)">TUNNEL HERO</text>
+</svg>

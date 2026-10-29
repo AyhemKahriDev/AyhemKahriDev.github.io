@@ -1,0 +1,16 @@
+{
+  "repo": "futurestudio/snake",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 388,
+  "pushedAt": "2019-06-10T04:43:07Z",
+  "description": "The classic snake game, in the browser",
+  "defaultBranch": "master",
+  "owner": "futurestudio",
+  "slug": "futurestudio-snake",
+  "dest": "third-party/futurestudio-snake",
+  "readme": "# Snake for the Browser\nThe classic snake game you may know from your Nokia phone, but in the browser.\n\n[![Screenshot of the Snake game in the Browser](https://raw.githubusercontent.com/futurestudio/snake/master/media/snake-in-the-browser.png)](https://snake.futurestud.io)\n\n<p align=\"center\">\n  <i>(click the image to play)</i>\n</p>\n",
+  "licenceFile": "LICENSE",
+  "entry": "game.html",
+  "validated": true
+}

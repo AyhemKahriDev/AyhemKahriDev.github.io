@@ -1,0 +1,16 @@
+{
+  "repo": "allysonjeronimo/breakout-js",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 9,
+  "pushedAt": "2021-01-15T22:38:51Z",
+  "description": "Clássico Jogo Breakout implementado utilizando Canvas e JavaScript.",
+  "defaultBranch": "master",
+  "owner": "allysonjeronimo",
+  "slug": "allysonjeronimo-breakout-js",
+  "dest": "third-party/allysonjeronimo-breakout-js",
+  "readme": "# breakout-js\n\n![print-breakout](https://user-images.githubusercontent.com/32485354/104591910-2731a400-564c-11eb-84fd-794c2252b213.png)\n\n\n## Sobre o projeto\n\nClássico Jogo Breakout implementado utilizando Canvas e JavaScript.\n\n\n## Licença\n\nMIT License\n\nCopyright (c) 2021 Allyson Jeronimo\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n\n\n\n\n\n\n\n\n\n\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

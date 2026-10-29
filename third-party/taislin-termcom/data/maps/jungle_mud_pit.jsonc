@@ -1,0 +1,22 @@
+{
+  "description": "Jungle mud pit map chunk",
+"height": 5,
+  "id": "jungle_mud_pit",
+  "no_rotate": true,
+  "rows": [
+    ".....",
+    ".MMM.",
+    ".MMM.",
+    ".MMM.",
+    "..M.."
+  ],
+  "tags": [
+    "jungle"
+  ],
+  "terrain": {
+    ".": "TileGrass",
+    "M": "TileMud"
+  },
+  "weight": 3,
+  "width": 5
+}

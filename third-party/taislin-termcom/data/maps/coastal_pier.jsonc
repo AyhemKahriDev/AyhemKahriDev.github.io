@@ -1,0 +1,23 @@
+{
+  "description": "Coastal pier map chunk",
+"height": 6,
+  "id": "coastal_pier",
+  "no_rotate": true,
+  "rows": [
+    "..P..",
+    "..P..",
+    "..P..",
+    "PPPPP",
+    "PPPPP",
+    "PPPPP"
+  ],
+  "tags": [
+    "coastal"
+  ],
+  "terrain": {
+    ".": "TileWater",
+    "P": "TilePier"
+  },
+  "weight": 2,
+  "width": 5
+}

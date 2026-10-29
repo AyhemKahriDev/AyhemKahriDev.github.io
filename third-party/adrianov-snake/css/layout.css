@@ -1,0 +1,218 @@
+/* =========== LAYOUT STRUCTURE =========== */
+.game-layout {
+    display: flex; /* Use flexbox for overall structure */
+    flex-direction: column; /* Stack header, main, footer */
+    min-height: 100vh;
+    width: 100vw;
+    max-width: 100vw;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    overflow: hidden; /* Prevent scrolling */
+    touch-action: pan-y; /* Allow vertical scrolling for content outside game */
+}
+
+/* Header, Main & Footer - Flex properties */
+.game-header {
+    flex: 0 0 auto; /* Header doesn't grow/shrink */
+    padding: 5px 0;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out, padding 0.3s ease-in-out, margin 0.3s ease-in-out;
+    z-index: 10;
+    width: 100%;
+}
+
+.main-container {
+    flex: 1 1 auto; /* Main content takes remaining space */
+    position: relative;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Center children horizontally */
+    justify-content: center; /* Center children vertically */
+    overflow: hidden; /* Prevent overflow */
+}
+
+.game-footer {
+    flex: 0 0 auto; /* Footer doesn't grow/shrink */
+    padding: 5px 15px;
+    text-align: center; /* Ensures copyright is centered */
+    font-size: 0.75rem;
+    color: var(--color-text-dim);
+    opacity: 0.7;
+    transition: opacity 0.3s ease-in-out, height 0.3s ease-in-out, padding 0.3s ease-in-out, margin 0.3s ease-in-out;
+    z-index: 10;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game-footer a {
+    color: var(--color-primary);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+
+.game-footer a:hover {
+    color: var(--color-secondary);
+    text-decoration: underline;
+}
+
+/* Unified Game Container Layout - Acts as a centering wrapper */
+.game-container {
+    display: flex;
+    /* flex-direction: column; /* Removed */
+    justify-content: center; /* Center column vertically */
+    align-items: center; /* Center column horizontally */
+    /* flex: 1 1 auto; /* Removed - Parent handles filling space */
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* New container for the actual game content column */
+.game-content-column {
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center content block vertically */
+    align-items: center; /* Center items horizontally */
+    width: min(95vw, 78vh); /* Increased vw constraint slightly */
+    /* height: 100%; /* Removed - let content define height */
+    gap: 0.75vh; /* Reduced from 1.5vh for more consistent spacing */
+    box-sizing: border-box;
+}
+
+/* --- BASE STYLES FOR CHILDREN (Now inside game-content-column) --- */
+.canvas-wrapper {
+    flex: 0 0 auto;
+    aspect-ratio: 1 / 1;
+    width: 100%; /* Fill the new column parent */
+    /* width: min(90vw, 80vh); /* Constraint moved to parent */
+    margin: 0;
+    min-width: 1px;
+    min-height: 1px;
+    box-sizing: border-box;
+}
+
+.game-controls {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%; /* Fill the new column parent */
+    /* max-width: min(90vw, 80vh); /* Constraint moved to parent */
+    gap: 0.75vh; /* Match parent gap for consistency */
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.score-container {
+    flex: 0 0 auto;
+    width: 100%; /* Fill the new column parent */
+    /* max-width: min(90vw, 80vh); /* Constraint moved to parent */
+    margin: 0;
+    box-sizing: border-box;
+}
+
+/* Order within game-controls */
+.game-controls .tip-area {
+    order: 0;
+    width: auto; /* Allow natural width */
+    flex: 0 0 auto;
+    align-self: center; /* Center horizontally */
+    text-align: center; /* Center text */
+    margin: 0; /* Remove any margin */
+}
+
+.game-controls .mobile-arrow-controls {
+    order: 1;
+    width: 100%;
+    flex: 0 0 auto;
+    margin: 0; /* Remove any margin */
+}
+
+.game-controls .desktop-only-tip,
+.game-controls .mobile-only-tip {
+    order: 2;
+    width: 100%;
+    flex: 0 0 auto;
+    margin: 0; /* Remove any margin */
+}
+
+/* --- Game Active State Specific Styles --- */
+.game-layout.game-active {
+    touch-action: none;
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+}
+
+/* Remove container max-width override for active state */
+/* .game-layout.game-active .game-container { max-width: 100%; } */
+
+/* Hide header/footer in active state */
+.game-layout.game-active .game-header,
+.game-layout.game-active .game-footer {
+    opacity: 0;
+    height: 0;
+    overflow: hidden;
+    position: absolute;
+    visibility: hidden;
+    z-index: -1;
+    padding: 0;
+    margin: 0;
+}
+
+/* Scaling adjustments (Apply only when game is active) */
+@media (max-height: 650px) {
+    /* Remove padding/margins adjustments */
+    /* .game-container {
+        padding: 2vh 0;
+    }
+    .canvas-wrapper,
+    .game-controls {
+        margin-bottom: 2vh;
+    } */
+    /* Keep scaling rules - only for score container now */
+    .game-layout.game-active .score-container {
+        transform: scale(0.95);
+    }
+}
+
+@media (max-height: 550px) {
+    /* Remove padding/margins adjustments */
+    /* .game-container {
+        padding: 1.5vh 0;
+    }
+    .canvas-wrapper,
+    .game-controls {
+        margin-bottom: 1.5vh;
+    } */
+    /* Keep scaling rules - only for score container now */
+    .game-layout.game-active .score-container {
+        transform: scale(0.9);
+    }
+}
+
+@media (max-height: 480px) {
+    /* Remove padding/margins adjustments */
+    /* .game-container {
+        padding: 1vh 0;
+    }
+    .canvas-wrapper,
+    .game-controls {
+        margin-bottom: 1vh;
+    } */
+    /* Keep scaling rules - only for score container now */
+    .game-layout.game-active .score-container {
+        transform: scale(0.85);
+    }
+}
+
+/* Ensure the gap adjustment remains */
+@media (max-height: 480px) {
+    .game-layout.game-active .game-controls { gap: 3px; }
+}
+
+/* ... Responsive adjustments ... */

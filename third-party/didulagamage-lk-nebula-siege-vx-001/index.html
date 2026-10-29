@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Nebula Siege — Arcade Shooter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="game-wrap">
+  <canvas id="game" width="960" height="600"></canvas>
+
+  <!-- HUD (in-game) -->
+  <div id="hud">
+    <div class="hud-block">
+      <span class="hud-label">SCORE</span>
+      <span class="hud-value" id="hud-score">0</span>
+    </div>
+    <div class="hud-block" id="hud-wave-block">
+      <span class="hud-label">WAVE</span>
+      <span class="hud-value" id="hud-wave">1</span>
+    </div>
+    <div class="hud-block">
+      <span class="hud-label">HIGH</span>
+      <span class="hud-value" id="hud-high">0</span>
+    </div>
+  </div>
+
+  <div id="lives-wrap">
+    <span class="hud-label">HULL</span>
+    <div id="lives-icons"></div>
+  </div>
+
+  <div id="weapon-bar">
+    <div id="weapon-fill"></div>
+  </div>
+
+  <!-- Start screen -->
+  <div class="overlay" id="screen-start">
+    <div class="panel">
+      <h1 class="title">NEBULA<span>SIEGE</span></h1>
+      <p class="subtitle">An arcade siege across the outer rim</p>
+      <div class="controls-grid">
+        <div><span class="key">W A S D</span> or <span class="key">ARROWS</span><br>Move</div>
+        <div><span class="key">SPACE</span><br>Fire</div>
+        <div><span class="key">P</span><br>Pause</div>
+        <div><span class="key">SHIFT</span><br>Overdrive Thrust</div>
+      </div>
+      <button class="btn" id="btn-start">LAUNCH</button>
+      <p class="footnote">Touch controls auto-enable on mobile devices.</p>
+    </div>
+  </div>
+
+  <!-- Pause screen -->
+  <div class="overlay hidden" id="screen-pause">
+    <div class="panel">
+      <h2 class="title-sm">PAUSED</h2>
+      <button class="btn" id="btn-resume">RESUME</button>
+      <button class="btn btn-ghost" id="btn-restart-pause">RESTART</button>
+    </div>
+  </div>
+
+  <!-- Game over screen -->
+  <div class="overlay hidden" id="screen-over">
+    <div class="panel">
+      <h2 class="title-sm" id="over-heading">HULL BREACHED</h2>
+      <div class="stat-row"><span>Final Score</span><strong id="over-score">0</strong></div>
+      <div class="stat-row"><span>Wave Reached</span><strong id="over-wave">1</strong></div>
+      <div class="stat-row" id="over-best-row"><span>Best Score</span><strong id="over-best">0</strong></div>
+      <button class="btn" id="btn-restart">RELAUNCH</button>
+    </div>
+  </div>
+
+  <!-- Wave banner -->
+  <div id="wave-banner" class="hidden">
+    <span id="wave-banner-text">WAVE 1</span>
+  </div>
+
+  <!-- Mobile touch controls -->
+  <div id="touch-controls" class="hidden">
+    <div id="touch-stick-zone">
+      <div id="touch-stick-base">
+        <div id="touch-stick-nub"></div>
+      </div>
+    </div>
+    <div id="touch-fire-zone">
+      <div id="touch-fire-btn">FIRE</div>
+    </div>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

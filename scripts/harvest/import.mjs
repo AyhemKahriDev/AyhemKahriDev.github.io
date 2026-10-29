@@ -26,7 +26,7 @@
  * every function is injectable so tests (and the integrator) can supply their
  * own without touching this file.
  */
-import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dedupeByTitle, defaultFamilyOf } from './dedupe.mjs';
@@ -398,6 +398,29 @@ function main() {
     process.exit(1);
   }
 
+  /**
+   * Do not publish a game the size gate would reject. Three games in the first
+   * 500 games were 11-14 MB (huge audio and sprite sheets); shipping them means
+   * a 14 MB page on a phone, and `npm run audit:size` fails the deploy anyway.
+   * Measured, not guessed: the directory on disk, up to 10 MB.
+   */
+  const MAX_GAME_BYTES = 10 * 1024 * 1024;
+  const dirSize = (dir) => {
+    let total = 0;
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const p = join(dir, entry.name);
+      total += entry.isDirectory() ? dirSize(p) : statSync(p).size;
+    }
+    return total;
+  };
+  const tooHeavy = new Set();
+  for (const record of vendored) {
+    const dir = join(root, 'third-party', record.slug);
+    if (existsSync(dir) && dirSize(dir) > MAX_GAME_BYTES) tooHeavy.add(record.slug);
+  }
+  const publishable = validated.filter((v) => !tooHeavy.has(v.slug));
+  if (tooHeavy.size) console.log(`import: skipped ${tooHeavy.size} game(s) over the 10 MB budget`);
+
   // Titles and ids the rest of the catalogue already publishes. Without this,
   // a harvested "Snake" collides with the one already on the site and the
   // content gate fails the build after a successful import.
@@ -406,7 +429,7 @@ function main() {
   const existingTitles = existing.map((g) => g.title);
   const existingIds = existing.map((g) => g.id);
 
-  const games = importGames({ vendored, validated, capPerFamily, budget, existingTitles, existingIds });
+  const games = importGames({ vendored, validated: publishable, capPerFamily, budget, existingTitles, existingIds });
   const passedCount = validated.filter((v) => v?.verdict === 'pass').length;
 
   mkdirSync(dirname(out), { recursive: true });

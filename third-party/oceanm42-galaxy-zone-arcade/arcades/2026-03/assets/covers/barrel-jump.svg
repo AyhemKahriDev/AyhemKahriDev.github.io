@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glowStrong">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes roll1 {
+      0% { transform: translate(0,0) rotate(0deg); }
+      100% { transform: translate(180px, 30px) rotate(720deg); }
+    }
+    @keyframes roll2 {
+      0% { transform: translate(0,0) rotate(0deg); }
+      100% { transform: translate(-180px, 30px) rotate(-720deg); }
+    }
+    @keyframes jumpMan {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+    @keyframes apePound {
+      0%, 70%, 100% { transform: translateY(0); }
+      80% { transform: translateY(-5px); }
+      90% { transform: translateY(2px); }
+    }
+    .barrel1 { animation: roll1 2.5s linear infinite; }
+    .barrel2 { animation: roll2 3s linear infinite; animation-delay: 1s; }
+    .jumpman { animation: jumpMan 0.8s ease-in-out infinite; }
+    .ape { animation: apePound 2s ease-in-out infinite; }
+  </style>
+  <rect width="300" height="400" fill="#0a0a1a"/>
+  <!-- Girders / platforms -->
+  <g filter="url(#glow)">
+    <rect x="20" y="340" width="260" height="8" fill="#708090" rx="1"/>
+    <line x1="20" y1="340" x2="280" y2="340" stroke="#FF4444" stroke-width="1"/>
+    <rect x="40" y="280" width="240" height="8" fill="#708090" rx="1" transform="rotate(-3, 160, 284)"/>
+    <line x1="40" y1="280" x2="280" y2="272" stroke="#FF4444" stroke-width="1"/>
+    <rect x="20" y="220" width="240" height="8" fill="#708090" rx="1" transform="rotate(3, 140, 224)"/>
+    <line x1="20" y1="220" x2="260" y2="228" stroke="#FF4444" stroke-width="1"/>
+    <rect x="40" y="160" width="240" height="8" fill="#708090" rx="1" transform="rotate(-3, 160, 164)"/>
+    <line x1="40" y1="160" x2="280" y2="152" stroke="#FF4444" stroke-width="1"/>
+    <rect x="60" y="100" width="200" height="8" fill="#708090" rx="1"/>
+  </g>
+  <!-- Ladders -->
+  <g stroke="#00FFFF" stroke-width="1.5" opacity="0.5" filter="url(#glow)">
+    <line x1="250" y1="290" x2="250" y2="340"/><line x1="260" y1="290" x2="260" y2="340"/>
+    <line x1="250" y1="300" x2="260" y2="300"/><line x1="250" y1="315" x2="260" y2="315"/><line x1="250" y1="330" x2="260" y2="330"/>
+    <line x1="50" y1="230" x2="50" y2="280"/><line x1="60" y1="230" x2="60" y2="280"/>
+    <line x1="50" y1="240" x2="60" y2="240"/><line x1="50" y1="255" x2="60" y2="255"/><line x1="50" y1="270" x2="60" y2="270"/>
+  </g>
+  <!-- Ape -->
+  <g class="ape" filter="url(#glowStrong)">
+    <ellipse cx="90" cy="85" rx="22" ry="18" fill="#8B4513"/>
+    <ellipse cx="90" cy="72" rx="14" ry="12" fill="#A0522D"/>
+    <circle cx="84" cy="70" r="2.5" fill="#fff"/><circle cx="96" cy="70" r="2.5" fill="#fff"/>
+    <circle cx="84" cy="70" r="1.2" fill="#000"/><circle cx="96" cy="70" r="1.2" fill="#000"/>
+    <ellipse cx="90" cy="78" rx="6" ry="3" fill="#D2691E"/>
+    <rect x="65" y="78" width="8" height="14" rx="3" fill="#8B4513" transform="rotate(-20,69,85)"/>
+    <rect x="107" y="78" width="8" height="14" rx="3" fill="#8B4513" transform="rotate(20,111,85)"/>
+  </g>
+  <!-- Barrels -->
+  <g class="barrel1" filter="url(#glow)">
+    <ellipse cx="60" cy="155" rx="10" ry="8" fill="#CC4400" stroke="#FF6600" stroke-width="1"/>
+    <line x1="52" y1="155" x2="68" y2="155" stroke="#FF8800" stroke-width="1"/>
+  </g>
+  <g class="barrel2" filter="url(#glow)">
+    <ellipse cx="240" cy="215" rx="10" ry="8" fill="#CC4400" stroke="#FF6600" stroke-width="1"/>
+    <line x1="232" y1="215" x2="248" y2="215" stroke="#FF8800" stroke-width="1"/>
+  </g>
+  <!-- Jump Man -->
+  <g class="jumpman" filter="url(#glowStrong)">
+    <rect x="37" y="323" width="8" height="12" fill="#FF0000" rx="1"/>
+    <circle cx="41" cy="320" r="4" fill="#FFB6C1"/>
+    <rect x="35" y="326" width="4" height="3" fill="#FF0000"/>
+    <rect x="43" y="326" width="4" height="3" fill="#FF0000"/>
+    <rect x="37" y="335" width="3" height="5" fill="#4169E1"/>
+    <rect x="42" y="335" width="3" height="5" fill="#4169E1"/>
+  </g>
+  <!-- Princess -->
+  <text x="200" y="95" font-family="monospace" font-size="10" fill="#FF69B4" filter="url(#glow)">HELP!</text>
+  <!-- Title -->
+  <text x="150" y="40" text-anchor="middle" font-family="monospace" font-size="26" font-weight="bold" fill="#FF4400" filter="url(#glowStrong)">BARREL JUMP</text>
+</svg>

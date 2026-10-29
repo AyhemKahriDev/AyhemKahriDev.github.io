@@ -3520,6 +3520,4670 @@
         "mumuy-pacman",
         "phoboslab-underrun"
       ]
+    },
+    {
+      "id": "studiobram-virtual-tabletop",
+      "title": "Virtual Tabletop",
+      "tagline": "Take turns, think ahead and win the board.",
+      "description": "Virtual tabletop is an online application that you can use to create and play board games using a browser.",
+      "category": "arcade",
+      "accent": "hsl(4 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/studiobram-virtual-tabletop/views/index.html"
+      },
+      "credit": {
+        "author": "studiobram",
+        "licence": "MIT",
+        "source": "https://github.com/studiobram/Virtual-tabletop"
+      },
+      "keywords": [
+        "virtual tabletop game",
+        "play virtual tabletop online",
+        "free virtual tabletop",
+        "online board game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick a piece with a tap or a click, then pick where it moves.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Take turns with your opponent and protect your own pieces."
+      ],
+      "faq": [
+        {
+          "q": "Is Virtual Tabletop free to play?",
+          "a": "Yes. Virtual Tabletop is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Virtual Tabletop work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "iliagrigorevdev-quoridor-web",
+      "title": "Quoridor",
+      "tagline": "Take turns, think ahead and win the board.",
+      "description": "Board game against AI in which you either move a pawn or place a wall to cross the board first.",
+      "category": "arcade",
+      "accent": "hsl(356 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/iliagrigorevdev-quoridor-web/index.html"
+      },
+      "credit": {
+        "author": "iliagrigorevdev",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/iliagrigorevdev/quoridor-web"
+      },
+      "keywords": [
+        "quoridor game",
+        "play quoridor online",
+        "free quoridor",
+        "online board game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick a piece with a tap or a click, then pick where it moves.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Take turns with your opponent and protect your own pieces."
+      ],
+      "faq": [
+        {
+          "q": "Is Quoridor free to play?",
+          "a": "Yes. Quoridor is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Quoridor work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "danieltomazi-pong-game",
+      "title": "Pong (DanielTomazi)",
+      "tagline": "Keep the ball in play and return every shot.",
+      "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
+      "category": "classics",
+      "accent": "hsl(191 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/danieltomazi-pong-game/Jogo%20Pong/index.html"
+      },
+      "credit": {
+        "author": "DanielTomazi",
+        "licence": "MIT",
+        "source": "https://github.com/DanielTomazi/Pong_Game"
+      },
+      "keywords": [
+        "pong game",
+        "play pong online",
+        "free pong",
+        "online pong game",
+        "classics game"
+      ],
+      "howToPlay": [
+        "Move your paddle with the up and down arrows, or use the on-screen pad.",
+        "Swipe up or down on a phone to move the paddle.",
+        "Return the ball past your opponent to win the point."
+      ],
+      "faq": [
+        {
+          "q": "Is Pong free to play?",
+          "a": "Yes. Pong is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Pong work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "bonnee-breakthefuckout",
+      "title": "Breakthefuckout",
+      "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
+      "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
+      "category": "arcade",
+      "accent": "hsl(157 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/bonnee-breakthefuckout/BreakTheFuckOut/BreakTheFuckOut/www/index.html"
+      },
+      "credit": {
+        "author": "bonnee",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/bonnee/breakthefuckout"
+      },
+      "keywords": [
+        "breakthefuckout game",
+        "play breakthefuckout online",
+        "free breakthefuckout",
+        "online brick breaker game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Slide the paddle with the left and right arrows, or use the on-screen pad.",
+        "Bounce the ball into the bricks without letting it past you.",
+        "Clear every brick to finish the wall and move on."
+      ],
+      "faq": [
+        {
+          "q": "Is Breakthefuckout free to play?",
+          "a": "Yes. Breakthefuckout is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Breakthefuckout work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "amitsagtani97-classic-arcade-game",
+      "title": "Classic Arcade",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(231 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/amitsagtani97-classic-arcade-game/game.html"
+      },
+      "credit": {
+        "author": "amitsagtani97",
+        "licence": "MIT",
+        "source": "https://github.com/amitsagtani97/Classic-Arcade-Game"
+      },
+      "keywords": [
+        "classic arcade game",
+        "play classic arcade online",
+        "free classic arcade",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Classic Arcade free to play?",
+          "a": "Yes. Classic Arcade is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Classic Arcade work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "gnuwilliam-phaser-pong",
+      "title": "Pong (Gnuwilliam)",
+      "tagline": "Keep the ball in play and return every shot.",
+      "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
+      "category": "classics",
+      "accent": "hsl(334 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/gnuwilliam-phaser-pong/index.html"
+      },
+      "credit": {
+        "author": "gnuwilliam",
+        "licence": "MIT",
+        "source": "https://github.com/gnuwilliam/phaser-pong"
+      },
+      "keywords": [
+        "pong game",
+        "play pong online",
+        "free pong",
+        "online pong game",
+        "classics game"
+      ],
+      "howToPlay": [
+        "Move your paddle with the up and down arrows, or use the on-screen pad.",
+        "Swipe up or down on a phone to move the paddle.",
+        "Return the ball past your opponent to win the point."
+      ],
+      "faq": [
+        {
+          "q": "Is Pong free to play?",
+          "a": "Yes. Pong is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Pong work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "dgatewood-shapecrush",
+      "title": "Shape Crush",
+      "tagline": "Swap two tiles, line up three and watch them go.",
+      "description": "Bejeweled/Candy Crush inspired game done. Free in your browser, with no download and no sign-up at all.",
+      "category": "arcade",
+      "accent": "hsl(259 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/dgatewood-shapecrush/index.html"
+      },
+      "credit": {
+        "author": "dgatewood",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/dgatewood/ShapeCrush"
+      },
+      "keywords": [
+        "shape crush game",
+        "play shape crush online",
+        "free shape crush",
+        "online match three game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Pick a tile with a tap or a click, then pick the one next to it.",
+        "Line up three or more of the same colour to clear them.",
+        "Move the selection with the arrow keys or the on-screen pad."
+      ],
+      "faq": [
+        {
+          "q": "Is Shape Crush free to play?",
+          "a": "Yes. Shape Crush is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Shape Crush work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "feldhaus-phaser-platformer",
+      "title": "Platformer (Feldhaus)",
+      "tagline": "Run, jump and reach the end of the level.",
+      "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
+      "category": "arcade",
+      "accent": "hsl(63 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/feldhaus-phaser-platformer/index.html"
+      },
+      "credit": {
+        "author": "feldhaus",
+        "licence": "MIT",
+        "source": "https://github.com/feldhaus/phaser-platformer"
+      },
+      "keywords": [
+        "platformer game",
+        "play platformer online",
+        "free platformer",
+        "online platform game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Jump with Space or the up arrow.",
+        "Swipe up on a phone to jump, and swipe left or right to run."
+      ],
+      "faq": [
+        {
+          "q": "Is Platformer free to play?",
+          "a": "Yes. Platformer is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Platformer work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "johannruiz-daytona-usa-web",
+      "title": "Daytona USA",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Browser port of Daytona USA, based on daytona-arcade-recomp.",
+      "category": "arcade",
+      "accent": "hsl(124 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/johannruiz-daytona-usa-web/index.html"
+      },
+      "credit": {
+        "author": "johannruiz",
+        "licence": "BSD-3-Clause",
+        "source": "https://github.com/johannruiz/Daytona-USA-Web"
+      },
+      "keywords": [
+        "daytona usa game",
+        "play daytona usa online",
+        "free daytona usa",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Daytona USA free to play?",
+          "a": "Yes. Daytona USA is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Daytona USA work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "miguelrolo-gamesjs",
+      "title": "Games",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(102 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/miguelrolo-gamesjs/Games/Pong/index.html"
+      },
+      "credit": {
+        "author": "MiguelRolo",
+        "licence": "Apache-2.0",
+        "source": "https://github.com/MiguelRolo/GamesJS"
+      },
+      "keywords": [
+        "games game",
+        "play games online",
+        "free games",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Games free to play?",
+          "a": "Yes. Games is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Games work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "wesleywerner-penny-farthing",
+      "title": "Penny Farthing",
+      "tagline": "Build the four suits from ace to king and clear the table.",
+      "description": "Deal the cards, build each suit from ace to king and turn over the hidden cards as you go.",
+      "category": "table",
+      "accent": "hsl(3 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/wesleywerner-penny-farthing/index.html"
+      },
+      "credit": {
+        "author": "wesleywerner",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/wesleywerner/penny-farthing"
+      },
+      "keywords": [
+        "penny farthing game",
+        "play penny farthing online",
+        "free penny farthing",
+        "online solitaire game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick up a card with a tap or a click, then pick the pile it belongs on.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Build each suit in order and turn over the hidden cards as you go."
+      ],
+      "faq": [
+        {
+          "q": "Is Penny Farthing free to play?",
+          "a": "Yes. Penny Farthing is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Penny Farthing work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "cuixiping-plank-puzzle-game",
+      "title": "Plank Puzzle",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Plank is a puzzle game, has very simple rules and are very challenging for your brain.",
+      "category": "brain",
+      "accent": "hsl(275 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/cuixiping-plank-puzzle-game/plank-puzzle.html"
+      },
+      "credit": {
+        "author": "cuixiping",
+        "licence": "MIT",
+        "source": "https://github.com/cuixiping/plank-puzzle-game"
+      },
+      "keywords": [
+        "plank puzzle game",
+        "play plank puzzle online",
+        "free plank puzzle",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Plank Puzzle free to play?",
+          "a": "Yes. Plank Puzzle is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Plank Puzzle work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "bburky-blocktoblock",
+      "title": "Block to Block",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "puzzle",
+      "accent": "hsl(335 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/bburky-blocktoblock/index.html"
+      },
+      "credit": {
+        "author": "bburky",
+        "licence": "MIT",
+        "source": "https://github.com/bburky/blocktoblock"
+      },
+      "keywords": [
+        "block to block game",
+        "play block to block online",
+        "free block to block",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Block to Block free to play?",
+          "a": "Yes. Block to Block is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Block to Block work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "karan19100-arcade-classic-game",
+      "title": "Arcade Classic",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(309 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/karan19100-arcade-classic-game/game.html"
+      },
+      "credit": {
+        "author": "karan19100",
+        "licence": "MIT",
+        "source": "https://github.com/karan19100/Arcade-classic-game"
+      },
+      "keywords": [
+        "arcade classic game",
+        "play arcade classic online",
+        "free arcade classic",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Arcade Classic free to play?",
+          "a": "Yes. Arcade Classic is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Arcade Classic work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "barnabyshearer-kibblekhaos",
+      "title": "Kibblekhaos",
+      "tagline": "Hold the line and clear the sky, wave after wave.",
+      "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
+      "category": "classics",
+      "accent": "hsl(61 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/barnabyshearer-kibblekhaos/html/index.html"
+      },
+      "credit": {
+        "author": "BarnabyShearer",
+        "licence": "GPL-2.0",
+        "source": "https://github.com/BarnabyShearer/kibblekhaos"
+      },
+      "keywords": [
+        "kibblekhaos game",
+        "play kibblekhaos online",
+        "free kibblekhaos",
+        "online space shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Clear each wave before it reaches the bottom of the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Kibblekhaos free to play?",
+          "a": "Yes. Kibblekhaos is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Kibblekhaos work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "richlewis007-ai-pong-game",
+      "title": "AI Pong",
+      "tagline": "Keep the ball in play and return every shot.",
+      "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
+      "category": "classics",
+      "accent": "hsl(36 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/richlewis007-ai-pong-game/index.html"
+      },
+      "credit": {
+        "author": "RichLewis007",
+        "licence": "MIT",
+        "source": "https://github.com/RichLewis007/AI-Pong-game"
+      },
+      "keywords": [
+        "ai pong game",
+        "play ai pong online",
+        "free ai pong",
+        "online pong game",
+        "classics game"
+      ],
+      "howToPlay": [
+        "Move your paddle with the up and down arrows, or use the on-screen pad.",
+        "Swipe up or down on a phone to move the paddle.",
+        "Return the ball past your opponent to win the point."
+      ],
+      "faq": [
+        {
+          "q": "Is AI Pong free to play?",
+          "a": "Yes. AI Pong is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does AI Pong work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "sgoldens-tetris-js",
+      "title": "Tetris (Sgoldens)",
+      "tagline": "Stack the falling blocks and clear every line.",
+      "description": "Demo of Tetris, copied from the listed YouTube video. Play free in your browser, with no download and no account.",
+      "category": "puzzle",
+      "accent": "hsl(271 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/sgoldens-tetris-js/tetris_demo.html"
+      },
+      "credit": {
+        "author": "sgoldens",
+        "licence": "MIT",
+        "source": "https://github.com/sgoldens/tetris-js"
+      },
+      "keywords": [
+        "tetris game",
+        "play tetris online",
+        "free tetris",
+        "online block puzzle game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, rotate with the up arrow.",
+        "Soft-drop with the down arrow and hard-drop with Space.",
+        "Fill a whole row across the board to clear it and keep the stack low."
+      ],
+      "faq": [
+        {
+          "q": "Is Tetris free to play?",
+          "a": "Yes. Tetris is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Tetris work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "didulagamage-lk-nebula-siege-vx-001",
+      "title": "Nebula Siege Vx 001",
+      "tagline": "Keep moving, keep firing and stay alive.",
+      "description": "Advanced arcade space shooter + no engine, no dependencies, no build step.",
+      "category": "arcade",
+      "accent": "hsl(4 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/didulagamage-lk-nebula-siege-vx-001/index.html"
+      },
+      "credit": {
+        "author": "DidulaGamage-lk",
+        "licence": "MIT",
+        "source": "https://github.com/DidulaGamage-lk/Nebula-Siege--Vx.001"
+      },
+      "keywords": [
+        "nebula siege vx 001 game",
+        "play nebula siege vx 001 online",
+        "free nebula siege vx 001",
+        "online shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Dodge what comes at you and clear the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Nebula Siege Vx 001 free to play?",
+          "a": "Yes. Nebula Siege Vx 001 is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Nebula Siege Vx 001 work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "shahabrdz-supergameapp",
+      "title": "Super Game App",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Mobile Super Game App with multiple mini-games - Water Sort Puzzle - Unity (C#) + Python/Pygame.",
+      "category": "puzzle",
+      "accent": "hsl(222 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/shahabrdz-supergameapp/web/index.html"
+      },
+      "credit": {
+        "author": "shahabRDZ",
+        "licence": "MIT",
+        "source": "https://github.com/shahabRDZ/SuperGameApp"
+      },
+      "keywords": [
+        "super game app game",
+        "play super game app online",
+        "free super game app",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Super Game App free to play?",
+          "a": "Yes. Super Game App is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Super Game App work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "shifulegend-spike-sprint",
+      "title": "Spike Sprint",
+      "tagline": "Run, jump and reach the end of the level.",
+      "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
+      "category": "arcade",
+      "accent": "hsl(102 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/shifulegend-spike-sprint/index.html"
+      },
+      "credit": {
+        "author": "shifulegend",
+        "licence": "MIT",
+        "source": "https://github.com/shifulegend/spike-sprint"
+      },
+      "keywords": [
+        "spike sprint game",
+        "play spike sprint online",
+        "free spike sprint",
+        "online platform game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Jump with Space or the up arrow.",
+        "Swipe up on a phone to jump, and swipe left or right to run."
+      ],
+      "faq": [
+        {
+          "q": "Is Spike Sprint free to play?",
+          "a": "Yes. Spike Sprint is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Spike Sprint work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "abdumurodovazulfizar-pick-flower",
+      "title": "Pick Flower",
+      "tagline": "Run, jump and reach the end of the level.",
+      "description": "It is a platform game that is similar to endless runner, take a moment to play and enjoy.",
+      "category": "arcade",
+      "accent": "hsl(62 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/abdumurodovazulfizar-pick-flower/dist/index.html"
+      },
+      "credit": {
+        "author": "AbdumurodovaZulfizar",
+        "licence": "MIT",
+        "source": "https://github.com/AbdumurodovaZulfizar/Pick-Flower"
+      },
+      "keywords": [
+        "pick flower game",
+        "play pick flower online",
+        "free pick flower",
+        "online platform game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Jump with Space or the up arrow.",
+        "Swipe up on a phone to jump, and swipe left or right to run."
+      ],
+      "faq": [
+        {
+          "q": "Is Pick Flower free to play?",
+          "a": "Yes. Pick Flower is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Pick Flower work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "bridge-mind-claude-opus-5-5-zombies-game",
+      "title": "Claude Opus 5 Zombies",
+      "tagline": "Keep moving, keep firing and stay alive.",
+      "description": "Dead Signal: Exclusion Zone - the Claude Opus 5.5 Zombies Game.",
+      "category": "arcade",
+      "accent": "hsl(256 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/bridge-mind-claude-opus-5-5-zombies-game/index.html"
+      },
+      "credit": {
+        "author": "bridge-mind",
+        "licence": "MIT",
+        "source": "https://github.com/bridge-mind/claude-opus-5.5-zombies-game"
+      },
+      "keywords": [
+        "claude opus 5 zombies game",
+        "play claude opus 5 zombies online",
+        "free claude opus 5 zombies",
+        "online shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Dodge what comes at you and clear the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Claude Opus 5 Zombies free to play?",
+          "a": "Yes. Claude Opus 5 Zombies is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Claude Opus 5 Zombies work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "maximusprime-primetetris",
+      "title": "Prime Tetris",
+      "tagline": "Stack the falling blocks and clear every line.",
+      "description": "Modern retro-futuristic Tetris game built with Electron, API, Gamepad support, dynamic neon glassmorphism UI and multi-language (EN/TR) support.",
+      "category": "puzzle",
+      "accent": "hsl(348 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/maximusprime-primetetris/Tetris.html"
+      },
+      "credit": {
+        "author": "MaximusPrime",
+        "licence": "MIT",
+        "source": "https://github.com/MaximusPrime/PrimeTetris"
+      },
+      "keywords": [
+        "prime tetris game",
+        "play prime tetris online",
+        "free prime tetris",
+        "online block puzzle game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, rotate with the up arrow.",
+        "Soft-drop with the down arrow and hard-drop with Space.",
+        "Fill a whole row across the board to clear it and keep the stack low."
+      ],
+      "faq": [
+        {
+          "q": "Is Prime Tetris free to play?",
+          "a": "Yes. Prime Tetris is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Prime Tetris work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "shubham-jana-dev-bengal-skies-js-game",
+      "title": "Bengal Skies",
+      "tagline": "Tap to flap and thread every gap.",
+      "description": "Tap to keep the bird in the air, thread every gap and see how far one run will take you.",
+      "category": "arcade",
+      "accent": "hsl(162 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/shubham-jana-dev-bengal-skies-js-game/index.html"
+      },
+      "credit": {
+        "author": "Shubham-Jana-Dev",
+        "licence": "MIT",
+        "source": "https://github.com/Shubham-Jana-Dev/bengal-skies-js-game"
+      },
+      "keywords": [
+        "bengal skies game",
+        "play bengal skies online",
+        "free bengal skies",
+        "online one-button game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Tap the screen or press Space to flap.",
+        "Pass through each gap without touching the edges.",
+        "Press R to start again after a crash."
+      ],
+      "faq": [
+        {
+          "q": "Is Bengal Skies free to play?",
+          "a": "Yes. Bengal Skies is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Bengal Skies work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "alibabama401-fishing-game-complete-source-art",
+      "title": "Fishing",
+      "tagline": "Run, jump and reach the end of the level.",
+      "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
+      "category": "arcade",
+      "accent": "hsl(173 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/alibabama401-fishing-game-complete-source-art/index.html"
+      },
+      "credit": {
+        "author": "alibabama401",
+        "licence": "MIT",
+        "source": "https://github.com/alibabama401/Fishing-Game-Complete-Source-Art"
+      },
+      "keywords": [
+        "fishing game",
+        "play fishing online",
+        "free fishing",
+        "online platform game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Jump with Space or the up arrow.",
+        "Swipe up on a phone to jump, and swipe left or right to run."
+      ],
+      "faq": [
+        {
+          "q": "Is Fishing free to play?",
+          "a": "Yes. Fishing is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Fishing work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "mikkun-evade-and-destroy",
+      "title": "Evade and Destroy",
+      "tagline": "Keep moving, keep firing and stay alive.",
+      "description": "Keep moving, aim at whatever comes for you and clear the screen without taking a hit.",
+      "category": "arcade",
+      "accent": "hsl(272 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/mikkun-evade-and-destroy/docs/index.html"
+      },
+      "credit": {
+        "author": "mikkun",
+        "licence": "MIT",
+        "source": "https://github.com/mikkun/evade-and-destroy"
+      },
+      "keywords": [
+        "evade and destroy game",
+        "play evade and destroy online",
+        "free evade and destroy",
+        "online shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Dodge what comes at you and clear the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Evade and Destroy free to play?",
+          "a": "Yes. Evade and Destroy is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Evade and Destroy work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "rsamwilson2323-cloud-tetris-game",
+      "title": "Tetris (Rsamwilson2323 Cloud)",
+      "tagline": "Stack the falling blocks and clear every line.",
+      "description": "Falling Blocks is a classic Tetris-style game and rendering.",
+      "category": "puzzle",
+      "accent": "hsl(88 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/rsamwilson2323-cloud-tetris-game/tetris%20game.html"
+      },
+      "credit": {
+        "author": "rsamwilson2323-cloud",
+        "licence": "MIT",
+        "source": "https://github.com/rsamwilson2323-cloud/tetris-game"
+      },
+      "keywords": [
+        "tetris game",
+        "play tetris online",
+        "free tetris",
+        "online block puzzle game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, rotate with the up arrow.",
+        "Soft-drop with the down arrow and hard-drop with Space.",
+        "Fill a whole row across the board to clear it and keep the stack low."
+      ],
+      "faq": [
+        {
+          "q": "Is Tetris free to play?",
+          "a": "Yes. Tetris is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Tetris work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "leireomadina-blackjack-game",
+      "title": "Blackjack",
+      "tagline": "Take turns, think ahead and win the board.",
+      "description": "Take turns moving your pieces, plan a few moves ahead and protect your own side of the board.",
+      "category": "table",
+      "accent": "hsl(342 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/leireomadina-blackjack-game/docs/index.html"
+      },
+      "credit": {
+        "author": "leireomadina",
+        "licence": "MIT",
+        "source": "https://github.com/leireomadina/blackjack-game"
+      },
+      "keywords": [
+        "blackjack game",
+        "play blackjack online",
+        "free blackjack",
+        "online board game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick a piece with a tap or a click, then pick where it moves.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Take turns with your opponent and protect your own pieces."
+      ],
+      "faq": [
+        {
+          "q": "Is Blackjack free to play?",
+          "a": "Yes. Blackjack is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Blackjack work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "mhhridoy7907-ludo-game",
+      "title": "Ludo (Mhhridoy7907)",
+      "tagline": "Take turns, think ahead and win the board.",
+      "description": "Take turns moving your pieces, plan a few moves ahead and protect your own side of the board.",
+      "category": "brain",
+      "accent": "hsl(33 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/mhhridoy7907-ludo-game/game%20code/index.html"
+      },
+      "credit": {
+        "author": "mhhridoy7907",
+        "licence": "MIT",
+        "source": "https://github.com/mhhridoy7907/ludo-game"
+      },
+      "keywords": [
+        "ludo game",
+        "play ludo online",
+        "free ludo",
+        "online board game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick a piece with a tap or a click, then pick where it moves.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Take turns with your opponent and protect your own pieces."
+      ],
+      "faq": [
+        {
+          "q": "Is Ludo free to play?",
+          "a": "Yes. Ludo is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Ludo work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "lk00100100-keyboardfallingblocks",
+      "title": "Keyboard Falling Blocks",
+      "tagline": "Stack the falling blocks and clear every line.",
+      "description": "Overly complicated game of Tetris for your browser using your entire keyboard.",
+      "category": "puzzle",
+      "accent": "hsl(264 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/lk00100100-keyboardfallingblocks/client/index.html"
+      },
+      "credit": {
+        "author": "LK00100100",
+        "licence": "MIT",
+        "source": "https://github.com/LK00100100/KeyboardFallingBlocks"
+      },
+      "keywords": [
+        "keyboard falling blocks game",
+        "play keyboard falling blocks online",
+        "free keyboard falling blocks",
+        "online block puzzle game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, rotate with the up arrow.",
+        "Soft-drop with the down arrow and hard-drop with Space.",
+        "Fill a whole row across the board to clear it and keep the stack low."
+      ],
+      "faq": [
+        {
+          "q": "Is Keyboard Falling Blocks free to play?",
+          "a": "Yes. Keyboard Falling Blocks is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Keyboard Falling Blocks work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "stackshub-stacks",
+      "title": "Stacks",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Puzzle game like the Tower of Hanoi in mobile and desktop browser.",
+      "category": "puzzle",
+      "accent": "hsl(278 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/stackshub-stacks/docs/index.html"
+      },
+      "credit": {
+        "author": "stackshub",
+        "licence": "MIT",
+        "source": "https://github.com/stackshub/stacks"
+      },
+      "keywords": [
+        "stacks game",
+        "play stacks online",
+        "free stacks",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Stacks free to play?",
+          "a": "Yes. Stacks is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Stacks work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "oskarkv-golfgame",
+      "title": "Golf",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(46 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/oskarkv-golfgame/game.html"
+      },
+      "credit": {
+        "author": "oskarkv",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/oskarkv/golfgame"
+      },
+      "keywords": [
+        "golf game",
+        "play golf online",
+        "free golf",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Golf free to play?",
+          "a": "Yes. Golf is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Golf work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "mrm8488-flappy-birds-genetic-evol",
+      "title": "Flappy Birds Genetic Evol",
+      "tagline": "Tap to flap and thread every gap.",
+      "description": "Simulation of Flappy Birds game using a simple neural network and genetic evolution strategy.",
+      "category": "strategy",
+      "accent": "hsl(219 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/mrm8488-flappy-birds-genetic-evol/index.html"
+      },
+      "credit": {
+        "author": "mrm8488",
+        "licence": "MIT",
+        "source": "https://github.com/mrm8488/flappy_birds_genetic_evol"
+      },
+      "keywords": [
+        "flappy birds genetic evol game",
+        "play flappy birds genetic evol online",
+        "free flappy birds genetic evol",
+        "online one-button game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Tap the screen or press Space to flap.",
+        "Pass through each gap without touching the edges.",
+        "Press R to start again after a crash."
+      ],
+      "faq": [
+        {
+          "q": "Is Flappy Birds Genetic Evol free to play?",
+          "a": "Yes. Flappy Birds Genetic Evol is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Flappy Birds Genetic Evol work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "ronnyweiss-apex-tetris",
+      "title": "Apex Tetris",
+      "tagline": "Stack the falling blocks and clear every line.",
+      "description": "This Region Plug-in is a funny Tetris game for Apex. Play free in your browser, with no download and no account.",
+      "category": "puzzle",
+      "accent": "hsl(262 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/ronnyweiss-apex-tetris/index.html"
+      },
+      "credit": {
+        "author": "RonnyWeiss",
+        "licence": "MIT",
+        "source": "https://github.com/RonnyWeiss/Apex-Tetris"
+      },
+      "keywords": [
+        "apex tetris game",
+        "play apex tetris online",
+        "free apex tetris",
+        "online block puzzle game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, rotate with the up arrow.",
+        "Soft-drop with the down arrow and hard-drop with Space.",
+        "Fill a whole row across the board to clear it and keep the stack low."
+      ],
+      "faq": [
+        {
+          "q": "Is Apex Tetris free to play?",
+          "a": "Yes. Apex Tetris is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Apex Tetris work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "daemonsloth-flappyball-p5js",
+      "title": "Flappy Ball P 5",
+      "tagline": "Tap to flap and thread every gap.",
+      "description": "Tap to keep the bird in the air, thread every gap and see how far one run will take you.",
+      "category": "arcade",
+      "accent": "hsl(311 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/daemonsloth-flappyball-p5js/src/index.html"
+      },
+      "credit": {
+        "author": "daemonsloth",
+        "licence": "MIT",
+        "source": "https://github.com/daemonsloth/flappyball-p5js"
+      },
+      "keywords": [
+        "flappy ball p 5 game",
+        "play flappy ball p 5 online",
+        "free flappy ball p 5",
+        "online one-button game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Tap the screen or press Space to flap.",
+        "Pass through each gap without touching the edges.",
+        "Press R to start again after a crash."
+      ],
+      "faq": [
+        {
+          "q": "Is Flappy Ball P 5 free to play?",
+          "a": "Yes. Flappy Ball P 5 is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Flappy Ball P 5 work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "olkorhon-js-mahjong",
+      "title": "Mahjong",
+      "tagline": "Clear the board by pairing matching tiles from the edges.",
+      "description": "Rudimentary based mahjong game built on top of a element. Play free in your browser, with no download and no account.",
+      "category": "table",
+      "accent": "hsl(5 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/olkorhon-js-mahjong/mahjong.html"
+      },
+      "credit": {
+        "author": "olkorhon",
+        "licence": "MIT",
+        "source": "https://github.com/olkorhon/js-mahjong"
+      },
+      "keywords": [
+        "mahjong game",
+        "play mahjong online",
+        "free mahjong",
+        "online mahjong game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick two matching tiles with a tap or a click.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Only tiles with a free side can be taken, so work inwards from the edges."
+      ],
+      "faq": [
+        {
+          "q": "Is Mahjong free to play?",
+          "a": "Yes. Mahjong is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Mahjong work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "carlnewton-rover",
+      "title": "Rover",
+      "tagline": "Push every crate into place without getting stuck.",
+      "description": "Walk the room, push each crate onto its mark and take care never to trap it against a wall.",
+      "category": "puzzle",
+      "accent": "hsl(4 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/carlnewton-rover/index.html"
+      },
+      "credit": {
+        "author": "carlnewton",
+        "licence": "MIT",
+        "source": "https://github.com/carlnewton/rover"
+      },
+      "keywords": [
+        "rover game",
+        "play rover online",
+        "free rover",
+        "online sokoban game",
+        "puzzle game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Walk into a crate to push it one square.",
+        "Swipe on a phone to push the crate in that direction."
+      ],
+      "faq": [
+        {
+          "q": "Is Rover free to play?",
+          "a": "Yes. Rover is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Rover work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "narimiran-amaze",
+      "title": "Amaze",
+      "tagline": "Find the way out before the walls close in.",
+      "description": "Find the route through the walls, remember the dead ends and make your way to the exit.",
+      "category": "brain",
+      "accent": "hsl(244 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/narimiran-amaze/docs/index.html"
+      },
+      "credit": {
+        "author": "narimiran",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/narimiran/amaze"
+      },
+      "keywords": [
+        "amaze game",
+        "play amaze online",
+        "free amaze",
+        "online maze game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next junction.",
+        "Reach the way out without getting stuck in a dead end."
+      ],
+      "faq": [
+        {
+          "q": "Is Amaze free to play?",
+          "a": "Yes. Amaze is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Amaze work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "ryan-menezes-asteroids",
+      "title": "Asteroids (Ryan Menezes)",
+      "tagline": "Hold the line and clear the sky, wave after wave.",
+      "description": "Asteroids é um jogo de arcade com gráficos vetoriais muito popular lançado em 1979 pela Atari.",
+      "category": "classics",
+      "accent": "hsl(315 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/ryan-menezes-asteroids/index.html"
+      },
+      "credit": {
+        "author": "Ryan-Menezes",
+        "licence": "MIT",
+        "source": "https://github.com/Ryan-Menezes/Asteroids"
+      },
+      "keywords": [
+        "asteroids game",
+        "play asteroids online",
+        "free asteroids",
+        "online space shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Clear each wave before it reaches the bottom of the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Asteroids free to play?",
+          "a": "Yes. Asteroids is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Asteroids work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "stambolievv-space-shooter",
+      "title": "Space Shooter",
+      "tagline": "Keep moving, keep firing and stay alive.",
+      "description": "Space Shooter is game where you fight for your survival against antigalactic enemies.",
+      "category": "arcade",
+      "accent": "hsl(254 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/stambolievv-space-shooter/index.html"
+      },
+      "credit": {
+        "author": "stambolievv",
+        "licence": "MIT",
+        "source": "https://github.com/stambolievv/Space-Shooter"
+      },
+      "keywords": [
+        "space shooter game",
+        "play space shooter online",
+        "free space shooter",
+        "online shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Dodge what comes at you and clear the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Space Shooter free to play?",
+          "a": "Yes. Space Shooter is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Space Shooter work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "lunakurame-squirrel-tale",
+      "title": "Squirrel Tale",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Video game about helping a squirrel find her lost friend. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(354 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/lunakurame-squirrel-tale/index.html"
+      },
+      "credit": {
+        "author": "lunakurame",
+        "licence": "MIT",
+        "source": "https://github.com/lunakurame/squirrel-tale"
+      },
+      "keywords": [
+        "squirrel tale game",
+        "play squirrel tale online",
+        "free squirrel tale",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Squirrel Tale free to play?",
+          "a": "Yes. Squirrel Tale is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Squirrel Tale work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "goshdarngames-html5-maze",
+      "title": "Maze (Goshdarngames)",
+      "tagline": "Find the way out before the walls close in.",
+      "description": "Find the route through the walls, remember the dead ends and make your way to the exit.",
+      "category": "brain",
+      "accent": "hsl(332 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/goshdarngames-html5-maze/html5-maze/index.html"
+      },
+      "credit": {
+        "author": "goshdarngames",
+        "licence": "MIT",
+        "source": "https://github.com/goshdarngames/HTML5-Maze"
+      },
+      "keywords": [
+        "maze game",
+        "play maze online",
+        "free maze",
+        "online maze game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next junction.",
+        "Reach the way out without getting stuck in a dead end."
+      ],
+      "faq": [
+        {
+          "q": "Is Maze free to play?",
+          "a": "Yes. Maze is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Maze work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "collidingscopes-manual-brick-breaker",
+      "title": "Manual Brick Breaker",
+      "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
+      "description": "Play brick breaker in-browser using hand-tracking ( + ). Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(340 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/collidingscopes-manual-brick-breaker/index.html"
+      },
+      "credit": {
+        "author": "collidingScopes",
+        "licence": "MIT",
+        "source": "https://github.com/collidingScopes/manual-brick-breaker"
+      },
+      "keywords": [
+        "manual brick breaker game",
+        "play manual brick breaker online",
+        "free manual brick breaker",
+        "online brick breaker game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Slide the paddle with the left and right arrows, or use the on-screen pad.",
+        "Bounce the ball into the bricks without letting it past you.",
+        "Clear every brick to finish the wall and move on."
+      ],
+      "faq": [
+        {
+          "q": "Is Manual Brick Breaker free to play?",
+          "a": "Yes. Manual Brick Breaker is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Manual Brick Breaker work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "flancast90-cursor-arcade-games",
+      "title": "Cursor Arcade",
+      "tagline": "Eat, grow and keep clear of your own tail.",
+      "description": "Minimalist monochrome arcade classics for VS Code and Cursor - Snake, 2048, Blocks, Minesweeper.",
+      "category": "puzzle",
+      "accent": "hsl(231 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/flancast90-cursor-arcade-games/media/index.html"
+      },
+      "credit": {
+        "author": "flancast90",
+        "licence": "MIT",
+        "source": "https://github.com/flancast90/cursor-arcade-games"
+      },
+      "keywords": [
+        "cursor arcade game",
+        "play cursor arcade online",
+        "free cursor arcade",
+        "online snake game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Steer with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the snake a new direction.",
+        "Eat the food, grow longer and never touch the walls or your own tail."
+      ],
+      "faq": [
+        {
+          "q": "Is Cursor Arcade free to play?",
+          "a": "Yes. Cursor Arcade is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Cursor Arcade work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "statico-gbhack",
+      "title": "Gbhack",
+      "tagline": "One life, a fresh dungeon and a fight to the last floor.",
+      "description": "Take one life into a fresh dungeon, fight what you meet and see how deep you can get.",
+      "category": "strategy",
+      "accent": "hsl(112 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/statico-gbhack/site/index.html"
+      },
+      "credit": {
+        "author": "statico",
+        "licence": "MIT",
+        "source": "https://github.com/statico/gbhack"
+      },
+      "keywords": [
+        "gbhack game",
+        "play gbhack online",
+        "free gbhack",
+        "online dungeon game",
+        "strategy game"
+      ],
+      "howToPlay": [
+        "Move one square at a time with the arrow keys, or use the on-screen pad.",
+        "Walk into a monster to attack it and step on an item to pick it up.",
+        "Swipe on a phone to move one square at a time."
+      ],
+      "faq": [
+        {
+          "q": "Is Gbhack free to play?",
+          "a": "Yes. Gbhack is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Gbhack work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "theferalcode-pixel-game-master-mcp",
+      "title": "Game Master Mcp",
+      "tagline": "Take turns, think ahead and win the board.",
+      "description": "Really play board games with your AI - an MCP game server with six rule-enforcing engines and a cozy local Room.",
+      "category": "arcade",
+      "accent": "hsl(328 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/theferalcode-pixel-game-master-mcp/web/index.html"
+      },
+      "credit": {
+        "author": "theferalcode-pixel",
+        "licence": "MIT",
+        "source": "https://github.com/theferalcode-pixel/game-master-mcp"
+      },
+      "keywords": [
+        "game master mcp game",
+        "play game master mcp online",
+        "free game master mcp",
+        "online board game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick a piece with a tap or a click, then pick where it moves.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Take turns with your opponent and protect your own pieces."
+      ],
+      "faq": [
+        {
+          "q": "Is Game Master Mcp free to play?",
+          "a": "Yes. Game Master Mcp is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Game Master Mcp work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "chongjiazhen-cardputer-puzzles",
+      "title": "Cardputer Puzzles",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "40 of Simon Tatham's puzzles on the M5Stack Cardputer ADV - on-device picker, Tab menu, preset & custom sizing.",
+      "category": "arcade",
+      "accent": "hsl(109 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/chongjiazhen-cardputer-puzzles/site/index.html"
+      },
+      "credit": {
+        "author": "chongjiazhen",
+        "licence": "MIT",
+        "source": "https://github.com/chongjiazhen/cardputer-puzzles"
+      },
+      "keywords": [
+        "cardputer puzzles game",
+        "play cardputer puzzles online",
+        "free cardputer puzzles",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Cardputer Puzzles free to play?",
+          "a": "Yes. Cardputer Puzzles is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Cardputer Puzzles work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "luxedo-asteroids-almost-from-scratch",
+      "title": "Asteroids Almost From Scratch",
+      "tagline": "Hold the line and clear the sky, wave after wave.",
+      "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
+      "category": "classics",
+      "accent": "hsl(205 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/luxedo-asteroids-almost-from-scratch/docs/index.html"
+      },
+      "credit": {
+        "author": "luxedo",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/luxedo/asteroids-almost-from-scratch"
+      },
+      "keywords": [
+        "asteroids almost from scratch game",
+        "play asteroids almost from scratch online",
+        "free asteroids almost from scratch",
+        "online space shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Clear each wave before it reaches the bottom of the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Asteroids Almost From Scratch free to play?",
+          "a": "Yes. Asteroids Almost From Scratch is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Asteroids Almost From Scratch work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "netmanfisher-chinese-ludo",
+      "title": "Chinese Ludo",
+      "tagline": "Take turns, think ahead and win the board.",
+      "description": "Take turns moving your pieces, plan a few moves ahead and protect your own side of the board.",
+      "category": "table",
+      "accent": "hsl(271 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/netmanfisher-chinese-ludo/game.html"
+      },
+      "credit": {
+        "author": "netmanfisher",
+        "licence": "MIT",
+        "source": "https://github.com/netmanfisher/chinese-ludo"
+      },
+      "keywords": [
+        "chinese ludo game",
+        "play chinese ludo online",
+        "free chinese ludo",
+        "online board game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick a piece with a tap or a click, then pick where it moves.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Take turns with your opponent and protect your own pieces."
+      ],
+      "faq": [
+        {
+          "q": "Is Chinese Ludo free to play?",
+          "a": "Yes. Chinese Ludo is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Chinese Ludo work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "taislin-termcom",
+      "title": "Termcom",
+      "tagline": "One life, a fresh dungeon and a fight to the last floor.",
+      "description": "X-com inspired demake, with roguelike elements. Free to play in your browser, with no download and no sign-up.",
+      "category": "strategy",
+      "accent": "hsl(114 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/taislin-termcom/docs/index.html"
+      },
+      "credit": {
+        "author": "taislin",
+        "licence": "MIT",
+        "source": "https://github.com/taislin/termcom"
+      },
+      "keywords": [
+        "termcom game",
+        "play termcom online",
+        "free termcom",
+        "online dungeon game",
+        "strategy game"
+      ],
+      "howToPlay": [
+        "Move one square at a time with the arrow keys, or use the on-screen pad.",
+        "Walk into a monster to attack it and step on an item to pick it up.",
+        "Swipe on a phone to move one square at a time."
+      ],
+      "faq": [
+        {
+          "q": "Is Termcom free to play?",
+          "a": "Yes. Termcom is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Termcom work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "lordofsunshine-snakevortex",
+      "title": "Snakevortex",
+      "tagline": "Eat, grow and keep clear of your own tail.",
+      "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
+      "category": "arcade",
+      "accent": "hsl(356 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/lordofsunshine-snakevortex/templates/index.html"
+      },
+      "credit": {
+        "author": "lordofsunshine",
+        "licence": "MIT",
+        "source": "https://github.com/lordofsunshine/snakevortex"
+      },
+      "keywords": [
+        "snakevortex game",
+        "play snakevortex online",
+        "free snakevortex",
+        "online snake game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Steer with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the snake a new direction.",
+        "Eat the food, grow longer and never touch the walls or your own tail."
+      ],
+      "faq": [
+        {
+          "q": "Is Snakevortex free to play?",
+          "a": "Yes. Snakevortex is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Snakevortex work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "aicoderproject-chain-drop-lab",
+      "title": "Chain Drop Lab",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "puzzle",
+      "accent": "hsl(84 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/aicoderproject-chain-drop-lab/index.html"
+      },
+      "credit": {
+        "author": "AICoderProject",
+        "licence": "MIT",
+        "source": "https://github.com/AICoderProject/chain-drop-lab"
+      },
+      "keywords": [
+        "chain drop lab game",
+        "play chain drop lab online",
+        "free chain drop lab",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Chain Drop Lab free to play?",
+          "a": "Yes. Chain Drop Lab is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Chain Drop Lab work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "hamdan-saddique-ai-arrow-escape-game",
+      "title": "Arrow Escape",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Thrilling arcade game where you dodge red arrows, collect blue power-ups and set high scores.",
+      "category": "arcade",
+      "accent": "hsl(196 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/hamdan-saddique-ai-arrow-escape-game/Arrow%20Escape%20Game/index.html"
+      },
+      "credit": {
+        "author": "Hamdan-Saddique-ai",
+        "licence": "MIT",
+        "source": "https://github.com/Hamdan-Saddique-ai/Arrow-Escape-Game"
+      },
+      "keywords": [
+        "arrow escape game",
+        "play arrow escape online",
+        "free arrow escape",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Arrow Escape free to play?",
+          "a": "Yes. Arrow Escape is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Arrow Escape work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "bhanu2006-24-neon-velocity",
+      "title": "Neon Velocity",
+      "tagline": "Steer for the line and keep your foot down.",
+      "description": "Neon Velocity is a high-speed 3D endless racing game where you drive through neon-lit cyberpunk highways, dodge traffic, collect power-ups and push your skills with nitro boosts, near-miss.",
+      "category": "racing",
+      "accent": "hsl(168 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/bhanu2006-24-neon-velocity/index.html"
+      },
+      "credit": {
+        "author": "bhanu2006-24",
+        "licence": "MIT",
+        "source": "https://github.com/bhanu2006-24/neon-velocity"
+      },
+      "keywords": [
+        "neon velocity game",
+        "play neon velocity online",
+        "free neon velocity",
+        "online racing game",
+        "racing game"
+      ],
+      "howToPlay": [
+        "Steer with the left and right arrows, or use the on-screen pad.",
+        "Accelerate with the up arrow and brake with the down arrow.",
+        "Swipe left or right on a phone to steer through the corner."
+      ],
+      "faq": [
+        {
+          "q": "Is Neon Velocity free to play?",
+          "a": "Yes. Neon Velocity is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Neon Velocity work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "rsamwilson2323-cloud-brick-breaker-game",
+      "title": "Brick Breaker",
+      "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
+      "description": "Block Breaker is a classic arcade-style game and rendering. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(141 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/rsamwilson2323-cloud-brick-breaker-game/Brick%20Breaker%20game.html"
+      },
+      "credit": {
+        "author": "rsamwilson2323-cloud",
+        "licence": "MIT",
+        "source": "https://github.com/rsamwilson2323-cloud/Brick-Breaker-game"
+      },
+      "keywords": [
+        "brick breaker game",
+        "play brick breaker online",
+        "free brick breaker",
+        "online brick breaker game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Slide the paddle with the left and right arrows, or use the on-screen pad.",
+        "Bounce the ball into the bricks without letting it past you.",
+        "Clear every brick to finish the wall and move on."
+      ],
+      "faq": [
+        {
+          "q": "Is Brick Breaker free to play?",
+          "a": "Yes. Brick Breaker is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Brick Breaker work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "danielafarias-space-invaders",
+      "title": "Space Invaders (Danielafarias)",
+      "tagline": "Hold the line and clear the sky, wave after wave.",
+      "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
+      "category": "classics",
+      "accent": "hsl(96 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/danielafarias-space-invaders/index.html"
+      },
+      "credit": {
+        "author": "danielafarias",
+        "licence": "MIT",
+        "source": "https://github.com/danielafarias/Space-Invaders"
+      },
+      "keywords": [
+        "space invaders game",
+        "play space invaders online",
+        "free space invaders",
+        "online space shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Clear each wave before it reaches the bottom of the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Space Invaders free to play?",
+          "a": "Yes. Space Invaders is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Space Invaders work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "ad-archer-retroaudiomaker",
+      "title": "Retroaudiomaker",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "RetroAudioMaker is a tool that compresses audio files to create a retro, low-fidelity sound reminiscent of 90s video game music.",
+      "category": "arcade",
+      "accent": "hsl(276 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/ad-archer-retroaudiomaker/public/index.html"
+      },
+      "credit": {
+        "author": "AD-Archer",
+        "licence": "MIT",
+        "source": "https://github.com/AD-Archer/retroaudiomaker"
+      },
+      "keywords": [
+        "retroaudiomaker game",
+        "play retroaudiomaker online",
+        "free retroaudiomaker",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Retroaudiomaker free to play?",
+          "a": "Yes. Retroaudiomaker is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Retroaudiomaker work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "rakeshid03-arrowpathpuzzle",
+      "title": "Arrowpathpuzzle",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(259 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/rakeshid03-arrowpathpuzzle/index.html"
+      },
+      "credit": {
+        "author": "rakeshid03",
+        "licence": "MIT",
+        "source": "https://github.com/rakeshid03/arrowpathpuzzle"
+      },
+      "keywords": [
+        "arrowpathpuzzle game",
+        "play arrowpathpuzzle online",
+        "free arrowpathpuzzle",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Arrowpathpuzzle free to play?",
+          "a": "Yes. Arrowpathpuzzle is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Arrowpathpuzzle work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "adheesharavindu-snake-and-ladder",
+      "title": "Snake and Ladder (AdheeshaRavindu)",
+      "tagline": "Eat, grow and keep clear of your own tail.",
+      "description": "Snake & Ladder with Firebase online multiplayer - up to 8 players, real-time synced turns, animated movement, voice announcements and music/SFX.",
+      "category": "arcade",
+      "accent": "hsl(12 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/adheesharavindu-snake-and-ladder/index.html"
+      },
+      "credit": {
+        "author": "AdheeshaRavindu",
+        "licence": "MIT",
+        "source": "https://github.com/AdheeshaRavindu/Snake-and-Ladder"
+      },
+      "keywords": [
+        "snake and ladder game",
+        "play snake and ladder online",
+        "free snake and ladder",
+        "online snake game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Steer with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the snake a new direction.",
+        "Eat the food, grow longer and never touch the walls or your own tail."
+      ],
+      "faq": [
+        {
+          "q": "Is Snake and Ladder free to play?",
+          "a": "Yes. Snake and Ladder is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Snake and Ladder work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "shibing624-angry-birds-gesture",
+      "title": "Angry Birds Gesture",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(129 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/shibing624-angry-birds-gesture/index.html"
+      },
+      "credit": {
+        "author": "shibing624",
+        "licence": "Apache-2.0",
+        "source": "https://github.com/shibing624/angry-birds-gesture"
+      },
+      "keywords": [
+        "angry birds gesture game",
+        "play angry birds gesture online",
+        "free angry birds gesture",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Angry Birds Gesture free to play?",
+          "a": "Yes. Angry Birds Gesture is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Angry Birds Gesture work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "sveinn-steinarsson-opposite-reaction",
+      "title": "Opposite Reaction",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Puzzle game where for every action, there is an equal and opposite reaction.",
+      "category": "puzzle",
+      "accent": "hsl(253 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/sveinn-steinarsson-opposite-reaction/index.html"
+      },
+      "credit": {
+        "author": "sveinn-steinarsson",
+        "licence": "MIT",
+        "source": "https://github.com/sveinn-steinarsson/opposite-reaction"
+      },
+      "keywords": [
+        "opposite reaction game",
+        "play opposite reaction online",
+        "free opposite reaction",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Opposite Reaction free to play?",
+          "a": "Yes. Opposite Reaction is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Opposite Reaction work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "ducthang-vu-memory-game",
+      "title": "Memory",
+      "tagline": "Turn two cards, remember where they were, find the pairs.",
+      "description": "Memory is a fun card game which does not require a lot of code.",
+      "category": "brain",
+      "accent": "hsl(161 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/ducthang-vu-memory-game/index.html"
+      },
+      "credit": {
+        "author": "ducthang-vu",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/ducthang-vu/memory---game"
+      },
+      "keywords": [
+        "memory game",
+        "play memory online",
+        "free memory",
+        "online memory game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Pick a card with a tap or a click to turn it over.",
+        "Turn a second card and keep the pair when the two match.",
+        "Move the selection with the arrow keys or the on-screen pad."
+      ],
+      "faq": [
+        {
+          "q": "Is Memory free to play?",
+          "a": "Yes. Memory is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Memory work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "codechefvit-asteroid-attack",
+      "title": "Asteroid Attack",
+      "tagline": "Hold the line and clear the sky, wave after wave.",
+      "description": "Asteroid Attack game used in the webinar on by @vinayakguptaa.",
+      "category": "arcade",
+      "accent": "hsl(323 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/codechefvit-asteroid-attack/index.html"
+      },
+      "credit": {
+        "author": "CodeChefVIT",
+        "licence": "MIT",
+        "source": "https://github.com/CodeChefVIT/Asteroid-Attack"
+      },
+      "keywords": [
+        "asteroid attack game",
+        "play asteroid attack online",
+        "free asteroid attack",
+        "online space shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Clear each wave before it reaches the bottom of the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Asteroid Attack free to play?",
+          "a": "Yes. Asteroid Attack is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Asteroid Attack work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "bogdanmoale-sudoku-game",
+      "title": "Sudoku (Bogdanmoale)",
+      "tagline": "Fill the grid so every row, column and box is complete.",
+      "description": "Fill every row, column and box with the digits one to nine, each of them used exactly once.",
+      "category": "table",
+      "accent": "hsl(276 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/bogdanmoale-sudoku-game/index.html"
+      },
+      "credit": {
+        "author": "bogdanmoale",
+        "licence": "MIT",
+        "source": "https://github.com/bogdanmoale/Sudoku-Game"
+      },
+      "keywords": [
+        "sudoku game",
+        "play sudoku online",
+        "free sudoku",
+        "online sudoku game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick a square with a tap or a click, then choose the number you want.",
+        "Move between squares with the arrow keys or the on-screen pad.",
+        "Every row, column and box must hold each number exactly once."
+      ],
+      "faq": [
+        {
+          "q": "Is Sudoku free to play?",
+          "a": "Yes. Sudoku is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Sudoku work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "narenkannan-breakout2dgame",
+      "title": "Breakout 2 Dgame",
+      "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
+      "description": "2D breakout game (Pure /CommonJs/AMD/ES6). Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(285 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/narenkannan-breakout2dgame/amd/index.html"
+      },
+      "credit": {
+        "author": "narenkannan",
+        "licence": "MIT",
+        "source": "https://github.com/narenkannan/breakout2dgame"
+      },
+      "keywords": [
+        "breakout 2 dgame game",
+        "play breakout 2 dgame online",
+        "free breakout 2 dgame",
+        "online brick breaker game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Slide the paddle with the left and right arrows, or use the on-screen pad.",
+        "Bounce the ball into the bricks without letting it past you.",
+        "Clear every brick to finish the wall and move on."
+      ],
+      "faq": [
+        {
+          "q": "Is Breakout 2 Dgame free to play?",
+          "a": "Yes. Breakout 2 Dgame is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Breakout 2 Dgame work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "duqian42707-sokoban",
+      "title": "Sokoban (Duqian42707)",
+      "tagline": "Push every crate into place without getting stuck.",
+      "description": "Walk the room, push each crate onto its mark and take care never to trap it against a wall.",
+      "category": "puzzle",
+      "accent": "hsl(84 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/duqian42707-sokoban/miniprogram/index.html"
+      },
+      "credit": {
+        "author": "duqian42707",
+        "licence": "MIT",
+        "source": "https://github.com/duqian42707/Sokoban"
+      },
+      "keywords": [
+        "sokoban game",
+        "play sokoban online",
+        "free sokoban",
+        "online sokoban game",
+        "puzzle game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Walk into a crate to push it one square.",
+        "Swipe on a phone to push the crate in that direction."
+      ],
+      "faq": [
+        {
+          "q": "Is Sokoban free to play?",
+          "a": "Yes. Sokoban is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Sokoban work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "kianpk-neon-serpent",
+      "title": "Neon Serpent",
+      "tagline": "Eat, grow and keep clear of your own tail.",
+      "description": "Neon snake arcade - speed ramp, touch controls, local high score.",
+      "category": "arcade",
+      "accent": "hsl(67 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/kianpk-neon-serpent/docs/index.html"
+      },
+      "credit": {
+        "author": "kianPk",
+        "licence": "MIT",
+        "source": "https://github.com/kianPk/neon-serpent"
+      },
+      "keywords": [
+        "neon serpent game",
+        "play neon serpent online",
+        "free neon serpent",
+        "online snake game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Steer with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the snake a new direction.",
+        "Eat the food, grow longer and never touch the walls or your own tail."
+      ],
+      "faq": [
+        {
+          "q": "Is Neon Serpent free to play?",
+          "a": "Yes. Neon Serpent is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Neon Serpent work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "soxfox42-typit",
+      "title": "Typit",
+      "tagline": "Six guesses to find the five-letter word.",
+      "description": "Word game based on Josh Wardle's Wordle and the gameshow Lingo.",
+      "category": "word",
+      "accent": "hsl(290 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/soxfox42-typit/index.html"
+      },
+      "credit": {
+        "author": "soxfox42",
+        "licence": "MIT",
+        "source": "https://github.com/soxfox42/typit"
+      },
+      "keywords": [
+        "typit game",
+        "play typit online",
+        "free typit",
+        "online wordle game",
+        "word game"
+      ],
+      "howToPlay": [
+        "Type a word, or pick the letters on the keyboard shown in the game.",
+        "Green means the right letter in the right place; yellow means it belongs elsewhere.",
+        "Press Enter or the B button on the pad to submit your guess."
+      ],
+      "faq": [
+        {
+          "q": "Is Typit free to play?",
+          "a": "Yes. Typit is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Typit work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "bibhuticoder-carrimboard",
+      "title": "Carrimboard",
+      "tagline": "Take turns, think ahead and win the board.",
+      "description": "Multiplayer Carrom Board game from scratch. Runs in your browser, free, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(351 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/bibhuticoder-carrimboard/index.html"
+      },
+      "credit": {
+        "author": "bibhuticoder",
+        "licence": "MIT",
+        "source": "https://github.com/bibhuticoder/carrimboard"
+      },
+      "keywords": [
+        "carrimboard game",
+        "play carrimboard online",
+        "free carrimboard",
+        "online board game",
+        "table game"
+      ],
+      "howToPlay": [
+        "Pick a piece with a tap or a click, then pick where it moves.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Take turns with your opponent and protect your own pieces."
+      ],
+      "faq": [
+        {
+          "q": "Is Carrimboard free to play?",
+          "a": "Yes. Carrimboard is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Carrimboard work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "lionell-smart-pacmans",
+      "title": "Smart Pacmans",
+      "tagline": "Clear the maze while the ghosts hunt you down.",
+      "description": "Run the maze, eat every dot along the way and slip past the ghosts before they close in.",
+      "category": "arcade",
+      "accent": "hsl(83 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/lionell-smart-pacmans/index.html"
+      },
+      "credit": {
+        "author": "lionell",
+        "licence": "MIT",
+        "source": "https://github.com/lionell/smart-pacmans"
+      },
+      "keywords": [
+        "smart pacmans game",
+        "play smart pacmans online",
+        "free smart pacmans",
+        "online pacman game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next corner.",
+        "Eat every dot in the maze and keep away from the ghosts."
+      ],
+      "faq": [
+        {
+          "q": "Is Smart Pacmans free to play?",
+          "a": "Yes. Smart Pacmans is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Smart Pacmans work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "joeseesun-mastermind-3d",
+      "title": "Mastermind 3D",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "puzzle",
+      "accent": "hsl(46 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/joeseesun-mastermind-3d/index.html"
+      },
+      "credit": {
+        "author": "joeseesun",
+        "licence": "MIT",
+        "source": "https://github.com/joeseesun/mastermind-3d"
+      },
+      "keywords": [
+        "mastermind 3d game",
+        "play mastermind 3d online",
+        "free mastermind 3d",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Mastermind 3D free to play?",
+          "a": "Yes. Mastermind 3D is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Mastermind 3D work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "arjunemirchandani-skyward-flight-simulator",
+      "title": "Skyward Flight Simulator",
+      "tagline": "Start small, earn steadily and watch the numbers grow.",
+      "description": "Arcade flight simulator in a single file - procedural islands, weather, traffic, ATC chatter, missions and scored landings.",
+      "category": "sandbox",
+      "accent": "hsl(223 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/arjunemirchandani-skyward-flight-simulator/index.html"
+      },
+      "credit": {
+        "author": "arjunemirchandani",
+        "licence": "MIT",
+        "source": "https://github.com/arjunemirchandani/skyward-flight-simulator"
+      },
+      "keywords": [
+        "skyward flight simulator game",
+        "play skyward flight simulator online",
+        "free skyward flight simulator",
+        "online idle game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to earn your first coins.",
+        "Spend what you earn on upgrades that earn faster.",
+        "Move between upgrades with the arrow keys or the on-screen pad."
+      ],
+      "faq": [
+        {
+          "q": "Is Skyward Flight Simulator free to play?",
+          "a": "Yes. Skyward Flight Simulator is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Skyward Flight Simulator work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "spixs-tinybubbles",
+      "title": "Tiny Bubbles",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "TinyBubbles - a 4 KB Puzzle Bobble-style game for the Commodore 64 in 6502 assembly.",
+      "category": "puzzle",
+      "accent": "hsl(113 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/spixs-tinybubbles/docs/index.html"
+      },
+      "credit": {
+        "author": "SPixs",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/SPixs/TinyBubbles"
+      },
+      "keywords": [
+        "tiny bubbles game",
+        "play tiny bubbles online",
+        "free tiny bubbles",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Tiny Bubbles free to play?",
+          "a": "Yes. Tiny Bubbles is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Tiny Bubbles work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "megabaka404-crucible-echoes",
+      "title": "Crucible Echoes",
+      "tagline": "One life, a fresh dungeon and a fight to the last floor.",
+      "description": "Take one life into a fresh dungeon, fight what you meet and see how deep you can get.",
+      "category": "strategy",
+      "accent": "hsl(309 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/megabaka404-crucible-echoes/frontend/index.html"
+      },
+      "credit": {
+        "author": "megabaka404",
+        "licence": "MIT",
+        "source": "https://github.com/megabaka404/crucible-echoes"
+      },
+      "keywords": [
+        "crucible echoes game",
+        "play crucible echoes online",
+        "free crucible echoes",
+        "online dungeon game",
+        "strategy game"
+      ],
+      "howToPlay": [
+        "Move one square at a time with the arrow keys, or use the on-screen pad.",
+        "Walk into a monster to attack it and step on an item to pick it up.",
+        "Swipe on a phone to move one square at a time."
+      ],
+      "faq": [
+        {
+          "q": "Is Crucible Echoes free to play?",
+          "a": "Yes. Crucible Echoes is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Crucible Echoes work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "joaolbero-joaoalbero-cv",
+      "title": "Joao Albero Cv",
+      "tagline": "Eat, grow and keep clear of your own tail.",
+      "description": "Dark & neon personal CV website with interactive terminal, Matrix mode, Snake mini-game and bilingual PT-BR/EN content.",
+      "category": "arcade",
+      "accent": "hsl(174 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/joaolbero-joaoalbero-cv/index.html"
+      },
+      "credit": {
+        "author": "Joaolbero",
+        "licence": "MIT",
+        "source": "https://github.com/Joaolbero/JoaoAlbero-CV"
+      },
+      "keywords": [
+        "joao albero cv game",
+        "play joao albero cv online",
+        "free joao albero cv",
+        "online snake game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Steer with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the snake a new direction.",
+        "Eat the food, grow longer and never touch the walls or your own tail."
+      ],
+      "faq": [
+        {
+          "q": "Is Joao Albero Cv free to play?",
+          "a": "Yes. Joao Albero Cv is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Joao Albero Cv work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "vibezzzcoder-clawd-pop",
+      "title": "Clawd Pop",
+      "tagline": "Keep moving, keep firing and stay alive.",
+      "description": "Keep moving, aim at whatever comes for you and clear the screen without taking a hit.",
+      "category": "arcade",
+      "accent": "hsl(53 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/vibezzzcoder-clawd-pop/index.html"
+      },
+      "credit": {
+        "author": "VibezZzCoder",
+        "licence": "MIT",
+        "source": "https://github.com/VibezZzCoder/clawd-pop"
+      },
+      "keywords": [
+        "clawd pop game",
+        "play clawd pop online",
+        "free clawd pop",
+        "online shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Dodge what comes at you and clear the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Clawd Pop free to play?",
+          "a": "Yes. Clawd Pop is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Clawd Pop work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "imshota1009-nyan-bomber",
+      "title": "Nyan Bomber",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "puzzle",
+      "accent": "hsl(138 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/imshota1009-nyan-bomber/index.html"
+      },
+      "credit": {
+        "author": "imshota1009",
+        "licence": "MIT",
+        "source": "https://github.com/imshota1009/Nyan-Bomber"
+      },
+      "keywords": [
+        "nyan bomber game",
+        "play nyan bomber online",
+        "free nyan bomber",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Nyan Bomber free to play?",
+          "a": "Yes. Nyan Bomber is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Nyan Bomber work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "mohsen-niksirat-devcompass",
+      "title": "Dev Compass",
+      "tagline": "Answer the questions and see how much you know.",
+      "description": "Free bilingual (FA/EN) quiz: which tech stack should you learn?",
+      "category": "word",
+      "accent": "hsl(44 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/mohsen-niksirat-devcompass/index.html"
+      },
+      "credit": {
+        "author": "mohsen-niksirat",
+        "licence": "MIT",
+        "source": "https://github.com/mohsen-niksirat/DevCompass"
+      },
+      "keywords": [
+        "dev compass game",
+        "play dev compass online",
+        "free dev compass",
+        "online quiz game",
+        "word game"
+      ],
+      "howToPlay": [
+        "Pick an answer with a tap or a click.",
+        "Move between answers with the arrow keys or the on-screen pad.",
+        "Every correct answer adds to your score, and the questions keep coming."
+      ],
+      "faq": [
+        {
+          "q": "Is Dev Compass free to play?",
+          "a": "Yes. Dev Compass is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Dev Compass work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "kopylash-algorithmics-project",
+      "title": "Algorithmics Project",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Arcade game showing Particle Swarm Optimization. Free to play in your browser, with no download and no sign-up.",
+      "category": "arcade",
+      "accent": "hsl(308 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/kopylash-algorithmics-project/index.html"
+      },
+      "credit": {
+        "author": "kopylash",
+        "licence": "MIT",
+        "source": "https://github.com/kopylash/algorithmics-project"
+      },
+      "keywords": [
+        "algorithmics project game",
+        "play algorithmics project online",
+        "free algorithmics project",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Algorithmics Project free to play?",
+          "a": "Yes. Algorithmics Project is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Algorithmics Project work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "elias-ba-lextris",
+      "title": "Lextris",
+      "tagline": "Stack the falling blocks and clear every line.",
+      "description": "Open-source word puzzle game inspired by Tetris and Scrabble.",
+      "category": "word",
+      "accent": "hsl(322 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/elias-ba-lextris/index.html"
+      },
+      "credit": {
+        "author": "elias-ba",
+        "licence": "MIT",
+        "source": "https://github.com/elias-ba/lextris"
+      },
+      "keywords": [
+        "lextris game",
+        "play lextris online",
+        "free lextris",
+        "online block puzzle game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, rotate with the up arrow.",
+        "Soft-drop with the down arrow and hard-drop with Space.",
+        "Fill a whole row across the board to clear it and keep the stack low."
+      ],
+      "faq": [
+        {
+          "q": "Is Lextris free to play?",
+          "a": "Yes. Lextris is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Lextris work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "rajatkumar1011-emojicrush",
+      "title": "Emoji Crush",
+      "tagline": "Swap two tiles, line up three and watch them go.",
+      "description": "EmojiCrush is a sleek, futuristic match-3 game console. Free in your browser, with no download and no sign-up at all.",
+      "category": "brain",
+      "accent": "hsl(277 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/rajatkumar1011-emojicrush/index.html"
+      },
+      "credit": {
+        "author": "rajatkumar1011",
+        "licence": "MIT",
+        "source": "https://github.com/rajatkumar1011/EmojiCrush"
+      },
+      "keywords": [
+        "emoji crush game",
+        "play emoji crush online",
+        "free emoji crush",
+        "online match three game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Pick a tile with a tap or a click, then pick the one next to it.",
+        "Line up three or more of the same colour to clear them.",
+        "Move the selection with the arrow keys or the on-screen pad."
+      ],
+      "faq": [
+        {
+          "q": "Is Emoji Crush free to play?",
+          "a": "Yes. Emoji Crush is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Emoji Crush work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "jsurrea-maze-online",
+      "title": "Maze Online",
+      "tagline": "Find the way out before the walls close in.",
+      "description": "The Maze Online Game is a maze challenge with multiple levels, featuring retro aesthetics and simple controls.",
+      "category": "brain",
+      "accent": "hsl(92 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/jsurrea-maze-online/index.html"
+      },
+      "credit": {
+        "author": "jsurrea",
+        "licence": "MIT",
+        "source": "https://github.com/jsurrea/Maze-Online"
+      },
+      "keywords": [
+        "maze online game",
+        "play maze online online",
+        "free maze online",
+        "online maze game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next junction.",
+        "Reach the way out without getting stuck in a dead end."
+      ],
+      "faq": [
+        {
+          "q": "Is Maze Online free to play?",
+          "a": "Yes. Maze Online is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Maze Online work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "apoorvdarshan-zombie-game",
+      "title": "Zombie",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Fully playable 3D zombie survival FPS, featuring dynamic waves, dual weapons and modern UI.",
+      "category": "arcade",
+      "accent": "hsl(312 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/apoorvdarshan-zombie-game/index.html"
+      },
+      "credit": {
+        "author": "apoorvdarshan",
+        "licence": "MIT",
+        "source": "https://github.com/apoorvdarshan/zombie-game"
+      },
+      "keywords": [
+        "zombie game",
+        "play zombie online",
+        "free zombie",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Zombie free to play?",
+          "a": "Yes. Zombie is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Zombie work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "presiyannnn-cbba-6890",
+      "title": "Cbba 6890",
+      "tagline": "Find the way out before the walls close in.",
+      "description": "Find the route through the walls, remember the dead ends and make your way to the exit.",
+      "category": "brain",
+      "accent": "hsl(20 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/presiyannnn-cbba-6890/doc/html/index.html"
+      },
+      "credit": {
+        "author": "presiyannnn",
+        "licence": "MIT",
+        "source": "https://github.com/presiyannnn/CBBA-6890"
+      },
+      "keywords": [
+        "cbba 6890 game",
+        "play cbba 6890 online",
+        "free cbba 6890",
+        "online maze game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next junction.",
+        "Reach the way out without getting stuck in a dead end."
+      ],
+      "faq": [
+        {
+          "q": "Is Cbba 6890 free to play?",
+          "a": "Yes. Cbba 6890 is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Cbba 6890 work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "eslamashhraf-flappy-bird-game",
+      "title": "Flappy Bird (EslamAsHhraf)",
+      "tagline": "Run, jump and reach the end of the level.",
+      "description": "Flappy Bird is a side-scrolling mobile game featuring 2D retro style graphics.",
+      "category": "arcade",
+      "accent": "hsl(313 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/eslamashhraf-flappy-bird-game/index.html"
+      },
+      "credit": {
+        "author": "EslamAsHhraf",
+        "licence": "MIT",
+        "source": "https://github.com/EslamAsHhraf/Flappy-Bird-Game"
+      },
+      "keywords": [
+        "flappy bird game",
+        "play flappy bird online",
+        "free flappy bird",
+        "online platform game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Jump with Space or the up arrow.",
+        "Swipe up on a phone to jump, and swipe left or right to run."
+      ],
+      "faq": [
+        {
+          "q": "Is Flappy Bird free to play?",
+          "a": "Yes. Flappy Bird is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Flappy Bird work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "prarambha369-shiny-octo",
+      "title": "Shiny Octo",
+      "tagline": "Tap to flap and thread every gap.",
+      "description": "Tap to keep the bird in the air, thread every gap and see how far one run will take you.",
+      "category": "arcade",
+      "accent": "hsl(320 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/prarambha369-shiny-octo/index.html"
+      },
+      "credit": {
+        "author": "Prarambha369",
+        "licence": "MIT",
+        "source": "https://github.com/Prarambha369/shiny-octo"
+      },
+      "keywords": [
+        "shiny octo game",
+        "play shiny octo online",
+        "free shiny octo",
+        "online one-button game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Tap the screen or press Space to flap.",
+        "Pass through each gap without touching the edges.",
+        "Press R to start again after a crash."
+      ],
+      "faq": [
+        {
+          "q": "Is Shiny Octo free to play?",
+          "a": "Yes. Shiny Octo is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Shiny Octo work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "joshi-07-mini-arcade-game",
+      "title": "Mini Arcade",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(161 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/joshi-07-mini-arcade-game/index.html"
+      },
+      "credit": {
+        "author": "joshi-07",
+        "licence": "MIT",
+        "source": "https://github.com/joshi-07/mini_arcade_game"
+      },
+      "keywords": [
+        "mini arcade game",
+        "play mini arcade online",
+        "free mini arcade",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Mini Arcade free to play?",
+          "a": "Yes. Mini Arcade is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Mini Arcade work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "oceanm42-galaxy-zone-arcade",
+      "title": "Galaxy Zone Arcade",
+      "tagline": "Clear the maze while the ghosts hunt you down.",
+      "description": "Sal's Galaxy Zone Arcade - 15 classic arcade games recreated with AI collaboration.",
+      "category": "classics",
+      "accent": "hsl(252 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/oceanm42-galaxy-zone-arcade/index.html"
+      },
+      "credit": {
+        "author": "oceanm42",
+        "licence": "MIT",
+        "source": "https://github.com/oceanm42/galaxy-zone-arcade"
+      },
+      "keywords": [
+        "galaxy zone arcade game",
+        "play galaxy zone arcade online",
+        "free galaxy zone arcade",
+        "online pacman game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next corner.",
+        "Eat every dot in the maze and keep away from the ghosts."
+      ],
+      "faq": [
+        {
+          "q": "Is Galaxy Zone Arcade free to play?",
+          "a": "Yes. Galaxy Zone Arcade is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Galaxy Zone Arcade work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "yunohost-apps-cubiks-2048-ynh",
+      "title": "Cubiks 2048 Ynh",
+      "tagline": "Slide, merge and build the biggest number on the board.",
+      "description": "Slide the whole board with each move, merge matching numbers and build the largest tile you can.",
+      "category": "puzzle",
+      "accent": "hsl(81 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/yunohost-apps-cubiks-2048-ynh/sources/index.html"
+      },
+      "credit": {
+        "author": "YunoHost-Apps",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/YunoHost-Apps/Cubiks-2048_ynh"
+      },
+      "keywords": [
+        "cubiks 2048 ynh game",
+        "play cubiks 2048 ynh online",
+        "free cubiks 2048 ynh",
+        "online number puzzle game",
+        "puzzle game"
+      ],
+      "howToPlay": [
+        "Slide every tile with the arrow keys, or use the on-screen pad.",
+        "Two tiles with the same number merge into one when they meet.",
+        "Swipe on a phone to send the whole board that way."
+      ],
+      "faq": [
+        {
+          "q": "Is Cubiks 2048 Ynh free to play?",
+          "a": "Yes. Cubiks 2048 Ynh is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Cubiks 2048 Ynh work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "starciad-starzombiechase",
+      "title": "Star Zombie Chase",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Puzzle game where the objective is to escape from zombies and collect items.",
+      "category": "puzzle",
+      "accent": "hsl(60 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/starciad-starzombiechase/index.html"
+      },
+      "credit": {
+        "author": "Starciad",
+        "licence": "MIT",
+        "source": "https://github.com/Starciad/StarZombieChase"
+      },
+      "keywords": [
+        "star zombie chase game",
+        "play star zombie chase online",
+        "free star zombie chase",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Star Zombie Chase free to play?",
+          "a": "Yes. Star Zombie Chase is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Star Zombie Chase work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "allysonjeronimo-breakout-js",
+      "title": "Breakout (Allysonjeronimo)",
+      "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
+      "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
+      "category": "arcade",
+      "accent": "hsl(217 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/allysonjeronimo-breakout-js/index.html"
+      },
+      "credit": {
+        "author": "allysonjeronimo",
+        "licence": "MIT",
+        "source": "https://github.com/allysonjeronimo/breakout-js"
+      },
+      "keywords": [
+        "breakout game",
+        "play breakout online",
+        "free breakout",
+        "online brick breaker game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Slide the paddle with the left and right arrows, or use the on-screen pad.",
+        "Bounce the ball into the bricks without letting it past you.",
+        "Clear every brick to finish the wall and move on."
+      ],
+      "faq": [
+        {
+          "q": "Is Breakout free to play?",
+          "a": "Yes. Breakout is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Breakout work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "motasimmakki-snake-game-in-javascript",
+      "title": "Snake Game",
+      "tagline": "Eat, grow and keep clear of your own tail.",
+      "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
+      "category": "arcade",
+      "accent": "hsl(207 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/motasimmakki-snake-game-in-javascript/snakeGame.html"
+      },
+      "credit": {
+        "author": "motasimmakki",
+        "licence": "MIT",
+        "source": "https://github.com/motasimmakki/Snake-Game-in-JavaScript"
+      },
+      "keywords": [
+        "snake game game",
+        "play snake game online",
+        "free snake game",
+        "online snake game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Steer with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the snake a new direction.",
+        "Eat the food, grow longer and never touch the walls or your own tail."
+      ],
+      "faq": [
+        {
+          "q": "Is Snake Game free to play?",
+          "a": "Yes. Snake Game is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Snake Game work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "menardi-tube-quiz",
+      "title": "Tube Quiz",
+      "tagline": "Answer the questions and see how much you know.",
+      "description": "Test your knowledge of London's Underground stations with this game.",
+      "category": "word",
+      "accent": "hsl(53 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/menardi-tube-quiz/index.html"
+      },
+      "credit": {
+        "author": "Menardi",
+        "licence": "MIT",
+        "source": "https://github.com/Menardi/tube-quiz"
+      },
+      "keywords": [
+        "tube quiz game",
+        "play tube quiz online",
+        "free tube quiz",
+        "online quiz game",
+        "word game"
+      ],
+      "howToPlay": [
+        "Pick an answer with a tap or a click.",
+        "Move between answers with the arrow keys or the on-screen pad.",
+        "Every correct answer adds to your score, and the questions keep coming."
+      ],
+      "faq": [
+        {
+          "q": "Is Tube Quiz free to play?",
+          "a": "Yes. Tube Quiz is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Tube Quiz work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "hanaasagi-pinball-game",
+      "title": "Pinball (Hanaasagi)",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(251 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/hanaasagi-pinball-game/release/index.html"
+      },
+      "credit": {
+        "author": "Hanaasagi",
+        "licence": "MIT",
+        "source": "https://github.com/Hanaasagi/pinball-game"
+      },
+      "keywords": [
+        "pinball game",
+        "play pinball online",
+        "free pinball",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Pinball free to play?",
+          "a": "Yes. Pinball is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Pinball work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "brianali-codes-frapp-giveaways",
+      "title": "Frapp Giveaways",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Video Game Giveaways at the palm of your hand, uses the Gamepower Api to gather giveaways from various web stores.",
+      "category": "arcade",
+      "accent": "hsl(248 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/brianali-codes-frapp-giveaways/index.html"
+      },
+      "credit": {
+        "author": "Brianali-codes",
+        "licence": "MIT",
+        "source": "https://github.com/Brianali-codes/FRAPP-GIVEAWAYS"
+      },
+      "keywords": [
+        "frapp giveaways game",
+        "play frapp giveaways online",
+        "free frapp giveaways",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Frapp Giveaways free to play?",
+          "a": "Yes. Frapp Giveaways is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Frapp Giveaways work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "robyt3-maze",
+      "title": "Maze (Robyt3)",
+      "tagline": "Find the way out before the walls close in.",
+      "description": "Interactive maze, map and camouflage generation. Play free in your browser, with no download and no account.",
+      "category": "brain",
+      "accent": "hsl(57 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/robyt3-maze/index.html"
+      },
+      "credit": {
+        "author": "Robyt3",
+        "licence": "MIT",
+        "source": "https://github.com/Robyt3/maze"
+      },
+      "keywords": [
+        "maze game",
+        "play maze online",
+        "free maze",
+        "online maze game",
+        "brain game"
+      ],
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next junction.",
+        "Reach the way out without getting stuck in a dead end."
+      ],
+      "faq": [
+        {
+          "q": "Is Maze free to play?",
+          "a": "Yes. Maze is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Maze work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "dinizdev-pongmaster",
+      "title": "Pong Master",
+      "tagline": "Keep the ball in play and return every shot.",
+      "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
+      "category": "classics",
+      "accent": "hsl(244 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/dinizdev-pongmaster/index.html"
+      },
+      "credit": {
+        "author": "dinizdev",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/dinizdev/PongMaster"
+      },
+      "keywords": [
+        "pong master game",
+        "play pong master online",
+        "free pong master",
+        "online pong game",
+        "classics game"
+      ],
+      "howToPlay": [
+        "Move your paddle with the up and down arrows, or use the on-screen pad.",
+        "Swipe up or down on a phone to move the paddle.",
+        "Return the ball past your opponent to win the point."
+      ],
+      "faq": [
+        {
+          "q": "Is Pong Master free to play?",
+          "a": "Yes. Pong Master is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Pong Master work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "deveah-amuleta",
+      "title": "Amuleta",
+      "tagline": "One life, a fresh dungeon and a fight to the last floor.",
+      "description": "Take one life into a fresh dungeon, fight what you meet and see how deep you can get.",
+      "category": "strategy",
+      "accent": "hsl(81 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/deveah-amuleta/docs/index.html"
+      },
+      "credit": {
+        "author": "deveah",
+        "licence": "MIT",
+        "source": "https://github.com/deveah/amuleta"
+      },
+      "keywords": [
+        "amuleta game",
+        "play amuleta online",
+        "free amuleta",
+        "online dungeon game",
+        "strategy game"
+      ],
+      "howToPlay": [
+        "Move one square at a time with the arrow keys, or use the on-screen pad.",
+        "Walk into a monster to attack it and step on an item to pick it up.",
+        "Swipe on a phone to move one square at a time."
+      ],
+      "faq": [
+        {
+          "q": "Is Amuleta free to play?",
+          "a": "Yes. Amuleta is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Amuleta work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "wetwareworks-euglenaarcade",
+      "title": "Euglena Arcade",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(93 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/wetwareworks-euglenaarcade/index.html"
+      },
+      "credit": {
+        "author": "Wetwareworks",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/Wetwareworks/EuglenaArcade"
+      },
+      "keywords": [
+        "euglena arcade game",
+        "play euglena arcade online",
+        "free euglena arcade",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Euglena Arcade free to play?",
+          "a": "Yes. Euglena Arcade is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Euglena Arcade work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "rahix-alien-invaders",
+      "title": "Alien Invaders",
+      "tagline": "Hold the line and clear the sky, wave after wave.",
+      "description": "Tower defence game where you have to protect your base against incoming UFOs.",
+      "category": "strategy",
+      "accent": "hsl(37 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/rahix-alien-invaders/index.html"
+      },
+      "credit": {
+        "author": "Rahix",
+        "licence": "GPL-2.0",
+        "source": "https://github.com/Rahix/Alien-Invaders"
+      },
+      "keywords": [
+        "alien invaders game",
+        "play alien invaders online",
+        "free alien invaders",
+        "online space shooter game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Clear each wave before it reaches the bottom of the screen."
+      ],
+      "faq": [
+        {
+          "q": "Is Alien Invaders free to play?",
+          "a": "Yes. Alien Invaders is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Alien Invaders work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "tiddly-gittly-tiddlywiki-game-2048",
+      "title": "Tiddlywiki Game 2048",
+      "tagline": "Slide, merge and build the biggest number on the board.",
+      "description": "Slide the whole board with each move, merge matching numbers and build the largest tile you can.",
+      "category": "puzzle",
+      "accent": "hsl(173 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/tiddly-gittly-tiddlywiki-game-2048/tw-2048-Gatha.html"
+      },
+      "credit": {
+        "author": "tiddly-gittly",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/tiddly-gittly/tiddlywiki-game-2048"
+      },
+      "keywords": [
+        "tiddlywiki game 2048 game",
+        "play tiddlywiki game 2048 online",
+        "free tiddlywiki game 2048",
+        "online number puzzle game",
+        "puzzle game"
+      ],
+      "howToPlay": [
+        "Slide every tile with the arrow keys, or use the on-screen pad.",
+        "Two tiles with the same number merge into one when they meet.",
+        "Swipe on a phone to send the whole board that way."
+      ],
+      "faq": [
+        {
+          "q": "Is Tiddlywiki Game 2048 free to play?",
+          "a": "Yes. Tiddlywiki Game 2048 is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Tiddlywiki Game 2048 work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "mcsdwvl-to11",
+      "title": "To 11",
+      "tagline": "Slide, merge and build the biggest number on the board.",
+      "description": "To11 is a 2048 variant which makes the game more puzzle. Runs in your browser, free, with no download and no sign-up.",
+      "category": "puzzle",
+      "accent": "hsl(354 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/mcsdwvl-to11/index.html"
+      },
+      "credit": {
+        "author": "MCSDWVL",
+        "licence": "MIT",
+        "source": "https://github.com/MCSDWVL/to11"
+      },
+      "keywords": [
+        "to 11 game",
+        "play to 11 online",
+        "free to 11",
+        "online number puzzle game",
+        "puzzle game"
+      ],
+      "howToPlay": [
+        "Slide every tile with the arrow keys, or use the on-screen pad.",
+        "Two tiles with the same number merge into one when they meet.",
+        "Swipe on a phone to send the whole board that way."
+      ],
+      "faq": [
+        {
+          "q": "Is To 11 free to play?",
+          "a": "Yes. To 11 is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does To 11 work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "alibahrami2001-tetris-ocean",
+      "title": "Tetris Ocean",
+      "tagline": "Stack the falling blocks and clear every line.",
+      "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
+      "category": "puzzle",
+      "accent": "hsl(170 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/alibahrami2001-tetris-ocean/index.html"
+      },
+      "credit": {
+        "author": "alibahrami2001",
+        "licence": "MIT",
+        "source": "https://github.com/alibahrami2001/Tetris-ocean"
+      },
+      "keywords": [
+        "tetris ocean game",
+        "play tetris ocean online",
+        "free tetris ocean",
+        "online block puzzle game",
+        "arcade game"
+      ],
+      "howToPlay": [
+        "Move with the left and right arrows, rotate with the up arrow.",
+        "Soft-drop with the down arrow and hard-drop with Space.",
+        "Fill a whole row across the board to clear it and keep the stack low."
+      ],
+      "faq": [
+        {
+          "q": "Is Tetris Ocean free to play?",
+          "a": "Yes. Tetris Ocean is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Tetris Ocean work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "thinksink-snakeyexample",
+      "title": "Snakey",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(57 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/thinksink-snakeyexample/Snakey.html"
+      },
+      "credit": {
+        "author": "ThinkSink",
+        "licence": "MIT",
+        "source": "https://github.com/ThinkSink/SnakeyExample"
+      },
+      "keywords": [
+        "snakey game",
+        "play snakey online",
+        "free snakey",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Snakey free to play?",
+          "a": "Yes. Snakey is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Snakey work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "meshko-scorched-earth-2000",
+      "title": "Scorched Earth 2000",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "category": "arcade",
+      "accent": "hsl(307 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/meshko-scorched-earth-2000/web/index.html"
+      },
+      "credit": {
+        "author": "meshko",
+        "licence": "GPL-3.0",
+        "source": "https://github.com/meshko/Scorched-Earth-2000"
+      },
+      "keywords": [
+        "scorched earth 2000 game",
+        "play scorched earth 2000 online",
+        "free scorched earth 2000",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Scorched Earth 2000 free to play?",
+          "a": "Yes. Scorched Earth 2000 is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Scorched Earth 2000 work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
+    },
+    {
+      "id": "nicksto-assemblo",
+      "title": "Assemblo",
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Teaching de novo assembly through a puzzle game. Free to play in your browser, with no download and no sign-up.",
+      "category": "puzzle",
+      "accent": "hsl(230 85% 62%)",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/nicksto-assemblo/index.html"
+      },
+      "credit": {
+        "author": "NickSto",
+        "licence": "GPL-2.0",
+        "source": "https://github.com/NickSto/assemblo"
+      },
+      "keywords": [
+        "assemblo game",
+        "play assemblo online",
+        "free assemblo",
+        "online quick game",
+        "sandbox game"
+      ],
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "Is Assemblo free to play?",
+          "a": "Yes. Assemblo is free to play in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Does Assemblo work on a phone?",
+          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
+        }
+      ],
+      "related": [
+        "gabrielecirulli-2048",
+        "mumuy-pacman",
+        "phoboslab-underrun"
+      ]
     }
   ]
 }

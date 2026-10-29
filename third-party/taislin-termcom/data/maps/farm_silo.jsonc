@@ -1,0 +1,25 @@
+{
+  "description": "Farm silo map chunk",
+  "height": 7,
+  "id": "farm_silo",
+  "no_rotate": true,
+  "rows": [
+    ".....",
+    ".....",
+    ".WWW.",
+    ".WWW.",
+    ".WWW.",
+    ".W.W.",
+    "....."
+  ],
+  "tags": [
+    "farm"
+  ],
+  "terrain": {
+    ".": "TileGrass",
+    "W": "TileWall",
+    "T": "TileTimber"
+  },
+  "weight": 2,
+  "width": 5
+}

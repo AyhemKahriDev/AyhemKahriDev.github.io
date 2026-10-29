@@ -1,0 +1,16 @@
+{
+  "repo": "DidulaGamage-lk/Nebula-Siege--Vx.001",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 191,
+  "pushedAt": "2026-07-16T11:29:13Z",
+  "description": "An advanced arcade space shooter built with vanilla HTML5 Canvas + JavaScript no engine, no dependencies, no build step. Just open index.html and play.",
+  "defaultBranch": "main",
+  "owner": "DidulaGamage-lk",
+  "slug": "didulagamage-lk-nebula-siege-vx-001",
+  "dest": "third-party/didulagamage-lk-nebula-siege-vx-001",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

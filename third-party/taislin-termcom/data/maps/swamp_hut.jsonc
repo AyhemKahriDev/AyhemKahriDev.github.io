@@ -1,0 +1,31 @@
+{
+  "id": "swamp_hut",
+  "description": "Swamp hut map chunk",
+  "weight": 1,
+  "tags": [
+    "swamp"
+  ],
+  "width": 9,
+  "height": 9,
+  "rows": [
+    "ddaeddgdd",
+    "dgeeeeggd",
+    "dehbhhedd",
+    "dehcchfad",
+    "dehbhhfdd",
+    "eeeeeeeed",
+    "dffegdggd",
+    "ddfdddadd",
+    "ddddddddd"
+  ],
+  "terrain": {
+    "a": "TileBush",
+    "b": "TileDoor",
+    "c": "TileFloor",
+    "d": "TileMarsh",
+    "e": "TileMud",
+    "f": "TileTimber",
+    "g": "TileVine",
+    "h": "TileWall"
+  }
+}

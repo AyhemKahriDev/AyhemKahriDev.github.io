@@ -1,0 +1,16 @@
+{
+  "repo": "jsurrea/Maze-Online",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 26,
+  "pushedAt": "2023-11-20T20:29:32Z",
+  "description": "The Maze Online Game is a web-based maze challenge with multiple levels, featuring retro aesthetics and simple controls. Players navigate mazes, avoiding obstacles, and strive for the best completion time.",
+  "defaultBranch": "main",
+  "owner": "jsurrea",
+  "slug": "jsurrea-maze-online",
+  "dest": "third-party/jsurrea-maze-online",
+  "readme": "# Maze-Online\n\nWelcome to the Maze Online Game! This simple web-based game challenges you to navigate through mazes, avoid obstacles, and reach the goal. The game is built using HTML, CSS, and JavaScript. Play this game [here](https://jsurrea.github.io/Maze-Online/) 👈\n\n![Game footage](https://user-images.githubusercontent.com/68788933/229954640-2680a539-cf6e-4e80-af75-12441e093c5b.png)\n![Captura de Pantalla 2023-11-20 a la(s) 3 27 34 p m](https://github.com/jsurrea/Maze-Online/assets/68788933/36a30fd2-52f5-4c38-8f2c-470d3a7e239c)\n![Captura de Pantalla 2023-11-20 a la(s) 3 28 26 p m](https://github.com/jsurrea/Maze-Online/assets/68788933/b8b8524a-3a0c-436b-a87c-683b2254dd1c)\n![Captura de Pantalla 2023-11-20 a la(s) 3 29 20 p m](https://github.com/jsurrea/Maze-Online/assets/68788933/85f32575-f5e3-46bf-b47f-539bad5386c4)\n\n\n## How to Play\n\n1. **Objective:** Reach the goal represented by the 🎁 emoji while avoiding obstacles (🌳) and staying within the maze boundaries.\n2. **Controls:**\n  - On desktop, use the arrow keys to move the player (🏃‍♂️).\n  - On mobile, touch the directional buttons to navigate.\n3. **Lives:** You start with 3 lives (❤️). Colliding with obstacles (🌳) reduces your lives. If you run out of lives, you lose.\n4. **Winning:** Complete all levels to win the game! Your time is recorded, and you can compete to achieve the best time.\n\n## Levels\n\nThe game includes multiple levels, each represented by a unique maze. As you progress, the mazes become more challenging.\n\n## Modal Windows\n\n- **Rules Modal:** Explains the game rules and controls. Press \"ENTER\" or touch the screen to start the game.\n- **Win Modal:** Displays when you successfully complete all levels. Shows your score and best time.\n- **Lose Modal:** Appears when you run out of lives. Displays the level reached and encourages you to try again.\n\n## Project Structure\n\n- **game.js:** The main JavaScript file containing the game logic.\n- **index.html:** The HTML file with the game layout and modals.\n- **maps.js:** Defines different maze levels using a 10x10 grid.\n- **styles.css:** The stylesheet for styling the game interface.\n\n## How to Run\n\n1. Clone or download the project files.\n2. Open the `index.html` file in a web browser.\n3. Create new mazes in `maps.js`.\n\n## Dependencies\n\n- Google Fonts (Press Start 2P): Used for the retro gaming font.\n- SVG Icons: Arrow icons for directional buttons.\n\n## Contribute\n\nEnjoy playing the Maze Online Game! If you encounter any issues or have suggestions for improvement, feel free to contribute or provide feedback.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

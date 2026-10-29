@@ -1,0 +1,16 @@
+{
+  "repo": "son-link/EntroPipes",
+  "stars": 3,
+  "licence": "GPL-3.0",
+  "sizeKB": 2563,
+  "pushedAt": "2017-10-18T17:31:55Z",
+  "description": "EntroPipes is a puzzle type game. Simply connect all pipes. For Linux, Windows and Web browsers",
+  "defaultBranch": "master",
+  "owner": "son-link",
+  "slug": "son-link-entropipes",
+  "dest": "third-party/son-link-entropipes",
+  "readme": "# EntroPipes\n\n![EntroPipes logo](img/logo.png)\n\nhttps://son-link.itch.io/entropipes\n\n© 2015 - 2017 Alfonso Saavedra \"Son Link\"\n\nhttp://son-link.github.io\n\nEntroPipes is a puzzle type game programing on [LUA](http://lua.org) and the framework [TIC-80](https://tic.computer/) for **Linux**, **Windows** and Web Browsers.\n\nUnder **GPL 3** license\n\nBased on original idea of [Z80St Software](https://sites.google.com/site/z80stsoftware)\n\n## Installation:\nSimply download the correct archive for your system, extract and double click on the executable.\n\n## Download:\n* [Last releases](https://github.com/son-link/EntroPipes/releases)\n* [Itch.io](https://son-link.itch.io/entropipes)\n* or [play online](https://tic.computer/play?cart=246)\n\n## How to play:\n\nIn the main menu select option using **Up/Down** keys (default **Up/Down arrows** on your keyboard), and **Left/Right** (default **Left/Right arrows** on your keyboard for select puzzle size. In game is used for move the cursor.\n\nPress **A** button (**Z** in keyboard) in the main menu for . In game rotate the selected pipe.\n\nIn game press **X** button (**A** in keyboard) for pause/play game\n\nPress **Scape** on Linux/Windows or **Back button** on Android to show pause menu on game or resolve puzlle. On main menu exit directly. On anoher options return to main menu.\n\nThe game will automatically pause when it loses focus (changed window or app) or is minimized.\n\n## Captures:\n### Main Screen:\n![Main Screen](main_screen.png)\n\n### In game video:\n![in game video](entropipes-record.gif)\n\n\n## Puzzle editor:\n\nThe puzzle editor is write on HTML and Javascript and based on the original puzzle ediotor make by Z80St. Simply open **editor.html** on your favorite web browser (tested on **Firefox** and **Chrome**) or use the online versions avaliable on my [blog](http://son-link.github.io/entropipes_editor/) and send to my email account, create a new issue or send push merge.\n\n\n## Other credits:\n\n[TIC-80](https://github.com/nesbox/TIC-80) is a fantasy computer for making, playing and sharing tiny games\n\nTIC-80 is under the MIT license. (C) 2017 Nesbox\n\nFont icon for the editor make with [Fontello](http://fontello.com)\n",
+  "licenceFile": "LICENSE",
+  "entry": "editor.html",
+  "validated": true
+}

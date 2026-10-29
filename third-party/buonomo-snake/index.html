@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Another snake game - by Ulysse Buonomo</title>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
+    <style>
+        body {
+            margin: auto;
+            width: 602px;
+            padding-top: 60px;
+        }
+        canvas {
+            border: 1px solid black;
+        }
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        button, a {
+            border: 1px solid black;
+            font-size: initial;
+            padding: 2px 7px;
+            text-decoration: none;
+            color: black;
+        }
+
+        button:not(:disabled):hover, a:hover {
+            cursor: pointer;
+            background: black;
+            color: white;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .small {
+            width: 200px;
+            height: 24px;
+        }
+
+        .gh-ico {
+            margin-bottom: -2px;
+            display: inline-block;
+            width: 16px;
+            height: 16px;
+            background: url('gh.png');
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            margin-right: 4px;
+        }
+
+        a:hover > .gh-ico {
+            background-image: url('gh-light.png');
+        }
+
+        #response {
+            border: 1px solid black;
+            width: 600px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <a href="https://github.com/buonomo/snake/"><span class="gh-ico"></span> star<span id="stars"></span></a>
+    <button id="online" hidden>play online</button>
+</div>
+<canvas id="game" width="600" height="400"></canvas>
+<div class="container">
+    <span class="container small">
+        <div> score: <span id="score">0</span></div>
+        <div>best: <span id="best">..</span></div>
+    </span>
+    <button id="restart" hidden>try again</button>
+</div>
+<textarea id="response" placeholder="insert response here to ensure connection" hidden></textarea>
+<script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+<script src="index.js" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "repo": "narenkannan/breakout2dgame",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 39,
+  "pushedAt": "2017-07-08T02:27:39Z",
+  "description": "2D breakout game (Pure JavaScript/CommonJs/AMD/ES6)",
+  "defaultBranch": "master",
+  "owner": "narenkannan",
+  "slug": "narenkannan-breakout2dgame",
+  "dest": "third-party/narenkannan-breakout2dgame",
+  "readme": "# Breakout 2D Game\n\n## 2D breakout game (Pure JavaScript/CommonJs/AMD/ES6)\n\n#### The content in this repo is extracted from \n\nhttps://developer.mozilla.org/en-US/docs/Games/Tutorials/2D_Breakout_game_pure_JavaScript\n\n#### Source Link :\n\nhttps://github.com/end3r/Gamedev-Canvas-workshop/blob/gh-pages/lesson10.html\n\nThe purpose of this repo is to convert the breakout game(2D) from pure Javascript to Javascript modular programming using CommonJS, AMD  & ES6 modules formats.\n\n#### This repo doesnt contains information on\n\n* Game development\n* Core Javascript and syntax.\n\n#### Prerequisite:\n* Basic Javascript knowledge.\n\n# JavaScript Modules\n\n## Introduction\n\n  * What is Javascript ?\n  \n  * Javascript application in real life\n  \n  * What if there is no Javascript !\n  \n  * Javascript execution context\n  \n  * Rich Internet applications & Single page apps.\n  \n  * Understanding JavaScript modules\n  \n  * Native Javascript support for modules\n  \n  * Design Patterns to the rescue.\n  \n  * Module and Revealing Module pattern\n  \n  * AMD & CommonJs\n  \n  * Module loaders\n  \n  * ES6 Modules\n",
+  "licenceFile": "LICENSE",
+  "entry": "amd/index.html",
+  "validated": true
+}

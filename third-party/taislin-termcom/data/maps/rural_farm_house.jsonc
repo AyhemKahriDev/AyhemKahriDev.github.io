@@ -1,0 +1,26 @@
+{
+  "description": "Rural farm house map chunk",
+  "height": 5,
+  "id": "rural_farm_house",
+  "rows": [
+    "WWWWWWW",
+    "N.d.d.N",
+    "W..a..W",
+    "W.l.l.W",
+    "WWW+WWW"
+  ],
+  "tags": [
+    "rural"
+  ],
+  "terrain": {
+    "+": "TileDoor",
+    ".": "TileFloor",
+    "N": "TileWindow",
+    "W": "TileWall",
+    "a": "TileCabinet",
+    "d": "TileDesk",
+    "l": "TileLocker"
+  },
+  "weight": 1,
+  "width": 7
+}

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Asteroid Blaster — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Asteroid Blaster</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      1979, and suddenly every kid in Portland had rock dust in their veins.
+      I had two Asteroids machines the year I opened, side by side, and I
+      remember a kid named Denny who wired himself up on cherry cola and
+      wouldn't leave the hyperspace button alone. Blinked himself right into
+      a rock more than once. I told him that button wasn't a "get out of
+      trouble free" card. He didn't believe me until his ship went up like a
+      firework, right in front of his girlfriend. Never lived it down.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The old version just added a little push to the ship's speed every
+      tick and called it done. This time the crew showed me real inertia —
+      thrust builds up your velocity, and there's a gentle drag pulling you
+      back down instead of a hard speed limit, so drifting through a rock
+      field actually feels like drifting, not driving. They also gave the
+      rocks proper jagged shapes instead of plain circles, put in a real
+      "wave" system so the field gets meaner as you clear it, and wired
+      hyperspace to actually be a gamble again — teleport across the screen,
+      but there's a real chance it rattles your engine apart. That part's
+      exactly how I remember it hurting Denny.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build Asteroids against our GZ engine. Ship needs real inertia —
+thrust and drift, not a fixed speed — with rotate on left/right,
+thrust on up, and a retro-brake on down. Fire up to four bullets
+at once, and hyperspace should teleport me somewhere random with
+a real chance of blowing up. Big rocks split into mediums, mediums
+into smalls. Saucers should cross the field on a timer and shoot
+back. Give me an extra ship every 10,000 points and make every
+hit and every death feel like something happened.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The ship's velocity is a running total that thrust adds to and drag
+        quietly subtracts from every tick, scaled by <code>dt</code> — that's
+        the difference between "sliding" and "walking."</li>
+      <li>Every rock, bullet, saucer, and the ship itself wraps at the four
+        screen edges the same way, so the field feels like it loops instead
+        of being a box.</li>
+      <li>Saucers get worse odds the higher the wave — the small ones aim
+        closer to dead-on as the level climbs, same as the big machines used
+        to ramp up the heat on you.</li>
+      <li>Hyperspace rolls its own dice every time you use it — about one
+        try in seven ends in an explosion instead of a clean teleport.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Asteroid Blaster</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

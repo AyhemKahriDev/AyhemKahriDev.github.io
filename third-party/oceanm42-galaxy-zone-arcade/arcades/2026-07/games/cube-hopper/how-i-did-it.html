@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Cube Hopper — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Cube Hopper</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      1982 — the golden year, and this was the machine with the weird little
+      orange guy with the nose. I never could say his name right on the
+      marquee lights so I just called it "the cube game" and everybody knew
+      what I meant. Had a cabinet up front where somebody, I never did find
+      out who, carved a tiny snake into the side panel with a pocketknife.
+      I sanded most of it down over the years. Left a little bit of the tail.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      Cleaning this one up meant fixing the hop — it used to just be a flat
+      "add 0.2 every frame" counter that had nothing to do with real time, so
+      it sped up and slowed down depending on the computer. Now it's a proper
+      tween measured in actual seconds, same everywhere. The crew also built
+      in something I didn't ask for and am very happy about: if you tap the
+      next direction while you're still mid-hop, it remembers it and fires
+      the second you land, so your thumbs never feel like they're fighting
+      the game. And they gave Coily real chase logic instead of a random
+      walk — he actually reads where you are and picks the hop that gets him
+      closer. Rude, but fair.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build our Q*bert game on the shared engine. Isometric pyramid, 28
+cubes, diagonal-only hops — up is up-right, left is up-left, right
+is down-right, down is down-left, exactly like that. Hopping a cube
+changes its color toward a target; once we're a few levels in,
+hopping a finished cube should undo it, the classic frustration.
+Red balls bounce down at random, a purple ball hatches into Coily
+who actually chases the player hop for hop, and a green ball freezes
+everything if you catch it. Floating discs beside the pyramid edge
+should carry you to the top if you hop off the right spot — and if
+Coily's chasing when you do it, he should fall to his death instead
+of you.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>Every cube's screen position comes out of one formula based on its
+        row and column — no hand-placed coordinates, which is the only
+        reason I trusted myself to get 28 of them lined up straight.</li>
+      <li>Coily picks his next hop by checking which of his four possible
+        diagonal moves lands closest to wherever you currently are — simple
+        math, but it's what makes him feel like he's actually hunting you.</li>
+      <li>The floating discs only work from one exact cube and one exact
+        direction — hop off the wrong edge and it's just a long fall, same
+        as it should be.</li>
+      <li>Everything — your hop, the enemies' hops, the freeze timer — is
+        measured in real seconds of elapsed time, so the game can't
+        accidentally get easier or harder just because a browser tab is
+        having a slow day.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Cube Hopper</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

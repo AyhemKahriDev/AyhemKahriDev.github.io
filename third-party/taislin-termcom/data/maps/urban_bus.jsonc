@@ -1,0 +1,20 @@
+{
+  "description": "Urban bus map chunk",
+  "id": "urban_bus",
+  "no_rotate": true,
+  "width": 5,
+  "height": 2,
+  "rows": [
+    "abbba",
+    "c.c.c"
+  ],
+  "terrain": {
+    "a": "TileBusEnd",
+    "b": "TileBusMid",
+    "c": "TileWheelSmall"
+  },
+  "tags": [
+    "urban"
+  ],
+  "weight": 2
+}

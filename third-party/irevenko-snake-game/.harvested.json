@@ -1,0 +1,16 @@
+{
+  "repo": "irevenko/snake-game",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 5,
+  "pushedAt": "2020-04-08T07:48:13Z",
+  "description": "🐍 A Classic Snake Game using VanillaJS",
+  "defaultBranch": "master",
+  "owner": "irevenko",
+  "slug": "irevenko-snake-game",
+  "dest": "third-party/irevenko-snake-game",
+  "readme": "# Snake Game 🐍\nMade this little game for Web Dev College labs to learn VanillaJS\n\n# Demo 🔍\n<img src=\"https://i.imgur.com/2TxfY7e.gif\" width=\"500\" height=\"300\">\n\n# Quick Start 🚀\n```git clone https://github.com/irevenko/snake-game.git```<br>\n```cd snake-game```<br>\n```open public/index.html in your browser, move with Arrows```\n\n# What I Learned 🧠\n* HTML Canvas\n* Some JS OOP\n* Basic Game Dev (a little bit of Geometry and Algebra)\n* window Object\n\n# License 📑 \n(c) 2020 Ilya Revenko. [MIT License](https://tldrlegal.com/license/mit-license)\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html",
+  "validated": true
+}

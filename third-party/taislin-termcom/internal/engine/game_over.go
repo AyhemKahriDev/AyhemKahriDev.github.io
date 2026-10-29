@@ -1,0 +1,45 @@
+package engine
+
+import (
+	"github.com/taislin/termcom/internal/language"
+	"github.com/gdamore/tcell/v3"
+)
+
+type GameOverScreen struct {
+	Game *Game
+	Won  bool
+	Stats string
+}
+
+func NewGameOverScreen(g *Game, won bool, stats string) *GameOverScreen {
+	return &GameOverScreen{
+		Game:  g,
+		Won:   won,
+		Stats: stats,
+	}
+}
+
+func (gos *GameOverScreen) Update() {}
+
+func (gos *GameOverScreen) Render(ctx *ScreenCtx) {
+	w, h := ctx.Size()
+	title := language.String("GAMEOVER_TITLE")
+	if gos.Won {
+		title = language.String("GAMEOVER_VICTORY")
+	}
+	ctx.DrawString(w/2-StringWidth(title)/2, h/2-2, title, StyleRedBold)
+	ctx.DrawString(w/2-StringWidth(gos.Stats)/2, h/2, gos.Stats, StyleDefault)
+	ctx.DrawString(w/2-10, h/2+2, language.String("GAMEOVER_PROMPT"), StyleGray)
+}
+
+func (gos *GameOverScreen) HandleKey(e *tcell.EventKey) {
+	if e.Key() == tcell.KeyEscape || e.Key() == tcell.KeyEnter || e.Str() == " " {
+		gos.Game.Quit()
+	}
+}
+
+func (gos *GameOverScreen) HandleMouse(e *tcell.EventMouse) {
+	if e.Buttons()&tcell.Button1 != 0 {
+		gos.Game.Quit()
+	}
+}

@@ -1,0 +1,16 @@
+{
+  "repo": "lionell/smart-pacmans",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 162,
+  "pushedAt": "2018-12-05T22:26:10Z",
+  "description": "Smart pacmans in Javascript",
+  "defaultBranch": "master",
+  "owner": "lionell",
+  "slug": "lionell-smart-pacmans",
+  "dest": "third-party/lionell-smart-pacmans",
+  "readme": "# smart-pacmans\nSmart pacmans in Javascript\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,2 +1,0 @@
-buttons.png: Pixel Gamepad Buttons by Andrew G. Crowell (eggboycolor)
-https://eggboycolor.itch.io/free-pixel-gamepad-buttons

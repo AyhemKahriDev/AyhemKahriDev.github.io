@@ -1,0 +1,16 @@
+{
+  "repo": "oceanm42/galaxy-zone-arcade",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 641,
+  "pushedAt": "2026-07-05T19:40:44Z",
+  "description": "🕹️ Sal's Galaxy Zone Arcade - 15 classic arcade games recreated with AI collaboration. Features authentic mechanics   (Pac-Man, Space Invaders, Asteroids, etc.), immersive storytelling, neon retro styling, and smart navigation. Built with HTML5 Canvas & vanilla JS. Insert coin to play! 🎮",
+  "defaultBranch": "master",
+  "owner": "oceanm42",
+  "slug": "oceanm42-galaxy-zone-arcade",
+  "dest": "third-party/oceanm42-galaxy-zone-arcade",
+  "readme": "# Sal's Galaxy Zone — Three Locations\n\n```\n   ______________________________________________\n  |  SAL'S  GALAXY  ZONE  ·  EST. 1978, PORTLAND |\n  |``````````````````````````````````````````````|\n  |   [No.1]        [No.2]         [No.3]        |\n  |  AUG 2025      MAR 2026       JUL 2026       |\n  |  ________      ________       ________       |\n  | |  OPEN  |    |  OPEN  |     |  OPEN  |      |\n  | |________|    |________|     |________|      |\n  |______________________________________________|\n```\n\nOne landing page, three complete arcades — every era of the Galaxy Zone,\nstill running.\n\n**🕹️ Play it live: [galaxyzonearcade.com](https://galaxyzonearcade.com/)**\n\n| Location | Era | Built with | Where |\n|---|---|---|---|\n| No. 1 — The Original | Aug 2025 | Claude (model lost to the register tape) | `arcades/2025-08/` |\n| No. 2 — The Second Location | Mar 2026 | Claude Opus 4.6 | `arcades/2026-03/` |\n| No. 3 — The Remodel ★ flagship | Jul 2026 | Claude Fable | `arcades/2026-07/` |\n\n## Run it\n\nOpen `index.html` — everything works straight from the file system, all three\nlocations. (Location No. 2 was built in the ES-modules era; its copy here was\nconverted to classic scripts so it runs from `file://` like the others.)\nPrefer a local server? `./start.sh` serves it all on http://localhost:8080.\n\n## What's in each arcade\n\n- **No. 1 (2025)** — the original 15 games, one afternoon of vibe coding.\n  Preserved exactly as the master branch shipped it.\n- **No. 2 (2026-03)** — 15 rebuilt games plus something locked in the back\n  room, on an early shared engine. Preserved as built.\n- **No. 3 (2026-07)** — the full remodel: 16 cabinets on one engine\n  (`engine/gz-*.js`), delta-time physics, touch controls, synthesized audio,\n  achievements, the story of Sal \"Pixel\" Martinez — and a crate that arrived\n  on a rainy Tuesday. See `arcades/2026-07/README.md` for details.\n\n— Sal 'Pixel' Martinez, Keeper of the High Score\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

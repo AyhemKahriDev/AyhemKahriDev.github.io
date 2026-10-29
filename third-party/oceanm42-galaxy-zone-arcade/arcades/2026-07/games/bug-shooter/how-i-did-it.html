@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Bug Shooter — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Bug Shooter</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Centipede showed up in my building in 1980 and never once sat empty. A
+      kid named Denny had his initials welded to the top of that high-score
+      list for the better part of a year — D-E-N, proud as anything. Then one
+      Saturday in '82 a girl named Fran beat his score by about four thousand
+      points and just stood there grinning at him while he checked his
+      pockets for another quarter. That rivalry ran for months and I never
+      had to buy either one of them a soda, they were feeding my machine
+      plenty on their own. Somewhere in there a kid tried to jam a Canadian
+      quarter in the coin slot and I spent twenty minutes with a butter knife
+      getting that machine breathing again.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The old version I hacked together myself in '25 had the bug just
+      bouncing along a row and dropping down when it hit a wall — good
+      enough, but it didn't really feel like a chain, more like a train of
+      boxes bumping into each other. This time the crew built it so every
+      segment actually follows the one in front of it, like a real conga
+      line of bugs, and if you shoot it in the middle the whole thing splits
+      into two separate bugs that keep crawling on their own. They also
+      taught it "deltaTime" again — same trick as the tennis game — so
+      everything from the bug's crawl speed to my little mushroom-healing
+      bonus ticks along steady no matter how fast your computer is. And they
+      put in the screen shake and a burst of sparks on every kill, which I
+      did not think I needed until I saw it and then I very much needed it.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build our Centipede game against the shared GZ engine. A field of
+mushrooms that take four hits each. A centipede made of segments
+that really follow each other like a chain, winding down the
+screen, reversing at walls and mushrooms. If I shoot a body
+segment it should turn into a mushroom and split the chain into
+two independent bugs. Give me a spider that bounces around my
+zone, a flea that drops in to restock mushrooms when they get
+thin, and a scorpion that poisons mushrooms so the centipede
+dives straight down when it touches one. Score by proximity for
+the spider kill. Three lives, and heal a few mushrooms when I
+die so it isn't hopeless.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>Everything runs on a 30-column grid, but the bug's movement and
+        the mushroom-heal timers all tick forward by the real elapsed
+        seconds — no fixed per-frame nudge like my first draft.</li>
+      <li>Each centipede is its own little chain object. When you kill a
+        body segment, I just slice its segment list in two — everything
+        ahead of the hit stays one bug, everything behind it becomes a
+        brand-new bug with its own head. Turns out that's most of the
+        trick right there.</li>
+      <li>The scorpion doesn't hurt the centipede directly — it tags a
+        mushroom as poisoned, and the next segment that runs into that
+        particular mushroom checks the flag and heads straight for the
+        floor instead of turning around.</li>
+      <li>When you lose a life, I go find some of the mushrooms you'd
+        already chipped away at and heal them back a notch, a few points
+        and a little tick sound each, spread out over about a second so it
+        doesn't all clatter at once.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Bug Shooter</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

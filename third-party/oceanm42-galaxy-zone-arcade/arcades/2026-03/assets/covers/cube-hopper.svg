@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes hop { 0%,100%{transform:translateY(0)} 30%{transform:translateY(-15px)} }
+    @keyframes colorShift { 0%,100%{fill:#ff8800} 50%{fill:#44cc44} }
+    @keyframes bubble { 0%,100%{opacity:1;transform:translateY(0)} 50%{opacity:.6;transform:translateY(-5px)} }
+    .player{animation:hop 1.5s ease-in-out infinite}
+    .changed{animation:colorShift 3s ease-in-out infinite}
+    .speech{animation:bubble 2s ease-in-out infinite}
+  </style>
+  <rect width="300" height="400" fill="#0a0a2a"/>
+  <!-- Isometric pyramid of cubes - row by row from top -->
+  <!-- Row 1 (top) - 1 cube -->
+  <g>
+    <polygon points="150,100 180,115 150,130 120,115" fill="#8844cc"/>
+    <polygon points="150,130 180,115 180,140 150,155" fill="#6633aa"/>
+    <polygon points="150,130 120,115 120,140 150,155" fill="#7738bb"/>
+  </g>
+  <!-- Row 2 - 2 cubes -->
+  <g>
+    <polygon points="120,145 150,160 120,175 90,160" class="changed"/>
+    <polygon points="120,175 150,160 150,185 120,200" fill="#cc6600"/>
+    <polygon points="120,175 90,160 90,185 120,200" fill="#dd7700"/>
+  </g>
+  <g>
+    <polygon points="180,145 210,160 180,175 150,160" fill="#8844cc"/>
+    <polygon points="180,175 210,160 210,185 180,200" fill="#6633aa"/>
+    <polygon points="180,175 150,160 150,185 180,200" fill="#7738bb"/>
+  </g>
+  <!-- Row 3 - 3 cubes -->
+  <g>
+    <polygon points="90,190 120,205 90,220 60,205" fill="#44cc44"/>
+    <polygon points="90,220 120,205 120,230 90,245" fill="#33aa33"/>
+    <polygon points="90,220 60,205 60,230 90,245" fill="#3ab83a"/>
+  </g>
+  <g>
+    <polygon points="150,190 180,205 150,220 120,205" class="changed"/>
+    <polygon points="150,220 180,205 180,230 150,245" fill="#cc6600"/>
+    <polygon points="150,220 120,205 120,230 150,245" fill="#dd7700"/>
+  </g>
+  <g>
+    <polygon points="210,190 240,205 210,220 180,205" fill="#8844cc"/>
+    <polygon points="210,220 240,205 240,230 210,245" fill="#6633aa"/>
+    <polygon points="210,220 180,205 180,230 210,245" fill="#7738bb"/>
+  </g>
+  <!-- Row 4 - 4 cubes -->
+  <g>
+    <polygon points="60,235 90,250 60,265 30,250" fill="#44cc44"/>
+    <polygon points="60,265 90,250 90,275 60,290" fill="#33aa33"/>
+    <polygon points="60,265 30,250 30,275 60,290" fill="#3ab83a"/>
+  </g>
+  <g>
+    <polygon points="120,235 150,250 120,265 90,250" fill="#8844cc"/>
+    <polygon points="120,265 150,250 150,275 120,290" fill="#6633aa"/>
+    <polygon points="120,265 90,250 90,275 120,290" fill="#7738bb"/>
+  </g>
+  <g>
+    <polygon points="180,235 210,250 180,265 150,250" fill="#44cc44"/>
+    <polygon points="180,265 210,250 210,275 180,290" fill="#33aa33"/>
+    <polygon points="180,265 150,250 150,275 180,290" fill="#3ab83a"/>
+  </g>
+  <g>
+    <polygon points="240,235 270,250 240,265 210,250" fill="#8844cc"/>
+    <polygon points="240,265 270,250 270,275 240,290" fill="#6633aa"/>
+    <polygon points="240,265 210,250 210,275 240,290" fill="#7738bb"/>
+  </g>
+  <!-- Player character on top cube -->
+  <g class="player" filter="url(#glow)">
+    <circle cx="150" cy="88" r="10" fill="#ff8800"/>
+    <circle cx="146" cy="85" r="2" fill="#000"/>
+    <circle cx="154" cy="85" r="2" fill="#000"/>
+    <ellipse cx="150" cy="92" rx="4" ry="2" fill="#cc4400"/>
+  </g>
+  <!-- Speech bubble -->
+  <g class="speech" filter="url(#glow)">
+    <rect x="170" y="60" width="60" height="22" rx="5" fill="#fff"/>
+    <polygon points="175,82 180,90 185,82" fill="#fff"/>
+    <text x="200" y="76" text-anchor="middle" font-family="monospace" font-size="11" font-weight="bold" fill="#ff4400">@#$%!</text>
+  </g>
+  <!-- Title -->
+  <text x="150" y="340" text-anchor="middle" font-family="monospace" font-size="18" font-weight="bold" fill="#ff8800" filter="url(#glow)">CUBE HOPPER</text>
+</svg>

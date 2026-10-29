@@ -1,0 +1,142 @@
+{
+  "name": "cursor-snake",
+  "displayName": "Monochrome Arcade",
+  "description": "A monochrome arcade collection for VS Code and Cursor — Snake, 2048, Blocks, Minesweeper, Pong, Tic-Tac-Toe, 2-player Head Soccer, and Capitalist idle tycoon. Eight minimalist classics, zero dependencies, keyboard-first.",
+  "version": "0.6.1",
+  "publisher": "flancast90",
+  "license": "MIT",
+  "author": {
+    "name": "flancast90",
+    "url": "https://github.com/flancast90"
+  },
+  "homepage": "https://github.com/flancast90/cursor-arcade-games#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/flancast90/cursor-arcade-games.git"
+  },
+  "bugs": {
+    "url": "https://github.com/flancast90/cursor-arcade-games/issues"
+  },
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#ffffff",
+    "theme": "light"
+  },
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "snake",
+    "2048",
+    "tetris",
+    "blocks",
+    "minesweeper",
+    "pong",
+    "atari",
+    "tic-tac-toe",
+    "tictactoe",
+    "noughts-and-crosses",
+    "minimax",
+    "soccer",
+    "head-soccer",
+    "multiplayer",
+    "2-player",
+    "idle",
+    "idle-game",
+    "tycoon",
+    "clicker",
+    "adventure-capitalist",
+    "capitalist",
+    "arcade",
+    "game",
+    "games",
+    "break",
+    "focus",
+    "fun",
+    "minimalist",
+    "monochrome",
+    "puzzle",
+    "classic",
+    "retro"
+  ],
+  "main": "./out/extension.js",
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "cursor-arcade.open",
+        "title": "Open Arcade",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.snake",
+        "title": "Play Snake",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.twenty48",
+        "title": "Play 2048",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.blocks",
+        "title": "Play Blocks",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.sweeper",
+        "title": "Play Minesweeper",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.soccer",
+        "title": "Play Head Soccer (1P / 2P)",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.capitalist",
+        "title": "Play Capitalist (idle tycoon)",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.pong",
+        "title": "Play Pong (1P / 2P)",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.tictactoe",
+        "title": "Play Tic-Tac-Toe (1P / 2P)",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.dailyChallenge",
+        "title": "Play Snake — Daily Challenge",
+        "category": "Arcade"
+      },
+      {
+        "command": "cursor-arcade.resetHighScores",
+        "title": "Reset All High Scores",
+        "category": "Arcade"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "icon": "sips -s format png -Z 128 media/icon.svg --out media/icon.png",
+    "package": "vsce package",
+    "publish:vsce": "vsce publish",
+    "publish:ovsx": "ovsx publish"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.80.0",
+    "@vscode/vsce": "^2.32.0",
+    "ovsx": "^0.9.0",
+    "typescript": "^5.4.0"
+  }
+}

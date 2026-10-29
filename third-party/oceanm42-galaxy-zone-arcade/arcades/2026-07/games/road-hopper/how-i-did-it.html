@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Road Hopper — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Road Hopper</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      1981 again — funny how much of my golden era traces back to that one
+      year. This was the game the parents actually liked, if you can
+      believe that, because it looked like it was teaching their kid to
+      look both ways before crossing a street. I had a regular, a mail
+      carrier on his lunch break, who'd play exactly one frog's worth every
+      day and then leave, win or lose. Never more than one credit. I used
+      to set my watch by him.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The old one I built moved the frog with plain timers — a
+      "moveCooldown" I just made up on the spot — and if you tapped a key
+      while the frog was mid-hop, sometimes it just... didn't count. Robots
+      fixed that with what they call "input buffering," which is a fancy
+      way of saying the game remembers you pressed something even if it
+      catches you between hops, and honors it the second you land. They also
+      redid the river logic so you actually ride the log or turtle smoothly
+      instead of teleporting a grid square at a time, and the turtles blink
+      before they go under now — you get a fair warning, not a cheap
+      drowning. Screen shakes when you get flattened. Feels a lot more fair
+      than it has any right to.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build our Frogger game on the shared engine. Thirteen columns,
+traffic lanes, a river with logs and turtle groups that submerge —
+blink a warning before they go under. One hop per press, but buffer
+the input so a tap during a hop still fires the next one instantly.
+Five home bays at the top; landing in an empty one scores, filling
+all five levels you up. Put a fly in a bay sometimes for bonus
+points and a crocodile in one that should look dangerous before you
+hop in. A lady frog rides a log occasionally — carrying her home is
+worth extra. Thirty-second timer per frog, shown as a shrinking bar.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The frog's position is a real floating-point column, not just a
+        grid index, so riding a log drifts you smoothly instead of
+        snapping — the hop itself still locks to exactly one tile.</li>
+      <li>Every lane's cars and logs wrap around the screen edge instead of
+        despawning, so the road never looks like it's "resetting."</li>
+      <li>Turtles cycle through three states on a timer — up, a blinking
+        warning, then under — and the higher the level, the longer they
+        stay under and the more often it happens.</li>
+      <li>Every hop, every vehicle, every log speed is multiplied by the
+        frame's actual elapsed time, so it plays the same on a phone as it
+        does on my shop's ancient laptop.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Road Hopper</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

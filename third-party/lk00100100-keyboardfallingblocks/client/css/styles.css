@@ -1,0 +1,271 @@
+#gamecontainer {
+	width:640px;
+	height:640px;
+	background: url(../images/splashscreen.png);
+	border: 1px solid black;
+}
+
+.gamelayer {
+	width:640px;
+	height:640px;
+	position:absolute;
+	display:none;
+}
+
+p {
+    font-family: ‘Courier New’, Courier, monospace;
+    color:green;
+    font-size: 20px;
+}
+
+/* Game Starting Menu Screen */
+#mainscreentextbox p {
+    width: 630px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    font-family: ‘Courier New’, Courier, monospace;
+    font-size: 20px;
+    display:block;
+    word-wrap:break-word
+}
+
+#highscores p {
+    width: 630px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    display:block;
+    word-wrap:break-word
+}
+
+#settingsscreen p {
+    width: 630px;
+    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-left: 10px;
+    display:block;
+    word-wrap:break-word
+}
+
+/* Loading Screen */
+#loadingscreen {
+    background:rgba(100,100,100,0.7);
+	z-index:10;
+}
+
+#loadingmessage {
+    margin-top:400px;
+    text-align:center;
+    height:48px;
+    color:white;
+    /* background:url(images/loader.gif) no-repeat center; */
+    font:12px Arial;
+}
+
+
+/* Game Interface Screen */
+#gameinterfacescreen {
+    background: url(../images/maininterface.png) no-repeat;
+}
+#gameinterfacescreen #keyAssist {
+    z-index:2;
+    width:400px;
+    height:100px;
+    position:absolute;
+    left:185px;
+    top:6px;
+    color: green;
+    overflow:hidden;
+    font-size: 20px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #holdText {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:20px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #nextText {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:500px;
+    top:20px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #goalText {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:130px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #goal {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:160px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+    text-align:left;
+}
+
+#gameinterfacescreen #linesText {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:220px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #lines {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:250px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #levelText {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:310px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #level {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:340px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #scoreText {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:400px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #score {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:430px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #timeText {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:490px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+}
+
+#gameinterfacescreen #time {
+    width:120px;
+    height:22px;
+    position:absolute;
+    left:20px;
+    top:520px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+
+}
+
+#gameinterfacescreen #messagebox {
+    width:330px;
+    height:180px;
+    position:absolute;
+    left:130px;
+    top:140px;
+    color: green;
+    overflow:hidden;
+    font-size: 25px;
+    font-family: 'Courier New', Courier, monospace;
+    text-align:left;
+    word-wrap:break-word;
+    margin: 0px;
+}
+
+#gameinterfacescreen canvas{
+    position:absolute;
+    top:0px;
+    left:0px;
+}
+
+#gameinterfacescreen #foregroundcanvas{
+    z-index:1;
+}
+
+#gameinterfacescreen #backgroundcanvas{
+    z-index:0;
+
+}

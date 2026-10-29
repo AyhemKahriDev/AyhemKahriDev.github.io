@@ -1,0 +1,27 @@
+{
+  "description": "Swamp cypress grove map chunk",
+  "height": 9,
+  "id": "swamp_cypress_grove",
+  "rows": [
+    "..T.T..B.",
+    ".TBTTB.V.",
+    "T.T.TBBV.",
+    "..B..TT..",
+    ".T.V.T..B",
+    ".TTB..V..",
+    "B.T.TTV..",
+    ".VB..V.B.",
+    ".......B."
+  ],
+  "tags": [
+    "swamp"
+  ],
+  "terrain": {
+    ".": "TileSwampWater",
+    "B": "TileBush",
+    "T": "TileCypressTree",
+    "V": "TileVine"
+  },
+  "weight": 3,
+  "width": 9
+}

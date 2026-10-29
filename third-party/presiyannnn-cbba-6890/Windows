@@ -1,0 +1,28 @@
+# include/ dir, obj/ dir and lib/ dir
+IDIR=include
+ODIR=obj
+LDIR=lib
+
+# Compiler options and flags
+CXX=g++
+CXXFLAGS=-I$(IDIR) -I$(IDIR)/ncursesw -L$(LDIR)
+ERRFLAGS=-Wall -Wunused-variable -Werror
+
+# Put header files here
+_DEPS=gameMenu.h mazeGeneration.h rayCaster.h gameLogic.h
+DEPS=$(patsubst %, $(IDIR)/%, $(_DEPS))
+
+# Put cpp files but change extension to .o
+_OBJ=main.o gameMenu.o mazeGeneration.o rayCaster.o gameLogic.o
+OBJ=$(patsubst %, $(ODIR)/%, $(_OBJ))
+
+# Libraries
+LIBS=-llibncursesw
+
+# Compile .cpp files to .o files
+$(ODIR)/%.o: src/%.cpp $(DEPS)
+	$(CXX) -c -o $@ $< $(CXXFLAGS) $(ERRFLAGS)
+
+# Link .o files and make an executable in bin/ folder
+main: $(OBJ)
+	$(CXX) -o bin/$@.exe $^ $(CXXFLAGS) $(ERRFLAGS) $(LIBS)

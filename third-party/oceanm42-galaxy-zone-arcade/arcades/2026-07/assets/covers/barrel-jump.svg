@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Barrel Jump cover art">
+  <rect x="0" y="0" width="400" height="300" fill="#0a0a14"/>
+
+  <!-- neon border frame -->
+  <rect x="6" y="6" width="388" height="288" rx="10" fill="none" stroke="#ff8a00" stroke-width="2" opacity="0.5"/>
+  <rect x="12" y="12" width="376" height="276" rx="8" fill="none" stroke="#eaf6ff" stroke-width="1.5" opacity="0.3"/>
+
+  <!-- sloped girders -->
+  <g stroke="#ff8a00" stroke-width="6" stroke-linecap="round" opacity="0.9">
+    <line x1="30" y1="248" x2="370" y2="248"/>
+    <line x1="30" y1="190" x2="330" y2="168"/>
+    <line x1="70" y1="120" x2="370" y2="140"/>
+    <line x1="60" y1="70" x2="300" y2="70"/>
+  </g>
+
+  <!-- ladders -->
+  <g stroke="#ffe600" stroke-width="3" opacity="0.85">
+    <line x1="300" y1="248" x2="300" y2="192"/>
+    <line x1="312" y1="248" x2="312" y2="192"/>
+    <line x1="300" y1="238" x2="312" y2="238"/>
+    <line x1="300" y1="220" x2="312" y2="220"/>
+    <line x1="300" y1="202" x2="312" y2="202"/>
+
+    <line x1="90" y1="182" x2="90" y2="126"/>
+    <line x1="102" y1="180" x2="102" y2="124"/>
+    <line x1="90" y1="168" x2="102" y2="167"/>
+    <line x1="90" y1="150" x2="102" y2="149"/>
+    <line x1="90" y1="132" x2="102" y2="131"/>
+  </g>
+
+  <!-- barrel -->
+  <g>
+    <ellipse cx="230" cy="152" rx="17" ry="15" fill="#ff8a00"/>
+    <ellipse cx="230" cy="152" rx="17" ry="15" fill="none" stroke="#0a0a14" stroke-width="2"/>
+    <ellipse cx="230" cy="145" rx="17" ry="5" fill="none" stroke="#0a0a14" stroke-width="2"/>
+    <ellipse cx="230" cy="159" rx="17" ry="5" fill="none" stroke="#0a0a14" stroke-width="2"/>
+  </g>
+
+  <!-- player, mid-jump -->
+  <g>
+    <rect x="150" y="188" width="18" height="24" rx="3" fill="#eaf6ff"/>
+    <rect x="150" y="188" width="18" height="24" rx="3" fill="none" stroke="#eaf6ff" stroke-width="6" opacity="0.35"/>
+    <circle cx="159" cy="184" r="7" fill="#eaf6ff"/>
+  </g>
+
+  <!-- captive marker at top -->
+  <g>
+    <rect x="188" y="42" width="22" height="26" rx="3" fill="#ff2ec4"/>
+    <rect x="188" y="42" width="22" height="26" rx="3" fill="none" stroke="#ff2ec4" stroke-width="6" opacity="0.3"/>
+  </g>
+</svg>

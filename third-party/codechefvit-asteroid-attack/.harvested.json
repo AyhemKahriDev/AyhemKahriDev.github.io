@@ -1,0 +1,16 @@
+{
+  "repo": "CodeChefVIT/Asteroid-Attack",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 355,
+  "pushedAt": "2021-02-04T04:59:35Z",
+  "description": "Asteroid Attack game used in the webinar on p5.js by @vinayakguptaa",
+  "defaultBranch": "master",
+  "owner": "CodeChefVIT",
+  "slug": "codechefvit-asteroid-attack",
+  "dest": "third-party/codechefvit-asteroid-attack",
+  "readme": "<p align=\"center\"><a href=\"https://www.codechefvit.com\" target=\"_blank\"><img src=\"https://s3.amazonaws.com/codechef_shared/sites/all/themes/abessive/logo-3.png\" title=\"CodeChef-VIT\" alt=\"Codechef-VIT\"></a>\n</p>\n\n# Asteroid Attack\n\n> <Subtitle>\n> A 2D game where your spaceship is under attack by asteroids and your task is to shoot and break the asteroids to survive made with p5.js & p5Play for a webinar on basics of Game Dev with JavaScript.\n\n---\n[![UI ](https://img.shields.io/badge/User%20Interface-Link%20to%20UI-orange?style=flat-square&logo=appveyor)](https://asteroid-attack.codechefvit.com)\n[![Webinar ](https://img.shields.io/badge/Webinar%20-Link%20to%20Webinar-red?style=flat-square&logo=youtube)](http://bit.ly/p5JSWebinar)\n\n## Instructions to run\n```\n$ git clone https://github.com/CodeChefVIT/Asteroid-Attack\n$ cd Asteroid-Attack\n```\nJust run `index.html` in your favourite browser\n\n## Contributors\n- <a href=\"https://github.com/gvinayakgupta\">Vinayak Gupta</a>\n\n## License\n[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)\n\n<p align=\"center\">\n\tWith :heart: by <a href=\"https://www.codechefvit.com\" target=\"_blank\">CodeChef-VIT</a>\n</p>\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

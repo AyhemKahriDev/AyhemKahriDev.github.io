@@ -1,0 +1,16 @@
+{
+  "repo": "NickSto/assemblo",
+  "stars": 3,
+  "licence": "GPL-2.0",
+  "sizeKB": 188,
+  "pushedAt": "2018-12-14T04:35:07Z",
+  "description": "Teaching de novo assembly through a puzzle game",
+  "defaultBranch": "master",
+  "owner": "NickSto",
+  "slug": "nicksto-assemblo",
+  "dest": "third-party/nicksto-assemblo",
+  "readme": "",
+  "licenceFile": "LICENSE.txt",
+  "entry": "index.html",
+  "validated": true
+}

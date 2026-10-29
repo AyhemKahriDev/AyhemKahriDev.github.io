@@ -1,0 +1,16 @@
+{
+  "repo": "Hanaasagi/pinball-game",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 41,
+  "pushedAt": "2018-01-04T12:26:05Z",
+  "description": "A game made by web assembly",
+  "defaultBranch": "master",
+  "owner": "Hanaasagi",
+  "slug": "hanaasagi-pinball-game",
+  "dest": "third-party/hanaasagi-pinball-game",
+  "readme": "# Pinball-Game\nOnline deme see [GitHub Page](https://hanaasagi.github.io/pinball-game/release/)\n\n\n### Building (using Rust's native WebAssembly backend)\n\n1. Install newest nightly Rust, or you can use docker:\n```Bash\n$ curl https://sh.rustup.rs -sSf | sh\n```\n2. Install WebAssembly target:\n```Bash\n$ rustup target add wasm32-unknown-unknown\n```\n3. Install [cargo-web](https://github.com/koute/cargo-web):\n```Bash\n$ cargo install -f cargo-web\n```\n4. Build it:\n```Bash\n$ cargo web start --target-webasm --release\n````\n5. Visit `http://localhost:8000` with your browser which support WebAssembly.\n",
+  "licenceFile": "LICENSE",
+  "entry": "release/index.html",
+  "validated": true
+}

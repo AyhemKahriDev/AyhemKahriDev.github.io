@@ -1,0 +1,16 @@
+{
+  "repo": "RonnyWeiss/Apex-Tetris",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 229,
+  "pushedAt": "2023-04-27T19:57:58Z",
+  "description": "This Region Plug-in is a funny Tetris game for Apex. Have fun! Login for Demo is: user-demo / 123456@. Thanks to Skybird Trill for your Pen: https://codepen.io/skybirdtrill/pen/NNwzqN?q=canvas+tetris&limit=all&type=type-pens",
+  "defaultBranch": "master",
+  "owner": "RonnyWeiss",
+  "slug": "ronnyweiss-apex-tetris",
+  "dest": "third-party/ronnyweiss-apex-tetris",
+  "readme": " # Apex-Tetris\r\n\r\n![Screenshot](https://github.com/RonnyWeiss/Apex-Tetris/blob/master/screenshot.gif?raw=true)\r\n\r\nThis Region Plug-in is a funny Tetris game for Apex. Have fun!\r\n\r\nFor working Demo just click on:\r\n\r\nhttps://apex.oracle.com/pls/apex/f?p=103428\r\n\r\nIf you like my stuff, donate me a coffee\r\n\r\n[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/RonnyW1)\r\n\r\n**Important clarification: My work in the development team of Oracle APEX is in no way related to my open source projects or the plug-ins on apex.world! All plug-ins are built in my spare time and are not supported by Oracle!**",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

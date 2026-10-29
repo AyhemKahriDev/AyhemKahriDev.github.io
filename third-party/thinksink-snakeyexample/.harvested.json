@@ -1,0 +1,16 @@
+{
+  "repo": "ThinkSink/SnakeyExample",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 4,
+  "pushedAt": "2019-04-07T08:26:51Z",
+  "description": "贪吃蛇游戏源码/The Snakey code（html+css+js）",
+  "defaultBranch": "master",
+  "owner": "ThinkSink",
+  "slug": "thinksink-snakeyexample",
+  "dest": "third-party/thinksink-snakeyexample",
+  "readme": "# SnakeyExample\n贪吃蛇游戏源码/The Snakey code（html+css+js）\n\n学习之作，仅供参考。  \nThis is only a simple example.\n",
+  "licenceFile": "LICENSE",
+  "entry": "Snakey.html",
+  "validated": true
+}

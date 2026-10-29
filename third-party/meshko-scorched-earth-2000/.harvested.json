@@ -1,0 +1,16 @@
+{
+  "repo": "meshko/Scorched-Earth-2000",
+  "stars": 3,
+  "licence": "GPL-3.0",
+  "sizeKB": 530,
+  "pushedAt": "2026-06-01T02:46:23Z",
+  "description": "JavaScript port of the old Java port of the classic game",
+  "defaultBranch": "main",
+  "owner": "meshko",
+  "slug": "meshko-scorched-earth-2000",
+  "dest": "third-party/meshko-scorched-earth-2000",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "web/index.html",
+  "validated": true
+}

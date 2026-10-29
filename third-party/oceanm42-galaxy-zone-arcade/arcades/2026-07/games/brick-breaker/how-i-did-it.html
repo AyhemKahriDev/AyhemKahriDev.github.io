@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Brick Breaker — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Brick Breaker</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      I bought my Breakout machine used in '78, already six years old by
+      then, cabinet paint half sun-faded before it ever hit my floor. Didn't
+      matter. Kids didn't care about the paint, they cared about the wall.
+      I had a regular, a kid named Denny, who came in every Saturday with a
+      pocket of quarters from mowing lawns and would not leave until he'd
+      punched a hole clean through the top row. Never did tell him the top
+      row was worth the most points on purpose. Let him think he earned it
+      the hard way.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The old Breakout ball used to just fly clean through the paddle
+      sometimes if it was going fast enough — you'd swear you caught it and
+      the game would swear you didn't. The robots fixed that with something
+      they called a "swept" check, which as far as I understand it means the
+      game draws a little line for where the ball's been and where it's
+      going, and checks the whole line, not just where it happens to land
+      when the clock ticks. So now it can't slip through, no matter how fast
+      the ball's going after ten paddle hits in a row. I also finally got
+      power-up capsules to fall out of bricks — the kind of thing I always
+      wanted to bolt onto that old board and never had the parts for. And
+      every brick you pop off makes the screen do a little shake or flash.
+      That part is just showing off, and I'm fine with that.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build our Breakout game against the shared engine. Paddle at the
+bottom, keyboard and mouse-drag control, ball bounces off the
+paddle at an angle based on where it lands, and it should never
+tunnel through the paddle even at high speed. Thirteen columns,
+eight rows of rainbow bricks up top. Give me silver bricks that
+take two hits starting level two, and a few gold bricks that can
+never break starting level three. Cycle through at least five
+different brick layouts as the levels climb, ball a little faster
+each time. Bricks should sometimes drop a power-up — paddle
+grow, slow ball, multiball, laser, catch, and a rare extra life.
+Three lives, and make every hit feel good.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>Everything moves on that fixed <code>dt</code> clock again, so the
+        ball ramps up speed the same way whether the machine's fast or
+        slow.</li>
+      <li>The paddle check is the same "sweep the whole path" trick as Retro
+        Tennis — I asked for it by name this time, since I liked it so
+        much the first go-round.</li>
+      <li>The five brick layouts — full wall, checkerboard, a diamond, a
+        fortress with a gold shell, and columns — are just different math
+        for "is this square filled in," which is a nicer way of building a
+        level than me drawing 104 bricks by hand.</li>
+      <li>Only one "modal" power-up can be active at a time — grow, slow,
+        laser, or catch — but multiball stacks on top of any of them, which
+        took some doing to keep straight in my head, let alone the code.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Brick Breaker</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

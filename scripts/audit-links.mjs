@@ -36,7 +36,15 @@ let checked = 0;
 
 /** Resolve a site-absolute path to the file that would serve it. */
 function targetFor(pathname) {
-  let p = pathname.split('#')[0].split('?')[0];
+  // A vendored game may link `tetris%20game.html`; the file on disk is
+  // `tetris game.html`. Resolving the encoded form reported a broken link on a
+  // game that works.
+  let p;
+  try {
+    p = decodeURIComponent(pathname.split('#')[0].split('?')[0]);
+  } catch {
+    p = pathname.split('#')[0].split('?')[0];
+  }
   if (p === '' || p === '/') p = '/index.html';
   else if (p.endsWith('/')) p += 'index.html';
   const abs = join(dist, p);

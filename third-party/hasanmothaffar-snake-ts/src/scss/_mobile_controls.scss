@@ -1,0 +1,38 @@
+.game-controls-container {
+	display: none;
+
+	button {
+		font-weight: bold;
+		padding: 0.5rem;
+		font-size: 1.1rem;
+	}
+}
+
+#mobile-arrows {
+	display: none;
+	position: relative;
+
+	height: 200px;
+	width: 200px;
+
+	margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+	#mobile-arrows {
+		display: block !important;
+		margin-left: 2rem;
+	}
+
+	.game-controls-container {
+		display: flex;
+		justify-content: space-around;
+
+		width: 100%;
+	}
+
+	.move-controls-container {
+		display: flex;
+		position: relative;
+	}
+}

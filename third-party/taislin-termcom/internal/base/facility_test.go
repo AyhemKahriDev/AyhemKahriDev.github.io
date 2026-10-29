@@ -1,0 +1,683 @@
+package base
+
+import (
+	"os"
+	"testing"
+
+	"github.com/taislin/termcom/internal/data"
+	"github.com/taislin/termcom/internal/soldier"
+)
+
+func TestMain(m *testing.M) {
+	species, _ := data.GenerateSpecies(42)
+	data.InitResearchTree(42, species)
+	os.Exit(m.Run())
+}
+
+func TestNewBase(t *testing.T) {
+	b := NewBase("Test", 0)
+	if b.Name != "Test" {
+		t.Errorf("expected Test, got %s", b.Name)
+	}
+	if b.Scientists != 10 {
+		t.Errorf("expected 10 scientists, got %d", b.Scientists)
+	}
+}
+
+func TestCountFacility(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacWorkshop})
+	if b.CountFacility(FacLab) != 2 {
+		t.Errorf("expected 2 labs, got %d", b.CountFacility(FacLab))
+	}
+}
+
+func TestLivingCapacity(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	if b.LivingCapacity() != 8 {
+		t.Errorf("expected 8, got %d", b.LivingCapacity())
+	}
+}
+
+func TestBuildFacility(t *testing.T) {
+	b := NewBase("Test", 0)
+	ok := b.BuildFacility(FacLab)
+	if !ok {
+		t.Error("BuildFacility should return true")
+	}
+	if len(b.Facilities) != 2 {
+		t.Errorf("expected 2, got %d", len(b.Facilities))
+	}
+	if !b.Facilities[1].Building {
+		t.Error("should be building")
+	}
+}
+
+func TestAdvanceDay(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.BuildFacility(FacLab)
+	f := b.Facilities[1]
+	f.DaysLeft = 2
+	b.AdvanceDay()
+	if f.DaysLeft != 1 || !f.Building {
+		t.Error("after 1 day should still be building")
+	}
+	b.AdvanceDay()
+	if f.DaysLeft != 0 || f.Building {
+		t.Error("after 2 days should be done")
+	}
+}
+
+func TestHireSoldier(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	ok, msg := b.HireSoldier()
+	if !ok {
+		t.Errorf("HireSoldier failed: %s", msg)
+	}
+	if len(b.Soldiers) != 5 {
+		t.Errorf("expected 5 soldiers (4 starting + 1 hired), got %d", len(b.Soldiers))
+	}
+}
+
+func TestHireSoldierNoRoom(t *testing.T) {
+	b := NewBase("Test", 0)
+	for i := 0; i < 8; i++ {
+		b.HireSoldier()
+	}
+	ok, _ := b.HireSoldier()
+	if ok {
+		t.Error("should fail when at capacity")
+	}
+}
+
+func TestDismissSoldier(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.HireSoldier()
+	b.HireSoldier()
+	if len(b.Soldiers) != 6 {
+		t.Fatal("expected 6 soldiers (4 starting + 2 hired)")
+	}
+	b.DismissSoldier(0)
+	if len(b.Soldiers) != 5 {
+		t.Errorf("expected 5 soldiers, got %d", len(b.Soldiers))
+	}
+}
+
+func TestDismissOutOfBounds(t *testing.T) {
+	b := NewBase("Test", 0)
+	if b.DismissSoldier(-1) {
+		t.Error("should fail on negative index")
+	}
+	if b.DismissSoldier(100) {
+		t.Error("should fail on out-of-bounds index")
+	}
+}
+
+func TestRemoveDeadSoldiers(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.HireSoldier()
+	b.HireSoldier()
+	// b has 4 starting + 2 hired = 6, kill the 5th soldier (index 4)
+	b.Soldiers[4].HP = 0
+	b.Soldiers[5].HP = 20
+	dead := b.RemoveDeadSoldiers()
+	if len(dead) != 1 {
+		t.Errorf("expected 1 dead, got %d", len(dead))
+	}
+	if len(b.Soldiers) != 5 {
+		t.Errorf("expected 5 alive, got %d", len(b.Soldiers))
+	}
+}
+
+func TestFacilityDefs(t *testing.T) {
+	required := []FacilityType{FacLivingQuarters, FacLab, FacWorkshop, FacStorage, FacRadar, FacContainment, FacPsiLab, FacHangar}
+	for _, ft := range required {
+		def, ok := FacilityDefs[ft]
+		if !ok {
+			t.Errorf("missing def for %d", ft)
+		}
+		if def.Name == "" {
+			t.Errorf("empty name for %d", ft)
+		}
+	}
+}
+
+func TestAddItem(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	if !b.AddItem("rifle", 3) {
+		t.Error("should add")
+	}
+	if b.CountItem("rifle") != 3 {
+		t.Errorf("expected 3 rifles, got %d", b.CountItem("rifle"))
+	}
+	if !b.AddItem("rifle", 2) {
+		t.Error("should add")
+	}
+	if b.CountItem("rifle") != 5 {
+		t.Errorf("expected 5 rifles after add, got %d", b.CountItem("rifle"))
+	}
+}
+
+func TestRemoveItem(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.AddItem("rifle", 3)
+	if !b.RemoveItem("rifle", 2) {
+		t.Error("should succeed")
+	}
+	if b.CountItem("rifle") != 1 {
+		t.Errorf("expected 1, got %d", b.CountItem("rifle"))
+	}
+	if b.RemoveItem("rifle", 5) {
+		t.Error("should fail")
+	}
+}
+
+func TestAddLoot(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.AddLoot([]string{"alloys", "elerium", "corpse_sect"})
+	if b.CountItem("alloys") != 1 {
+		t.Error("expected 1 alloys")
+	}
+	if b.CountItem("elerium") != 1 {
+		t.Error("expected 1 elerium")
+	}
+	if b.CountItem("corpse_sect") != 1 {
+		t.Error("expected 1 corpse_sect")
+	}
+}
+
+func TestEquipWeapon(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.HireSoldier()
+	b.AddItem("laser_rifle", 1)
+	s := b.Soldiers[0]
+	s.Weapon = "rifle"
+	if !b.EquipWeapon(0, "laser_rifle") {
+		t.Error("should equip")
+	}
+	if s.Weapon != "laser_rifle" {
+		t.Errorf("expected laser_rifle, got %s", s.Weapon)
+	}
+	if b.CountItem("rifle") != 1 {
+		t.Error("old weapon should be returned to stores")
+	}
+}
+
+func TestEquipWeaponNoStock(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.HireSoldier()
+	if b.EquipWeapon(0, "plasma_rifle") {
+		t.Error("should fail with no stock")
+	}
+}
+
+func TestEquipArmor(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.HireSoldier()
+	b.AddItem("personal", 1)
+	s := b.Soldiers[0]
+	s.Armor = "none"
+	if !b.EquipArmor(0, "personal") {
+		t.Error("should equip")
+	}
+	if s.Armor != "personal" {
+		t.Errorf("expected personal, got %s", s.Armor)
+	}
+}
+
+func TestEquipArmorSwap(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Scientists = 0
+	b.Engineers = 0
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.HireSoldier()
+	b.AddItem("medium", 1)
+	s := b.Soldiers[0]
+	s.Armor = "light"
+	if !b.EquipArmor(0, "medium") {
+		t.Error("should equip")
+	}
+	if s.Armor != "medium" {
+		t.Errorf("expected medium, got %s", s.Armor)
+	}
+	if b.CountItem("light") != 1 {
+		t.Errorf("old armor should be returned, got %d", b.CountItem("light"))
+	}
+}
+
+func TestEquipArmorNone(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Scientists = 0
+	b.Engineers = 0
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.HireSoldier()
+	s := b.Soldiers[0]
+	s.Armor = "personal"
+	if !b.EquipArmor(0, "none") {
+		t.Error("should equip none")
+	}
+	if s.Armor != "none" {
+		t.Errorf("expected none, got %s", s.Armor)
+	}
+	if b.CountItem("personal") != 1 {
+		t.Errorf("armor should return to stores, got %d", b.CountItem("personal"))
+	}
+}
+
+func TestMonthlyBudget(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Scientists = 0
+	b.Engineers = 0
+	// HireSoldier already decreases soldiers - remove starting soldiers for clean test
+	b.Soldiers = nil
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.HireSoldier()
+	salary := b.MonthlySalary()
+	if salary != 2000 {
+		t.Errorf("expected 2000, got %d", salary)
+	}
+	funding := b.GovernmentFunding()
+	if funding != 300000 {
+		t.Errorf("expected 300000, got %d", funding)
+	}
+}
+
+func TestStorageCapacity(t *testing.T) {
+	b := NewBase("Test", 0)
+	if b.StorageCapacity() != 0 {
+		t.Error("no storage should be 0")
+	}
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	if b.StorageCapacity() != 50 {
+		t.Errorf("expected 50, got %d", b.StorageCapacity())
+	}
+}
+
+func TestHasResearch(t *testing.T) {
+	b := NewBase("Test", 0)
+	if b.HasResearch("alien_alloys") {
+		t.Error("should not have alien_alloys yet")
+	}
+	b.CompletedResearch = append(b.CompletedResearch, "alien_alloys")
+	if !b.HasResearch("alien_alloys") {
+		t.Error("should have alien_alloys now")
+	}
+}
+
+func TestCanResearch(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab})
+	b.Stores["alloys"] = 1
+	topic := data.ResearchByID("alien_alloys")
+	if !b.CanResearch(topic) {
+		t.Error("should be able to research alien_alloys")
+	}
+	topic2 := data.ResearchByID("light_suit")
+	if b.CanResearch(topic2) {
+		t.Error("should not be able to research light_suit (missing prereqs)")
+	}
+}
+
+func TestStartResearch(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab})
+	b.Stores["alloys"] = 1
+	ok := b.StartResearch("alien_alloys")
+	if !ok {
+		t.Error("should start research")
+	}
+	if b.ActiveResearch == nil {
+		t.Fatal("ActiveResearch should be set")
+	}
+	if b.ActiveResearch.TopicID != "alien_alloys" {
+		t.Errorf("expected alien_alloys, got %s", b.ActiveResearch.TopicID)
+	}
+}
+
+func TestAdvanceResearch(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab})
+	b.Stores["alloys"] = 1
+	b.StartResearch("alien_alloys")
+	b.ActiveResearch.Cost = 10
+	b.ActiveResearch.Scientists = 5
+	done := b.AdvanceResearch()
+	if len(done) > 0 {
+		t.Error("should not be done yet")
+	}
+	if b.ActiveResearch.Progress != 5 {
+		t.Errorf("expected 5, got %d", b.ActiveResearch.Progress)
+	}
+	done = b.AdvanceResearch()
+	if len(done) == 0 {
+		t.Error("should be done now")
+	}
+	if !b.HasResearch("alien_alloys") {
+		t.Error("should have completed research")
+	}
+}
+
+func TestStartManufacture(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacWorkshop})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.AddItem("alloys", 5)
+	ok := b.StartManufacture("pistol", 1, map[string]int{"alloys": 1})
+	if !ok {
+		t.Error("should start manufacture")
+	}
+	if len(b.ManufactureQueue) != 1 {
+		t.Errorf("expected 1 job, got %d", len(b.ManufactureQueue))
+	}
+	if b.CountItem("alloys") != 4 {
+		t.Errorf("expected 4 alloys, got %d", b.CountItem("alloys"))
+	}
+}
+
+func TestStartManufactureNoMaterials(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacWorkshop})
+	ok := b.StartManufacture("pistol", 1, map[string]int{"alloys": 1})
+	if ok {
+		t.Error("should fail without materials")
+	}
+}
+
+func TestAdvanceManufacture(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacWorkshop})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.AddItem("alloys", 5)
+	b.StartManufacture("pistol", 1, map[string]int{"alloys": 1})
+	b.ManufactureQueue[0].CostDays = 10
+	b.ManufactureQueue[0].Engineers = 3
+	crafted := b.AdvanceManufacture()
+	if len(crafted) > 0 {
+		t.Error("should not be done yet")
+	}
+	if b.ManufactureQueue[0].Progress != 3 {
+		t.Errorf("expected 3 progress, got %d", b.ManufactureQueue[0].Progress)
+	}
+	crafted = b.AdvanceManufacture()
+	if len(crafted) > 0 {
+		t.Error("should not be done yet (6/10)")
+	}
+	crafted = b.AdvanceManufacture()
+	if len(crafted) > 0 {
+		t.Error("should not be done yet (9/10)")
+	}
+	crafted = b.AdvanceManufacture()
+	if len(crafted) == 0 {
+		t.Error("should be done now (12/10)")
+	}
+	if b.CountItem("pistol") != 1 {
+		t.Error("pistol should be in stores")
+	}
+}
+
+func TestAdvanceDayHealing(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.HireSoldier()
+	s := b.Soldiers[0]
+	s.HP = 10
+	s.MaxHP = 20
+	s.Wounds = 5
+	b.AdvanceDay()
+	if s.Wounds != 4 {
+		t.Errorf("expected 4 wounds, got %d", s.Wounds)
+	}
+	if s.HP != 12 {
+		t.Errorf("expected 12 HP, got %d", s.HP)
+	}
+}
+
+func TestAdvanceDayFullHeal(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLivingQuarters})
+	b.HireSoldier()
+	s := b.Soldiers[0]
+	s.HP = 10
+	s.MaxHP = 20
+	s.Wounds = 1
+	b.AdvanceDay()
+	if s.Wounds != 0 {
+		t.Errorf("expected 0 wounds, got %d", s.Wounds)
+	}
+	if s.HP != s.MaxHP {
+		t.Errorf("expected full HP %d, got %d", s.MaxHP, s.HP)
+	}
+}
+
+func TestSellFacility(t *testing.T) {
+	b := NewBase("Test", 0)
+	if len(b.Facilities) != 1 {
+		t.Fatal("expected 1 starting hangar facility")
+	}
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab, Building: false})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacWorkshop, Building: false})
+	if len(b.Facilities) != 3 {
+		t.Fatal("expected 3 facilities")
+	}
+	b.Facilities = append(b.Facilities[:1], b.Facilities[2:]...)
+	if len(b.Facilities) != 2 {
+		t.Errorf("expected 2 facilities, got %d", len(b.Facilities))
+	}
+}
+
+func TestAssignScientists(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.UnassignedScientists = 5
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab})
+	b.Stores["alloys"] = 1
+	b.StartResearch("alien_alloys")
+
+	ok := b.AssignScientists(3)
+	if !ok {
+		t.Fatal("should assign scientists")
+	}
+	if b.ActiveResearch.Scientists != 3 {
+		t.Errorf("expected 3 assigned, got %d", b.ActiveResearch.Scientists)
+	}
+	if b.UnassignedScientists != 2 {
+		t.Errorf("expected 2 unassigned, got %d", b.UnassignedScientists)
+	}
+
+	b.AssignScientists(10)
+	if b.ActiveResearch.Scientists != 5 {
+		t.Errorf("expected 5 assigned (capped), got %d", b.ActiveResearch.Scientists)
+	}
+	if b.UnassignedScientists != 0 {
+		t.Errorf("expected 0 unassigned, got %d", b.UnassignedScientists)
+	}
+
+	b.AssignScientists(-2)
+	if b.ActiveResearch.Scientists != 3 {
+		t.Errorf("expected 3 after unassign, got %d", b.ActiveResearch.Scientists)
+	}
+	if b.UnassignedScientists != 2 {
+		t.Errorf("expected 2 unassigned after unassign, got %d", b.UnassignedScientists)
+	}
+
+	b.AssignScientists(-100)
+	if b.ActiveResearch.Scientists != 0 {
+		t.Errorf("expected 0 after unassign-all, got %d", b.ActiveResearch.Scientists)
+	}
+	if b.UnassignedScientists != 5 {
+		t.Errorf("expected 5 unassigned after unassign-all, got %d", b.UnassignedScientists)
+	}
+}
+
+func TestAssignScientistsNoProject(t *testing.T) {
+	b := NewBase("Test", 0)
+	ok := b.AssignScientists(3)
+	if ok {
+		t.Error("should not assign without active project")
+	}
+}
+
+func TestAssignEngineers(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.UnassignedEngineers = 5
+	mats := map[string]int{"alloys": 2}
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	b.AddItem("alloys", 10)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacWorkshop})
+	b.StartManufacture("pistol", 1, mats)
+
+	if len(b.ManufactureQueue) == 0 {
+		t.Fatal("should have 1 manufacture job")
+	}
+	job := b.ManufactureQueue[0]
+
+	ok := b.AssignEngineers(0, 3)
+	if !ok {
+		t.Fatal("should assign engineers")
+	}
+	if job.Engineers != 3 {
+		t.Errorf("expected 3 assigned, got %d", job.Engineers)
+	}
+	if b.UnassignedEngineers != 2 {
+		t.Errorf("expected 2 unassigned, got %d", b.UnassignedEngineers)
+	}
+
+	b.AssignEngineers(0, -100)
+	if job.Engineers != 0 {
+		t.Errorf("expected 0 after unassign-all, got %d", job.Engineers)
+	}
+	if b.UnassignedEngineers != 5 {
+		t.Errorf("expected 5 unassigned after unassign-all, got %d", b.UnassignedEngineers)
+	}
+}
+
+func TestAssignEngineersOutOfBounds(t *testing.T) {
+	b := NewBase("Test", 0)
+	ok := b.AssignEngineers(99, 3)
+	if ok {
+		t.Error("should not assign to invalid index")
+	}
+}
+
+func TestStartResearchAlreadyActive(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab})
+	b.Stores["alloys"] = 1
+	b.Stores["elerium"] = 1
+	b.StartResearch("alien_alloys")
+	if b.ActiveResearch == nil {
+		t.Fatal("first research should start")
+	}
+
+	ok := b.StartResearch("elerium")
+	if ok {
+		t.Error("should not start second research while first is active")
+	}
+}
+
+func TestStorageCapBlocksOverflow(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacStorage})
+	if b.StorageCapacity() != 50 {
+		t.Fatalf("expected capacity 50, got %d", b.StorageCapacity())
+	}
+	ok := b.AddItem("rifle", 50)
+	if !ok {
+		t.Error("should fill to capacity")
+	}
+	if b.UsedStorage != 50 {
+		t.Errorf("expected used 50, got %d", b.UsedStorage)
+	}
+	ok = b.AddItem("pistol", 1)
+	if ok {
+		t.Error("should reject item beyond capacity")
+	}
+	if b.CountItem("pistol") != 0 {
+		t.Error("pistol should not be added")
+	}
+}
+
+func TestCaptureContainmentInterrogation(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacContainment})
+	b.Facilities = append(b.Facilities, &Facility{Type: FacLab})
+
+	if len(b.LiveAliens) != 0 {
+		t.Error("should start with no live aliens")
+	}
+
+	b.LiveAliens = append(b.LiveAliens, "Sectoid")
+	if len(b.LiveAliens) != 1 {
+		t.Fatalf("expected 1 live alien, got %d", len(b.LiveAliens))
+	}
+
+	data.ResearchTree = append(data.ResearchTree, data.ResearchTopic{
+		ID: "sectoid_autopsy", Name: "Sectoid Autopsy", Cost: 40, Tier: 1,
+	})
+
+	topic, ok := b.InterrogateAlien("Sectoid")
+	if !ok {
+		t.Error("interrogation should succeed")
+	}
+	if topic == "" {
+		t.Error("interrogation should return a topic name")
+	}
+	if len(b.LiveAliens) != 0 {
+		t.Error("live alien should be consumed after interrogation")
+	}
+	if !b.HasResearch("sectoid_autopsy") {
+		t.Error("sectoid_autopsy should be completed after interrogation")
+	}
+}
+
+func TestInterrogateAlienNoLabs(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacContainment})
+	b.LiveAliens = append(b.LiveAliens, "Sectoid")
+
+	_, ok := b.InterrogateAlien("Sectoid")
+	if ok {
+		t.Error("interrogation should fail without labs")
+	}
+	if len(b.LiveAliens) != 1 {
+		t.Error("live alien should not be consumed on failure")
+	}
+}
+
+func TestPsiLabTraining(t *testing.T) {
+	b := NewBase("Test", 0)
+	b.Facilities = append(b.Facilities, &Facility{Type: FacPsiLab})
+	s := soldier.NewSoldier("PsiGuy")
+	s.PsiSkill = 10
+	b.Soldiers = append(b.Soldiers, s)
+
+	b.AdvanceDay()
+	if s.PsiSkill < 10 || s.PsiSkill > 11 {
+		t.Errorf("expected PsiSkill in [10,11] after 1 day, got %d", s.PsiSkill)
+	}
+
+	for i := 0; i < 200; i++ {
+		b.AdvanceDay()
+	}
+	if s.PsiSkill < 10 {
+		t.Errorf("PsiSkill should never decrease, got %d", s.PsiSkill)
+	}
+	if s.PsiSkill > 80 {
+		t.Errorf("PsiSkill should be capped at 80, got %d", s.PsiSkill)
+	}
+}

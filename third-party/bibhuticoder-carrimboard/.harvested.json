@@ -1,0 +1,16 @@
+{
+  "repo": "bibhuticoder/carrimboard",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 10,
+  "pushedAt": "2018-02-27T09:26:54Z",
+  "description": "Multiplayer Carrom Board game in JavaScript from scratch.",
+  "defaultBranch": "master",
+  "owner": "bibhuticoder",
+  "slug": "bibhuticoder-carrimboard",
+  "dest": "third-party/bibhuticoder-carrimboard",
+  "readme": "# Carrimboard\nCarrimboard game in javascript from scratch\n\n## demo\nhttps://bibhuticoder.github.io/carrimboard\n\n## todos\n- foul check\n- score issues\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

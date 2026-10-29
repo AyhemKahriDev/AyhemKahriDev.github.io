@@ -110,7 +110,7 @@ function main() {
     problems.push(`dist is ${mb(total)} MB, over the ${mb(MAX_TOTAL)} MB budget`);
   }
   for (const [slug, size] of fatGames) {
-    problems.push(`third-party/${slug} is ${mb(size)} MB, over the 3.0 MB per-game budget`);
+    problems.push(`third-party/${slug} is ${mb(size)} MB, over the ${mb(MAX_GAME)} MB per-game budget`);
   }
   for (const file of fatFiles) {
     problems.push(`${relative(dist, file.path)} is ${mb(file.size)} MB, over the 20 MB per-file budget`);

@@ -1,0 +1,16 @@
+{
+  "repo": "Menardi/tube-quiz",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 132,
+  "pushedAt": "2025-03-22T10:51:28Z",
+  "description": "Test your knowledge of London's Underground stations with this browser-based game",
+  "defaultBranch": "main",
+  "owner": "Menardi",
+  "slug": "menardi-tube-quiz",
+  "dest": "third-party/menardi-tube-quiz",
+  "readme": "# Tube Quiz\n\nDo you know the underground lines where you would find South Kenton, Roding Valley or Croxley? Test your knowledge with Tube Quiz!\n\n## Demo\n\nhttps://gearoid.me/tubequiz\n\n## Development\n\nFirst install the dependencies with `yarn install` or `npm install`.\n\nTo build the files and test in browser, run\n\n```\nnpm run serve\n```\n\n## Release\n\nTo build for release, run\n\n```\nnpm run build\n```\n\nThis will output everything into the `dist` folder.\n\n## Licence\n\nThis project is licensed under the MIT licence.\n\nBy the way, this project has nothing to do with TFL, just a bit of open source fun!\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

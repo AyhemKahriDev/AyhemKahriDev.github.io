@@ -1,0 +1,29 @@
+{
+  "description": "Swamp sinkhole map chunk",
+  "height": 7,
+  "id": "swamp_sinkhole",
+  "no_rotate": true,
+  "rows": [
+    "..B.V..",
+    ".Bw~wT.",
+    "Tw~W~wB",
+    "B.~W~..",
+    ".w~W~wV",
+    ".Tw~w..",
+    "..V.B.."
+  ],
+  "tags": [
+    "swamp"
+  ],
+  "terrain": {
+    ".": "TileMarsh",
+    "W": "TileWater",
+    "w": "TileSwampWater",
+    "~": "TileMud",
+    "B": "TileBush",
+    "T": "TileCypressTree",
+    "V": "TileVine"
+  },
+  "weight": 2,
+  "width": 7
+}

@@ -1,0 +1,16 @@
+{
+  "repo": "soxfox42/typit",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 63,
+  "pushedAt": "2024-02-27T09:03:08Z",
+  "description": "A word game based on Josh Wardle's Wordle and the gameshow Lingo.",
+  "defaultBranch": "main",
+  "owner": "soxfox42",
+  "slug": "soxfox42-typit",
+  "dest": "third-party/soxfox42-typit",
+  "readme": "typit\n=====\n\nThis is a web-based word game, essentially cloning the gameplay of Josh Wardle's [Wordle](https://www.powerlanguage.co.uk/wordle/),\nwhich itself is very similar to part of the television game show *Lingo*.\n\nUnlike Wordle, this game can be played more than once per day. After you have played the daily word, Typit picks random words each round.\n\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

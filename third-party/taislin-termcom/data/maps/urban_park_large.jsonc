@@ -1,0 +1,24 @@
+{
+  "id": "urban_park_large",
+  "description": "Urban park large map chunk",
+  "weight": 2,
+  "tags": [
+    "urban"
+  ],
+  "width": 8,
+  "height": 8,
+  "rows": [
+    "a..aa..a",
+    "baabbaab",
+    "baabbaab",
+    "a..aa..a",
+    "baabbaab",
+    "baabbaab",
+    "a..aa..a",
+    "........"
+  ],
+  "terrain": {
+    "a": "TileBush",
+    "b": "TileTree"
+  }
+}

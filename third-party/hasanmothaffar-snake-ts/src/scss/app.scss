@@ -1,0 +1,78 @@
+@use "./buttons";
+@use "./gradients";
+@use "./mobile_controls";
+@use "./options";
+@use "./score";
+@use "./variables";
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap');
+
+* {
+	box-sizing: border-box;
+
+	&::after {
+		box-sizing: border-box;
+	}
+
+	&::before {
+		box-sizing: border-box;
+	}
+}
+
+html {
+	font-size: 16px;
+	font-family: Poppins;
+	color: var(--text-color);
+
+	overflow-x: hidden;
+}
+
+body {
+	min-height: 100vh;
+	margin: 0;
+
+	overflow-x: hidden;
+
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	justify-content: space-around;
+
+	transition: all .2s ease-in;
+}
+
+/*
+* Canvas elements actually require both css styles and inline html styles.
+* Read more about this on the Internet
+*/
+canvas {
+	background: white;
+	border-radius: 10px;
+	border: 1px solid var(--cavnas-border-color);
+
+	transition: border-color 0.2s ease-in;
+}
+
+.game-state {
+	height: 30px;
+	margin: 10px 0;
+}
+
+@media (max-width: 768px) {
+	.start-label {
+		display: none;
+	}
+	
+	.game-state {
+		position: absolute;
+		
+		top: -20%;
+		margin: 0;
+	}
+}
+
+@media (max-width: 567px) {
+	html, body {
+		font-size: 14px;
+	}
+}

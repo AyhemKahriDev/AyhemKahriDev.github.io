@@ -1,0 +1,16 @@
+{
+  "repo": "mhhridoy7907/ludo-game",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 26,
+  "pushedAt": "2026-05-16T17:52:25Z",
+  "description": "A fully functional Ludo board game built with HTML, CSS, and Vanilla JavaScript. Includes dice rolling, token movement, AI bots, and complete game logic for 2–4 players.",
+  "defaultBranch": "main",
+  "owner": "mhhridoy7907",
+  "slug": "mhhridoy7907-ludo-game",
+  "dest": "third-party/mhhridoy7907-ludo-game",
+  "readme": "# Ludo Game (HTML + CSS + JavaScript)\n\nA fully functional Ludo board game built using only Vanilla HTML, CSS, and JavaScript.\nThis project includes complete game logic, animations, bots, and interactive UI.\n\n## Features\n- Real-time dice rolling system\n- 2–4 player support\n- Bot & Random AI players\n- Smart move validation system\n- Token killing (capture system)\n- Win detection (4 tokens home)\n- Clean Ludo board UI design\n- Responsive layout (desktop & mobile friendly)\n\n## Technologies Used\n- HTML5\n- CSS3 (Grid + Flexbox)\n- Vanilla JavaScript (ES6 Classes)\n- Canvas API (for animation rendering)\n\n\n## How to Play\n- Open index.html in your browser\n- Enter player names and select colors\n- Click Start Game\n- Roll the dice 🎲\n- Select token to move\n- First player to bring all 4 tokens home wins 🏆\n\n## Game Logic\n- Each player has 4 tokens\n- Dice value controls movement\n- Rolling 6 gives extra chance\n- Tokens can kill opponent tokens on same position\n- Safe zones prevent capture\n- Game ends when a player reaches 4/4 tokens home\n\n## 📂 Project Structure\n📁 game code/\n\n├── index.html\n\n ├── style.css (inside HTML)\n \n ├── script.js (inside HTML)\n \n └── img/\n     ├── d0.png\n     ├── d1.png\n     ├── d2.png\n     ├── ...\n     └── d6.png\n     \n\n\n\n\n## Future Improvements\n- Online multiplayer (WebSocket / Firebase)\n- Mobile touch controls\n- Sound effects\n- Leaderboard system\n- Better animations\n\n\n## 👨‍💻 Author\n`Murad Hasan Hridoy`\nWhatsApp: +880 1962-388570\nGmail: mhhridoy7907@\n\n📜 License\n\nThis project is open-source and free to use for learning purposes.\n",
+  "licenceFile": "LICENSE",
+  "entry": "game code/index.html",
+  "validated": true
+}

@@ -1,0 +1,54 @@
+# Binaries
+/termcom
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.wasm
+*.wasm.gz
+
+# Test binary
+*.test
+
+# Output of go coverage
+*.out
+
+# Go workspace
+go.work
+go.work.sum
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Save files
+*.sav
+saves/
+
+# Logs
+*.log
+
+# WASM runtime bridge (copied from Go toolchain)
+web_wasm/wasm_exec.js
+
+# WASM build data (copied by build script)
+cmd/termcom_wasm/wasmdata/
+termcom.code-workspace
+termcom.exe
+termcom_battle.exe
+_assets/
+/termcom
+autosave.json
+config.json
+/scenario_creator
+/build_android.ps1
+termcom_battle
+test_map

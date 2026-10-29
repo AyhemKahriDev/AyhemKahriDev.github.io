@@ -1,0 +1,22 @@
+{
+  "description": "Ufo pod room map chunk",
+  "height": 5,
+  "id": "ufo_pod_room",
+  "rows": [
+    "WWWWW",
+    "W...W",
+    "W.P.W",
+    "W...W",
+    "WWWWW"
+  ],
+  "tags": [
+    "ufo"
+  ],
+  "terrain": {
+    ".": "TileUFOFloor",
+    "W": "TileUFOWall",
+    "P": "TilePod"
+  },
+  "weight": 2,
+  "width": 5
+}

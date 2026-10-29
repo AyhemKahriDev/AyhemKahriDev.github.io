@@ -1,0 +1,16 @@
+{
+  "repo": "rsamwilson2323-cloud/Brick-Breaker-game",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 6,
+  "pushedAt": "2026-03-18T12:02:15Z",
+  "description": "🧱 Block Breaker is a classic arcade-style game built using HTML, CSS, and JavaScript with canvas rendering. Features paddle control, ball physics, brick collision detection, scoring, lives system, and win/lose conditions. Smooth gameplay with keyboard and mouse controls in a responsive design.",
+  "defaultBranch": "main",
+  "owner": "rsamwilson2323-cloud",
+  "slug": "rsamwilson2323-cloud-brick-breaker-game",
+  "dest": "third-party/rsamwilson2323-cloud-brick-breaker-game",
+  "readme": "# 🧱 Block Breaker Game\n\nA classic arcade-style Block Breaker game built using HTML, CSS, and JavaScript with Canvas API. Control the paddle to bounce the ball, break all bricks, and score points while managing limited lives.\n\n---\n\n## 🚀 Features\n\n- 🧱 Brick breaking gameplay  \n- 🎮 Paddle control using keyboard & mouse  \n- ⚡ Realistic ball physics and collision detection  \n- 📊 Score tracking system  \n- ❤️ Lives system with game over condition  \n- 🏆 Win condition when all bricks are destroyed  \n- 🎨 Clean canvas-based UI  \n- ⚡ Smooth animation using requestAnimationFrame  \n\n---\n\n## 🛠️ Tech Stack\n\n- HTML  \n- CSS  \n- JavaScript (Canvas API)  \n\n---\n\n## 📂 Project Structure\n\n    Brick-Breaker-game/\n    │── block breaker.html\n    │── README.md\n    │── LICENSE\n\n---\n\n## 📦 Requirements\n\nNo installation required ✅  \nJust a modern web browser (Chrome, Edge, Firefox)\n\n---\n\n## ⚙️ How to Run\n\n### 1️⃣ Clone the repository\ngit clone https://github.com/rsamwilson2323-cloud/Brick-Breaker-game.git\n\n### 2️⃣ Navigate into the folder\ncd Brick-Breaker-game\n\n### 3️⃣ Open the project\n\nDouble click:\nblock breaker.html\n\nOR use command:\n\nWindows:\nstart \"block breaker.html\"\n\nMac:\nopen \"block breaker.html\"\n\nLinux:\nxdg-open \"block breaker.html\"\n\n---\n\n## 🎯 Controls\n\n- ⬅️ Arrow Left → Move paddle left  \n- ➡️ Arrow Right → Move paddle right  \n- 🖱️ Mouse → Move paddle smoothly  \n\n---\n\n## 🎯 Gameplay\n\n- Bounce the ball using the paddle  \n- Break all bricks to win  \n- Each brick increases score  \n- Avoid missing the ball  \n- Lose all lives = Game Over  \n\nClassic brick breaker games involve bouncing a ball to destroy bricks while controlling a paddle, requiring timing and reflex skills :contentReference[oaicite:0]{index=0}  \n\n---\n\n## 🖼️ Output\n\n- Interactive canvas gameplay  \n- Dynamic brick grid  \n- Live score and lives display  \n- Win and game-over alerts  \n\n---\n\n## 📌 Key Functionalities\n\n- Collision detection (ball, paddle, bricks)  \n- Dynamic brick grid generation  \n- Physics-based ball movement  \n- Game loop using requestAnimationFrame  \n- Score and lives management  \n\n---\n\n## 📌 Future Improvements\n\n- 🎵 Sound effects  \n- 🎨 Multiple levels  \n- 🧠 Power-ups (multi-ball, speed boost)  \n- 📱 Mobile touch controls  \n\n---\n\n## 👨‍💻 Author\n\nSam Wilson  \n\nGitHub: https://github.com/rsamwilson2323-cloud  \nLinkedIn: https://www.linkedin.com/in/sam-wilson-14b554385  \n\n---\n\n## 📄 License\n\nMIT License\n\n---\n\n## ⭐ Support\n\nIf you like this project, give it a ⭐ on GitHub!\n",
+  "licenceFile": "LICENSE",
+  "entry": "Brick Breaker game.html",
+  "validated": true
+}

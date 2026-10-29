@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pacman</title>
+  <link rel="icon" href="meta/pacman_final.gif" type="image/gif">
+   <script type="text/javascript" src="js/Game.js"></script>
+	<style>
+	.tooltip {
+	  position: relative;
+	  display: inline-block;
+	}
+
+	.tooltip .tooltiptext {
+	  visibility: hidden;
+	  width: 140px;
+	  background-color: #555;
+	  color: #fff;
+	  text-align: center;
+	  border-radius: 6px;
+	  padding: 5px;
+	  position: absolute;
+	  z-index: 1;
+	  bottom: 150%;
+	  left: 50%;
+	  margin-left: -75px;
+	  opacity: 0;
+	  transition: opacity 0.3s;
+	  overflow-wrap: break-word;
+	}
+
+	.tooltip .tooltiptext::after {
+	  content: "";
+	  position: absolute;
+	  top: 100%;
+	  left: 50%;
+	  margin-left: -5px;
+	  border-width: 5px;
+	  border-style: solid;
+	  border-color: #555 transparent transparent transparent;
+	}
+
+	.tooltip:hover .tooltiptext {
+	  visibility: visible;
+	  opacity: 1;
+	}
+	</style>
+</head>
+<body style="background:#999999"  onLoad="pageLoadEvent();">
+	<!-- <script> alert(document.documentElement.clientWidth + ", " + document.documentElement.clientHeight) </script> -->
+	<!-- <h1 style="position:absolute; top:40px; left:120px; font-size:50px;"> Collision </h1> -->
+	<!-- <img src="meta/PacmanIcon.png" style="position:absolute; top:40px; left:90px; width:418px; height:79px;"/> -->
+	<h1>Pacman</h1>
+	<div style="position:absolute; top:50px; left:709px; width:100px;height:100px; background-color:#000000; border-radius:25px;">
+	<p style="text-align:justify;text-align:center; color:#ffffff"><strong>Current<br>Score</strong></p>
+	<p style="text-align:justify;text-align:center; color:#ffffff; font-size:20px" id="currS"><strong>0</strong></p>
+	</div>
+	<div style="position:absolute; top:50px; left:849px; width:100px;height:100px; background-color:#000000; border-radius:25px;">
+	<p style="text-align:justify;text-align:center; color:#ffffff"><strong>Best<br>Score</strong></p>
+	<p style="text-align:justify;text-align:center; color:#ffffff; font-size:20px" id="bestS"><strong>0</strong></p>
+	</div>
+	<div style="position:absolute; top:356px; left:610px; color:#39ff14; font-size: 24px; display: none; z-index: 1;" id="cd"><h2>Game Over!</h2></div>
+	<div style="position:absolute; top:160px; left:450px;" id="fpsdiv"><h3 id="fps"><p>FPS:0</p></h3></div>
+	<div style="position:absolute; top:300px; left:99px;"><h3><p><u>HOW TO PLAY:</u><br></p></h3></div>
+
+	<img src="meta/food.png" style="position:absolute; top:350px; left:110px; width:20px; height:20px;"></img>
+	<div style="position:absolute; max-width:300px; top:330px; left:139px;"><h3><p>Use your mouse/touchpad to move pacman from hitting with moving ghosts.</p></h3></div>
+	
+	<img src="meta/food.png" style="position:absolute; top:430px; left:110px; width:20px; height:20px;"></img>
+	<div style="position:absolute; max-width:300px; top:410px; left:139px; color:#000000;" id="ssmsgdiv"><h3 id="ssmsg">Start new game by pressing any movement key or left clicking on pacman(release mouse button after a click and start moving cursor)</h3></div>
+	
+	<img src="meta/food.png" style="position:absolute; top:530px; left:110px; width:20px; height:20px;"></img>
+	<div style="position:absolute; max-width:300px; top:510px; left:139px; color:#000000;"><h3>Grab cherries for bonus score</h3></div>
+	
+	<img src="meta/food.png" style="position:absolute; top:570px; left:110px; width:20px; height:20px;"></img>
+	<div style="position:absolute; max-width:300px; top:550px; left:139px; color:#000000;"><h3>Note- Score increases only on higher FPS</h3></div>
+	
+	<!-- Main box begin -->
+	<!-- Black big box -->
+	<div style="position:absolute; top:200px; left:450px; width:500px; height:400px; background-color:#000000;"></div>
+	<div id="game-objects">
+		<!-- Pacman -->
+		<div style="position:absolute; top:400px; left:700px; width:20px; height:20px; background-color:#ff0000; border-radius:10px; z-index:0;" onClick="Game();" id="Pacman"><img src="meta/pacman_final.gif" style="width:20px; height:20px;" id="pacmanImg" /></div>
+		<!-- Food -->
+		<div style="position:absolute; top:400px; left:700px; width:20px; height:20px; background-color:#000000; border-radius:10px; z-index:0;" id="foodImg"><img src="meta/food.png" style="width:20px; height:20px;" /></div>
+		<!-- Obstacles begin -->
+		<!-- white dots -->
+		<div style="position:absolute; top:300px; left:900px; width:10px; height:10px;  border-radius:5px;" id="whiteDot1">
+		<img src="meta/opponent1.png" style="width:10px; height:10px;" id="wd1img" />
+		</div>
+		<div style="position:absolute; top:300px; left:900px; width:10px; height:10px;  border-radius:5px;" id="whiteDot2">
+		<img src="meta/opponent2.png" style="width:10px; height:10px;" id="wd2img" />
+		</div>
+		<div style="position:absolute; top:300px; left:900px; width:10px; height:10px; border-radius:5px;" id="whiteDot3">
+		<img src="meta/opponent3.png" style="width:10px; height:10px;" id="wd3img" />
+		</div>
+		<!-- white circle -->
+		<div style="position:absolute; top:500px; left:700px; width:50px; height:50px; border-radius:25px;" id="whiteCircle">
+		<img src="meta/opponent4.png" style="width:50px; height:50px;" id="wcimg" />
+		</div>
+		<!-- white square -->
+		<div style="position:absolute; top:250px; left:600px; width:30px; height:30px;" id="whiteSquare">
+		<img src="meta/opponent3.png" style="width:30px; height:30px;" id="wsimg" />
+		</div>
+		<!-- white rect -->
+		<div style="position:absolute; top:450px; left:550px; width:140px; height:20px;" id="whiteRect">
+		<img src="meta/opponent1.png" style="width:20px; height:20px;" id="wr1img" />
+		<img src="meta/opponent2.png" style="width:20px; height:20px;" id="wr2img" />
+		<img src="meta/opponent3.png" style="width:20px; height:20px;" id="wr3img" />
+		<img src="meta/opponent4.png" style="width:20px; height:20px;" id="wr4img" />
+		<img src="meta/opponent1.png" style="width:20px; height:20px;" id="wr5img" />
+		<img src="meta/opponent2.png" style="width:20px; height:20px;" id="wr6img" />
+		</div>
+		<!-- white square1 -->
+		<div style="position:absolute; top:200px; left:450px; width:25px; height:25px; " id="whiteSquare1">
+		<img src="meta/opponent1.png" style="width:25px; height:25px;" id="ws1img" />
+		</div>
+		<!-- white square2 -->
+		<div style="position:absolute; top:575px; left:450px; width:25px; height:25px; " id="whiteSquare2">
+		<img src="meta/opponent4.png" style="width:25px; height:25px;" id="ws2img" />
+		</div>
+		<!-- white square3 -->
+		<div style="position:absolute; top:575px; left:925px; width:25px; height:25px; " id="whiteSquare3">
+		<img src="meta/opponent2.png" style="width:25px; height:25px;" id="ws3img" />
+		</div>
+		<!-- white square4 -->
+		<div style="position:absolute; top:200px; left:925px; width:25px; height:25px; " id="whiteSquare4">
+		<img src="meta/opponent3.png" style="width:25px; height:25px;" id="ws4img" />
+		</div>
+		<!-- white square5 -->
+		<div style="position:absolute; top:200px; left:450px; width:25px; height:25px; " id="whiteSquare5">
+		<img src="meta/opponent1.png" style="width:25px; height:25px;" id="ws5img" />
+		</div>
+		<!-- white square6 -->
+		<div style="position:absolute; top:575px; left:450px; width:25px; height:25px; " id="whiteSquare6">
+		<img src="meta/opponent4.png" style="width:25px; height:25px;" id="ws6img" />
+		</div>
+		<!-- white square7 -->
+		<div style="position:absolute; top:575px; left:925px; width:25px; height:25px; " id="whiteSquare7">
+		<img src="meta/opponent2.png" style="width:25px; height:25px;" id="ws7img" />
+		</div>
+		<!-- white square8 -->
+		<div style="position:absolute; top:200px; left:925px; width:25px; height:25px; " id="whiteSquare8">
+		<img src="meta/opponent3.png" style="width:25px; height:25px;" id="ws8img" />
+		</div>
+	</div>
+	<!-- Obstacles end -->
+	<!-- Main box end -->
+	
+	<div style="position:absolute; top:590px; left:725px;"><h4><p>Created by</p></h4></div>
+	<div style="position:absolute; top:590px; left:810px;"><h3><p><a target="_blank" href="https://github.com/PalashBansal">Palash Bansal</a></p></h3></div>
+	<div style="position:absolute; top:620px; left:210px;"><h3><p>I created this game in my spare time after getting inspired from the famous <a target="_blank" href="https://space.mit.edu/~linares/game.htm">Escapa game</a></p></h3></div>
+	<div style="position:absolute; top:650px; left:210px;"><h3><p><a target="_blank" href="https://github.com/PalashBansal/Collision">Contributions</a> are welcome :)</p></h3></div>
+	
+	<div style="position:absolute; top:720px; left:210px;"><h3><p>If you liked the game and would like to grab me a coffee-</p></h3></div>
+	<div style="position:absolute; top:750px; left:210px;"><h3><p>Bitcoin(BTC) - </p></h3></div>
+	<div style="position:absolute; top:750px; left:335px;" ><h3><p id="btc"><a href="bitcoin:331RPAL7LsAjL2BzUKDgHsixQWepMbfchX">331RPAL7LsAjL2BzUKDgHsixQWepMbfchX</a></p></h3></div>
+	<div style="position:absolute; top:780px; left:280px;"><h3><a id="paypal" href="https://www.paypal.com/paypalme/BansalPalash" target="_blank">Paypal</a></h3></div>
+	<div style="position:absolute; top:768px; left:715px;" class="tooltip">
+	<button onclick="CopyBtnClick(1)" onmouseout="TooltipOutFunc()">
+	  <span class="tooltiptext" id="myTooltip1">Copy to clipboard!</span>
+	  Copy address
+	  </button>
+	</div>
+	<div style="position:absolute; top:725px; left:820px;" >
+	<svg shape-rendering="crispEdges" height="100" width="100" viewBox="0 0 29 29"><path fill="#FFFFFF"></path><path fill="#000000" d="M0 0h7v1H0zM8 0h3v1H8zM12 0h1v1H12zM14 0h1v1H14zM16 0h1v1H16zM18 0h2v1H18zM22,0 h7v1H22zM0 1h1v1H0zM6 1h1v1H6zM8 1h3v1H8zM13 1h1v1H13zM17 1h4v1H17zM22 1h1v1H22zM28,1 h1v1H28zM0 2h1v1H0zM2 2h3v1H2zM6 2h1v1H6zM8 2h1v1H8zM10 2h2v1H10zM14 2h4v1H14zM19 2h1v1H19zM22 2h1v1H22zM24 2h3v1H24zM28,2 h1v1H28zM0 3h1v1H0zM2 3h3v1H2zM6 3h1v1H6zM8 3h2v1H8zM11 3h1v1H11zM13 3h3v1H13zM18 3h1v1H18zM20 3h1v1H20zM22 3h1v1H22zM24 3h3v1H24zM28,3 h1v1H28zM0 4h1v1H0zM2 4h3v1H2zM6 4h1v1H6zM13 4h5v1H13zM20 4h1v1H20zM22 4h1v1H22zM24 4h3v1H24zM28,4 h1v1H28zM0 5h1v1H0zM6 5h1v1H6zM8 5h1v1H8zM11 5h2v1H11zM14 5h1v1H14zM16 5h5v1H16zM22 5h1v1H22zM28,5 h1v1H28zM0 6h7v1H0zM8 6h1v1H8zM10 6h1v1H10zM12 6h1v1H12zM14 6h1v1H14zM16 6h1v1H16zM18 6h1v1H18zM20 6h1v1H20zM22,6 h7v1H22zM9 7h1v1H9zM12 7h1v1H12zM15 7h1v1H15zM17 7h1v1H17zM20 7h1v1H20zM0 8h2v1H0zM4 8h3v1H4zM11 8h1v1H11zM20 8h1v1H20zM23 8h1v1H23zM25,8 h4v1H25zM1 9h4v1H1zM7 9h1v1H7zM9 9h2v1H9zM12 9h5v1H12zM19 9h1v1H19zM21 9h1v1H21zM23 9h4v1H23zM28,9 h1v1H28zM2 10h2v1H2zM6 10h1v1H6zM8 10h1v1H8zM11 10h5v1H11zM17 10h2v1H17zM21 10h6v1H21zM28,10 h1v1H28zM0 11h1v1H0zM3 11h1v1H3zM5 11h1v1H5zM7 11h1v1H7zM10 11h2v1H10zM17 11h3v1H17zM21 11h3v1H21zM25 11h1v1H25zM27,11 h2v1H27zM0 12h1v1H0zM2 12h2v1H2zM5 12h2v1H5zM8 12h1v1H8zM10 12h1v1H10zM12 12h1v1H12zM16 12h1v1H16zM20 12h2v1H20zM23 12h3v1H23zM27 12h1v1H27zM0 13h2v1H0zM5 13h1v1H5zM7 13h3v1H7zM13 13h2v1H13zM16 13h3v1H16zM23 13h2v1H23zM27,13 h2v1H27zM0 14h1v1H0zM3 14h1v1H3zM5 14h2v1H5zM8 14h2v1H8zM13 14h1v1H13zM15 14h1v1H15zM20 14h3v1H20zM25 14h2v1H25zM28,14 h1v1H28zM3 15h3v1H3zM8 15h2v1H8zM12 15h1v1H12zM14 15h5v1H14zM22 15h2v1H22zM25 15h1v1H25zM28,15 h1v1H28zM2 16h1v1H2zM4 16h1v1H4zM6 16h1v1H6zM9 16h1v1H9zM11 16h1v1H11zM16 16h1v1H16zM19 16h3v1H19zM23 16h1v1H23zM25 16h1v1H25zM28,16 h1v1H28zM0 17h1v1H0zM2 17h2v1H2zM5 17h1v1H5zM7 17h1v1H7zM10 17h1v1H10zM12 17h1v1H12zM14 17h1v1H14zM16 17h1v1H16zM18 17h2v1H18zM24 17h2v1H24zM28,17 h1v1H28zM5 18h2v1H5zM10 18h3v1H10zM15 18h4v1H15zM20 18h1v1H20zM24 18h2v1H24zM28,18 h1v1H28zM2 19h3v1H2zM7 19h1v1H7zM9 19h3v1H9zM15 19h3v1H15zM19 19h1v1H19zM21 19h3v1H21zM25 19h1v1H25zM27 19h1v1H27zM0 20h2v1H0zM3 20h2v1H3zM6 20h1v1H6zM10 20h1v1H10zM12 20h2v1H12zM15 20h3v1H15zM19 20h7v1H19zM8 21h1v1H8zM15 21h2v1H15zM18 21h1v1H18zM20 21h1v1H20zM24 21h1v1H24zM28,21 h1v1H28zM0 22h7v1H0zM9 22h1v1H9zM15 22h1v1H15zM18 22h3v1H18zM22 22h1v1H22zM24 22h1v1H24zM26 22h1v1H26zM28,22 h1v1H28zM0 23h1v1H0zM6 23h1v1H6zM8 23h3v1H8zM12 23h1v1H12zM15 23h6v1H15zM24 23h1v1H24zM27 23h1v1H27zM0 24h1v1H0zM2 24h3v1H2zM6 24h1v1H6zM8 24h4v1H8zM13 24h3v1H13zM19 24h6v1H19zM28,24 h1v1H28zM0 25h1v1H0zM2 25h3v1H2zM6 25h1v1H6zM9 25h2v1H9zM12 25h1v1H12zM14 25h7v1H14zM23 25h1v1H23zM25 25h1v1H25zM28,25 h1v1H28zM0 26h1v1H0zM2 26h3v1H2zM6 26h1v1H6zM9 26h1v1H9zM11 26h5v1H11zM17 26h1v1H17zM19 26h2v1H19zM23 26h1v1H23zM26,26 h3v1H26zM0 27h1v1H0zM6 27h1v1H6zM8 27h1v1H8zM11 27h1v1H11zM13 27h1v1H13zM16 27h2v1H16zM22 27h1v1H22zM24 27h1v1H24zM27,27 h2v1H27zM0 28h7v1H0zM8 28h3v1H8zM12 28h2v1H12zM16 28h2v1H16zM20 28h3v1H20zM24 28h1v1H24zM27 28h1v1H27z"></path></svg>
+	</div>
+	
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+{
+  "repo": "presiyannnn/CBBA-6890",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 3500,
+  "pushedAt": "2021-11-09T18:56:45Z",
+  "description": "A maze raycasting game",
+  "defaultBranch": "main",
+  "owner": "presiyannnn",
+  "slug": "presiyannnn-cbba-6890",
+  "dest": "third-party/presiyannnn-cbba-6890",
+  "readme": "![Logo](./images/Logo.png)\n\n<details>\n\t<summary>Table of contents</summary>\n\t<ol>\n\t\t<li>\n\t\t\t<a href = \"#about-the-project\">About the project</a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a href = \"#Technologies-used\">Technologies used</a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a href = \"#Getting-started\">Getting started</a>\n\t\t\t<ul>\n\t\t\t\t<li>\n\t\t\t\t\t<a href = \"#Released-project\">Released project</a>\n\t\t\t\t</li>\n\t\t\t\t<li>\n\t\t\t\t\t<a href = \"#Compiling-from-source\">Compiling from source</a>\n\t\t\t\t</li>\n\t\t\t</ul>\n\t\t</li>\n\t\t<li>\n\t\t\t<a href=\"#License\">License</a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a href=\"#Contact-us\">Contact us</a>\n\t\t</li>\n\t\t<li>\n\t\t\t<a href=\"#Acknowledgements\">Acknowledgements</a>\n\t\t</li>\n\t</ol>\n</details>\n\n\n\n## About the project\n![Game image](./images/gameImage.png)\nThis is the maze game of Team \"CBBA-6890\". We used a combination of raycasting and maze generation algorithms to make this game.\n\n## Technologies used\nWe used two main technologies:\n* C++\n* ncurses\n\n## Getting started\n#### Released project\nYou can go to the Releases page of the project and download the latest version for your OS <br>\n(Note: On Windows you will need an installation of [MinGw](https://sourceforge.net/projects/mingw/) to run it)\n\n#### Compiling from source\n\n##### Prerequisites\n+ If you are using a Windows machine it is recommended you have the ```make``` command and a compiler(Preferably ```g++```). The recommended compiler is [MinGW](https://sourceforge.net/projects/mingw)\n+ If you are on Linux download ```ncurses.h```\n\t+ Arch and Arch-based distros\n\t```sh\n\tpacman -S ncurses\n\t```\n\t+ Debian and Debian-based\n\t```sh\n\tapt-get install libncurses5-dev libncursesw5-dev\n\t```\n\n##### Compiling and running\n1. Clone the project\n```sh\ngit clone https://www.github.com/PSStefanov19/CBBA-6890\n```\n2. Choose the right makefile\n\t+ If you are using Windows\n\t```sh\n\tmingw32-make -f Windows\n\t```\n\t+ If you are using Linux\n\t```sh\n\tmake -f Linux\n\t```\n1. Run the project\n\t+ Windows\n\t```sh\n\tcd bin/\n\tmain.exe\n\t```\n\t+ Linux\n\t```sh\n\t./bin/main.out\n\t```\n## License\nThis project is licensed under the MIT license. See [License](License) for more information.\n\n## Contact us\nPresian Stefanov\n+ Github - [@PSStefanov19](https://github.com/PSStefanov19)\n+ Instagram - [@presian.cpp](https://www.instagram.com/presian.cpp/)\n## Acknowledgements\nHelpful resources I found while working on the project\n+ [Choose an Open Source License](https://choosealicense.com/)\n+ [Colsby Computer Science's makefile guide](https://www.cs.colby.edu/maxwell/courses/tutorials/maketutor/)\n+ [TLDP's Ncurses HOWTO](https://tldp.org/HOWTO/NCURSES-Programming-HOWTO/)\n+ [Invisible island's ncurses Windows port](https://invisible-island.net/ncurses/ncurses.html)\n+ [One Lone Coder](https://github.com/OneLoneCoder)\n",
+  "licenceFile": "LICENSE",
+  "entry": "doc/html/index.html",
+  "validated": true
+}

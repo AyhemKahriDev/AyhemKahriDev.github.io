@@ -1,0 +1,13 @@
+.card {
+  height: 140px;
+  width: auto;
+  margin-right: -60px;
+
+  @media all and (min-width: 768px) {
+    height: 220px;
+  }
+
+  @media all and (min-width: 1200px) {
+    height: 250px;
+  }
+}

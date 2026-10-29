@@ -1,0 +1,16 @@
+{
+  "repo": "AD-Archer/retroaudiomaker",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 65,
+  "pushedAt": "2026-03-02T04:06:47Z",
+  "description": "RetroAudioMaker is a tool that compresses audio files to create a retro, low-fidelity sound reminiscent of 90s video game music. Built with Express, Web Audio API, and FileReader API, it degrades audio quality intentionally to mimic the limitations of old hardware, giving your tracks a nostalgic, pixelated feel.",
+  "defaultBranch": "main",
+  "owner": "AD-Archer",
+  "slug": "ad-archer-retroaudiomaker",
+  "dest": "third-party/ad-archer-retroaudiomaker",
+  "readme": "# Retro Audio Maker\n\nRetro Audio Maker is a web-based tool that transforms your uploaded audio files into retro, 90s game-style sound effects. I built this project because I needed a way to generate retro audio for a project I'm working on. The app applies a series of audio processing effects—including downsampling, low-pass filtering, bit crushing, and distortion—to give your audio that vintage feel.\n\nLive Demo: https://retroaudiomaker.vercel.app/\n\nGitHub Repository: https://github.com/AD-Archer/retroaudiomaker\n\n# Features:\n- Audio Upload: Supports WAV, MP3, and OGG formats.\n- Retro Processing: Applies effects such as downsampling to a lower sample rate (e.g., 8000Hz), low-pass filtering, bit crushing, and distortion using a custom wave shaper.\n- Playback & Download: Listen to the processed audio and download it as a WAV file.\n\n# Tools & Technologies:\n- Node.js\n- Express\n- JavaScript\n- HTML & CSS\n- Web Audio API\n- AudioWorklet API\n- OfflineAudioContext\n- FileReader API\n\n# Getting Started:\nPrerequisites: Node.js (v14 or later) and npm (or yarn)\n\n# Installation:\n\n1. Clone the repository:\n   ```sh\n   git clone https://github.com/AD-Archer/retroaudiomaker.git\n   cd retroaudiomaker\n   ```\n\n2. Install dependencies (use either npm or yarn):\n   ```sh\n   npm install\n   ```\n   or\n   ```sh\n   yarn install\n   ```\n\n3. Start the server:\n   ```sh\n   npm start\n   ```\n\n   The application should now be running at [http://localhost:3000](http://localhost:3000).\n\n# Usage:\n1. Open your browser and navigate to http://localhost:3000.\n2. Upload an audio file using the provided file input.\n3. Click on the Process Audio button to apply the retro effects.\n4. Listen to your processed audio in the browser.\n5. Download the processed audio file by clicking the download link.\n\n# Customization:\nModify script.js to tweak parameters such as the target sample rate, filter frequencies, and bit crusher settings.\nCustomize the look and feel by editing the CSS.\nAdjust the custom audio processing by editing bit-crusher-processor.js.\n\n# Contributing:\nContributions are welcome! Fork the repository and submit a pull request.\nFor issues, open an issue on GitHub.\n\n# License:\nThis project is licensed under the MIT License.\n\n# Acknowledgments:\nThanks to the developers and maintainers of the Web Audio API and AudioWorklet API.\nSpecial thanks to the community for providing valuable resources and documentation.\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html",
+  "validated": true
+}

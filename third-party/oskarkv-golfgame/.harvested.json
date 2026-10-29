@@ -1,0 +1,16 @@
+{
+  "repo": "oskarkv/golfgame",
+  "stars": 5,
+  "licence": "GPL-3.0",
+  "sizeKB": 85,
+  "pushedAt": "2020-12-17T20:20:33Z",
+  "description": "A small JavaScript golf game. My first JS program.",
+  "defaultBranch": "master",
+  "owner": "oskarkv",
+  "slug": "oskarkv-golfgame",
+  "dest": "third-party/oskarkv-golfgame",
+  "readme": "A small JavaScript golf game\n============================\n\n- Load `game.html` to run\n- Use mouse to shoot when the ball is stationary\n- Can not currently be played on touch devices\n- Infinite holes/levels\n\nUses [Ramda](http://ramdajs.com/0.14/index.html) and\n[RequireJS](http://requirejs.org/) (included).\n\nLicense\n=======\n\nCopyright (C) 2020  Oskar Kvist\n\nThis program is free software: you can redistribute it\nand/or modify it under the terms of the GNU General Public\nLicense as published by the Free Software Foundation, either\nversion 3 of the License, or (at your option) any later\nversion.\n\nThis program is distributed in the hope that it will be\nuseful, but WITHOUT ANY WARRANTY; without even the implied\nwarranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR\nPURPOSE. See the GNU General Public License for more\ndetails.\n\nYou should have received a copy of the GNU General Public\nLicense along with this program. If not, see\n<https://www.gnu.org/licenses/>.\n",
+  "licenceFile": "LICENSE",
+  "entry": "game.html",
+  "validated": true
+}

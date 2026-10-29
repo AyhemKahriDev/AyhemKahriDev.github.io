@@ -1,0 +1,25 @@
+{
+  "description": "Rural greenhouse map chunk",
+  "height": 5,
+  "id": "rural_greenhouse",
+  "rows": [
+    "NNNNNNN",
+    "N.B.B.N",
+    "N.....+",
+    "N.B.B.N",
+    "NNNNNNN"
+  ],
+  "tags": [
+    "rural",
+    "farm",
+    "urban"
+  ],
+  "terrain": {
+    "+": "TileDoor",
+    ".": "TileFloor",
+    "N": "TileWindow",
+    "B": "TileBush"
+  },
+  "weight": 2,
+  "width": 7
+}

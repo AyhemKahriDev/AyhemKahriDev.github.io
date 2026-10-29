@@ -1,0 +1,16 @@
+{
+  "repo": "danielafarias/Space-Invaders",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 3077,
+  "pushedAt": "2021-09-26T07:20:32Z",
+  "description": "Space-Invaders é um jogo de naves com o objetivo de salvar o satélite dos aliens invasores. Feito com HTML, CSS, JavaScript e JQuery.",
+  "defaultBranch": "master",
+  "owner": "danielafarias",
+  "slug": "danielafarias-space-invaders",
+  "dest": "third-party/danielafarias-space-invaders",
+  "readme": "# SPACE-INVADERS\n\n![GitHub repo size](https://img.shields.io/github/repo-size/danielafarias/Space-Invaders?style=for-the-badge)\n![GitHub language count](https://img.shields.io/github/languages/count/danielafarias/Space-Invaders?style=for-the-badge)\n![GitHub forks](https://img.shields.io/chocolatey/dt/Space-Invaders?style=for-the-badge)\n![Bitbucket open issues](https://img.shields.io/bitbucket/issues/danielafarias/Space-Invaders?style=for-the-badge)\n![GitHub Last Commit](https://img.shields.io/github/last-commit/danielafarias/Space-Invaders?style=for-the-badge)\n![Github Watchers](https://img.shields.io/github/watchers/danielafarias/Space-Invaders?style=for-the-badge)\n\n![space-invaders](img/space-logo.png)\n\n\n> Space-Invaders é um jogo de naves com o objetivo de salvar o satélite dos aliens invasores. Feito com HTML, CSS, JavaScript e JQuery.\n\n### 🛸 Ajustes e melhorias\n\nO projeto está completo, podendo ser atualizado no futuro.\n\n- [x] Projeto inicializado\n- [x] HTML\n- [x] Style\n- [x] Animações\n- [x] JQuery\n- [x] Projeto Finalizado\n\n## 👾 Instalando `<Space-Invaders>`\n\nPara instalar o `<Space-Invaders>`, siga estas etapas:\n\nClone o projeto:\n```\n<git clone https://github.com/danielafarias/Space-Invaders.git>\n```\n\n## 🎮 Usando `<Space-Invaders>`\n\nPara usar `<Space-Invaders>`, abra o seguinte arquivo em seu navegador (preferencialmente Google Chrome):\n```\n<index.html>\n```\n\nVoilà!\n\n\n## 🛰 Contribuindo para `<Space-Invaders>`\n\nPara contribuir com `<Space-Invaders>`, siga estas etapas:\n\n1. Bifurque este repositório.\n2. Crie um branch: `git checkout -b <space_seu_nome>`.\n3. Faça suas alterações e confirme-as: `git commit -m '<sua_mensagem_de_commit>'`\n4. Envie para o branch original: `git push origin <master> / <https://github.com/danielafarias/Space-Invaders>`\n5. Crie a solicitação de pull.\n\nComo alternativa, consulte a documentação do GitHub em [como criar uma solicitação pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).\n\n## 🤖 Colaboradores\n\nSeguintes pessoas que contribuíram para este projeto:\n\n<table>\n  <tr>\n    <td align=\"center\">\n      <a href=\"https://github.com/danielafarias\">\n        <img src=\"https://avatars.githubusercontent.com/u/79869120?v=4\" width=\"100px;\" alt=\"Foto da Daniela Farias no GitHub\"/><br>\n        <sub>\n          <b>Daniela Farias</b>\n        </sub>\n      </a>\n    </td>\n  </tr>\n</table>\n\n## 📜 Licença\n\nEsse projeto está sob licença MIT ⚖️. Veja o arquivo [LICENÇA](LICENSE.md) para mais detalhes.\n\n[⬆ Voltar ao topo](#space-invaders)<br>\n\n```\n© README.md template by iuricode\n```\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html",
+  "validated": true
+}

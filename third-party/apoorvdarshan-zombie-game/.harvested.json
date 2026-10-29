@@ -1,0 +1,16 @@
+{
+  "repo": "apoorvdarshan/zombie-game",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 453,
+  "pushedAt": "2026-09-07T03:38:01Z",
+  "description": "🎯 A fully playable 3D zombie survival FPS built with Three.js, featuring dynamic waves, dual weapons, and modern UI.",
+  "defaultBranch": "main",
+  "owner": "apoorvdarshan",
+  "slug": "apoorvdarshan-zombie-game",
+  "dest": "third-party/apoorvdarshan-zombie-game",
+  "readme": "# Zombie Survival FPS\n\nA modern 3D zombie survival game built with Three.js featuring professional UI design, authentic weapon sounds, and advanced tactical systems.\n\n<p align=\"center\">\n  <a href=\"https://zombie-game.apoorvdarshan.com\">\n    <img src=\"https://img.shields.io/badge/🎮_Play_Live-4CAF50?style=for-the-badge&logoColor=white\" alt=\"Play Live\"/>\n  </a>\n  <a href=\"https://github.com/apoorvdarshan/zombie-game\">\n    <img src=\"https://img.shields.io/badge/📂_View_Code-181717?style=for-the-badge&logo=github&logoColor=white\" alt=\"View Code\"/>\n  </a>\n</p>\n\n## 📸 Preview\n\nhttps://github.com/user-attachments/assets/ac1ff468-1634-48f5-9327-cc1fa36014c2\n\n## 🎮 Features\n\n- **Wave Survival**: Endless zombie waves with increasing difficulty\n- **Dual Weapons**: Rifle (unlimited) & Machine Gun (150 rounds)\n- **4 Zombie Types**: Normal, Runner, Tank, Brute\n- **Modern UI**: Glass-morphism design with military radar & health bar\n- **Ammo System**: Collectible ammo packs for machine gun\n- **Social Media Ads**: Your handles displayed on in-game buildings\n\n## 🚀 Setup\n\n**Important**: Must be served via HTTP/HTTPS (not file://) for audio loading.\n\n### Quick Start\n\n```bash\ncd zombie-game\npython -m http.server 8080\n# Open http://localhost:8080\n```\n\nOr use VS Code Live Server extension.\n\n### Controls\n\n- **Move**: WASD/Arrow Keys | **Look**: Mouse | **Shoot**: Left Click\n- **Switch Weapons**: Right Click | **Pause**: ESC\n\n## 🌐 Requirements\n\n- Modern browser with WebGL, Web Audio API, and ES6+ support\n- HTTP/HTTPS server (Chrome 90+, Firefox 88+, Safari 14+, Edge 90+)\n\n## 📧 Social Media\n\nDeveloper's handles (also advertised on in-game buildings):\n\n<p align=\"center\">\n  <a href=\"https://github.com/apoorvdarshan\">\n    <img src=\"https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white\" alt=\"GitHub\"/>\n  </a>\n  <a href=\"https://www.linkedin.com/in/apoorvdarshan/\">\n    <img src=\"https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white\" alt=\"LinkedIn\"/>\n  </a>\n  <a href=\"https://x.com/apoorvdarshan\">\n    <img src=\"https://img.shields.io/badge/-000000?style=for-the-badge&logo=x&logoColor=white\" alt=\"X\"/>\n  </a>\n  <a href=\"https://www.youtube.com/@apoorvdarshan\">\n    <img src=\"https://img.shields.io/badge/YouTube-FF0000?style=for-the-badge&logo=youtube&logoColor=white\" alt=\"YouTube\"/>\n  </a>\n  <a href=\"https://www.instagram.com/apoorvcodes\">\n    <img src=\"https://img.shields.io/badge/Instagram-E4405F?style=for-the-badge&logo=instagram&logoColor=white\" alt=\"Instagram\"/>\n  </a>\n</p>\n\n---\n\n**Built with ❤️ using Three.js and modern web technologies**\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

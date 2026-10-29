@@ -1,0 +1,16 @@
+{
+  "repo": "leireomadina/blackjack-game",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 4749,
+  "pushedAt": "2021-02-17T11:16:19Z",
+  "description": "Blackjack card game developed with vanilla JavaScript ES6",
+  "defaultBranch": "master",
+  "owner": "leireomadina",
+  "slug": "leireomadina-blackjack-game",
+  "dest": "third-party/leireomadina-blackjack-game",
+  "readme": "# Blackjack\r\n\r\nEl objetivo es desarrollar un juego de cartas llamado **Blackjack**, también conocido como *veintinuo*, donde el usuario puede competir contra el ordenador. El juego consiste en sumar mediante cartas un valor lo más cercano posible a 21 pero sin pasarse.\r\n\r\nEl proyecto forma parte de un curso de Udemy de Fernando Herrera sobre JavaScript ES6. Por tanto el código base es de su autoría, pero he introducido modificaciones propias, mejoras y refactorización del código: mayor semántica y accesibilidad a través de HTML5, uso de SASS y partials para trabajar de manera más ordenada y automatización de tareas mediante Gulp. Además, he modificado complementamente el **diseño UI/UX** responsive partiendo de una idea propia y he añadidido nuevas **funcionalidades** como:\r\n\r\n- Botón de instrucciones.\r\n- Juego de 5 rondas con contador de victorias.\r\n- Modal para anunciar el ganador final.\r\n\r\nMi intención es seguir añadiendo mejoras y más funcionalidades nuevas, de modo que puedes consultar la sección de Projects para ver cuáles son o sobre cuáles estoy trabajando. Cualquier feedback es bienvenido.\r\n\r\n### Tecnologías usadas:\r\n\r\n- HTML5 y SASS\r\n- JavaScript ES6\r\n- Gulp y Git\r\n\r\n### Resultado final:\r\n\r\n<img src=\"./src/images/mockup-desktop.png\" height=\"600px\"/>\r\n<img src=\"./src/images/mockup-mobile.png\" height=\"600px\"/>\r\n\r\n\r\n### Pasos para arrancar el proyecto:\r\n\r\n> **NOTA:** Necesitas tener instalado [Node JS](https://nodejs.org/) para ejecutar el proyecto:\r\n\r\n1. Instala las dependencias locales ejecutando en la terminal el comando:\r\n\r\n```bash\r\nnpm install\r\n```\r\n\r\n2. Una vez hemos instalado las dependencias, ya podemos arrancar el proyecto. Para ello ejecuta el comando:\r\n\r\n```bash\r\nnpm start\r\n```\r\n\r\n---\r\n\r\nMuchas gracias por leer hasta aquí. Glhf! 😄\r\n\r\n<!--\r\n### Estructura de carpetas\r\n\r\nLa estructura de carpetas sigue este esquema:\r\n\r\n```\r\nsrc\r\n ├─ api // los ficheros de esta carpeta se copian en public/api/\r\n |  └─ data.json\r\n ├─ images\r\n |  └─ logo.jpg\r\n ├─ js // los ficheros de esta carpeta se concatenan en el fichero main.js y este se guarda en public/main.js\r\n |  ├─ main.js\r\n |  └─ events.js\r\n ├─ scss\r\n |  ├─ components\r\n |  ├─ core\r\n |  ├─ layout\r\n |  └─ pages\r\n └─ html\r\n    └─ partials\r\n```\r\n\r\n-->\r\n",
+  "licenceFile": "LICENSE",
+  "entry": "docs/index.html",
+  "validated": true
+}

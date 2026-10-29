@@ -1,0 +1,16 @@
+{
+  "repo": "deveah/amuleta",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 19,
+  "pushedAt": "2018-01-28T20:52:46Z",
+  "description": "A traditional roguelike",
+  "defaultBranch": "master",
+  "owner": "deveah",
+  "slug": "deveah-amuleta",
+  "dest": "third-party/deveah-amuleta",
+  "readme": "# Amuleta\n\n_Amuleta_ is a traditional roguelike, featuring a ten-level dungeon, and a\nsimplified stat system. It is intended to be a _coffeebreak roguelike_, so\nthat a complete play session may take up to half an hour.\n\nIn _Amuleta_, you must guide an adventurer through a perilous dungeon, and\nretrieve the Amulet of Light, a powerful artifact said to illuminate the mind\nof its wearer.\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "docs/index.html",
+  "validated": true
+}

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>cardputer-puzzles - 40 Simon Tatham puzzles on the M5Stack Cardputer</title>
+<meta name="description" content="All 40 of Simon Tatham's puzzles on the M5Stack Cardputer ADV. Flash it from this page over USB, no toolchain needed.">
+<meta property="og:title" content="cardputer-puzzles">
+<meta property="og:description" content="All 40 of Simon Tatham's puzzles on the M5Stack Cardputer ADV. Flash from your browser.">
+<meta property="og:image" content="hero.jpg">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='14' font-size='14'>&#129513;</text></svg>">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="https://unpkg.com/esp-web-tools@10.4.0/dist/web/install-button.js?module"></script>
+</head>
+<body>
+
+<header class="hero">
+  <h1>cardputer&#8209;puzzles</h1>
+  <p class="tagline">All 40 of Simon Tatham's puzzles on the M5Stack Cardputer ADV.
+     Flash one <code>.bin</code> and play offline.</p>
+  <p class="links">
+    <a href="https://github.com/chongjiazhen/cardputer-puzzles">Source on GitHub</a>
+    <a href="https://github.com/chongjiazhen/cardputer-puzzles/releases/latest">Releases</a>
+    <a href="https://www.chiark.greenend.org.uk/~sgtatham/puzzles/">Upstream collection</a>
+  </p>
+  <img class="shot" src="hero.jpg" alt="M5Stack Cardputer ADV running the puzzle picker">
+</header>
+
+<main>
+
+<section id="install" class="install">
+  <h2>Install</h2>
+  <p>Plug the Cardputer into this computer over USB&#8209;C and press the button. The
+     whole firmware is written from your browser - no PlatformIO, no esptool, no
+     driver install.</p>
+
+  <esp-web-install-button manifest="manifest.json">
+    <button slot="activate" class="flash-btn">Flash my Cardputer</button>
+    <span slot="unsupported" class="notice warn">
+      This browser can't talk to serial devices. Use <strong>Chrome</strong> or
+      <strong>Edge</strong> on desktop, or flash manually with the commands below.
+    </span>
+    <span slot="not-allowed" class="notice warn">
+      Serial access needs a secure (https) page. Open this site over https.
+    </span>
+  </esp-web-install-button>
+
+  <p class="fineprint">
+    Desktop Chrome or Edge only (Web Serial). Version
+    <strong id="fw-version">-</strong>. The write skips the
+    <code>nvs</code> partition and stops far short of the save-file partition, so
+    upgrading keeps your in-progress games. If the device isn't listed in the port
+    picker, hold <kbd>G0</kbd> while plugging it in.
+  </p>
+
+  <details class="manual">
+    <summary>Flash manually instead</summary>
+    <p>Download <code>cardputer-puzzles-vX.Y-merged.bin</code> from the
+       <a href="https://github.com/chongjiazhen/cardputer-puzzles/releases/latest">latest release</a>
+       and write it at offset <code>0x0</code>:</p>
+    <pre><code>esptool --chip esp32s3 write-flash 0x0 cardputer-puzzles-vX.Y-merged.bin</code></pre>
+    <p>That single-command form erases the <code>nvs</code> partition in the gap it
+       spans. To keep an existing device's settings, write the two halves around it:</p>
+    <pre><code>esptool --chip esp32s3 write-flash 0x0 firmware-0x0.bin 0xe000 firmware-0xe000.bin</code></pre>
+    <p>Both split parts are served from this page
+       (<a href="firmware-0x0.bin">0x0</a>, <a href="firmware-0xe000.bin">0xe000</a>)
+       and are the same bytes as the merged image.</p>
+    <p>Running an SD-card launcher such as the
+       <a href="https://bmorcelli.github.io/Launcher/">M5Stack Launcher</a>? Take the
+       <code>-app.bin</code> asset instead. It keeps the device's own partition table,
+       so saved games persist only if that table has a <code>spiffs</code> partition.</p>
+  </details>
+</section>
+
+<section id="games">
+  <h2>The 40 games</h2>
+  <ul class="games">
+    <li>Black Box</li><li>Bridges</li><li>Cube</li><li>Dominosa</li><li>Fifteen</li>
+    <li>Filling</li><li>Flip</li><li>Flood</li><li>Galaxies</li><li>Guess</li>
+    <li>Inertia</li><li>Keen</li><li>Light Up</li><li>Loopy</li><li>Magnets</li>
+    <li>Map</li><li>Mines</li><li>Mosaic</li><li>Net</li><li>Netslide</li>
+    <li>Palisade</li><li>Pattern</li><li>Pearl</li><li>Pegs</li><li>Range</li>
+    <li>Rectangles</li><li>Same Game</li><li>Signpost</li><li>Singles</li><li>Sixteen</li>
+    <li>Slant</li><li>Solo</li><li>Tents</li><li>Towers</li><li>Train Tracks</li>
+    <li>Twiddle</li><li>Undead</li><li>Unequal</li><li>Unruly</li><li>Untangle</li>
+  </ul>
+  <p class="fineprint">Every game keeps its own board across a power&#8209;off, with
+     preset and custom sizes, an in&#8209;menu rules viewer, and an error path that
+     returns to the menu instead of hanging.</p>
+</section>
+
+<section id="controls">
+  <h2>Controls</h2>
+  <p>Every plain key goes to the puzzle, so games that use letters (Map's
+     <kbd>l</kbd>, Solo's hex digits) work as they do upstream. Frontend commands
+     live on <kbd>Ctrl</kbd>, <kbd>Tab</kbd> and <kbd>`</kbd>.</p>
+  <table>
+    <tbody>
+      <tr><td><kbd>;</kbd> <kbd>.</kbd> <kbd>,</kbd> <kbd>/</kbd></td><td>Move cursor (up / down / left / right)</td></tr>
+      <tr><td><kbd>Enter</kbd></td><td>Select - the cursor cell, or a click at the crosshair in pointer mode</td></tr>
+      <tr><td><kbd>Space</kbd></td><td>Select2 / mark (flag, pencil, ...)</td></tr>
+      <tr><td>digits, letters, <kbd>&#9003;</kbd></td><td>Per-game input</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Z</kbd> / <kbd>Y</kbd></td><td>Undo / redo</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>N</kbd> / <kbd>R</kbd></td><td>New game / restart</td></tr>
+      <tr><td><kbd>Tab</kbd></td><td>Menu in a game (size, new, restart, solve, pointer, zoom, pan, rules); help on the game list</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>P</kbd></td><td>Toggle the IMU tilt pointer</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>Space</kbd></td><td>Recenter the tilt pointer on your current hold</td></tr>
+      <tr><td><kbd>Ctrl</kbd>+<kbd>L</kbd></td><td>Toggle 2&times; zoom; <kbd>Ctrl</kbd>+<kbd>;</kbd><kbd>.</kbd><kbd>,</kbd><kbd>/</kbd> pans</td></tr>
+      <tr><td><kbd>`</kbd></td><td>Back, to the game list or out of a menu</td></tr>
+    </tbody>
+  </table>
+  <p class="fineprint"><strong>Drag games</strong> - Map, Pegs, Signpost, Guess and
+     Untangle - split the drag across two presses in pointer mode, because the
+     crosshair can't hold a button: <kbd>Enter</kbd> picks up, tilt to aim,
+     <kbd>Enter</kbd> drops. The key that picked it up is the key that drops it; the
+     other key cancels.</p>
+</section>
+
+<section id="hardware">
+  <h2>Hardware</h2>
+  <p>Built and tested on the <strong>M5Stack Cardputer ADV</strong> (ESP32&#8209;S3
+     Stamp&#8209;S3A, 8&nbsp;MB flash, no PSRAM, 240&times;135 display). It should run on
+     the original Cardputer too - same board family and panel, and M5Unified picks
+     the keyboard driver at runtime - but that's untested; the tilt pointer needs the
+     IMU the ADV added, so it stays off there. If you try it,
+     <a href="https://github.com/chongjiazhen/cardputer-puzzles/issues">open an issue</a>
+     saying what the Fn keys do.</p>
+</section>
+
+<section id="build">
+  <h2>Build it yourself</h2>
+  <pre><code>git clone --recurse-submodules https://github.com/chongjiazhen/cardputer-puzzles
+cd cardputer-puzzles
+pio run -e puzzles -t upload</code></pre>
+  <p>Game logic lives in <code>upstream/</code>, a git submodule pinned unmodified.
+     Only the Cardputer frontend (<code>src/puzzles/</code>, <code>lib/</code>) is
+     original to this project.</p>
+</section>
+
+<footer>
+  <p>Puzzles and midend &copy; Simon Tatham and contributors, MIT. Cardputer
+     frontend MIT. Not affiliated with M5Stack.</p>
+</footer>
+
+</main>
+
+<script>
+fetch('manifest.json')
+  .then(r => r.json())
+  .then(m => { document.getElementById('fw-version').textContent = m.version; })
+  .catch(() => {});
+</script>
+
+</body>
+</html>

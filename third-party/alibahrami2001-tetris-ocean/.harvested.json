@@ -1,0 +1,16 @@
+{
+  "repo": "alibahrami2001/Tetris-ocean",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 481,
+  "pushedAt": "2022-08-22T16:37:09Z",
+  "description": "Tetris ocean 🎮🌊",
+  "defaultBranch": "main",
+  "owner": "alibahrami2001",
+  "slug": "alibahrami2001-tetris-ocean",
+  "dest": "third-party/alibahrami2001-tetris-ocean",
+  "readme": "# tetris-ocean\ntetris ocean\n<div align=\"center\">\n<img src=\"https://github.com/sh4de-c4t/Tetris-ocean/blob/main/file/1.png\" />\n</div>\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

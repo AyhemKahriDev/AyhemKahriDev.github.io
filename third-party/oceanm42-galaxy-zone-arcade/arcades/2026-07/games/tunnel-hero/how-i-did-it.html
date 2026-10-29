@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Tunnel Hero — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Tunnel Hero</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Dig Dug showed up in '82, right in the thick of the good years, and it
+      was the politest hit I ever had — no lasers, no explosions, just a
+      little guy with a bicycle pump. There was a kid, Marcus, who figured
+      out you got double points for popping the dragon sideways, and he
+      guarded that secret like it was a bank code. Charged other kids a
+      quarter to tell them. I let him, because honestly, it was good
+      information.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The old '25 version was barely Dig Dug — you sort of wandered around
+      collecting vegetables and mashing a button. Embarrassing, looking back.
+      This time I asked for the whole machine: the pump that takes three
+      squeezes, the dragons that pause and glow before they breathe fire —
+      that pause is your warning, same as the cabinet — the monsters that go
+      see-through and float at you right through the dirt, and the rocks. Oh,
+      the rocks. Dig under one and it wobbles like it's deciding, then it
+      comes down on whoever's dumb enough to still be standing there.
+      Sometimes that's you. Everything moves smooth now too, on the
+      fixed-clock business the whole remodel runs on, and digging actually
+      feels slower than running through an open tunnel, the way it should.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Rebuild Tunnel Hero properly this time. Four layers of dirt, darker
+and worth more the deeper you go. The pump takes three hits to pop a
+monster and they deflate if I stop pumping. Dragons telegraph before
+a two-square flame. Monsters should occasionally ghost through the
+dirt straight at me, more often the longer I stall. Rocks wobble and
+fall when I dig under them — crushing counts for 1000 — and after two
+rocks drop a bonus vegetable shows up. And give the dragon double
+points if I pop him sideways. A kid named Marcus will know why.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The dirt is a 20-wide grid under one strip of sky, split into four
+        depth bands — 200, 300, 400, 500 points a pop depending on how deep
+        you are when you do the popping.</li>
+      <li>Digging and walking use the same smooth tile-to-tile mover as the
+        other maze games, but the speed drops when the square you're
+        entering still has dirt in it. That little slowdown is what makes
+        digging feel like digging.</li>
+      <li>The ghost trick is just the monster ignoring the grid: it drifts
+        in a straight line toward me and only turns solid again when it's
+        centered over an open tunnel square. Its urge to do this grows with
+        a timer that shrinks as the level drags on.</li>
+      <li>A rock watches the square under itself every frame. Open square
+        means wobble, wobble means fall, and a falling rock checks
+        everything it passes through — monsters, me, no favorites — before
+        it shatters at the bottom.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Tunnel Hero</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

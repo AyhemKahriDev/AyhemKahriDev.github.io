@@ -1,0 +1,69 @@
+body {
+    text-align: center;
+    background-color: #050505;
+    margin: 0;
+    padding-top: 48px;
+    font-family: "Courier New", Courier, monospace;
+    overflow: hidden;
+    position: relative;
+    z-index: 0;
+}
+
+/* Hardware accelerated static background grid */
+body::before {
+    content: "";
+    position: absolute;
+    top: -38px;
+    left: -38px;
+    width: calc(100% + 60px);
+    height: calc(100% + 60px);
+    z-index: -1;
+    background-image: 
+    radial-gradient(rgba(0, 255, 255, 0.18) 1px, transparent 1px),
+    linear-gradient(rgba(0, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 90px, 90px, 30px, 30px, 30px, 30px;
+}
+
+#arcadeTitle { 
+    color: #0ff;
+    font-size: 2.2rem;
+    letter-spacing: 10px;
+    margin: 0 0 24px; 
+    position: relative;
+    z-index: 2;
+    /* Simplified to a single glow layer for performance */
+    text-shadow: 0 0 15px #0ff;
+}
+
+#board { 
+    position: relative;
+    z-index: 2;
+    overflow: hidden;  
+    background-color: black;
+    border: 4px solid #111;
+    border-radius: 8px;
+    /* Simplified to a single, cheaper glow layer */
+    box-shadow: 0 0 20px rgba(0, 100, 255, 0.4);
+    animation: boardIntro 0.8s ease-out forwards;
+}
+
+@keyframes boardIntro {
+    from {opacity: 0; transform: scale(0.94);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+#pressStart {
+    color: #ff0;
+    font-size: 0.9rem;
+    letter-spacing: 3px;
+    margin-top: 20px;
+    position: relative;
+    z-index: 2;
+    animation: blink 1s steps(1) infinite;
+}
+
+@keyframes blink {
+    0%, 49% {opacity: 1;}
+    50%, 100% {opacity: 0;}
+}

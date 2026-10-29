@@ -1,0 +1,35 @@
+{
+  "description": "Forest overgrown chapel map chunk",
+  "height": 15,
+  "id": "forest_overgrown_chapel",
+  "rows": [
+    "WWWWWWWWWW",
+    "N........N",
+    "W........W",
+    "W........W",
+    "W........W",
+    "W...OO...W",
+    "W...OO...W",
+    "W...OO...W",
+    "W........W",
+    "W........W",
+    "W........W",
+    "W........W",
+    "W........W",
+    "W........W",
+    "WWWW+WWWWW"
+  ],
+  "tags": [
+    "forest",
+    "rural"
+  ],
+  "terrain": {
+    "+": "TileDoor",
+    ".": "TileGrass",
+    "N": "TileWindow",
+    "W": "TileWall",
+    "O": "TileObject"
+  },
+  "weight": 2,
+  "width": 10
+}

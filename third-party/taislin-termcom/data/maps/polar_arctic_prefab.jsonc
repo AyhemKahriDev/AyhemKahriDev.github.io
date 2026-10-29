@@ -1,0 +1,35 @@
+{
+  "description": "Polar arctic prefab map chunk",
+  "height": 11,
+  "id": "polar_arctic_prefab",
+  "no_rotate": true,
+  "rows": [
+    ".MMM+MMMMM+MMM.",
+    ".MaaFFFFFFFFFM.",
+    ".MFFFFF(DDD)FM.",
+    ".MFFFFFFFFFFFM.",
+    ".MMM+MMMMM+MMM.",
+    ".MaFFFFMFFFaaM.",
+    ".MFFFFDMFFFFFM.",
+    ".MMM+MMMFFFFFM.",
+    ".MFFFFFMFF(D)M.",
+    ".MFFFFF+FFFD)M.",
+    ".MMM+MMMM+MMMM."
+  ],
+  "tags": [
+    "polar",
+    "rural"
+  ],
+  "terrain": {
+    "(": "TileChairRight",
+    ")": "TileChairLeft",
+    "+": "TileDoor",
+    ".": "TileSnow",
+    "F": "TileFloor",
+    "M": "TileMetalWall",
+    "a": "TileCabinet",
+    "D": "TileDesk"
+  },
+  "weight": 2,
+  "width": 15
+}

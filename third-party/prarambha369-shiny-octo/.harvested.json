@@ -1,0 +1,16 @@
+{
+  "repo": "Prarambha369/shiny-octo",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 44,
+  "pushedAt": "2025-07-14T02:58:01Z",
+  "description": "Game like Flappy Bird on Web",
+  "defaultBranch": "main",
+  "owner": "Prarambha369",
+  "slug": "prarambha369-shiny-octo",
+  "dest": "third-party/prarambha369-shiny-octo",
+  "readme": "# Shiny Octo - Flappy Bird: Beautiful Edition\n\nA stunning, modern, and open-source reimagining of Flappy Bird, built for the web with pure HTML, CSS, and JavaScript.\n\n---\n\n## 📸 Screenshots\n\n| Character Selection | Classic Bird | Shiny Octo | Octo |\n|:------------------:|:------------:|:----------:|:-----:|\n| ![Character Selection](https://hc-cdn.hel1.your-objectstorage.com/s/v3/b8f52be6d9ef5fdf5d601999d7d0635197213cc6_image.png) | ![Gameplay classic bird](https://hc-cdn.hel1.your-objectstorage.com/s/v3/c9a750e7b8fc4a70ce9680b4430b5759429770ce_image.png) | ![Gameplay shiny octo](https://hc-cdn.hel1.your-objectstorage.com/s/v3/cd90f036b9db005472c411fd990751039ca431bb_image.png) | ![Gameplay octo](https://hc-cdn.hel1.your-objectstorage.com/s/v3/8d6db324178778e22e18e71284ab85817823bdcb_image.png) |\n\n---\n\n## 🚀 Features\n- **Three Playable Characters**: Classic Bird, Octo, and Shiny Octo, each with unique animations and effects\n- **Live Sprite Previews**: Character selection UI shows real, animated previews\n- **Rich Animated Backgrounds**: Sky (bird) or ocean (octo/shiny octo) with sun, hills, fish, bubbles, seaweed, and more\n- **Distinct Particle Effects**: Jump, score, and death effects tailored per character\n- **Responsive UI**: Looks great on desktop and mobile\n- **Sound Effects**: With easy mute/unmute\n- **Persistent High Score**: Saved in your browser\n- **No Dependencies**: 100% client-side, no frameworks, no build step\n- **Fast and Lightweight**: Loads instantly, smooth gameplay\n\n## 🕹️ Controls\n- **Tap** (mobile) or **Press UP ARROW (↑)** (desktop) to make your character fly\n- **Mute/Unmute**: Use the sound button in the corner\n- **Switch Characters**: Choose your sprite at the start or from the main menu\n\n## 🛠️ Getting Started\n1. **Clone or Download** this repository\n2. Open `index.html` in your browser (Chrome, Firefox, Edge, Safari, or any modern browser)\n3. Play instantly! No install, no build, no internet required after download\n\n## 📁 Project Structure\n- `index.html` — Main HTML file\n- `styles.css` — Visual styles and layout\n- `script.js` — Game logic, animation, and UI\n- `README.md` — This file\n\n## ✨ Recent Highlights\n- Updated start screen instructions: Now says \"Tap or use UP ARROW key to fly!\" for clarity\n- Added random bird color feature: bird color is now randomly selected at game start and restart\n- Added background music with mute toggle functionality\n\n## 🤝 Contributing\nOpen to pull requests and suggestions! If you find a bug or have an idea, open an issue or PR.\n\n## 📜 License\nMIT — see [LICENSE](LICENSE) for details.\n\n---\n\nEnjoy Shiny Octo! Made with ❤️ for the open-source community.",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

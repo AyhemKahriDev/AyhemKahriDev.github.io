@@ -1,0 +1,16 @@
+### getUserData
+GET http://localhost:8080/api/userData
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+
+### saveUserData
+POST http://localhost:8080/api/userData
+Content-Type: application/json
+Authorization: bearer {{token}}
+
+{
+  "text": "a/kE56QbC6kN/PENPGhlNxTfA2vG1n5DPlo7us1+IfEi95NhOHWutAz7ozWVn6Irj2UfVSg/Z5zNWgC7N+e1WWuXeGIPLknva0DamNG5DJ4rc/Mj4r5lJB9Sc16Xcr6BDGowCZMjiB/Wug32nvKV3DCc5BeTUGKLUXIpLWTO+Rg="
+}
+
+###

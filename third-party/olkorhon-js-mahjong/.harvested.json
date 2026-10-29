@@ -1,0 +1,16 @@
+{
+  "repo": "olkorhon/js-mahjong",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 2120,
+  "pushedAt": "2021-09-30T14:09:41Z",
+  "description": "Rudimentary javascript based mahjong game built on top of a html canvas element.",
+  "defaultBranch": "master",
+  "owner": "olkorhon",
+  "slug": "olkorhon-js-mahjong",
+  "dest": "third-party/olkorhon-js-mahjong",
+  "readme": "# js-mahjong\nRudimentary javascript based mahjong game built on top of a html canvas element.\n\nShould work on most modern browsers that support HTML5 canvas element.  \nThe game could use some polishing, but it is fully functional.\n\n![Image of the game in action](canvas.jpeg)\n\nGraphical resources shamelessly ripped from the internet, no personal gain is intended.\n",
+  "licenceFile": "LICENSE",
+  "entry": "mahjong.html",
+  "validated": true
+}

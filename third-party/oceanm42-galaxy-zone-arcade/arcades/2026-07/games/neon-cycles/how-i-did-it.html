@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Neon Cycles — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Neon Cycles</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Summer of '82, the movie came out and every kid in Portland wanted on
+      my Tron cabinet the same afternoon. Two brothers, the Kowalskis, used
+      to play the light cycles against each other so hard that the loser had
+      to buy the winner a Coke from the machine by the door. I made more off
+      that Coke machine than the cabinet some weeks. The light cycle part
+      was everybody's favorite — simple as drawing a line, mean as a knife
+      fight.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      My '25 version let the bikes drift around on loose pixels, which meant
+      sometimes you'd clip a wall you swore you missed. The robots put the
+      whole arena on a proper grid this time — a hundred cells across — and
+      every bike, mine and the computer's, moves cell by cell under the
+      exact same rules. No cheating possible, in either direction. The bikes
+      still look like they glide because the drawing slides them smoothly
+      between cells, but the crash math is honest squares. And the computer
+      riders got personalities: one tries to cut you off, one plays it safe,
+      one's a little unhinged. Plus a boost button, because the Kowalskis
+      would've demanded one.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Rebuild Neon Cycles grid-based so it's fair — the AI and I follow
+identical collision rules, no fuzzy pixel checks. Trails are walls,
+90-degree turns only, swipe to steer on a phone. Give me up to three
+AI riders with different personalities: an aggressive one that cuts
+across my path, a cautious one that hugs open space, and an erratic
+one that's random but never suicidal. Add a boost meter I hold A to
+burn. Make it gorgeous — glowing heads, glowing trails, a tinted
+arena that changes color every level.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The arena is a 100-by-72 grid of on/off cells. A bike asks "is the
+        next cell free?" before it enters — if not, it derezzes. That one
+        rule covers walls, your own trail, and everybody else's.</li>
+      <li>Bikes advance at cells-per-second scaled by the engine's fixed
+        time step, and the drawing interpolates the head between cells so a
+        chunky grid still looks like liquid neon.</li>
+      <li>When an AI needs to turn, it counts how much open floor it can
+        reach in each direction — a little flood-fill, capped so it stays
+        cheap — and the aggressive one subtracts points for being far from a
+        spot projected ahead of my bike. That's the cut-off move.</li>
+      <li>Trails are drawn as one glowing polyline per bike (a corner point
+        gets added only when it turns), so a long round doesn't slow the
+        drawing down one bit.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Neon Cycles</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

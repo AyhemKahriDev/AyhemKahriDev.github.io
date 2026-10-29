@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: City Defense — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: City Defense</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Missile Command showed up in my arcade in 1980 with that trackball
+      that felt like it belonged on a boat, not a game cabinet. I remember
+      a fella — grown man, tie and everything, must've just gotten off work
+      downtown — who'd come in on his lunch break and just stand there
+      grim-faced, defending his six little cities like it was personal.
+      Never said a word to anybody. Just fed it quarters, lost all six
+      cities, sighed, and went back to the office. Same time, every day,
+      for about a year.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      This one used to just check "is the enemy missile close to my
+      explosion" once a tick and call it good, which meant fast missiles
+      could sometimes slip past a blossom that was still very much there,
+      just between checks. Now the explosion's real size gets checked every
+      single moment it's growing and shrinking, not just at a few fixed
+      points, so a warhead that wanders into it at any instant is caught
+      fair and square. I also finally got the chain reactions working right
+      — shoot down a missile that's mid-split and both halves still count,
+      still go boom, still shake the screen. And the crosshair follows your
+      mouse or your finger now instead of a trackball I don't have to clean
+      cigarette tar out of anymore. Small mercies.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build Missile Command against our shared engine. Six cities, three
+missile batteries with ten interceptors each, ammo shown as little
+stacked pips. The crosshair follows the mouse or touch point, and
+clicking fires one interceptor from whichever battery is nearest
+and still has ammo — fast from the center battery, slower from the
+sides, like the original. Explosions should expand then shrink and
+catch anything that flies into them, including chain reactions.
+Give me MIRVs that split, smart bombs that dodge unless you catch
+them dead center, and the occasional bomber flying across. Wave
+clears should tally a bonus with some nice tick sounds, and losing
+all six cities ends it with THE END in big letters, just like I
+remember it.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>Same fixed-timestep trick as the other games — the blossom
+        radius grows and shrinks on a clock, not a frame count, so it looks
+        the same on every machine.</li>
+      <li>A warhead that gets caught mid-flight throws its own smaller
+        blossom, and that one can catch the next missile over — that's
+        the "chain reaction" the original was famous for, and it just kind
+        of works once you write the collision check once and let it run
+        on every explosion, old or new.</li>
+      <li>The bonus tally at the end of a wave isn't just adding a number —
+        it ticks the score up bit by bit with a little coin sound, same as
+        standing there watching the real machine count your leftover
+        ammo.</li>
+      <li>Every ten thousand points rebuilds one ruined city, if you've
+        got one to rebuild. That part always felt like the game giving you
+        a little mercy, and I wanted to keep that feeling exactly.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to City Defense</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

@@ -1,0 +1,16 @@
+{
+  "repo": "joshi-07/mini_arcade_game",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 65,
+  "pushedAt": "2025-12-03T16:49:13Z",
+  "description": "",
+  "defaultBranch": "main",
+  "owner": "joshi-07",
+  "slug": "joshi-07-mini-arcade-game",
+  "dest": "third-party/joshi-07-mini-arcade-game",
+  "readme": "# Mini Game Arcade\n\nA fun, mobile-friendly static web application featuring multiple mini-games with leaderboards and animations.\n\n## Games Included\n\n1. **Reaction Speed** - Test your reflexes by clicking when the box turns green\n2. **Memory Matching** - Flip cards to find matching pairs (Easy: 4x4, Hard: 6x6)\n3. **Puzzle Slider** - Slide tiles to complete the picture\n4. **Trivia Quiz** - Answer questions quickly for points\n\n## Features\n\n- Responsive design that works on mobile and desktop\n- Animated UI with smooth transitions\n- Confetti effects for celebrations\n- Local leaderboards for each game (stored in browser localStorage)\n- Welcome modal and game instructions\n- Touch-friendly interface\n- No backend required - fully static\n\n## Technologies Used\n\n- **Frontend**: HTML,  CSS, JavaScript\n- **Styling**: Custom CSS with animations\n- **Storage**: Browser localStorage for scores\n- **Deployment**: Static hosting (GitHub Pages, Netlify, etc.)\n\n## Local Development\n\n1. Simply open `index.html` in your browser\n\n## Deployment\n\nThis app can be deployed to any static hosting service:\n\n- **GitHub Pages**: Upload files to a GitHub repository and enable Pages\n- **Netlify**: Drag and drop the files or connect a Git repository\n- **Vercel**: Connect a Git repository for automatic deployment\n\n## File Structure\n\n```\ngame/\n├── index.html            # Home page\n├── game1.html            # Reaction Speed game\n├── memory.html           # Memory Matching game\n├── puzzle.html           # Puzzle Slider game\n├── trivia.html           # Trivia Quiz game\n├── leaderboard.html      # Leaderboard page\n├── README.md             # This file\n├── LICENSE               # License\n└── static/               # Static assets\n    ├── css/\n    │   └── style.css     # Stylesheets\n    └── js/\n        ├── game1.js      # Reaction Speed logic\n        ├── memory.js     # Memory Matching logic\n        ├── puzzle.js     # Puzzle Slider logic\n        └── trivia.js     # Trivia Quiz logic\n```\n\n## Scoring System\n\n- **Reaction Speed**: Points based on reaction time (faster = higher score)\n- **Memory Matching**: Points based on attempts and time (fewer attempts + faster time = higher score)\n- **Puzzle Slider**: Points based on moves and time (fewer moves + faster time = higher score)\n- **Trivia Quiz**: Points for correct answers with time bonuses\n\n## Contributing\n\nFeel free to add more games or improve existing ones!\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

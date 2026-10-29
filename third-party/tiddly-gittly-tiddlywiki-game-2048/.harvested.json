@@ -1,0 +1,16 @@
+{
+  "repo": "tiddly-gittly/tiddlywiki-game-2048",
+  "stars": 3,
+  "licence": "GPL-3.0",
+  "sizeKB": 2576,
+  "pushedAt": "2024-03-02T14:39:37Z",
+  "description": "一个TiddlyWiki 2048小游戏",
+  "defaultBranch": "master",
+  "owner": "tiddly-gittly",
+  "slug": "tiddly-gittly-tiddlywiki-game-2048",
+  "dest": "third-party/tiddly-gittly-tiddlywiki-game-2048",
+  "readme": "# tiddlywiki-game-2048\n一个TiddlyWiki版2048小游戏\n\n主程序：tw-2048-Gatha.html\n\ndemo: https://tiddly-gittly.github.io/tiddlywiki-game-2048/tw-2048-Gatha.html\n\n此TiddlyWiki文件包含Gatha封装插件，tiddlywiki中的README条目包含游戏的适配与封装说明。\n\n仅支持屏幕宽度大于336px的设备，不同设备的屏幕大小的UI适配问题根据林一二的建议采用媒体查询（Media Query）解决。\n\n致谢：感谢群友机柕（dongrentianyu）的想法和意见。\n",
+  "licenceFile": "LICENSE",
+  "entry": "tw-2048-Gatha.html",
+  "validated": true
+}

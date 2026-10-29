@@ -1,0 +1,2320 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DevCompass">
+<title>دِو‌کمپس · DevCompass — چه استکی یاد بگیرم؟</title>
+<meta name="description" content="کوییز رایگان «چه استکی یاد بگیرم؟» — در ۲ دقیقه مسیر یادگیری برنامه‌نویسی‌ات را پیدا کن: فرانت‌اند، بک‌اند، هوش مصنوعی، موبایل و… / Free quiz: which tech stack should you learn?">
+<meta name="theme-color" content="#0b0714">
+<link rel="canonical" href="https://mohsen-niksirat.github.io/DevCompass/">
+<meta property="og:url" content="https://mohsen-niksirat.github.io/DevCompass/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="دِو‌کمپس · DevCompass — چه استکی یاد بگیرم؟">
+<meta property="og:description" content="کوییز رایگان: در ۲ دقیقه بفهم چه استک برنامه‌نویسی بهت می‌خورد. نتیجه را با دوستت به اشتراک بگذار.">
+<meta property="og:image" content="https://mohsen-niksirat.github.io/DevCompass/assets/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="دِو‌کمپس · DevCompass">
+<meta name="twitter:description" content="چه استکی یاد بگیرم؟ کوییز رایگان ۲ دقیقه‌ای">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🧭</text></svg>'>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0b0714;
+  --bg2:#120d1f;
+  --card:rgba(255,255,255,.04);
+  --card-hover:rgba(255,255,255,.07);
+  --border:rgba(255,255,255,.09);
+  --ink:#f3eefc;
+  --muted:#9b8fb8;
+  --accent:#a78bfa;
+  --accent2:#34d399;
+  --accent3:#fbbf24;
+  --danger:#f472b6;
+  --ring:rgba(167,139,250,.35);
+  --radius:16px;
+  --font:"Vazirmatn",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:ui-monospace,"Cascadia Code","SF Mono",Menlo,monospace;
+}
+html[data-theme="light"]{
+  --bg:#f6f2ff;
+  --bg2:#efe8ff;
+  --card:rgba(255,255,255,.72);
+  --card-hover:rgba(255,255,255,.95);
+  --border:rgba(80,50,140,.14);
+  --ink:#1c1230;
+  --muted:#5d5478;
+  --accent:#7c3aed;
+  --accent2:#059669;
+  --accent3:#d97706;
+  --danger:#db2777;
+  --ring:rgba(124,58,237,.35);
+}
+html[data-theme="light"] .aurora .blob{opacity:.22}
+html[data-theme="light"] .btn-primary{
+  box-shadow:0 8px 24px rgba(124,58,237,.28)
+}
+html[data-theme="light"] .share-card{
+  background:linear-gradient(145deg,#ede9fe 0%,#e0f2fe 50%,#d1fae5 100%)
+}
+html[data-theme="light"] .toast{
+  background:#fff;color:#1c1230
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--ink);
+  min-height:100dvh;
+  line-height:1.7;
+  overflow-x:hidden;
+}
+/* aurora */
+.aurora{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.45}
+.b1{width:420px;height:420px;background:#7c3aed;top:-120px;inset-inline-start:-80px}
+.b2{width:360px;height:360px;background:#0ea5e9;bottom:10%;inset-inline-end:-100px;opacity:.3}
+.b3{width:280px;height:280px;background:#f472b6;top:40%;inset-inline-start:30%;opacity:.2}
+
+.wrap{
+  position:relative;z-index:1;max-width:640px;margin:0 auto;
+  padding:calc(18px + env(safe-area-inset-top,0px)) max(16px, env(safe-area-inset-right,0px)) calc(72px + env(safe-area-inset-bottom,0px)) max(16px, env(safe-area-inset-left,0px));
+  overflow-x:clip
+}
+
+/* header */
+header.top{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  margin-bottom:28px;width:100%;
+}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink);min-width:0;flex:1 1 auto}
+.brand .meta{min-width:0;display:flex;flex-direction:column}
+.brand strong{font-weight:800;font-size:1.05rem;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.brand .sub{display:block;font-size:.72rem;color:var(--muted);font-weight:500;margin-top:-2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.brand .logo{
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;flex:0 0 40px;
+  background:linear-gradient(135deg,#7c3aed,#2563eb);
+  font-size:20px;box-shadow:0 4px 20px rgba(124,58,237,.4)
+}
+.header-actions{display:flex;align-items:center;gap:8px;flex:0 0 auto}
+.theme-btn{
+  width:40px;height:40px;border-radius:12px;border:1px solid var(--border);
+  background:var(--card);cursor:pointer;font-size:1rem;display:grid;place-items:center;
+  touch-action:manipulation
+}
+.theme-btn:hover{background:var(--card-hover)}
+.lang-toggle{
+  display:flex;background:var(--card);border:1px solid var(--border);border-radius:999px;padding:3px;gap:2px;flex:0 0 auto
+}
+.lang-toggle button{
+  border:0;background:transparent;color:var(--muted);font-family:var(--font);
+  font-size:.78rem;font-weight:600;padding:6px 12px;border-radius:999px;cursor:pointer
+}
+.lang-toggle button.active{background:var(--accent);color:#0b0714}
+
+/* screens */
+.screen{display:none;animation:fade .35s ease}
+.screen.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+/* hero */
+.hero{text-align:center;padding:28px 0 8px}
+.hero .emoji{font-size:3.2rem;line-height:1;margin-bottom:14px;filter:drop-shadow(0 6px 16px rgba(167,139,250,.5))}
+.hero h1{
+  font-size:clamp(1.5rem,5vw,2rem);font-weight:800;letter-spacing:-.03em;line-height:1.35;
+  background:linear-gradient(120deg,#f3eefc 20%,#a78bfa 60%,#34d399);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.hero p{color:var(--muted);margin-top:10px;font-size:1rem;max-width:420px;margin-inline:auto}
+.pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.pill{
+  font-size:.75rem;color:var(--muted);background:var(--card);border:1px solid var(--border);
+  padding:6px 12px;border-radius:999px;font-weight:500
+}
+.pill b{color:var(--accent2);font-weight:700}
+.offline-pill{border-color:rgba(251,191,36,.4);color:var(--accent3)}
+.offline-pill[hidden]{display:none !important}
+
+/* buttons */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-family:var(--font);font-weight:700;font-size:.95rem;
+  padding:14px 28px;min-height:48px;border-radius:14px;border:0;cursor:pointer;
+  text-decoration:none;transition:transform .15s ease,box-shadow .15s ease,background .15s;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;user-select:none
+}
+.btn:active{transform:scale(.97)}
+.btn[hidden]{display:none !important}
+.btn-primary{
+  background:linear-gradient(135deg,#8b5cf6,#6366f1);
+  color:#fff;box-shadow:0 8px 28px rgba(139,92,246,.4);
+  width:100%;margin-top:28px;font-size:1.05rem;padding:16px 28px;min-height:54px
+}
+.btn-primary:hover{box-shadow:0 10px 36px rgba(139,92,246,.55)}
+.btn-ghost{
+  background:var(--card);color:var(--ink);border:1px solid var(--border);width:100%
+}
+.btn-ghost:hover{background:var(--card-hover)}
+.btn-row{display:grid;gap:10px;margin-top:16px}
+@media(min-width:480px){.btn-row.two{grid-template-columns:1fr 1fr}}
+
+/* challenge banner */
+.challenge-banner{
+  display:none;margin-top:20px;padding:14px 16px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(52,211,153,.12),rgba(59,130,246,.1));
+  border:1px solid rgba(52,211,153,.3);text-align:center;font-size:.9rem
+}
+.challenge-banner.on{display:block;animation:fade .4s ease}
+.challenge-banner strong{color:var(--accent2)}
+.challenge-cta{
+  margin-top:8px;font-size:.82rem;font-weight:700;color:#0b0714;
+  background:linear-gradient(90deg,#34d399,#6ee7b7);
+  display:inline-block;padding:6px 14px;border-radius:999px
+}
+.goal-box{margin-top:18px;text-align:center}
+.goal-label{font-size:.82rem;color:var(--muted);font-weight:600;margin-bottom:10px}
+.goal-pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.goal-pill{
+  border:1px solid var(--border);background:var(--card);color:var(--ink);
+  font-family:var(--font);font-size:.78rem;font-weight:600;padding:8px 12px;
+  border-radius:999px;cursor:pointer;min-height:36px;touch-action:manipulation;
+  transition:transform .15s ease, border-color .15s, background .15s
+}
+.goal-pill:active{transform:scale(.96)}
+.goal-pill:hover{border-color:var(--accent)}
+.goal-pill.active{
+  background:rgba(167,139,250,.16);border-color:var(--accent);color:var(--accent)
+}
+
+/* progress */
+.progress-wrap{margin:8px 0 24px}
+.progress-meta{
+  display:flex;justify-content:space-between;font-size:.78rem;color:var(--muted);
+  margin-bottom:8px;font-weight:600
+}
+.progress-bar{
+  height:6px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden
+}
+.progress-bar .fill{
+  height:100%;width:0%;border-radius:999px;
+  background:linear-gradient(90deg,#8b5cf6,#34d399);
+  transition:width .35s cubic-bezier(.4,0,.2,1)
+}
+
+/* question card */
+.q-card{
+  background:var(--card);border:1px solid var(--border);border-radius:20px;
+  padding:24px 20px;backdrop-filter:blur(12px)
+}
+.q-card h2{font-size:1.2rem;font-weight:700;line-height:1.5;margin-bottom:18px}
+.options{display:grid;gap:10px}
+.opt{
+  display:flex;align-items:flex-start;gap:12px;width:100%;text-align:start;
+  background:rgba(255,255,255,.03);border:1.5px solid var(--border);
+  border-radius:14px;padding:14px 16px;color:var(--ink);cursor:pointer;
+  font-family:var(--font);font-size:.95rem;line-height:1.55;min-height:56px;
+  transition:border-color .15s,background .15s,transform .12s;
+  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
+  animation:optIn .28s ease both
+}
+.opt:nth-child(1){animation-delay:.02s}
+.opt:nth-child(2){animation-delay:.06s}
+.opt:nth-child(3){animation-delay:.1s}
+.opt:nth-child(4){animation-delay:.14s}
+@keyframes optIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.install-banner{
+  margin-top:18px;padding:12px 14px;border-radius:14px;
+  background:linear-gradient(135deg,rgba(167,139,250,.14),rgba(52,211,153,.1));
+  border:1px solid rgba(167,139,250,.28);
+  display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+  font-size:.88rem;font-weight:600;animation:fadeUp .4s ease both
+}
+.install-banner[hidden]{display:none !important}
+.install-actions{display:flex;gap:8px}
+.install-yes,.install-no{
+  border:0;border-radius:999px;font-family:var(--font);font-weight:700;
+  min-height:36px;padding:6px 14px;cursor:pointer;touch-action:manipulation
+}
+.install-yes{background:var(--accent);color:#0b0714}
+.install-no{background:transparent;color:var(--muted);border:1px solid var(--border)}
+.opt:hover{background:var(--card-hover);border-color:var(--accent)}
+.opt.selected{border-color:var(--accent);background:rgba(167,139,250,.12)}
+.opt .ico{font-size:1.25rem;line-height:1.4;flex-shrink:0}
+.opt .txt{font-weight:500}
+.back-row{margin-top:16px}
+.btn-back{
+  background:none;border:0;color:var(--muted);font-family:var(--font);font-size:.85rem;
+  cursor:pointer;padding:8px;font-weight:600
+}
+.btn-back:hover{color:var(--ink)}
+
+/* result */
+.result-hero{text-align:center;padding:8px 0 4px}
+.badge-ring{
+  width:clamp(120px,38vw,148px);aspect-ratio:1;margin:0 auto 18px;border-radius:50%;
+  display:grid;place-items:center;position:relative;
+  background:
+    radial-gradient(closest-side,var(--bg) 78%,transparent 79% 100%),
+    conic-gradient(var(--accent) calc(var(--pct)*1%), rgba(255,255,255,.08) 0);
+  animation:badgePop .55s cubic-bezier(.22,1.2,.36,1) both;
+}
+.badge-ring::after{
+  content:"";position:absolute;inset:-8px;border-radius:50%;
+  border:2px solid rgba(167,139,250,.25);
+  animation:ringPulse 2.4s ease-in-out infinite;
+  pointer-events:none;opacity:0;
+}
+.badge-ring.on::after{opacity:1}
+@keyframes badgePop{
+  0%{transform:scale(.72);opacity:0}
+  60%{transform:scale(1.06)}
+  100%{transform:scale(1);opacity:1}
+}
+@keyframes ringPulse{
+  0%,100%{transform:scale(1);opacity:.35}
+  50%{transform:scale(1.06);opacity:.7}
+}
+.badge-ring .inner{text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:fadeUp .45s .15s ease both}
+.badge-ring .emoji{font-size:clamp(1.8rem,7vw,2.4rem);line-height:1.1}
+.badge-ring .pct{font-size:clamp(1.15rem,4.5vw,1.5rem);font-weight:800;letter-spacing:-.03em;margin-top:2px}
+.result-kicker{font-size:.8rem;color:var(--accent2);font-weight:700;letter-spacing:.04em;text-transform:uppercase;animation:fadeUp .4s .18s ease both}
+.result-title{font-size:clamp(1.4rem,4.5vw,1.85rem);font-weight:800;margin:6px 0 4px;letter-spacing:-.02em;animation:fadeUp .4s .24s ease both}
+.result-sub{color:var(--muted);font-size:.95rem;max-width:440px;margin:0 auto;animation:fadeUp .4s .3s ease both}
+.stack-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:18px 0 8px}
+.chip{
+  font-size:.78rem;font-weight:600;padding:6px 12px;border-radius:999px;
+  background:rgba(167,139,250,.12);color:var(--accent);border:1px solid rgba(167,139,250,.25);
+  animation:chipIn .45s ease both
+}
+.chip:nth-child(1){animation-delay:.32s}
+.chip:nth-child(2){animation-delay:.4s}
+.chip:nth-child(3){animation-delay:.48s}
+.chip.alt{background:rgba(52,211,153,.1);color:var(--accent2);border-color:rgba(52,211,153,.25)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+@keyframes chipIn{from{opacity:0;transform:scale(.9) translateY(6px)}to{opacity:1;transform:none}}
+.screen.on .panel{animation:fadeUp .45s .35s ease both}
+.screen.on .share-card{animation:fadeUp .5s .42s ease both}
+.screen.on .compare-panel{animation:fadeUp .45s .38s ease both}
+.opt.selected{animation:optPop .28s ease}
+@keyframes optPop{
+  0%{transform:scale(1)}
+  40%{transform:scale(1.015)}
+  100%{transform:scale(1)}
+}
+.result-confetti{
+  position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:18px
+}
+.result-confetti i{
+  position:absolute;width:6px;height:6px;border-radius:1px;opacity:0;
+  animation:confettiFall 1.1s ease-out forwards
+}
+@keyframes confettiFall{
+  0%{opacity:1;transform:translateY(0) rotate(0)}
+  100%{opacity:0;transform:translateY(120px) rotate(220deg)}
+}
+
+/* related tools */
+.related-panel[hidden]{display:none !important}
+
+/* iran tips */
+.iran-panel[hidden]{display:none !important}
+.iran-list{list-style:none;display:grid;gap:8px}
+.iran-list li{
+  display:flex;gap:10px;align-items:flex-start;font-size:.9rem;line-height:1.55;
+  padding:10px 12px;background:rgba(251,191,36,.07);border:1px solid rgba(251,191,36,.22);
+  border-radius:12px
+}
+.iran-list .ir-ico{flex-shrink:0;font-size:1.05rem}
+
+/* compare */
+.compare-panel[hidden]{display:none !important}
+.compare-grid{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:stretch}
+.compare-card{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;
+  padding:14px 10px;text-align:center
+}
+.compare-card.friend{border-color:rgba(251,191,36,.35);background:rgba(251,191,36,.06)}
+.compare-card .cc-label{font-size:.72rem;font-weight:700;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin-bottom:6px}
+.compare-card .cc-emoji{font-size:1.6rem;line-height:1}
+.compare-card .cc-name{font-size:.82rem;font-weight:700;margin-top:6px}
+.compare-card .cc-pct{font-size:1.1rem;font-weight:800;color:var(--accent);margin-top:2px}
+.compare-card.match{border-color:rgba(52,211,153,.55);background:rgba(52,211,153,.1)}
+.compare-card.match .cc-pct{color:var(--accent2)}
+.compare-vs{
+  align-self:center;font-weight:800;font-size:.85rem;color:var(--muted);
+  width:36px;height:36px;border-radius:50%;display:grid;place-items:center;
+  border:1px solid var(--border);background:var(--card)
+}
+.compare-verdict{
+  margin-top:12px;font-size:.9rem;font-weight:600;text-align:center;line-height:1.55
+}
+.compare-verdict.match{color:var(--accent2)}
+.compare-verdict.diff{color:var(--accent3)}
+
+/* stacks UI */
+.stack-card{
+  display:flex;flex-direction:column;align-items:flex-start;gap:4px;
+  background:var(--card);border:1px solid var(--border);border-radius:14px;
+  padding:14px;cursor:pointer;text-align:start;font-family:var(--font);
+  color:var(--ink);min-height:88px;touch-action:manipulation
+}
+.stack-card:hover{border-color:var(--accent);background:var(--card-hover)}
+.stack-card .sc-em{font-size:1.4rem}
+.stack-card .sc-nm{font-weight:700;font-size:.9rem;line-height:1.35}
+.stack-card .sc-ln{font-size:.72rem;color:var(--muted);direction:ltr;text-align:start}
+.stack-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:8px}
+@media(min-width:520px){.stack-grid{grid-template-columns:repeat(2,1fr)}}
+.stacks-head{margin-bottom:14px}
+.stacks-head h2{font-size:1.25rem;font-weight:800;letter-spacing:-.02em}
+.stacks-head p{color:var(--muted);font-size:.9rem;margin-top:6px}
+.stack-detail[hidden]{display:none !important}
+.sd-line{font-family:var(--mono);font-size:.8rem;color:var(--accent2);direction:ltr;text-align:start;margin:-4px 0 10px}
+.sd-sub{color:var(--muted);font-size:.92rem;line-height:1.65;margin-bottom:12px}
+
+/* ecosystem links */
+.eco-box{margin-top:28px;text-align:center}
+.eco-label{font-size:.78rem;color:var(--muted);font-weight:600;margin-bottom:10px}
+.eco-links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.eco-link{
+  font-size:.78rem;font-weight:600;color:var(--ink);text-decoration:none;
+  background:var(--card);border:1px solid var(--border);border-radius:999px;
+  padding:8px 12px;touch-action:manipulation
+}
+.eco-link:hover{border-color:var(--accent);color:var(--accent)}
+
+/* group challenge */
+.group-panel[hidden]{display:none !important}
+.group-hint{color:var(--muted);font-size:.85rem;margin:-4px 0 12px}
+.group-list{list-style:none;display:grid;gap:8px}
+.group-list li{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 12px;background:rgba(255,255,255,.03);border-radius:12px;
+  border:1px solid transparent;font-size:.88rem
+}
+html[data-theme="light"] .group-list li{background:rgba(251,191,36,.08)}
+.group-list li.me{border-color:rgba(52,211,153,.4)}
+.group-list .g-rank{
+  width:26px;height:26px;border-radius:50%;display:grid;place-items:center;
+  background:linear-gradient(135deg,#fbbf24,#f59e0b);color:#1c1230;font-weight:800;font-size:.78rem;flex-shrink:0
+}
+.group-list .g-left{display:flex;align-items:center;gap:10px;min-width:0}
+.group-list .g-em{font-size:1.15rem}
+.group-list .g-nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.group-list .g-meta{font-size:.72rem;color:var(--muted)}
+.group-list .g-pct{font-weight:800;color:var(--accent3);flex-shrink:0}
+.group-save-row{display:flex;gap:8px;margin-top:10px}
+.group-save-row input{
+  flex:1;min-width:0;border-radius:12px;border:1px solid var(--border);
+  background:var(--card);color:var(--ink);font-family:var(--font);
+  padding:10px 12px;font-size:.9rem;min-height:44px
+}
+.group-save-row button{
+  border:0;border-radius:12px;background:var(--accent);color:#0b0714;
+  font-family:var(--font);font-weight:700;padding:0 14px;min-height:44px;cursor:pointer
+}
+
+.history-panel[hidden]{display:none !important}
+.history-list{list-style:none;display:grid;gap:8px}
+.history-list li{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  padding:10px 12px;background:rgba(255,255,255,.03);border-radius:12px;
+  border:1px solid transparent;font-size:.88rem
+}
+html[data-theme="light"] .history-list li{background:rgba(124,58,237,.06)}
+.history-list li:hover{border-color:var(--border)}
+.history-list .h-left{display:flex;align-items:center;gap:10px;min-width:0}
+.history-list .h-em{font-size:1.2rem}
+.history-list .h-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-list .h-meta{font-size:.72rem;color:var(--muted)}
+.history-list .h-pct{font-weight:800;color:var(--accent);flex-shrink:0}
+
+.panel{
+  background:var(--card);border:1px solid var(--border);border-radius:18px;
+  padding:20px;margin-top:20px
+}
+.panel h3{
+  font-size:.95rem;font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:8px
+}
+.panel h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
+.roadmap{list-style:none;display:grid;gap:10px}
+.roadmap li{
+  display:flex;gap:12px;align-items:flex-start;font-size:.9rem;line-height:1.55;
+  padding:12px 14px;background:rgba(255,255,255,.03);border-radius:12px;border:1px solid transparent
+}
+.roadmap li:hover{border-color:var(--border)}
+.roadmap .step{
+  width:26px;height:26px;border-radius:8px;display:grid;place-items:center;flex-shrink:0;
+  background:linear-gradient(135deg,#7c3aed,#4f46e5);font-size:.75rem;font-weight:800;color:#fff
+}
+.share-card{
+  margin-top:20px;border-radius:18px;overflow:hidden;
+  background:linear-gradient(145deg,#1a1230 0%,#0f172a 50%,#042f2e 100%);
+  border:1px solid var(--border);padding:22px 20px;text-align:center;position:relative
+}
+.share-card::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse at 30% 0%,rgba(167,139,250,.18),transparent 55%),
+             radial-gradient(ellipse at 80% 100%,rgba(52,211,153,.12),transparent 50%);
+  pointer-events:none
+}
+.share-card > *{position:relative}
+.share-card .sc-brand{font-size:.72rem;color:var(--muted);font-weight:600;letter-spacing:.08em}
+.share-card .sc-emoji{font-size:2rem;margin:8px 0 4px}
+.share-card .sc-title{font-size:1.25rem;font-weight:800}
+.share-card .sc-pct{font-size:2rem;font-weight:800;color:var(--accent);letter-spacing:-.03em;margin:4px 0}
+.share-card .sc-line{font-size:.85rem;color:var(--muted)}
+.share-card .sc-tag{margin-top:10px;font-size:.78rem;color:var(--accent2);font-weight:600}
+.share-preview{
+  margin-top:16px;background:rgba(0,0,0,.35);border:1px solid var(--border);border-radius:12px;
+  padding:14px;font-size:.82rem;color:var(--muted);white-space:pre-wrap;line-height:1.7;
+  text-align:start;font-family:var(--mono);direction:ltr;unicode-bidi:plaintext
+}
+
+/* scores bars */
+.scores{display:grid;gap:8px;margin-top:4px}
+.score-row{display:grid;grid-template-columns:28px 1fr auto;gap:10px;align-items:center;font-size:.85rem}
+.score-row .em{font-size:1.1rem}
+.score-row .bar{height:8px;background:rgba(255,255,255,.07);border-radius:999px;overflow:hidden}
+.score-row .bar i{display:block;height:100%;background:linear-gradient(90deg,#8b5cf6,#34d399);border-radius:999px;width:0;transition:width .6s cubic-bezier(.4,0,.2,1)}
+.score-row .val{color:var(--muted);font-weight:700;font-size:.78rem;min-width:36px;text-align:end}
+
+/* toast */
+.toast{
+  position:fixed;bottom:calc(20px + env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(80px);
+  background:#1a1230;color:var(--ink);border:1px solid var(--border);
+  padding:12px 20px;border-radius:12px;font-size:.88rem;font-weight:600;
+  box-shadow:0 12px 40px rgba(0,0,0,.5);z-index:50;opacity:0;transition:all .3s ease;
+  pointer-events:none;max-width:min(92vw,420px);text-align:center
+}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* mobile refinements */
+@media(max-width:480px){
+  .hero{padding-top:16px}
+  .hero .emoji{font-size:2.7rem}
+  .hero p{font-size:.95rem}
+  .q-card{padding:18px 14px;border-radius:16px}
+  .q-card h2{font-size:1.08rem;margin-bottom:14px}
+  .opt{padding:13px 12px;gap:10px;font-size:.92rem;border-radius:12px}
+  .opt .ico{font-size:1.15rem}
+  .panel{padding:16px 14px;border-radius:14px}
+  .roadmap li{padding:10px 12px;font-size:.86rem}
+  .share-card{padding:18px 14px}
+  .share-preview{display:none}
+  .btn-row.two{grid-template-columns:1fr}
+  .result-sub{font-size:.9rem;padding:0 4px}
+  .chip{font-size:.74rem;padding:6px 10px}
+  header.top{margin-bottom:18px}
+  footer{margin-top:32px}
+}
+@media(max-width:360px){
+  .wrap{padding-left:12px;padding-right:12px}
+  .lang-toggle button{padding:6px 9px;font-size:.72rem}
+  .brand strong{font-size:.95rem}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important}
+}
+
+/* footer */
+footer{
+  margin-top:48px;text-align:center;font-size:.78rem;color:var(--muted);
+  padding-top:20px;border-top:1px solid var(--border)
+}
+footer a{color:var(--accent);text-decoration:none;font-weight:600}
+footer a:hover{text-decoration:underline}
+.foot-links{margin-top:8px;font-size:.72rem;opacity:.9}
+
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+</style>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "DevCompass",
+  "alternateName": "دِو‌کمپس",
+  "url": "https://mohsen-niksirat.github.io/DevCompass/",
+  "description": "Free bilingual quiz that recommends which tech stack you should learn, with a shareable result card.",
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any",
+  "inLanguage": ["fa", "en"],
+  "isAccessibleForFree": true,
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "author": {
+    "@type": "Person",
+    "name": "Mohsen Niksirat",
+    "url": "https://github.com/mohsen-niksirat"
+  }
+}
+</script>
+</head>
+<body>
+<div class="aurora" aria-hidden="true">
+  <span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span>
+</div>
+
+<div class="wrap">
+  <header class="top">
+    <a class="brand" href="./" id="brandLink">
+      <span class="logo" aria-hidden="true">🧭</span>
+      <span class="meta">
+        <strong id="brandTitle">دِو‌کمپس</strong>
+        <span class="sub" id="brandSub">DevCompass</span>
+      </span>
+    </a>
+    <div class="header-actions">
+      <button type="button" id="btnTheme" class="theme-btn" title="Theme" aria-label="Toggle theme"
+        onclick="(function(){var c=document.documentElement.getAttribute('data-theme');var n=c==='light'?'dark':'light';document.documentElement.setAttribute('data-theme',n);try{localStorage.setItem('devcompass.theme',n)}catch(e){};var b=document.getElementById('btnTheme');if(b)b.textContent=n==='light'?'☀️':'🌙'})()">🌙</button>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" id="btnFA" class="active" lang="fa">فا</button>
+        <button type="button" id="btnEN" lang="en">EN</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- WELCOME -->
+  <section class="screen on" id="screen-welcome">
+    <div class="hero">
+      <div class="emoji" aria-hidden="true">🧭</div>
+      <h1 id="heroTitle">چه استکی یاد بگیرم؟</h1>
+      <p id="heroSub">۱۲ سؤال کوتاه. ۲ دقیقه. یک مسیر روشن برای شروع برنامه‌نویسی — با کارت نتیجهٔ قابل اشتراک.</p>
+      <div class="pills">
+        <span class="pill">⏱ <b id="pillTime">~۲ دقیقه</b></span>
+        <span class="pill">🆓 <b id="pillFree">رایگان</b></span>
+        <span class="pill">📤 <b id="pillShare">قابل اشتراک</b></span>
+        <span class="pill offline-pill" id="offlinePill" hidden>📴 آفلاین هم کار می‌کند</span>
+      </div>
+    </div>
+    <div class="challenge-banner" id="challengeBanner">
+      <span id="challengeText"></span>
+      <div class="challenge-cta" id="challengeCta">همین حالا شروع کن</div>
+    </div>
+    <div class="goal-box">
+      <div class="goal-label" id="goalLabel">هدف تو چیست؟ (اختیاری)</div>
+      <div class="goal-pills" role="radiogroup" id="goalPills">
+        <button type="button" class="goal-pill active" data-goal="any">نامشخص</button>
+        <button type="button" class="goal-pill" data-goal="job"> استخدام / شغل </button>
+        <button type="button" class="goal-pill" data-goal="freelance">فریلنسری</button>
+        <button type="button" class="goal-pill" data-goal="fun">سرگرمی / پروژه شخصی</button>
+        <button type="button" class="goal-pill" data-goal="study">یادگیری / دانشگاه</button>
+      </div>
+    </div>
+    <div class="install-banner" id="installBanner" hidden>
+      <span id="installText">نصب DevCompass روی گوشی</span>
+      <div class="install-actions">
+        <button type="button" id="btnInstall" class="install-yes">نصب</button>
+        <button type="button" id="btnInstallNo" class="install-no">بعداً</button>
+      </div>
+    </div>
+    <button class="btn btn-primary" id="btnStart" type="button">شروع کوییز ←</button>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="btnLastResult" type="button" hidden>آخرین نتیجهٔ من</button>
+      <button class="btn btn-ghost" id="btnStacks" type="button">🧭 مسیرهای یادگیری</button>
+    </div>
+    <div class="panel group-panel" id="groupPanel">
+      <h3><span class="dot" style="background:var(--accent3)"></span><span id="groupTitle">چالش گروهی</span></h3>
+      <p class="group-hint" id="groupHint">نتیجهٔ دوستانت را ثبت کن و ببین کی جلوتر است.</p>
+      <ul class="group-list" id="groupList"></ul>
+      <div class="btn-row">
+        <button class="btn btn-ghost" id="btnGroupClear" type="button" style="margin-top:8px">پاک کردن جدول</button>
+      </div>
+    </div>
+    <div class="panel history-panel" id="historyPanel" hidden>
+      <h3><span class="dot" style="background:var(--accent2)"></span><span id="historyTitle">تاریخچهٔ نتایج</span></h3>
+      <ul class="history-list" id="historyList"></ul>
+    </div>
+    <div class="eco-box" id="ecoBox">
+      <div class="eco-label" id="ecoLabel">ابزارهای دیگر من</div>
+      <div class="eco-links">
+        <a class="eco-link" href="https://mohsen-niksirat.github.io/github-wrapped/" target="_blank" rel="noopener">📦 GitHub Wrapped</a>
+        <a class="eco-link" href="https://mohsen-niksirat.github.io/promptopia/" target="_blank" rel="noopener">🎨 Promptopia</a>
+        <a class="eco-link" href="https://github.com/mohsen-niksirat/Leitner-Pro-Max" target="_blank" rel="noopener">📚 Readner</a>
+        <a class="eco-link" href="https://github.com/mohsen-niksirat" target="_blank" rel="noopener">👤 همهٔ پروژه‌ها</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACKS -->
+  <section class="screen" id="screen-stacks">
+    <div class="stacks-head">
+      <h2 id="stacksTitle">مسیرهای یادگیری</h2>
+      <p id="stacksSub">هر مسیر را ببین؛ بعد کوییز بده تا بهترین‌اش را پیشنهاد کنیم.</p>
+    </div>
+    <div class="stack-grid" id="stackGrid"></div>
+    <div class="panel stack-detail" id="stackDetail" hidden>
+      <h3><span class="dot"></span><span id="sdTitle"></span></h3>
+      <p class="sd-line" id="sdLine"></p>
+      <p class="sd-sub" id="sdSub"></p>
+      <ol class="roadmap" id="sdRoadmap"></ol>
+      <div class="btn-row">
+        <button class="btn btn-primary" id="btnStackQuiz" type="button" style="margin-top:8px">شروع کوییز ←</button>
+        <button class="btn btn-ghost" id="btnStackBack" type="button">← همهٔ مسیرها</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="screen-quiz" aria-live="polite">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="qCounter">سؤال ۱ از ۱۰</span>
+        <span id="qPct">۰٪</span>
+      </div>
+      <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+        <div class="fill" id="progressFill"></div>
+      </div>
+    </div>
+    <div class="q-card">
+      <h2 id="qText"></h2>
+      <div class="options" id="qOptions" role="radiogroup"></div>
+    </div>
+    <div class="back-row">
+      <button class="btn-back" id="btnBack" type="button">← قبلی</button>
+    </div>
+  </section>
+
+  <!-- RESULT -->
+  <section class="screen" id="screen-result">
+    <div class="result-hero">
+      <div class="badge-ring" id="badgeRing" style="--pct:0" aria-hidden="true">
+        <div class="inner">
+          <div class="emoji" id="resEmoji">⚛️</div>
+          <div class="pct" id="resPctTop">۰٪</div>
+        </div>
+      </div>
+      <div class="result-kicker" id="resKicker">مسیر پیشنهادی تو</div>
+      <h2 class="result-title" id="resTitle">Frontend</h2>
+      <p class="result-sub" id="resSub"></p>
+      <div class="stack-chips" id="resChips"></div>
+    </div>
+
+    <div class="panel iran-panel" id="iranPanel" hidden>
+      <h3><span class="dot" style="background:var(--accent3)"></span><span id="iranTitle">نکات بازار ایران</span></h3>
+      <ul class="iran-list" id="iranList"></ul>
+    </div>
+
+    <div class="panel related-panel" id="relatedPanel" hidden>
+      <h3><span class="dot" style="background:var(--accent2)"></span><span id="relatedTitle">ابزارهای مرتبط با مسیرت</span></h3>
+      <div class="eco-links" id="relatedLinks"></div>
+    </div>
+
+    <div class="panel compare-panel" id="comparePanel" hidden>
+      <h3><span class="dot" style="background:var(--accent3)"></span><span id="compareTitle">مقایسه با دوست</span></h3>
+      <div class="compare-grid">
+        <div class="compare-card" id="compareYou">
+          <div class="cc-label" id="compareYouLabel">تو</div>
+          <div class="cc-emoji" id="compareYouEmoji">—</div>
+          <div class="cc-name" id="compareYouName">—</div>
+          <div class="cc-pct" id="compareYouPct">—</div>
+        </div>
+        <div class="compare-vs">VS</div>
+        <div class="compare-card friend" id="compareFriend">
+          <div class="cc-label" id="compareFriendLabel">دوست</div>
+          <div class="cc-emoji" id="compareFriendEmoji">—</div>
+          <div class="cc-name" id="compareFriendName">—</div>
+          <div class="cc-pct" id="compareFriendPct">—</div>
+        </div>
+      </div>
+      <p class="compare-verdict" id="compareVerdict"></p>
+    </div>
+
+    <div class="panel">
+      <h3><span class="dot"></span><span id="roadmapTitle">مسیر یادگیری پیشنهادی</span></h3>
+      <ol class="roadmap" id="roadmapList"></ol>
+    </div>
+
+    <div class="panel">
+      <h3><span class="dot" style="background:var(--accent2)"></span><span id="allScoresTitle">همهٔ امتیازها</span></h3>
+      <div class="scores" id="scoresList"></div>
+    </div>
+
+    <div class="share-card" id="shareCard">
+      <div class="result-confetti" id="resultConfetti" aria-hidden="true"></div>
+      <div class="sc-brand">DEVCOMPASS · دِو‌کمپس</div>
+      <div class="sc-emoji" id="scEmoji">⚛️</div>
+      <div class="sc-title" id="scTitle">Frontend Engineer</div>
+      <div class="sc-pct" id="scPct">۸۴٪</div>
+      <div class="sc-line" id="scLine">React · Next.js · TypeScript</div>
+      <div class="sc-tag" id="scTag">تو هم بزن: DevCompass ↗</div>
+    </div>
+
+    <div class="btn-row two">
+      <button class="btn btn-primary" id="btnCopy" type="button" style="margin-top:0">📋 کپی نتیجه</button>
+      <a class="btn btn-ghost" id="btnTelegram" href="#" target="_blank" rel="noopener">✈️ تلگرام</a>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="btnShare" type="button" hidden style="margin-top:0">📤 اشتراک‌گذاری</button>
+    </div>
+    <div class="btn-row two">
+      <a class="btn btn-ghost" id="btnTwitter" href="#" target="_blank" rel="noopener">𝕏 ایکس</a>
+      <button class="btn btn-ghost" id="btnChallenge" type="button">🎯 چالش دوست</button>
+    </div>
+    <div class="btn-row two">
+      <button class="btn btn-ghost" id="btnDownload" type="button">⬇️ دانلود کارت PNG</button>
+      <button class="btn btn-ghost" id="btnResultLink" type="button">🔗 لینک نتیجه</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="btnGroupSave" type="button">🏆 ثبت در چالش گروهی</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-ghost" id="btnRetry" type="button">🔄 دوباره از اول</button>
+      <pre class="share-preview" id="sharePreview" aria-hidden="true"></pre>
+    </div>
+  </section>
+
+  <footer>
+    <p id="footNote">ساختهٔ <a href="https://github.com/mohsen-niksirat" target="_blank" rel="noopener">Mohsen Niksirat</a> · رایگان و متن‌باز</p>
+    <p class="foot-links">
+      <a href="https://github.com/mohsen-niksirat/github-wrapped" target="_blank" rel="noopener">GitHub Wrapped</a>
+      ·
+      <a href="https://github.com/mohsen-niksirat/promptopia" target="_blank" rel="noopener">Promptopia</a>
+      ·
+      <a href="https://github.com/mohsen-niksirat/Leitner-Pro-Max" target="_blank" rel="noopener">Readner</a>
+    </p>
+  </footer>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   DevCompass — single-file quiz engine
+   ══════════════════════════════════════════ */
+(function(){
+"use strict";
+
+const SITE = "https://mohsen-niksirat.github.io/DevCompass/";
+const STORE_KEY = "devcompass.v1";
+const HIST_KEY = "devcompass.hist.v1";
+const THEME_KEY = "devcompass.theme";
+const PROG_KEY = "devcompass.prog.v1";
+const GROUP_KEY = "devcompass.group.v1";
+const STATS_KEY = "devcompass.stats.v1";
+
+/* ---------- i18n ---------- */
+const I18N = {
+  fa: {
+    dir:"rtl", lang:"fa",
+    brandTitle:"دِو‌کمپس", brandSub:"DevCompass",
+    heroTitle:"چه استکی یاد بگیرم؟",
+    heroSub:"۱۲ سؤال کوتاه. ۲ دقیقه. یک مسیر روشن برای شروع برنامه‌نویسی — با کارت نتیجهٔ قابل اشتراک.",
+    pillTime:"~۲ دقیقه", pillFree:"رایگان", pillShare:"قابل اشتراک",
+    start:"شروع کوییز ←", last:"آخرین نتیجهٔ من",
+    counter:(i,n)=>`سؤال ${faNum(i)} از ${faNum(n)}`,
+    back:"← قبلی",
+    kicker:"مسیر پیشنهادی تو",
+    roadmapTitle:"مسیر یادگیری پیشنهادی",
+    allScoresTitle:"همهٔ امتیازها",
+    copy:"📋 کپی نتیجه", tg:"✈️ تلگرام", tw:"𝕏 ایکس",
+    challenge:"🎯 چالش دوست", retry:"🔄 دوباره از اول",
+    download:"⬇️ دانلود کارت PNG",
+    share:"📤 اشتراک‌گذاری",
+    resultLink:"🔗 لینک نتیجه",
+    resultLinkCopied:"لینک نتیجه کپی شد — بدون کوییز باز می‌شود!",
+    copied:"کپی شد! در تلگرام یا استوری بچسبان ✨",
+    challengeCopied:"لینک چالش کپی شد — برای دوستت بفرست!",
+    downloaded:"کارت ذخیره شد — در استوری بچسبان!",
+    shareFailed:"اشتراک لغو شد",
+    foot:"ساختهٔ <a href=\"https://github.com/mohsen-niksirat\" target=\"_blank\" rel=\"noopener\">Mohsen Niksirat</a> · رایگان و متن‌باز",
+    challengeOn:(t)=>`🎯 دوستت تو را به چالش دعوت کرده! نتیجهٔ او: <strong>${t}</strong> — ببین تو چی می‌شی.`,
+    challengeStart:"همین حالا شروع کن و نتیجه‌ات را بفرست",
+    compareTitle:"مقایسه با دوست",
+    youLabel:"تو", friendLabel:"دوستت",
+    verdictMatch:(a,b)=>`🎉 دقیقاً هم‌مسیر شدید! هر دو <strong>${a}</strong>`,
+    verdictDiff:(a,b)=>`⚡ مسیرهای متفاوت — تو <strong>${a}</strong> و دوستت <strong>${b}</strong>. کارت را بفرست و ببین کی بیشتر جذب می‌شود!`,
+    shareCompare:"🧩 نتیجهٔ من با چالش دوستم:",
+    goalLabel:"هدف تو چیست؟ (اختیاری)",
+    goals:{any:"نامشخص",job:" استخدام / شغل ",freelance:"فریلنسری",fun:"سرگرمی / پروژه شخصی",study:"یادگیری / دانشگاه"},
+    historyTitle:"تاریخچهٔ نتایج",
+    stacksBtn:"🧭 مسیرهای یادگیری",
+    stacksTitle:"مسیرهای یادگیری",
+    stacksSub:"هر مسیر را ببین؛ بعد کوییز بده تا بهترین‌اش را پیشنهاد کنیم.",
+    stacksBack:"← همهٔ مسیرها",
+    stacksStart:"شروع کوییز ←",
+    ecoLabel:"ابزارهای دیگر من",
+    groupTitle:"چالش گروهی",
+    groupHint:"نتیجهٔ دوستانت را ثبت کن و ببین کی جلوتر است.",
+    groupSave:"🏆 ثبت در چالش گروهی",
+    groupClear:"پاک کردن جدول",
+    groupSaved:"به جدول گروه اضافه شد!",
+    groupNamePh:"اسم تو…",
+    groupAdd:"ثبت",
+    groupEmpty:"هنوز کسی ثبت نکرده — اولین نفر باش!",
+    groupMe:"تو",
+    installCta:"نصب DevCompass روی گوشی",
+    installDismiss:"بعداً",
+    iranTitle:"نکات بازار ایران",
+    relatedTitle:"ابزارهای مرتبط با مسیرت",
+    related:{
+      frontend:[{label:"🎨 پرامپت‌های UI در Promptopia",url:"https://mohsen-niksirat.github.io/promptopia/"}],
+      backend:[{label:"📦 GitHub Wrapped برای رزومهٔ سال",url:"https://mohsen-niksirat.github.io/github-wrapped/"}],
+      fullstack:[{label:"🎨 Promptopia برای طراحی سریع",url:"https://mohsen-niksirat.github.io/promptopia/"},{label:"📦 GitHub Wrapped",url:"https://mohsen-niksirat.github.io/github-wrapped/"}],
+      mobile:[{label:"📦 GitHub Wrapped",url:"https://mohsen-niksirat.github.io/github-wrapped/"}],
+      gamedev:[{label:"🎨 Promptopia برای ایدهٔ بصری",url:"https://mohsen-niksirat.github.io/promptopia/"}],
+      ai:[{label:"🎨 Promptopia — گالری پرامپت",url:"https://mohsen-niksirat.github.io/promptopia/"},{label:"📚 Readner برای یادگیری سریع",url:"https://github.com/mohsen-niksirat/Leitner-Pro-Max"}],
+      data:[{label:"📦 GitHub Wrapped برای الگوی کاری",url:"https://mohsen-niksirat.github.io/github-wrapped/"},{label:"📚 Readner",url:"https://github.com/mohsen-niksirat/Leitner-Pro-Max"}],
+      devops:[{label:"📦 GitHub Wrapped",url:"https://mohsen-niksirat.github.io/github-wrapped/"}],
+      security:[{label:"📚 Readner برای انگلیسی فنی",url:"https://github.com/mohsen-niksirat/Leitner-Pro-Max"}]
+    },
+    iranTips:{
+      frontend:["پروژه‌های سازمانی و فروشگاهی زیاد است — پورتفولیوی فارسی+انگلیسی بساز.","فریلنسری در پونیشا و پارسکدرز واقعی است؛ نمونه‌کار محکم بزن.","مهارت Tailwind و Next برای استخدام تیم‌های استارتاپی تهران پرتقاضاست."],
+      backend:["بانک، فین‌تک و سیستم‌های پرداخت به Node/Python تقاضای بالا دارند.","یادگیری SQL عمیق + Docker برای موقعیت‌های سازمانی حیاتی است.","Remote با شرکت‌های خارجی برای بک‌اند واقع‌بینانه است اگر English خوب باشد."],
+      fullstack:["استارتاپ‌های ایرانی اغلب فل‌استک تمام‌عیار می‌خواهند.","یک محصول SaaS کوچک فارسی بساز — بهترین رزومه برای استخدام.","فریلنسری پروژه‌های واقعی (فروشگاه، رزرو، پنل) درآمد سریع دارد."],
+      mobile:["Flutter برای اندروید فارسی و بازار ایران انتخاب عاقلانه‌ای است.","انتشار در کافه‌بازار کنار Google Play ترافیک واقعی می‌دهد.","اپ‌های سفارشی برای کسب‌وکارهای کوچک مشتری خوب دارند."],
+      gamedev:["بازی‌های کوچک HTML5 برای ناشران و تبلیغات درآمد دارند.","مهارت Unity/C# برای استودیوهای داخلی و ریموت کاربرد دارد."," itch.io و شبکه‌های اجتماعی بهترین محل نمایش اولیه است."],
+      ai:["تیم‌های محصول به LLM/RAG عملی بیشتر از مقاله نیاز دارند.","پروژه‌های فارسی NLP (جست‌وجو، چت‌بات) کم‌رقابت و جذاب‌اند.","فریلنسری AI با نمونه‌کار واقعی، میانگین درآمد بالاتری دارد."],
+      data:["داشبورد فارسی برای مدیران فروش/مالی مشتری دارد.","SQL + Power BI/Metabase سریع‌ترین مسیر استخدام در شرکت‌های متوسط است.","تحلیل مارکتینگ و متریک‌های محصول برای استارتاپ‌ها پرتقاضاست."],
+      devops:["هوزینگ ایران (پارس‌پک و…) را عملی یاد بگیر، نه فقط AWS.","CI/CD و Docker برای تیم‌های نرم‌افزاری داخلی ارزش‌افزای فوری دارد.","Remote DevOps با انگلیسی خوب یکی از بهترین مسیرهای درآمد دلاری است."],
+      security:["اول CTF و آزمایشگاه، بعد سمت شغلی — عجله نکن.","امنیت وب (OWASP) برای مشاوره به استارتاپ‌ها کاربردی است.","گزارش‌های responsible disclosure و پورتفولیوی labs را جدی بگیر."]
+    },
+    shareTag:"تو هم بزن: DevCompass ↗",
+    quizTitle:"کوییز مسیر یادگیری",
+  },
+  en: {
+    dir:"ltr", lang:"en",
+    brandTitle:"DevCompass", brandSub:"Find your stack",
+    heroTitle:"Which tech stack should you learn?",
+    heroSub:"12 short questions. 2 minutes. One clear path to start coding — with a shareable result card.",
+    pillTime:"~2 min", pillFree:"Free", pillShare:"Shareable",
+    start:"Start the quiz →", last:"My last result",
+    counter:(i,n)=>`Question ${i} of ${n}`,
+    back:"← Back",
+    kicker:"Your recommended path",
+    roadmapTitle:"Suggested learning roadmap",
+    allScoresTitle:"All scores",
+    copy:"📋 Copy result", tg:"✈️ Telegram", tw:"𝕏 X",
+    challenge:"🎯 Challenge a friend", retry:"🔄 Retake",
+    download:"⬇️ Download PNG card",
+    share:"📤 Share",
+    resultLink:"🔗 Result link",
+    resultLinkCopied:"Result link copied — opens without the quiz!",
+    copied:"Copied! Paste it in Telegram or your story ✨",
+    challengeCopied:"Challenge link copied — send it to a friend!",
+    downloaded:"Card saved — share it in your story!",
+    shareFailed:"Share cancelled",
+    foot:"Built by <a href=\"https://github.com/mohsen-niksirat\" target=\"_blank\" rel=\"noopener\">Mohsen Niksirat</a> · Free & open source",
+    challengeOn:(t)=>`🎯 A friend challenged you! Their result: <strong>${t}</strong> — let's see yours.`,
+    challengeStart:"Start now and send them your result",
+    compareTitle:"Friend comparison",
+    youLabel:"You", friendLabel:"Friend",
+    verdictMatch:(a,b)=>`🎉 Same path! You both got <strong>${a}</strong>`,
+    verdictDiff:(a,b)=>`⚡ Different paths — you <strong>${a}</strong>, friend <strong>${b}</strong>. Send your card and see who wins!`,
+    shareCompare:"🧩 My result after a friend challenge:",
+    goalLabel:"What's your goal? (optional)",
+    goals:{any:"Not sure",job:"Job / career",freelance:"Freelance",fun:"Fun / side project",study:"Learning / school"},
+    historyTitle:"Result history",
+    stacksBtn:"🧭 Learning paths",
+    stacksTitle:"Learning paths",
+    stacksSub:"Browse each path, then take the quiz to get your best match.",
+    stacksBack:"← All paths",
+    stacksStart:"Start the quiz →",
+    ecoLabel:"More tools by me",
+    groupTitle:"Group challenge",
+    groupHint:"Log friends' results and see who is ahead.",
+    groupSave:"🏆 Save to group board",
+    groupClear:"Clear board",
+    groupSaved:"Added to the group board!",
+    groupNamePh:"Your name…",
+    groupAdd:"Add",
+    groupEmpty:"No entries yet — be the first!",
+    groupMe:"You",
+    installCta:"Install DevCompass on your phone",
+    installDismiss:"Later",
+    iranTitle:"Iran market tips",
+    relatedTitle:"Tools related to your path",
+    related:{
+      frontend:[{label:"🎨 UI prompts on Promptopia",url:"https://mohsen-niksirat.github.io/promptopia/"}],
+      backend:[{label:"📦 GitHub Wrapped resume",url:"https://mohsen-niksirat.github.io/github-wrapped/"}],
+      fullstack:[{label:"🎨 Promptopia",url:"https://mohsen-niksirat.github.io/promptopia/"},{label:"📦 GitHub Wrapped",url:"https://mohsen-niksirat.github.io/github-wrapped/"}],
+      mobile:[{label:"📦 GitHub Wrapped",url:"https://mohsen-niksirat.github.io/github-wrapped/"}],
+      gamedev:[{label:"🎨 Promptopia for visual ideas",url:"https://mohsen-niksirat.github.io/promptopia/"}],
+      ai:[{label:"🎨 Promptopia prompt gallery",url:"https://mohsen-niksirat.github.io/promptopia/"},{label:"📚 Readner for fast learning",url:"https://github.com/mohsen-niksirat/Leitner-Pro-Max"}],
+      data:[{label:"📦 GitHub Wrapped",url:"https://mohsen-niksirat.github.io/github-wrapped/"},{label:"📚 Readner",url:"https://github.com/mohsen-niksirat/Leitner-Pro-Max"}],
+      devops:[{label:"📦 GitHub Wrapped",url:"https://mohsen-niksirat.github.io/github-wrapped/"}],
+      security:[{label:"📚 Readner for technical English",url:"https://github.com/mohsen-niksirat/Leitner-Pro-Max"}]
+    },
+    iranTips:{
+      frontend:["Lots of org & shop projects — ship a bilingual portfolio.","Freelance on Ponisha-style boards is real; lead with samples.","Tailwind + Next.js is highly requested by Tehran startups."],
+      backend:["Banks, fintech and payments hire Node/Python heavily.","Deep SQL + Docker matters for enterprise roles.","Remote work abroad is realistic with strong English."],
+      fullstack:["Iranian startups often want full product owners.","Build a small Farsi SaaS — best hiring artifact.","Freelance shop/booking/panel projects pay quickly."],
+      mobile:["Flutter is a smart default for Android + Iran market.","Cafe Bazaar + Play Store dual listing brings real traffic.","Custom apps for small businesses are steady work."],
+      gamedev:["Small HTML5 games can monetize via ads/publishers.","Unity/C# skills open studio + remote roles.","Show early builds on itch.io and socials."],
+      ai:["Product teams need practical LLM/RAG, not papers.","Farsi NLP products are less crowded and useful.","Freelance AI with real demos pays better."],
+      data:["Farsi dashboards for sales/finance managers sell well.","SQL + Power BI/Metabase is a fast hire path.","Marketing & product analytics stay in demand."],
+      devops:["Learn local hosts (e.g. Iranian clouds) alongside AWS.","CI/CD + Docker adds instant team value.","Remote DevOps + English is a strong dollar-income path."],
+      security:["Start with CTFs and labs before job titles.","Web security (OWASP) fits startup consulting.","Keep responsible-disclosure + lab portfolio serious."]
+    },
+    shareTag:"Try it: DevCompass ↗",
+    quizTitle:"Learning path quiz",
+  }
+};
+
+function faNum(n){return String(n).replace(/\d/g,d=>"۰۱۲۳۴۵۶۷۸۹"[d]);}
+
+/* ---------- stacks ---------- */
+const STACKS = {
+  frontend:{
+    emoji:"⚛️",
+    name:{fa:"فرانت‌اند (React / Next)", en:"Frontend (React / Next)"},
+    title:{fa:"Frontend Engineer", en:"Frontend Engineer"},
+    line:"React · Next.js · TypeScript",
+    sub:{
+      fa:"تو ذوق بصری داری و دوست داری کاربر همان لحظه تغییراتت را ببیند. فرانت‌اند سریع‌ترین مسیر برای ساختن چیزهایی است که مردم واقعاً استفاده می‌کنند.",
+      en:"You care about visuals and want users to feel your work immediately. Frontend is the fastest path to shipping things people actually use."
+    },
+    roadmap:{
+      fa:["HTML/CSS (Semantic + Flex/Grid)","JavaScript مدرن (ES6+)","React + hooks","TypeScript","Next.js + Tailwind","یک پروژهٔ واقعی و deploy روی Vercel"],
+      en:["HTML/CSS (Semantic + Flex/Grid)","Modern JavaScript (ES6+)","React + hooks","TypeScript","Next.js + Tailwind","Ship a real project on Vercel"]
+    }
+  },
+  backend:{
+    emoji:"⚙️",
+    name:{fa:"بک‌اند (Node / Go)", en:"Backend (Node / Go)"},
+    title:{fa:"Backend Engineer", en:"Backend Engineer"},
+    line:"Node.js · SQL · APIs",
+    sub:{
+      fa:"منطق، داده و سرعت برایت مهم‌تر از رابط کاربری است. بک‌اند جایی است که سیستم واقعاً نفس می‌کشد.",
+      en:"Logic, data and reliability matter more to you than UI. Backend is where the system actually lives."
+    },
+    roadmap:{
+      fa:["یک زبان: JavaScript/Go/Python","Git و Linux پایه","SQL (PostgreSQL)","REST + Auth","Docker پایه","ساخت یک API کامل و deploy"],
+      en:["Pick a language: JS/Go/Python","Git & Linux basics","SQL (PostgreSQL)","REST + Auth","Docker basics","Build & deploy a full API"]
+    }
+  },
+  fullstack:{
+    emoji:"🧩",
+    name:{fa:"فل‌استک (Full-Stack)", en:"Full-Stack"},
+    title:{fa:"Full-Stack Developer", en:"Full-Stack Developer"},
+    line:"Next.js · Node · DB",
+    sub:{
+      fa:"دوست داری هم رابط بسازی هم منطقش را. فل‌استک برای فریلنسری و استارتاپ‌های کوچک عالی است.",
+      en:"You want to own both the UI and the logic. Full-stack is perfect for freelancing and small startups."
+    },
+    roadmap:{
+      fa:["HTML/CSS/JS","React یا Vue","Node.js + Express/Fastify","SQL + ORM","Auth و deploy","یک SaaS کوچک کامل بساز"],
+      en:["HTML/CSS/JS","React or Vue","Node.js + Express/Fastify","SQL + ORM","Auth & deploy","Ship one complete mini-SaaS"]
+    }
+  },
+  mobile:{
+    emoji:"📱",
+    name:{fa:"موبایل (Flutter / RN)", en:"Mobile (Flutter / RN)"},
+    title:{fa:"Mobile Developer", en:"Mobile Developer"},
+    line:"Flutter · Firebase",
+    sub:{
+      fa:"اپ در جیب آدم‌ها زندگی می‌کند و تو این حس را دوست داری. موبایل مسیر روشنی برای بازار ایران و فریلنسری دارد.",
+      en:"Apps live in people's pockets — you like that. Mobile is a clear path for the Iranian market and freelancing."
+    },
+    roadmap:{
+      fa:["Dart یا JavaScript","Flutter (یا React Native)","UI موبایل‌فرست","State management","Firebase / Supabase","انتشار در کافه‌بازار یا Play Store"],
+      en:["Dart or JavaScript","Flutter (or React Native)","Mobile-first UI","State management","Firebase / Supabase","Ship to Play Store / App Store"]
+    }
+  },
+  gamedev:{
+    emoji:"🎮",
+    name:{fa:"بازی‌سازی (Unity / Godot)", en:"Game Dev (Unity / Godot)"},
+    title:{fa:"Game Developer", en:"Game Developer"},
+    line:"C# · Unity · Godot",
+    sub:{
+      fa:"بازی برایت فقط سرگرمی نیست — دوست داری خودت تجربه بسازی. مسیر سرگرم‌کننده است اما نظم و تکرار می‌خواهد.",
+      en:"Games aren't just entertainment for you — you want to craft experiences. Fun path, but needs discipline."
+    },
+    roadmap:{
+      fa:["C# یا GDScript","Unity یا Godot پایه","گیم‌دیزاین و مکانیک","۲D یا 3D طبق علاقه","یک بازی کوچک کامل → itch.io","بعداً تیم یا فریلنسر"],
+      en:["C# or GDScript","Unity or Godot basics","Game design & mechanics","2D or 3D per taste","One complete small game → itch.io","Then team or freelance"]
+    }
+  },
+  ai:{
+    emoji:"🤖",
+    name:{fa:"هوش مصنوعی / ML", en:"AI / Machine Learning"},
+    title:{fa:"AI Engineer", en:"AI Engineer"},
+    line:"Python · LLMs · PyTorch",
+    sub:{
+      fa:"کنجکاوی و حل مسئله برایت جذاب‌تر از UI کلاسیک است. AI امروز سریع‌ترین حوزهٔ رشد است — اگر ریاضی و صبر را بپذیری.",
+      en:"Curiosity and problem-solving beat classic UI for you. AI is the fastest-growing field — if you accept math and patience."
+    },
+    roadmap:{
+      fa:["Python","آمار و ریاضی پایه","pandas + NumPy","Machine Learning کلاسیک","LLM / RAG / Agents","یک محصول AI واقعی بساز"],
+      en:["Python","Core math & stats","pandas + NumPy","Classical ML","LLM / RAG / Agents","Ship one real AI product"]
+    }
+  },
+  data:{
+    emoji:"📊",
+    name:{fa:"داده (Data Analytics)", en:"Data (Analytics)"},
+    title:{fa:"Data Analyst", en:"Data Analyst"},
+    line:"SQL · Python · BI",
+    sub:{
+      fa:"از اعداد و الگو در آن‌ها انرژی می‌گیری. تحلیل داده درآمد خوب و ورود نسبتاً آسانی دارد.",
+      en:"Numbers and patterns energize you. Data analytics pays well and has a relatively soft entry."
+    },
+    roadmap:{
+      fa:["Excel عمیق","SQL","Python (pandas)","بی‌ای و داشبورد (Power BI / Metabase)","استوری‌تلینگ با داده","یک پروژهٔ Portfolio واقعی"],
+      en:["Deep Excel","SQL","Python (pandas)","BI dashboards (Power BI / Metabase)","Data storytelling","One real portfolio project"]
+    }
+  },
+  devops:{
+    emoji:"☁️",
+    name:{fa:"دِواپس / کلاد", en:"DevOps / Cloud"},
+    title:{fa:"DevOps Engineer", en:"DevOps Engineer"},
+    line:"Linux · Docker · K8s",
+    sub:{
+      fa:"از نظم، اتوماسیون و «همه‌چیز سبز باشد» انرژی می‌گیری. DevOps تقاضای بالا و درآمد عالی دارد.",
+      en:"Order, automation, and green dashboards motivate you. DevOps has high demand and great pay."
+    },
+    roadmap:{
+      fa:["Linux و شبکه پایه","Git پیشرفته","Bash / scripting","Docker","CI/CD (GitHub Actions)","Cloud (AWS یا Hetzner)"],
+      en:["Linux & networking","Advanced Git","Bash / scripting","Docker","CI/CD (GitHub Actions)","Cloud (AWS or Hetzner)"]
+    }
+  },
+  security:{
+    emoji:"🛡️",
+    name:{fa:"امنیت (Cybersecurity)", en:"Security (Cyber)"},
+    title:{fa:"Security Analyst", en:"Security Analyst"},
+    line:"Networking · Linux · Pentest",
+    sub:{
+      fa:"دوست داری سیستم‌ها را مثل یک مهاجم ببینی و بعد درستشان کنی. مسیر چالشی و هیجان‌انگیز است.",
+      en:"You want to see systems like an attacker, then fix them. A challenging, thrilling path."
+    },
+    roadmap:{
+      fa:["شبکه (TCP/IP)","Linux عمیق","پایه‌های برنامه‌نویسی","OWASP Top 10","CTF و آزمایشگاه‌ها","CEH یا OSCP (بعداً)"],
+      en:["Networking (TCP/IP)","Deep Linux","Programming basics","OWASP Top 10","CTFs & labs","CEH or OSCP (later)"]
+    }
+  }
+};
+
+/* ---------- questions ----------
+   w = weights per stack. Keys match STACKS.
+*/
+const QUESTIONS = [
+  {
+    q:{fa:"آخر هفته‌ات را کدام پروژه بیشتر جذب می‌کند؟", en:"Which weekend project pulls you in most?"},
+    opts:[
+      {ico:"🎨", t:{fa:"یک رابط کاربری خوشگل و انیمیشن‌دار", en:"A beautiful animated UI"}, w:{frontend:3,fullstack:1}},
+      {ico:"🛠️", t:{fa:"یک ابزار خط فرمان یا سرور کوچک", en:"A CLI tool or small server"}, w:{backend:3,devops:1}},
+      {ico:"🎮", t:{fa:"یک مینی‌گیم یا ایدهٔ بازی", en:"A mini-game or game idea"}, w:{gamedev:3}},
+      {ico:"📊", t:{fa:"داشبوردی روی داده‌های واقعی", en:"A dashboard over real data"}, w:{data:3,ai:1}}
+    ]
+  },
+  {
+    q:{fa:"کدام جمله بیشتر به صدای درونی‌ات می‌خورد؟", en:"Which line sounds most like your inner voice?"},
+    opts:[
+      {ico:"👁️", t:{fa:"«اگه خوب به نظر نرسه، اصلاً مهم نیست»", en:"“If it doesn't look good, it doesn't count”"}, w:{frontend:3,fullstack:1}},
+      {ico:"🧠", t:{fa:"«اگه زیر کاپوت درست کار نکنه، بدرد نمی‌خوره»", en:"“If it doesn't work under the hood, it's useless”"}, w:{backend:3,devops:1}},
+      {ico:"📱", t:{fa:"«آدم‌ها باید تو مترو با یک دست استفاده کنن»", en:"“People should use it one-handed on the metro”"}, w:{mobile:3,frontend:1}},
+      {ico:"🔮", t:{fa:"«ای کاش ماشین خودش بفهمه»", en:"“I wish the machine just figured it out”"}, w:{ai:3,data:1}}
+    ]
+  },
+  {
+    q:{fa:"وقتی گیر می‌کنی، اول چه می‌کنی؟", en:"When you're stuck, what's your first move?"},
+    opts:[
+      {ico:"🔍", t:{fa:"کد نمونه می‌خوانم و الگو پیدا می‌کنم", en:"Read sample code and find the pattern"}, w:{frontend:1,fullstack:2,backend:1}},
+      {ico:"🧪", t:{fa:"قدم‌به‌قدم تست می‌کنم تا باگ پیدا شود", en:"Step through tests until the bug appears"}, w:{backend:2,security:2,devops:1}},
+      {ico:"✏️", t:{fa:"اول روی کاغذ طراحی می‌کنم", en:"Sketch it on paper first"}, w:{gamedev:2,frontend:1,data:1}},
+      {ico:"📈", t:{fa:"دیتاست درست می‌کنم و امتحان می‌کنم", en:"Build a dataset and experiment"}, w:{ai:3,data:2}}
+    ]
+  },
+  {
+    q:{fa:"کدام محیط کاری برایت ایده‌آل است؟", en:"Which work setting feels ideal?"},
+    opts:[
+      {ico:"🏠", t:{fa:"فریلنسری و پروژه‌های متنوع", en:"Freelance with varied projects"}, w:{fullstack:2,frontend:2,mobile:1}},
+      {ico:"🏢", t:{fa:"تیم محصول در یک شرکت بزرگ", en:"Product team at a big company"}, w:{frontend:1,backend:1,ai:1,data:1,devops:1}},
+      {ico:"🚀", t:{fa:"استارتاپ کوچک، همه‌کاره", en:"Small startup, wear many hats"}, w:{fullstack:3,mobile:1,devops:1}},
+      {ico:"🕵️", t:{fa:"تخصص عمیق در یک حوزهٔ تخصصی", en:"Deep specialty in one niche"}, w:{ai:2,security:2,devops:2,gamedev:1}}
+    ]
+  },
+  {
+    q:{fa:"کدام گزاره با تو هم‌خوانی دارد؟", en:"Which statement resonates with you?"},
+    opts:[
+      {ico:"🌈", t:{fa:"رنگ، تایپوگرافی و جزئیات برایم مهم‌اند", en:"Color, typography and details matter"}, w:{frontend:3}},
+      {ico:"🔢", t:{fa:"الگوریتم و بهینه‌سازی لذت دارد", en:"Algorithms and optimization are satisfying"}, w:{backend:2,ai:2,data:1}},
+      {ico:"🎯", t:{fa:"سرعت انتشار مهم‌تر از کمال است", en:"Shipping speed beats perfection"}, w:{fullstack:3,mobile:2}},
+      {ico:"🔐", t:{fa:"دوست دارم مرزها و ریسک‌ها را پیدا کنم", en:"I like finding edges and risks"}, w:{security:3,devops:1}}
+    ]
+  },
+  {
+    q:{fa:"بیشتر با کدام نوع داده سر و کار داری؟", en:"What kind of data do you enjoy most?"},
+    opts:[
+      {ico:"🖼️", t:{fa:"تصویر، ویدیو، رابط کاربری", en:"Images, video, interfaces"}, w:{frontend:2,gamedev:2,ai:1}},
+      {ico:"🗂️", t:{fa:"API، لاگ، صف پیام", en:"APIs, logs, message queues"}, w:{backend:3,devops:2}},
+      {ico:"📈", t:{fa:"جدول، متریک، گزارش مالی", en:"Tables, metrics, financial reports"}, w:{data:3}},
+      {ico:"🗣️", t:{fa:"متن، گفتار، مدل‌های زبانی", en:"Text, speech, language models"}, w:{ai:3}}
+    ]
+  },
+  {
+    q:{fa:"ریاضی و آمار چقدر برایت راحت است؟", en:"How comfortable are you with math/stats?"},
+    opts:[
+      {ico:"😊", t:{fa:"خوبم، از حل مسئله لذت می‌برم", en:"Good — I enjoy solving problems"}, w:{ai:2,data:2,backend:1}},
+      {ico:"😐", t:{fa:"متوسط — تا حد لازم یاد می‌گیرم", en:"Medium — I'll learn what's needed"}, w:{fullstack:2,frontend:1,mobile:1,backend:1}},
+      {ico:"🎨", t:{fa:"ترجیح می‌دهم بیشتر خلاقانه/بصری باشد", en:"Prefer creative/visual work"}, w:{frontend:2,gamedev:2}},
+      {ico:"⚙️", t:{fa:"عملی و مهندسی‌محور بیشتر می‌چسبد", en:"Hands-on engineering suits me better"}, w:{devops:2,backend:1,security:1}}
+    ]
+  },
+  {
+    q:{fa:"مشتری یا مخاطب رویایی‌ات؟", en:"Your dream client or audience?"},
+    opts:[
+      {ico:"🛍️", t:{fa:"فروشگاه و برندها (وبسایت و برند)", en:"Shops & brands (web + brand)"}, w:{frontend:2,fullstack:2}},
+      {ico:"🏦", t:{fa:"بانک، فین‌تک، سیستم‌های حساس", en:"Banks, fintech, critical systems"}, w:{backend:2,security:2,data:1}},
+      {ico:"🎮", t:{fa:"گیمرها و جامعهٔ بازی", en:"Gamers and the games community"}, w:{gamedev:3}},
+      {ico:"📑", t:{fa:"مدیرانی که تصمیم با داده می‌گیرند", en:"Executives who decide with data"}, w:{data:3,ai:1}}
+    ]
+  },
+  {
+    q:{fa:"در ۳ ماه آینده بیشتر دوست داری…", en:"In the next 3 months you'd rather…"},
+    opts:[
+      {ico:"🚀", t:{fa:"یک محصول واقعی آنلاین کنم", en:"Ship a real product online"}, w:{fullstack:2,frontend:1,mobile:1}},
+      {ico:"📚", t:{fa:"عمق فنی پیدا کنم (نه لزوماً محصول)", en:"Go deep technically (not necessarily ship)"}, w:{backend:2,ai:2,security:1,devops:1}},
+      {ico:"💼", t:{fa:"پورتفولیو برای استخدام بسازم", en:"Build a portfolio for hiring"}, w:{frontend:2,fullstack:2,data:1,mobile:1}},
+      {ico:"🛠️", t:{fa:"زیرساخت و ابزارهای تیم را درست کنم", en:"Fix team infrastructure & tooling"}, w:{devops:3,backend:1}}
+    ]
+  },
+  {
+    q:{fa:"کدام یکی بیشتر حس «خونه» بهت می‌دهد؟", en:"Which feels most like home?"},
+    opts:[
+      {ico:"✨", t:{fa:"لحظه‌ای که انیمیشن UI بالا می‌آید", en:"The moment a UI animation comes alive"}, w:{frontend:3,gamedev:1}},
+      {ico:"🔌", t:{fa:"اتصال دو سیستم و دیدن داده در جریان", en:"Wiring two systems and seeing data flow"}, w:{backend:2,devops:2,fullstack:1}},
+      {ico:"📲", t:{fa:"اپی که روی گوشی دوستت نصب می‌شود", en:"An app landing on your friend's phone"}, w:{mobile:3}},
+      {ico:"🧬", t:{fa:"مدلی که بعد از آموزش درست حدس می‌زند", en:"A model that predicts correctly after training"}, w:{ai:3,data:1}}
+    ]
+  },
+  {
+    q:{fa:"اگر یک فیشینگ یا باگ امنیتی ببینی، چه حسی داری؟", en:"If you spotted a phishing page or security bug, how would you feel?"},
+    opts:[
+      {ico:"🕵️", t:{fa:"کنجکاو می‌شوم — می‌خواهم تحلیلش کنم", en:"Curious — I want to reverse-engineer it"}, w:{security:3}},
+      {ico:"🛡️", t:{fa:"دوست دارم سریع گزارش و رفعش کنم", en:"I'd want to patch and report it fast"}, w:{security:2,devops:2}},
+      {ico:"🧱", t:{fa:"بیشتر به معماری سالم سیستم فکر می‌کنم", en:"I think about healthy system architecture"}, w:{backend:2,devops:2,fullstack:1}},
+      {ico:"🚫", t:{fa:"اصلاً جذبم نمی‌کند", en:"Not interesting to me"}, w:{frontend:1,gamedev:1,fullstack:1}}
+    ]
+  },
+  {
+    q:{fa:"کدام نوع «بینش» از داده بیشتر می‌چسبد؟", en:"Which kind of data insight feels most satisfying?"},
+    opts:[
+      {ico:"📉", t:{fa:"کمپین مارکتینگ چرا تبدیل کم داشت", en:"Why a marketing campaign converted poorly"}, w:{data:3,ai:1}},
+      {ico:"🔮", t:{fa:"پیش‌بینی رفتار کاربر در هفتهٔ بعد", en:"Predicting next week's user behavior"}, w:{ai:3,data:2}},
+      {ico:"🩺", t:{fa:"کدام API کند است و چرا کرش می‌کند", en:"Which API is slow and why it crashes"}, w:{backend:2,devops:2,security:1}},
+      {ico:"🎮", t:{fa:"چرا بازیکن‌ها در مرحلهٔ ۳ رها می‌کنند", en:"Why players quit at level 3"}, w:{gamedev:3,data:1}}
+    ]
+  }
+];
+
+/* ---------- state ---------- */
+let lang = "fa";
+let qi = 0;
+let answers = []; // option index per question
+let lastResult = null;
+let goal = "any";
+
+const GOAL_BONUS = {
+  any: {},
+  job: { backend:1, frontend:1, security:1, data:1, ai:1, devops:1 },
+  freelance: { fullstack:2, frontend:1, mobile:1, gamedev:1 },
+  fun: { gamedev:2, frontend:1, mobile:1, fullstack:1 },
+  study: { ai:1, data:1, backend:1, frontend:1 }
+};
+
+const $ = (id)=>document.getElementById(id);
+
+/* ---------- scoring ---------- */
+function score(answersArr){
+  const s = {};
+  Object.keys(STACKS).forEach(k=>s[k]=0);
+  answersArr.forEach((oi,qi2)=>{
+    if(oi==null) return;
+    const w = QUESTIONS[qi2].opts[oi].w;
+    Object.keys(w).forEach(k=>{ s[k]=(s[k]||0)+w[k]; });
+  });
+  const bonus = GOAL_BONUS[goal] || {};
+  Object.keys(bonus).forEach(k=>{ s[k]=(s[k]||0)+bonus[k]; });
+  return s;
+}
+
+function ranked(scores){
+  return Object.keys(scores)
+    .map(k=>({k, v:scores[k]}))
+    .sort((a,b)=>b.v-a.v);
+}
+
+function toPct(scored){
+  // normalize top stack to a confident-looking 70-96% band, others relative
+  if(!scored.length) return [];
+  const max = scored[0].v || 1;
+  return scored.map((row,i)=>{
+    const rel = max ? row.v/max : 0;
+    // top gets 78 + small variance from absolute strength; others scale down
+    const base = i===0
+      ? Math.min(96, Math.max(72, 70 + Math.round(rel*22) + (row.v>=12?4:0)))
+      : Math.max(8, Math.round(rel * 90));
+    return {...row, pct: base};
+  });
+}
+
+/* ---------- share ---------- */
+function shareUrl(){
+  const base = location.href.split("?")[0].split("#")[0];
+  return base.endsWith("/") ? base : base + "/";
+}
+
+function challengeUrl(topKey, answersArr){
+  const base = shareUrl() + "?r=" + topKey;
+  const a = (answersArr || answers).filter(x => x != null);
+  if(a.length === QUESTIONS.length){
+    return base + "&a=" + a.join(",");
+  }
+  return base;
+}
+
+function resultDeepLink(topKey, answersArr){
+  const a = (answersArr || answers).filter(x => x != null);
+  if(a.length !== QUESTIONS.length) return challengeUrl(topKey, answersArr);
+  return shareUrl() + "?view=result&r=" + topKey + "&a=" + a.join(",");
+}
+
+function trackEvent(name){
+  // Privacy-friendly: local counters only, no network, no PII
+  try{
+    const raw = localStorage.getItem(STATS_KEY);
+    const s = raw ? JSON.parse(raw) : {};
+    s[name] = (s[name]||0)+1;
+    s.updatedAt = Date.now();
+    localStorage.setItem(STATS_KEY, JSON.stringify(s));
+  }catch(e){}
+}
+
+function countUpPct(el, target){
+  if(!el) return;
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce){ el.textContent = lang==="fa" ? faNum(target)+"٪" : target+"%"; return; }
+  const start = performance.now();
+  const dur = 700;
+  const step = (now)=>{
+    const t = Math.min(1, (now-start)/dur);
+    const eased = 1-Math.pow(1-t,3);
+    const v = Math.round(target*eased);
+    el.textContent = lang==="fa" ? faNum(v)+"٪" : v+"%";
+    if(t<1) requestAnimationFrame(step);
+  };
+  el.textContent = lang==="fa" ? "۰٪" : "0%";
+  requestAnimationFrame(step);
+}
+
+function burstConfetti(){
+  const box = $("resultConfetti");
+  if(!box) return;
+  box.innerHTML = "";
+  const reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if(reduce) return;
+  const colors = ["#a78bfa","#34d399","#fbbf24","#f472b6","#60a5fa"];
+  for(let i=0;i<18;i++){
+    const p = document.createElement("i");
+    p.style.left = (10 + Math.random()*80) + "%";
+    p.style.top = (Math.random()*40) + "%";
+    p.style.background = colors[i%colors.length];
+    p.style.animationDelay = (Math.random()*0.25)+"s";
+    p.style.transform = `rotate(${Math.random()*180}deg)`;
+    box.appendChild(p);
+  }
+  setTimeout(()=>{ box.innerHTML=""; }, 1600);
+}
+
+function showResultFromAnswers(ans){
+  const savedGoal = goal;
+  // reconstruct without assuming viewer's goal bonus matches sharer's
+  goal = "any";
+  const scores = score(ans);
+  goal = savedGoal;
+  lastResult = { scores, at: Date.now(), shared: true };
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(lastResult)); }catch(e){}
+  renderResult(lastResult);
+  show("result");
+  return true;
+}
+
+function parseFriendAnswers(){
+  const a = new URLSearchParams(location.search).get("a");
+  if(!a) return null;
+  const parts = a.split(",").map(x => parseInt(x, 10));
+  if(parts.length !== QUESTIONS.length || parts.some(n => Number.isNaN(n) || n < 0 || n > 3)) return null;
+  return parts;
+}
+
+function friendScoresFromUrl(){
+  const arr = parseFriendAnswers();
+  if(!arr) return null;
+  const saved = goal;
+  goal = "any"; // friend answers scored without our goal bonus
+  const s = score(arr);
+  goal = saved;
+  return s;
+}
+
+function shareText(scores){
+  const top = toPct(ranked(scores))[0];
+  const st = STACKS[top.k];
+  if(lang==="fa"){
+    return `🧭 DevCompass نتیجهٔ من:\n${st.emoji} ${st.title.fa} — ${faNum(top.pct)}٪\nمسیر: ${st.line}\n\nتو هم بزن 👇\n${challengeUrl(top.k)}`;
+  }
+  return `🧭 My DevCompass result:\n${st.emoji} ${st.title.en} — ${top.pct}%\nPath: ${st.line}\n\nYour turn 👇\n${challengeUrl(top.k)}`;
+}
+
+function toast(msg){
+  const t = $("toast");
+  t.textContent = msg;
+  t.classList.add("on");
+  clearTimeout(toast._t);
+  toast._t = setTimeout(()=>t.classList.remove("on"), 2600);
+}
+
+async function copyText(text, okMsg){
+  try{
+    await navigator.clipboard.writeText(text);
+    toast(okMsg);
+  }catch(e){
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    ta.style.position="fixed";ta.style.left="-9999px";
+    document.body.appendChild(ta);
+    ta.select();
+    try{document.execCommand("copy"); toast(okMsg);}catch(_){toast("Copy failed");}
+    document.body.removeChild(ta);
+  }
+}
+
+/* ---------- render helpers ---------- */
+function setLang(l){
+  lang = l;
+  const t = I18N[l];
+  document.documentElement.lang = t.lang;
+  document.documentElement.dir = t.dir;
+  $("btnFA").classList.toggle("active", l==="fa");
+  $("btnEN").classList.toggle("active", l==="en");
+  $("brandTitle").textContent = t.brandTitle;
+  $("brandSub").textContent = t.brandSub;
+  $("heroTitle").textContent = t.heroTitle;
+  $("heroSub").textContent = t.heroSub;
+  $("pillTime").textContent = t.pillTime;
+  $("pillFree").textContent = t.pillFree;
+  $("pillShare").textContent = t.pillShare;
+  $("btnStart").textContent = t.start;
+  $("btnLastResult").textContent = t.last;
+  $("btnBack").textContent = t.back;
+  $("resKicker").textContent = t.kicker;
+  $("roadmapTitle").textContent = t.roadmapTitle;
+  $("allScoresTitle").textContent = t.allScoresTitle;
+  $("btnCopy").textContent = t.copy;
+  $("btnTelegram").textContent = t.tg;
+  $("btnTwitter").textContent = t.tw;
+  $("btnChallenge").textContent = t.challenge;
+  $("btnRetry").textContent = t.retry;
+  $("btnDownload").textContent = t.download;
+  $("btnShare").textContent = t.share;
+  $("btnResultLink").textContent = t.resultLink;
+  $("goalLabel").textContent = t.goalLabel;
+  $("historyTitle").textContent = t.historyTitle;
+  $("btnStacks").textContent = t.stacksBtn;
+  $("stacksTitle").textContent = t.stacksTitle;
+  $("stacksSub").textContent = t.stacksSub;
+  $("btnStackBack").textContent = t.stacksBack;
+  $("btnStackQuiz").textContent = t.stacksStart;
+  $("ecoLabel").textContent = t.ecoLabel;
+  $("groupTitle").textContent = t.groupTitle;
+  $("groupHint").textContent = t.groupHint;
+  $("btnGroupSave").textContent = t.groupSave;
+  $("btnGroupClear").textContent = t.groupClear;
+  $("iranTitle").textContent = t.iranTitle;
+  $("relatedTitle").textContent = t.relatedTitle;
+  document.querySelectorAll(".goal-pill").forEach(btn=>{
+    const g = btn.dataset.goal;
+    if(t.goals && t.goals[g]) btn.textContent = t.goals[g];
+  });
+  $("footNote").innerHTML = t.foot;
+  document.title = l==="fa"
+    ? "دِو‌کمپس · DevCompass — چه استکی یاد بگیرم؟"
+    : "DevCompass — Which tech stack should you learn?";
+  // re-render current view
+  if($("screen-quiz").classList.contains("on")) renderQuestion();
+  if($("screen-result").classList.contains("on") && lastResult) renderResult(lastResult);
+  // challenge banner language
+  updateChallengeBanner();
+  renderHistory();
+  try{ renderGroup(); }catch(e){}
+  if($("screen-stacks").classList.contains("on")) renderStackGrid();
+}
+
+function show(name){
+  ["welcome","quiz","result","stacks"].forEach(s=>{
+    $("screen-"+s).classList.toggle("on", s===name);
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---------- stacks browser ---------- */
+function renderStackGrid(){
+  const grid = $("stackGrid");
+  grid.innerHTML = "";
+  Object.keys(STACKS).forEach(k=>{
+    const st = STACKS[k];
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "stack-card";
+    b.innerHTML = `<span class="sc-em">${st.emoji}</span><span class="sc-nm">${st.name[lang]}</span><span class="sc-ln">${st.line}</span>`;
+    b.addEventListener("click", ()=>openStack(k));
+    grid.appendChild(b);
+  });
+}
+
+function openStack(key){
+  const st = STACKS[key];
+  if(!st) return;
+  $("stackDetail").hidden = false;
+  $("sdTitle").textContent = st.name[lang];
+  $("sdLine").textContent = st.line;
+  $("sdSub").textContent = st.sub[lang];
+  const ol = $("sdRoadmap");
+  ol.innerHTML = "";
+  st.roadmap[lang].forEach((step,i)=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="step">${i+1}</span><span>${step}</span>`;
+    ol.appendChild(li);
+  });
+  $("btnStackQuiz").dataset.stack = key;
+  $("stackDetail").scrollIntoView({behavior:"smooth", block:"start"});
+}
+
+function closeStackDetail(){
+  $("stackDetail").hidden = true;
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+/* ---------- group challenge ---------- */
+function loadGroup(){
+  try{
+    const raw = localStorage.getItem(GROUP_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  }catch(e){ return []; }
+}
+
+function saveGroup(list){
+  try{ localStorage.setItem(GROUP_KEY, JSON.stringify(list.slice(0,20))); }catch(e){}
+}
+
+function addGroupEntry(name, top, scores){
+  const entry = {
+    name: (name||"").trim().slice(0,24) || (lang==="fa"?"بدون اسم":"Anonymous"),
+    k: top.k,
+    pct: top.pct,
+    at: Date.now(),
+    me: true
+  };
+  let list = loadGroup().map(x=>({...x, me:false}));
+  list.push(entry);
+  list.sort((a,b)=>b.pct-a.pct || a.at-b.at);
+  saveGroup(list);
+  renderGroup();
+  return entry;
+}
+
+function renderGroup(){
+  const list = loadGroup();
+  const panel = $("groupPanel");
+  const ul = $("groupList");
+  if(!list.length){
+    panel.hidden = false;
+    ul.innerHTML = `<li><span class="g-meta">${I18N[lang].groupEmpty}</span></li>`;
+    return;
+  }
+  panel.hidden = false;
+  ul.innerHTML = "";
+  list.forEach((row,i)=>{
+    const st = STACKS[row.k];
+    if(!st) return;
+    const li = document.createElement("li");
+    if(row.me) li.className = "me";
+    const name = row.name || (lang==="fa"?"بدون اسم":"Anonymous");
+    li.innerHTML = `
+      <div class="g-left">
+        <span class="g-rank">${lang==="fa"?faNum(i+1):i+1}</span>
+        <span class="g-em">${st.emoji}</span>
+        <div>
+          <div class="g-nm">${name}</div>
+          <div class="g-meta">${st.name[lang]}</div>
+        </div>
+      </div>
+      <span class="g-pct">${lang==="fa"?faNum(row.pct)+"٪":row.pct+"%"}</span>`;
+    ul.appendChild(li);
+  });
+}
+
+function promptGroupName(defaultName, onOk){
+  const t = I18N[lang];
+  const panel = $("groupPanel");
+  panel.hidden = false;
+  const existing = panel.querySelector(".group-save-row");
+  if(existing) existing.remove();
+  const row = document.createElement("div");
+  row.className = "group-save-row";
+  row.innerHTML = `<input id="groupNameInput" maxlength="24" placeholder="${t.groupNamePh}" value="${defaultName||""}"><button type="button" id="groupNameGo">${t.groupAdd}</button>`;
+  panel.appendChild(row);
+  const input = row.querySelector("input");
+  const go = row.querySelector("button");
+  const commit = ()=>{
+    const name = input.value;
+    row.remove();
+    onOk(name);
+  };
+  go.addEventListener("click", commit);
+  input.addEventListener("keydown", (e)=>{ if(e.key==="Enter") commit(); });
+  input.focus();
+}
+
+function getFriendStack(){
+  const r = new URLSearchParams(location.search).get("r");
+  return r && STACKS[r] ? r : null;
+}
+
+function updateChallengeBanner(){
+  const r = getFriendStack();
+  const banner = $("challengeBanner");
+  if(r){
+    banner.classList.add("on");
+    const title = STACKS[r].name[lang];
+    $("challengeText").innerHTML = I18N[lang].challengeOn(title);
+    $("challengeCta").textContent = I18N[lang].challengeStart;
+  }else{
+    banner.classList.remove("on");
+  }
+}
+
+/* ---------- quiz UI ---------- */
+function renderQuestion(){
+  const t = I18N[lang];
+  const n = QUESTIONS.length;
+  const cur = QUESTIONS[qi];
+  const iDisplay = lang==="fa" ? faNum(qi+1) : String(qi+1);
+  const nDisplay = lang==="fa" ? faNum(n) : String(n);
+  $("qCounter").textContent = t.counter(qi+1, n).replace(/Question \d+ of \d+/, `Question ${qi+1} of ${n}`);
+  // more accurate for fa/en:
+  $("qCounter").textContent = lang==="fa" ? `سؤال ${iDisplay} از ${nDisplay}` : `Question ${qi+1} of ${n}`;
+  const p = Math.round(((qi+1)/n)*100);
+  $("qPct").textContent = lang==="fa" ? faNum(p)+"٪" : p+"%";
+  $("progressFill").style.width = p+"%";
+  $("progressFill").parentElement.setAttribute("aria-valuenow", String(p));
+  $("qText").textContent = cur.q[lang];
+
+  const box = $("qOptions");
+  box.innerHTML = "";
+  cur.opts.forEach((o,i)=>{
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "opt" + (answers[qi]===i ? " selected" : "");
+    b.setAttribute("role","radio");
+    b.setAttribute("aria-checked", answers[qi]===i ? "true":"false");
+    b.innerHTML = `<span class="ico" aria-hidden="true">${o.ico}</span><span class="txt">${o.t[lang]}</span>`;
+    b.addEventListener("click", ()=>selectOption(i));
+    box.appendChild(b);
+  });
+
+  $("btnBack").style.visibility = qi===0 ? "hidden" : "visible";
+}
+
+function selectOption(i){
+  answers[qi] = i;
+  try{ localStorage.setItem(PROG_KEY, JSON.stringify({qi, answers, goal})); }catch(e){}
+  // visual select
+  [...$("qOptions").children].forEach((el,idx)=>{
+    el.classList.toggle("selected", idx===i);
+    el.setAttribute("aria-checked", idx===i ? "true":"false");
+  });
+  // brief delay then advance (feels snappy)
+  setTimeout(()=>{
+    if(qi < QUESTIONS.length-1){
+      qi++;
+      renderQuestion();
+    }else{
+      try{ localStorage.removeItem(PROG_KEY); }catch(e){}
+      finish();
+    }
+  }, 180);
+}
+
+/* ---------- result ---------- */
+function finish(){
+  const scores = score(answers);
+  lastResult = {scores, at: Date.now()};
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify(lastResult)); }catch(e){}
+  pushHistory(lastResult);
+  try{ renderHistory(); }catch(e){}
+  renderResult(lastResult);
+  show("result");
+}
+
+function loadHistory(){
+  try{
+    const raw = localStorage.getItem(HIST_KEY);
+    const arr = raw ? JSON.parse(raw) : [];
+    return Array.isArray(arr) ? arr : [];
+  }catch(e){ return []; }
+}
+
+function pushHistory(res){
+  const list = toPct(ranked(res.scores));
+  const top = list[0];
+  if(!top) return;
+  const entry = {
+    k: top.k,
+    pct: top.pct,
+    at: res.at || Date.now(),
+    scores: res.scores
+  };
+  let hist = loadHistory();
+  hist.unshift(entry);
+  hist = hist.slice(0, 8);
+  try{ localStorage.setItem(HIST_KEY, JSON.stringify(hist)); }catch(e){}
+}
+
+function renderHistory(){
+  const hist = loadHistory();
+  const panel = $("historyPanel");
+  const listEl = $("historyList");
+  if(!hist.length){ panel.hidden = true; return; }
+  panel.hidden = false;
+  listEl.innerHTML = "";
+  hist.forEach((h,i)=>{
+    const st = STACKS[h.k];
+    if(!st) return;
+    const li = document.createElement("li");
+    const d = new Date(h.at);
+    const date = lang==="fa"
+      ? `${faNum(d.getDate())}/${faNum(d.getMonth()+1)}`
+      : `${d.getDate()}/${d.getMonth()+1}`;
+    li.innerHTML = `
+      <div class="h-left">
+        <span class="h-em">${st.emoji}</span>
+        <div>
+          <div class="h-name">${st.name[lang]}</div>
+          <div class="h-meta">${date}</div>
+        </div>
+      </div>
+      <span class="h-pct">${lang==="fa"?faNum(h.pct)+"٪":h.pct+"%"}</span>`;
+    listEl.appendChild(li);
+  });
+}
+
+function applyTheme(theme){
+  const t = theme === "light" ? "light" : "dark";
+  document.documentElement.setAttribute("data-theme", t);
+  const btn = document.getElementById("btnTheme");
+  if(btn) btn.textContent = t === "light" ? "☀️" : "🌙";
+  try{ localStorage.setItem(THEME_KEY, t); }catch(e){}
+}
+
+function renderResult(res){
+  const scores = res.scores;
+  const list = toPct(ranked(scores));
+  const top = list[0];
+  const second = list[1];
+  const third = list[2];
+  const st = STACKS[top.k];
+  const t = I18N[lang];
+
+  $("badgeRing").style.setProperty("--pct", 0);
+  requestAnimationFrame(()=>{
+    $("badgeRing").style.setProperty("--pct", top.pct);
+  });
+  $("badgeRing").classList.add("on");
+  $("resEmoji").textContent = st.emoji;
+  countUpPct($("resPctTop"), top.pct);
+  $("resTitle").textContent = st.name[lang];
+  $("resSub").textContent = st.sub[lang];
+  try{ burstConfetti(); }catch(e){}
+
+  // Iran / market tips for top stack
+  try{
+    const tips = (t.iranTips && t.iranTips[top.k]) || [];
+    const iran = $("iranPanel");
+    if(tips.length){
+      iran.hidden = false;
+      const ul = $("iranList");
+      ul.innerHTML = "";
+      tips.forEach((tip)=>{
+        const li = document.createElement("li");
+        li.innerHTML = `<span class="ir-ico" aria-hidden="true">🇮🇷</span><span>${tip}</span>`;
+        ul.appendChild(li);
+      });
+    }else{
+      iran.hidden = true;
+    }
+  }catch(e){ $("iranPanel").hidden = true; }
+
+  // related tools
+  try{
+    const rel = (t.related && t.related[top.k]) || [];
+    const rp = $("relatedPanel");
+    if(rel.length){
+      rp.hidden = false;
+      const box = $("relatedLinks");
+      box.innerHTML = "";
+      rel.forEach(item=>{
+        const a = document.createElement("a");
+        a.className = "eco-link";
+        a.href = item.url;
+        a.target = "_blank";
+        a.rel = "noopener";
+        a.textContent = item.label;
+        box.appendChild(a);
+      });
+    }else{
+      rp.hidden = true;
+    }
+  }catch(e){ $("relatedPanel").hidden = true; }
+
+  const chips = $("resChips");
+  chips.innerHTML = "";
+  const mk=(row, alt)=>{
+    const c = document.createElement("span");
+    c.className = "chip" + (alt?" alt":"");
+    c.textContent = `${STACKS[row.k].emoji} ${STACKS[row.k].name[lang]} · ${lang==="fa"?faNum(row.pct)+"٪":row.pct+"%"}`;
+    chips.appendChild(c);
+  };
+  mk(top,false);
+  if(second) mk(second,true);
+  if(third) mk(third,true);
+
+  // friend compare panel
+  const friendKey = getFriendStack();
+  const cp = $("comparePanel");
+  if(friendKey){
+    cp.hidden = false;
+    $("compareTitle").textContent = t.compareTitle;
+    $("compareYouLabel").textContent = t.youLabel;
+    $("compareFriendLabel").textContent = t.friendLabel;
+    $("compareYouEmoji").textContent = st.emoji;
+    $("compareYouName").textContent = st.name[lang];
+    $("compareYouPct").textContent = lang==="fa" ? faNum(top.pct)+"٪" : top.pct+"%";
+    const friendScores = friendScoresFromUrl();
+    let friendPct = 100;
+    let friendShowKey = friendKey;
+    if(friendScores){
+      const flist = toPct(ranked(friendScores));
+      friendPct = flist[0].pct;
+      friendShowKey = flist[0].k;
+    }
+    const fst = STACKS[friendShowKey] || STACKS[friendKey];
+    $("compareFriendEmoji").textContent = fst.emoji;
+    $("compareFriendName").textContent = fst.name[lang];
+    $("compareFriendPct").textContent = lang==="fa" ? faNum(friendPct)+"٪" : friendPct+"%";
+    const isMatch = friendShowKey === top.k || friendKey === top.k;
+    $("compareYou").classList.toggle("match", isMatch);
+    $("compareFriend").classList.toggle("match", isMatch);
+    $("compareVerdict").className = "compare-verdict " + (isMatch ? "match" : "diff");
+    $("compareVerdict").innerHTML = isMatch
+      ? t.verdictMatch(st.name[lang], fst.name[lang])
+      : t.verdictDiff(st.name[lang], fst.name[lang]);
+  }else{
+    cp.hidden = true;
+  }
+
+  const listEl = $("roadmapList");
+  listEl.innerHTML = "";
+  st.roadmap[lang].forEach((step,i)=>{
+    const li = document.createElement("li");
+    li.innerHTML = `<span class="step">${i+1}</span><span>${step}</span>`;
+    listEl.appendChild(li);
+  });
+
+  const scoresEl = $("scoresList");
+  scoresEl.innerHTML = "";
+  const maxV = list[0].pct || 1;
+  list.forEach(row=>{
+    const div = document.createElement("div");
+    div.className = "score-row";
+    const p = Math.round((row.pct/maxV)*100);
+    div.innerHTML = `
+      <span class="em" aria-hidden="true">${STACKS[row.k].emoji}</span>
+      <span class="bar"><i style="width:0%" data-w="${p}"></i></span>
+      <span class="val">${lang==="fa"?faNum(row.pct)+"٪":row.pct+"%"}</span>`;
+    scoresEl.appendChild(div);
+    requestAnimationFrame(()=>{
+      const bar = div.querySelector("i");
+      requestAnimationFrame(()=>{ bar.style.width = p+"%"; });
+    });
+  });
+
+  // share card
+  $("scEmoji").textContent = st.emoji;
+  $("scTitle").textContent = st.title[lang];
+  $("scPct").textContent = lang==="fa" ? faNum(top.pct)+"٪" : top.pct+"%";
+  $("scLine").textContent = st.line;
+  $("scTag").textContent = t.shareTag;
+
+  const text = shareText(scores);
+  $("sharePreview").textContent = text;
+
+  const shareUrlWithAnswers = challengeUrl(top.k, answers);
+  const tgText = encodeURIComponent(text);
+  $("btnTelegram").href = "https://t.me/share/url?url="+encodeURIComponent(shareUrlWithAnswers)+"&text="+tgText;
+  const twText = lang==="fa"
+    ? `من ${st.emoji} ${st.title.fa} شدم (${top.pct}٪)!\nچه استکی توئه؟\n`
+    : `I got ${st.emoji} ${st.title.en} (${top.pct}%)!\nWhat's your stack?\n`;
+  $("btnTwitter").href = "https://twitter.com/intent/tweet?text="+encodeURIComponent(twText)+"&url="+encodeURIComponent(shareUrlWithAnswers);
+
+  // stash for buttons
+  $("btnCopy").dataset.text = text;
+  $("btnChallenge").dataset.url = shareUrlWithAnswers;
+  $("btnResultLink").dataset.url = resultDeepLink(top.k, answers);
+  try{ trackEvent("result_shown"); }catch(e){}
+}
+
+/* ---------- PNG share card ---------- */
+function drawRoundedRect(ctx,x,y,w,h,r){
+  ctx.beginPath();
+  ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r);
+  ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r);
+  ctx.arcTo(x,y,x+w,y,r);
+  ctx.closePath();
+}
+
+async function downloadCard(){
+  if(!lastResult) return;
+  const scores = lastResult.scores;
+  const list = toPct(ranked(scores));
+  const top = list[0];
+  const st = STACKS[top.k];
+  const t = I18N[lang];
+  const W=1200,H=630;
+  const c=document.createElement("canvas");
+  c.width=W;c.height=H;
+  const ctx=c.getContext("2d");
+
+  // background
+  const g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,"#1a0b2e");
+  g.addColorStop(.5,"#0b0714");
+  g.addColorStop(1,"#042f2e");
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+
+  // blobs
+  const blob=(x,y,r,col)=>{
+    const rg=ctx.createRadialGradient(x,y,0,x,y,r);
+    rg.addColorStop(0,col);rg.addColorStop(1,"transparent");
+    ctx.fillStyle=rg;ctx.fillRect(0,0,W,H);
+  };
+  blob(120,80,320,"rgba(124,58,237,.55)");
+  blob(1080,520,300,"rgba(14,165,233,.35)");
+  blob(600,620,240,"rgba(244,114,182,.25)");
+
+  // card
+  drawRoundedRect(ctx,70,70,1060,490,28);
+  ctx.fillStyle="rgba(18,13,31,.88)";ctx.fill();
+  ctx.strokeStyle="rgba(167,139,250,.4)";ctx.lineWidth=2;ctx.stroke();
+
+  // accent bar
+  const ag=ctx.createLinearGradient(70,0,1130,0);
+  ag.addColorStop(0,"#8b5cf6");ag.addColorStop(.5,"#6366f1");ag.addColorStop(1,"#34d399");
+  ctx.fillStyle=ag;
+  drawRoundedRect(ctx,70,70,1060,8,4);ctx.fill();
+
+  // orb
+  const ox=160,oy=200,or_=66;
+  const og=ctx.createRadialGradient(ox-20,oy-20,8,ox,oy,or_);
+  og.addColorStop(0,"#c4b5fd");og.addColorStop(.55,"#7c3aed");og.addColorStop(1,"#4c1d95");
+  ctx.beginPath();ctx.arc(ox,oy,or_,0,Math.PI*2);ctx.fillStyle=og;ctx.fill();
+  ctx.strokeStyle="rgba(255,255,255,.2)";ctx.lineWidth=2;ctx.stroke();
+  ctx.font="64px system-ui,Segoe UI Emoji,Noto Color Emoji,sans-serif";
+  ctx.textAlign="center";ctx.textBaseline="middle";
+  ctx.fillText("🧭",ox,oy+4);
+
+  // brand + title (RTL text: set direction via canvas — draw as-is with right align for mixed)
+  ctx.textAlign="right";
+  ctx.direction = "rtl";
+  ctx.direction = lang==="fa" ? "rtl" : "ltr";
+  ctx.fillStyle="#9b8fb8";
+  ctx.font="600 22px Vazirmatn,Tahoma,Segoe UI,sans-serif";
+  ctx.fillText("DEVCOMPASS · دِو‌کمپس", W-110, 150);
+
+  ctx.fillStyle="#f3eefc";
+  ctx.font="800 52px Vazirmatn,Tahoma,Segoe UI,sans-serif";
+  ctx.fillText(lang==="fa"?"چه استکی یاد بگیرم؟":"Which tech stack should you learn?", W-110, 220);
+
+  ctx.fillStyle="#9b8fb8";
+  ctx.font="500 24px Vazirmatn,Tahoma,Segoe UI,sans-serif";
+  const sub = lang==="fa"
+    ? `نتیجهٔ من · ${st.emoji} ${st.name.fa}`
+    : `My result · ${st.emoji} ${st.name.en}`;
+  ctx.fillText(sub, W-110, 275);
+
+  // result box left (LTR)
+  ctx.direction="ltr";
+  ctx.textAlign="left";
+  drawRoundedRect(ctx,110,140,280,220,20);
+  ctx.fillStyle="rgba(0,0,0,.4)";ctx.fill();
+  ctx.strokeStyle="rgba(255,255,255,.12)";ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle="#9b8fb8";
+  ctx.font="700 16px Segoe UI,Tahoma,sans-serif";
+  ctx.fillText("RESULT",140,180);
+  ctx.fillStyle="#f3eefc";
+  ctx.font="700 24px Segoe UI,Tahoma,sans-serif";
+  ctx.fillText(`${st.emoji} ${st.title[lang]}`,140,220);
+  ctx.fillStyle="#a78bfa";
+  ctx.font="800 48px Segoe UI,Tahoma,sans-serif";
+  const pctLabel = lang==="fa" ? faNum(top.pct)+"%" : top.pct+"%";
+  ctx.fillText(pctLabel,140,280);
+  // bar
+  drawRoundedRect(ctx,140,310,220,12,6);
+  ctx.fillStyle="rgba(255,255,255,.1)";ctx.fill();
+  const bg=ctx.createLinearGradient(140,0,360,0);
+  bg.addColorStop(0,"#8b5cf6");bg.addColorStop(1,"#34d399");
+  drawRoundedRect(ctx,140,310,220*(top.pct/100),12,6);
+  ctx.fillStyle=bg;ctx.fill();
+
+  // pills
+  const pills = lang==="fa"
+    ? ["Frontend","Backend","AI","Mobile","Game"]
+    : ["Frontend","Backend","AI","Mobile","Game"];
+  const emojis = {Frontend:"⚛️",Backend:"⚙️",AI:"🤖",Mobile:"📱",Game:"🎮"};
+  const colors = ["#8b5cf6","#34d399","#3b82f6","#fbbf24","#f472b6"];
+  ctx.direction="ltr";ctx.textAlign="left";ctx.textBaseline="middle";
+  let px=W-110;
+  for(let i=pills.length-1;i>=0;i--){
+    const label=`${emojis[pills[i]]} ${pills[i]}`;
+    ctx.font="600 18px Segoe UI,Tahoma,sans-serif";
+    const tw=ctx.measureText(label).width;
+    const bw=tw+36;
+    px-=bw;
+    drawRoundedRect(ctx,px,420,bw,48,24);
+    ctx.fillStyle=colors[i]+"33";ctx.fill();
+    ctx.strokeStyle=colors[i]+"99";ctx.lineWidth=1;ctx.stroke();
+    ctx.fillStyle="#f3eefc";
+    ctx.fillText(label,px+18,445);
+    px-=14;
+  }
+
+  // url
+  ctx.direction="ltr";ctx.textAlign="left";
+  ctx.fillStyle="#34d399";
+  ctx.font="600 22px Segoe UI,Tahoma,sans-serif";
+  ctx.fillText("mohsen-niksirat.github.io/DevCompass",110,520);
+
+  c.toBlob((blobOut)=>{
+    if(!blobOut){toast("Download failed");return;}
+    const a=document.createElement("a");
+    a.href=URL.createObjectURL(blobOut);
+    a.download=`devcompass-${top.k}.png`;
+    a.click();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+    toast(I18N[lang].downloaded);
+  },"image/png");
+}
+
+function canNativeShare(){
+  return typeof navigator !== "undefined" && typeof navigator.share === "function";
+}
+
+async function nativeShareResult(){
+  if(!lastResult) return;
+  const scores = lastResult.scores;
+  const list = toPct(ranked(scores));
+  const top = list[0];
+  const st = STACKS[top.k];
+  const text = shareText(scores);
+  const url = challengeUrl(top.k, answers);
+
+  // Prefer sharing PNG card when supported
+  try{
+    const canvas = await buildCardCanvas(top, st);
+    const blob = await new Promise((res)=>canvas.toBlob(res,"image/png"));
+    if(blob){
+      const file = new File([blob], `devcompass-${top.k}.png`, { type:"image/png" });
+      if(navigator.canShare && navigator.canShare({ files:[file] })){
+        await navigator.share({ files:[file], title:"DevCompass", text: text.split("\n")[0] });
+        return;
+      }
+    }
+  }catch(err){
+    if(err && err.name === "AbortError") return;
+  }
+
+  try{
+    await navigator.share({ title:"DevCompass", text, url });
+  }catch(err){
+    if(err && err.name === "AbortError") return;
+    toast(I18N[lang].shareFailed);
+  }
+}
+
+/* rebuild canvas without download — extracted from downloadCard body */
+async function buildCardCanvas(top, st){
+  const W=1200,H=630;
+  const c=document.createElement("canvas");
+  c.width=W;c.height=H;
+  const ctx=c.getContext("2d");
+  const g=ctx.createLinearGradient(0,0,W,H);
+  g.addColorStop(0,"#1a0b2e");g.addColorStop(.5,"#0b0714");g.addColorStop(1,"#042f2e");
+  ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  const blob=(x,y,r,col)=>{
+    const rg=ctx.createRadialGradient(x,y,0,x,y,r);
+    rg.addColorStop(0,col);rg.addColorStop(1,"transparent");
+    ctx.fillStyle=rg;ctx.fillRect(0,0,W,H);
+  };
+  blob(120,80,320,"rgba(124,58,237,.55)");
+  blob(1080,520,300,"rgba(14,165,233,.35)");
+  drawRoundedRect(ctx,70,70,1060,490,28);
+  ctx.fillStyle="rgba(18,13,31,.88)";ctx.fill();
+  ctx.strokeStyle="rgba(167,139,250,.4)";ctx.lineWidth=2;ctx.stroke();
+  const ox=160,oy=200,or_=66;
+  const og=ctx.createRadialGradient(ox-20,oy-20,8,ox,oy,or_);
+  og.addColorStop(0,"#c4b5fd");og.addColorStop(.55,"#7c3aed");og.addColorStop(1,"#4c1d95");
+  ctx.beginPath();ctx.arc(ox,oy,or_,0,Math.PI*2);ctx.fillStyle=og;ctx.fill();
+  ctx.textAlign="right";
+  ctx.direction = lang==="fa" ? "rtl" : "ltr";
+  ctx.fillStyle="#9b8fb8";
+  ctx.font="600 22px Vazirmatn,Tahoma,Segoe UI,sans-serif";
+  ctx.fillText("DEVCOMPASS · دِو‌کمپس", W-110, 150);
+  ctx.fillStyle="#f3eefc";
+  ctx.font="800 52px Vazirmatn,Tahoma,Segoe UI,sans-serif";
+  ctx.fillText(lang==="fa"?"چه استکی یاد بگیرم؟":"Which tech stack should you learn?", W-110, 220);
+  ctx.fillStyle="#9b8fb8";
+  ctx.font="500 24px Vazirmatn,Tahoma,Segoe UI,sans-serif";
+  const sub = lang==="fa" ? `نتیجهٔ من · ${st.emoji} ${st.name.fa}` : `My result · ${st.emoji} ${st.name.en}`;
+  ctx.fillText(sub, W-110, 275);
+  ctx.direction="ltr";ctx.textAlign="left";
+  drawRoundedRect(ctx,110,140,280,220,20);
+  ctx.fillStyle="rgba(0,0,0,.4)";ctx.fill();
+  ctx.strokeStyle="rgba(255,255,255,.12)";ctx.lineWidth=1;ctx.stroke();
+  ctx.fillStyle="#9b8fb8";ctx.font="700 16px Segoe UI,Tahoma,sans-serif";
+  ctx.fillText("RESULT",140,180);
+  ctx.fillStyle="#f3eefc";ctx.font="700 24px Segoe UI,Tahoma,sans-serif";
+  ctx.fillText(`${st.emoji} ${st.title[lang]}`,140,220);
+  ctx.fillStyle="#a78bfa";ctx.font="800 48px Segoe UI,Tahoma,sans-serif";
+  ctx.fillText(lang==="fa"?faNum(top.pct)+"%":top.pct+"%",140,280);
+  drawRoundedRect(ctx,140,310,220,12,6);
+  ctx.fillStyle="rgba(255,255,255,.1)";ctx.fill();
+  const bg=ctx.createLinearGradient(140,0,360,0);
+  bg.addColorStop(0,"#8b5cf6");bg.addColorStop(1,"#34d399");
+  drawRoundedRect(ctx,140,310,220*(top.pct/100),12,6);
+  ctx.fillStyle=bg;ctx.fill();
+  ctx.direction="ltr";ctx.textAlign="left";
+  ctx.fillStyle="#34d399";ctx.font="600 22px Segoe UI,Tahoma,sans-serif";
+  ctx.fillText("mohsen-niksirat.github.io/DevCompass",110,520);
+  return c;
+}
+
+/* ---------- events ---------- */
+$("btnStart").addEventListener("click", ()=>{
+  qi = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  renderQuestion();
+  show("quiz");
+  trackEvent("quiz_start");
+});
+$("btnBack").addEventListener("click", ()=>{
+  if(qi>0){ qi--; renderQuestion(); }
+});
+$("btnRetry").addEventListener("click", ()=>{
+  qi = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  renderQuestion();
+  show("quiz");
+  trackEvent("quiz_retry");
+});
+$("btnCopy").addEventListener("click", ()=>{
+  copyText($("btnCopy").dataset.text || "", I18N[lang].copied);
+  trackEvent("copy_result");
+});
+$("btnChallenge").addEventListener("click", ()=>{
+  const url = $("btnChallenge").dataset.url || shareUrl();
+  copyText(url, I18N[lang].challengeCopied);
+  trackEvent("copy_challenge");
+});
+$("btnDownload").addEventListener("click", ()=>{ downloadCard(); trackEvent("download_png"); });
+$("btnShare").addEventListener("click", ()=>{ nativeShareResult(); trackEvent("native_share"); });
+$("btnResultLink").addEventListener("click", ()=>{
+  const url = $("btnResultLink").dataset.url || shareUrl();
+  copyText(url, I18N[lang].resultLinkCopied);
+  trackEvent("copy_result_link");
+});
+$("btnGroupSave").addEventListener("click", ()=>{
+  if(!lastResult) return;
+  const list = toPct(ranked(lastResult.scores));
+  const top = list[0];
+  promptGroupName("", (name)=>{
+    addGroupEntry(name, top, lastResult.scores);
+    toast(I18N[lang].groupSaved);
+  });
+});
+$("btnGroupClear").addEventListener("click", ()=>{
+  saveGroup([]);
+  renderGroup();
+});
+$("btnFA").addEventListener("click", ()=>setLang("fa"));
+$("btnEN").addEventListener("click", ()=>setLang("en"));
+$("goalPills").addEventListener("click", (e)=>{
+  const btn = e.target.closest(".goal-pill");
+  if(!btn) return;
+  goal = btn.dataset.goal || "any";
+  document.querySelectorAll(".goal-pill").forEach(b=>b.classList.toggle("active", b===btn));
+});
+$("btnLastResult").addEventListener("click", ()=>{
+  if(lastResult){ renderResult(lastResult); show("result"); }
+});
+$("btnStacks").addEventListener("click", ()=>{
+  renderStackGrid();
+  closeStackDetail();
+  show("stacks");
+});
+$("btnStackBack").addEventListener("click", ()=>{
+  closeStackDetail();
+});
+$("btnStackQuiz").addEventListener("click", ()=>{
+  qi = 0;
+  answers = new Array(QUESTIONS.length).fill(null);
+  renderQuestion();
+  show("quiz");
+});
+$("brandLink").addEventListener("click", (e)=>{
+  // stay on SPA home
+  e.preventDefault();
+  show("welcome");
+});
+
+// keyboard: 1-4 select option
+document.addEventListener("keydown", (e)=>{
+  if(!$("screen-quiz").classList.contains("on")) return;
+  const n = parseInt(e.key,10);
+  if(n>=1 && n<=4){
+    const opts = QUESTIONS[qi].opts;
+    if(n<=opts.length) selectOption(n-1);
+  }
+});
+
+/* ---------- init ---------- */
+function init(){
+  // language from ?lang= or browser
+  const params = new URLSearchParams(location.search);
+  const qLang = params.get("lang");
+  if(qLang==="en"||qLang==="fa") lang=qLang;
+  else if((navigator.language||"").toLowerCase().startsWith("fa")) lang="fa";
+  else if(!(navigator.language||"").toLowerCase().startsWith("fa")) lang="en";
+  // default FA for this audience unless clearly non-fa
+  // Actually: default fa (target), allow ?lang=en
+  if(!qLang) lang = "fa";
+
+  try{
+    applyTheme(localStorage.getItem(THEME_KEY) || "dark");
+  }catch(e){
+    try{ document.documentElement.setAttribute("data-theme","dark"); }catch(_){}
+  }
+
+  try{ setLang(lang); }catch(e){}
+
+  try{
+    const raw = localStorage.getItem(STORE_KEY);
+    if(raw){
+      lastResult = JSON.parse(raw);
+      if(lastResult && lastResult.scores){
+        $("btnLastResult").hidden = false;
+      }
+    }
+  }catch(e){}
+
+  renderHistory();
+  try{ renderGroup(); }catch(e){}
+
+  // deep result link ?view=result&a=...
+  const viewParam = params.get("view");
+  const ansFromUrl = parseFriendAnswers();
+  if(viewParam === "result" && ansFromUrl){
+    answers = ansFromUrl.slice();
+    try{ showResultFromAnswers(answers); }catch(e){}
+  }else {
+  // resume in-progress quiz
+  try{
+    const rawProg = localStorage.getItem(PROG_KEY);
+    if(rawProg){
+      const prog = JSON.parse(rawProg);
+      if(prog && Array.isArray(prog.answers) && prog.answers.length === QUESTIONS.length && typeof prog.qi === "number"){
+        if(prog.qi > 0 && prog.qi < QUESTIONS.length){
+          answers = prog.answers.slice();
+          if(prog.goal) goal = prog.goal;
+          qi = prog.qi;
+          renderQuestion();
+          show("quiz");
+        }
+      }
+    }
+  }catch(e){}
+  }
+
+  // deep link ?s=stack → open stacks browser detail
+  const sParam = params.get("s");
+  if(sParam && STACKS[sParam]){
+    renderStackGrid();
+    show("stacks");
+    openStack(sParam);
+  }
+
+  updateChallengeBanner();
+
+  // native share sheet on mobile / supporting browsers
+  if(canNativeShare()){
+    $("btnShare").hidden = false;
+  }
+
+  // deep-link result preview?r=stack — still start fresh but banner shows
+
+  // offline PWA
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js").catch(()=>{});
+  }
+
+  // offline indicator
+  const updateOnline = ()=>{
+    const pill = $("offlinePill");
+    if(!pill) return;
+    pill.hidden = navigator.onLine !== false;
+  };
+  window.addEventListener("online", updateOnline);
+  window.addEventListener("offline", updateOnline);
+  updateOnline();
+
+  // PWA install prompt (no backend, no tracking network)
+  let deferredInstall = null;
+  window.addEventListener("beforeinstallprompt", (e)=>{
+    e.preventDefault();
+    deferredInstall = e;
+    try{
+      if(localStorage.getItem("devcompass.install.dismissed")!=="1"){
+        $("installText").textContent = I18N[lang].installCta;
+        $("btnInstall").textContent = lang==="fa" ? "نصب" : "Install";
+        $("btnInstallNo").textContent = I18N[lang].installDismiss;
+        $("installBanner").hidden = false;
+      }
+    }catch(_){ $("installBanner").hidden = false; }
+  });
+  $("btnInstall").addEventListener("click", async ()=>{
+    $("installBanner").hidden = true;
+    if(deferredInstall){
+      deferredInstall.prompt();
+      try{ await deferredInstall.userChoice; }catch(e){}
+      deferredInstall = null;
+    }
+    trackEvent("pwa_install_click");
+  });
+  $("btnInstallNo").addEventListener("click", ()=>{
+    $("installBanner").hidden = true;
+    try{ localStorage.setItem("devcompass.install.dismissed","1"); }catch(e){}
+  });
+}
+
+init();
+})();
+</script>
+</body>
+</html>

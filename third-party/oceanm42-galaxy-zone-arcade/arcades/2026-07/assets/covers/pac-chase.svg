@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Pac-Chase cover art">
+  <rect x="0" y="0" width="400" height="300" fill="#0a0a14"/>
+
+  <!-- neon border frame -->
+  <rect x="6" y="6" width="388" height="288" rx="10" fill="none" stroke="#ffe600" stroke-width="2" opacity="0.5"/>
+  <rect x="12" y="12" width="376" height="276" rx="8" fill="none" stroke="#ff3355" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- corridor walls, hinting at the maze -->
+  <g fill="none" stroke="#ffe600" stroke-width="1.5" opacity="0.22">
+    <rect x="40" y="60" width="120" height="30" rx="8"/>
+    <rect x="40" y="210" width="120" height="30" rx="8"/>
+    <rect x="240" y="60" width="120" height="30" rx="8"/>
+    <rect x="240" y="210" width="120" height="30" rx="8"/>
+  </g>
+
+  <!-- dot trail being eaten, right to left -->
+  <g fill="#ffe600">
+    <circle cx="216" cy="150" r="5"/>
+    <circle cx="248" cy="150" r="5"/>
+    <circle cx="280" cy="150" r="5"/>
+    <circle cx="312" cy="150" r="5"/>
+  </g>
+  <!-- power pellet at the end of the trail -->
+  <circle cx="350" cy="150" r="10" fill="#ffe600"/>
+  <circle cx="350" cy="150" r="10" fill="none" stroke="#ffe600" stroke-width="6" opacity="0.35"/>
+
+  <!-- hero: Pac chomping right -->
+  <g>
+    <path d="M 132 150 L 172 122 A 48 48 0 1 0 172 178 Z" fill="#ffe600" transform="rotate(0 132 150)"/>
+    <path d="M 132 150 L 172 122 A 48 48 0 1 0 172 178 Z" fill="none" stroke="#ffe600" stroke-width="7" opacity="0.35"/>
+  </g>
+
+  <!-- ghost in pursuit behind him -->
+  <g>
+    <path d="M 30 158 a 26 26 0 0 1 52 0 v 20 l -8.5 -7 l -8.5 7 l -9 -7 l -9 7 l -8.5 -7 l -8.5 7 Z" fill="#ff3355"/>
+    <path d="M 30 158 a 26 26 0 0 1 52 0 v 20 l -8.5 -7 l -8.5 7 l -9 -7 l -9 7 l -8.5 -7 l -8.5 7 Z" fill="none" stroke="#ff3355" stroke-width="5" opacity="0.35"/>
+    <circle cx="48" cy="152" r="7" fill="#0a0a14"/>
+    <circle cx="66" cy="152" r="7" fill="#0a0a14"/>
+    <circle cx="51" cy="152" r="3.5" fill="#ffe600"/>
+    <circle cx="69" cy="152" r="3.5" fill="#ffe600"/>
+  </g>
+</svg>

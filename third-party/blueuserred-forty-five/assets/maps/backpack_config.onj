@@ -1,8 +1,0 @@
-deckNameDef: {
-    minLength: 3,
-    maxLength: 30,
-//    regEx: "[^\n]*",
-},
-
-slotsPerDeck: 35,
-minCardsPerDeck: 12,

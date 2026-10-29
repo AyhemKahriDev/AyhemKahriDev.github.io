@@ -1,0 +1,21 @@
+{
+  "description": "Polar snow dunes map chunk",
+"height": 4,
+  "id": "polar_snow_dunes",
+  "rows": [
+    "ssss",
+    "..s.",
+    "sr.s",
+    "ssss"
+  ],
+  "tags": [
+    "polar"
+  ],
+  "terrain": {
+    ".": "TileGrass",
+    "r": "TileRock",
+    "s": "TileSnow"
+  },
+  "weight": 3,
+  "width": 4
+}

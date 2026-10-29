@@ -1,0 +1,24 @@
+{
+  "description": "Ruined shack map chunk",
+"height": 4,
+  "id": "ruined_shack",
+  "rows": [
+    "WW..W",
+    "WR..W",
+    ".R..R",
+    "WW+WW"
+  ],
+  "tags": [
+    "urban",
+    "forest",
+    "rural"
+  ],
+  "terrain": {
+    "+": "TileDoor",
+    ".": "TileFloor",
+    "W": "TileWall",
+    "R": "TileRubble"
+  },
+  "weight": 2,
+  "width": 5
+}

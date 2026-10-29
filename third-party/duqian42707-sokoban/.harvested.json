@@ -1,0 +1,16 @@
+{
+  "repo": "duqian42707/Sokoban",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 2167,
+  "pushedAt": "2024-09-23T04:36:20Z",
+  "description": "微信小游戏：推箱子",
+  "defaultBranch": "master",
+  "owner": "duqian42707",
+  "slug": "duqian42707-sokoban",
+  "dest": "third-party/duqian42707-sokoban",
+  "readme": "# 推箱子\n\n![简约推箱子](docs/image/minicode.png)\n\n## 功能列表\n\n### v1.0 版本功能\n\n- [x] 完全基于canvas，支持浏览器、小程序\n- [x] 支持手机端\n- [x] 通过键盘上下左右键，控制人物移动\n- [x] 通过手指触摸滑动，控制人物移动\n- [x] 上一关、下一关\n- [x] 前100关的数据初始化\n\n### v1.1 版本功能\n\n- [x] 重置关卡\n- [x] 本地缓存通关进度\n- [x] UI优化\n- [x] 自由选择关卡，新的页面\n\n### v1.2 版本功能\n\n- [x] 回退一步\n- [x] 关卡上下滚动\n- [x] UI优化\n\n### v1.3 版本功能\n\n- [x] 增加登录功能，数据保存到服务端\n- [x] 增加更多关卡数据\n- [x] UI优化\n\n### v1.4 版本功能\n\n- [x] 显示步数\n- [x] 查看答案，自动播放\n\n### v1.5 版本功能\n\n- [x] 不再访问后端接口，数据不再保存到服务端\n\n### 未来版本计划\n\n- [ ] UI优化\n- [ ] 支持多种主题\n- [ ] 支持鼠标、手指点击自动寻路，并移动到目标位置\n- [ ] 游戏介绍、玩法说明\n- [ ] 获取用户信息，记录用时、解答步骤，计算分数\n- [ ] 查看排行\n- [ ] 支持自定义主题（自己上传图片）\n- [ ] 支持设计关卡\n- [ ] 关卡分享\n- [ ] 支持回放解答步骤并进行分享\n- [ ] 步骤生成动图或视频保存至本地\n\n### 优化方案\n\n- [ ] 界面显示优化，各种设备适配\n- [ ] 不同朝向的人物图片\n- [ ] 用canvas实现各种弹窗\n- [ ] 增加过渡、动画效果\n\n### 广告投放时机\n\n- 解锁更多关卡\n- 回退一步\n- 查看答案\n- 保存动图或视频\n\n## 相关技术\n\n- canvas : 画布，用于绘制游戏界面\n- [hammerjs](https://hammerjs.github.io/)：前端触摸手势插件\n- Spring Boot：后端框架\n\n## 灵感来源\n\n- https://github.com/akira-cn/boxbox\n\n## 相关资料\n\n- http://sokoban.cn/\n\n## 其他\n\n### 显示如何优化\n\n1. 寻找常用手机屏幕支持的最大行、列数量，比如 9 * 11\n2. 不到最大行、列的，用空白填充占位\n3. 避免图像太大或者太小\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "miniprogram/index.html",
+  "validated": true
+}

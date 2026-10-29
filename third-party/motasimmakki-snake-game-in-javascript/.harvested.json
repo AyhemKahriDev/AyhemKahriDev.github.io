@@ -1,0 +1,16 @@
+{
+  "repo": "motasimmakki/Snake-Game-in-JavaScript",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 266,
+  "pushedAt": "2021-10-31T08:12:56Z",
+  "description": "Snake Game for desktop built in JavaScript using Canvas. ( www.mysnake.epizy.com )",
+  "defaultBranch": "master",
+  "owner": "motasimmakki",
+  "slug": "motasimmakki-snake-game-in-javascript",
+  "dest": "third-party/motasimmakki-snake-game-in-javascript",
+  "readme": "# Snake-Game-in-JavaScript\n\n# <h1>Introduction :</h1>\n<ul>\n  <li>\n    The Snake game is developed in JavaScript using Canvas and one external library, jQuery.\n  </li><br>\n  <li>\n    The game is Only designed and developed to be played in desktop only.\n  </li><br>\n  <li>\n    The Game can be played online from the link, www.mysnake.epizy.com\n  </li><br>\n  <li>\n    All the other functional instructions to play the game is mention under the instruction section of the game.\n  </li>\n</ul>\n\n# <h1>Screenshots :</h1>\n\n|Initial Run|\n|------|\n|<img src=\"https://github.com/motasimmakki/Snake-Game-in-JavaScript/blob/master/Screenshots/Screenshot%20(379).png\" />|\n\n|Playing Game|\n|------|\n|<img src=\"https://github.com/motasimmakki/Snake-Game-in-JavaScript/blob/master/Screenshots/Screenshot%20(380).png\" />|\n\n|Game Paused|\n|------|\n|<img src=\"https://github.com/motasimmakki/Snake-Game-in-JavaScript/blob/master/Screenshots/Screenshot%20(381).png\" />|\n\n|Game Over|\n|------|\n|<img src=\"https://github.com/motasimmakki/Snake-Game-in-JavaScript/blob/master/Screenshots/Screenshot%20(382).png\" />|\n\n<h6 align='center'>\n   / <> with 🧡 By Motasim /\n<h6>\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "snakeGame.html",
+  "validated": true
+}

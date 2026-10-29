@@ -1,0 +1,16 @@
+{
+  "repo": "ducthang-vu/memory---game",
+  "stars": 4,
+  "licence": "GPL-3.0",
+  "sizeKB": 1339,
+  "pushedAt": "2020-04-29T18:44:03Z",
+  "description": "MEMORY is a fun card game which does not require a lot of code. This is an implementation  of the game.",
+  "defaultBranch": "master",
+  "owner": "ducthang-vu",
+  "slug": "ducthang-vu-memory-game",
+  "dest": "third-party/ducthang-vu-memory-game",
+  "readme": "# MEMORY\n\nMEMORY is a fun card game which does not require a lot of code. This is an implementation  of the game.\n\n\n## Rules of the game\n\n1 - The player chooses the difficulty level: 1, 2, 3 or 4. These levels require the player to solve a game with a deck of respectively 16, 32, 48 and 64 cards.\n\n2 - A deck of cards is composed of pairs of cards with the same rank. Ranks are defined randomly by the program with values between 10 and 99, included.\n\n3 - The cards are shuffled and laid face-down.\n\n4 - The player starts by picking up two cards. If the cards are of the same rank, they are removed from the game; otherwise, they are laid back on the board face-down.\n\n5 - The player continues to pick two cards, as described at rule 4, until all cards are removed, thus ending the game.\n\n6 - At the end of the games, the player may take notice of how many attempts he has made in total, and the time, in seconds, elapsed since he has picked the first card. \n\n\n## Usage\n\nDownload the repository and open index.html.\n\nNote that this game uses sounds: you can disable sounds after opening index.html.\n\n\n## Contributing\nPull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.\n\nPlease make sure to update tests as appropriate.\n\n\n## License\n[GNU](https://choosealicense.com/licenses/gpl-3.0/)",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

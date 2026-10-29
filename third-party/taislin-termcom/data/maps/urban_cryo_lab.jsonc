@@ -1,0 +1,25 @@
+{
+  "description": "Urban cryo lab map chunk",
+  "height": 5,
+  "id": "urban_cryo_lab",
+  "rows": [
+    "WWWWWWW",
+    "W...P.W",
+    "WPPPp.W",
+    "W...P.W",
+    "WWW+WWW"
+  ],
+  "tags": [
+    "urban",
+    "ufo"
+  ],
+  "terrain": {
+    "+": "TileDoor",
+    ".": "TileFloor",
+    "W": "TileWall",
+    "P": "TileCryoPipe",
+    "p": "TileCryoPipe"
+  },
+  "weight": 3,
+  "width": 7
+}

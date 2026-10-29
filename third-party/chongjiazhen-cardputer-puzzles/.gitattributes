@@ -1,0 +1,8 @@
+# Patch files must stay LF: git apply matches them against the LF-checked-out
+# upstream/ submodule, and CRLF-converted patches fail to apply on fresh clones.
+patches/*.patch -text
+apply-patches.py text eol=lf
+
+# Shell scripts must stay LF: they run under Git Bash / WSL, and a CRLF
+# shebang line fails with "bad interpreter".
+*.sh text eol=lf

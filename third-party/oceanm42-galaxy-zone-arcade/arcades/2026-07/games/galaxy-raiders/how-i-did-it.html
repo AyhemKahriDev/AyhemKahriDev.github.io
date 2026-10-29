@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Galaxy Raiders — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Galaxy Raiders</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Galaga came in during the good years, '82 or so, and it split the
+      whole arcade into two kinds of people: the ones who just wanted to
+      shoot bugs, and the ones who'd stand there for twenty minutes
+      practicing how to lose a ship to the tractor beam on purpose. There
+      was a kid — I want to say his name was Denny — who fed that machine
+      every quarter he made mowing lawns all summer just to get good enough
+      at winning his ship back. Never once asked me for a refund when the
+      coin slot jammed, which it did constantly. He'd just bang the side of
+      the cabinet twice, like it owed him an apology, and it usually paid up.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      Last year I had those bug formations just marching in a straight line
+      because that's all I knew how to make them do. This time the robots
+      showed me something called a "bezier curve" — which sounds fancier
+      than it is, it's just a fancy way of drawing a swoop instead of a
+      straight line, and it's timed off the actual clock instead of counting
+      frames, so it swoops the same whether your computer's fast or slow.
+      That's how the whole squadron flies in from the corners now, curving
+      into formation instead of just popping into place. And the tractor
+      beam — that's the one I really wanted right — the boss dives down,
+      throws that cone of light, and if it catches you, you lose your ship
+      and watch it ride back up docked on that same bug, mad as anything.
+      Shoot that bug later while it's out on another dive and you get your
+      pilot back, and suddenly you've got two ships flying side by side
+      firing together. I made them shake the screen and flash the whole
+      thing cyan when that happens. Wasn't in the plan. It should've been
+      from the start.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build Galaxy Raiders against our GZ engine. Formation of bees,
+butterflies, and boss galaga that fly in on curved paths and settle
+into a swaying grid, then peel off in small groups to dive and
+shoot at the player. Give the boss galaga a real tractor beam: it
+dives to mid-screen, casts a cone, and captures the player ship if
+it connects — losing a life and docking the ship on that boss.
+Shooting that specific boss on a later dive should free the
+captured ship and turn the player into a dual fighter with double
+shots. Every third stage should be a no-shooting bonus wave with a
+perfect-clear bonus. Make the capture and rescue feel huge — flash,
+shake, particles, the works.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The whole stage runs off one accumulated clock, not a frame count,
+        so every swoop — entrance, dive, tractor beam, the loop back to
+        formation — is a curve sampled against real seconds, not guesswork.</li>
+      <li>The tractor beam is its own little state machine on the boss: dive
+        down, hover and cast the cone, then loop back up, whether or not it
+        actually caught you.</li>
+      <li>A boss remembers if it's holding your ship. Land a hit on that
+        exact boss while it's out diving — before the beam or after — and
+        it lets your pilot go and you're flying double.</li>
+      <li>Every third stage swaps out the shooting for a flythrough — no
+        return fire, just score what you can before they're gone, and a fat
+        bonus if you don't let a single one get past you.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Galaxy Raiders</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

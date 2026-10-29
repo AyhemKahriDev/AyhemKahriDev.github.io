@@ -1,0 +1,32 @@
+{
+  "description": "Urban bodega map chunk",
+  "height": 10,
+  "id": "urban_bodega",
+  "no_rotate": true,
+  "rows": [
+    "ffffffffff",
+    "fddaddedef",
+    "fdbbbdedef",
+    "fddddddddf",
+    "fdedededef",
+    "fdedededef",
+    "gddddddddg",
+    "gededdedeg",
+    "gededdedeg",
+    "fgggcggggf"
+  ],
+  "tags": [
+    "urban"
+  ],
+  "terrain": {
+    "a": "TileChair",
+    "b": "TileDesk",
+    "c": "TileDoor",
+    "d": "TileFloor",
+    "e": "TileStorage",
+    "f": "TileWall",
+    "g": "TileWindow"
+  },
+  "weight": 2,
+  "width": 10
+}

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Achievements — Sal's Galaxy Zone Arcade</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/crt-effects.css">
+  <style>
+    /* ── Achievement Page Styles ─────────────────────────────────────────── */
+
+    .ach-page {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: var(--space-lg);
+    }
+
+    /* ── Global Progress Bar ──────────────────────────────────────────── */
+
+    .global-progress {
+      margin-bottom: var(--space-2xl);
+      text-align: center;
+    }
+
+    .global-progress .progress-label {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 8px var(--neon-cyan-dim);
+      letter-spacing: 0.08em;
+      margin-bottom: var(--space-sm);
+    }
+
+    .progress-track {
+      position: relative;
+      width: 100%;
+      height: 20px;
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--neon-cyan-dim);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      border-radius: 10px;
+      background: linear-gradient(90deg, var(--neon-blue), var(--neon-cyan), var(--neon-green));
+      box-shadow:
+        0 0 10px var(--neon-cyan),
+        0 0 20px var(--neon-cyan-dim),
+        inset 0 0 6px rgba(255, 255, 255, 0.15);
+      transition: width 1s ease;
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.2) 50%,
+        transparent 100%
+      );
+      animation: progress-shimmer 2s ease-in-out infinite;
+    }
+
+    @keyframes progress-shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .progress-percent {
+      font-family: var(--font-score);
+      font-size: 0.8rem;
+      color: #aab;
+      margin-top: var(--space-xs);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── Cross-Game Achievements ──────────────────────────────────────── */
+
+    .cross-game-section {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--neon-magenta);
+      text-shadow: 0 0 10px var(--neon-magenta-dim), 0 0 20px var(--neon-magenta-dim);
+      margin-bottom: var(--space-lg);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--neon-magenta-dim);
+    }
+
+    .cross-game-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-md);
+    }
+
+    /* ── Achievement Card ─────────────────────────────────────────────── */
+
+    .ach-card {
+      position: relative;
+      background: var(--color-bg-card);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: var(--card-radius);
+      padding: var(--space-md);
+      text-align: center;
+      transition: all var(--transition-base);
+      overflow: hidden;
+    }
+
+    .ach-card.locked {
+      filter: grayscale(0.8) brightness(0.45);
+      opacity: 0.7;
+    }
+
+    .ach-card.locked .ach-icon {
+      filter: blur(1px);
+    }
+
+    .ach-card.locked::before {
+      content: '\1F512';
+      position: absolute;
+      top: 6px;
+      right: 8px;
+      font-size: 0.75rem;
+      opacity: 0.5;
+    }
+
+    .ach-card.unlocked {
+      border-color: var(--neon-cyan-dim);
+      box-shadow:
+        0 0 8px var(--neon-cyan-dim),
+        0 0 20px rgba(0, 255, 255, 0.08),
+        inset 0 0 12px rgba(0, 255, 255, 0.04);
+    }
+
+    .ach-card.unlocked:hover {
+      border-color: var(--neon-cyan);
+      box-shadow:
+        0 0 12px var(--neon-cyan-dim),
+        0 0 30px rgba(0, 255, 255, 0.15),
+        inset 0 0 16px rgba(0, 255, 255, 0.06);
+      transform: translateY(-2px);
+    }
+
+    .ach-icon {
+      font-size: 2.2rem;
+      display: block;
+      margin-bottom: var(--space-sm);
+      transition: filter var(--transition-base);
+    }
+
+    .ach-name {
+      font-family: var(--font-display);
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #e0e0ff;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+
+    .ach-desc {
+      font-size: 0.7rem;
+      color: #888;
+      line-height: 1.4;
+    }
+
+    .ach-card.unlocked .ach-name {
+      color: #fff;
+      text-shadow: 0 0 6px var(--neon-cyan-dim);
+    }
+
+    .ach-card.unlocked .ach-desc {
+      color: #aab;
+    }
+
+    /* ── Game Sections ────────────────────────────────────────────────── */
+
+    .game-section {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .game-section-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--neon-cyan-dim);
+    }
+
+    .game-section-name {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #fff;
+      text-shadow: 0 0 8px var(--neon-cyan-dim);
+    }
+
+    .game-section-score {
+      font-family: var(--font-score);
+      font-size: 0.85rem;
+      color: var(--neon-green);
+      text-shadow: 0 0 4px var(--neon-green-dim);
+      letter-spacing: 0.08em;
+    }
+
+    .game-ach-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: var(--space-md);
+    }
+
+    /* ── Stats Footer ─────────────────────────────────────────────────── */
+
+    .stats-footer {
+      margin-top: var(--space-2xl);
+      padding: var(--space-xl) var(--space-lg);
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--neon-cyan-dim);
+      border-radius: var(--card-radius);
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-lg);
+      text-align: center;
+    }
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-xs);
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px var(--neon-cyan-dim);
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #888;
+    }
+
+    .stat-detail {
+      font-family: var(--font-score);
+      font-size: 0.7rem;
+      color: var(--neon-green);
+      text-shadow: 0 0 4px var(--neon-green-dim);
+    }
+
+    /* ── Responsive ───────────────────────────────────────────────────── */
+
+    @media (max-width: 768px) {
+      .cross-game-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .game-ach-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .stats-footer {
+        grid-template-columns: 1fr;
+        gap: var(--space-md);
+      }
+      .game-section-header {
+        flex-direction: column;
+        gap: var(--space-xs);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .cross-game-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .game-ach-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .ach-icon {
+        font-size: 1.6rem;
+      }
+      .ach-name {
+        font-size: 0.7rem;
+      }
+      .section-title {
+        font-size: 1rem;
+      }
+    }
+
+    /* ── Page footer ──────────────────────────────────────────────────── */
+
+    .site-footer {
+      text-align: center;
+      padding: var(--space-xl) var(--space-md);
+      color: #555;
+      font-size: 0.75rem;
+    }
+
+    .site-footer a {
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <h1 class="neon-sign">
+      <span class="neon-letter">A</span><span class="neon-letter">C</span><span class="neon-letter">H</span><span class="neon-letter">I</span><span class="neon-letter">E</span><span class="neon-letter">V</span><span class="neon-letter">E</span><span class="neon-letter">M</span><span class="neon-letter">E</span><span class="neon-letter">N</span><span class="neon-letter">T</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">H</span><span class="neon-letter">A</span><span class="neon-letter">L</span><span class="neon-letter">L</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">O</span><span class="neon-letter">F</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">F</span><span class="neon-letter">A</span><span class="neon-letter">M</span><span class="neon-letter">E</span>
+    </h1>
+  </header>
+
+  <nav class="nav-bar">
+    <a href="index.html" class="nav-link">Back to Arcade</a>
+    <a href="how-it-was-done.html" class="nav-link">About</a>
+  </nav>
+
+  <main class="ach-page">
+
+    <!-- Global Progress -->
+    <section class="global-progress" id="global-progress">
+      <div class="progress-label" id="progress-label">Loading...</div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+      </div>
+      <div class="progress-percent" id="progress-percent"></div>
+    </section>
+
+    <!-- Cross-Game Achievements -->
+    <section class="cross-game-section">
+      <h2 class="section-title">Cross-Game Achievements</h2>
+      <div class="cross-game-grid" id="cross-game-grid"></div>
+    </section>
+
+    <!-- Per-Game Sections (populated by JS) -->
+    <div id="game-sections"></div>
+
+    <!-- Stats Footer -->
+    <div class="stats-footer" id="stats-footer">
+      <div class="stat-item">
+        <span class="stat-value" id="stat-games-played">0</span>
+        <span class="stat-label">Games Played</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="stat-total-score">0</span>
+        <span class="stat-label">Total Score</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-value" id="stat-favorite">—</span>
+        <span class="stat-label">Favorite Game</span>
+        <span class="stat-detail" id="stat-favorite-score"></span>
+      </div>
+    </div>
+
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; 2026 Sal's Galaxy Zone Arcade</p>
+  </footer>
+
+  <script>
+    // ── Achievement Definitions (mirroring each game.js) ──────────────────
+
+    const ALL_GAME_ACHIEVEMENTS = {
+      'pac-chase': {
+        name: 'Pac-Chase',
+        achievements: [
+          { id: 'dot-muncher',  name: 'Dot Muncher',  description: 'Eat all dots on level 1',                icon: '\u{1F7E1}' },
+          { id: 'ghost-hunter', name: 'Ghost Hunter',  description: 'Eat all 4 ghosts in one power pellet',   icon: '\u{1F47B}' },
+          { id: 'fruit-lover',  name: 'Fruit Lover',   description: 'Collect 3 fruits in one game',            icon: '\u{1F352}' },
+          { id: 'level-3',      name: 'Level 3',       description: 'Reach level 3',                           icon: '\u{1F31F}' },
+          { id: 'pac-master',   name: 'Pac-Master',    description: 'Score 10,000+ points',                    icon: '\u{1F3C6}' },
+        ],
+      },
+      'space-defenders': {
+        name: 'Space Defenders',
+        achievements: [
+          { id: 'first-contact',    name: 'First Contact',    description: 'Destroy your first alien',                          icon: '\u{1F47E}' },
+          { id: 'ufo-hunter',       name: 'UFO Hunter',       description: 'Shoot down the mystery ship',                       icon: '\u{1F6F8}' },
+          { id: 'shield-tactician', name: 'Shield Tactician', description: 'Clear a wave with at least one shield intact',      icon: '\u{1F6E1}' },
+          { id: 'wave-5',           name: 'Wave 5',           description: 'Reach wave 5',                                     icon: '\u{1F30A}' },
+          { id: 'space-ace',        name: 'Space Ace',        description: 'Score 3000+ points',                                icon: '\u{1F680}' },
+        ],
+      },
+      'asteroid-blaster': {
+        name: 'Asteroid Blaster',
+        achievements: [
+          { id: 'rock-breaker',        name: 'Rock Breaker',        description: 'Destroy your first large asteroid',   icon: '\uD83E\uDEA8' },
+          { id: 'ufo-down',            name: 'UFO Down',            description: 'Shoot down a UFO',                    icon: '\uD83D\uDEF8' },
+          { id: 'hyperspace-survivor',  name: 'Hyperspace Survivor', description: 'Use hyperspace 3 times in one game',  icon: '\u2728' },
+          { id: 'clean-sweep',         name: 'Clean Sweep',         description: 'Clear a wave without dying',           icon: '\uD83E\uDDF9' },
+          { id: 'space-legend',        name: 'Space Legend',        description: 'Score 10,000+ points',                 icon: '\uD83C\uDF1F' },
+        ],
+      },
+      'barrel-jump': {
+        name: 'Barrel Jump',
+        achievements: [
+          { id: 'barrel-jumper', name: 'Barrel Jumper',   description: 'Jump over your first barrel',     icon: '\u{1F6E2}' },
+          { id: 'hammer-time',   name: 'Hammer Time',     description: 'Smash 3 barrels with one hammer', icon: '\u{1F528}' },
+          { id: 'rivet-master',  name: 'Rivet Master',    description: 'Complete the rivet stage',        icon: '\u{1F529}' },
+          { id: 'all-four',      name: 'All Four Stages', description: 'Complete all 4 stage types',      icon: '\u{1F3C5}' },
+          { id: 'high-climber',  name: 'High Climber',    description: 'Score 20,000+ points',            icon: '\u{1F3D4}' },
+        ],
+      },
+      'road-hopper': {
+        name: 'Road Hopper',
+        achievements: [
+          { id: 'safe-crossing', name: 'Safe Crossing', description: 'Reach home for the first time',        icon: '\u{1F438}' },
+          { id: 'fly-catcher',   name: 'Fly Catcher',   description: 'Land on a home with a fly',            icon: '\u{1FAB0}' },
+          { id: 'speed-frog',    name: 'Speed Frog',    description: 'Reach home with 50%+ time remaining',  icon: '\u26A1' },
+          { id: 'turtle-rider',  name: 'Turtle Rider',  description: 'Ride turtles for 5 seconds total',     icon: '\u{1F422}' },
+          { id: 'level-5-frog',  name: 'Level 5 Frog',  description: 'Reach level 5',                        icon: '\u{1F31F}' },
+        ],
+      },
+      'galaxy-raiders': {
+        name: 'Galaxy Raiders',
+        achievements: [
+          { id: 'first-wave',        name: 'First Wave',        description: 'Clear stage 1',                                  icon: '\u{1F30A}' },
+          { id: 'dual-fighter',      name: 'Dual Fighter',      description: 'Rescue your captured ship',                      icon: '\u{1F680}' },
+          { id: 'perfect-challenge', name: 'Perfect Challenge', description: 'Destroy all 40 aliens in a challenge stage',     icon: '\u{1F3AF}' },
+          { id: 'ace-pilot',        name: 'Ace Pilot',         description: 'Achieve 80%+ hit accuracy in a stage',            icon: '\u{1F396}' },
+          { id: 'galaxy-hero',      name: 'Galaxy Hero',       description: 'Reach stage 10',                                  icon: '\u{2B50}' },
+        ],
+      },
+      'brick-breaker': {
+        name: 'Brick Breaker',
+        achievements: [
+          { id: 'first-break',   name: 'First Break',   description: 'Clear your first level',               icon: '\u{1F9F1}' },
+          { id: 'power-hungry',  name: 'Power Hungry',  description: 'Collect 3 power-ups in one level',     icon: '\u26A1' },
+          { id: 'combo-king',    name: 'Combo King',    description: 'Get a 5x combo',                        icon: '\u{1F525}' },
+          { id: 'untouchable',   name: 'Untouchable',   description: 'Clear a level without losing a ball',   icon: '\u{1F6E1}' },
+          { id: 'brick-master',  name: 'Brick Master',  description: 'Reach level 5',                         icon: '\u{1F3C6}' },
+        ],
+      },
+      'retro-tennis': {
+        name: 'Retro Tennis',
+        achievements: [
+          { id: 'first-rally',  name: 'First Rally',    description: 'Hit the ball 5 times in one rally',                icon: '\uD83C\uDFBE' },
+          { id: 'ace',          name: 'Ace!',           description: 'Score without opponent touching ball',              icon: '\u26A1' },
+          { id: 'marathon',     name: 'Marathon Match', description: 'Play a game with 20+ total rallies in a point',    icon: '\uD83C\uDFC3' },
+          { id: 'spin-master',  name: 'Spin Master',    description: 'Score with a curved shot',                         icon: '\uD83C\uDF00' },
+          { id: 'shutout',      name: 'Shutout',        description: 'Win 11-0',                                        icon: '\uD83D\uDEE1\uFE0F' },
+        ],
+      },
+      'bug-shooter': {
+        name: 'Bug Shooter',
+        achievements: [
+          { id: 'exterminator',     name: 'Exterminator',     description: 'Clear level 1',                        icon: '\uD83D\uDC1B' },
+          { id: 'spider-sniper',    name: 'Spider Sniper',    description: 'Kill spider at max distance (900 pts)', icon: '\uD83D\uDD78\uFE0F' },
+          { id: 'scorpion-hunter',  name: 'Scorpion Hunter',  description: 'Kill 3 scorpions in one game',          icon: '\uD83E\uDD82' },
+          { id: 'mushroom-farmer',  name: 'Mushroom Farmer',  description: 'Have 50+ mushrooms on screen',          icon: '\uD83C\uDF44' },
+          { id: 'bug-blaster',      name: 'Bug Blaster',      description: 'Reach level 10',                        icon: '\uD83D\uDCA5' },
+        ],
+      },
+      'city-defense': {
+        name: 'City Defense',
+        achievements: [
+          { id: 'first-defense',  name: 'First Defense',  description: 'Destroy your first missile',                  icon: '\u{1F6E1}' },
+          { id: 'chain-reaction', name: 'Chain Reaction', description: 'Destroy 3+ missiles in one explosion chain',  icon: '\u{1F4A5}' },
+          { id: 'perfect-wave',   name: 'Perfect Wave',   description: 'Complete a wave with all 6 cities intact',     icon: '\u{2B50}' },
+          { id: 'mirv-buster',    name: 'MIRV Buster',    description: 'Destroy a MIRV before it splits',              icon: '\u{1F3AF}' },
+          { id: 'guardian',       name: 'Guardian',        description: 'Reach wave 10',                                icon: '\u{1F3F0}' },
+        ],
+      },
+      'tunnel-hero': {
+        name: 'Tunnel Hero',
+        achievements: [
+          { id: 'digger',        name: 'Digger',        description: 'Clear level 1',                          icon: '\u26CF' },
+          { id: 'rock-drop',     name: 'Rock Drop',     description: 'Crush an enemy with a rock',             icon: '\uD83E\uDEA8' },
+          { id: 'double-crush',  name: 'Double Crush',  description: 'Crush 2+ enemies with one rock',         icon: '\uD83D\uDCA5' },
+          { id: 'dragon-slayer', name: 'Dragon Slayer', description: 'Kill a Fygar from the side',             icon: '\uD83D\uDC09' },
+          { id: 'deep-diver',    name: 'Deep Diver',    description: 'Kill an enemy on the deepest layer',     icon: '\u2B07' },
+        ],
+      },
+      'cube-hopper': {
+        name: 'Cube Hopper',
+        achievements: [
+          { id: 'color-changer', name: 'Color Changer', description: 'Complete level 1',                      icon: '\u{1F3A8}' },
+          { id: 'snake-charmer', name: 'Snake Charmer', description: 'Lure Coily off the pyramid',            icon: '\u{1F40D}' },
+          { id: 'disc-jockey',   name: 'Disc Jockey',   description: 'Use a spinning disc escape',            icon: '\u{1F4BF}' },
+          { id: 'triple-cycle',  name: 'Triple Cycle',  description: 'Complete a level with cycling colors',   icon: '\u{1F504}' },
+          { id: 'cube-master',   name: 'Cube Master',   description: 'Reach level 10',                        icon: '\u{1F451}' },
+        ],
+      },
+      'knight-flyer': {
+        name: 'Knight Flyer',
+        achievements: [
+          { id: 'first-joust',     name: 'First Joust',          description: 'Defeat your first enemy knight',            icon: '\u2694\uFE0F' },
+          { id: 'egg-scramble',    name: 'Egg Scramble',         description: 'Collect 5 eggs in one wave',                 icon: '\uD83E\uDD5A' },
+          { id: 'lava-dodger',     name: 'Lava Dodger',          description: 'Survive below the lowest platform for 3s',   icon: '\uD83C\uDF0B' },
+          { id: 'ptero-survivor',  name: 'Pterodactyl Survivor', description: 'Survive a wave with a pterodactyl',          icon: '\uD83E\uDD96' },
+          { id: 'knight-champion', name: 'Knight Champion',      description: 'Reach wave 10',                              icon: '\uD83D\uDC51' },
+        ],
+      },
+      'star-guardian': {
+        name: 'Star Guardian',
+        achievements: [
+          { id: 'guardian',      name: 'Guardian',      description: 'Save your first human',                      icon: '\u{1F6E1}' },
+          { id: 'smart-move',    name: 'Smart Move',    description: 'Destroy 5+ enemies with one smart bomb',     icon: '\u{1F4A3}' },
+          { id: 'full-rescue',   name: 'Full Rescue',   description: 'Complete a wave with all 10 humans alive',   icon: '\u{1F31F}' },
+          { id: 'mutant-slayer', name: 'Mutant Slayer', description: 'Defeat 10 mutants in one game',              icon: '\u{2694}' },
+          { id: 'star-defender', name: 'Star Defender', description: 'Reach wave 10',                              icon: '\u{1F680}' },
+        ],
+      },
+      'neon-cycles': {
+        name: 'Neon Cycles',
+        achievements: [
+          { id: 'survivor',   name: 'Survivor',   description: 'Win your first round',               icon: '\u26A1' },
+          { id: 'gladiator',  name: 'Gladiator',  description: 'Win a match vs 3 AI opponents',      icon: '\uD83C\uDFC6' },
+          { id: 'daredevil',  name: 'Daredevil',  description: 'Use speed boost and survive 5 sec',  icon: '\uD83D\uDD25' },
+          { id: 'gap-artist', name: 'Gap Artist', description: 'Make an opponent crash into a gap',   icon: '\uD83D\uDD73\uFE0F' },
+          { id: 'undefeated', name: 'Undefeated', description: 'Win a match without losing a round',  icon: '\uD83D\uDC51' },
+        ],
+      },
+      'robotron': {
+        name: 'Robotron',
+        achievements: [
+          { id: 'first-rescue',  name: 'Last Human Hope', description: 'Rescue your first human family member',              icon: '\u{1F9D1}' },
+          { id: 'chain-rescuer', name: 'Chain Rescuer',   description: 'Rescue 5 humans in one wave (hit 5000 pts bonus)',    icon: '\u{1F517}' },
+          { id: 'hulk-wrangler', name: 'Hulk Wrangler',   description: 'Push a Hulk into 3 other enemies',                   icon: '\u{1F4AA}' },
+          { id: 'wave-10',       name: 'Wave 10',          description: 'Survive to wave 10',                                icon: '\u{1F30A}' },
+          { id: 'master',        name: 'Robotron Master',  description: 'Score 100,000+ points',                             icon: '\u{1F3C6}' },
+        ],
+      },
+    };
+
+    const CROSS_GAME_ACHIEVEMENTS = [
+      { id: 'arcade-regular',  name: 'Arcade Regular', description: 'Play 5 different games',                  icon: '\uD83C\uDFAE' },
+      { id: 'arcade-master',   name: 'Arcade Master',  description: 'Score 5000+ in 5 different games',        icon: '\uD83C\uDFC6' },
+      { id: 'completionist',   name: 'Completionist',  description: 'Unlock all achievements in any single game', icon: '\uD83D\uDCAF' },
+      { id: 'galaxy-champion', name: 'Galaxy Champion', description: 'Unlock all achievements across all games', icon: '\uD83D\uDE80' },
+    ];
+
+    const STORAGE_PREFIX = 'galaxy-arcade-achievements-';
+    const GLOBAL_KEY = 'galaxy-arcade-global';
+
+    // ── Helpers ──────────────────────────────────────────────────────────
+
+    function loadJSON(key, fallback) {
+      try { return JSON.parse(localStorage.getItem(key)) || fallback; }
+      catch { return fallback; }
+    }
+
+    function getGameData(gameId) {
+      return loadJSON(STORAGE_PREFIX + gameId, { unlockedIds: [], scores: {} });
+    }
+
+    function getGlobalData() {
+      return loadJSON(GLOBAL_KEY, { gamesPlayed: [], crossGameUnlocked: [] });
+    }
+
+    function escapeHTML(str) {
+      const div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
+    function formatNumber(n) {
+      return n.toLocaleString();
+    }
+
+    // ── Build the page ───────────────────────────────────────────────────
+
+    function buildPage() {
+      const globalData = getGlobalData();
+      const crossUnlocked = new Set(globalData.crossGameUnlocked || []);
+
+      // Gather all per-game stats
+      let totalUnlocked = 0;
+      let totalAchievements = 0;
+      let totalScore = 0;
+      let favoriteGame = null;
+      let favoriteScore = -1;
+      const gameStats = {};
+
+      for (const [gameId, gameDef] of Object.entries(ALL_GAME_ACHIEVEMENTS)) {
+        const data = getGameData(gameId);
+        const unlockedSet = new Set(data.unlockedIds);
+        const highScore = data.scores.highest || 0;
+
+        const achStatus = gameDef.achievements.map(a => ({
+          ...a,
+          unlocked: unlockedSet.has(a.id),
+        }));
+
+        const unlocked = achStatus.filter(a => a.unlocked).length;
+        totalUnlocked += unlocked;
+        totalAchievements += gameDef.achievements.length;
+        totalScore += highScore;
+
+        if (highScore > favoriteScore) {
+          favoriteScore = highScore;
+          favoriteGame = gameDef.name;
+        }
+
+        gameStats[gameId] = { achStatus, highScore, unlocked, total: gameDef.achievements.length };
+      }
+
+      // Add cross-game to totals
+      totalAchievements += CROSS_GAME_ACHIEVEMENTS.length;
+      totalUnlocked += crossUnlocked.size;
+
+      const percent = totalAchievements > 0
+        ? Math.round((totalUnlocked / totalAchievements) * 100)
+        : 0;
+
+      // ── Global Progress Bar ──────────────────────────────────────────
+      document.getElementById('progress-label').textContent =
+        `${totalUnlocked} / ${totalAchievements} Achievements Unlocked (${percent}%)`;
+      document.getElementById('progress-fill').style.width = `${percent}%`;
+      document.getElementById('progress-percent').textContent =
+        percent === 100 ? 'ALL ACHIEVEMENTS UNLOCKED — TRUE GALAXY CHAMPION' : '';
+
+      // ── Cross-Game Achievements ──────────────────────────────────────
+      const crossGrid = document.getElementById('cross-game-grid');
+      crossGrid.innerHTML = CROSS_GAME_ACHIEVEMENTS.map(ach => {
+        const isUnlocked = crossUnlocked.has(ach.id);
+        return `
+          <div class="ach-card ${isUnlocked ? 'unlocked' : 'locked'}">
+            <span class="ach-icon">${ach.icon}</span>
+            <div class="ach-name">${escapeHTML(ach.name)}</div>
+            <div class="ach-desc">${escapeHTML(ach.description)}</div>
+          </div>`;
+      }).join('');
+
+      // ── Per-Game Sections ────────────────────────────────────────────
+      const container = document.getElementById('game-sections');
+
+      // Display order matching the arcade grid
+      const gameOrder = [
+        'pac-chase', 'space-defenders', 'asteroid-blaster', 'barrel-jump',
+        'road-hopper', 'galaxy-raiders', 'brick-breaker', 'retro-tennis',
+        'bug-shooter', 'city-defense', 'tunnel-hero', 'cube-hopper',
+        'knight-flyer', 'star-guardian', 'neon-cycles', 'robotron',
+      ];
+
+      container.innerHTML = gameOrder.map(gameId => {
+        const gameDef = ALL_GAME_ACHIEVEMENTS[gameId];
+        const stats = gameStats[gameId];
+        if (!gameDef || !stats) return '';
+
+        const scoreDisplay = stats.highScore > 0
+          ? `HI: ${formatNumber(stats.highScore)}`
+          : 'NO SCORE YET';
+
+        const achCards = stats.achStatus.map(ach => `
+          <div class="ach-card ${ach.unlocked ? 'unlocked' : 'locked'}">
+            <span class="ach-icon">${ach.icon}</span>
+            <div class="ach-name">${escapeHTML(ach.name)}</div>
+            <div class="ach-desc">${escapeHTML(ach.description)}</div>
+          </div>`).join('');
+
+        return `
+          <section class="game-section">
+            <div class="game-section-header">
+              <h2 class="game-section-name">${escapeHTML(gameDef.name)}</h2>
+              <span class="game-section-score">${scoreDisplay} &nbsp; (${stats.unlocked}/${stats.total})</span>
+            </div>
+            <div class="game-ach-grid">${achCards}</div>
+          </section>`;
+      }).join('');
+
+      // ── Stats Footer ────────────────────────────────────────────────
+      const gamesPlayed = globalData.gamesPlayed ? globalData.gamesPlayed.length : 0;
+      document.getElementById('stat-games-played').textContent = gamesPlayed;
+      document.getElementById('stat-total-score').textContent = formatNumber(totalScore);
+
+      if (favoriteGame && favoriteScore > 0) {
+        document.getElementById('stat-favorite').textContent = favoriteGame;
+        document.getElementById('stat-favorite-score').textContent =
+          `High Score: ${formatNumber(favoriteScore)}`;
+      } else {
+        document.getElementById('stat-favorite').textContent = '\u2014';
+        document.getElementById('stat-favorite-score').textContent = 'Play some games!';
+      }
+    }
+
+    // ── Init ─────────────────────────────────────────────────────────────
+    buildPage();
+  </script>
+
+</body>
+</html>

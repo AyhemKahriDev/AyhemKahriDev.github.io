@@ -1,0 +1,80 @@
+#home{
+    background-color: #222f3e;
+    height: 400px;
+    width: 400px;
+    position: absolute;
+}
+#home h2{
+    color: white;
+    font:30px courier;
+    text-align: center;
+    padding: 8px;
+}
+#home h5{
+    color: white;
+    font: 10px courier;
+    position: absolute;
+    margin-left: 163px;
+    margin-top: 28px;
+}
+#home img{
+    height: 180px;
+    width:180px;
+    margin-left: 110px;
+    margin-bottom: 40px;
+}
+#start{
+    font: 22px courier;
+    color: white;
+    background-color: #222f3e;
+    width: 250px;
+    margin-left: 75px;
+}
+.hide{
+    opacity: 0%;
+    visibility: hidden;
+ }
+ #gameover{
+     background-color: #576574;
+     width: 300px;
+     height: 100px;
+     position: absolute;
+     margin-top: 150px;
+     margin-left: 50px;
+ }
+#tituloover{
+    font:16px courier;
+    color: white;
+    margin-left:102px ;
+    margin-top:5px;
+    position: absolute;
+}
+#black{
+    background-color: #222f3e;
+    position: absolute;
+    height: 400px;
+    width: 400px;
+}
+#points{
+    color: white;
+    font:13px courier;
+    position: absolute;
+    margin-top: 27px;
+    margin-left: 55px;
+}
+#record{
+    color: white;
+    font:13px courier;
+    position: absolute;
+    margin-top: 27px;
+    margin-left: 175px;   
+}
+#restart{
+    background-color: #222f3e;
+    position: relative;
+    color: white;
+    height: 35px;
+    width:250px;
+    margin-top: 50px;
+    margin-left: 25px;
+}

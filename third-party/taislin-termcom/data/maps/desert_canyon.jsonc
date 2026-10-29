@@ -1,0 +1,22 @@
+{
+  "description": "Desert canyon map chunk",
+"height": 6,
+  "id": "desert_canyon",
+  "rows": [
+    "rr..r",
+    "r....",
+    "....r",
+    "r....",
+    "....r",
+    "rr..r"
+  ],
+  "tags": [
+    "desert"
+  ],
+  "terrain": {
+    ".": "TileSand",
+    "r": "TileRock"
+  },
+  "weight": 2,
+  "width": 5
+}

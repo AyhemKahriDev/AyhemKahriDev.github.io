@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+asteroids-almost-from-scratch
+This is an attempt of making the game pong using modern programming languages
+
+Copyright (C) 2016  Luiz Eduardo Amaral - <luizamaral306@gmail.com>
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+-->
+<html>
+  <head>
+    <title>ASTEROIDS ALMOST FROM SCRATCH</title>
+    <meta name="description" content="This is an attempt of making the game asteroids using modern programming languages">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link id="favicon" rel="icon" href="assets/favicon.ico" type="image/x-icon">
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  </head>
+
+  <body class="highscore-body">
+    <div class="container">
+      <h1>Asteroids almost from scratch</h1>
+      <br>
+      <h2>High Scores</h2>
+      <table id="high-scores-table" align="center" cellspacing="0" cellpadding="0">
+      </table>
+      <br>
+      <div class="highscore-footer">
+        <p>
+          <h3><a href="/">Go to game!</a></h3>
+        </p>
+        <p>
+          <a href="https://github.com/luxedo/asteroids-almost-from-scratch">
+            <img src="assets/GitHub-Mark-Light-32px.png"></img><span>Check it on GitHub!</span>
+          </a>
+        </p>
+        <p>
+          Copyright (c) 2016 Luiz Eduardo Amaral -
+          <a href="mailto:luizamaral306@gmail.com?Subject=asteroids-almost-from-scratch">
+            &lt;luizamaral306@gmail.com&gt;
+          </a>
+        </p>
+        <p>
+          This software is under a
+          <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU GPL3</a> license. Have fun!
+          <span style="font-size: 2em; vertical-align: top;">😉</span>
+        </p>
+      </div>
+    </div>
+  </body>
+  <script>
+    $.get("/highscores", data => {
+      data.forEach((value, index) => {
+        let element = `<tr><td>${index+1}</td><td>${value.name}</td><td>${value.score}</td></tr>`
+        $('#high-scores-table').append(element);
+      });
+    });
+  </script>
+</html>

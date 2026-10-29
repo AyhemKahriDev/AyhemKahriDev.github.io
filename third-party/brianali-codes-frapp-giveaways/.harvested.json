@@ -1,0 +1,16 @@
+{
+  "repo": "Brianali-codes/FRAPP-GIVEAWAYS",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 5389,
+  "pushedAt": "2025-02-18T16:52:34Z",
+  "description": "Video Game Giveaways at the palm of your hand, uses the Gamepower Api to gather giveaways from various web stores",
+  "defaultBranch": "main",
+  "owner": "Brianali-codes",
+  "slug": "brianali-codes-frapp-giveaways",
+  "dest": "third-party/brianali-codes-frapp-giveaways",
+  "readme": "<h1><u>Frapp.</u></h1>\n</br>\nThis Website Provides the latest video game giveaways from sources such as the Epic games Store, IndieGala,Steam Gog,Alienware Arena and many More\n</br>\nThe Website Uses the GamePower Api Which can be found here: <link>https://www.gamerpower.com/api-read</link>\n</br></br>\nTo make a similar project you can fork or clone the project using </br> <pre><code>git clone https://github.com/gamerfunky78/FRAPP-GIVEAWAYS.git</code></pre>\n",
+  "licenceFile": "licence",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,31 @@
+{
+  "description": "Urban building map chunk",
+  "height": 6,
+  "id": "urban_building",
+  "rows": [
+    "WWWWWWW",
+    "N.....N",
+    "W.c.C.W",
+    "W(ld)rW",
+    "Wl...aW",
+    "WW+WWWW"
+  ],
+  "tags": [
+    "urban"
+  ],
+  "terrain": {
+    "+": "TileDoor",
+    ".": "TileFloor",
+    "N": "TileWindow",
+    "W": "TileWall",
+    "(": "TileChairRight",
+    ")": "TileChairLeft",
+    "C": "TileComputer",
+    "a": "TileCabinet",
+    "c": "TileChair",
+    "d": "TileDesk",
+    "l": "TileLocker"
+  },
+  "weight": 1,
+  "width": 7
+}

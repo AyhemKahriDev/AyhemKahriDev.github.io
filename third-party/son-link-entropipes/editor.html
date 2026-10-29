@@ -1,0 +1,78 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+	<title>EntroPipe Puzzle Editor</title>
+	<link rel="stylesheet" href="fontello-embedded.css" />
+	<link rel="stylesheet" href="editor.css" />
+	<script type="text/javascript" src="editor.js"></script>
+  </head>
+  <body>
+	<div id="content">
+		<table id="pipes">
+			<tr>
+				<td align="center"><div id="t0" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="t1" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="t2" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="t3" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="t4" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="t5" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="t6" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="t7" onclick="selectTile(this);return true;"><div></div></div></td>
+			</tr>
+			<tr>
+				<td align="center"><div id="t8" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="t9" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="tA" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="tB" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="tC" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="tD" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="tE" onclick="selectTile(this);return true;"><div></div></div></td>
+				<td align="center"><div id="tF" onclick="selectTile(this);return true;"><div></div></div></td>
+			</tr>
+		</table>
+		<div>
+			<table align="center" id="controls" style="float: left">
+				<tr>
+					<td align="center" colspan="3"><a href="#" onclick="shiftUp();return true;" class="icon-up" title="Move puzzle to up"></a></td>
+				</tr>
+				<tr>
+					<td align="center"><a href="#" onclick="shiftLeft();return true;" class="icon-left" title="Move puzzle to lett"></a></td>
+					<td align="center"><a href="#" onclick="if ( confirm('Clear puzzle?') ) { initPlantilla();return true;}" class="icon-trash" title="Clear puzzle"></a></td>
+					<td align="center"><a href="#" onclick="shiftRight();return true;" class="icon-right" title="Move puzzle to right"></a></td>
+				</tr>
+				<tr>
+					<td align="center" colspan="3"><a href="#" onclick="shiftDown();return true;" class="icon-down" title="Move puzzle to down"></a></td>
+				</tr>
+			</table>
+			<div style="float: left">
+				<label for="gridsize">Grid size</label>
+				<select id="gridsize" onchange="gridSize();">
+					<option>4x4</option>
+					<option>6x4</option>
+					<option>6x6</option>
+					<option selected>8x6</option>
+				</select>
+			</div>
+			<p id="entropy">Puzzle Entropy: 0</p>
+		</div>
+		<div><table id="plantilla"></table></div>
+	</div>
+	<div id="result">
+		<table>
+			<tr>
+				<td>
+					<b>Copy and send these lines:</b><br /><br />
+					<textarea id="final" cols="7" rows="6"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<br />
+					<textarea id="loadArea" cols="7" rows="6"></textarea><br /><br />
+					<button onclick="if ( confirm('Load puzzle?') ) { lPuzzle();return true;}">LOAD PUZZLE</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+	<div style="clear: both; display: block">Send puzzles (with entropy 0) to sonlink (doooot) dourden (aaat) gmail (doooooooot) com</div>
+
+</body></html>

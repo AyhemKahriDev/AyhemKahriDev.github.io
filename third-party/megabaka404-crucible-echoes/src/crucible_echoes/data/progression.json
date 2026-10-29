@@ -1,0 +1,53 @@
+{
+  "initial_ingredients": ["water", "charcoal", "cauldron", "kitten", "test_tube"],
+  "starting_gold": 1,
+  "pigment_required_colors": ["red", "yellow", "blue"],
+  "ingredient_rarity": {
+    "0": [100.0, 0.0, 0.0, 0.0],
+    "1": [88.0, 12.0, 0.0, 0.0],
+    "2": [75.0, 23.4, 1.5, 0.1],
+    "3": [73.0, 25.0, 1.8, 0.2],
+    "4": [67.0, 30.0, 2.5, 0.5],
+    "5+": [65.0, 31.5, 2.8, 0.7]
+  },
+  "item_rarity": {
+    "0": [100.0, 0.0, 0.0, 0.0],
+    "1": [88.0, 12.0, 0.0, 0.0],
+    "2": [75.0, 23.4, 1.5, 0.1],
+    "3": [73.0, 25.0, 1.8, 0.2],
+    "4": [68.0, 29.0, 2.0, 1.0],
+    "5": [66.5, 30.0, 2.2, 1.3],
+    "6+": [59.5, 35.0, 3.7, 1.8]
+  },
+  "orders": [
+    {"amount": 25, "spins": 5},
+    {"amount": 50, "spins": 5},
+    {"amount": 100, "spins": 6},
+    {"amount": 150, "spins": 6},
+    {"amount": 225, "spins": 7},
+    {"amount": 285, "spins": 7},
+    {"amount": 350, "spins": 8},
+    {"amount": 425, "spins": 8},
+    {"amount": 575, "spins": 9},
+    {"amount": 625, "spins": 9},
+    {"amount": 675, "spins": 10},
+    {"amount": 777, "spins": 10},
+    {"amount": 1000, "spins": 10}
+  ],
+  "difficulty": {
+    "2": {"order_bonus": {"7": 25}},
+    "3": {"order_bonus": {"8": 25}},
+    "4": {"token_reward": {"remove": 1, "roll": 1}},
+    "5": {"initial_slag": 1},
+    "6": {"order_bonus": {"10": 25}, "initial_slag": 2},
+    "7": {"order_bonus": {"11": 25}, "slag_interval": 33},
+    "8": {"initial_slag": 3},
+    "9": {"order_bonus": {"9": 25}},
+    "10": {"final_order": {"after_completed": 12, "amount": 1350, "spins": 15}},
+    "11": {"final_order": {"after_completed": 12, "amount": 1425, "spins": 15}},
+    "12": {"ingredient_overrides": {"slag": {"force_value": 0, "remove_after_bonus": 2}}, "slag_interval": 27},
+    "13": {"order_bonus": {"12": 23}, "slag_interval": 20},
+    "14": {"final_order": {"after_completed": 12, "amount": 1500, "spins": 15}},
+    "15": {"token_reward": {"essence": 1}, "post_order_gold_deduction": {"from_completed": 4, "amount": 5}}
+  }
+}

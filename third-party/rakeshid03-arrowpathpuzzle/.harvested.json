@@ -1,0 +1,16 @@
+{
+  "repo": "rakeshid03/arrowpathpuzzle",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 22,
+  "pushedAt": "2025-10-20T16:27:39Z",
+  "description": "",
+  "defaultBranch": "main",
+  "owner": "rakeshid03",
+  "slug": "rakeshid03-arrowpathpuzzle",
+  "dest": "third-party/rakeshid03-arrowpathpuzzle",
+  "readme": "# 🧩 Arrow Path Puzzle\n\n**Arrow Path Puzzle** is a fun, logic-based grid puzzle game built entirely with **HTML, CSS, and JavaScript** — no external frameworks needed!  \nRotate arrows strategically to guide your player (the bird 🐥 or other cute characters) from the **Start** cell to the **Goal** cell.  \nEach puzzle is randomly generated, offering a unique challenge every time.\n\n---\n\n## 🎮 Demo\n\n👉 **[Play Live](https://rakeshid03.github.io/arrowpathpuzzle/)**\n\n---\n\n## 🧠 Gameplay Overview\n\n- The game board is a grid filled with directional arrows (↑ → ↓ ←).  \n- Your goal is to **rotate the arrows** to form a connected path from the **Start** (bottom-left) to the **Goal** (top-right).  \n- Once the correct path is formed, the **player automatically moves** along the route — and confetti 🎉 celebrates your success!\n\n---\n\n## 🌟 Features\n\n✅ **Dynamic Difficulty Levels**  \n- Easy (4×4)  \n- Medium (6×6)  \n- Hard (8×8)\n\n✅ **Customizable Player & Goal**  \nChoose your favorite character (🐥 🐸 🐰 🐱 🦊 🐼 etc.) and goal (🏁 🎁 💎 🎂 🍖 🛸 ...).\n\n✅ **Auto Path Detection**  \nInstantly checks for a valid connection between start and goal as you rotate arrows.\n\n✅ **Smooth Bird Animation**  \nWatch your character move cell by cell along the glowing path when solved.\n\n✅ **Vibration Feedback** (Mobile-friendly)  \nGives tactile feedback when interacting on supported devices.\n\n✅ **Rock Obstacles**  \nRocks 🪨 appear in advanced puzzles, forcing you to find creative paths.\n\n✅ **Confetti Celebration + Sound Effects**  \nRewarding visual and audio feedback when you win!\n\n✅ **Fully Responsive Design**  \nOptimized for both mobile and desktop play.\n\n---\n\n## 🧩 How to Play\n\n1. Select your **Player** and **Goal** icons from the dropdown.\n2. Choose your **Difficulty** level.\n3. Click on any arrow cell to **rotate** it clockwise.\n4. Form a continuous path from **Start** to **Goal**.\n5. Once connected, your player moves automatically — enjoy the celebration 🎉.\n6. Click **Next Puzzle** to play again with a new grid layout!\n\n---\n\n## 🛠️ Technologies Used\n\n| Technology | Purpose |\n|-------------|----------|\n| **HTML5** | Structure of the puzzle and UI |\n| **CSS3** | Styling, responsive layout, and animations |\n| **Vanilla JavaScript (ES6)** | Game logic, pathfinding, and interactions |\n| **Canvas Confetti** | Celebration effects |\n| **Audio API** | Click and success sounds |\n| **Vibration API** | Mobile feedback |\n\n---\n\n## Contributing\n\nWelcome contributions from the open-source community to help make this project even better. Feel free to fork this project to suggest new features, improve the UI/UX, remove bugs. Pull requests are welcome!\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

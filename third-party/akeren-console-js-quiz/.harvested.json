@@ -1,0 +1,15 @@
+{
+  "repo": "akeren/console-js-quiz",
+  "stars": 4,
+  "licence": "GPL-3.0",
+  "sizeKB": 300,
+  "pushedAt": "2020-05-03T13:49:53Z",
+  "description": "Console JS Quiz-Application",
+  "defaultBranch": "master",
+  "owner": "akeren",
+  "slug": "akeren-console-js-quiz",
+  "dest": "third-party/akeren-console-js-quiz",
+  "readme": "# GDG Gwagwalada #Code2Grow 10 Days of Code: JavaScript Console Quiz-App\n\nThe core idea behind this development is to help code newbies to understand the fundamental concept of building applications with a deep understanding of some data structures, objects, logical & structural thinking, and best practices among others during **[GDG Gwagwalada](https://twitter.com/GDGGwags) 10Days of Code** in isolation tag #Code2Grow.\n\n## Topic Covered\n\n- Variable Declarations\n- Functions\n- Arrays\n- Objects\n- Iheritances\n- Closures\n- JS Module Pattern\n- ES5, ES6, ES7, ES8 to ESNext\n\n## Dev Guidelines\n\n- I put together a development guidelines located in [Dev-guidelines](https://github.com/akeren/console-js-quiz/tree/master/Dev-guidelines) directory.\n\n## Demo\n\n<img src=\"./img/Question.png\">\n<img src=\"./img/Input_ans.png\">\n<img src=\"./img/feedback.png\">\n\n## Contributions\n\nYou can fork the repository and send pull request or reach out easily to me via twitter => [Kater Akeren](https://twitter.com/katerakeren)\n",
+  "licenceFile": "LICENSE",
+  "entry": "src/index.html"
+}

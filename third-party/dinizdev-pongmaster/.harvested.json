@@ -1,0 +1,16 @@
+{
+  "repo": "dinizdev/PongMaster",
+  "stars": 3,
+  "licence": "GPL-3.0",
+  "sizeKB": 17,
+  "pushedAt": "2022-10-21T20:06:06Z",
+  "description": "Game made in JavaScript for teaching purposes 🚀",
+  "defaultBranch": "master",
+  "owner": "dinizdev",
+  "slug": "dinizdev-pongmaster",
+  "dest": "third-party/dinizdev-pongmaster",
+  "readme": "# Pong Master Javascript Vanilla\n> Game made in javascript for studies and didactic purposes ✨\n\n## Running locally\n\n1. Clone this repo:\n\n```sh\n$ git clone https://github.com/dinizdev/PongMaster.git\n```\n\n2. Then go to the project's folder:\n\n```sh\ncd PongMaster\n```\n3. Run locally:\n\n```sh\nnode main.js\n```\n\nPong ScreenShot\n\n![Image of PongMaster](http://image.prntscr.com/image/9cd3f91b81b74d539a7457f3c3804dbf.png)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

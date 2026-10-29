@@ -1,0 +1,16 @@
+{
+  "repo": "MCSDWVL/to11",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 2353,
+  "pushedAt": "2014-08-21T17:38:03Z",
+  "description": "to11 is a 2048 variant which makes the game more puzzle based",
+  "defaultBranch": "master",
+  "owner": "MCSDWVL",
+  "slug": "mcsdwvl-to11",
+  "dest": "third-party/mcsdwvl-to11",
+  "readme": "# to11\nA variant of [2048](http://gabrielecirulli.github.io/2048/), with a more puzzley nature.\n\n",
+  "licenceFile": "LICENSE.txt",
+  "entry": "index.html",
+  "validated": true
+}

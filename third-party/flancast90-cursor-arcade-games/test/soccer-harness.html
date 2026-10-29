@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Soccer Harness</title>
+    <link rel="stylesheet" href="../media/arcade.css" />
+    <style>
+      body { margin: 0; }
+      #app { height: 100vh; display: flex; flex-direction: column; }
+      .topbar { display:flex; gap:12px; padding:8px 12px; border-bottom:1px solid var(--line); align-items:center; }
+      #stats { display:flex; gap:12px; flex:1; }
+      .stat { font-family: var(--mono); font-size: 12px; color: var(--fg-soft); }
+      .stat b { color: var(--fg); margin-left: 4px; }
+      #gameHost { flex:1; display:flex; align-items:center; justify-content:center; padding:16px; }
+      #overlay { position: fixed; inset: 0; background: rgba(255,255,255,0.9); display:flex; align-items:center; justify-content:center; }
+      #overlay.hidden { display:none; }
+      .overlay-inner { text-align:center; font-family: var(--mono); }
+      .overlay-inner button { margin: 4px; padding: 6px 14px; font-family: inherit; cursor: pointer; }
+      #readout { font-family: var(--mono); font-size: 11px; padding: 6px 12px; border-top: 1px solid var(--line); max-height: 120px; overflow: auto; }
+      button.link { background: none; border: 0; color: var(--fg); cursor: pointer; font-family: var(--mono); font-size: 12px; }
+      .hidden { display: none; }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <header class="topbar">
+        <button id="btnMenu" class="link">Arcade</button>
+        <nav class="stats" id="stats"></nav>
+        <div class="actions">
+          <button id="btnPause" class="link hidden">Pause</button>
+          <button id="btnRestart" class="link hidden">Restart</button>
+          <button id="btnSettings" class="link">Settings</button>
+        </div>
+      </header>
+      <div id="gameHost"></div>
+      <div id="overlay" class="hidden">
+        <div class="overlay-inner">
+          <h2 id="overlayTitle">Paused</h2>
+          <p id="overlaySub">Press Space to resume.</p>
+          <button id="overlayPrimary">Resume</button>
+          <button id="overlaySecondary">Back</button>
+        </div>
+      </div>
+      <pre id="readout"></pre>
+    </div>
+
+    <script>
+      window.acquireVsCodeApi = function () {
+        return { postMessage: function () {} };
+      };
+      window.CursorArcade = window.CursorArcade || {};
+      window.CursorArcade.games = window.CursorArcade.games || {};
+      window.CursorArcade.api = {
+        submitScore(k, s) { log('submitScore ' + k + ' ' + s); },
+        saveSettings() {},
+        toast() {},
+        getHighScore() { return 0; },
+        getSettings() { return null; },
+        setStats(o) {
+          const el = document.getElementById('stats');
+          el.innerHTML = '';
+          for (const [k, v] of Object.entries(o || {})) {
+            const s = document.createElement('span');
+            s.className = 'stat';
+            s.innerHTML = k + '<b>' + v + '</b>';
+            el.appendChild(s);
+          }
+        },
+        setTopbarControls(opts) {
+          document.getElementById('btnPause').classList.toggle('hidden', !opts.pause);
+          document.getElementById('btnRestart').classList.toggle('hidden', !opts.restart);
+        },
+        showOverlay(opts) {
+          document.getElementById('overlayTitle').textContent = opts.title || '';
+          document.getElementById('overlaySub').textContent = opts.subtitle || '';
+          document.getElementById('overlay').classList.remove('hidden');
+          const p = document.getElementById('overlayPrimary');
+          p.textContent = opts.primaryLabel || 'Resume';
+          p.onclick = () => { document.getElementById('overlay').classList.add('hidden'); opts.onPrimary && opts.onPrimary(); };
+          const s = document.getElementById('overlaySecondary');
+          s.textContent = opts.secondaryLabel || 'Back';
+          s.onclick = () => { document.getElementById('overlay').classList.add('hidden'); opts.onSecondary && opts.onSecondary(); };
+        },
+        hideOverlay() { document.getElementById('overlay').classList.add('hidden'); },
+        setTheme() {},
+        getTheme() { return 'light'; },
+      };
+
+      function log(msg) {
+        const el = document.getElementById('readout');
+        el.textContent = (el.textContent + '\n' + msg).split('\n').slice(-30).join('\n');
+      }
+      window.__log = log;
+    </script>
+    <script src="../media/games/soccer.js"></script>
+    <script>
+      const host = document.getElementById('gameHost');
+      const meta = window.CursorArcade.games.soccer;
+      const game = meta.create({ host, api: window.CursorArcade.api, meta: { id: 'soccer', hsKey: 'soccer' }, options: {} });
+      window.__game = game;
+
+      document.addEventListener('keydown', (e) => {
+        if (game.onKey) game.onKey(e);
+      }, true);
+
+      document.getElementById('btnPause').onclick = () => game.togglePause && game.togglePause();
+      document.getElementById('btnRestart').onclick = () => game.restart && game.restart();
+
+      // Expose a few debug helpers for the test harness.
+      window.__state = () => ({
+        state: game.state,
+        score: game.score,
+        matchTimeLeft: Math.round(game.matchTimeLeft),
+        players: game.players.map(p => ({
+          idx: p.idx,
+          x: Math.round(p.x),
+          y: Math.round(p.y),
+          vx: Math.round(p.vx),
+          vy: Math.round(p.vy),
+          onGround: p.onGround,
+          power: Math.round(p.power),
+          kickActive: Math.round(p.kickActive),
+          effects: p.effects,
+          stun: Math.round(p.stun),
+        })),
+        balls: game.balls.map(b => ({
+          x: Math.round(b.x),
+          y: Math.round(b.y),
+          vx: Math.round(b.vx),
+          vy: Math.round(b.vy),
+        })),
+        powerups: game.powerups.map(pu => ({ kind: pu.kind, x: Math.round(pu.x), y: Math.round(pu.y) })),
+      });
+
+      window.__dump = () => {
+        log(JSON.stringify(window.__state(), null, 2));
+      };
+
+      // Periodic one-line health check visible in the readout
+      setInterval(() => {
+        const st = window.__state();
+        document.title = 'Soccer ' + st.state + ' ' + st.score.join('-') + ' t=' + st.matchTimeLeft + 's';
+      }, 500);
+
+      // ---------------- Self-tests ----------------
+      // Each test manipulates game state directly and records pass/fail to console.
+      function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+      function ok(name, cond, extra) {
+        console.log((cond ? 'PASS' : 'FAIL') + ' ' + name + (extra ? ' :: ' + extra : ''));
+        log((cond ? 'PASS' : 'FAIL') + ' ' + name);
+      }
+
+      async function runSelfTests() {
+        // Let the countdown finish so state becomes 'playing'.
+        while (game.state !== 'playing') await delay(50);
+        // Disable AI so it doesn't interfere with controlled experiments.
+        for (const p of game.players) p.ai = false;
+        log('--- self-tests starting ---');
+
+        // Helper to force match back to 'playing' and park both players safely.
+        function resetForTest() {
+          game.state = 'playing';
+          game.goalPauseT = 0;
+          game.countdownT = 0;
+          game.matchTimeLeft = 999;
+          for (const pl of game.players) {
+            pl.x = pl.idx === 0 ? 200 : 700;
+            pl.y = 395;
+            pl.vx = 0; pl.vy = 0;
+            pl.onGround = true;
+            pl.kickActive = 0; pl.kickCooldown = 0;
+            pl.stun = 0;
+            pl.input.left = false; pl.input.right = false;
+            pl.armedUntil = 0;
+            pl.effects = { fire: 0, ice: 0, giant: 0 };
+          }
+          // Park the ball out of the way, at rest, so it can't interfere.
+          game.balls = [game.balls[0]];
+          game.balls[0].x = 450;
+          game.balls[0].y = 200;
+          game.balls[0].vx = 0;
+          game.balls[0].vy = 0;
+          game.balls[0].trail.length = 0;
+          game.balls[0].onFire = 0;
+          game.balls[0].iceArmedBy = -1;
+          game.balls[0].powerFlash = 0;
+          game.balls[0].lowGrav = 0;
+          game.powerups.length = 0;
+          game.keys.clear();
+        }
+
+        // ----- T1: ball falls under gravity -----
+        resetForTest();
+        game.balls[0].x = 450;
+        game.balls[0].y = 100;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        await delay(250);
+        const b1 = game.balls[0];
+        ok('ball-falls-under-gravity', b1.y > 140 && b1.vy > 250, 'y=' + Math.round(b1.y) + ' vy=' + Math.round(b1.vy));
+        await delay(4500);
+        const b1b = game.balls[0];
+        // Ball is bouncing with 0.7 restitution; after ~4.5s it should be near ground with small velocity.
+        ok('ball-settles-on-ground', b1b.y > 430 && Math.abs(b1b.vy) < 200, 'y=' + Math.round(b1b.y) + ' vy=' + Math.round(b1b.vy));
+
+        // ----- T2: horizontal input moves P1 -----
+        resetForTest();
+        const p1 = game.players[0];
+        p1.x = 400;
+        p1.vx = 0;
+        game.keys.add('d');
+        await delay(350);
+        game.keys.delete('d');
+        ok('p1-walks-right', p1.x > 410, 'x=' + Math.round(p1.x));
+
+        // ----- T3: Jump -----
+        resetForTest();
+        p1.onGround = true;
+        game.tryJump(p1);
+        const jumpVy = p1.vy;
+        await delay(220);
+        ok('p1-jumps', jumpVy < -600 && p1.y < 395, 'jumpVy=' + jumpVy + ' y=' + Math.round(p1.y));
+
+        await delay(700);
+
+        // ----- T4: Kick launches body-height ball -----
+        resetForTest();
+        p1.x = 400;
+        game.balls[0].x = 430;
+        game.balls[0].y = 420;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        game.tryKick(p1);
+        await delay(120);
+        const b4 = game.balls[0];
+        ok('kick-sends-body-height-ball-right', b4.vx > 200, 'vx=' + Math.round(b4.vx));
+
+        // ----- T4b: Kick launches foot-height ball -----
+        resetForTest();
+        p1.x = 400;
+        game.balls[0].x = 435;
+        game.balls[0].y = 470;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        game.tryKick(p1);
+        await delay(120);
+        const b4b = game.balls[0];
+        ok('kick-sends-foot-height-ball-right', b4b.vx > 200, 'vx=' + Math.round(b4b.vx));
+
+        // ----- T4c: Kick launches head-height ball -----
+        resetForTest();
+        p1.x = 400;
+        game.balls[0].x = 430;
+        game.balls[0].y = 385; // right next to head
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        game.tryKick(p1);
+        await delay(120);
+        const b4c = game.balls[0];
+        ok('kick-sends-head-height-ball-right', b4c.vx > 150, 'vx=' + Math.round(b4c.vx));
+
+        // ----- T5: Power arming -----
+        resetForTest();
+        p1.power = 100;
+        p1.armedUntil = 0;
+        game.tryArmPower(p1);
+        ok('power-arms', p1.armedUntil > 2000, 'armed=' + Math.round(p1.armedUntil));
+
+        // ----- T6: Scoring into P2's goal increments P1 -----
+        resetForTest();
+        const scoreBefore = [...game.score];
+        game.balls[0].x = 900 - 30;
+        game.balls[0].y = 460;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        await delay(120);
+        ok('right-goal-credits-p1',
+          game.score[0] === scoreBefore[0] + 1,
+          'before=' + scoreBefore.join(',') + ' after=' + game.score.join(','));
+
+        await delay(3200);
+
+        // ----- T7: Scoring into P1's goal increments P2 -----
+        resetForTest();
+        const scoreBefore2 = [...game.score];
+        game.balls[0].x = 30;
+        game.balls[0].y = 460;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        await delay(120);
+        ok('left-goal-credits-p2',
+          game.score[1] === scoreBefore2[1] + 1,
+          'before=' + scoreBefore2.join(',') + ' after=' + game.score.join(','));
+
+        await delay(3200);
+
+        // ----- T8: Powerup collection -----
+        resetForTest();
+        game.powerups.push({ kind: 'fire', x: p1.x + 10, y: p1.y + 30, vx: 0, vy: 0, alive: true });
+        await delay(200);
+        ok('powerup-fire-collected', p1.effects.fire > 0, 'fire=' + Math.round(p1.effects.fire));
+
+        // ----- T9: Ball-head elastic bounce -----
+        resetForTest();
+        game.balls[0].x = p1.x;
+        game.balls[0].y = p1.y - 40;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 400;
+        await delay(120);
+        ok('ball-bounces-off-head',
+          game.balls[0].vy < 0,
+          'after vy=' + Math.round(game.balls[0].vy));
+
+        // ----- T10: Fire boost increases kick power -----
+        resetForTest();
+        p1.x = 400;
+        p1.effects.fire = 5000;
+        game.balls[0].x = 430;
+        game.balls[0].y = 420;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        game.tryKick(p1);
+        await delay(120);
+        ok('fire-boosted-kick-strong',
+          game.balls[0].vx > 700,
+          'vx=' + Math.round(game.balls[0].vx) + ' fire=' + Math.round(p1.effects.fire));
+
+        // ----- T11: Power shot has very high velocity -----
+        resetForTest();
+        p1.x = 400;
+        p1.power = 100;
+        p1.armedUntil = 2000;
+        game.balls[0].x = 430;
+        game.balls[0].y = 420;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        game.tryKick(p1);
+        await delay(120);
+        ok('power-shot-fires',
+          game.balls[0].vx > 1000 && p1.power < 10,
+          'vx=' + Math.round(game.balls[0].vx) + ' power=' + Math.round(p1.power));
+
+        // ----- T12: Ice-armed ball stuns opponent -----
+        resetForTest();
+        const p2 = game.players[1];
+        p1.effects.ice = 5000;
+        p1.x = 400;
+        game.balls[0].x = 430;
+        game.balls[0].y = 420;
+        game.balls[0].vx = 0;
+        game.balls[0].vy = 0;
+        game.tryKick(p1);
+        await delay(100); // let the kick happen
+        // Now put the ball right in front of P2 so it collides.
+        p2.x = 600;
+        game.balls[0].x = 610;
+        game.balls[0].y = 395;
+        game.balls[0].vx = -50;
+        game.balls[0].vy = 0;
+        await delay(100);
+        ok('ice-ball-stuns-p2',
+          p2.stun > 0,
+          'stun=' + Math.round(p2.stun));
+
+        // ----- T13: Giant head makes collision radius larger -----
+        resetForTest();
+        p1.effects.giant = 5000;
+        p1.x = 400;
+        game.balls[0].x = 440; // far enough that only giant hits
+        game.balls[0].y = 395;
+        game.balls[0].vx = -100;
+        game.balls[0].vy = 0;
+        await delay(100);
+        ok('giant-head-expands-reach',
+          game.balls[0].vx > -20,
+          'vx=' + Math.round(game.balls[0].vx));
+
+        log('--- self-tests done ---');
+        console.log('[SELFTEST_DONE]');
+      }
+
+      setTimeout(runSelfTests, 500);
+    </script>
+  </body>
+</html>

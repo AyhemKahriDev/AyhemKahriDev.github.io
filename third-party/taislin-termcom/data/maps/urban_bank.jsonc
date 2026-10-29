@@ -1,0 +1,38 @@
+{
+  "description": "Urban bank map chunk",
+  "id": "urban_bank",
+  "width": 15,
+  "height": 15,
+  "rows": [
+    "hhhhhhhhhhhhhhh",
+    "iffgfgfgfgfgffi",
+    "hgfffffffffffgh",
+    "hffhhehhhhhhffh",
+    "igfhfcfcfcfhfgi",
+    "hffhfffffffhffh",
+    "hgfhfafafafhfgh",
+    "hffhhhhhhhfhffh",
+    "igfghfffgafhfgi",
+    "hffhfbbbfffhffh",
+    "hhehhdddehhhehh",
+    "ifffffffffffffi",
+    "hfffffffffffffh",
+    "hbbbfffbbbbbbfh",
+    "hhhhhehhhhhhhhh"
+  ],
+  "terrain": {
+    "a": "TileCabinet",
+    "b": "TileChair",
+    "c": "TileComputer",
+    "d": "TileDesk",
+    "e": "TileDoor",
+    "f": "TileFloor",
+    "g": "TileLocker",
+    "h": "TileWall",
+    "i": "TileWindow"
+  },
+  "tags": [
+    "urban"
+  ],
+  "weight": 2
+}

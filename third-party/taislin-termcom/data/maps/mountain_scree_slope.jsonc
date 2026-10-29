@@ -1,0 +1,22 @@
+{
+  "description": "Mountain scree slope map chunk",
+  "height": 5,
+  "id": "mountain_scree_slope",
+  "no_rotate": true,
+  "rows": [
+    ".......",
+    "BBBBBBB",
+    "SSSSSSS",
+    ".SSSSS.",
+    "......."
+  ],
+  "tags": [
+    "mountain"
+  ],
+  "terrain": {
+    "B": "TileBoulder",
+    "S": "TileScree"
+  },
+  "weight": 3,
+  "width": 7
+}

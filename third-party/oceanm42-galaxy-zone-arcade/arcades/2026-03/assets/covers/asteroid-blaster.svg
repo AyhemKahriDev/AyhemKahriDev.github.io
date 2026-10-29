@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glowStrong">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes rotate1 { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes rotate2 { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
+    @keyframes thrust { 0%, 100% { opacity: 1; transform: scaleY(1); } 50% { opacity: 0.4; transform: scaleY(0.6); } }
+    @keyframes drift1 { 0% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(10px,-5px) rotate(180deg); } 100% { transform: translate(0,0) rotate(360deg); } }
+    @keyframes drift2 { 0% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(-8px,8px) rotate(-180deg); } 100% { transform: translate(0,0) rotate(-360deg); } }
+    @keyframes drift3 { 0% { transform: translate(0,0) rotate(0deg); } 50% { transform: translate(5px,10px) rotate(180deg); } 100% { transform: translate(0,0) rotate(360deg); } }
+    .ast1 { animation: drift1 8s linear infinite; transform-origin: 70px 120px; }
+    .ast2 { animation: drift2 6s linear infinite; transform-origin: 230px 150px; }
+    .ast3 { animation: drift3 10s linear infinite; transform-origin: 60px 300px; }
+    .ast4 { animation: drift1 7s linear infinite; transform-origin: 240px 310px; }
+    .ast5 { animation: drift2 9s linear infinite; transform-origin: 150px 80px; }
+    .flame { animation: thrust 0.2s ease-in-out infinite; transform-origin: 150px 220px; }
+  </style>
+  <rect width="300" height="400" fill="#0a0a1a"/>
+  <!-- Stars -->
+  <g fill="#fff" opacity="0.3">
+    <circle cx="15" cy="25" r="0.8"/><circle cx="55" cy="60" r="0.5"/><circle cx="120" cy="30" r="0.7"/>
+    <circle cx="200" cy="50" r="0.6"/><circle cx="270" cy="80" r="0.8"/><circle cx="280" cy="200" r="0.5"/>
+    <circle cx="25" cy="370" r="0.7"/><circle cx="180" cy="380" r="0.6"/><circle cx="90" cy="350" r="0.5"/>
+  </g>
+  <!-- Asteroids -->
+  <g class="ast1" filter="url(#glow)">
+    <polygon points="70,95 90,100 95,115 85,135 65,130 55,115 60,100" fill="none" stroke="#00FFFF" stroke-width="1.5"/>
+  </g>
+  <g class="ast2" filter="url(#glow)">
+    <polygon points="230,125 250,130 255,145 248,165 225,160 218,145 222,130" fill="none" stroke="#00FFFF" stroke-width="1.5"/>
+  </g>
+  <g class="ast3" filter="url(#glow)">
+    <polygon points="60,280 75,275 85,290 80,310 65,315 50,305 48,290" fill="none" stroke="#88FFFF" stroke-width="1.2"/>
+  </g>
+  <g class="ast4" filter="url(#glow)">
+    <polygon points="240,295 255,290 265,305 258,320 242,322 232,310" fill="none" stroke="#88FFFF" stroke-width="1.2"/>
+  </g>
+  <g class="ast5" filter="url(#glow)">
+    <polygon points="150,60 162,65 168,78 158,90 142,88 135,75 140,65" fill="none" stroke="#00FFFF" stroke-width="1"/>
+  </g>
+  <!-- Ship -->
+  <g filter="url(#glowStrong)">
+    <polygon points="150,175 165,210 150,205 135,210" fill="none" stroke="#ffffff" stroke-width="2"/>
+  </g>
+  <!-- Thrust flame -->
+  <g class="flame" filter="url(#glow)">
+    <polygon points="150,208 145,225 150,220 155,225" fill="#00CCFF" opacity="0.8"/>
+  </g>
+  <!-- Title -->
+  <text x="150" y="50" text-anchor="middle" font-family="monospace" font-size="22" font-weight="bold" fill="#00FFFF" filter="url(#glowStrong)">ASTEROID BLASTER</text>
+  <text x="150" y="380" text-anchor="middle" font-family="monospace" font-size="12" fill="#88FFFF" opacity="0.6">HYPERSPACE</text>
+</svg>

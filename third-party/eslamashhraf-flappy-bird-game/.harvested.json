@@ -1,0 +1,16 @@
+{
+  "repo": "EslamAsHhraf/Flappy-Bird-Game",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 1690,
+  "pushedAt": "2023-10-05T08:16:17Z",
+  "description": "🐦 Flappy Bird is a side-scrolling mobile game featuring 2D retro style graphics. The objective is to direct a flying bird, named \"Faby\", who moves continuously to the right, between sets of Mario-like pipes.",
+  "defaultBranch": "main",
+  "owner": "EslamAsHhraf",
+  "slug": "eslamashhraf-flappy-bird-game",
+  "dest": "third-party/eslamashhraf-flappy-bird-game",
+  "readme": "# 🕊️ Flappy Bird\n\n<div align=\"center\">\n\n<img width=475px src=\"https://user-images.githubusercontent.com/71986226/189888993-ffc4335b-62c0-46b2-b12a-fdbc09863be4.gif\">\n<div align=\"center\"  width=10%>\n\n### \"Enjoy🐣\"\n\n</div>\n</div>\n\n<hr style=\"background-color: #4b4c60\"></hr>\n\n## 📝 Table of Contents\n\n- <a href =\"#about\"> 📙 Overview</a>\n- <a href =\"#video\"> 🎥 Demo</a>\n- <a href =\"#contributors\"> ✨ Contributors</a>\n- <a href =\"#license\"> 🔒 License</a>\n<hr style=\"background-color: #4b4c60\"></hr>\n<a id = \"about\"></a>\n\n## 📙 Overview\n\n<ul>\n <li>\nFlappy Bird was a side-scrolling mobile game featuring 2D retro style graphics. The objective was to direct a flying bird, named \"Faby\", who moves continuously to the right, between sets of Mario-like pipes. </li> <li>If the player touches the pipes, they lose.</li>\n<li> Faby briefly flaps upward each time that the player taps the screen; if the screen is not tapped, Faby falls because of gravity; each pair of pipes that he navigates between earns the player a single point, with medals awarded for the score at the end of the game.</li>\n<li>No medal is awarded to scores less than ten. A bronze medal is given to scores between ten and twenty. In order to receive the silver medal, the player must reach 20 points. The gold medal is given to those who score higher than thirty points. Players who achieve a score of forty or higher receive a platinum medal.\n</li>\n</ul>\n<hr style=\"background-color: #4b4c60\"></hr>\n<a id = \"Started\"></a>\n\n## 🚀 Get Started\n\n- **Let's Go visit** <a href=\"https://eslamashhraf.github.io/Flappy-Bird-Game/\">**Flappy Bird Game**</a>\n\n<br>\n\n<hr style=\"background-color: #4b4c60\"></hr>\n<a id =\"Video\"></a>\n\n## 🎥 Demo\n\n<div  align=\"center\">\n<video src=\"https://user-images.githubusercontent.com/71986226/189905917-7627f516-56b5-4bc6-94f4-3751605d0fb1.mp4\"  controls autoplay unmuted>\n</video> \n</div>\n\n> **Note**: Play the sound\n\n<hr style=\"background-color: #4b4c60\"></hr>\n<a id =\"Contributors\"></a>\n\n## 👑 Contributors\n\n<br>\n<table >\n  <tr>\n        <td align=\"center\"><a href=\"https://github.com/EslamAsHhraf\"><img src=\"https://avatars.githubusercontent.com/u/71986226?v=4\" width=\"150px;\" alt=\"\"/><br /><sub><b>Eslam Ashraf</b></sub></a><br /></td>\n  </tr>\n</table>\n\n<hr style=\"background-color: #4b4c60\"></hr>\n\n<a id =\"License\"></a>\n\n## 🔒 License\n\n> **Note**: This software is licensed under MIT License, See [License](https://github.com/EslamAsHhraf/Flappy-Bird-Game/blob/main/LICENSE) for more information ©EslamAsHhraf.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

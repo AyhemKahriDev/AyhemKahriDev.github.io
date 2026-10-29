@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Barrel Jump — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Barrel Jump</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      1981, and suddenly every kid in Portland had barrel-jumping calluses on
+      their thumbs. I had the real machine wedged between two pinball tables
+      up front, and I swear the girder-climbing one got more foot traffic
+      than the popcorn machine. There was a kid, must've been ten, who came
+      in every day after school with exactly one quarter and could clear
+      three barrels in a single jump. Never made it to the top. Never once
+      complained either. Just fed the machine his quarter and tried again.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The old version I coded myself last year had barrels that would just
+      teleport past you if the frame rate hiccuped — same deltaTime trick as
+      always, now everything from your walk speed to the barrel roll is tied
+      to actual seconds instead of "however many ticks happened to run." The
+      big thing the crew added this time is the ladders — some of them don't
+      even connect all the way through anymore, which sounds like a bug but
+      it's on purpose, it's a trap, and it makes you sweat a little climbing
+      up not knowing if you'll dead-end. And that hammer power-up now really
+      commits you — you can't jump or grab a ladder while you're swinging
+      it, which is exactly the kind of tradeoff that used to make me yell at
+      the cabinet in '82.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build our Donkey Kong game against the shared engine. Six sloped
+girders connected by ladders — make a couple of the ladders broken,
+dead ends that don't fully connect. Barrels roll down from the ape
+and sometimes take a ladder toward the player instead of just
+rolling off the end. Jumping clean over a barrel should feel great —
+sound, floating score text, bonus for clearing more than one in a
+jump. Two hammer pickups that make you invincible for a few seconds
+but you can't jump or climb while you're swinging it. A fireball
+that wanders the stage and only the hammer can stop. Bonus timer
+ticking down, reach the captive before it hits zero.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>Every girder is just two height values — one for the left edge,
+        one for the right — so walking across it and sliding down the slope
+        is one line of math, no separate "ramp" logic bolted on.</li>
+      <li>Jumping over a barrel is detected by watching which side of you the
+        barrel is on before and after each tick — the instant it flips from
+        one side to the other without you two touching, that's a clean
+        clear.</li>
+      <li>The fireball doesn't just wander — it re-checks which ladder gets
+        it closer to whatever row you're standing on every second or so,
+        same as I imagine the real cabinet's chip must have done it, just
+        with fewer transistors.</li>
+      <li>Falling more than one girder height in a single jump is what kills
+        you — land on the very next girder down and you're fine, miss it
+        and it's a long way down.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Barrel Jump</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>
