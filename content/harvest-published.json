@@ -574,94 +574,6 @@
       ]
     },
     {
-      "id": "selenebun-towerdefense",
-      "title": "Tower Defence",
-      "tagline": "Build your towers and hold the line against the waves.",
-      "description": "Place towers along the path, spend what you earn on upgrades and stop every wave before it reaches the base.",
-      "category": "strategy",
-      "accent": "hsl(67 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/selenebun-towerdefense/index.html"
-      },
-      "credit": {
-        "author": "selenebun",
-        "licence": "MIT",
-        "source": "https://github.com/selenebun/towerdefense"
-      },
-      "keywords": [
-        "tower defence game",
-        "play tower defence online",
-        "free tower defence",
-        "online tower defence game",
-        "strategy game"
-      ],
-      "howToPlay": [
-        "Pick a tower with a tap or a click, then pick a spot beside the path.",
-        "Move between build spots with the arrow keys or the on-screen pad.",
-        "Each wave is stronger than the last, so upgrade before it arrives."
-      ],
-      "faq": [
-        {
-          "q": "Is Tower Defence free to play?",
-          "a": "Yes. Tower Defence is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Tower Defence work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "mumuy-pacman",
-        "phoboslab-underrun"
-      ]
-    },
-    {
-      "id": "knadh-wordpluck",
-      "title": "Wordpluck",
-      "tagline": "Type the words as fast and as accurately as you can.",
-      "description": "Type each word that appears as quickly and accurately as you can, and keep the run going.",
-      "category": "word",
-      "accent": "hsl(244 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/knadh-wordpluck/index.html"
-      },
-      "credit": {
-        "author": "knadh",
-        "licence": "MIT",
-        "source": "https://github.com/knadh/wordpluck"
-      },
-      "keywords": [
-        "wordpluck game",
-        "play wordpluck online",
-        "free wordpluck",
-        "online typing game",
-        "word game"
-      ],
-      "howToPlay": [
-        "Type each word that appears, then press Space to move on.",
-        "Keep your hands on the keyboard and your eyes on the text.",
-        "Accuracy and speed both count towards your score."
-      ],
-      "faq": [
-        {
-          "q": "Is Wordpluck free to play?",
-          "a": "Yes. Wordpluck is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Wordpluck work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "mumuy-pacman",
-        "phoboslab-underrun"
-      ]
-    },
-    {
       "id": "bozar-cursedsouls",
       "title": "Cursed Souls",
       "tagline": "One life, a fresh dungeon and a fight to the last floor.",
@@ -784,50 +696,6 @@
         },
         {
           "q": "Does Flappy Bird work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "mumuy-pacman",
-        "phoboslab-underrun"
-      ]
-    },
-    {
-      "id": "awslabs-the-qubit-factory",
-      "title": "The Qubit Factory",
-      "tagline": "Start small, earn steadily and watch the numbers grow.",
-      "description": "Puzzle/construction game about quantum computing. Free in your browser, with no download and no sign-up at all.",
-      "category": "puzzle",
-      "accent": "hsl(160 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/awslabs-the-qubit-factory/index.html"
-      },
-      "credit": {
-        "author": "awslabs",
-        "licence": "Apache-2.0",
-        "source": "https://github.com/awslabs/the-qubit-factory"
-      },
-      "keywords": [
-        "the qubit factory game",
-        "play the qubit factory online",
-        "free the qubit factory",
-        "online idle game",
-        "sandbox game"
-      ],
-      "howToPlay": [
-        "Tap or click to earn your first coins.",
-        "Spend what you earn on upgrades that earn faster.",
-        "Move between upgrades with the arrow keys or the on-screen pad."
-      ],
-      "faq": [
-        {
-          "q": "Is The Qubit Factory free to play?",
-          "a": "Yes. The Qubit Factory is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does The Qubit Factory work on a phone?",
           "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
         }
       ],
@@ -1674,50 +1542,6 @@
       ]
     },
     {
-      "id": "md-abu-kayser-drive-mad",
-      "title": "Drive Mad",
-      "tagline": "Steer for the line and keep your foot down.",
-      "description": "High-octane, dependency-free arcade racing game ( / ) - keyboard, gamepad and touch controls.",
-      "category": "racing",
-      "accent": "hsl(28 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/md-abu-kayser-drive-mad/index.html"
-      },
-      "credit": {
-        "author": "md-abu-kayser",
-        "licence": "MIT",
-        "source": "https://github.com/md-abu-kayser/drive-mad"
-      },
-      "keywords": [
-        "drive mad game",
-        "play drive mad online",
-        "free drive mad",
-        "online racing game",
-        "racing game"
-      ],
-      "howToPlay": [
-        "Steer with the left and right arrows, or use the on-screen pad.",
-        "Accelerate with the up arrow and brake with the down arrow.",
-        "Swipe left or right on a phone to steer through the corner."
-      ],
-      "faq": [
-        {
-          "q": "Is Drive Mad free to play?",
-          "a": "Yes. Drive Mad is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Drive Mad work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "mumuy-pacman",
-        "phoboslab-underrun"
-      ]
-    },
-    {
       "id": "kg-1510-quizeasy",
       "title": "Quiz Easy",
       "tagline": "Answer the questions and see how much you know.",
@@ -1840,50 +1664,6 @@
         },
         {
           "q": "Does Daddelkiste work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "mumuy-pacman",
-        "phoboslab-underrun"
-      ]
-    },
-    {
-      "id": "varunbanka-super-mario-run-using-javascript",
-      "title": "Super Mario Run Using",
-      "tagline": "A quick game to pick up and play in the browser.",
-      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
-      "category": "arcade",
-      "accent": "hsl(83 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/varunbanka-super-mario-run-using-javascript/index.html"
-      },
-      "credit": {
-        "author": "VarunBanka",
-        "licence": "GPL-3.0",
-        "source": "https://github.com/VarunBanka/super-mario-run-using-javascript"
-      },
-      "keywords": [
-        "super mario run using game",
-        "play super mario run using online",
-        "free super mario run using",
-        "online quick game",
-        "sandbox game"
-      ],
-      "howToPlay": [
-        "Tap or click to start, then follow the prompts inside the game.",
-        "Move with the arrow keys, or use the on-screen pad.",
-        "Swipe on a phone to send the arrow keys the game expects."
-      ],
-      "faq": [
-        {
-          "q": "Is Super Mario Run Using free to play?",
-          "a": "Yes. Super Mario Run Using is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Super Mario Run Using work on a phone?",
           "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
         }
       ],
@@ -2378,50 +2158,6 @@
       ]
     },
     {
-      "id": "james-livesey-bytle",
-      "title": "Bytle",
-      "tagline": "Six guesses to find the five-letter word.",
-      "description": "Wordle-like game where you have to guess the unsigned 8-bit binary number.",
-      "category": "word",
-      "accent": "hsl(3 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/james-livesey-bytle/index.html"
-      },
-      "credit": {
-        "author": "James-Livesey",
-        "licence": "MIT",
-        "source": "https://github.com/James-Livesey/bytle"
-      },
-      "keywords": [
-        "bytle game",
-        "play bytle online",
-        "free bytle",
-        "online wordle game",
-        "word game"
-      ],
-      "howToPlay": [
-        "Type a word, or pick the letters on the keyboard shown in the game.",
-        "Green means the right letter in the right place; yellow means it belongs elsewhere.",
-        "Press Enter or the B button on the pad to submit your guess."
-      ],
-      "faq": [
-        {
-          "q": "Is Bytle free to play?",
-          "a": "Yes. Bytle is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Bytle work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "mumuy-pacman",
-        "phoboslab-underrun"
-      ]
-    },
-    {
       "id": "liyasthomas-snake",
       "title": "Snake (Liyasthomas)",
       "tagline": "Eat, grow and keep clear of your own tail.",
@@ -2676,50 +2412,6 @@
         },
         {
           "q": "Does Multiplayer Snake work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "mumuy-pacman",
-        "phoboslab-underrun"
-      ]
-    },
-    {
-      "id": "habibieamrullah-html5-crossword-puzzle-game",
-      "title": "Crossword Puzzle",
-      "tagline": "Find every hidden word in the grid.",
-      "description": "Scan the grid across, down and diagonally to find every word on the list before the round ends.",
-      "category": "word",
-      "accent": "hsl(170 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/habibieamrullah-html5-crossword-puzzle-game/assets/index.html"
-      },
-      "credit": {
-        "author": "habibieamrullah",
-        "licence": "MIT",
-        "source": "https://github.com/habibieamrullah/HTML5-Crossword-Puzzle-Game"
-      },
-      "keywords": [
-        "crossword puzzle game",
-        "play crossword puzzle online",
-        "free crossword puzzle",
-        "online word search game",
-        "word game"
-      ],
-      "howToPlay": [
-        "Drag across a line of letters, or move the cursor with the arrow keys.",
-        "Words can run across, down, up or diagonally.",
-        "Mark every word on the list to finish the puzzle."
-      ],
-      "faq": [
-        {
-          "q": "Is Crossword Puzzle free to play?",
-          "a": "Yes. Crossword Puzzle is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Crossword Puzzle work on a phone?",
           "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
         }
       ],
