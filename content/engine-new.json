@@ -1,0 +1,96 @@
+{
+  "_comment": "New first-party engine games for the six-game chunk. Merged into content/games.json by the integrator; this file is the source of truth for these six ids.",
+  "games": [
+    {
+      "id": "sudoku",
+      "title": "Daily Sudoku",
+      "tagline": "One grid a day, three mistakes and you are out.",
+      "description": "A free daily sudoku with a unique solution every time. Every player gets the same grid on the same day, three difficulty levels change how many numbers you start with, and three wrong entries end the round. No download, no sign-up.",
+      "category": "puzzle",
+      "accent": "#FFC93E",
+      "daily": true,
+      "keywords": ["sudoku", "daily sudoku", "free sudoku online", "sudoku easy", "sudoku hard", "play sudoku"],
+      "howToPlay": ["Tap a cell, then type 1-9. Backspace clears it.", "A wrong number costs one of your three mistakes.", "Fill every cell correctly to finish the grid."],
+      "faq": [
+        { "q": "Is the sudoku the same for everyone?", "a": "Yes. The grid is generated from today's date, so every player gets the same puzzle until midnight." },
+        { "q": "How many numbers does the hard grid start with?", "a": "About 30, against 46 on easy. Every grid has exactly one solution." }
+      ],
+      "related": ["minesweeper", "memory"]
+    },
+    {
+      "id": "minesweeper",
+      "title": "Minesweeper",
+      "tagline": "Clear the field. The first click is always safe.",
+      "description": "Classic minesweeper with a guarantee: your first click never hits a mine. Three field sizes, flags on F, and a timer that only starts when you do. Free, in the browser, on a phone or a desktop.",
+      "category": "brain",
+      "accent": "#3DFFA9",
+      "daily": true,
+      "keywords": ["minesweeper", "free minesweeper", "minesweeper online", "minesweeper no download", "play minesweeper"],
+      "howToPlay": ["Tap a square to open it. Numbers count the mines touching that square.", "Press F, or the mode button, to place flags.", "Open every safe square to win."],
+      "faq": [
+        { "q": "Can I lose on the first click?", "a": "No. If the square you open first hides a mine, the mine moves before the click resolves." }
+      ],
+      "related": ["sudoku", "memory"]
+    },
+    {
+      "id": "breakout",
+      "title": "Neon Breakout",
+      "tagline": "One paddle, one ball, forty bricks.",
+      "description": "A neon brick-breaker with a paddle you can drag on a phone or steer with the arrow keys. Five rows of bricks, three lives and a ball that gets faster every level.",
+      "category": "arcade",
+      "accent": "#2FE6FF",
+      "daily": false,
+      "keywords": ["breakout", "brick breaker", "free breakout game", "play breakout online", "arkanoid"],
+      "howToPlay": ["Drag anywhere to move the paddle, or use the left and right arrows.", "Press Space to launch the ball.", "Clear every brick without losing all three lives."],
+      "faq": [
+        { "q": "Does it work with one thumb?", "a": "Yes. The paddle follows your finger anywhere on the playfield, and the page does not scroll while you play." }
+      ],
+      "related": ["tetris", "snake"]
+    },
+    {
+      "id": "lightsout",
+      "title": "Lights Out",
+      "tagline": "One tap flips five lights. Turn them all off.",
+      "description": "The puzzle where every tap changes the light you pressed and its four neighbours. Every board is generated from a solved one, so it can always be finished - the only question is in how few moves.",
+      "category": "puzzle",
+      "accent": "#B98CFF",
+      "daily": true,
+      "keywords": ["lights out", "lights out puzzle", "free puzzle game", "logic puzzle online", "play lights out"],
+      "howToPlay": ["Tap a light to flip it and its four neighbours.", "Every board starts solvable.", "Turn all 25 lights off to win."],
+      "faq": [
+        { "q": "Is every board solvable?", "a": "Yes. The board is built by playing the game backwards from a solved state." }
+      ],
+      "related": ["sudoku", "memory"]
+    },
+    {
+      "id": "simon",
+      "title": "Simon Says",
+      "tagline": "Four pads. One growing sequence. How long can you keep up?",
+      "description": "The memory game with four pads and a sequence that grows by one every round. Watch, then repeat. Hard mode plays faster and starts longer.",
+      "category": "brain",
+      "accent": "#4FA3FF",
+      "daily": false,
+      "keywords": ["simon says", "simon game", "memory game online", "free memory game", "sequence game"],
+      "howToPlay": ["Watch the pads light up and listen.", "Repeat the sequence by tapping the pads in the same order.", "Every correct round adds one more step."],
+      "faq": [
+        { "q": "Does it make sound?", "a": "Each pad has its own tone, synthesised in the browser. Press M to mute." }
+      ],
+      "related": ["memory", "sudoku"]
+    },
+    {
+      "id": "typing",
+      "title": "Typing Sprint",
+      "tagline": "Sixty seconds. How many words can you type?",
+      "description": "A one-minute typing test with real words, live words-per-minute and a score per character. No account, no lesson, no sign-up - just start typing when the clock starts.",
+      "category": "word",
+      "accent": "#FF4FA8",
+      "daily": true,
+      "keywords": ["typing test", "typing speed test", "wpm test", "free typing game", "typing practice"],
+      "howToPlay": ["Type the highlighted word and press Space to submit it.", "A mistake costs the word - finish it and move on.", "Your score is ten points per letter."],
+      "faq": [
+        { "q": "How is WPM calculated?", "a": "Correct characters divided by five, divided by the minutes elapsed." }
+      ],
+      "related": ["wordsearch", "sudoku"]
+    }
+  ]
+}
