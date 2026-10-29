@@ -1,0 +1,4 @@
+{
+  "_comment": "Machine-curated harvest entries that have passed the publish gate. Written by the publishing chunk; read as layer 4 by scripts/catalogue.mjs. Hand-written copy belongs in content/overlays.json instead.",
+  "games": []
+}

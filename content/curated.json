@@ -1,0 +1,4 @@
+{
+  "_comment": "Hand-written third-party picks. `npm run harvest` never touches this file; later layers (published, generated) lose to it by id. See scripts/catalogue.mjs.",
+  "games": []
+}

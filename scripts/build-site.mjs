@@ -15,6 +15,7 @@ import { gameShell, embedShell } from './shell.mjs';
 import { gameIcon, iconSprite, glyph, brandMark, tileAccent } from './icons.mjs';
 import { cleanTagline, creditLicence } from './content-utils.mjs';
 import { sanitizeHtml } from './sanitize-embed.mjs';
+import { mergeCatalogue, layerGames } from './catalogue.mjs';
 import {
   generateWordBoard,
   boardAnswers,
@@ -151,8 +152,37 @@ const THEMES = [
 ];
 /** Themes whose stage is paper, not a screen: the browser chrome follows. */
 const LIGHT_THEMES = THEMES.filter((t) => t.light).map((t) => t.id);
-/** Curated games first, then the harvested catalogue. */
-const GAMES = [...content.games, ...(generated.games ?? [])];
+/**
+ * Read an optional catalogue layer from content/.
+ *
+ * `content/engine-new.json` and `content/harvest-published.json` are written by
+ * other chunks of the same job and may not exist yet, so a missing file is an
+ * empty layer rather than a build failure - a static `import ... with { type:
+ * 'json' }` cannot express that (it throws at load time, before any code runs).
+ */
+function readJsonLayer(rel) {
+  const file = join(root, rel);
+  if (!existsSync(file)) return {};
+  try {
+    return JSON.parse(readFileSync(file, 'utf8'));
+  } catch (err) {
+    throw new Error(`${rel} is not valid JSON: ${err.message}`);
+  }
+}
+
+/**
+ * One catalogue, five layers plus overlays. Earlier layers win by id, so
+ * nothing the harvest regenerates can overwrite hand-written curation, and the
+ * overlays in content/overlays.json are applied last. See scripts/catalogue.mjs.
+ */
+const GAMES = mergeCatalogue({
+  base: content.games ?? [],
+  engine: layerGames(readJsonLayer('content/engine-new.json')),
+  curated: layerGames(readJsonLayer('content/curated.json')),
+  published: layerGames(readJsonLayer('content/harvest-published.json')),
+  generated: generated.games ?? [],
+  overlays: readJsonLayer('content/overlays.json').games ?? {},
+});
 const CATEGORIES = content.categories.filter((c) => GAMES.some((g) => g.category === c.id));
 
 const PAST_DAYS = 30;
@@ -989,12 +1019,14 @@ ${urls.map((u) => `  <url><loc>${esc(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.la
 }
 
 function buildRobots() {
+  // SITE.baseUrl already ends in a slash ("https://arcadefork.pages.dev/"),
+  // so appending "/sitemap.xml" produced a doubled slash in the live file.
   write(
     'robots.txt',
     `User-agent: *
 Allow: /
 
-Sitemap: ${SITE.baseUrl}/sitemap.xml
+Sitemap: ${SITE.baseUrl.replace(/\/+$/, '')}/sitemap.xml
 `,
   );
 }
