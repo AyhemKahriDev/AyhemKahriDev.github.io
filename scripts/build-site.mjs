@@ -429,6 +429,7 @@ function layout({
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
+<meta name="language" content="${esc(L.id)}">
 ${indexable ? '' : '<meta name="robots" content="noindex">\n'}<link rel="canonical" href="${esc(canon)}">
 ${altTags}
 <meta property="og:type" content="website">
@@ -966,6 +967,7 @@ function buildCategory(cat) {
       '@type': 'VideoGame',
       name: g.title,
       url: pageUrl(`/games/${g.id}/`),
+      inLanguage: L.id,
       genre: title,
       gamePlatform: 'Web Browser',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
@@ -1126,6 +1128,7 @@ function buildGamePage(game) {
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
+      inLanguage: L.id,
       mainEntity: faq.map((f) => ({
         '@type': 'Question',
         name: f.q,

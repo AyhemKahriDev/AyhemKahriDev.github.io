@@ -31,6 +31,28 @@
   var PREFIX = AF.prefix || '';
   var STR = AF.strings || {};
 
+  /* English for every string this file writes into the DOM. The payload above
+     carries the page's own wording; this table covers a document that ships
+     without one (an older cached page). Same contract as the builder's
+     catalogues: a missing string reads as English - never "undefined", never
+     a bare key. */
+  var FALLBACK = {
+    themeButton: 'Theme: {name}',
+    match: 'matching “{q}”',
+    in: 'in {category}',
+    all: '· all {count} games',
+    broken: '· catalogue unavailable, this page only',
+    page: '· this page, loading the rest',
+    one: '{count} game',
+    many: '{count} games',
+  };
+
+  /** One of the strings this file owns: the page's, else English. */
+  function str(name) {
+    var value = STR[name];
+    return typeof value === 'string' && value ? value : FALLBACK[name];
+  }
+
   /** A site path in this page's language tree. */
   function lp(path) {
     return PREFIX + path;
@@ -54,14 +76,37 @@
     );
 
     /* One source of truth: the menu markup. A new coat is a THEMES entry in
-       the builder, and the switcher labels itself from the DOM. */
+       the builder, and the switcher labels itself from the DOM. The coat's
+       hint (`<em>ink + lime</em>`) stays out of the label: it is a caption,
+       not a name. */
     var themeLabels = {};
     themeItems.forEach(function (el) {
       var nm = el.querySelector('.nm');
-      themeLabels[el.getAttribute('data-theme-id')] = nm
-        ? (nm.textContent || '').split('\n')[0].replace(/\s+/g, ' ').trim()
+      var name = nm ? nm.cloneNode(true) : null;
+      if (name) {
+        var hint = name.querySelector('em');
+        if (hint && hint.parentNode) hint.parentNode.removeChild(hint);
+      }
+      themeLabels[el.getAttribute('data-theme-id')] = name
+        ? (name.textContent || '').replace(/\s+/g, ' ').trim()
         : el.getAttribute('data-theme-id');
     });
+
+    /* The picker's own label in the page's language: the document renders it
+       once for the first coat ("Thème : Signal"), so its wording *is* the
+       localisation. Turn that into a template ("Thème : {name}") and every
+       other coat reads the same language - no extra payload key, and it stays
+       right for a language only the builder knows about. */
+    function themeLabelTemplate() {
+      if (typeof STR.themeButton === 'string' && STR.themeButton) return STR.themeButton;
+      var current = themeBtn && themeBtn.getAttribute('aria-label');
+      var first = themeItems[0] && themeLabels[themeItems[0].getAttribute('data-theme-id')];
+      if (current && first && current.indexOf(first) !== -1) {
+        return current.replace(first, '{name}');
+      }
+      return FALLBACK.themeButton;
+    }
+    var THEME_LABEL = themeLabelTemplate();
 
     function paintTheme(id) {
       root.setAttribute('data-theme', id);
@@ -75,7 +120,12 @@
       themeItems.forEach(function (el) {
         el.setAttribute('aria-checked', String(el.getAttribute('data-theme-id') === id));
       });
-      if (themeBtn) themeBtn.setAttribute('aria-label', 'Theme: ' + (themeLabels[id] || id));
+      if (themeBtn) {
+        themeBtn.setAttribute(
+          'aria-label',
+          fill(THEME_LABEL, { name: themeLabels[id] || id }),
+        );
+      }
       var meta = document.getElementById('meta-theme');
       if (meta) {
         var bg = getComputedStyle(root).getPropertyValue('--ink').trim();
@@ -605,13 +655,13 @@
         if (status) {
           var bits = [];
           if (filtering) {
-            bits.push(fill(hits === 1 ? STR.one : STR.many, { count: hits }));
-            if (state.q) bits.push(fill(STR.match, { q: input.value.trim() }));
+            bits.push(fill(str(hits === 1 ? 'one' : 'many'), { count: hits }));
+            if (state.q) bits.push(fill(str('match'), { q: input.value.trim() }));
             if (state.cat !== 'all')
-              bits.push(fill(STR.in, { category: catName[state.cat] || state.cat }));
-            if (crossPage) bits.push(fill(STR.all, { count: catalogCache.length }));
-            else if (catalogBroken) bits.push(STR.broken);
-            else bits.push(STR.page);
+              bits.push(fill(str('in'), { category: catName[state.cat] || state.cat }));
+            if (crossPage) bits.push(fill(str('all'), { count: catalogCache.length }));
+            else if (catalogBroken) bits.push(str('broken'));
+            else bits.push(str('page'));
           }
           status.textContent = bits.join(' ');
         }
