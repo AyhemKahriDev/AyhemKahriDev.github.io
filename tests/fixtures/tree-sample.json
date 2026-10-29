@@ -1,0 +1,114 @@
+{
+  "_comment": "Real-shaped `gh api repos/<owner>/<repo>/git/trees/<branch>?recursive=1 --jq '.tree[].path'` output. One array per scenario the entry picker has to handle.",
+  "rootIndex": [
+    ".gitignore",
+    "LICENSE",
+    "README.md",
+    "index.html",
+    "game.js",
+    "style.css",
+    "assets/sprites.png",
+    "dist/index.html",
+    "dist/bundle.js"
+  ],
+  "docsBuild": [
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "docs/index.html",
+    "docs/assets/app.js",
+    "src/engine/physics/index.html",
+    "src/engine/physics/loop.js"
+  ],
+  "gameDirectory": [
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "game/index.html",
+    "game/game.js",
+    "game/style.css",
+    "assets/music.mp3",
+    "tools/build.js"
+  ],
+  "noiseOnly": [
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "node_modules/jquery/dist/index.html",
+    "node_modules/jquery/dist/jquery.js",
+    "tests/fixtures/index.html",
+    "examples/demo/index.html"
+  ],
+  "tooDeep": [
+    "LICENSE",
+    "README.md",
+    "src/js/levels/maps/index.html",
+    "src/js/levels/maps/data.js"
+  ],
+  "docsSite": [
+    "LICENSE",
+    "README.md",
+    "docs/_site/index.html",
+    "docs/_site/assets/app.js",
+    "mkdocs/index.html",
+    "mkdocs/theme.js",
+    "coverage/index.html",
+    "docusaurus/build/index.html"
+  ],
+  "noHtml": [
+    "LICENSE",
+    "README.md",
+    "package.json",
+    "src/main.ts",
+    "src/engine.ts",
+    "vite.config.ts"
+  ],
+  "singlePage": [
+    "LICENSE",
+    "README.md",
+    "game.html",
+    "game.js",
+    "style.css"
+  ],
+  "landingOnly": [
+    "LICENSE",
+    "README.md",
+    "about.html",
+    "contact.html",
+    "privacy.html",
+    "terms.html",
+    "404.html",
+    "README.html",
+    "style.css"
+  ],
+  "tieBreak": [
+    "LICENSE",
+    "README.md",
+    "zoo/index.html",
+    "zoo/zoo.js",
+    "a/b/index.html",
+    "a/b/b.js"
+  ],
+  "kitchen": [
+    ".github/workflows/deploy.yml",
+    ".gitignore",
+    "LICENSE",
+    "README.md",
+    "index.html",
+    "package.json",
+    "vite.config.mjs",
+    "src/main.js",
+    "src/game.js",
+    "src/scenes/boot.js",
+    "src/scenes/menu.js",
+    "src/assets/sprites/player.png",
+    "src/assets/audio/theme.ogg",
+    "style/main.css",
+    "node_modules/phaser/dist/phaser.js",
+    "node_modules/phaser/package.json",
+    "docs/README.md",
+    "dist/game.min.js",
+    "test/unit/scenes.spec.js",
+    "tools/build.mjs"
+  ]
+}
