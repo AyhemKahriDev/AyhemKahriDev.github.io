@@ -201,6 +201,25 @@ export function defaultCopy(record = {}) {
 /* -------------------------------------------------------------- import */
 
 /**
+ * The vendored entry path, made safe to put in an iframe URL.
+ *
+ * Vendored repos do not always ship index.html at their root: the vendor step
+ * records whatever scripts/harvest/entry.mjs discovered (docs/index.html,
+ * game/index.html, ...). Old records have no `entry` and keep the URL they
+ * were published under, so this never re-points an existing game.
+ */
+function entryPathOf(record) {
+  const raw = String(record?.entry ?? '')
+    .trim()
+    .replace(/\\/g, '/')
+    .replace(/^\/+/, '');
+  const segments = raw.split('/').filter(Boolean);
+  // A '.' or '..' segment would escape /third-party/<slug>/: refuse it.
+  if (!segments.length || segments.some((s) => s === '.' || s === '..')) return 'index.html';
+  return segments.map(encodeURIComponent).join('/');
+}
+
+/**
  * Build catalogue entries from the two harvest reports.
  *
  * Pure: same input, same output, no I/O. Every dependency that needs a
@@ -287,7 +306,7 @@ export function importGames({
       category,
       accent: accentFor(id),
       daily: false,
-      embed: { src: `/third-party/${record.slug}/index.html` },
+      embed: { src: `/third-party/${record.slug}/${entryPathOf(record)}` },
       credit: {
         author: String(record.owner ?? record.repo.split('/')[0] ?? 'Unknown'),
         licence: String(record.licence ?? 'Unknown'),
