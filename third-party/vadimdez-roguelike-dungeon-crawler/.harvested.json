@@ -1,0 +1,15 @@
+{
+  "repo": "VadimDez/roguelike-dungeon-crawler",
+  "stars": 20,
+  "licence": "MIT",
+  "sizeKB": 808,
+  "pushedAt": "2017-03-19T22:25:38Z",
+  "description": "react.js game",
+  "defaultBranch": "master",
+  "owner": "VadimDez",
+  "slug": "vadimdez-roguelike-dungeon-crawler",
+  "dest": "third-party/vadimdez-roguelike-dungeon-crawler",
+  "readme": "# Roguelike Dungeon Crawler Game\n\n2D Game build with [React](https://facebook.github.io/react/), part of FCC basejumps.\n\n[Demo page](http://vadimdez.github.io/roguelike-dungeon-crawler/)\n\n### Uses\n- React\n- Redux\n- SCSS\n- Webpack 2\n\n### Install\n\n```\nnpm install\n```\n\n### Run dev\n\n```\nnpm run serve\n```\n\n### Open in browser\n\n[http://localhost:9000](http://localhost:9000)\n\n### License\n[MIT](https://tldrlegal.com/license/mit-license) © [Vadym Yatsyuk](https://github.com/vadimdez)\n",
+  "licenceFile": "LICENSE.md",
+  "entry": "index.html"
+}

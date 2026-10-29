@@ -1,0 +1,16 @@
+{
+  "repo": "shunyue1320/sokoban",
+  "stars": 38,
+  "licence": "MIT",
+  "sizeKB": 52,
+  "pushedAt": "2026-06-01T07:26:28Z",
+  "description": "这是一个好玩的推箱子游戏，共100关哦",
+  "defaultBranch": "master",
+  "owner": "shunyue1320",
+  "slug": "shunyue1320-sokoban",
+  "dest": "third-party/shunyue1320-sokoban",
+  "readme": "# sokoban\n**这是一个好玩的推箱子游戏，共100关哦**\n### 效果如下:\n![](https://img-blog.csdnimg.cn/20190620081752394.gif)\n\n# Use\n点击`clone or download` -> 下载`Download zip`-> 解压 -> 右击`game.html`文件使用谷歌浏览器打开即可开始游戏\n",
+  "licenceFile": "LICENSE",
+  "entry": "game.html",
+  "validated": true
+}

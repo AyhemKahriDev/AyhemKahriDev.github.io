@@ -1,0 +1,16 @@
+{
+  "repo": "karan19100/Arcade-classic-game",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 5,
+  "pushedAt": "2020-10-18T13:08:42Z",
+  "description": "A classic Arcade game i.e Program a ball and paddle project using JAVASCRIPT and HTML Canvas coded by me. the focus is on building common game programming concepts.",
+  "defaultBranch": "master",
+  "owner": "karan19100",
+  "slug": "karan19100-arcade-classic-game",
+  "dest": "third-party/karan19100-arcade-classic-game",
+  "readme": "# Arcade-classic-game\nA classic Arcade game i.e Program a ball and paddle project using Javascript and HTML Canvas coded by me. The focus is on building common game programming concepts in javascript.\n",
+  "licenceFile": "LICENSE",
+  "entry": "game.html",
+  "validated": true
+}

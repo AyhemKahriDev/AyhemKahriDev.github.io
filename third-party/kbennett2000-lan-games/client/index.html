@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LAN Games</title>
+  <link rel="stylesheet" href="/css/main.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     AUTH SCREEN  (shown when not logged in)
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="auth-screen" class="screen active">
+  <div class="auth-container">
+    <h1 class="auth-title">🎲 LAN Games</h1>
+    <p class="auth-subtitle">Multiplayer · Local Network</p>
+
+    <div class="tab-bar">
+      <button class="tab-btn active" data-tab="login">Sign In</button>
+      <button class="tab-btn" data-tab="register">Register</button>
+    </div>
+
+    <!-- Login form -->
+    <form id="login-form" class="auth-form active">
+      <div class="form-group">
+        <label for="login-username">Username</label>
+        <input id="login-username" type="text" autocomplete="username" placeholder="Your username" required>
+      </div>
+      <div class="form-group">
+        <label for="login-password">Password</label>
+        <input id="login-password" type="password" autocomplete="current-password" placeholder="Your password" required>
+      </div>
+      <div class="form-error" id="login-error"></div>
+      <button type="submit" class="btn btn-primary btn-full">Sign In</button>
+    </form>
+
+    <!-- Register form -->
+    <form id="register-form" class="auth-form">
+      <div class="form-group">
+        <label for="reg-username">Choose a username</label>
+        <input id="reg-username" type="text" autocomplete="username" placeholder="2–24 characters" required>
+      </div>
+      <div class="form-group">
+        <label for="reg-password">Choose a password</label>
+        <input id="reg-password" type="password" autocomplete="new-password" placeholder="4+ characters" required>
+      </div>
+      <div class="form-error" id="register-error"></div>
+      <button type="submit" class="btn btn-primary btn-full">Create Account</button>
+    </form>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     LOBBY SCREEN  (shown after login, before joining a game)
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="lobby-screen" class="screen">
+  <header class="lobby-header">
+    <h1 class="logo">🎲 LAN Games</h1>
+    <div class="header-user">
+      <span id="header-username"></span>
+      <button id="logout-btn" class="btn btn-sm btn-outline">Sign Out</button>
+    </div>
+  </header>
+
+  <div class="lobby-body">
+    <!-- Left: game list -->
+    <section class="lobby-games">
+      <div class="section-header">
+        <h2>Games</h2>
+        <button id="refresh-games-btn" class="btn btn-sm btn-outline">↻ Refresh</button>
+      </div>
+
+      <div id="my-games-section" class="saved-games-section" style="display:none">
+        <h3>↩ Rejoin Your Active Game</h3>
+        <div id="my-games-list" class="games-list"></div>
+      </div>
+
+      <div id="games-list" class="games-list">
+        <p class="empty-state">No open games found. Create one below!</p>
+      </div>
+
+      <div class="saved-games-section">
+        <h3>Your Saved Games</h3>
+        <div id="saved-games-list" class="games-list">
+          <p class="empty-state">No saved games.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Right: create game -->
+    <section class="lobby-create">
+      <h2>Create New Game</h2>
+      <form id="create-game-form">
+        <div class="form-group">
+          <label for="game-name">Game name</label>
+          <input id="game-name" type="text" placeholder="e.g. Friday Night Game" maxlength="64" required>
+        </div>
+
+        <div class="form-group">
+          <label for="game-type">Game type</label>
+          <div class="game-type-row">
+            <select id="game-type">
+              <option value="monopoly">Monopoly</option>
+            </select>
+            <button type="button" id="game-type-help-btn" class="help-btn" title="How to play">?</button>
+          </div>
+          <p class="game-type-description" id="game-type-description"></p>
+        </div>
+
+        <div class="config-section" id="monopoly-config-section">
+          <button type="button" class="collapsible-btn" id="toggle-config">
+            ▶ Customize Rules
+          </button>
+          <div class="config-panel" id="config-panel" style="display:none">
+
+            <div class="form-group">
+              <label>Starting Money</label>
+              <input id="cfg-starting-money" type="number" value="1500" min="100" max="10000" step="50">
+            </div>
+            <div class="form-group">
+              <label>Go Salary</label>
+              <input id="cfg-go-salary" type="number" value="200" min="0" max="1000" step="10">
+            </div>
+            <div class="form-group">
+              <label>Jail Fine</label>
+              <input id="cfg-jail-fine" type="number" value="50" min="0" max="500" step="10">
+            </div>
+            <div class="form-group checkbox-group">
+              <label>
+                <input id="cfg-free-parking" type="checkbox">
+                Free Parking Jackpot (taxes go into the pot)
+              </label>
+            </div>
+            <div class="form-group checkbox-group">
+              <label>
+                <input id="cfg-auction" type="checkbox" checked>
+                Auction unbuilt properties when declined
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-error" id="create-error"></div>
+        <button type="submit" class="btn btn-primary btn-full">Create Game</button>
+      </form>
+    </section>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     GAME WAITING ROOM  (after creating/joining, before start)
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="waiting-screen" class="screen">
+  <header class="game-header">
+    <div class="game-header-left">
+      <button id="leave-lobby-btn" class="btn btn-sm btn-outline">← Leave</button>
+      <h2 id="waiting-game-name">Game Name</h2>
+    </div>
+    <div class="game-header-right">
+      <span id="waiting-username"></span>
+    </div>
+  </header>
+
+  <div class="waiting-body">
+    <div class="waiting-card">
+      <h3>Players in Lobby</h3>
+      <ul id="waiting-players-list" class="players-waiting-list"></ul>
+
+      <p class="waiting-hint" id="waiting-hint">Waiting for the host to start the game…</p>
+      <button id="start-game-btn" class="btn btn-primary" style="display:none">Start Game</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════
+     GAME SCREEN  (the actual Monopoly game)
+═══════════════════════════════════════════════════════════════════════════ -->
+<div id="game-screen" class="screen">
+
+  <header class="game-header">
+    <div class="game-header-left">
+      <h2 id="game-title">Monopoly</h2>
+      <span id="game-turn-indicator" class="turn-indicator"></span>
+    </div>
+    <div class="game-header-right">
+      <button id="mute-btn"             class="btn btn-sm btn-outline" title="Toggle sound">🔊</button>
+      <button id="game-help-btn"       class="btn btn-sm btn-outline" title="How to play">? Help</button>
+      <button id="save-game-btn"       class="btn btn-sm btn-outline">💾 Save</button>
+      <button id="quit-game-btn"       class="btn btn-sm btn-outline">✕ Quit</button>
+      <!-- Shown instead of Save/Quit when spectating; toggled by UIManager.applySpectatorChrome. -->
+      <button id="leave-spectator-btn" class="btn btn-sm btn-outline" style="display:none">✕ Leave</button>
+    </div>
+  </header>
+
+  <!-- Spectator banner — hidden by default; UIManager.applySpectatorChrome
+       toggles display when the local viewer joined as a spectator. -->
+  <div id="spectator-banner" style="display:none">
+    <span class="spectator-banner-text">👁 You're spectating — chat enabled, no actions available.</span>
+  </div>
+
+  <div class="game-layout">
+
+    <!-- ── board ─────────────────────────────────────────────────────────── -->
+    <!--
+      Game-specific board DOM is created by each game's renderer in its
+      init() and removed in destroy().  Nothing inside .board-wrapper at
+      page-load time; the framework empties it before each renderer.init().
+    -->
+    <div class="board-wrapper"></div>
+
+    <!-- ── right sidebar ─────────────────────────────────────────────────── -->
+    <aside class="game-sidebar">
+
+      <!-- Player panels -->
+      <section class="players-section">
+        <h3>Players</h3>
+        <div id="players-panel" class="players-panel">
+          <!-- built by ui-manager.js -->
+        </div>
+      </section>
+
+      <!-- Action panel -->
+      <section class="action-section" id="action-section">
+        <h3 id="action-title">Actions</h3>
+        <div id="dice-display" class="dice-display" style="display:none">
+          <div class="die" id="die-1">
+            <div class="pip-slot" id="d1-tl"></div><div class="pip-slot" id="d1-tm"></div><div class="pip-slot" id="d1-tr"></div>
+            <div class="pip-slot" id="d1-ml"></div><div class="pip-slot" id="d1-mm"></div><div class="pip-slot" id="d1-mr"></div>
+            <div class="pip-slot" id="d1-bl"></div><div class="pip-slot" id="d1-bm"></div><div class="pip-slot" id="d1-br"></div>
+          </div>
+          <div class="die" id="die-2">
+            <div class="pip-slot" id="d2-tl"></div><div class="pip-slot" id="d2-tm"></div><div class="pip-slot" id="d2-tr"></div>
+            <div class="pip-slot" id="d2-ml"></div><div class="pip-slot" id="d2-mm"></div><div class="pip-slot" id="d2-mr"></div>
+            <div class="pip-slot" id="d2-bl"></div><div class="pip-slot" id="d2-bm"></div><div class="pip-slot" id="d2-br"></div>
+          </div>
+          <span id="doubles-badge" class="doubles-badge" style="display:none">Doubles!</span>
+        </div>
+        <div id="action-buttons" class="action-buttons">
+          <!-- built dynamically -->
+        </div>
+        <!-- Auction bidding -->
+        <div id="auction-panel" class="auction-panel" style="display:none">
+          <p>Property: <strong id="auction-prop-name"></strong></p>
+          <p>High bid: <strong id="auction-current-bid">$0</strong> by <span id="auction-bidder-name">—</span></p>
+          <div class="auction-bid-row">
+            <input id="auction-bid-input" type="number" min="1" placeholder="Your bid ($)" class="bid-input">
+            <button id="place-bid-btn" class="btn btn-primary">Bid</button>
+          </div>
+          <button id="pass-auction-btn" class="btn btn-outline btn-full mt-2">Pass</button>
+        </div>
+      </section>
+
+      <!-- Game log -->
+      <section class="log-section">
+        <h3>Game Log</h3>
+        <div id="game-log" class="game-log"></div>
+      </section>
+
+      <!-- Chat -->
+      <section class="chat-section">
+        <h3>Chat</h3>
+        <div id="chat-messages" class="chat-messages"></div>
+        <form id="chat-form" class="chat-form">
+          <input id="chat-input" type="text" placeholder="Say something…" maxlength="300">
+          <button type="submit" class="btn btn-primary">Send</button>
+        </form>
+      </section>
+
+    </aside>
+  </div>
+
+  <!-- ── property management modal ───────────────────────────────────────── -->
+  <div id="property-modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 id="prop-modal-title">Property</h3>
+        <button class="modal-close" id="close-property-modal">✕</button>
+      </div>
+      <div class="modal-body" id="prop-modal-body">
+        <!-- filled by ui-manager.js -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ── trade modal ──────────────────────────────────────────────────────── -->
+  <div id="trade-modal" class="modal" style="display:none">
+    <div class="modal-content modal-wide">
+      <div class="modal-header">
+        <h3>Trade</h3>
+        <button class="modal-close" id="close-trade-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="trade-columns">
+          <!-- Offer side -->
+          <div class="trade-col">
+            <h4>You Offer</h4>
+            <div class="form-group">
+              <label>Money ($)</label>
+              <input id="trade-offer-money" type="number" min="0" value="0" class="trade-input">
+            </div>
+            <div class="form-group">
+              <label>Get Out of Jail Cards</label>
+              <input id="trade-offer-cards" type="number" min="0" value="0" class="trade-input">
+            </div>
+            <label>Properties to offer:</label>
+            <div id="trade-offer-props" class="trade-props-list"></div>
+          </div>
+
+          <!-- In exchange for -->
+          <div class="trade-col-center">⇌</div>
+
+          <!-- Request side -->
+          <div class="trade-col">
+            <h4>You Request From</h4>
+            <select id="trade-target-player" class="trade-select">
+              <option value="">— Select player —</option>
+            </select>
+            <div class="form-group">
+              <label>Money ($)</label>
+              <input id="trade-request-money" type="number" min="0" value="0" class="trade-input">
+            </div>
+            <div class="form-group">
+              <label>Get Out of Jail Cards</label>
+              <input id="trade-request-cards" type="number" min="0" value="0" class="trade-input">
+            </div>
+            <label>Properties to request:</label>
+            <div id="trade-request-props" class="trade-props-list"></div>
+          </div>
+        </div>
+        <div class="form-error" id="trade-error"></div>
+        <div class="modal-footer">
+          <button id="send-trade-btn" class="btn btn-primary">Send Trade Offer</button>
+          <button id="cancel-trade-modal-btn" class="btn btn-outline">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── incoming trade offer modal ──────────────────────────────────────── -->
+  <div id="trade-incoming-modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Trade Offer Received</h3>
+      </div>
+      <div class="modal-body" id="trade-incoming-body">
+        <!-- filled by ui-manager -->
+      </div>
+      <div class="modal-footer">
+        <button id="accept-trade-btn" class="btn btn-primary">Accept</button>
+        <button id="reject-trade-btn" class="btn btn-danger">Reject</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── my properties modal ─────────────────────────────────────────────── -->
+  <div id="my-props-modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>My Properties</h3>
+        <button class="modal-close" id="close-my-props-modal">✕</button>
+      </div>
+      <div class="modal-body">
+        <div id="my-props-body" class="my-props-list"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── game over modal ──────────────────────────────────────────────────── -->
+  <div id="game-over-modal" class="modal" style="display:none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Game Over!</h3>
+      </div>
+      <div class="modal-body">
+        <p id="game-over-message" class="game-over-message"></p>
+      </div>
+      <div class="modal-footer">
+        <button id="back-to-lobby-btn" class="btn btn-primary">Back to Lobby</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- end #game-screen -->
+
+<!-- ── scripts (load order matters) ────────────────────────────────────────── -->
+<!-- Socket.io client is served by the server automatically at /socket.io/socket.io.js -->
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/sound-manager.js"></script>
+<script src="/js/games/renderer-interface.js"></script>
+<script src="/js/games/renderer-registry.js"></script>
+<script src="/js/api.js"></script>
+<script src="/js/help-system.js"></script>
+<script src="/js/game-state.js"></script>
+<script src="/js/games/monopoly/board-grid.js"></script>
+<script src="/js/ui-manager.js"></script>
+<script src="/js/turn-warning.js"></script>
+<script src="/js/games/connect-four/renderer.js"></script>
+<script src="/js/games/monopoly/renderer.js"></script>
+<script src="/js/games/risk/renderer.js"></script>
+<script src="/js/games/tic-tac-toe/renderer.js"></script>
+<script src="/js/games/yahtzee/score-sheet.js"></script>
+<script src="/js/games/yahtzee/renderer.js"></script>
+<script src="/js/games/battleship/grid.js"></script>
+<script src="/js/games/battleship/setup-phase.js"></script>
+<script src="/js/games/battleship/firing-phase.js"></script>
+<script src="/js/games/battleship/renderer.js"></script>
+<script src="/js/games/life/board-view.js"></script>
+<script src="/js/games/life/action-panel.js"></script>
+<script src="/js/games/life/card-display.js"></script>
+<script src="/js/games/life/renderer.js"></script>
+<script src="/js/games/checkers/renderer.js"></script>
+<script src="/js/socket-client.js"></script>
+<script src="/js/app.js"></script>
+
+</body>
+</html>

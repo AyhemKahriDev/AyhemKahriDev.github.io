@@ -1,0 +1,15 @@
+{
+  "repo": "alfremedpal/board-game-picker",
+  "stars": 12,
+  "licence": "MIT",
+  "sizeKB": 457,
+  "pushedAt": "2026-05-23T19:49:45Z",
+  "description": "Rank your BGG collection by tiers and share it! You can also get a random board game from your BGG collection to play!",
+  "defaultBranch": "master",
+  "owner": "alfremedpal",
+  "slug": "alfremedpal-board-game-picker",
+  "dest": "third-party/alfremedpal-board-game-picker",
+  "readme": "# Board Game Picker\nEnter your Board Game Geek username and get a random game form your collection (marked as owned) to play! Give it a try over at [bgpicker.com](https://www.bgpicker.com/)\n\nBuilt with React JS and [chakra UI](https://next.chakra-ui.com/)\n\n## Local installation\n- Clone this repo\n    - `git clone https://github.com/alfremedpal/board-game-picker.git`\n- Move inside the project\n    - `cd board-game-picker/`\n- Install dependencies\n    - `yarn install`\n- Run\n    - `yarn start`\n\n## Run with Docker\n- Build the docker image:\n    - `docker build . -t bgpicker`\n- Start docker container:\n    - `docker run -p 3000:3000 -d bgpicker`\n\n# Future\n- Add vertical layout option for ranking display\n- Add change width option for the ranking table\n- Add export option to the ranking engine\n- Add import option to the ranking engine\n\n# Contribute\nFeel free to contribute to this project by creating a pull request.\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html"
+}

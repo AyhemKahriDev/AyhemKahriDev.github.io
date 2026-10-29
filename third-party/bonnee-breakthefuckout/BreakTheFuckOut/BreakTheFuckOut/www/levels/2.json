@@ -1,0 +1,6 @@
+{
+    "title": "2",
+    "bricks": [
+        { "x": "0", "y": "456", "width": "45", "height": "23", "color": "0xFF0000", "score": "10", "sprite": "" }
+    ]
+}

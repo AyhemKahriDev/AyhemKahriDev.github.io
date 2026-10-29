@@ -1,0 +1,15 @@
+{
+  "repo": "react-puzzle-games/react-hangman",
+  "stars": 19,
+  "licence": "MIT",
+  "sizeKB": 476,
+  "pushedAt": "2026-01-17T18:48:25Z",
+  "description": "Hangman game built with React",
+  "defaultBranch": "master",
+  "owner": "react-puzzle-games",
+  "slug": "react-puzzle-games-react-hangman",
+  "dest": "third-party/react-puzzle-games-react-hangman",
+  "readme": "### Hangman game\n\n### License\nAll of the games under the [React Puzzle Games](https://github.com/react-puzzle-games) organization are [MIT licensed](./LICENSE).\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html"
+}

@@ -1,0 +1,17 @@
+.LettersRow {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+}
+
+@media (max-width: 480px) {
+  .LettersRow {
+    gap: 3px;
+  }
+}
+
+@media (max-width: 360px) {
+  .LettersRow {
+    gap: 2px;
+  }
+}

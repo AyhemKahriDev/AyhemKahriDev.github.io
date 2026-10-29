@@ -1,0 +1,1264 @@
+package main
+
+import "core:fmt"
+import "core:math"
+import "core:mem"
+import "core:os"
+import "core:strings"
+import rl "vendor:raylib"
+
+CAMERA_TEST_WIDTH :: 1280
+CAMERA_TEST_HEIGHT :: 720
+
+// Project the actual chase camera and its next 0.4–2.0 seconds of fast road into screen space.
+fast_camera_preview_max_y :: proc(nodes: []Track_Node) -> (max_y: f32, sample_count: int) {
+	max_y = -1e9
+	fractions := [3]f32{0, 0.5, 0.95}
+	lookaheads := [6]f32{4, 8, 10, 12, 16, 20}
+	for i in 0 ..< len(nodes) - 1 {
+		for fraction in fractions {
+			playhead := f32(i) + fraction
+			if pace_sample(nodes, playhead) < 0.65 do continue
+			next_i := min(i + 1, len(nodes) - 1)
+			base_x := nodes[i].curve_x + (nodes[next_i].curve_x - nodes[i].curve_x) * fraction
+			base_y := nodes[i].curve_y + (nodes[next_i].curve_y - nodes[i].curve_y) * fraction
+			base_z := nodes[i].curve_z + (nodes[next_i].curve_z - nodes[i].curve_z) * fraction
+			base_heading :=
+				nodes[i].heading + (nodes[next_i].heading - nodes[i].heading) * fraction
+			camera := ride_camera(nodes, i, fraction, 0, 0, 0, 0, {})
+			for lookahead in lookaheads {
+				preview := road_center_sample(
+					nodes,
+					playhead + lookahead,
+					base_x,
+					base_y,
+					base_z,
+					base_heading,
+				)
+				screen := rl.GetWorldToScreenEx(
+					preview,
+					camera,
+					CAMERA_TEST_WIDTH,
+					CAMERA_TEST_HEIGHT,
+				)
+				max_y = max(max_y, screen.y)
+				sample_count += 1
+			}
+		}
+	}
+	return
+}
+
+// Check both banked lane extremes with the largest possible downward crash shake.
+fast_camera_min_y :: proc(nodes: []Track_Node) -> (min_y: f32, sample_count: int) {
+	min_y = 1e9
+	fractions := [3]f32{0, 0.5, 0.95}
+	lanes := [3]f32{-1, 0, 1}
+	for i in 0 ..< len(nodes) - 1 {
+		for fraction in fractions {
+			if pace_sample(nodes, f32(i) + fraction) < 0.65 do continue
+			for lane in lanes {
+				camera := ride_camera(nodes, i, fraction, lane, 0, 0, -0.18, {})
+				min_y = min(min_y, camera.position.y)
+				sample_count += 1
+			}
+		}
+	}
+	return
+}
+
+test_audio_fx :: proc() {
+	audio_fx_self_test()
+	fmt.println("self-test: audio fx ok")
+}
+
+test_track_and_geometry :: proc() {
+	assert(track_section_for_music(0.1, 0.1, 0.05, 0.2) == CLIMB)
+	assert(track_section_for_music(0.5, 0.2, 0.1, 0.6) == DROP)
+	assert(track_section_for_music(0.2, 0.25, 0.1, 0.5) == SLALOM)
+	assert(track_section_for_music(0.1, 0.2, 0.15, 0.5) == TUNNEL)
+	assert(track_section_for_music(0.1, 0.5, 0.1, 0.5) == SPIRAL)
+	assert(track_section_for_music(0.4, 0.5, 0.25, 0.5) == SPIRAL)
+	assert(track_section_for_music(0.41, 0.5, 0.1, 0.5) == SLALOM)
+	assert(track_section_for_music(0.1, 0.5, 0.251, 0.5) == TUNNEL)
+	assert(track_section_for_music(0.1, 0.5, 0.1, SPIRAL_MIN_PACE - 0.01) == SLALOM)
+	assert(
+		track_section_for_music(0.1, SPIRAL_MIN_MID - 0.01, 0.1, 0.5) == SLALOM,
+		"moderate mids must retain the existing slalom movement",
+	)
+	spiral_heading, reverse_spiral_heading: f32
+	for _ in 0 ..< TRACK_SECTION_LENGTH {
+		target := spiral_heading_target(spiral_heading, 1)
+		spiral_heading = spiral_heading * (1 - TRACK_HEADING_BLEND) + target * TRACK_HEADING_BLEND
+		reverse_target := spiral_heading_target(reverse_spiral_heading, -1)
+		reverse_spiral_heading =
+			reverse_spiral_heading * (1 - TRACK_HEADING_BLEND) +
+			reverse_target * TRACK_HEADING_BLEND
+	}
+	assert(abs(spiral_heading - f32(2 * math.PI)) < 0.001)
+	assert(abs(reverse_spiral_heading + f32(2 * math.PI)) < 0.001)
+	assert(spiral_pitch_base(0) > 0 && spiral_pitch_base(0.75) > 0)
+	assert(
+		spiral_pitch_base(1) > spiral_pitch_base(0),
+		"spiral pitch must rise monotonically through the coil",
+	)
+
+	spiral_nodes := make([]Track_Node, TRACK_SECTION_LENGTH * 6)
+	defer delete(spiral_nodes)
+	for &node in spiral_nodes {
+		node.bass = 0.1
+		node.mid = 0.6
+		node.high = 0.1
+		node.pace = 0.7
+	}
+	compose_track(spiral_nodes, 12345)
+	spiral_min_rise: f32 = 1e9
+	for section_i in 0 ..< 6 {
+		section_start := section_i * TRACK_SECTION_LENGTH
+		section_end := section_start + TRACK_SECTION_LENGTH - 1
+		if section_i % 2 == 0 {
+			assert(spiral_nodes[section_start].section == SPIRAL)
+			assert(abs(spiral_nodes[section_start].width - 4.55) < 0.001)
+			section_rise := spiral_nodes[section_end].curve_y - spiral_nodes[section_start].curve_y
+			spiral_min_rise = min(spiral_min_rise, section_rise)
+			assert(
+				section_rise >= SPIRAL_MIN_CACHED_RISE - 0.01,
+				"cached spirals must keep their minimum rise between recovery movements",
+			)
+		} else {
+			assert(spiral_nodes[section_start].section == SLALOM)
+		}
+	}
+	assert(track_is_closed(spiral_nodes))
+	spiral_cached_turn, spiral_max_node_turn: f32
+	for i in 0 ..< TRACK_SECTION_LENGTH - 1 {
+		turn := wrapped_angle_delta(spiral_nodes[i + 1].heading, spiral_nodes[i].heading)
+		spiral_cached_turn += turn
+		spiral_max_node_turn = max(spiral_max_node_turn, abs(turn))
+	}
+	fmt.printfln(
+		"self-test: spiral cached turn %.1f° max step %.1f° min rise %.1f",
+		f64(spiral_cached_turn) * 180 / math.PI,
+		f64(spiral_max_node_turn) * 180 / math.PI,
+		spiral_min_rise,
+	)
+	assert(
+		abs(spiral_cached_turn) > f32(1.5 * math.PI),
+		"cached spiral geometry must preserve at least three quarters of its full turn",
+	)
+	assert(spiral_max_node_turn < 0.55, "spiral closure must not introduce corner-like turns")
+	spiral_camera_y, spiral_camera_samples := fast_camera_min_y(spiral_nodes)
+	assert(spiral_camera_samples > 0 && spiral_camera_y >= CHASE_CAMERA_MIN_Y)
+	terminal_spiral_nodes := make([]Track_Node, TRACK_SECTION_LENGTH * 2)
+	defer delete(terminal_spiral_nodes)
+	for i in 0 ..< len(terminal_spiral_nodes) {
+		terminal_spiral_nodes[i].bass = 0.1
+		terminal_spiral_nodes[i].mid = 0.1
+		terminal_spiral_nodes[i].high = 0.05
+		terminal_spiral_nodes[i].pace = 0.2
+		if i >= TRACK_SECTION_LENGTH {
+			terminal_spiral_nodes[i].mid = 0.6
+			terminal_spiral_nodes[i].pace = 0.7
+		}
+	}
+	compose_track(terminal_spiral_nodes, 54321)
+	assert(terminal_spiral_nodes[0].section == CLIMB)
+	assert(
+		terminal_spiral_nodes[TRACK_SECTION_LENGTH].section == SLALOM,
+		"a terminal spiral must become a recovery movement instead of descending into the seam",
+	)
+	recovery_nodes := make([]Track_Node, TRACK_SECTION_LENGTH * 3)
+	defer delete(recovery_nodes)
+	for i in 0 ..< len(recovery_nodes) {
+		recovery_nodes[i].bass = 0.1
+		recovery_nodes[i].mid = 0.1
+		recovery_nodes[i].high = 0.05
+		recovery_nodes[i].pace = 0.2
+		if i >= TRACK_SECTION_LENGTH && i < TRACK_SECTION_LENGTH * 2 {
+			recovery_nodes[i].mid = 0.6
+			recovery_nodes[i].pace = 0.7
+		}
+	}
+	compose_track(recovery_nodes, 24680)
+	recovery_spiral_start := TRACK_SECTION_LENGTH
+	recovery_spiral_end := recovery_spiral_start + TRACK_SECTION_LENGTH - 1
+	assert(recovery_nodes[0].section == CLIMB)
+	assert(recovery_nodes[recovery_spiral_start].section == SPIRAL)
+	assert(
+		recovery_nodes[TRACK_SECTION_LENGTH * 2].section == SLALOM,
+		"every spiral must override its following movement with a recovery slalom",
+	)
+	recovery_spiral_rise :=
+		recovery_nodes[recovery_spiral_end].curve_y - recovery_nodes[recovery_spiral_start].curve_y
+	fmt.printfln("self-test: recovery fixture spiral rise %.2f", recovery_spiral_rise)
+	assert(
+		recovery_spiral_rise >= SPIRAL_MIN_CACHED_RISE - 0.01,
+		"a recovery slalom must preserve the preceding spiral's cached ascent",
+	)
+
+	rate := 8000
+	samples := make([]f32, rate * 24)
+	defer delete(samples)
+	for i in 0 ..< len(samples) {
+		t := f64(i) / f64(rate)
+		segment := i / (rate * 6)
+		frequencies := [4]f64{100, 80, 800, 3000}
+		amplitudes := [4]f32{0.02, 0.32, 0.24, 0.20}
+		samples[i] = f32(math.sin(2 * math.PI * frequencies[segment] * t)) * amplitudes[segment]
+		if segment > 0 && i % (rate / 2) < rate / 50 do samples[i] *= 1.8
+	}
+	nodes := analyze_samples(raw_data(samples), len(samples), rate, 1)
+	defer delete(nodes)
+	min_fast_camera_y, fast_camera_samples := fast_camera_min_y(nodes)
+	fmt.printfln("self-test: fast camera minimum y %.2f", min_fast_camera_y)
+	assert(fast_camera_samples > 0, "the camera-height fixture must contain fast sections")
+	assert(
+		min_fast_camera_y >= CHASE_CAMERA_MIN_Y,
+		"fast banked sections must not pull the chase camera below its height floor",
+	)
+	fast_preview_y, fast_preview_samples := fast_camera_preview_max_y(nodes)
+	fmt.printfln(
+		"self-test: fast camera preview max y %.0f / %d",
+		fast_preview_y,
+		CAMERA_TEST_HEIGHT,
+	)
+	assert(fast_preview_samples > 0, "the camera regression fixture must contain fast sections")
+	assert(
+		fast_preview_y < f32(CAMERA_TEST_HEIGHT) * 2 / 3,
+		"fast-section lookahead must stay above the ship and foreground zone",
+	)
+	assert(len(nodes) == 240)
+	assert(nodes[10].bass >= 0 && nodes[10].bass <= 1)
+	assert(nodes[90].distance - nodes[89].distance > nodes[20].distance - nodes[19].distance)
+	first, last := nodes[0], nodes[len(nodes) - 1]
+	closure_dx := last.curve_x - first.curve_x
+	closure_dy := last.curve_y - first.curve_y
+	closure_dz := last.curve_z - first.curve_z
+	closure_distance := f32(
+		math.sqrt(
+			f64(closure_dx * closure_dx + closure_dy * closure_dy + closure_dz * closure_dz),
+		),
+	)
+	seam_heading_error := abs(wrapped_angle_delta(nodes[len(nodes) - 2].heading, first.heading))
+	seam_pitch_error := abs(nodes[len(nodes) - 2].pitch - first.pitch)
+	seam_bank_error := abs(road_bank(nodes, len(nodes) - 1) - road_bank(nodes, 0))
+	fmt.printfln(
+		"self-test: loop closure %.3f; seam heading %.2f° pitch %.2f° bank %.2f°",
+		closure_distance,
+		f64(seam_heading_error) * 180 / math.PI,
+		f64(seam_pitch_error) * 180 / math.PI,
+		f64(seam_bank_error) * 180 / math.PI,
+	)
+	assert(closure_distance < 0.01, "the final cached road point must return to the start")
+	assert(
+		seam_heading_error < 0.04 && seam_pitch_error < 0.04,
+		"the loop seam must preserve its tangent",
+	)
+	assert(seam_bank_error < 0.08, "the loop seam must preserve road banking")
+	assert(abs(last.width - first.width) < 0.001, "the loop seam must preserve road width")
+	pickups, hazards, features: int
+	sections: bit_set[0 ..< TRACK_SECTION_KIND_COUNT]
+	for node in nodes {
+		if node.kind == PICKUP do pickups += 1
+		if node.kind == HAZARD do hazards += 1
+		if node.feature != 0 do features += 1
+		sections += {int(node.section)}
+	}
+	fmt.printfln(
+		"self-test: movement kinds climb=%v drop=%v slalom=%v tunnel=%v spiral=%v",
+		int(CLIMB) in sections,
+		int(DROP) in sections,
+		int(SLALOM) in sections,
+		int(TUNNEL) in sections,
+		int(SPIRAL) in sections,
+	)
+	fixture_spiral_start := TRACK_SECTION_LENGTH * 2
+	fixture_spiral_end := fixture_spiral_start + TRACK_SECTION_LENGTH - 1
+	assert(nodes[fixture_spiral_start].section == SPIRAL)
+	fixture_spiral_rise := nodes[fixture_spiral_end].curve_y - nodes[fixture_spiral_start].curve_y
+	fmt.printfln("self-test: cached spiral rise %.2f", fixture_spiral_rise)
+	assert(
+		fixture_spiral_rise >= SPIRAL_MIN_CACHED_RISE - 0.01,
+		"cached mixed-track spirals must retain their minimum ascent",
+	)
+	min_x, max_x := nodes[0].curve_x, nodes[0].curve_x
+	min_y, max_y := nodes[0].curve_y, nodes[0].curve_y
+	min_turn, max_turn, min_pitch, max_pitch: f32
+	min_turn_i, max_turn_i: int
+	for node in nodes {
+		min_x, max_x = min(min_x, node.curve_x), max(max_x, node.curve_x)
+		min_y, max_y = min(min_y, node.curve_y), max(max_y, node.curve_y)
+	}
+	for i in 0 ..< len(nodes) - 1 {
+		dx := nodes[i + 1].curve_x - nodes[i].curve_x
+		dy := nodes[i + 1].curve_y - nodes[i].curve_y
+		dz := nodes[i + 1].curve_z - nodes[i].curve_z
+		heading := f32(math.atan2(f64(dx), f64(dz)))
+		planar_step := f32(math.sqrt(f64(dx * dx + dz * dz)))
+		pitch := f32(math.atan2(f64(dy), f64(max(0.001, planar_step))))
+		spatial_step := f32(math.sqrt(f64(dx * dx + dy * dy + dz * dz)))
+		arc_step := nodes[i + 1].distance - nodes[i].distance
+		assert(spatial_step > 0.01, "closed centerline segments must not collapse")
+		assert(
+			abs(spatial_step - arc_step) < 0.01,
+			"cached distance must match 3D centerline arc length",
+		)
+		assert(
+			abs(wrapped_angle_delta(heading, nodes[i].heading)) < 0.001,
+			"cached heading must match centerline tangent",
+		)
+		assert(abs(pitch - nodes[i].pitch) < 0.001, "cached pitch must match centerline tangent")
+		if i > 0 {
+			turn := nodes[i].heading - nodes[i - 1].heading
+			if turn < min_turn {
+				min_turn = turn
+				min_turn_i = i
+			}
+			if turn > max_turn {
+				max_turn = turn
+				max_turn_i = i
+			}
+		}
+		min_pitch = min(min_pitch, pitch)
+		max_pitch = max(max_pitch, pitch)
+	}
+	fmt.printfln(
+		"self-test: local turn %.1f° left @%d / %.1f° right @%d; pitch %.1f° up / %.1f° down",
+		f64(max_turn) * 180 / math.PI,
+		max_turn_i,
+		f64(min_turn) * 180 / math.PI,
+		min_turn_i,
+		f64(max_pitch) * 180 / math.PI,
+		f64(min_pitch) * 180 / math.PI,
+	)
+	assert(pickups > 0 && hazards > 0)
+	assert(card(sections) == 4)
+	assert(max_x - min_x > 16 && max_y - min_y > 18 && features > 4)
+	assert(max_turn > 0.004 && min_turn < -0.004, "closed road must curve both ways")
+	assert(
+		max(abs(min_turn), abs(max_turn)) < 0.55,
+		"mixed-section closure must not introduce corner-like turns",
+	)
+	assert(max_pitch > 0.10 && min_pitch < -0.10, "road must make visible climbs and drops")
+	probe_i := len(nodes) / 2
+	probe := nodes[probe_i]
+	probe_left := road_point(
+		nodes,
+		probe_i,
+		-probe.width,
+		probe.curve_x,
+		probe.curve_y,
+		probe.curve_z,
+		probe.heading,
+	)
+	probe_right := road_point(
+		nodes,
+		probe_i,
+		probe.width,
+		probe.curve_x,
+		probe.curve_y,
+		probe.curve_z,
+		probe.heading,
+	)
+	assert(abs(probe_left.x + probe.width) < 0.01 && abs(probe_left.z) < 0.01)
+	assert(abs(probe_right.x - probe.width) < 0.01 && abs(probe_right.z) < 0.01)
+	future_i := min(len(nodes) - 1, probe_i + 10)
+	future_center := road_point(
+		nodes,
+		future_i,
+		0,
+		probe.curve_x,
+		probe.curve_y,
+		probe.curve_z,
+		probe.heading,
+	)
+	assert(
+		future_center.z > 1,
+		"future cached centerline must remain ahead in the local tangent frame",
+	)
+	assert(abs(future_center.x) > 0.1, "future tangent transform must expose the upcoming bend")
+	worst_uncropped_z, worst_cropped_z: f32 = 1e9, 1e9
+	shallowest_cropped_z: f32 = -1e9
+	worst_near_i := 0
+	near_test_fractions := [5]f32{0, 0.2, 0.5, 0.8, 0.95}
+	for i in 0 ..< len(nodes) - 1 {
+		for fraction in near_test_fractions {
+			base_x := nodes[i].curve_x + (nodes[i + 1].curve_x - nodes[i].curve_x) * fraction
+			base_y := nodes[i].curve_y + (nodes[i + 1].curve_y - nodes[i].curve_y) * fraction
+			base_z := nodes[i].curve_z + (nodes[i + 1].curve_z - nodes[i].curve_z) * fraction
+			base_heading := nodes[i].heading + (nodes[i + 1].heading - nodes[i].heading) * fraction
+			uncropped_center := road_point(nodes, i, 0, base_x, base_y, base_z, base_heading)
+			playhead := f32(i) + fraction
+			sample_position := road_near_sample_position(
+				nodes,
+				playhead,
+				base_x,
+				base_y,
+				base_z,
+				base_heading,
+			)
+			sample_width := width_sample(nodes, sample_position)
+			cropped_center := road_point_sample(
+				nodes,
+				sample_position,
+				0,
+				base_x,
+				base_y,
+				base_z,
+				base_heading,
+			)
+			cropped_left := road_point_sample(
+				nodes,
+				sample_position,
+				-sample_width,
+				base_x,
+				base_y,
+				base_z,
+				base_heading,
+			)
+			cropped_right := road_point_sample(
+				nodes,
+				sample_position,
+				sample_width,
+				base_x,
+				base_y,
+				base_z,
+				base_heading,
+			)
+			if uncropped_center.z < worst_uncropped_z {
+				worst_uncropped_z = uncropped_center.z
+				worst_near_i = i
+			}
+			worst_cropped_z = min(worst_cropped_z, cropped_left.z, cropped_right.z)
+			shallowest_cropped_z = max(shallowest_cropped_z, cropped_center.z)
+		}
+	}
+	fmt.printfln(
+		"self-test: near-road clip old %.2f at slice %d; edge %.2f shallow %.2f; camera %.2f",
+		worst_uncropped_z,
+		worst_near_i,
+		worst_cropped_z,
+		shallowest_cropped_z,
+		CHASE_CAMERA_Z,
+	)
+	assert(worst_uncropped_z < CHASE_CAMERA_Z, "the regression fixture must cross the camera")
+	assert(
+		worst_cropped_z > CHASE_CAMERA_Z + 1,
+		"the first visible road edge must stay safely ahead of the camera",
+	)
+	assert(
+		shallowest_cropped_z < -3,
+		"the first visible road edge must extend behind the player and fill the foreground",
+	)
+	sample_boundary := f32(probe_i + 10)
+	preview_before := road_center_sample(
+		nodes,
+		sample_boundary + 0.999,
+		probe.curve_x,
+		probe.curve_y,
+		probe.curve_z,
+		probe.heading,
+	)
+	preview_after := road_center_sample(
+		nodes,
+		sample_boundary + 1.001,
+		probe.curve_x,
+		probe.curve_y,
+		probe.curve_z,
+		probe.heading,
+	)
+	preview_dx := preview_after.x - preview_before.x
+	preview_dy := preview_after.y - preview_before.y
+	preview_dz := preview_after.z - preview_before.z
+	preview_jump := f32(
+		math.sqrt(
+			f64(preview_dx * preview_dx + preview_dy * preview_dy + preview_dz * preview_dz),
+		),
+	)
+	fmt.printfln("self-test: camera preview cache-boundary jump %.3f", preview_jump)
+	assert(preview_jump < 0.10, "camera preview must move continuously across cached audio slices")
+	loop_span := f32(len(nodes) - 1)
+	seam_preview_before := road_center_sample(
+		nodes,
+		loop_span - 0.001,
+		first.curve_x,
+		first.curve_y,
+		first.curve_z,
+		first.heading,
+	)
+	seam_preview_after := road_center_sample(
+		nodes,
+		loop_span + 0.001,
+		first.curve_x,
+		first.curve_y,
+		first.curve_z,
+		first.heading,
+	)
+	seam_preview_dx := seam_preview_after.x - seam_preview_before.x
+	seam_preview_dy := seam_preview_after.y - seam_preview_before.y
+	seam_preview_dz := seam_preview_after.z - seam_preview_before.z
+	seam_preview_jump := f32(
+		math.sqrt(
+			f64(
+				seam_preview_dx * seam_preview_dx +
+				seam_preview_dy * seam_preview_dy +
+				seam_preview_dz * seam_preview_dz,
+			),
+		),
+	)
+	fmt.printfln("self-test: camera loop-seam jump %.3f", seam_preview_jump)
+	assert(seam_preview_jump < 0.10, "camera preview must continue through the loop seam")
+	fmt.println("self-test: track and geometry ok")
+}
+
+test_gameplay_and_rendering :: proc() {
+	assert(abs(lane_position(4.8, 1) - 3.2) < 0.001)
+	assert(lane_aligned(0, 0))
+	assert(!lane_aligned(0, 1))
+	assert(lane_aligned(LANE_COLLISION_TOLERANCE - 0.001, 0))
+	assert(lane_aligned(-LANE_COLLISION_TOLERANCE + 0.001, 0))
+	assert(!lane_aligned(LANE_COLLISION_TOLERANCE, 0))
+	assert(!lane_aligned(-LANE_COLLISION_TOLERANCE, 0))
+	assert(steer_input(true, false) > 0, "A/left must move toward screen-left for a +Z camera")
+	assert(mouse_lane_target(0, 1000) > 0.99)
+	assert(abs(mouse_lane_target(500, 1000)) < 0.001)
+	assert(mouse_lane_target(1000, 1000) < -0.99)
+	calm_background := background_response(0, 0, 0, 0, 0, 0)
+	bass_background := background_response(1, 0, 0, 0, 0, 0)
+	mid_background := background_response(0, 1, 0, 0, 0, 0)
+	high_background := background_response(0, 0, 1, 0, 0, 0)
+	beat_background := background_response(0, 0, 0, 1, 0, 0)
+	fast_background := background_response(0, 0, 0, 0, 1, 0)
+	assert(bass_background.bass_glow > calm_background.bass_glow)
+	assert(mid_background.ribbon_amplitude > calm_background.ribbon_amplitude)
+	assert(high_background.sparkle > calm_background.sparkle)
+	assert(beat_background.beat_flash > calm_background.beat_flash)
+	assert(fast_background.drift > calm_background.drift)
+	assert(course_map_alpha(200, false) == 200)
+	assert(course_map_alpha(200, true) == 100)
+	assert(course_map_alpha(255, true) == 127)
+	palette_paces := [3]f32{0, 0.5, 1}
+	for pace in palette_paces {
+		road_hue := wrap_hue(pace_hue(pace))
+		lamp_hue := pace_opposite_hue(pace)
+		hue_distance := abs(lamp_hue - road_hue)
+		hue_distance = min(hue_distance, 360 - hue_distance)
+		assert(abs(hue_distance - 180) < 0.001, "streetlamps must oppose the road hue")
+	}
+	calm_bulb_radius := street_bulb_radius(0)
+	beat_bulb_radius := street_bulb_radius(1)
+	assert(
+		beat_bulb_radius > calm_bulb_radius * 1.5,
+		"street bulbs must grow visibly on the rhythm pulse",
+	)
+	assert(abs(calm_bulb_radius - 0.60) < 0.001)
+	assert(abs(beat_bulb_radius - 1.00) < 0.001)
+	assert(beat_bulb_radius < 1.25, "the solid street bulb must remain outside the road")
+	assert(street_bulb_aura_alpha(0) == 128)
+	assert(street_bulb_aura_alpha(1) == 240)
+	assert(street_bulb_radius(-1) == calm_bulb_radius)
+	assert(street_bulb_radius(2) == beat_bulb_radius)
+	silent_echo := ship_echo_response(0, 0.5)
+	threshold_echo := ship_echo_response(SHIP_ECHO_BEAT_THRESHOLD, 0.5)
+	medium_echo := ship_echo_response(0.58, 0.5)
+	strong_slow_echo := ship_echo_response(1, 0)
+	strong_fast_echo := ship_echo_response(1, 1)
+	clamped_echo := ship_echo_response(2, 2)
+	assert(silent_echo.strength == 0 && silent_echo.spread == 0 && silent_echo.depth == 0)
+	assert(threshold_echo.strength == 0, "small accents must not clutter the ship with echoes")
+	assert(
+		medium_echo.strength > 0 && medium_echo.strength < strong_fast_echo.strength,
+		"ship echoes must grow smoothly with a beat",
+	)
+	assert(strong_fast_echo.strength == 1)
+	assert(
+		strong_fast_echo.spread > strong_slow_echo.spread &&
+		strong_fast_echo.depth > strong_slow_echo.depth,
+		"fast tracks must tear the ship echoes farther apart",
+	)
+	assert(
+		strong_fast_echo.spread < 2 && strong_fast_echo.depth < 1.2,
+		"ship echoes must stay clear of the chase camera",
+	)
+	assert(clamped_echo == strong_fast_echo, "ship echo inputs must remain bounded")
+	near_echo_layer := ship_echo_layer(strong_fast_echo, 1)
+	far_echo_layer := ship_echo_layer(strong_fast_echo, SHIP_ECHO_LAYERS)
+	assert(
+		far_echo_layer.lateral_offset > near_echo_layer.lateral_offset &&
+		far_echo_layer.depth_offset < near_echo_layer.depth_offset &&
+		far_echo_layer.scale < near_echo_layer.scale,
+		"older ship echoes must be farther out, farther back, and smaller",
+	)
+	echo_pickup := Track_Node {
+		pace  = 1,
+		width = 4.8,
+		lane  = 1,
+		kind  = PICKUP,
+	}
+	assert(
+		ship_echo_collects_node(echo_pickup, 0, 1, 1),
+		"a strong overdrive echo must collect an adjacent-lane pickup",
+	)
+	echo_pickup.lane = -1
+	assert(
+		ship_echo_collects_node(echo_pickup, 0, 1, 1),
+		"echo pickup collection must be symmetric",
+	)
+	assert(
+		!ship_echo_collects_node(echo_pickup, 0, 0, 1),
+		"invisible echoes must not collect pickups",
+	)
+	assert(
+		!ship_echo_collects_node(echo_pickup, 0, 1, 0),
+		"echoes must not collect pickups outside overdrive",
+	)
+	non_pickup_kinds := [3]i32{HAZARD, SHIELD, BOOST}
+	for kind in non_pickup_kinds {
+		echo_pickup.kind = kind
+		assert(
+			!ship_echo_collects_node(echo_pickup, 0, 1, 1),
+			"echoes must never collect hazards, shields, or overdrive boxes",
+		)
+	}
+	rebound_echo_rhythm: Rhythm_Motion
+	rebound_echo_rhythm.push.rebound = 0.25
+	assert(
+		ship_echo_rhythm_strength(rebound_echo_rhythm) > 0.6,
+		"ship echoes must remain visible through the positive physical rebound",
+	)
+	rebound_echo_rhythm.push.rebound = -0.25
+	assert(
+		ship_echo_rhythm_strength(rebound_echo_rhythm) == 0,
+		"ship echoes must collapse after the rebound crosses rest",
+	)
+	silent_kick := rhythm_kick_response(0, 1, 0, 1)
+	impact_kick := rhythm_kick_response(1, 1, 0, 1)
+	rebound_kick := rhythm_kick_response(1, 1, 0.45, 1)
+	late_kick := rhythm_kick_response(1, 1, 0.95, 1)
+	disabled_kick := rhythm_kick_response(1, 1, 0, 0)
+	assert(silent_kick.impact == 0 && silent_kick.rebound == 0)
+	assert(impact_kick.impact > 0.95 && impact_kick.rebound == 0)
+	assert(rebound_kick.rebound > rebound_kick.impact)
+	assert(late_kick.impact < rebound_kick.impact && late_kick.rebound < rebound_kick.rebound)
+	assert(disabled_kick.impact == 0 && disabled_kick.rebound == 0)
+	silent_impulse := rhythm_impulse_strength(0, 1, 1)
+	soft_impulse := rhythm_impulse_strength(0.35, 0, 1)
+	strong_impulse := rhythm_impulse_strength(1, 1, 1)
+	disabled_impulse := rhythm_impulse_strength(1, 1, 0)
+	assert(silent_impulse == 0)
+	assert(strong_impulse > soft_impulse)
+	assert(disabled_impulse == 0)
+	push: Rhythm_Push
+	push = rhythm_push_step(push, strong_impulse, 1.0 / 60.0, true)
+	assert(push.impact > 0.95, "a strong beat must produce an immediate camera punch")
+	assert(push.rebound > 0.04 && push.velocity > 3, "a beat must launch the spring")
+	visual_disabled_push := rhythm_push_visual(push, 0)
+	assert(visual_disabled_push == Rhythm_Push{}, "zero visual strength must hide rhythm motion")
+	assert(rhythm_push_visual(push, 1) == push)
+	gameplay_echo := ship_echo_rhythm_strength(Rhythm_Motion{push = push})
+	assert(
+		ship_echo_collects_node(
+			Track_Node{kind = PICKUP, lane = 1, width = 4.8, pace = 1},
+			0,
+			gameplay_echo,
+			1,
+		),
+		"visual scaling must not suppress gameplay echo collection",
+	)
+	coasting_push := rhythm_push_step(push, 0, 1.0 / 60.0, true)
+	assert(coasting_push.impact < push.impact, "the sharp impact must decay")
+	assert(coasting_push.rebound > push.rebound, "the physical push must outlive the flash")
+	stacked_push := rhythm_push_step(push, strong_impulse, 1.0 / 60.0, true)
+	assert(
+		stacked_push.velocity > coasting_push.velocity,
+		"a second beat must add momentum instead of restarting an animation",
+	)
+	paused_push := rhythm_push_step(stacked_push, strong_impulse, 1.0 / 60.0, false)
+	assert(
+		paused_push == stacked_push,
+		"rhythm motion must freeze exactly while the ride is paused",
+	)
+	settled_push := push
+	for _ in 0 ..< 240 {
+		settled_push = rhythm_push_step(settled_push, 0, 1.0 / 60.0, true)
+	}
+	assert(
+		settled_push.impact == 0 &&
+		abs(settled_push.rebound) < 0.001 &&
+		abs(settled_push.velocity) < 0.001,
+		"rhythm motion must settle back to rest",
+	)
+	mouse_step := smooth_mouse_lane(0, 1, 1.0 / 60.0)
+	assert(
+		mouse_step > 0.32 && mouse_step < 1,
+		"default mouse response must be quicker than the alpha build",
+	)
+	assert(!ride_finished(false, false, false), "a ride cannot finish before playback starts")
+	assert(!ride_finished(true, true, false), "pausing must not finish a ride")
+	assert(
+		ride_finished(false, true, false),
+		"stopped playback must finish even if the final sample was skipped",
+	)
+	assert(ride_controls_enabled(false, false), "steering must work during an active ride")
+	assert(!ride_controls_enabled(true, false), "steering must stop while paused")
+	assert(!ride_controls_enabled(false, true), "steering must stop after the ride finishes")
+	assert(should_catch_up_final_nodes(9, 12))
+	assert(should_catch_up_final_nodes(11, 12))
+	completed_time := ride_playback_time(0, 1.0, 1.2, 12, true)
+	assert(completed_time == 1.2, "a reset playback clock must finish a near-complete ride")
+	assert(
+		ride_playback_time(0, completed_time, 1.2, 12, true) == completed_time,
+		"results must retain the final playhead on subsequent stopped frames",
+	)
+	assert(
+		ride_playback_time(0, 0.4, 1.2, 12, true) == 0.4,
+		"an early stream failure must preserve progress without clearing the remainder",
+	)
+	last_node, last_fraction := ride_sample_position(completed_time, 12)
+	assert(
+		last_node == 11 && last_fraction == 0,
+		"the final road sample must match the stationary base transform",
+	)
+	middle_node, middle_fraction := ride_sample_position(0.55, 12)
+	assert(middle_node == 5 && abs(middle_fraction - 0.5) < 0.0001)
+	assert(ride_timer_step(6, 10, false) == 6, "paused gameplay must freeze overdrive")
+	assert(ride_timer_step(6, 2, true) == 4, "overdrive must follow uncapped playback time")
+	assert(ride_timer_step(1, 2, true) == 0)
+	assert(ride_timer_step(1, -2, true) == 1)
+	assert(
+		!should_catch_up_final_nodes(4, 12),
+		"an early playback failure must not process the unplayed remainder",
+	)
+	pilot_nodes: [12]Track_Node
+	pilot_nodes[3] = {
+		kind = HAZARD,
+		lane = -1,
+	}
+	pilot_nodes[5] = {
+		kind = PICKUP,
+		lane = 1,
+	}
+	pilot_nodes[8] = {
+		kind = PICKUP,
+		lane = -1,
+	}
+	assert(
+		ghost_pilot_target_lane(pilot_nodes[:], 0, 0) == 1,
+		"ghost pilot must ignore hazards and target the nearest point pickup",
+	)
+	assert(
+		ghost_pilot_target_lane(pilot_nodes[:], 5, 0) == -1,
+		"ghost pilot must advance to the next pickup after passing its target",
+	)
+	pilot_nodes[8].kind = 0
+	assert(
+		ghost_pilot_target_lane(pilot_nodes[:], 5, 0.25) == 0.25,
+		"ghost pilot must hold its lane when no pickup is ahead",
+	)
+	assert(ghost_pilot_after_manual_input(true, false))
+	assert(
+		!ghost_pilot_after_manual_input(true, true),
+		"manual steering must disengage ghost pilot",
+	)
+	assert(!ghost_pilot_after_manual_input(false, false))
+	pilot_lane: f32 = -1
+	for _ in 0 ..< 18 {
+		pilot_lane = smooth_mouse_lane(pilot_lane, 1, 1.0 / 60.0, GHOST_PILOT_RESPONSE)
+	}
+	assert(
+		lane_aligned(pilot_lane, 1),
+		"ghost pilot must cross the road smoothly within one pickup interval",
+	)
+	secret_sequence: Secret_Sequence_State
+	secret_activations := 0
+	for key in SECRET_OVERDRIVE_SEQUENCE {
+		secret_step := secret_overdrive_sequence_step(secret_sequence, key, 0.1)
+		secret_sequence = secret_step.state
+		if secret_step.activated do secret_activations += 1
+	}
+	assert(
+		secret_activations == 1 && secret_sequence.matched == 0 && secret_sequence.remaining == 0,
+		"typing the rotated GHOSTS ritual followed by F10 must activate exactly once",
+	)
+	secret_step := secret_overdrive_sequence_step({}, .S, 0)
+	secret_step = secret_overdrive_sequence_step(secret_step.state, .X, 0)
+	assert(
+		secret_step.state.matched == 0 && secret_step.state.remaining == 0,
+		"a wrong secret key must reset the ritual",
+	)
+	secret_step = secret_overdrive_sequence_step({}, .S, 0)
+	secret_step = secret_overdrive_sequence_step(
+		secret_step.state,
+		.KEY_NULL,
+		SECRET_SEQUENCE_TIMEOUT + 0.1,
+	)
+	assert(
+		secret_step.state.matched == 0 && secret_step.state.remaining == 0,
+		"the secret ritual must time out",
+	)
+	assert(SECRET_OVERDRIVE_SECONDS == 999)
+	hud_mode: Hud_Mode = .FULL
+	hud_mode = next_hud_mode(hud_mode)
+	assert(hud_mode == .HIDDEN)
+	hud_mode = next_hud_mode(hud_mode)
+	assert(hud_mode == .MAP_ONLY)
+	hud_mode = next_hud_mode(hud_mode)
+	assert(hud_mode == .FULL, "F3 HUD modes must wrap back to full")
+	hidden_ride_overlays := overlay_visibility(.HIDDEN, false)
+	assert(
+		!hidden_ride_overlays.ride_hud &&
+		!hidden_ride_overlays.map_only &&
+		!hidden_ride_overlays.results,
+	)
+	map_only_overlays := overlay_visibility(.MAP_ONLY, false)
+	assert(!map_only_overlays.ride_hud && map_only_overlays.map_only)
+	hidden_finished_overlays := overlay_visibility(.HIDDEN, true)
+	assert(
+		!hidden_finished_overlays.ride_hud &&
+		!hidden_finished_overlays.map_only &&
+		hidden_finished_overlays.results,
+		"F3 must never hide the completed-ride results screen",
+	)
+	mastery_nodes: [TRACK_SECTION_LENGTH + 16]Track_Node
+	mastery_nodes[0].kind = PICKUP
+	mastery_nodes[5].kind = PICKUP
+	mastery_nodes[31].kind = PICKUP
+	mastery_nodes[TRACK_SECTION_LENGTH + 4].kind = PICKUP
+	perfect_section := begin_section_mastery(mastery_nodes[:], 0)
+	assert(
+		perfect_section.active &&
+		perfect_section.section_index == 0 &&
+		perfect_section.node_count == TRACK_SECTION_LENGTH &&
+		perfect_section.pickup_count == 3,
+	)
+	perfect_section = record_section_pickup(perfect_section, true)
+	perfect_section = record_section_pickup(perfect_section, true)
+	perfect_section = record_section_pickup(perfect_section, true)
+	perfect_outcome := finish_section_mastery(perfect_section)
+	assert(perfect_outcome.perfect)
+	assert(
+		perfect_outcome.bonus == TRACK_SECTION_LENGTH * SECTION_CLEAR_POINTS_PER_NODE,
+		"a perfect full section must award a length-scaled bonus",
+	)
+	assert(!perfect_outcome.state.active, "a finished section must not award twice")
+	assert(finish_section_mastery(perfect_outcome.state).bonus == 0)
+	missed_section := begin_section_mastery(mastery_nodes[:], 0)
+	missed_section = record_section_pickup(missed_section, true)
+	missed_section = record_section_pickup(missed_section, true)
+	missed_section = record_section_pickup(missed_section, false)
+	assert(
+		!finish_section_mastery(missed_section).perfect,
+		"missing any pickup must invalidate the section bonus",
+	)
+	unfinished_section := begin_section_mastery(mastery_nodes[:], 0)
+	unfinished_section = record_section_pickup(unfinished_section, true)
+	assert(
+		!finish_section_mastery(unfinished_section).perfect,
+		"a section must not clear before every pickup has been processed",
+	)
+	short_section := begin_section_mastery(mastery_nodes[:], TRACK_SECTION_LENGTH)
+	assert(short_section.node_count == 16 && short_section.pickup_count == 1)
+	short_section = record_section_pickup(short_section, true)
+	assert(
+		finish_section_mastery(short_section).bonus == 16 * SECTION_CLEAR_POINTS_PER_NODE,
+		"the final partial section must scale its bonus by its actual length",
+	)
+	no_pickup_nodes: [12]Track_Node
+	assert(
+		finish_section_mastery(begin_section_mastery(no_pickup_nodes[:], 0)).bonus == 0,
+		"empty sections must not award a vacuous perfect bonus",
+	)
+	assert(section_index_for_node(TRACK_SECTION_LENGTH - 1) == 0)
+	assert(section_index_for_node(TRACK_SECTION_LENGTH) == 1)
+	assert(drift_score_rate(0.68, -1) == DRIFT_MAX_POINTS_PER_SECOND)
+	assert(drift_score_rate(-0.68, 1) == DRIFT_MAX_POINTS_PER_SECOND)
+	assert(
+		drift_score_rate(0.68, 1) == 0 && drift_score_rate(-0.68, -1) == 0,
+		"the inner lane must never earn drift points",
+	)
+	assert(drift_score_rate(DRIFT_MIN_BANK, -1) == 0)
+	assert(drift_score_rate(0.68, -DRIFT_MIN_OUTER_LANE) == 0)
+	frame_steps := [3]int{10, 20, 60}
+	frame_rates := [3]f32{10, 20, 60}
+	drift_totals: [3]int
+	for fixture_i in 0 ..< len(frame_steps) {
+		residual: f32
+		for _ in 0 ..< frame_steps[fixture_i] {
+			step := drift_score_step(residual, 0.68, -1, 1 / frame_rates[fixture_i])
+			residual = step.residual
+			drift_totals[fixture_i] += step.points
+		}
+	}
+	assert(
+		drift_totals[0] == drift_totals[1] &&
+		drift_totals[1] == drift_totals[2] &&
+		drift_totals[0] == int(DRIFT_MAX_POINTS_PER_SECOND),
+		"drift scoring must be independent of frame rate",
+	)
+	paused_drift := drift_score_step(0.4, 0.68, -1, 0)
+	assert(paused_drift.points == 0 && paused_drift.residual == 0.4)
+	drift_interval_nodes: [5]Track_Node
+	interval_headings := [5]f32{0, 0.2, 0.4, 0.2, 0}
+	for i in 0 ..< len(drift_interval_nodes) {
+		drift_interval_nodes[i].curve_z = f32(i)
+		drift_interval_nodes[i].heading = interval_headings[i]
+	}
+	mixed_interval := drift_score_interval(drift_interval_nodes[:], 0, -1, 0, 0.5)
+	assert(
+		mixed_interval.points > 0 && mixed_interval.points < 30,
+		"a playback jump must integrate changing turns instead of using only its endpoint bank",
+	)
+	protected_hazard := resolve_hazard(2, 1500, 7, 3, 1, 4, 0.01)
+	assert(protected_hazard.blocked, "overdrive must block hazard damage")
+	assert(
+		protected_hazard.shield == 2 &&
+		protected_hazard.score == 1500 &&
+		protected_hazard.streak == 7 &&
+		protected_hazard.color_chain == 3 &&
+		protected_hazard.last_tone == 1 &&
+		protected_hazard.crashes == 4,
+		"blocked hazards must preserve all player progress",
+	)
+	damaging_hazard := resolve_hazard(2, 1500, 7, 3, 1, 4, 0)
+	assert(!damaging_hazard.blocked)
+	assert(
+		damaging_hazard.shield == 1 &&
+		damaging_hazard.score == 1150 &&
+		damaging_hazard.streak == 0 &&
+		damaging_hazard.color_chain == 0 &&
+		damaging_hazard.last_tone == -1 &&
+		damaging_hazard.crashes == 4,
+		"hazards must retain their normal damage outside overdrive",
+	)
+	crashing_hazard := resolve_hazard(1, 1000, 7, 3, 1, 4, 0)
+	assert(
+		crashing_hazard.shield == 3 &&
+		crashing_hazard.score == 325 &&
+		crashing_hazard.crashes == 5,
+		"an unprotected final shield hit must still cause a crash",
+	)
+	fmt.println("self-test: gameplay and rendering ok")
+}
+
+test_config_and_speed :: proc() {
+	assert(game_config_key_known("speed_limit"))
+	assert(!game_config_key_known("speeed_limit"))
+	config_test := parse_game_config(
+		`
+mouse_response = 31.0
+hide_cursor = false
+music_volume = 2.0 # must clamp
+visual_fx = false
+audio_fx_strength = 0.33
+speed_limit = 250
+speeed_limit = 52
+`,
+	)
+	assert(abs(config_test.mouse_response - 31) < 0.001)
+	assert(!config_test.hide_cursor && !config_test.visual_fx)
+	assert(abs(config_test.music_volume - 0.8) < 0.001)
+	assert(abs(config_test.audio_fx_strength - 0.33) < 0.001)
+	assert(config_test.speed_limit == 250)
+	clamped_config := parse_game_config(
+		`
+mouse_response = -100
+music_volume = -1
+visual_strength = 7
+audio_fx_strength = 9
+speed_limit = -99
+visual_fx = true
+audio_fx = true
+hide_cursor = true
+`,
+	)
+	assert(abs(clamped_config.mouse_response - 8) < 0.001)
+	assert(clamped_config.music_volume == 0)
+	assert(clamped_config.visual_strength == 1)
+	assert(clamped_config.audio_fx_strength == 0.5)
+	assert(clamped_config.speed_limit == -1)
+	assert(clamped_config.visual_fx && clamped_config.audio_fx && clamped_config.hide_cursor)
+	assert(default_game_config().speed_limit == -1)
+	assert(abs(track_speed_percent(1, -1) - 327) < 0.001)
+	assert(abs(track_speed_percent(1, 250) - 250) < 0.001)
+	assert(abs(track_speed_percent(0, 250) - 52) < 0.001)
+	assert(abs(track_speed_multiplier(1, 250) - 2.5) < 0.001)
+	pace_samples := [5]f32{0, 0.25, 0.5, 0.75, 1}
+	previous_speed := track_speed_multiplier(pace_samples[0], -1)
+	for pace in pace_samples[1:] {
+		current_speed := track_speed_multiplier(pace, -1)
+		assert(current_speed > previous_speed, "track speed must increase monotonically with pace")
+		previous_speed = current_speed
+	}
+	unlimited_speed_track := make([]Track_Node, 32)
+	limited_speed_track := make([]Track_Node, 32)
+	defer delete(unlimited_speed_track)
+	defer delete(limited_speed_track)
+	for i in 0 ..< len(unlimited_speed_track) {
+		unlimited_speed_track[i].pace = 1
+		limited_speed_track[i].pace = 1
+	}
+	compose_track(unlimited_speed_track, 1234, -1)
+	compose_track(limited_speed_track, 1234, 250)
+	assert(
+		limited_speed_track[len(limited_speed_track) - 1].distance <
+		unlimited_speed_track[len(unlimited_speed_track) - 1].distance * 0.85,
+		"the configured limit must reduce physical track travel, not only the HUD",
+	)
+	cache_fixture := [4]byte{0x50, 0x53, 0x59, 0x43}
+	unlimited_cache_path := cache_path(cache_fixture[:], -1)
+	limited_cache_path := cache_path(cache_fixture[:], 250)
+	assert(unlimited_cache_path != limited_cache_path)
+	assert(strings.contains(limited_cache_path, "-speed-250.map"))
+	delete(unlimited_cache_path)
+	delete(limited_cache_path)
+	result_test := format_game_result(123, "music/test.wav", 0xab, 4567, 12, 3, 98.5)
+	assert(strings.contains(result_test, "\t4567\t12\t3\t98.50"))
+	assert(strings.contains(result_test, "\t00000000000000ab\n"))
+	delete(result_test)
+	result_history :=
+		"completed_unix\tsong\tscore\tbest_streak\tcrashes\tduration_seconds\tsong_id\n" +
+		"1\t\"music/test.wav\"\t4000\t9\t2\t60.00\n" +
+		"2\t\"moved/test.wav\"\t7200\t12\t1\t60.00\t00000000000000ab\n" +
+		"3\t\"other.wav\"\t9000\t15\t0\t80.00\t00000000000000cd\n"
+	content_bests := personal_bests_from_results(result_history, 0xab, "renamed/test.wav")
+	assert(content_bests.has_song && content_bests.song_score == 7200)
+	assert(content_bests.has_overall && content_bests.overall_score == 9000)
+	legacy_bests := personal_bests_from_results(result_history, 0xee, "music/test.wav")
+	assert(legacy_bests.has_song && legacy_bests.song_score == 4000)
+	assert(beats_personal_best(7201, 7200, true))
+	assert(!beats_personal_best(7200, 7200, true))
+	assert(beats_personal_best(0, 0, false))
+	fmt.println("self-test: config and speed ok")
+}
+
+test_analysis_dynamics :: proc() {
+	odd_rate := 11025
+	odd_samples := make([]f32, odd_rate * 4)
+	defer delete(odd_samples)
+	odd_nodes := analyze_samples(raw_data(odd_samples), len(odd_samples), odd_rate, 1)
+	defer delete(odd_nodes)
+	assert(
+		len(odd_nodes) == 40,
+		"analysis slices must follow timestamps at fractional frame rates",
+	)
+
+	stereo_rate := 8000
+	mono_samples := make([]f32, stereo_rate * 2)
+	stereo_samples := make([]f32, len(mono_samples) * 2)
+	defer delete(mono_samples)
+	defer delete(stereo_samples)
+	for frame in 0 ..< len(mono_samples) {
+		sample := f32(math.sin(2 * math.PI * 440 * f64(frame) / f64(stereo_rate))) * 0.5
+		mono_samples[frame] = sample
+		stereo_samples[frame * 2] = sample
+		stereo_samples[frame * 2 + 1] = -sample
+	}
+	mono_nodes := analyze_samples(raw_data(mono_samples), len(mono_samples), stereo_rate, 1)
+	stereo_nodes := analyze_samples(raw_data(stereo_samples), len(mono_samples), stereo_rate, 2)
+	defer delete(mono_nodes)
+	defer delete(stereo_nodes)
+	for i in 0 ..< len(mono_nodes) {
+		assert(
+			abs(stereo_nodes[i].mid - mono_nodes[i].mid) < 0.0001,
+			"opposite-phase stereo must retain its audible band energy",
+		)
+		assert(abs(stereo_nodes[i].pace - mono_nodes[i].pace) < 0.0001)
+	}
+
+	rate := 8000
+	// Multi-second musical dynamics must produce opposite grades and visibly different speeds.
+	rhythm_samples := make([]f32, rate * 24)
+	defer delete(rhythm_samples)
+	for i in 0 ..< len(rhythm_samples) {
+		t := f64(i) / f64(rate)
+		amplitude: f32 = 0.025
+		if (i / (rate * 6)) % 2 == 1 do amplitude = 0.30
+		rhythm_samples[i] = f32(math.sin(2 * math.PI * 100 * t)) * amplitude
+	}
+	rhythm := analyze_samples(raw_data(rhythm_samples), len(rhythm_samples), rate, 1)
+	defer delete(rhythm)
+	quiet_slope, loud_slope, quiet_speed, loud_speed: f32
+	quiet_count, loud_count: int
+	for i in 1 ..< len(rhythm) {
+		if i % 60 < 20 || i % 60 > 56 do continue
+		slope := rhythm[i].curve_y - rhythm[i - 1].curve_y
+		speed := rhythm[i].distance - rhythm[i - 1].distance
+		if (i / 60) % 2 == 0 {
+			quiet_slope += slope
+			quiet_speed += speed
+			quiet_count += 1
+		} else {
+			loud_slope += slope
+			loud_speed += speed
+			loud_count += 1
+		}
+	}
+	quiet_slope, loud_slope = quiet_slope / f32(quiet_count), loud_slope / f32(loud_count)
+	quiet_speed, loud_speed = quiet_speed / f32(quiet_count), loud_speed / f32(loud_count)
+	fmt.printfln(
+		"self-test: quiet grade %.3f speed %.2f | loud grade %.3f speed %.2f",
+		quiet_slope,
+		quiet_speed,
+		loud_slope,
+		loud_speed,
+	)
+	quiet_run := f32(
+		math.sqrt(f64(max(0.001, quiet_speed * quiet_speed - quiet_slope * quiet_slope))),
+	)
+	loud_run := f32(math.sqrt(f64(max(0.001, loud_speed * loud_speed - loud_slope * loud_slope))))
+	quiet_angle := f32(math.atan2(f64(quiet_slope), f64(quiet_run)))
+	loud_angle := f32(math.atan2(f64(loud_slope), f64(loud_run)))
+	fmt.printfln(
+		"self-test: actual road pitch %.1f° quiet / %.1f° loud",
+		f64(quiet_angle) * 180 / math.PI,
+		f64(loud_angle) * 180 / math.PI,
+	)
+	assert(quiet_slope > 0.12 && loud_slope < -0.12)
+	assert(loud_speed > quiet_speed * 1.8)
+	assert(
+		quiet_angle > 0.10 && loud_angle < -0.10,
+		"climbs and drops must remain visible at speed",
+	)
+
+	// Beat periodicity affects pace even when the average amplitude stays similar.
+	tempo_samples := make([]f32, rate * 28)
+	defer delete(tempo_samples)
+	for i in 0 ..< len(tempo_samples) {
+		t := f64(i) / f64(rate)
+		period := rate * 4 / 5 // 75 BPM
+		if i >= rate * 14 do period = rate * 2 / 5 // 150 BPM
+		pulse_length := rate / 18
+		phase := i % period
+		envelope: f32
+		if phase < pulse_length do envelope = 1 - f32(phase) / f32(pulse_length)
+		tempo_samples[i] =
+			f32(math.sin(2 * math.PI * 105 * t)) * (0.035 + envelope * 0.31) +
+			f32(math.sin(2 * math.PI * 1450 * t)) * envelope * 0.06
+	}
+	tempo_nodes := analyze_samples(raw_data(tempo_samples), len(tempo_samples), rate, 1)
+	defer delete(tempo_nodes)
+	slow_tempo, fast_tempo, slow_pace, fast_pace: f32
+	metric_count: int
+	for i in 40 ..< 105 {
+		slow_tempo += tempo_nodes[i].tempo
+		slow_pace += tempo_nodes[i].pace
+		fast_tempo += tempo_nodes[i + 140].tempo
+		fast_pace += tempo_nodes[i + 140].pace
+		metric_count += 1
+	}
+	slow_tempo, fast_tempo = slow_tempo / f32(metric_count), fast_tempo / f32(metric_count)
+	slow_pace, fast_pace = slow_pace / f32(metric_count), fast_pace / f32(metric_count)
+	fmt.printfln(
+		"self-test: slow beat %.2f pace %.2f | fast beat %.2f pace %.2f",
+		slow_tempo,
+		slow_pace,
+		fast_tempo,
+		fast_pace,
+	)
+	assert(fast_tempo > slow_tempo + 0.12)
+	assert(fast_pace > slow_pace + 0.05)
+
+	// Extreme dive: the camera must sit above the road so the road fills the
+	// lower screen and recedes to a low horizon, never a mid-screen line with
+	// background below it ("cut in half"). ponytail: regression guard for the
+	// dive camera-lift.
+	dive2 := make([]Track_Node, 200)
+	defer delete(dive2)
+	for i in 0 ..< len(dive2) {
+		dive2[i].curve_x = 0
+		dive2[i].curve_y = -f32(i) * 6.67
+		dive2[i].curve_z = f32(i) * 16.7
+		dive2[i].heading = 0
+		dive2[i].pitch = -0.38
+		dive2[i].width = 4.8
+		dive2[i].pace = 1
+	}
+	dcam := ride_camera(dive2, 50, 0, 0, 0, 0, 0, {})
+	dbase_x := dive2[50].curve_x
+	dbase_y := dive2[50].curve_y
+	dbase_z := dive2[50].curve_z
+	dbase_h := dive2[50].heading
+	dnear := road_center_sample(dive2, 50, dbase_x, dbase_y, dbase_z, dbase_h)
+	dfar := road_center_sample(dive2, 100, dbase_x, dbase_y, dbase_z, dbase_h)
+	dnear_s := rl.GetWorldToScreenEx(dnear, dcam, CAMERA_TEST_WIDTH, CAMERA_TEST_HEIGHT)
+	dfar_s := rl.GetWorldToScreenEx(dfar, dcam, CAMERA_TEST_WIDTH, CAMERA_TEST_HEIGHT)
+	fmt.printfln(
+		"self-test: extreme dive near road y %.0f / %d, horizon y %.0f",
+		dnear_s.y,
+		CAMERA_TEST_HEIGHT,
+		dfar_s.y,
+	)
+	assert(
+		dnear_s.y > f32(CAMERA_TEST_HEIGHT) * 0.70,
+		"extreme dives must drop the near road into the lower screen, not a mid-screen line",
+	)
+	assert(dnear_s.y > dfar_s.y, "the road must recede upward to a horizon on a dive")
+	assert(dfar_s.y < f32(CAMERA_TEST_HEIGHT) * 0.85, "the dive horizon must stay on screen")
+	fmt.println("self-test: analysis dynamics and extreme camera ok")
+}
+
+test_map_cache :: proc() {
+	assert(MAP_VERSION == 3, "channel-energy and timestamp fixes must invalidate older caches")
+	nodes := [3]Track_Node {
+		{curve_z = 1.25, heading = 0.1, pitch = -0.2, lane = -1, width = 4, distance = 0},
+		{curve_z = 3.50, heading = 0.2, pitch = 0.3, lane = 0, width = 4, distance = 3},
+		{curve_z = 7.75, heading = -0.4, pitch = 0.1, lane = 1, width = 4, distance = 7},
+	}
+	path := ".psycho_cache/self-test.map"
+	assert(save_map(path, nodes[:]))
+	loaded, ok := load_map(path)
+	defer delete(loaded)
+	assert(ok && len(loaded) == len(nodes) && loaded[0].lane == nodes[0].lane)
+	assert(
+		loaded[0].curve_z == nodes[0].curve_z &&
+		loaded[0].heading == nodes[0].heading &&
+		loaded[0].pitch == nodes[0].pitch,
+	)
+	assert(loaded[len(loaded) - 1].curve_z == nodes[len(nodes) - 1].curve_z)
+
+	bad_headers := [4]Cache_Header {
+		{magic = 0, version = MAP_VERSION, count = 1},
+		{magic = MAP_MAGIC, version = MAP_VERSION - 1, count = 1},
+		{magic = MAP_MAGIC, version = MAP_VERSION + 1, count = 1},
+		{magic = MAP_MAGIC, version = MAP_VERSION, count = 10_000_001},
+	}
+	for &bad_header in bad_headers {
+		assert(os.write_entire_file(path, mem.ptr_to_bytes(&bad_header)) == nil)
+		bad_nodes, bad_ok := load_map(path)
+		delete(bad_nodes)
+		assert(!bad_ok, "map cache must reject corrupt headers")
+	}
+	invalid_nodes: [8]Track_Node
+	for &node in invalid_nodes do node = nodes[0]
+	invalid_nodes[0].section = TRACK_SECTION_KIND_COUNT
+	invalid_nodes[1].curve_x = transmute(f32)u32(0x7fc00000)
+	invalid_nodes[2].heading = transmute(f32)u32(0x7f800000)
+	invalid_nodes[3].width = 0
+	invalid_nodes[4].lane = 2
+	invalid_nodes[5].pace = 2
+	invalid_nodes[6].kind = BOOST + 1
+	invalid_nodes[7].distance = -1
+	for node in invalid_nodes {
+		fixture := [1]Track_Node{node}
+		assert(save_map(path, fixture[:]))
+		bad_nodes, bad_ok := load_map(path)
+		delete(bad_nodes)
+		assert(!bad_ok, "map cache must reject corrupt node contents")
+	}
+	assert(map_nodes_valid(nodes[:]))
+	nonmonotonic := nodes
+	nonmonotonic[1].distance = nonmonotonic[0].distance
+	assert(!map_nodes_valid(nonmonotonic[:]))
+	fmt.println("self-test: map cache ok")
+}
+
+self_test :: proc() {
+	fmt.println("self-test: starting 6 groups")
+	test_audio_fx()
+	test_track_and_geometry()
+	test_gameplay_and_rendering()
+	test_config_and_speed()
+	test_analysis_dynamics()
+	test_map_cache()
+	fmt.println("self-test: ok")
+}

@@ -1,0 +1,55 @@
+use Common;
+
+var cardSelectorSharedKeys = {
+    negate?: boolean,
+};
+
+$CardSelector{
+
+    $ByName {
+        name: string,
+        ...cardSelectorSharedKeys
+    }
+
+    $ByTag{
+        name: string,
+        ...cardSelectorSharedKeys
+    }
+
+}
+
+$CardEffect{
+    $Blacklist { }
+
+    $ProbabilityAddition {
+        weight: float
+    }
+
+    $PriceMultiplier {
+        price: float
+    }
+
+    $PriceAddition {
+        price: int
+    }
+}
+var cardChange = {
+    select: $CardSelector,
+    effect: $CardEffect
+};
+
+types: {
+    cardChanges: cardChange[],
+    name: string
+}[],
+
+biomes: {
+    name:string,
+    shop: cardChange[],
+    chooseCard: cardChange[],
+}[],
+
+rarities: {
+    tag: string,
+    maxAmount: int
+}[]

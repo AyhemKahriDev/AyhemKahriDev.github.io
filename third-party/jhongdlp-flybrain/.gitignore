@@ -1,0 +1,14 @@
+target/
+node_modules/
+dist/
+__pycache__/
+.venv/
+*.so
+
+# Capturas del chequeo visual
+pantalla*.png
+
+# El conectoma: 540 MB, público, se baja con fly/paso0.py --descargar
+data/
+.venv-ojo/
+*.mp4

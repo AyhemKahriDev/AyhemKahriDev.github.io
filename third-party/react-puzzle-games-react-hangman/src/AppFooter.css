@@ -1,0 +1,56 @@
+.App-footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 20px;
+  background: var(--header-bg);
+  font-size: 0.85em;
+  color: var(--text-light);
+  text-align: center;
+}
+
+.App-footer-github {
+  color: #ffffff;
+  opacity: 0.8;
+  transition: opacity 0.15s ease;
+}
+
+.App-footer-github svg {
+  display: block;
+  fill: #ffffff;
+}
+
+.App-footer-github:hover {
+  opacity: 1;
+}
+
+.App-footer p {
+  margin: 0;
+  font-weight: 400;
+}
+
+.App-footer-heart {
+  color: var(--tile-color);
+}
+
+@media (max-width: 768px) {
+  .App-footer {
+    padding: 20px 16px;
+    font-size: 0.8em;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .App-footer {
+    padding: 16px 12px;
+    font-size: 0.75em;
+    gap: 6px;
+  }
+
+  .App-footer p {
+    line-height: 1.4;
+  }
+}

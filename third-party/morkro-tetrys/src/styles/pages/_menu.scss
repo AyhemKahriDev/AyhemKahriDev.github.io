@@ -1,0 +1,48 @@
+.view-menu .view-inner {
+	justify-content: space-between;
+}
+
+.view-menu header {
+	background: transparent;
+	box-shadow: none;
+	justify-content: center;
+
+	a { display: none; }
+
+	h1 {
+		position: relative;
+		margin-top: 10vh;
+		font-size: 20vw;
+		letter-spacing: -4px;
+
+		&:before {
+			content: "☳";
+			position: absolute;
+			z-index: -1;
+			left: 50%;
+			transform: translateX(-50%);
+			font-size: 40vw;
+			color: rgba(0,0,0,.1);
+		}
+	}
+}
+
+.view-menu .tetrys-controls {
+	flex-direction: column;
+	align-items: center;
+
+	li {
+		margin-bottom: 20px;
+	}
+
+	a {
+		display: flex;
+		align-items: center;
+	}
+
+	svg {
+		margin-right: 2.5vw;
+		width: 30px;
+		height: 30px;
+	}
+}

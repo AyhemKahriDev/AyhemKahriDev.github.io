@@ -1,0 +1,399 @@
+/**
+ * game-manager.js
+ *
+ * Manages the lifecycle of all active game sessions.  Keeps an in-memory
+ * map of running games (GameState objects) and syncs them to the database
+ * when they change.
+ *
+ * This module is intentionally game-agnostic: all game-specific behaviour is
+ * delegated to the appropriate game-logic module via game-registry.js.
+ *
+ * The singleton pattern is intentional — Node.js modules are cached after
+ * the first require(), so all parts of the server share the same instance.
+ *
+ * ─── IMPORTANT: read APIs ───────────────────────────────────────────────────
+ *
+ * peekGame(id)         → returns the LIVE, MUTABLE in-memory state reference.
+ *                        Mutating the returned object mutates the canonical
+ *                        copy.  Use ONLY for read paths that immediately
+ *                        serialize (persist, length checks, etc.) and ONLY
+ *                        from inside a withGameLock callback.
+ *
+ * getGameSnapshot(id)  → returns a deep clone via structuredClone().  Use
+ *                        whenever the state is handed to game-logic code or
+ *                        returned over the wire — anything that could
+ *                        accidentally write back to the caller's local copy.
+ */
+
+'use strict';
+
+const { v4: uuidv4 } = require('uuid');
+const database = require('./database');
+const gameRegistry = require('./game-registry');
+
+/** Return the game-logic module for a given state. */
+function getLogic(state) {
+  return gameRegistry.getGameLogic(state.gameType);
+}
+
+// ── in-memory store ──────────────────────────────────────────────────────────
+
+// Map of gameId → GameState (active games only)
+const activeGames = new Map();
+
+// ── per-game action queue ─────────────────────────────────────────────────────
+//
+// All mutations to a single game's state run through withGameLock so that
+// concurrent socket events can never interleave their read-modify-write cycles.
+//
+// Implementation: a promise-chain keyed by gameId.  Each caller replaces the
+// map entry with its own "I'm done" promise (mine), then awaits the previous
+// tail (prev).  This gives FIFO serialisation with no external dependencies.
+//
+// Cleanup: if no task queued behind us, we delete the entry to avoid leaks.
+
+const _locks = new Map(); // gameId → Promise (tail of that game's queue)
+
+async function withGameLock(gameId, fn) {
+  const prev = _locks.get(gameId) ?? Promise.resolve();
+  let release;
+  const mine = new Promise((r) => (release = r));
+  _locks.set(gameId, mine);
+  await prev;
+  try {
+    return await fn();
+  } finally {
+    release();
+    if (_locks.get(gameId) === mine) _locks.delete(gameId);
+  }
+}
+
+// ── helpers ──────────────────────────────────────────────────────────────────
+
+function persist(state) {
+  database.updateGame(state.id, state.status, state);
+}
+
+// ── public API ───────────────────────────────────────────────────────────────
+
+/**
+ * Create a brand-new game in 'waiting' state.
+ *
+ * @param {string} name           Human-readable game name
+ * @param {string} hostUserId     UUID of the creating user
+ * @param {string} [gameType]     Registered game type key (default 'monopoly')
+ * @param {object} [configOverrides]  Optional overrides merged into the config
+ * @returns {{ gameId, state }}
+ */
+function createGame(name, hostUserId, gameType = 'monopoly', configOverrides = {}) {
+  const gameId = uuidv4();
+  const logic = gameRegistry.getGameLogic(gameType);
+  const config = logic.getConfigCopy();
+
+  // Merge per-game rule tweaks sent from the client
+  if (configOverrides.settings) Object.assign(config.settings, configOverrides.settings);
+  if (configOverrides.board) config.board = configOverrides.board;
+  if (configOverrides.cards?.chance) config.cards.chance = configOverrides.cards.chance;
+  if (configOverrides.cards?.communityChest)
+    config.cards.communityChest = configOverrides.cards.communityChest;
+
+  const { minPlayers, maxPlayers } = logic.getGameMetadata();
+
+  // Minimal waiting-room state — no game-specific fields yet
+  const placeholderState = {
+    id: gameId,
+    name,
+    gameType,
+    createdBy: hostUserId,
+    status: 'waiting',
+    stateVersion: logic.STATE_VERSION,
+    config,
+    minPlayers,
+    maxPlayers,
+    players: [],
+  };
+
+  database.createGame(gameId, name, hostUserId, placeholderState, config, gameType);
+  database.addPlayerToGame(gameId, hostUserId);
+  activeGames.set(gameId, placeholderState);
+
+  return { gameId, state: placeholderState };
+}
+
+/**
+ * Load a saved/paused game back into memory.
+ *
+ * @param {string} gameId
+ * @returns {GameState | null}
+ */
+function loadGame(gameId) {
+  if (activeGames.has(gameId)) return activeGames.get(gameId);
+
+  const row = database.getGameById(gameId);
+  if (!row) return null;
+
+  // Back-fill fields from DB columns for games saved before they were
+  // embedded in the state JSON.
+  if (!row.state.createdBy && row.created_by) {
+    row.state.createdBy = row.created_by;
+  }
+  if (!row.state.gameType && row.game_type) {
+    row.state.gameType = row.game_type;
+  }
+
+  // Back-fill stateVersion for states persisted before versioning was
+  // introduced.  Treat them as v1 (the first versioned release) so they are
+  // not flagged as needing migration when the current version is also 1.
+  if (row.state.stateVersion === undefined) {
+    row.state.stateVersion = 1;
+  }
+
+  // Run the game's migration function if the persisted version is behind.
+  const logic = getLogic(row.state);
+  if (row.state.stateVersion !== logic.STATE_VERSION) {
+    if (typeof logic.migrate !== 'function') {
+      console.warn(
+        `[game-manager] Game ${gameId} has stateVersion ${row.state.stateVersion} but ` +
+          `current is ${logic.STATE_VERSION}; no migrate() defined — loading as-is.`,
+      );
+    } else {
+      try {
+        row.state = logic.migrate(row.state);
+        persist(row.state);
+        console.log(
+          `[game-manager] Migrated game ${gameId} to stateVersion ${logic.STATE_VERSION}`,
+        );
+      } catch (err) {
+        console.error(`[game-manager] Migration failed for game ${gameId}: ${err.message}`);
+        return null;
+      }
+    }
+  }
+
+  activeGames.set(gameId, row.state);
+  return row.state;
+}
+
+/**
+ * Return the LIVE in-memory state for a running game (loading from DB if
+ * needed).  The returned object is the canonical mutable reference —
+ * mutating it mutates the cached game.  See module header for usage rules.
+ */
+function peekGame(gameId) {
+  return activeGames.get(gameId) || loadGame(gameId);
+}
+
+/**
+ * Return a structuredClone() of the game's state, safe to hand to game-logic
+ * code or to return over the wire.  Returns null if the game doesn't exist.
+ */
+function getGameSnapshot(gameId) {
+  const live = peekGame(gameId);
+  return live ? structuredClone(live) : null;
+}
+
+/**
+ * Return a public (safe-to-send) representation of all open games.
+ */
+function listOpenGames() {
+  return database.listOpenGames();
+}
+
+/**
+ * Add a player to the waiting-room player list.
+ *
+ * @param {string} gameId
+ * @param {Object} user   - { id, username } from the auth system
+ */
+async function addPlayerToLobby(gameId, user) {
+  return withGameLock(gameId, () => {
+    const state = peekGame(gameId);
+    if (!state) return { error: 'Game not found' };
+    if (state.status !== 'waiting') return { error: 'Game already in progress' };
+
+    const logic = getLogic(state);
+    const { maxPlayers } = logic.getGameMetadata();
+    if (state.players.length >= maxPlayers) return { error: 'Game is full' };
+
+    if (state.players.find((p) => p.userId === user.id)) {
+      return { state }; // idempotent
+    }
+
+    const player = logic.createInitialPlayer(user, state.players, state.config);
+    state.players.push(player);
+
+    database.addPlayerToGame(gameId, user.id);
+    persist(state);
+
+    return { state };
+  });
+}
+
+/**
+ * Remove a player from a waiting-room lobby.
+ */
+async function removePlayerFromLobby(gameId, userId) {
+  return withGameLock(gameId, () => {
+    const state = peekGame(gameId);
+    if (!state || state.status !== 'waiting') return;
+
+    state.players = state.players.filter((p) => p.userId !== userId);
+    database.removePlayerFromGame(gameId, userId);
+    persist(state);
+  });
+}
+
+/**
+ * Start a waiting game.  The host calls this once all players are ready.
+ *
+ * @param {string} gameId
+ * @param {string} hostUserId  Only the host can start the game
+ * @returns {{ state, events, error? }}
+ */
+function startGame(gameId, hostUserId) {
+  const state = peekGame(gameId);
+  if (!state) return { error: 'Game not found' };
+  if (state.status !== 'waiting') return { error: 'Game is not in waiting state' };
+
+  const dbGame = database.getGameById(gameId);
+  if (dbGame.created_by !== hostUserId) return { error: 'Only the host can start the game' };
+
+  const logic = getLogic(state);
+  const { minPlayers } = logic.getGameMetadata();
+  if (state.players.length < minPlayers) {
+    return { error: `Need at least ${minPlayers} players to start` };
+  }
+
+  const newState = logic.initGame(gameId, state.name, state.players, state.config);
+  newState.createdBy = state.createdBy || hostUserId;
+  newState.gameType = state.gameType;
+  activeGames.set(gameId, newState);
+  persist(newState);
+
+  return {
+    state: newState,
+    events: [
+      {
+        type: 'GAME_STARTED',
+        data: {
+          players: newState.players.map((p) => ({ userId: p.userId, username: p.username })),
+        },
+        timestamp: Date.now(),
+      },
+    ],
+  };
+}
+
+/**
+ * Apply a game action dispatched by a player.
+ * All actions go through this single entry point which calls the appropriate
+ * game-logic function and then persists the updated state.
+ *
+ * @param {string} gameId
+ * @param {string} userId   The acting player
+ * @param {string} action   Action name (matches exported game-logic functions)
+ * @param {object} [payload]  Additional data for the action
+ * @returns {{ state, events, error? }}
+ */
+async function applyAction(gameId, userId, action, payload = {}) {
+  return withGameLock(gameId, () => {
+    const state = peekGame(gameId);
+    if (!state) return { state: null, events: [], error: 'Game not found' };
+    if (state.status !== 'playing')
+      return { state, events: [], error: 'Game is not in playing state' };
+
+    const result = getLogic(state).applyAction(state, userId, action, payload);
+    if (result.error) return { state, events: [], error: result.error };
+
+    activeGames.set(gameId, result.state);
+    persist(result.state);
+    return { state: result.state, events: result.events };
+  });
+}
+
+/**
+ * Delete a game permanently.  Only the host may delete.  Any status is fair
+ * game — the host owns the game and can nuke it at will.  Connected players
+ * in a deleted in-progress game will see their next socket action rejected
+ * with "Game not found"; the lobby will refresh and the game will disappear
+ * from their list.
+ */
+async function deleteGame(gameId, userId) {
+  return withGameLock(gameId, () => {
+    const dbGame = database.getGameById(gameId);
+    if (!dbGame) return { error: 'Game not found' };
+    if (dbGame.created_by !== userId) return { error: 'Only the host can delete a game' };
+
+    activeGames.delete(gameId);
+    database.deleteGame(gameId);
+    return { success: true };
+  });
+}
+
+/**
+ * Resume a paused game, setting its status back to 'playing'.
+ */
+async function resumeGame(gameId) {
+  return withGameLock(gameId, () => {
+    const state = peekGame(gameId);
+    if (!state || state.status !== 'paused') return;
+    state.status = 'playing';
+    persist(state);
+  });
+}
+
+/**
+ * Save (pause) a game so it can be resumed later.
+ */
+async function saveGame(gameId, userId) {
+  return withGameLock(gameId, () => {
+    const state = peekGame(gameId);
+    if (!state) return { error: 'Game not found' };
+
+    const dbGame = database.getGameById(gameId);
+    if (dbGame.created_by !== userId) return { error: 'Only the host can save the game' };
+
+    state.status = 'paused';
+    persist(state);
+    return { success: true };
+  });
+}
+
+/**
+ * Mark a player as (dis)connected.  Disconnected players can still own
+ * property and the game continues; their turn is skipped after a timeout
+ * (handled externally by the socket handler).
+ */
+async function setPlayerConnected(gameId, userId, connected) {
+  return withGameLock(gameId, () => {
+    const state = peekGame(gameId);
+    if (!state) return;
+    const player = state.players.find((p) => p.userId === userId);
+    if (player) player.connected = connected;
+    persist(state);
+  });
+}
+
+/**
+ * Remove a game from the in-memory cache (e.g. when all players leave).
+ */
+function evictGame(gameId) {
+  activeGames.delete(gameId);
+}
+
+module.exports = {
+  createGame,
+  loadGame,
+  peekGame,
+  getGameSnapshot,
+  listOpenGames,
+  addPlayerToLobby,
+  removePlayerFromLobby,
+  startGame,
+  applyAction,
+  deleteGame,
+  saveGame,
+  resumeGame,
+  setPlayerConnected,
+  evictGame,
+};

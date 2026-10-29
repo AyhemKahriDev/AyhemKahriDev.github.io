@@ -1,0 +1,168 @@
+@font-face{ 
+    font-family: 'coiny';
+    src: url('/stc/third-party/Coiny-Regular.ttf');
+}
+
+* {
+    touch-action: none;
+    user-select: none;
+}
+
+body {
+    height: 100%;
+    overflow: hidden;
+    -webkit-touch-callout: none;
+    -webkit-text-size-adjust: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+div#main-container {
+    position: absolute;
+    height: 99%;
+}
+
+div#board-container {
+    padding: 2px;
+    margin-top: 4px;
+    margin-bottom: 20px;
+    border-width: 5px;
+}
+
+div.playgrid {
+    position: relative;
+}
+
+div.help {
+    font-size: 40px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 4px solid black;
+    border-radius: 40px;
+    padding: 30px 10px 30px 10px;
+    text-align: left;
+}
+
+#board {
+    z-index: 0;
+    border-style: solid;
+}
+
+@media not all and (hover: none) {
+    div.playgrid div:hover {
+        background-color: #888;
+        opacity: 0.5;
+    }
+}
+
+h1 {
+    font-size: 70px;
+    font-family: 'coiny';
+    margin-top: 0px;
+}
+
+h2 {
+    margin-top: 0px;
+    font-size: 40px;
+    font-family: 'coiny';
+    text-align: center;
+}
+
+h3 {
+    margin-top: 0px;
+    font-size: 30px;
+    font-family: 'coiny';
+    text-align: center;
+}
+
+div.fp {
+    width: 500px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+div#buttons {
+    display: flex;
+    justify-content: flex-center;
+    flex-direction: row;
+}
+
+div#buttons div.separator {
+    flex: 1;
+}
+
+div.button {
+    height: 70px;
+    text-align: center;
+    vertical-align: middle;
+    padding: 5px;
+    font-size: 50px;
+    border-radius: 12px;
+    background-color: #0dd;
+    border: solid 1px #044; 
+    box-shadow: 5px 5px 0px 0px #066; 
+    font-family: 'coiny';
+    margin-top: 10px;
+    -webkit-tap-highlight-color: #0aa;
+    touch-action: manipulation;
+}
+
+div.separator {
+    width: 10px;
+}
+
+@media not all and (hover: none) {
+    div.button:hover {
+        background-color: #0ff;
+    }
+}
+
+div.playgrid div {
+    position: absolute;
+
+    width: 50px;
+    height: 50px;
+    padding: 0px;
+    vertical-align: top;
+    text-align: center;
+    font-family: 'coiny';
+    font-size: 40px;
+    margin: 0px;
+}
+
+#board div.line {
+    background-color: #ee0;
+    box-shadow: 3px 3px 0px 0px #660;
+    z-index: -1;
+    border-radius: 25px;
+    border: solid 1px #880;
+}
+
+#board div.line-match {
+    background-color: #0e0;
+    box-shadow: 3px 3px 0px 0px #060;
+    border: solid 1px #080;
+}
+
+#board div.line-toolong {
+    background-color: #e00;
+    box-shadow: 3px 3px 0px 0px #600;
+    border: solid 1px #800;
+}
+
+#board div.blocked {
+    background-color: #f00;
+}
+
+@keyframes blink {
+    from { background-color: rgba(255, 0, 0, 1); }
+    50% { background-color: rgba(0, 255, 0, 0); }
+    to { background-color: rgba(255, 0, 0, 1); }
+}
+
+div.blink {
+    animation-name: blink;
+    animation-duration: 0.1s;
+    animation-iteration-count: 3;
+}

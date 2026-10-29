@@ -1,0 +1,16 @@
+{
+  "repo": "amitsagtani97/Classic-Arcade-Game",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 12,
+  "pushedAt": "2018-10-14T08:59:00Z",
+  "description": "A classic arcade game created using Javascript",
+  "defaultBranch": "master",
+  "owner": "amitsagtani97",
+  "slug": "amitsagtani97-classic-arcade-game",
+  "dest": "third-party/amitsagtani97-classic-arcade-game",
+  "readme": "# Classic-Arcade-Game\nA classic arcade game created using Javascript\nMainly uses canvas\nAuthor :- Amit Sagtani\n\nOpen game.html file in any browser and enjoy the classic arcade game.\n\nFeel free to contribute and improve the game.\n\n[![image.jpg](https://s1.postimg.org/4ujebbgwcv/image.jpg)](https://postimg.org/image/7ep8nyguyz/)\n",
+  "licenceFile": "LICENSE",
+  "entry": "game.html",
+  "validated": true
+}

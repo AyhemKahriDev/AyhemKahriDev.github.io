@@ -1,0 +1,16 @@
+{
+  "repo": "Quinten/black-hole-square",
+  "stars": 65,
+  "licence": "MIT",
+  "sizeKB": 696,
+  "pushedAt": "2026-02-16T06:49:51Z",
+  "description": "A puzzle game for js13k 2021",
+  "defaultBranch": "master",
+  "owner": "Quinten",
+  "slug": "quinten-black-hole-square",
+  "dest": "third-party/quinten-black-hole-square",
+  "readme": "# Black Hole Square\n\nA puzzle game for js13k 2021\n\nTheme: SPACE\n\n## Welcome to Black Hole Square!\n\nClean up all the other squares in the universe. Just tap them and see what happens.\n\nSwipe right to reset a puzzle or go back to the old ones. Swipe left to skip a puzzle.\n\nUnlock 3 bonus puzzles by supporting this game through [web monetization](https://webmonetization.org/).\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html",
+  "validated": true
+}

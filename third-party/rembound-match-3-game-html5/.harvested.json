@@ -1,0 +1,16 @@
+{
+  "repo": "rembound/Match-3-Game-HTML5",
+  "stars": 80,
+  "licence": "MIT",
+  "sizeKB": 34,
+  "pushedAt": "2023-01-13T23:15:50Z",
+  "description": "How to make a Match-3 game with HTML5 Canvas and JavaScript.",
+  "defaultBranch": "master",
+  "owner": "rembound",
+  "slug": "rembound-match-3-game-html5",
+  "dest": "third-party/rembound-match-3-game-html5",
+  "readme": "# Match-3 Game HTML5\nA Match-3 game like Bejeweled and Candy Crush Saga with HTML5 Canvas and JavaScript.\n\nThis is a code example that belongs to the article: [How To Make A Match-3 Game With HTML5 Canvas](http://rembound.com/articles/how-to-make-a-match3-game-with-html5-canvas)\n\n[![How To Make A Match-3 Game With HTML5 Canvas](screenshot.png?raw=true)](http://rembound.com/articles/how-to-make-a-match3-game-with-html5-canvas)",
+  "licenceFile": "LICENSE",
+  "entry": "match3.html",
+  "validated": true
+}

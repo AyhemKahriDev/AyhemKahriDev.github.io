@@ -1,0 +1,48 @@
+import { PinballConfig } from '../config/config'
+import { indirectResolve } from '../lib/indirectResolver'
+
+export interface LayoutInfo {
+  // Grid size
+  size: number
+  // Sizes and positions
+  width: number
+  height: number
+  // side is the size of a side of a slate
+  side: number
+  // boardBase is the board position
+  boardBase: Position
+  boardSize: number
+  indicatorRadius: number
+  indicatorStrokeWidth: number
+  trailDotRadius: number
+  bumperWidth: number
+  bumperHeight: number
+  ballRadius: number
+  ballStrokeWidth: number
+}
+
+export function getLayout(window: Window, canvas: HTMLCanvasElement, config: PinballConfig) {
+  return indirectResolve<LayoutInfo>({
+    size: () => config.size,
+    // Sizes and positions
+    width: () => canvas.clientWidth,
+    height: () => canvas.clientHeight,
+    side: ({ size, width, height }) => {
+      let viewportSize = Math.min(width(), height()) * 0.82
+      let maximumBoardSize = 720
+      return Math.floor(Math.min(viewportSize, maximumBoardSize) / (size() + 2))
+    },
+    boardSize: ({ size, side }) => side() * (size() + 2),
+    boardBase: ({ width, height, boardSize }) => ({
+      x: (width() - boardSize()) / 2,
+      y: (height() - boardSize()) / 2,
+    }),
+    indicatorRadius: ({ side }) => Math.floor((2 * side()) / 7),
+    indicatorStrokeWidth: ({ indicatorRadius }) => (2 * indicatorRadius()) / 5,
+    trailDotRadius: ({ side }) => Math.floor(side() / 8),
+    bumperWidth: ({ side }) => (4 * side()) / 5,
+    bumperHeight: ({ side }) => side() / 8,
+    ballRadius: ({ side }) => Math.floor(side() / 3),
+    ballStrokeWidth: ({ ballRadius }) => ballRadius() / 3,
+  })
+}

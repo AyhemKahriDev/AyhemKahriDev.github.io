@@ -1,0 +1,15 @@
+{
+  "repo": "samthor/wasm-game",
+  "stars": 16,
+  "licence": "Apache-2.0",
+  "sizeKB": 10,
+  "pushedAt": "2017-09-04T10:34:15Z",
+  "description": "Pixel game written with Web Assembly",
+  "defaultBranch": "master",
+  "owner": "samthor",
+  "slug": "samthor-wasm-game",
+  "dest": "third-party/samthor-wasm-game",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

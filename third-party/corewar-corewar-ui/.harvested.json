@@ -1,0 +1,15 @@
+{
+  "repo": "corewar/corewar-ui",
+  "stars": 13,
+  "licence": "MIT",
+  "sizeKB": 3082,
+  "pushedAt": "2021-03-12T00:42:15Z",
+  "description": "HTML5 & javascript implementation of the classic game Corewar",
+  "defaultBranch": "master",
+  "owner": "corewar",
+  "slug": "corewar-corewar-ui",
+  "dest": "third-party/corewar-corewar-ui",
+  "readme": "[![Netlify Status](https://api.netlify.com/api/v1/badges/9b7a33cc-31cd-4578-854c-142a40d98be5/deploy-status)](https://app.netlify.com/sites/fervent-colden-f3a70c/deploys)\n\n# NOTE: This repository has been deprecated and moved to our new home in the monorepo at: https://github.com/corewar/corewar.io\n\n# Corewar UI\n\nThis project is a web user interface for the Corewar.\n\nIt specifically consume our other project [Corewar](https://github.com/gareththegeek/corewar) which is a Typescript / Javascript implementation of the classic game [corewar](https://en.wikipedia.org/wiki/Core_War)\n\nYou can use the website here [https://www.corewar.io](https://www.corewar.io/)\n\n## Technology\n\nThis project is written as a set of react components to consume the parser and simulator from [Corewar](https://github.com/gareththegeek/corewar) and display the output in an attractive manner.\n\n## Getting started\n\n- Clone the project\n- `npm i` the dependencies\n- `npm start` to run the webserver and visit `localhost:3000` to see the output\n\n## Testing\n\nRun `npm test` to execute the UI tests\n\n## Contribution\n\nWe welcome all contributions, feedback and issues, please drop us a line with any feedback you have.\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html"
+}

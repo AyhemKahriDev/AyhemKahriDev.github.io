@@ -1,0 +1,177 @@
+import os
+import sys
+import tempfile
+from ctypes import c_char_p, c_int, c_longlong, cdll
+
+BUILD_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "c_build"))
+C_SHARED_LIB = os.path.join(BUILD_DIR, "dice.so")
+
+_libc = None
+
+
+def _get_libc():
+    global _libc
+    if _libc is None:
+        _libc = cdll.LoadLibrary(C_SHARED_LIB)
+        _libc.gnoll_validate_roll_request.argtypes = [c_char_p]
+        _libc.gnoll_validate_roll_request.restype = c_int
+        _libc.roll_full_options.argtypes = [
+            c_char_p,
+            c_char_p,
+            c_int,
+            c_int,
+            c_int,
+            c_int,
+            c_int,
+            c_longlong,
+        ]
+        _libc.roll_full_options.restype = c_int
+    return _libc
+
+
+class GNOLLException(Exception):
+    """A custom exception to capture
+    the specific types of errors raised by GNOLL
+    """
+
+    def __init__(self, v):
+        Exception.__init__(self, v)
+
+
+def raise_gnoll_error(value):
+    """Translates a GNOLL return code into a python
+    Exception, which is then raised
+    @value return code of GNOLL
+    """
+    d = [
+        None,
+        GNOLLException("BAD_ALLOC"),
+        GNOLLException("BAD_FILE"),
+        GNOLLException("NOT_IMPLEMENTED"),
+        GNOLLException("INTERNAL_ASSERT"),
+        GNOLLException("UNDEFINED_BEHAVIOUR"),
+        GNOLLException("BAD_STRING"),
+        GNOLLException("OUT_OF_RANGE"),
+        GNOLLException("IO_ERROR"),
+        GNOLLException("MAX_LOOP_LIMIT_HIT"),
+        GNOLLException("SYNTAX_ERROR"),
+        GNOLLException("DIVIDE_BY_ZERO"),
+        GNOLLException("UNDEFINED_MACRO"),
+        GNOLLException("MATH_OVERFLOW"),
+        GNOLLException("MATH_UNDERFLOW"),
+    ]
+    err = d[value]
+    if err is not None:
+        raise err
+
+
+def validate_roll_string(s):
+    """Run the same pre-parse checks as roll_full_options (C implementation)."""
+    rc = _get_libc().gnoll_validate_roll_request(s.encode("ascii"))
+    if rc != 0:
+        raise_gnoll_error(rc)
+
+
+def roll(
+    s,
+    verbose=False,
+    mock=None,
+    mock_const=3,
+    breakdown=False,
+    builtins=False,
+    keep_temp_file=False,
+):
+    """Parse some dice notation with GNOLL.
+    @param s the string to parse
+    @param verbose whether to enable verbosity (primarily for debug)
+    @param mock override the internal random number generator (for testing).
+    @param mock_const the seed value for overriding with mocks
+    @param breakdown get the details of each dice rolled, not just the final result
+    @param keep_temp_file don't delete the temporary file
+    @param force_dll_reload destroy the dll/shared object and reload (inadvisable)
+    @return  return code, final result, dice breakdown (None if disabled)
+    """
+
+    def make_native_type(v):
+        """
+        Change a string to a more appropriate type if possible.
+        Number -> int
+        Word -> String
+        """
+        if v == "0":
+            return 0
+        if v == "":
+            return "NULL"
+        try:
+            return int(v)
+        except ValueError:
+            return v
+
+    def extract_from_dice_file(lines, seperator):
+        """
+        Parse GNOLL's file output
+        @param lines array of file readlines()
+        @param seperator value seperating terms in the file
+        """
+        v = [x.split(seperator)[:-1] for x in lines if seperator in x]
+        v = [list(map(make_native_type, x)) for x in v]
+        return v
+
+    die_file = None
+    out_file = None
+    try:
+        temp = tempfile.NamedTemporaryFile(prefix="gnoll_roll_",
+                                           suffix=".die",
+                                           delete=False)
+        temp.close()
+
+        die_file = temp.name
+
+        out_file = str(die_file).encode("ascii")
+        if verbose:
+            print("Rolling: ", s)
+            print("Output in:", out_file)
+
+        roll_req = s.encode("ascii")
+        enable_mock = 1 if mock is not None else 0
+        mocking_type = int(mock) if mock is not None else 0
+
+        return_code = _get_libc().roll_full_options(
+            roll_req,
+            out_file,
+            int(verbose),
+            int(breakdown),
+            enable_mock,
+            int(builtins),
+            mocking_type,
+            c_longlong(mock_const),
+        )
+        if return_code != 0:
+            raise_gnoll_error(return_code)
+
+        with open(out_file, encoding="utf-8") as f:
+            lines = f.readlines()
+
+        dice_breakdown = extract_from_dice_file(lines, ",")
+        result = extract_from_dice_file(lines, ";")
+
+        return int(return_code), result, dice_breakdown
+
+    finally:
+        if not keep_temp_file and die_file is not None:
+            if verbose and out_file is not None:
+                print("Deleting:", out_file)
+
+            os.remove(die_file)
+
+
+if __name__ == "__main__":
+    arg = "".join(sys.argv[1:])
+    arg = arg if arg != "" else "1d20"
+    code, r, detailed_r = roll(arg, verbose=False)
+    print(f"""
+[[GNOLL Results]]
+Dice Roll:      {arg}
+Result:         {r}
+Exit Code:      {code},
+Dice Breakdown: {detailed_r}""")

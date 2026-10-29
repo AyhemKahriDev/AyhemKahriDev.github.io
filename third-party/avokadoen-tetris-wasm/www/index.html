@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>WASM tetris!</title>
+    <!-- source: 
+          button group: https://www.w3schools.com/howto/howto_css_button_group_vertical.asp
+    -->
+    <style>
+      body {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .menu div {
+        background: rgb(189, 188, 188);
+        border: 1px solid black;
+      }
+      
+      .btn-group button {
+        background-color: rgba(90, 90, 90, 1);
+        border: 1px solid rgba(77, 76, 76, 0.8); 
+        color: white; 
+        padding: 10px 24px;
+        margin: 2% 10% 2% 10%;
+        cursor: pointer;
+        display: block;
+        width: 80%;
+      }
+
+      .btn-group button:not(:last-child) {
+        border-bottom: none; /* Prevent double borders */
+      }
+
+      .btn-group button:first-child {
+        margin: 15% 10% 2% 10%;
+      }
+
+      /* Add a background color on hover */
+      .btn-group button:hover {
+        background-color: rgb(150, 150, 150);
+      }
+
+      .btn-group button:active {
+        background-color: rgb(129, 121, 121);
+      }
+
+      .input-field select {
+        width: 80px;
+        margin: 2px 10% 5px 10%;
+      }
+
+      .input-field div {
+        border: 0px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="menu">
+      <div id="mainMenu" class="btn-group" style="display: none">
+        <button id="resume">Resume</button>
+        <button id="reset">Reset</button>
+        <button id="settings">Settings</button>
+        <button id="quit">Quit</button>
+      </div>
+      <div id="settingsMenu" class="btn-group menu" style="display: none">
+        <!-- TODO: styling -->
+        <h3 style="margin-left: 10px;">Input settings</h3>
+        <!-- TODO: set value on menu enter based on current settings (from cookie?) -->
+        <form class="input-field">
+          <table>
+            <tr>
+                <td style="padding-left: 10px;">
+                  <label for="rot_inp">Rotate</label>
+                </td>
+                <td>
+                  <select id="rot_inp">
+                  </select>
+                </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 10px;">
+                <label for="down_inp">Down</label>
+              </td>
+              <td>
+                <select id="down_inp">
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 10px;">
+                <label for="left_stride_inp">Left</label>
+              </td>
+              <td>
+                <select id="left_stride_inp">
+                </select>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding-left: 10px;">
+                <label for="right_stride_inp">Right</label>
+              </td>
+              <td>
+                <select id="right_stride_inp">
+                </select>
+              </td>
+            </tr>
+          </table>
+        </form>
+        <button>Reset</button> 
+      </div>
+    </div>
+
+    <canvas id="tetris-canvas"></canvas>
+    <h3 id="score_display">Score: 0</h3>
+    <script src='./bootstrap.js'></script>
+  </body>
+</html>

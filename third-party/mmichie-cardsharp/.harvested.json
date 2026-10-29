@@ -1,0 +1,16 @@
+{
+  "repo": "mmichie/cardsharp",
+  "stars": 10,
+  "licence": "MIT",
+  "sizeKB": 2828,
+  "pushedAt": "2026-10-19T00:04:12Z",
+  "description": "CardSharp is a Python package for simulating and testing card games. The package currently supports Blackjack but can be extended to support more card games.",
+  "defaultBranch": "master",
+  "owner": "mmichie",
+  "slug": "mmichie-cardsharp",
+  "dest": "third-party/mmichie-cardsharp",
+  "readme": "# CardSharp\n\nA Python framework for simulating and analyzing card games. Currently supports\nBlackjack, War, High Card, Baccarat, Dragon Tiger, and Durak.\n\n[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)\n\n## Installation\n\n```bash\ngit clone https://github.com/mmichie/cardsharp.git\ncd cardsharp\nuv sync\n```\n\n## Usage\n\n### Simulation\n\n```bash\n# Run 10,000 blackjack games with visualization\nuv run python cardsharp/blackjack/blackjack.py --simulate --num_games 10000 --vis\n\n# Compare strategies (Basic, Counting, Aggressive, Martingale)\nuv run python cardsharp/blackjack/blackjack.py --analysis --num_games 5000\n\n# Performance profiling\nuv run python cardsharp/blackjack/blackjack.py --simulate --profile --num_games 1000\n```\n\n### Interactive Play\n\n```bash\n# Console blackjack\nuv run python cardsharp/blackjack/blackjack.py --console\n\n# Full CLI game with options\nuv run python examples/cli_blackjack.py --players 3 --bankroll 500 --rounds 5\n```\n\n### Examples\n\n```bash\nuv run python examples/async_api_demo.py        # Async API with event-driven flow\nuv run python examples/blackjack_engine_demo.py  # Engine with immutable state\nuv run python examples/adapter_demo.py           # Platform adapter system\nuv run python examples/modern_blackjack_ui.py    # Streamlit web UI\n```\n\nSee `examples/` for the full set of demos.\n\n## Architecture\n\nCardSharp uses an event-driven architecture with immutable state transitions:\n\n- **Events** -- Components communicate through pub/sub (`cardsharp/events/`)\n- **Immutable State** -- Game state transitions via pure functions (`cardsharp/state/`)\n- **Engines** -- Game logic per game type (`cardsharp/engine/`, `cardsharp/blackjack/`, etc.)\n- **Adapters** -- Platform-specific rendering and input (`cardsharp/adapters/`)\n- **APIs** -- High-level sync/async interfaces (`cardsharp/api/`)\n\n## Testing\n\n```bash\nuv run pytest                              # Run all tests\nuv run pytest --cov=cardsharp              # With coverage\nuv run pytest tests/api/test_event_cleanup.py -v  # Specific module\nuv run pytest -n auto                      # Parallel\n```\n\n## License\n\nMIT\n",
+  "licenceFile": "LICENSE",
+  "entry": "web/index.html",
+  "validated": true
+}

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    <meta charset="UTF-8">
+    <title>aMAZE game</title>
+    <style type="text/css" media="screen">
+      #app {
+          display: flex;
+          justify-content: center;   /* left-right centering */
+          align-items: center;       /* vertical centering */
+          margin: 10px;
+          height: 720px;
+      }
+      html,
+      body {
+          margin: 0;
+          padding: 0;
+          overflow: hidden; /* disables scrollbar; otherwise everything moves on SPACE */
+          height: 100%;
+          overscroll-behavior: contain;
+          background-color: #EEE;
+      }
+      #text {
+          margin: 20px;
+      }
+      .p5Canvas {
+          display: block;
+      }
+    </style>
+
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this game.</noscript>
+    <div id="app"></div>
+    <script src="js/main.js"></script>
+    <div id="text">
+      <a href="https://github.com/narimiran/amaze" target="_blank">[source code]</a>
+    </div>
+  </body>
+</html>

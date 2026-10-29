@@ -11,5 +11,6 @@
   "dest": "third-party/phoboslab-underrun",
   "readme": "# UNDERRUN - A JS13k GAME\n\nMy entry for the 2018 [js13k](https://js13kgames.com/) competition.\n\nPlay here: https://phoboslab.org/underrun/\n\nMIT Licensed\n\nPlease be aware that this projects makes use of the Sonant-X library (albeit heavily modified) which is published under the zlib license.",
   "licenceFile": "LICENSE.md",
-  "entry": "index-debug.html"
+  "entry": "index-debug.html",
+  "validated": true
 }

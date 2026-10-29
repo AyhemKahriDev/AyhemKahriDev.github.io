@@ -1,0 +1,16 @@
+{
+  "repo": "goshdarngames/HTML5-Maze",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 144,
+  "pushedAt": "2015-02-13T16:37:05Z",
+  "description": "A maze game implemented in HTML5.  Interface adapts to screen orientation.",
+  "defaultBranch": "master",
+  "owner": "goshdarngames",
+  "slug": "goshdarngames-html5-maze",
+  "dest": "third-party/goshdarngames-html5-maze",
+  "readme": "# HTML5-Maze\nA maze game implemented in HTML5.  The interface adapts to screen orientation.\n\nCreated while learning HTML5/Javascript so may not be the most elegant\nprogram ever written! \n",
+  "licenceFile": "LICENSE",
+  "entry": "html5-maze/index.html",
+  "validated": true
+}

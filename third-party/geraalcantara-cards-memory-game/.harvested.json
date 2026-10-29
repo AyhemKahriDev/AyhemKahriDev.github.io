@@ -1,0 +1,15 @@
+{
+  "repo": "GeraAlcantara/cards-memory-game",
+  "stars": 17,
+  "licence": "GPL-3.0",
+  "sizeKB": 995,
+  "pushedAt": "2022-10-12T05:48:55Z",
+  "description": "Classic card game, Flip the cards and match done in Vanilla JavaScript, Svelte, VUE, React",
+  "defaultBranch": "main",
+  "owner": "GeraAlcantara",
+  "slug": "geraalcantara-cards-memory-game",
+  "dest": "third-party/geraalcantara-cards-memory-game",
+  "readme": "# cards-memory-game\n\nA classic card game, flip and match the cards done in Vanilla JavaScript, Svelte, VUE, React and TypeScript.\n\nShow love 💜 to the repo by giving a ⭐\n\n## Preview\n\n![memorie game example](https://github.com/GeraAlcantara/cards-memory-game/blob/main/img/gameExample.gif?raw=true)\n\n### The game will be recreated in the following JavaScript libraries:\n\n- React\n- VUE\n- Svelte\n\n### cards-memory-game Base\n\nYou can find the game under the folder gameBase.\nPlease review it before you try to implement it in any library.\n\nPlease check the [contribution.md](https://github.com/GeraAlcantara/cards-memory-game/blob/main/CONTRIBUTING.md) for contributing purposes.\n\nResources:\nBase on the proyect of [Marina Ferreira](https://github.com/marina-ferreira)\n\n[Medium Post](https://medium.com/free-code-camp/vanilla-javascript-tutorial-build-a-memory-game-in-30-minutes-e542c4447eae)\n\n[Repository](https://github.com/code-sketch/memory-game)\n",
+  "licenceFile": "LICENSE",
+  "entry": "docs/index.html"
+}

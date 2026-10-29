@@ -1,0 +1,15 @@
+{
+  "repo": "Mo7ammedd/color-quiz-application",
+  "stars": 17,
+  "licence": "MIT",
+  "sizeKB": 16,
+  "pushedAt": "2023-08-10T16:01:04Z",
+  "description": "displays questions related to hexadecimal color codes",
+  "defaultBranch": "main",
+  "owner": "Mo7ammedd",
+  "slug": "mo7ammedd-color-quiz-application",
+  "dest": "third-party/mo7ammedd-color-quiz-application",
+  "readme": "# JavaScript Color Quiz App\n\nThis is a simple color quiz application built using HTML, CSS, and JavaScript. The app displays questions related to hexadecimal color codes and challenges users to select the correct color.\n\n## Features\n\n- Randomly generates questions about hexadecimal color codes.\n- Displays multiple options for each question.\n- Starts a countdown timer for each question.\n- Provides immediate feedback on user's answer correctness.\n- Calculates and displays the user's score at the end of the quiz.\n- Allows users to restart the quiz.\n\n## How to Engage\n\nEmbark on this color-filled adventure by trying out our [Live Demo](https://mo7ammedd.github.io/color-quiz-application/). Immerse yourself in the world of hexadecimal colors and put your knowledge to the test!\n\n## Crafting Your Own Path\n\n1. Clone the repository as mentioned above.\n2. Make changes to the JavaScript code in the `script.js` file to modify quiz questions or behavior.\n3. Customize the CSS in the `styles.css` file to adjust the app's appearance.\n4. Open the `index.html` file in a web browser to test your changes.\n\n## License\n\nThis project is licensed under the MIT License - see the [LICENSE](https://github.com/Mo7ammedd/color-quiz-application/blob/main/LICENSE.txt) file for details.\n\n\n\n",
+  "licenceFile": "LICENSE.txt",
+  "entry": "index.html"
+}

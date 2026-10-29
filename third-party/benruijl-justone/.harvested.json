@@ -1,0 +1,16 @@
+{
+  "repo": "benruijl/justone",
+  "stars": 11,
+  "licence": "MIT",
+  "sizeKB": 164,
+  "pushedAt": "2023-02-01T17:44:44Z",
+  "description": "A web version of the board game Just One",
+  "defaultBranch": "master",
+  "owner": "benruijl",
+  "slug": "benruijl-justone",
+  "dest": "third-party/benruijl-justone",
+  "readme": "Just One\n========\n\nA web version of the board game [Just One](https://www.boardgamegeek.com/boardgame/254640/just-one). If you like this (unaffiliated) digital version, support the original designers by buying their game.\n\nIf you'd like to [support](https://www.buymeacoffee.com/benruijl) me, you can buy me a coffee!\n\nPlaying\n-------\nTo play the game online, you can host a server yourself or go to https://justone.duckdns.org/.\n\nScreenshots\n-----------\n<img src=\"include/justone_gameplay.png\" alt=\"Gameplay\" width=\"400\"/>\n<br/>\n<img src=\"include/justone_gameplay2.png\" alt=\"Gameplay\" width=\"400\"/>\n\n\nDevelopment\n-----------\nAny suggestions, word lists, and patches are welcome!",
+  "licenceFile": "LICENSE",
+  "entry": "include/index.html",
+  "validated": true
+}

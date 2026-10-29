@@ -1,0 +1,13 @@
+@count,text
+,"Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should only appear once."
+ ,"Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should only appear once."
+1,"Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should only appear once."
+"1","Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should only appear once."
+"  1 ","Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should only appear once."
+2,"Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should appear twice."
+3,"Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should appear three times."
+-1,"Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should not appear."
+"0","Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should not appear."
+"1a","Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should not appear."
+0,"Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should not appear."
+1001,"Row {{ _card_row_index }}#{{ _card_copy_index }}<br/>This card should warn and appear conditionally."

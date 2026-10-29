@@ -1,0 +1,16 @@
+{
+  "repo": "yizhuoyan/game-flappybird-canvas",
+  "stars": 19,
+  "licence": "GPL-3.0",
+  "sizeKB": 408,
+  "pushedAt": "2017-11-15T05:31:40Z",
+  "description": "flappybirdcanvas版本",
+  "defaultBranch": "master",
+  "owner": "yizhuoyan",
+  "slug": "yizhuoyan-game-flappybird-canvas",
+  "dest": "third-party/yizhuoyan-game-flappybird-canvas",
+  "readme": "# flappybird-canvas\nflappybirdcanvas版本\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

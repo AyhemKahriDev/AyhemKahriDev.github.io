@@ -30,6 +30,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dedupeByTitle, defaultFamilyOf } from './dedupe.mjs';
+import { HARDWARE } from './filters.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -259,6 +260,9 @@ export function importGames({
   const records = [];
   for (const verdict of passed) {
     const source = vendoredBySlug.get(verdict.slug) ?? {};
+    // Already vendored before the filter existed: a firmware repo with an
+    // embedded web toy is not a game, however well it paints.
+    if (HARDWARE.test(`${source.repo ?? ''} ${source.title ?? ''} ${source.description ?? ''}`)) continue;
     // Never write to the caller's objects: a frozen report must import fine.
     const record = {
       ...source,

@@ -1,0 +1,22 @@
+<div class="main-container">
+  <div class="content-container">
+    <div class="content-area">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>
+
+<div class="github" *ngIf="badgeScanningMode">
+  <cds-icon shape="play" solid="true"></cds-icon> bashbrawl.com
+</div>
+<div class="github" *ngIf="!badgeScanningMode">
+  <a href="https://github.com/jggoebel/bashbrawl"
+    ><cds-icon shape="star" solid="true"></cds-icon> on GitHub</a
+  >
+</div>
+<div class="imprint" *ngIf="imprint">
+  <a [href]="imprint">Impressum</a>
+</div>
+<div class="privacy" *ngIf="privacyPolicy">
+  <a [href]="privacyPolicy">Privacy Policy</a>
+</div>

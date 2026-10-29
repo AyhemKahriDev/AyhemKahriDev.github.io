@@ -1,0 +1,16 @@
+{
+  "repo": "wesleywerner/penny-farthing",
+  "stars": 6,
+  "licence": "GPL-3.0",
+  "sizeKB": 1219,
+  "pushedAt": "2023-03-12T05:25:38Z",
+  "description": "A solitaire card game engine",
+  "defaultBranch": "main",
+  "owner": "wesleywerner",
+  "slug": "wesleywerner-penny-farthing",
+  "dest": "third-party/wesleywerner-penny-farthing",
+  "readme": "# Migrated\n\nThis repo has migrated to [Codeberg](https://codeberg.org/wesbot/penny-farthing).\n\n# Overview\n\nPenny farthing is a solitaire card game engine using a web canvas and written in vanilla JavaScript.\n\nFor details on it's implementation and how to make your own card game rules, [see the WIKI](https://github.com/wesleywerner/penny-farthing/wiki).\n\n# References\n\n* [Vector Playing Cards, by Chris](https://sourceforge.net/projects/vector-cards/)\n* [Random number generator source, by Protonk](https://gist.github.com/Protonk/5367430)\n* [Riders Image, By L. Prang & Co., touched up by user:Churchh, Public domain, via Wikimedia Commons](https://commons.wikimedia.org/wiki/File%3ABicycling-ca1887-bigwheelers.jpg)\n\n# License\n\n    This program is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    This program is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with this program.  If not, see <http://www.gnu.org/licenses/>.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

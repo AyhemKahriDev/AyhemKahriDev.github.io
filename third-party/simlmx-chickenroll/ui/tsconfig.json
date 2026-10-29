@@ -1,0 +1,13 @@
+{
+  "extends": "../tsconfig.base.json",
+
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "dist",
+    "declarationDir": "dist/types",
+    "jsx": "preserve",
+    "moduleResolution": "bundler"
+  },
+
+  "include": ["src/**/*", "lingui.config.ts"]
+}

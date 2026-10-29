@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Crossword</title>
+    <meta name="description" content="Crossword">
+    <meta name="author" content="Giulia Alfonsi @electric_g">
+    <script src="js/jquery-1.4.2.min.js"></script>
+    <script src="js/jquery.easydrag.handler.beta2.js"></script>
+    <script src="crossword.js"></script>
+    <link rel="stylesheet" href="style/main.css">
+</head>
+<body>
+    
+    <h1>Crossword</h1>
+    <h3>Istruzioni</h3>
+    <p>Frecce della tastiera &larr; &uarr; &rarr; &darr; per muoversi tra le caselle nelle quattro direzioni.<br />
+    Tasto tab  ⇥ per spostarsi alla definizione successiva.<br />
+    Tasto dello spazio per cambiare il verso della parola selezionata.<br />
+    Tasto backspace per cancellare il valore della cella e spostarsi in quella precedente.<br />
+    Tasto canc per cancellare il valore della cella senza spostarsi.<br />
+    Cliccare su una definizione per spostarsi direttamente sulle celle interessate.<br />
+    Premere il bottone "check" per controllare con la soluzione.</p>
+    <h3>Instructions</h3>
+    <p>Keyboard arrows &larr; &uarr; &rarr; &darr; to move between the cells in the four directions.<br />
+    Tab key   ⇥ to move to the next definition.<br />
+    Spacebar to change the direction of the selected word.<br />
+    Backspace key to delete the value of the cell e move to the previous one.<br />
+    Delete key to delete the value of the cell without moving.<br />
+    Click on a definition to go to the respective cells.<br />
+    Click on "check" to check with the solution.</p>
+    <input type="button" id="check" value="check" />
+    <a href="solution.png">See the solution / Vedi la soluzione</a>
+    <div id="definitions"></div>
+
+
+<script>
+$.get("source.php", function(response) { 
+
+    $resp = $(response);
+    var cw = $resp.find("#create_crossword").val(),
+        hor = $resp.find("#create_hor").val(),
+        ver = $resp.find("#create_ver").val(),
+        cw_id = "crossword12345";
+
+
+    html = $.crosswordCreate({
+        crossword_id: cw_id,
+        crossword_val: cw,
+        hor_val: hor,
+        ver_val: ver,
+        caption: "September 16, 2010"
+    });
+    $("#definitions")
+        .append("<h3>Orizzontale / Across</h3>")
+        .append(html.def[0])
+        .append("<h3>Verticale / Down</h3>")
+        .append(html.def[1])
+        .before(html.schema);
+    
+
+    $("#"+cw_id).crossword();
+
+
+    $("#check").click(function() {
+        $.crosswordCheck({
+            solution: cw,
+            crossword_id: cw_id,
+            level: 1
+        });
+    });
+
+});
+</script>
+
+</body>
+</html>

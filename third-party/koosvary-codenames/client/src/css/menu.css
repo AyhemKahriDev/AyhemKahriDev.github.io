@@ -1,0 +1,6 @@
+h2{font-size:1.1em}
+p.intro{line-height:1.5em;margin-bottom:3em;text-align:justify;font-family:verdana;font-size:.9em}
+#menu{width:520px;height:100%;margin:0 auto;font-family:'Courier New',monospace}
+#game-menu{margin:0 auto; padding: 0 10px;}
+#game-menu input#game-name{top:50%;height:50px;width:350px;padding:5px 10px;font-size:1.3em;border:1px #ddd solid;letter-spacing:.1em}
+#game-menu button{height:62px;width:120px;padding:5px 10px;background:#85de6f;border:1px #ddd solid;font-size:1em;font-weight:600;vertical-align:top;text-transform:uppercase;cursor:pointer}

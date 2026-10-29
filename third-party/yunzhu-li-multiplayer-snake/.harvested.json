@@ -1,0 +1,16 @@
+{
+  "repo": "yunzhu-li/multiplayer-snake",
+  "stars": 15,
+  "licence": "MIT",
+  "sizeKB": 1096,
+  "pushedAt": "2023-04-17T07:31:49Z",
+  "description": "A multiplayer network snake game made with node.js and socket.io",
+  "defaultBranch": "master",
+  "owner": "yunzhu-li",
+  "slug": "yunzhu-li-multiplayer-snake",
+  "dest": "third-party/yunzhu-li-multiplayer-snake",
+  "readme": "snake\n-----\nA network snake game synchronization made with nodejs and socket.io.\n\nA **live demo** is available at: [https://apps.yunzhu.li/snake](https://apps.yunzhu.li/snake/)\n\n![Screen Recording](resources/screen_recording.gif)\n\nBranches\n-----\n\n`master` - For low-latency networks (<100ms RTT). Simple and robust.\n\n`rollback_and_prediction` - For high-latency networks. Using `rollback & prediction` non-blocking synchronization.\n\nRun Your Own Copy\n-----\nThis application is available as a docker image.\n\n- Make sure you have access to `docker`.\n\n- Run:\n  ```\n  docker run -d --rm -p 8000:8000 -e SERVER_URI=\"http://<server-ip>:8000\" yunzhu/snake\n  ```\n\n- Access `http://<server-ip>:8000` in your browser.\n\n> The 2 environment variables `SERVER_URI` and `SOCKET_IO_PATH` (optional) are used to configure the socket.io connection info for the client page served by the container.\n>\n> The container always serves client page at `/` and socket.io connection at `/socket.io/`.\n>\n> See: https://socket.io/docs/client-api/#new-manager-url-options\n",
+  "licenceFile": "LICENSE",
+  "entry": "client/index.html",
+  "validated": true
+}

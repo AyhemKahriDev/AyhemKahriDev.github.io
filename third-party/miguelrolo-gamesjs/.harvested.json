@@ -1,0 +1,16 @@
+{
+  "repo": "MiguelRolo/GamesJS",
+  "stars": 6,
+  "licence": "Apache-2.0",
+  "sizeKB": 345,
+  "pushedAt": "2024-03-04T23:17:05Z",
+  "description": "This repository contains several classic games, with basic programming (HTML, CSS and JS).",
+  "defaultBranch": "main",
+  "owner": "MiguelRolo",
+  "slug": "miguelrolo-gamesjs",
+  "dest": "third-party/miguelrolo-gamesjs",
+  "readme": "# GamesJS 🎮\n\n- This open source repository contains a **collection of games** built on basic tech stacks in web development. \n- Use your creativity, build your own game and contribute to the repository by making a PR\n- Make sure to ⭐️ the repository to stay tuned! \n\n## Games that you can find 🔭\n\nGames in total: `2`\n\n|                                         |                                            |\n|               :---:                     |                 :---:                      |\n| ![Tetris](./assets/tetris-show.png)     | ![Pong](./assets/pong-show.png)            |\n\n*And <a href='https://github.com/MiguelRolo/GamesJS/tree/main/Games'>more</a>...*\n\n## Why to Open Source 🌐\n\n1. **Community Collaboration**: Open sourcing your project invites a global community of developers to contribute, share ideas, and enhance its capabilities.\n\n2. **Accelerated Development**: With a collective effort, open source projects progress faster, benefiting from diverse skill sets and constant feedback.\n\n3. **Transparency and Trust**: Open source builds trust by allowing users to inspect code, ensuring security and transparency in software.\n\n4. **Cost Efficiency**: It reduces development costs as contributors volunteer their time and resources, making it an economical choice.\n\n5. **Longevity**: Open source projects tend to have longer lifespans, as they are not reliant on a single entity, ensuring sustainability.\n\n## Tech Stack ⚡\n\nMost of the games are **Client-Side based** coded wiht **HTML5**, **CSS3** and **JS**\n\n![HTML5](https://img.shields.io/badge/HTML5-E34F26.svg?style=for-the-badge&logo=HTML5&logoColor=white)\n![CSS3](https://img.shields.io/badge/CSS3-1572B6.svg?style=for-the-badge&logo=CSS3&logoColor=white)\n![Javascript](https://img.shields.io/badge/Javascript-F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black)\n\n## Installation 📥\n\n> Install GameJS Repository with npm\n>\n> *(This will install all files, including all games and this README.md)*\n>\n> ```bash\n>  npm install https://github.com/MiguelRolo/GamesJS.git\n>  cd GamesJs\n> ```\n\n## License 🪪\n\n> (Apache License, Version 2.0) You're free to use this games and codes in any project, personal or commercial. \n>\n> There's no need to ask permission before using theses. Giving attribution is not required, but appreciated.\n\n## Games List 🤖\nGames in total: `2`\n\n| No.     | Name of the game |\n| :---:   | ---- |\n| 1       | <a href='https://github.com/MiguelRolo/GamesJS/tree/main/Games/Pong'>Pong</a>  |\n| 2       | <a href='https://github.com/MiguelRolo/GamesJS/tree/main/Games/Tetris'>Tetris</a>  |\n",
+  "licenceFile": "LICENSE",
+  "entry": "Games/Pong/index.html",
+  "validated": true
+}

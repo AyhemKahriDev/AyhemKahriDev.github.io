@@ -1,0 +1,16 @@
+{
+  "repo": "bonnee/breakthefuckout",
+  "stars": 7,
+  "licence": "GPL-3.0",
+  "sizeKB": 524,
+  "pushedAt": "2016-10-22T12:26:24Z",
+  "description": "Breakout game made in JavaScript and Pixi.js",
+  "defaultBranch": "master",
+  "owner": "bonnee",
+  "slug": "bonnee-breakthefuckout",
+  "dest": "third-party/bonnee-breakthefuckout",
+  "readme": "# BreakTheFuckOut\n**The Atari classic Breakout written in JavaScript and WebGL through pixi.js library**\n<br />\n* used libraries:\n * [Pixi.js](https://github.com/pixijs/pixi.js)\n * [Howler.js](https://github.com/goldfire/howler.js)\n\n<br />\n>Play it [here](http://bonnee.github.io/breakthefuckout/), (run on mobile... what did you expect? :smirk:)\n",
+  "licenceFile": "LICENSE",
+  "entry": "BreakTheFuckOut/BreakTheFuckOut/www/index.html",
+  "validated": true
+}

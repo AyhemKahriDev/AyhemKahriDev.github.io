@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+    <head>
+         <!-- Meta -->
+        <meta charset="UTF-8">
+        <meta name="description" content="Just another tetris game but in JavaScript">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <meta name="mobile-web-app-capable" content="yes">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+
+        <!-- Title -->
+        <title>Tetяis | DяA</title>
+        <meta name="apple-mobile-web-app-title" content="Tetяis | DяA">
+
+        <!-- Theme Colors -->
+        <meta name="theme-color" content="#ecedf2">
+        <meta name="msapplication-navbutton-color" content="#ecedf2">
+        <meta name="apple-mobile-web-app-status-bar-style" content="#ecedf2">
+
+        <!-- Icons -->
+        <link rel="shortcut icon" href="img/favicon.png">
+        <link rel="icon" type="image/png" href="img/tetris.png">
+        <link rel="apple-touch-icon-precomposed" href="img/tetris.png">
+
+        <!-- CSS styles -->
+        <link rel="stylesheet" href="css/tetris.css">
+        <link rel="stylesheet" href="css/tetris-page.css">
+        <script src="js/Tetris/TetrisBoard.js"></script>
+        <script src="js/Tetris/Tetris.js"></script>
+        <script src="js/Tetris/WebTetris.js"></script>
+        <script src="js/Tetris/WebTetrisClient.js"></script>
+        <script src="js/tetris-page.js"></script>
+    </head>
+    <body>
+        <div id="show-scores">scores</div>
+        <div id="tetris-container">
+            <div id="tetris"></div>
+        </div>
+        <div id="controls">
+            <div class="control--left"></div>
+            <div class="control--down"></div>
+            <div class="control--right"></div>
+            <div class="control--rotate"></div>
+            <div class="control--push"></div>
+        </div>
+        <div id="game-over">
+          <form id="save-score-form">
+              <input type="text" placeholder="Name">
+              <input type="submit" value="save">
+          </form>
+        </div>
+    </body>
+</html>

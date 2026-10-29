@@ -1,0 +1,21 @@
+use Common;
+import "imports/advanced_text_effect.onjschema" as _;
+
+
+people: {
+    name: string,
+    displayName: string,
+    defaultShopParameter: string,
+    texts: {
+        rawText: string,
+        effects?: $AdvancedTextEffect[],
+    }[],
+    npcImageName: string,
+}[],
+
+
+defaults: {
+    font: string,
+    fontScale: float,
+    color: Color,
+},

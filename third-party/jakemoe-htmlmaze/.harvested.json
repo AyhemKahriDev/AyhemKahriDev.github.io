@@ -1,0 +1,16 @@
+{
+  "repo": "JakeMoe/htmlMaze",
+  "stars": 23,
+  "licence": "GPL-3.0",
+  "sizeKB": 29,
+  "pushedAt": "2020-09-07T10:24:04Z",
+  "description": "Simple maze game in HTML5/JS",
+  "defaultBranch": "master",
+  "owner": "JakeMoe",
+  "slug": "jakemoe-htmlmaze",
+  "dest": "third-party/jakemoe-htmlmaze",
+  "readme": "## htmlMaze\n\nA simple maze game in HTML5 / JavaScript\n\nA live version can be played here: https://jakemoe.github.io/htmlMaze/\nUpdated version can be played here: https://jakemoe.github.io/htmlMaze/index2.html\n\n### Revision History\n\n* 0.1 - John Moe - 24 August 2017\n  * Initial commit\n* 0.2 - John Moe - 25 August 2017\n  * Added CSS formatting, moved README.md to correct location\n* 0.3 - John Moe - 25 August 2017\n  * Added initial classes to JavaScript\n* 0.4 - John Moe - 26 August 2017\n  * Filled out Maze class, added end location\n* 0.5 - John Moe - 19 September 2017\n  * Fixed keyboard event listener, began Player class\n* 0.6 - John Moe - 20 September 2017\n  * Finished up player, began settings\n* 0.7 - John Moe - 29 August 2020\n  * Added GPL v3 license that had been forgotten\n  * Renamed pages from default.* to index.* to match modern standards\n* 0.8 - John Moe - 4 September 2020\n  * Fixed license text in files\n  * Created index2.html to update with new HTML/CSS/JS I've learned\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

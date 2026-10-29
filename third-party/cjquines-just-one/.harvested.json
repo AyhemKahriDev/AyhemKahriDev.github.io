@@ -1,0 +1,15 @@
+{
+  "repo": "cjquines/just-one",
+  "stars": 27,
+  "licence": "MIT",
+  "sizeKB": 2860,
+  "pushedAt": "2024-08-06T23:38:04Z",
+  "description": "web app for just one, the board game",
+  "defaultBranch": "master",
+  "owner": "cjquines",
+  "slug": "cjquines-just-one",
+  "dest": "third-party/cjquines-just-one",
+  "readme": "# just one!\n\na web app for playing [just one](https://boardgamegeek.com/boardgame/254640/just-one), a cooperative party word game. hosted on https://just1.herokuapp.com/.\n\n![](sample.png)\n\nin each round, the guesser is trying to guess a word. everyone not guessing writes a single-word clue. then everyone compares clues, and hides clues that are the same. they show the clues to the guesser, who then tries to guess the word.\n\nyou can join room example by going directly to https://just1.herokuapp.com/room/example. if you don’t type a name when prompted, you spectate the room.\n\n## implementation details\n\ninspired by [betaveros/castlefall](https://github.com/betaveros/castlefall), the app relies on the players to trust each other. so anyone can kick anyone else, including themselves. joining a room with the same name as an existing player kicks and replaces them, so you can reconnect as yourself if you disconnect.\n\nserver uses express and socket.io; frontend uses react.\n\n### build\n\nrun `npm install`. development runs on two servers, one for the socket, and one for the client. running `npm start` starts the socket server, and running `npm run hotloader` starts the client server.\n\nyou will need wordlists, see [wordlist.js](server/wordlist.js). it imports a bunch of `json` files, which should contain a single object with the key `words`, with its value as an array of a list of strings to be words.\n\n### todo\n\n- sanitize names, clues, and guesses?\n- \"add clues\" feature after a round ends?\n- add a timer? or like, a timer that counts up, resetting every phase?\n",
+  "licenceFile": "LICENSE",
+  "entry": "client/public/index.html"
+}

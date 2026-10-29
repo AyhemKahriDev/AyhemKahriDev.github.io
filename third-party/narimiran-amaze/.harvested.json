@@ -1,0 +1,16 @@
+{
+  "repo": "narimiran/amaze",
+  "stars": 5,
+  "licence": "GPL-3.0",
+  "sizeKB": 1352,
+  "pushedAt": "2024-06-19T06:03:10Z",
+  "description": "aMAZE: amazing maze",
+  "defaultBranch": "main",
+  "owner": "narimiran",
+  "slug": "narimiran-amaze",
+  "dest": "third-party/narimiran-amaze",
+  "readme": "# aMAZE\n\nA(mazing) maze game built for [Spring Lisp Game Jam 2024](https://itch.io/jam/spring-lisp-game-jam-2024).\n\nWork in progress.\n\n\n## Play it\n\n- [on Github](https://narimiran.github.io/amaze/)\n\n- [on itch.io](https://narimiran.itch.io/amaze)\n\n\n## Build it yourself\n\n1. Clone this repo\n\n2. Run `shadow-cljs watch app`\n\n3. Open the game at `http://localhost:8080`\n",
+  "licenceFile": "LICENSE.txt",
+  "entry": "docs/index.html",
+  "validated": true
+}

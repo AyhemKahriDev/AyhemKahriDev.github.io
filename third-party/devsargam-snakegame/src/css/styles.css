@@ -1,0 +1,319 @@
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Open+Sans:ital,wght@0,400;0,700;1,400;1,700&family=Poppins:ital,wght@0,400;0,700;1,400;1,700&display=swap");
+
+*,
+*::after,
+*::before {
+  padding: 0;
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --row: 30;
+  --col: var(--row);
+}
+
+.root {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #533E2D;
+  color: #FCB1A6;
+  overflow: hidden;
+}
+
+.scores{
+  font-size: 30px;
+}
+
+#board {
+  background-color: black;
+  margin: 1rem;
+  border: 5px solid #fff;
+}
+
+#audioButton {
+  position: absolute;
+  right: 0px;
+  bottom: 0px;
+  height: 7rem;
+  width: 7rem;
+}
+
+#overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.overlay__container {
+  position: absolute;
+  background-color: white;
+  padding: 2em;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  text-align: center;
+  width: 80%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  border-radius: 15px;
+}
+
+.overlayGrid {
+  display: grid;
+  grid-template-columns: 190px 150px;
+  font-size: 1.3em;
+  padding: 1.5em;
+  justify-items: left;
+  max-width: 340px;
+  align-self: center;
+  align-items: center;
+  line-height: 45px;
+}
+
+#overlay__head {
+  font-size: 2.5em;
+  color: #f37736;
+  font-family: "DM Sans", sans-serif;
+}
+
+#toggleButton {
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+  background-color: royalblue;
+  transition: 0.25s all ease;
+}
+
+#toggleButton:hover {
+  background-color: rgb(24, 39, 81);
+}
+
+.visible {
+  display: flex !important;
+}
+
+#difficulty,
+#theme {
+  padding: 0.5em;
+  border: 2px solid gray;
+  border-radius: 15px;
+  background-color: white;
+  font-size: 0.65em;
+  min-width: 100px;
+}
+
+#difficulty:hover,
+#theme:hover {
+  cursor: pointer;
+}
+
+.soundToggleWrapper {
+  display: flex;
+}
+
+.option > select {
+  background-color: aquamarine;
+  border: 1px solid black;
+  padding: 1% 2%;
+  font-size: 1rem;
+}
+
+input[type="checkbox"] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+}
+
+label {
+  cursor: pointer;
+  width: 55px;
+  height: 30px;
+  background: grey;
+  display: block;
+  border-radius: 70px;
+  position: relative;
+  transition: 0.3s ease-in-out;
+}
+
+label:after {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  border-radius: 60px;
+  transition: 0.3s ease-in-out;
+}
+
+input:checked + label {
+  background: royalblue;
+}
+
+input:checked + label:after {
+  left: calc(100% - 5px);
+  transform: translateX(-100%);
+}
+
+.info {
+  color: whitesmoke;
+}
+
+.modal {
+  display: none;
+  position: fixed;
+  right: 0;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  height: fit-content;
+  max-width: 900px;
+  width: 80%;
+  padding: 36px 24px;
+  border-radius: 5px;
+  box-shadow: 0px 0px 6px 2px #666;
+  background-color: #fff;
+  color: black;
+}
+
+.modal-text {
+  font-size: 1.8rem;
+  text-align: center;
+}
+
+#ControlButton {
+  margin-top: 10px;
+  background-color: #F37736;
+  transition: 0.4s all ease;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+#ObjectiveButton {
+  margin-top: 10px;
+  background-color: #7cfc00;
+  transition: 0.4s all ease;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+}
+
+#MainButton1, #MainButton2 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  border-radius: 15px;
+  color: white;
+  cursor: pointer;
+  padding: 10px 20px;
+  background-color: royalblue;
+  transition: 0.25s all ease;
+}
+
+#instruction {
+  color: aqua;
+}
+
+.adjust {
+  position: absolute;
+}
+
+
+#MainButton1:hover,
+#MainButton2:hover {
+  background-color: black;
+}
+
+#ControlButton:hover{
+  background-color: #924720;
+}
+
+#ObjectiveButton:hover{
+  background-color: #57b000;
+}
+
+.visible_objective {
+  display: flex !important;
+}
+
+.visible_control {
+  display: flex !important;
+}
+
+#overlay_control {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 15px;
+}
+
+#overlay_objective {
+  visibility: hidden;
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 99;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  border-radius: 15px;
+}
+
+.overlayGrid_ {
+  display: grid;
+  font-size: 1.3em;
+  padding: 1.5em;
+  justify-items: left;
+  max-width: 340px;
+  align-self: center;
+  align-items: center;
+  line-height: 45px;
+  text-align: left;
+}
+
+.Btn {
+  width: 20px;
+  height: 20px;
+}

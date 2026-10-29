@@ -1,0 +1,15 @@
+{
+  "repo": "JSLegendDev/Desktop-JS-Game-Tauri",
+  "stars": 27,
+  "licence": "MIT",
+  "sizeKB": 364,
+  "pushedAt": "2024-06-11T23:09:46Z",
+  "description": "Desktop Flappy bird style game made in JavaScript with Kaplay and Tauri.",
+  "defaultBranch": "master",
+  "owner": "JSLegendDev",
+  "slug": "jslegenddev-desktop-js-game-tauri",
+  "dest": "third-party/jslegenddev-desktop-js-game-tauri",
+  "readme": "# Desktop Game made in JavaScript + Tauri\n\n![game screenshot](./game.png)\n\nFlappy bird style game made with the Kaplay library and Tauri. It features a basic save system where your best score is saved on disk.\n\nSupports multiple inputs (Mouse, Keyboard and Gamepad)\n\nDownload for Windows here : [https://jslegend.itch.io/kriby](https://jslegend.itch.io/kriby)\n\nTutorial on how to build this : [https://www.youtube.com/watch?v=mbljv1EkrRQ](https://www.youtube.com/watch?v=mbljv1EkrRQ)\n\n## How to run?\n\n1. Make sure you have the prerequisites : [https://tauri.app/v1/guides/getting-started/prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites)\n2. Make sure you have Node.js installed.\n3. Clone the repo.\n4. Once in the repo, do `npm install` to install the required dependencies.\n5. Run the project in dev by doing `npm run dev`.\n\n## How to distribute the project as an installable app?\n\n1. Build the project by doing `npm run build`.\n2. After the build is complete go to `target > release > bundle > msi`.\n3. Distribute the installer on sites like itch.io or on Steam.\n\n_Note : It's important to distribute the installer and not the .exe available in `target > release >  Your Game.exe` because Tauri relies on WebView2 to be present on the system.The installer will make sure to download and install it on the user's system if not already there. This is not the case for the .exe._\n\n## Why Tauri?\n\nFor this project, I opted to use Tauri instead of Electron for a few reasons :\n\n- Easier to setup than Electron. (You can use Tauri's JS api so no need to learn or use Rust)\n- Final executable for the game is lightweight (In this case 6 MB). Electron produces bloated executables.\n- By packaging a Chrome browser, Electron can guarantee that the app will render the same way across platforms. This is not the case with Tauri since it uses the Webview of the platform the app is running on. Since the expectation for games is that they run on Windows, this drawback of Tauri doesn't affect this project.\n\nLearn more about Tauri : [https://tauri.app/](https://tauri.app/)\n\n## Why Kaplay?\n\nKaplay is a very high-level library for making games. It allows you to make games really fast. I use it because it's very productive.\n\nIt was previously called Kaboom. I have plenty of tutorials on my YouTube channel : https://www.youtube.com/@jslegenddev\n\nLearn more about Kaplay : [https://kaplayjs.com/](https://kaplayjs.com/)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

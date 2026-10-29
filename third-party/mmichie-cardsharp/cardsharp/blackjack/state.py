@@ -1,0 +1,921 @@
+"""
+This module provides an asynchronous game state management system for a
+Blackjack game. It uses the state design pattern to manage the various game
+states and transitions between them. The game progresses through various states:
+WaitingForPlayersState, PlacingBetsState, DealingState, OfferInsuranceState,
+PlayersTurnState, DealersTurnState, and EndRoundState.
+
+Classes:
+
+GameState: An abstract base class for game states.
+WaitingForPlayersState: The game state while the game is waiting for players to join.
+PlacingBetsState: The game state where players are placing their bets.
+DealingState: The game state where the dealer is dealing the cards.
+OfferInsuranceState: The game state where insurance is offered if the dealer has an Ace.
+PlayersTurnState: The game state where it's the players' turn to play.
+DealersTurnState: The game state where it's the dealer's turn to play.
+EndRoundState: The game state where the round is ending.
+The handle method in each game state class is responsible for performing the
+actions required in that state, notifying the interface, and transitioning to
+the next state. Each game state class also overrides the str method to return
+the state name.
+"""
+
+import time
+
+from abc import ABC
+from abc import abstractmethod
+from datetime import datetime
+
+from cardsharp.common.card import Rank
+from cardsharp.blackjack.action import Action
+from cardsharp.common.io_interface import DummyIOInterface
+from cardsharp.blackjack.constants import get_blackjack_value
+from cardsharp.blackjack.decision_logger import decision_logger, DecisionContext
+import logging
+
+
+# State ID constants for fast comparison (optimization)
+STATE_WAITING = 0
+STATE_PLACING_BETS = 1
+STATE_DEALING = 2
+STATE_OFFER_INSURANCE = 3
+STATE_PLAYERS_TURN = 4
+STATE_DEALERS_TURN = 5
+STATE_END_ROUND = 6
+
+
+class InsufficientFundsError(Exception):
+    """Raised when a player does not have enough money to perform an action."""
+
+    pass
+
+
+class GameState(ABC):
+    """
+    Abstract base class for game states.
+
+    States are stateless objects that implement game flow behavior.
+    They can be safely reused (singleton pattern) for performance.
+    """
+    __slots__ = ()  # No instance attributes
+    STATE_ID = -1   # Override in subclasses
+
+    @abstractmethod
+    def handle(self, game) -> None:
+        """The method that handles the game state."""
+
+    def __str__(self) -> str:
+        return self.__class__.__name__
+
+
+class WaitingForPlayersState(GameState):
+    """
+    The game state while the game is waiting for players to join.
+    """
+    __slots__ = ()
+    STATE_ID = STATE_WAITING
+
+    def handle(self, game):
+        """
+        Continuously checks if the minimum number of players have joined.
+        If so, it changes the game state to PlacingBetsState.
+        """
+        while len(game.players) < game.minimum_players:
+            time.sleep(1)
+        game.set_state(_state_placing_bets)
+
+    def add_player(self, game, player):
+        """
+        Adds a player to the game and notifies the interface.
+        """
+        game.players.append(player)
+        game.output(f"{player.name} has joined the game.")
+
+
+class PlacingBetsState(GameState):
+    """
+    The game state where players are placing their bets.
+    """
+    __slots__ = ()
+    STATE_ID = STATE_PLACING_BETS
+
+    def handle(self, game):
+        """
+        Handles the player bets and changes the game state to DealingState.
+        """
+        for player in game.players:
+            # Get bet amount from strategy
+            if hasattr(player, 'strategy') and player.strategy:
+                bet_amount = player.strategy.get_bet_amount(
+                    game._min_bet,
+                    game._max_bet,
+                    player.money
+                )
+            else:
+                bet_amount = game._min_bet
+
+            self.place_bet(game, player, bet_amount)
+        game.set_state(_state_dealing)
+
+    def place_bet(self, game, player, amount):
+        """
+        Handles the bet placement of a player and notifies the interface.
+        """
+        min_bet = game._min_bet
+        player.place_bet(amount, min_bet)
+        game.output(f"{player.name} has placed a bet of {amount}.")
+
+
+class DealingState(GameState):
+    """
+    The game state where the dealer is dealing the cards.
+    """
+    __slots__ = ()
+    STATE_ID = STATE_DEALING
+
+    def handle(self, game):
+        """
+        Handles the card dealing, checks for blackjack, and changes the game state to OfferInsuranceState.
+        """
+        self.deal(game)
+        self.check_blackjack(game)
+        game.set_state(_state_offer_insurance)
+
+    def deal(self, game):
+        """
+        Handles the card dealing and notifies the interface.
+        """
+        # Open the round on the shoe: if the cut card came out last round,
+        # this is where the (between-rounds) shuffle happens. While the
+        # round is open the shoe will not shuffle at the cut card.
+        game.shoe.begin_round()
+
+        # Skip output for simulation mode
+        is_dummy_io = isinstance(game.io_interface, DummyIOInterface)
+
+        # Optimize dealing loop - reduce method lookups by having players_with_dealer ready
+        players_with_dealer = game.players + [game.dealer]
+
+        # First round - deal one card to each player and dealer
+        for player in players_with_dealer:
+            card = game.shoe.deal()
+            player.add_card(card)
+            game.add_visible_card(card)
+            if not is_dummy_io and player != game.dealer:
+                game.output(f"Dealt {card} to {player.name}.")
+
+        # Second round - deal second card to each player and dealer
+        for player in players_with_dealer:
+            card = game.shoe.deal()
+            player.add_card(card)
+            game.add_visible_card(card)
+            if not is_dummy_io and player != game.dealer:
+                game.output(f"Dealt {card} to {player.name}.")
+
+    def check_blackjack(self, game):
+        """Handle blackjack detection.
+
+        Peek mode: OfferInsuranceState handles everything after insurance/peek.
+        No-peek mode (European/ENHC): player plays normally without knowing
+        if dealer has blackjack. Resolved at EndRound with OBO rule.
+        """
+        if game.rules.should_dealer_peek():
+            return  # OfferInsuranceState handles everything after insurance/peek
+
+        # No-peek mode: flag player blackjacks so they stand automatically,
+        # but do NOT resolve dealer blackjack -- player must play first.
+        # Dealer BJ is discovered at EndRound where OBO applies.
+        for player in game.players:
+            if player.current_hand.is_blackjack:
+                player.blackjack = True
+                player.hand_done[player.current_hand_index] = True
+                game.output(f"{player.name} has blackjack!")
+
+
+class OfferInsuranceState(GameState):
+    """
+    The game state where insurance is offered if the dealer has an Ace,
+    and the dealer checks for blackjack if appropriate.
+    """
+    __slots__ = ()
+    STATE_ID = STATE_OFFER_INSURANCE
+
+    def handle(self, game):
+        """
+        Handles insurance offers, dealer blackjack checks, and resolves insurance bets.
+        """
+        dealer_up_card = game.dealer.current_hand.cards[0]
+        game.output(f"Dealer shows {dealer_up_card}.")
+
+        # Offer insurance if dealer's upcard is an Ace
+        if dealer_up_card.rank == Rank.ACE and game._allow_insurance:
+            for player in game.players:
+                self.offer_insurance(game, player)
+
+        # Early surrender: offered before dealer peeks, so player can
+        # surrender even against a dealer blackjack. Real casinos
+        # typically offer this in NO-PEEK games (it's an alternative
+        # to peeking) but the rule is also valid in peek games (the
+        # surrender just happens before the peek). The void-vs-hold
+        # against a dealer BJ is enforced at EndRound by gating on
+        # not allow_early_surrender.
+        if game.rules.can_early_surrender():
+            for player in game.players:
+                if player.done or player.hand_done[0]:
+                    continue
+                action = player.decide_action(dealer_up_card=dealer_up_card)
+                if action == Action.SURRENDER:
+                    player.surrender()
+                    game.output(f"{player.name} takes early surrender.")
+
+        # Check for dealer blackjack if dealer peeking is allowed
+        if game.rules.should_dealer_peek():
+            if (
+                dealer_up_card.rank == Rank.ACE
+                or dealer_up_card.bj_value == 10
+            ):
+                if game.dealer.current_hand.is_blackjack:
+                    self.handle_dealer_blackjack(game)
+                    game.set_state(_state_end_round)
+                    return
+
+        # Insurance resolution. In peek mode we now know the dealer
+        # doesn't have BJ (peek branch above returned), so any
+        # outstanding insurance is lost. In no-peek mode the dealer's
+        # BJ status is still unknown, so insurance must wait until
+        # EndRound where it is resolved by EndRoundState.
+        if game.rules.should_dealer_peek():
+            for player in game.players:
+                if player.insurance > 0:
+                    game.output(
+                        f"{player.name} loses insurance bet of ${player.insurance:.2f}."
+                    )
+                    # Insurance bet was already deducted when bought; reset insurance amount
+                    player.insurance = 0  # Reset insurance bet
+
+        # Check for player blackjacks -- only pay immediately if we've
+        # confirmed dealer doesn't have BJ (peek mode). In no-peek mode,
+        # player BJs are deferred to EndRound where both BJ = push.
+        if game.rules.should_dealer_peek():
+            for player in game.players:
+                if player.current_hand.is_blackjack:
+                    bet = player.bets[0]
+                    payout_amount = bet + (bet * game._blackjack_payout)
+                    player.payout(0, payout_amount)
+                    player.blackjack = True
+                    player.winner = ["player"]
+                    player.hand_done[player.current_hand_index] = True
+                game.output(f"{player.name} got a blackjack!")
+
+        # Proceed to players' turns
+        game.set_state(_state_players_turn)
+
+    def offer_insurance(self, game, player):
+        """
+        Offers insurance to a player if the dealer's upcard is an Ace.
+        """
+        wants_insurance = player.strategy.decide_insurance(player)
+        if wants_insurance:
+            insurance_bet = player.bets[0] / 2
+            try:
+                player.buy_insurance(insurance_bet)
+                game.output(f"{player.name} has bought insurance.")
+            except (ValueError, InsufficientFundsError) as e:
+                game.output(str(e))
+        else:
+            game.output(f"{player.name} declines insurance.")
+
+    def handle_dealer_blackjack(self, game):
+        """
+        Handles the scenario where the dealer has blackjack.
+        Resolves insurance bets and player bets accordingly.
+        """
+        game.output("Dealer has blackjack!")
+
+        # Handle insurance payouts
+        for player in game.players:
+            if player.insurance > 0:
+                insurance_multiplier = game.rules.get_insurance_payout()
+                total_payout = player.insurance * (1 + insurance_multiplier)
+                player.payout_insurance(total_payout)
+                game.output(
+                    f"{player.name} wins insurance bet of ${total_payout:.2f}."
+                )
+                player.insurance = 0  # Reset insurance bet
+            else:
+                game.output(f"{player.name} did not take insurance.")
+
+        # Resolve player bets
+        for player in game.players:
+            if player.hand_done[player.current_hand_index]:
+                continue  # Already resolved (e.g., early surrender)
+            if player.current_hand.is_blackjack:
+                # Push
+                bet = player.bets[0]
+                player.payout(0, bet)
+                player.winner = ["draw"]
+                player.hand_done[player.current_hand_index] = True
+                game.output(
+                    f"{player.name} and dealer both have blackjack. Push."
+                )
+            else:
+                # Dealer wins
+                player.winner = ["dealer"]
+                player.hand_done[player.current_hand_index] = True
+                game.output(f"{player.name} loses to dealer's blackjack.")
+
+
+class PlayersTurnState(GameState):
+    """The game state where it's the players' turn to play."""
+    __slots__ = ()
+    STATE_ID = STATE_PLAYERS_TURN
+
+    def handle(self, game):
+        """Handles the players' actions and changes the game state to DealersTurnState."""
+        dealer_up_card = game.dealer.current_hand.cards[0]
+
+        decision_logger.log_rule_evaluation(
+            "dealer_up_card", True, f"Dealer shows {dealer_up_card}"
+        )
+
+        for player in game.players:
+            if player.done:
+                continue  # Skip this player
+            game.output(f"{player.name}'s turn.")
+            # Iterate over each hand the player has
+            for hand_index, hand in enumerate(player.hands):
+                player.current_hand_index = hand_index
+                if player.hand_done[hand_index]:
+                    continue  # Skip hands that are already done
+                game.output(f"Playing hand {hand_index + 1}")
+
+                while not player.hand_done[hand_index]:
+                    valid_actions = self.get_valid_actions(game, player, hand_index)
+
+                    # Cache valid_actions so strategy doesn't recompute
+                    player._cached_valid_actions = valid_actions
+                    action = player.decide_action(dealer_up_card=dealer_up_card)
+                    player._cached_valid_actions = None
+
+                    if action in valid_actions:
+                        # Only create decision context if logging is enabled
+                        if decision_logger.logger.isEnabledFor(logging.DEBUG):
+                            # Create decision context
+                            context = DecisionContext(
+                                timestamp=datetime.now(),
+                                player_name=player.name,
+                                hand_index=hand_index,
+                                hand_cards=hand.cards.copy(),
+                                hand_value=hand.value(),
+                                is_soft=hand.is_soft,
+                                is_pair=hand.can_split,
+                                is_split_hand=hand.is_split,
+                                dealer_upcard=dealer_up_card,
+                                valid_actions=valid_actions,
+                                chosen_action=action,
+                            )
+                            decision_logger.log_decision_point(context)
+                        self.player_action(game, player, action)
+                    else:
+                        game.output(
+                            f"Invalid action {action}. Standing instead."
+                        )
+                        decision_logger.logger.warning(
+                            f"Invalid action {action} for {player.name}, forcing stand"
+                        )
+                        player.stand()
+                        player.hand_done[hand_index] = True
+                    if player.is_busted() or player.is_done():
+                        break  # Exit the loop if player is busted or done
+        game.set_state(_state_dealers_turn)
+
+    def get_valid_actions(self, game, player, hand_index):
+        """Returns valid actions for the player's current hand, considering game rules."""
+        valid_actions = [Action.HIT, Action.STAND]
+        hand = player.hands[hand_index]
+
+        # Check if this hand has already doubled down
+        hand_actions = player.action_history[hand_index]
+        has_doubled = Action.DOUBLE in hand_actions
+
+        # Check if this is a split ace hand that already has two cards
+        is_split_ace = (
+            hand.is_split
+            and any(card.rank == Rank.ACE for card in hand.cards)
+            and len(hand.cards) >= 2
+        )
+
+        # Use variant rules for split aces if available
+        if is_split_ace:
+            if (
+                game.rules._action_validator
+                and not game.rules._action_validator.can_hit_split_aces()
+            ):
+                return [
+                    Action.STAND
+                ]  # Split aces can only stand after receiving one card
+            elif not game.rules._action_validator:
+                return [Action.STAND]  # Classic rules: Split aces can only stand
+
+        # Only allow double down if haven't already doubled
+        if not has_doubled and len(hand.cards) == 2:
+            # Check double down based on game rules and hand value
+            if game.rules.can_double_down(hand):
+                if player.can_afford(player.bets[hand_index]):
+                    valid_actions.append(Action.DOUBLE)
+
+            # Check split
+            can_split_hand = game.rules.can_split(hand)
+            can_split_more = game.rules.can_split_more(len(player.hands))
+            can_afford_split = player.can_afford(player.bets[hand_index])
+
+            decision_logger.log_split_decision(
+                player.name,
+                hand,
+                can_split_hand and can_split_more and can_afford_split,
+                f"hand_splittable={can_split_hand}, more_splits_allowed={can_split_more}, "
+                f"can_afford={can_afford_split}, current_hands={len(player.hands)}",
+            )
+
+            if can_split_hand and can_split_more and can_afford_split:
+                valid_actions.append(Action.SPLIT)
+
+            is_first_action = len(player.action_history[hand_index]) == 0
+
+            if game.rules.can_surrender(hand, is_first_action) and not hand.is_split:
+                valid_actions.append(Action.SURRENDER)
+
+        return valid_actions
+
+    def player_action(self, game, player, action):
+        """Handles a player action with proper split hand tracking."""
+
+        player.action_history[player.current_hand_index].append(action)
+
+        if action == Action.HIT:
+            # Check if this is a split ace hand before allowing the hit
+            if (
+                player.current_hand.is_split
+                and any(card.rank == Rank.ACE for card in player.current_hand.cards)
+                and len(player.current_hand.cards) > 1
+            ):
+                game.output(f"{player.name} cannot hit on split aces.")
+                player.hand_done[player.current_hand_index] = True
+                return
+
+            card = game.shoe.deal()
+            player.hit(card)
+            game.add_visible_card(card)
+            game.output(f"{player.name} hits and gets {card}.")
+
+            # Check for Five-card Charlie
+            if game.rules.is_five_card_charlie(player.current_hand):
+                game.output(f"{player.name} has Five-card Charlie!")
+                player.hand_done[player.current_hand_index] = True
+            # Force stand on split aces after receiving one card
+            elif (
+                player.current_hand.is_split
+                and any(card.rank == Rank.ACE for card in player.current_hand.cards)
+                and len(player.current_hand.cards) == 2
+            ):
+                player.hand_done[player.current_hand_index] = True
+                game.output(
+                    f"{player.name}'s split ace stands automatically."
+                )
+            elif player.is_busted():
+                game.output(f"{player.name} has busted.")
+                player.hand_done[player.current_hand_index] = True
+
+        elif action == Action.SPLIT:
+            curr_index = player.current_hand_index
+            is_splitting_aces = player.current_hand.cards[0].rank == Rank.ACE
+
+            decision_logger.log_hand_transition(
+                player.name,
+                curr_index,
+                f"Pair of {player.current_hand.cards[0].rank}",
+                "Split into two hands",
+                f"Splitting at index {curr_index}",
+            )
+
+            # Process the split using the player's split method
+            player.split()
+
+            game.output(f"{player.name} splits.")
+
+            # Deal one card to each of the split hands
+            # The new hand is always appended to the end of the hands list
+            new_hand_index = len(player.hands) - 1
+            for i in [curr_index, new_hand_index]:
+                card = game.shoe.deal()
+                player.hands[i].add_card(card)
+                game.add_visible_card(card)
+                game.output(f"{player.name}'s hand {i + 1} gets {card}.")
+
+                decision_logger.logger.debug(
+                    f"Split hand {i} now has: {[str(c) for c in player.hands[i].cards]}"
+                )
+
+                # If splitting aces, automatically stand after dealing one card
+                if is_splitting_aces:
+                    player.hand_done[i] = True
+                    game.output(
+                        f"Split ace hand {i + 1} stands automatically."
+                    )
+                    decision_logger.logger.info(
+                        f"Split ace restriction: Hand {i} forced to stand"
+                    )
+
+        elif action == Action.DOUBLE:
+            # Prevent doubling down on split aces
+            if player.current_hand.is_split and any(
+                card.rank == Rank.ACE for card in player.current_hand.cards
+            ):
+                game.output(
+                    f"{player.name} cannot double down on split aces."
+                )
+                return
+
+            player.double_down()
+            card = game.shoe.deal()
+            player.hit(card)
+            game.add_visible_card(card)
+            game.output(f"{player.name} doubles down and gets {card}.")
+            if player.is_busted():
+                game.output(f"{player.name} has busted.")
+            player.hand_done[player.current_hand_index] = True
+
+        elif action == Action.STAND:
+            player.stand()
+            player.hand_done[player.current_hand_index] = True
+            game.output(f"{player.name} stands.")
+
+        elif action == Action.SURRENDER:
+            player.surrender()
+            game.output(f"{player.name} surrenders.")
+            player.hand_done[player.current_hand_index] = True
+
+
+class DealersTurnState(GameState):
+    """
+    The game state where it's the dealer's turn to play.
+    """
+    __slots__ = ()
+    STATE_ID = STATE_DEALERS_TURN
+
+    def handle(self, game):
+        """Handles the dealer's actions and changes the game state to EndRoundState."""
+        # Casino procedure: the dealer completes their hand only if at
+        # least one player hand is still live (not busted, surrendered, or
+        # already settled). When every hand is dead the dealer just reveals
+        # the hole card -- drawing extra cards would consume shoe cards a
+        # real game never deals, distorting shoe pacing and giving counting
+        # strategies information a real counter would never see.
+        if self._any_live_hand(game):
+            # Hit until the dealer should stand according to the rules
+            while game.dealer.should_hit(game.rules):
+                self.dealer_action(game)
+
+        game.output("Dealer stands.")
+        game.set_state(_state_end_round)
+
+    @staticmethod
+    def _any_live_hand(game):
+        """Return True if any player hand's outcome depends on the dealer's
+        final total (rather than only on the already-dealt dealer cards)."""
+        for player in game.players:
+            for i, hand in enumerate(player.hands):
+                if i < len(player.bets) and player.bets[i] <= 0:
+                    continue  # surrendered, or already settled (e.g. paid BJ)
+                if not hand.cards:
+                    continue
+                if hand.value() > 21:
+                    continue  # busted: loses regardless of dealer total
+                if hand.is_blackjack:
+                    # A natural's outcome depends only on whether the dealer
+                    # also has a natural -- already determined by the two
+                    # dealt dealer cards, never by further draws. (is_blackjack
+                    # is False for split hands, which do need a dealer total.)
+                    continue
+                return True
+        return False
+
+    def dealer_action(self, game):
+        """
+        Handles a dealer action and notifies the interface.
+        """
+        card = game.shoe.deal()
+        game.dealer.add_card(card)
+        game.add_visible_card(card)
+        game.output(f"Dealer hits and gets {card}.")
+
+
+class EndRoundState(GameState):
+    """
+    The game state where the round is ending.
+    """
+    __slots__ = ()
+    STATE_ID = STATE_END_ROUND
+
+    def handle(self, game):
+        """
+        Handles the calculation of the winner, updates the statistics, and changes the game state to PlacingBetsState.
+        """
+        self.calculate_winner(game)
+        self.output_results(game)
+        self.resolve_no_peek_insurance(game)
+        self.handle_payouts(game)
+        game.stats.update(game)
+        # visible_cards is cleared in BlackjackGame.reset(), not here.
+        # Counting strategies need to see all cards (including dealer hits)
+        # after the round ends.
+
+        # Close the round on the shoe so between-round shuffling (and any
+        # out-of-round dealing by other callers) behaves correctly.
+        game.shoe.end_round()
+
+        # Check if cut card was reached and we need to reshuffle
+        if game.shoe.is_cut_card_reached():
+            game.output(
+                "Cut card reached. Shuffling shoe before the next round."
+            )
+            # begin_round() performs the shuffle when the next round starts
+
+        game.set_state(_state_placing_bets)
+
+    def resolve_no_peek_insurance(self, game):
+        """Pay or void insurance bets in no-peek mode.
+
+        In peek mode, OfferInsuranceState resolves insurance immediately
+        after the dealer peeks (handle_dealer_blackjack pays out on BJ;
+        the post-peek branch zeroes the insurance otherwise). In no-peek
+        mode, the dealer's BJ status is unknown until the dealer plays,
+        so insurance is held open and resolved here.
+        """
+        if game.rules.should_dealer_peek():
+            return  # peek mode already resolved insurance
+
+        dealer_blackjack = game.dealer.current_hand.is_blackjack
+        for player in game.players:
+            if player.insurance <= 0:
+                continue
+            if dealer_blackjack:
+                multiplier = game.rules.get_insurance_payout()
+                payout = player.insurance * (1 + multiplier)
+                player.payout_insurance(payout)
+                game.output(
+                    f"{player.name} wins insurance bet of ${payout:.2f}."
+                )
+            else:
+                game.output(
+                    f"{player.name} loses insurance bet of ${player.insurance:.2f}."
+                )
+            player.insurance = 0
+
+    def calculate_winner(self, game):
+        """Calculates the winner of the round."""
+        dealer_hand_value = game.dealer.current_hand.value()
+        dealer_blackjack = game.dealer.current_hand.is_blackjack
+
+        for player in game.players:
+            player.winner = []
+            for hand in player.hands:
+                player_hand_value = hand.value()
+                player_blackjack = hand.is_blackjack
+
+                # Use variant's win resolver if available
+                if game.win_resolver:
+                    winner = game.win_resolver.resolve(
+                        hand,
+                        game.dealer.current_hand,
+                        player_blackjack,
+                        dealer_blackjack,
+                    )
+                else:
+                    # Fallback to classic rules
+                    # Blackjack priority: natural 21 beats non-natural 21
+                    if dealer_blackjack and not player_blackjack:
+                        winner = "dealer"
+                    elif player_blackjack and not dealer_blackjack:
+                        winner = "player"
+                    elif dealer_blackjack and player_blackjack:
+                        winner = "draw"
+                    # Check for Five-card Charlie (automatic win unless dealer has blackjack)
+                    elif game.rules.is_five_card_charlie(hand) and not dealer_blackjack:
+                        winner = "player"
+                    elif player_hand_value > 21:
+                        winner = "dealer"
+                    elif (
+                        dealer_hand_value > 21 or player_hand_value > dealer_hand_value
+                    ):
+                        winner = "player"
+                    elif player_hand_value < dealer_hand_value:
+                        winner = "dealer"
+                    else:
+                        winner = "draw"
+                player.winner.append(winner)
+
+    def output_results(self, game):
+        """Outputs the results of the round."""
+        if isinstance(game.io_interface, DummyIOInterface):
+            return  # Short-circuit if the interface is a dummy
+
+        dealer_hand_value = game.dealer.current_hand.value()
+        dealer_cards = ", ".join(str(card) for card in game.dealer.current_hand.cards)
+        game.output(f"Dealer's final cards: {dealer_cards}")
+        game.output(f"Dealer's final hand value: {dealer_hand_value}")
+
+        for player in game.players:
+            for hand_index, hand in enumerate(player.hands):
+                player_hand_value = hand.value()
+                player_cards = ", ".join(str(card) for card in hand.cards)
+                game.output(
+                    f"{player.name}'s hand {hand_index + 1} final cards: {player_cards}"
+                )
+                game.output(
+                    f"{player.name}'s hand {hand_index + 1} final hand value: {player_hand_value}"
+                )
+                winner = player.winner[hand_index]
+                if winner == "dealer":
+                    game.output(
+                        f"{player.name}'s hand {hand_index + 1} loses. Dealer wins!"
+                    )
+                elif winner == "player":
+                    game.output(
+                        f"{player.name}'s hand {hand_index + 1} wins the round!"
+                    )
+                elif winner == "draw":
+                    game.output(
+                        f"{player.name}'s hand {hand_index + 1} and Dealer tie! It's a push."
+                    )
+
+    def handle_payouts(self, game):
+        """Handles the payouts for the round."""
+        dealer_blackjack = game.dealer.current_hand.is_blackjack
+        is_no_peek = not game.rules.should_dealer_peek()
+
+        for player in game.players:
+            # Pre-pass: void late surrenders against dealer BJ in no-peek
+            # mode. Surrender (Player.surrender) leaves bets[i]=0 with
+            # original_bets[i]>0; under late-surrender semantics the
+            # decision is supposed to be made AFTER the dealer peeks, so
+            # a dealer BJ retroactively voids it. Early surrender (allowed
+            # before dealer checks) holds against dealer BJ and is
+            # exempted.
+            if (
+                is_no_peek
+                and dealer_blackjack
+                and not game.rules.allow_early_surrender
+            ):
+                for hand_index in range(len(player.hands)):
+                    if (
+                        player.bets[hand_index] == 0
+                        and hand_index < len(player.original_bets)
+                        and player.original_bets[hand_index] > 0
+                    ):
+                        original = player.original_bets[hand_index]
+                        half = original / 2
+                        # Reverse the half-bet refund granted by surrender()
+                        player.money -= half
+                        player.total_winnings -= half
+                        player.bets[hand_index] = original
+                        # surrender's hand-value comparison can land on a
+                        # "draw" for 2-card 21 vs dealer 21; voided
+                        # surrender always loses to dealer BJ.
+                        player.winner[hand_index] = "dealer"
+
+            for hand_index, hand in enumerate(player.hands):
+                winner = player.winner[hand_index]
+                bet_for_hand = player.bets[hand_index]
+
+                if bet_for_hand == 0:
+                    continue  # Skip hands with no bet
+
+                # Use variant's payout system if available
+                if game.payout_calculator and game.variant:
+                    # Check for variant-specific special hands
+                    special_hand = game.variant.evaluate_special_hands(hand)
+
+                    is_blackjack = player.blackjack and not hand.is_split
+
+                    if winner == "player":
+                        payout_amount = game.payout_calculator.calculate_payout(
+                            bet_for_hand, hand, special_hand, is_blackjack, False
+                        )
+                        player.payout(hand_index, payout_amount)
+
+                        # Output special hand message
+                        if special_hand:
+                            game.output(
+                                f"{player.name} gets {special_hand.description} bonus!"
+                            )
+                    elif winner == "draw":
+                        player.payout(hand_index, bet_for_hand)
+                    # dealer wins = no payout needed
+                else:
+                    # Fallback to classic payout logic
+                    # Check for bonus payout combinations first
+                    bonus_combination = self.check_for_bonus_combination(hand)
+                    if (
+                        bonus_combination and winner == "player"
+                    ):  # Only apply bonus for winning hands
+                        bonus_multiplier = game.get_bonus_payout(bonus_combination)
+                        if bonus_multiplier > 0:
+                            bonus_amount = bet_for_hand * bonus_multiplier
+                            # Base payout (even money) + bonus amount
+                            total_payout = (bet_for_hand * 2) + bonus_amount
+                            player.payout(hand_index, total_payout)
+                            game.output(
+                                f"{player.name} gets a bonus payout of {bonus_amount:.2f} for {bonus_combination}!"
+                            )
+                            continue  # Skip regular payout processing
+
+                    # Regular payout processing
+                    if winner == "player":
+                        if player.blackjack and not hand.is_split:
+                            payout_multiplier = game.get_blackjack_payout()
+                            payout_amount = bet_for_hand + (
+                                bet_for_hand * payout_multiplier
+                            )
+                        else:
+                            payout_amount = bet_for_hand * 2  # Regular win pays 1:1
+                        player.payout(hand_index, payout_amount)
+                    elif winner == "draw":
+                        payout_amount = bet_for_hand
+                        player.payout(hand_index, payout_amount)
+
+            # Player-level OBO (Original Bets Only) refund: in no-peek
+            # mode with dealer BJ, the player's total exposure is capped
+            # at the initial wager. Any extra accumulated via doubles or
+            # splits on hands lost to the dealer is refunded. Some games
+            # (and some house rules) disable OBO; allow_obo=False makes
+            # the player lose the full bet on every losing hand.
+            if (
+                is_no_peek
+                and dealer_blackjack
+                and getattr(game.rules, "allow_obo", True)
+            ):
+                losing_total = sum(
+                    player.bets[i]
+                    for i in range(len(player.hands))
+                    if player.winner[i] == "dealer"
+                )
+                if losing_total > player.initial_bets:
+                    refund = losing_total - player.initial_bets
+                    player.money += refund
+                    game.output(
+                        f"{player.name}: OBO refund of ${refund:.2f} "
+                        f"(dealer blackjack)."
+                    )
+
+    def check_for_bonus_combination(self, hand):
+        """
+        Check if a hand matches any bonus payout combination.
+        Returns the combination string if found, None otherwise.
+        """
+        # Example: Check for suited 6-7-8
+        if len(hand.cards) == 3:
+            # Sort cards by rank
+            sorted_cards = sorted(
+                hand.cards, key=lambda card: get_blackjack_value(card.rank)
+            )
+
+            # Check for consecutive ranks (like 6-7-8)
+            is_consecutive = all(
+                get_blackjack_value(sorted_cards[i + 1].rank)
+                == get_blackjack_value(sorted_cards[i].rank) + 1
+                for i in range(len(sorted_cards) - 1)
+            )
+
+            # Check if all cards have the same suit
+            same_suit = all(card.suit == sorted_cards[0].suit for card in sorted_cards)
+
+            if is_consecutive and same_suit:
+                # Create a key like "suited-6-7-8"
+                ranks = "-".join(str(card.rank) for card in sorted_cards)
+                return f"suited-{ranks}"
+
+        # Check for three of a kind (e.g., 7-7-7)
+        if len(hand.cards) == 3:
+            if all(card.rank == hand.cards[0].rank for card in hand.cards):
+                return f"{hand.cards[0].rank}-{hand.cards[0].rank}-{hand.cards[0].rank}"
+
+        # Check for 21 with 5 cards or more
+        if len(hand.cards) >= 5 and hand.value() == 21:
+            return "five-card-21"
+
+        # Add more patterns as needed
+
+        return None
+
+
+# Singleton state instances for performance (avoid repeated allocation)
+# States are stateless, so they can be safely reused across all games
+_state_waiting = WaitingForPlayersState()
+_state_placing_bets = PlacingBetsState()
+_state_dealing = DealingState()
+_state_offer_insurance = OfferInsuranceState()
+_state_players_turn = PlayersTurnState()
+_state_dealers_turn = DealersTurnState()
+_state_end_round = EndRoundState()

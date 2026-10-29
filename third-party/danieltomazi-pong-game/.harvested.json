@@ -1,0 +1,16 @@
+{
+  "repo": "DanielTomazi/Pong_Game",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 1571,
+  "pushedAt": "2024-11-28T19:04:35Z",
+  "description": "Classic Pong game, created using the JavaScript programming language.",
+  "defaultBranch": "main",
+  "owner": "DanielTomazi",
+  "slug": "danieltomazi-pong-game",
+  "dest": "third-party/danieltomazi-pong-game",
+  "readme": "# Jogo Pong - JavaScript\nTest the game here: https://pong-game-self.vercel.app\n*********\nReplication of the classic Pong game using JavaScript, very famous and recognized as one of the first games ever created. (The game has not been adapted to run on mobile devices, it is meant to be tested or played on a PC).\n*********\nPlay the game using the 'Up' and 'Down' arrow keys on the keyboard. The objective is to bounce the ball with the paddle, preventing the ball from hitting the player's defended area. Each time there is a collision, one point is recorded. (The game's difficulty is directly applied in the code, as the difficulty level is naturally linked to the machine's error rate. In the future, I plan to implement different difficulty levels).\n\n![ImagemDoJogo](https://github.com/DanielTomazi/Pong_Game/blob/main/Jogo%20Pong%20-%20Demonstrativo.png)\n**************************\n",
+  "licenceFile": "LICENSE",
+  "entry": "Jogo Pong/index.html",
+  "validated": true
+}

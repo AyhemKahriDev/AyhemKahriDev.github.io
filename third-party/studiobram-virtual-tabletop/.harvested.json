@@ -1,0 +1,16 @@
+{
+  "repo": "studiobram/Virtual-tabletop",
+  "stars": 7,
+  "licence": "MIT",
+  "sizeKB": 803,
+  "pushedAt": "2020-10-10T12:44:31Z",
+  "description": "Virtual tabletop is an online application that you can use to create and play board games using a browser.",
+  "defaultBranch": "main",
+  "owner": "studiobram",
+  "slug": "studiobram-virtual-tabletop",
+  "dest": "third-party/studiobram-virtual-tabletop",
+  "readme": "# Virtual tabletop\n\nVirtual tabletop is an online site that you can use to create and play board games using the browser.\n\n![preview](https://i.imgur.com/1M71J9f.png)\n\nIt is made using: \n  - [Node.js](https://nodejs.org/en/)\n  - [Express](https://github.com/expressjs/express)\n  - Socket.io \n  - [Ravendb](https://ravendb.net/)\n\n### Installation\n\nVirtual tabletop requires [Node.js](https://nodejs.org/en/) and [Ravendb](https://ravendb.net/) to run.\nAfter installing and setting up Node.js and Ravendb we can start setting up the server. Begin by creating a database in ravendb and creating a .env file for the configuration. The project contains an example .env file that you can use and an example database with an example card game that you can import in your database.\n\n```sh\nNODE_ENV=production\nHTTP_PORT=3001\nSOCKETIO_PORT=3001\nURL=localhost\nRAVENDB_URL=http://localhost:8080 // Add the url that you have configured ravendb to\nRAVENDB_DATABASE=Virtual-tabletop // The name of the database you have created in ravendb\nSECRET=qwe123ewq321 // Try to make at least some changes to this string\n```\n\nAfter setting up the configuration you need to run the following command in the project folder\n```sh\n$ npm install\n```\n\nAfter that is done you can start the server by running \n```sh\n$ npm start\n```\n\n### Troubleshooting\n\nIf something goes wrong while starting the server check the following things\n\n- Has the ravendb server been started?\n- Does the database that you have configured exist in the ravendb server?\n\n## License\n\n  [MIT](LICENSE)",
+  "licenceFile": "LICENSE",
+  "entry": "views/index.html",
+  "validated": true
+}

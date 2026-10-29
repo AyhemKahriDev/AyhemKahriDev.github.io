@@ -1,0 +1,16 @@
+{
+  "repo": "pilotpirxie/tetris-ts",
+  "stars": 20,
+  "licence": "MIT",
+  "sizeKB": 15,
+  "pushedAt": "2021-06-16T22:39:31Z",
+  "description": "🎮 Tetris game like written in Typescript.",
+  "defaultBranch": "master",
+  "owner": "pilotpirxie",
+  "slug": "pilotpirxie-tetris-ts",
+  "dest": "third-party/pilotpirxie-tetris-ts",
+  "readme": "# tetris-ts\n \nTetris game like written in pure Typescript, less than 30kB.\n\nYou can play here: [Play Game](https://pilotpirxie.github.io/tetris-ts/demo.html)\n\n![s1](https://i.imgur.com/QfoIovP.png)\n\n![s1](https://i.imgur.com/0qkud35.png)\n",
+  "licenceFile": "LICENSE",
+  "entry": "demo.html",
+  "validated": true
+}

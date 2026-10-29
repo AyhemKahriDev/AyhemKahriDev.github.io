@@ -1,0 +1,104 @@
+<!--
+  MIT License
+
+  Copyright (c) 2016 Yunzhu Li
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+-->
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Snake</title>
+    <meta name="author" content="Yunzhu Li">
+    <meta name="description" content="A real-time multiplayer snake game">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" crossorigin="anonymous">
+    <style type="text/css">
+      body                { font-size:13px;font-family:"Monaco","Consolas","monospace","Helvetica Neue",Helvetica,Arial; }
+      a                   { cursor:pointer; }
+      td                  { text-align:center; }
+      .span-steps         { line-height: 3; }
+      .container-fluid    { margin-top:50px;max-width:1000px; }
+      .panel-title        { display:inline-block; }
+      .status-indicator   { display:inline-block;width:11px;height:11px;border-radius:3px; }
+      .btn-primary        { background-color: #1D98F6;border-color: #218ADB; }
+      .btn-primary:hover,
+      .btn-primary:focus  { background-color: #218ADB;border-color: #0F7ACC; }
+      #canvas_board       { display:none; }
+      #div_settings       { max-width:320px; margin:auto; }
+      #ul_messages        { max-height:600px; }
+      #div_restart        { display:inline-block;margin-top:-3px;display:none; }
+      #btn_restart        { margin-top:-2px; }
+    </style>
+  </head>
+
+  <body>
+    <div class="container-fluid">
+      <div class="row">
+        <!-- Snake -->
+        <div class="col-md-8">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title">Snake</h3>
+              <a target="_blank" href="https://github.com/yunzhu-li/multiplayer-snake">GitHub</a>
+              <div id="div_restart" class="pull-right">
+                You died. &nbsp;
+                <button id="btn_restart" type="button" class="btn btn-primary btn-sm" onclick="client.restartGame();">Restart</button>
+              </div>
+            </div>
+            <div class="panel-body text-center">
+              <canvas id="canvas_board" width="600px" height="600px"></canvas>
+              <div id="div_settings" class="text-left">
+                <br>
+                <span class="span-steps"><b>1. Enter your name (optional)</b></span>
+                <input id="txt_player_name" type="text" class="form-control input-sm" placeholder="Name">
+                <br>
+                <span class="span-steps"><b>2. Join a room!</b></span>
+                <table class="table table-hover">
+                  <thead>
+                    <tr><td><b>Room</b></td><td><b>Players</b></td><td><b>Action</b></td></tr>
+                  </thead>
+                  <tbody id="tbody_rooms"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Status -->
+        <div class="col-md-4">
+          <div class="panel panel-default">
+            <div class="panel-heading"><h3 class="panel-title">Status</h3></div>
+            <div id="panel_status" class="panel-body"></div>
+            <ul id="ul_messages" class="list-group">
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js" crossorigin="anonymous"></script>
+  <script src="snake_client.js"></script>
+  <script>
+    var client = new SnakeClient();
+  </script>
+</html>

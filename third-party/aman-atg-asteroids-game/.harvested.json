@@ -1,0 +1,15 @@
+{
+  "repo": "aman-atg/asteroids-game",
+  "stars": 37,
+  "licence": "MIT",
+  "sizeKB": 3377,
+  "pushedAt": "2021-12-10T05:12:39Z",
+  "description": "Built with p5.js , Clone of Arcade Game :  Asteroids (1979 Atari)",
+  "defaultBranch": "master",
+  "owner": "aman-atg",
+  "slug": "aman-atg-asteroids-game",
+  "dest": "third-party/aman-atg-asteroids-game",
+  "readme": "# Asteroids Game \n\n \n![Game-Play](./atariGame1.gif)\n\n## Prerequisites\n\n* A modern-web browser like Brave , Chrome , Firefox etc\n* Computer...\n\n\n## Getting Started\n\n**1.** Fork [this](https://github.com/aman-atg/asteroids-game/) repository :fork_and_knife:\n\n**2.** Clone your forked repository to your local system :busts_in_silhouette:\n```sh\ngit clone https://github.com/<your-username>/asteroids-game.git\n```\nOr Download and extract the zip file.\n\n## Running\n\n1. Open the index.html file with VS Code's Live Server or Chrome's Live Server Extension\n\n### Built With\n\n* [HTML](https://www.html.com) - Standard markup language\n* [CSS](https://css.com) - Style sheet language\n* [JS](https://www.javascript.com/) - High-level, interpreted programming language\n* [P5JS](https://p5js.org/) - It's a JavaScript library for creative coding, with a focus on making coding accessible and inclusive\n\n### Authors\n\n* **[Aman Ansari](https://github.com/aman-atg)**\n\n### License\n\nThis project is licensed under the MIT License - see the [LICENSE.md](https://github.com/aman-atg/asteroids-game/blob/master/LICENSE) file for details\n\n### Acknowledgments \n\n* [Original Asteroids Game](https://en.wikipedia.org/wiki/Asteroids_(video_game))\n* [FCC-YOUTUBE](https://www.youtube.com/watch?v=H9CSWMxJx84)\n* [Fighter jet Icon](https://iconscout.com/icons/fighter-jet\") by [Iconscout](https://iconscout.com/contributors/iconscout)\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

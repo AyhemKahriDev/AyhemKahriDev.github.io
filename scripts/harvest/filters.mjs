@@ -139,6 +139,16 @@ function starsOf(candidate) {
  * description, and nothing in the text that says "this is a library, a course
  * or a portfolio".
  */
+/**
+ * Hardware/firmware projects.
+ *
+ * `techniccontroller/wordclock-esp8266` described itself as "Wordclock …
+ * with Pong, Tetris and Snake" and sailed through every game-keyword filter,
+ * then passed the browser gate because an embedded web UI paints. It is a
+ * firmware repository, not a game, and there is no way to play it.
+ */
+export const HARDWARE = /\b(esp8266|esp32|arduino|raspberry ?pi|neopixel|firmware|microcontroller|stm32|atmega|platformio|wordclock|led ?matrix|fpga)\b/i;
+
 export function rejectReason(candidate, { minStars = 2, maxSizeKB = 6000 } = {}) {
   const repo = repoName(candidate);
   if (!repo) return 'missing repo name';
@@ -157,6 +167,8 @@ export function rejectReason(candidate, { minStars = 2, maxSizeKB = 6000 } = {})
   if (stars !== null && stars < minStars) return `too few stars (${stars} < ${minStars})`;
 
   const text = `${repo} ${candidate?.description ?? ''}`.toLowerCase();
+  if (HARDWARE.test(text)) return 'hardware/firmware project, not a browser game';
+
   const skip = SKIP_WORDS.find((word) => text.includes(word));
   if (skip) return `looks like a non-game ("${skip}")`;
 

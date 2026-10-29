@@ -1,0 +1,15 @@
+{
+  "repo": "lemmoor/jigsaw-svelte",
+  "stars": 14,
+  "licence": "MIT",
+  "sizeKB": 347,
+  "pushedAt": "2023-02-20T18:37:09Z",
+  "description": "A web app where you can solve a jigsaw puzzle with a random image or your own.",
+  "defaultBranch": "main",
+  "owner": "lemmoor",
+  "slug": "lemmoor-jigsaw-svelte",
+  "dest": "third-party/lemmoor-jigsaw-svelte",
+  "readme": "# Jigsaw puzzle game\n\nA web app where you can solve a jigsaw puzzle with a random image or your own.  \nStar the repo if you like it! ⭐  \n[Live Demo](https://lemmoor.github.io/jigsaw-svelte/)\n\n## Table of Contents\n\n- [Getting Started](#getting-started)\n- [Contributing](#contributing)\n- [License](#license)\n- [Acknowledgments](#acknowledgments)\n\n### Getting started\n\nTo run the application on your local machine, follow the steps given below:\n\n1. Download and install [Node.js](https://nodejs.org/en)\n\n2. Clone the repository.\n\n```sh\n   git clone https://github.com/lemmoor/jigsaw-svelte.git\n```\n\n3. Enter the local directory\n\n```sh\ncd jigsaw-svelte\n```\n\n4. Install the required npm packages\n\n```sh\nnpm install\n```\n\n5. Run the application\n\n```sh\nnpm run dev\n```\n\n### Contributing\n\nYou are welcome to contribute and improve this project, I made it a while ago to learn svelte. Feel free to open an issue/PR :)\n\n### License\n\nThis project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details\n\n### Acknowledgments\n\n- This project was inspired by [this tutorial](https://www.youtube.com/watch?v=HS6KHYIYdXc)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

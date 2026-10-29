@@ -1,0 +1,15 @@
+.AttemptsLeft {
+  font-size: 0.9em;
+  color: var(--text-muted);
+}
+
+.AttemptsLeft-Number {
+  font-weight: 600;
+  color: var(--tile-color);
+}
+
+@media (max-width: 480px) {
+  .AttemptsLeft {
+    font-size: 0.85em;
+  }
+}

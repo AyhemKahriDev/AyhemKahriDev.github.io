@@ -1,0 +1,239 @@
+/**
+ * game.routes.js
+ *
+ * REST endpoints for game management.  All routes require authentication.
+ *
+ *   GET  /api/games                          — list open / resumable games
+ *   GET  /api/games/saved                    — games saved by the current user
+ *   GET  /api/games/mine                     — in-progress games the user is in
+ *   GET  /api/games/types                    — list registered game type keys
+ *   GET  /api/games/types/:type/config       — default config for a game type
+ *   POST /api/games/types/:type/config/reload — reload config from disk
+ *   GET  /api/games/config/default           — alias: monopoly default config
+ *   POST /api/games                          — create a new game
+ *   GET  /api/games/:id                      — get game state
+ *   POST /api/games/:id/join                 — join a game lobby
+ *   POST /api/games/:id/start               — start a waiting game
+ *   POST /api/games/:id/save                — save (pause) a game
+ *   DELETE /api/games/:id                   — delete a game (host only)
+ */
+
+'use strict';
+
+const express = require('express');
+const auth = require('../auth');
+const gameManager = require('../game-manager');
+
+// ── admin gate for config-reload ────────────────────────────────────────────
+// Config reload mutates server-wide state (the cached config used for new
+// games), so it can't be open to every authenticated user.  Two modes:
+//   1. ADMIN_USER_IDS set  → comma-separated allow-list of user ids
+//   2. ADMIN_USER_IDS unset → fall back to localhost-only (127.0.0.1 / ::1)
+const ADMIN_USER_IDS = new Set(
+  (process.env.ADMIN_USER_IDS || '')
+    .split(',')
+    .map((s) => s.trim())
+    .filter(Boolean),
+);
+if (ADMIN_USER_IDS.size === 0) {
+  console.warn(
+    '[config-reload] ADMIN_USER_IDS is unset — config-reload endpoint is ' +
+      'restricted to localhost (127.0.0.1 / ::1) requests only.',
+  );
+}
+const LOCAL_IPS = new Set(['127.0.0.1', '::1', '::ffff:127.0.0.1']);
+function isAdminRequest(req) {
+  if (ADMIN_USER_IDS.size > 0) return ADMIN_USER_IDS.has(req.user.sub);
+  return LOCAL_IPS.has(req.ip);
+}
+const gameRegistry = require('../game-registry');
+const socketHandler = require('../socket-handler');
+const { filterStateForUser } = require('../state-filter');
+
+const router = express.Router();
+
+// All game routes require a valid token
+router.use(auth.requireAuth);
+
+// ── GET /api/games ───────────────────────────────────────────────────────────
+
+router.get('/', (req, res) => {
+  try {
+    res.json({ games: gameManager.listOpenGames() });
+  } catch (err) {
+    console.error('[games] list error:', err);
+    res.status(500).json({ error: 'Could not list games' });
+  }
+});
+
+// ── GET /api/games/saved ─────────────────────────────────────────────────────
+
+router.get('/saved', (req, res) => {
+  try {
+    const database = require('../database');
+    res.json({ games: database.listSavedGamesForUser(req.user.sub) });
+  } catch (err) {
+    console.error('[games] saved list error:', err);
+    res.status(500).json({ error: 'Could not list saved games' });
+  }
+});
+
+// ── GET /api/games/mine ──────────────────────────────────────────────────────
+
+router.get('/mine', (req, res) => {
+  try {
+    const database = require('../database');
+    res.json({ games: database.listActiveGamesForUser(req.user.sub) });
+  } catch (err) {
+    console.error('[games] mine list error:', err);
+    res.status(500).json({ error: 'Could not list active games' });
+  }
+});
+
+// ── GET /api/games/types ─────────────────────────────────────────────────────
+// Returns registered game type keys plus their metadata.
+
+router.get('/types', (req, res) => {
+  try {
+    const types = gameRegistry.listGameTypes().map((key) => ({
+      key,
+      ...gameRegistry.getGameLogic(key).getGameMetadata(),
+    }));
+    res.json({ types });
+  } catch (err) {
+    console.error('[games] types error:', err);
+    res.status(500).json({ error: 'Could not list game types' });
+  }
+});
+
+// ── GET /api/games/types/:type/config ────────────────────────────────────────
+// Returns the default configuration for a specific game type.
+
+router.get('/types/:type/config', (req, res) => {
+  try {
+    const logic = gameRegistry.getGameLogic(req.params.type);
+    res.json({ config: logic.getConfigCopy() });
+  } catch (err) {
+    if (err.message.startsWith('Unknown game type')) {
+      return res.status(404).json({ error: err.message });
+    }
+    console.error('[games] config error:', err);
+    res.status(500).json({ error: 'Could not load config' });
+  }
+});
+
+// ── POST /api/games/types/:type/config/reload ────────────────────────────────
+// Re-read config files from disk for the given game type.
+
+router.post('/types/:type/config/reload', (req, res) => {
+  if (!isAdminRequest(req)) {
+    return res.status(403).json({ error: 'Config reload is restricted to admins' });
+  }
+  try {
+    const logic = gameRegistry.getGameLogic(req.params.type);
+    const config = logic.loadConfig();
+    res.json({ success: true, config });
+  } catch (err) {
+    if (err.message.startsWith('Unknown game type')) {
+      return res.status(404).json({ error: err.message });
+    }
+    console.error('[games] config reload error:', err);
+    res.status(500).json({ error: `Config reload failed: ${err.message}` });
+  }
+});
+
+// ── POST /api/games ──────────────────────────────────────────────────────────
+
+router.post('/', (req, res) => {
+  const { name, gameType = 'monopoly', configOverrides } = req.body;
+
+  if (!name || typeof name !== 'string' || name.trim().length === 0) {
+    return res.status(400).json({ error: 'Game name is required' });
+  }
+  if (name.length > 64) {
+    return res.status(400).json({ error: 'Game name must be 64 characters or fewer' });
+  }
+
+  // Reject unknown game types with a clear 400 rather than a 500
+  try {
+    gameRegistry.getGameLogic(gameType);
+  } catch {
+    return res.status(400).json({ error: `Unknown game type: "${gameType}"` });
+  }
+
+  try {
+    const { gameId, state } = gameManager.createGame(
+      name.trim(),
+      req.user.sub,
+      gameType,
+      configOverrides || {},
+    );
+    socketHandler.broadcastLobbyUpdate();
+    res.status(201).json({ gameId, state });
+  } catch (err) {
+    console.error('[games] create error:', err);
+    res.status(500).json({ error: 'Could not create game' });
+  }
+});
+
+// ── GET /api/games/:id/spectators ────────────────────────────────────────────
+// Returns the current spectator list for a game, sourced from the socket
+// handler's runtime map (spectators are not persisted in state).  Used by
+// the lobby to render a "N spectator(s)" chip next to in-progress games.
+// Defined before /:id so the static segment wins the routing match.
+
+router.get('/:id/spectators', (req, res) => {
+  if (!gameManager.peekGame(req.params.id)) {
+    return res.status(404).json({ error: 'Game not found' });
+  }
+  res.json({ spectators: socketHandler.spectatorsForWire(req.params.id) });
+});
+
+// ── GET /api/games/:id ───────────────────────────────────────────────────────
+// NOTE: all static routes above must be defined before this pattern.
+
+router.get('/:id', (req, res) => {
+  // Open to any authenticated user — acts as read-only spectating.
+  // Hidden info is stripped by filterStateForUser.
+  const state = gameManager.getGameSnapshot(req.params.id);
+  if (!state) return res.status(404).json({ error: 'Game not found' });
+  res.json({ state: filterStateForUser(state, req.user.sub, gameRegistry) });
+});
+
+// ── POST /api/games/:id/join ─────────────────────────────────────────────────
+
+router.post('/:id/join', async (req, res) => {
+  const result = await gameManager.addPlayerToLobby(req.params.id, {
+    id: req.user.sub,
+    username: req.user.username,
+  });
+  if (result.error) return res.status(400).json({ error: result.error });
+  res.json({ state: result.state });
+});
+
+// ── POST /api/games/:id/start ────────────────────────────────────────────────
+
+router.post('/:id/start', (req, res) => {
+  const result = gameManager.startGame(req.params.id, req.user.sub);
+  if (result.error) return res.status(400).json({ error: result.error });
+  res.json({ state: filterStateForUser(result.state, req.user.sub, gameRegistry) });
+});
+
+// ── POST /api/games/:id/save ─────────────────────────────────────────────────
+
+router.post('/:id/save', async (req, res) => {
+  const result = await gameManager.saveGame(req.params.id, req.user.sub);
+  if (result.error) return res.status(400).json({ error: result.error });
+  res.json({ success: true });
+});
+
+// ── DELETE /api/games/:id ────────────────────────────────────────────────────
+
+router.delete('/:id', async (req, res) => {
+  const result = await gameManager.deleteGame(req.params.id, req.user.sub);
+  if (result.error) return res.status(400).json({ error: result.error });
+  socketHandler.broadcastLobbyUpdate();
+  res.json({ success: true });
+});
+
+module.exports = router;

@@ -1,0 +1,16 @@
+{
+  "repo": "felipeorlando/tetris-grid",
+  "stars": 16,
+  "licence": "MIT",
+  "sizeKB": 216,
+  "pushedAt": "2019-02-12T16:43:00Z",
+  "description": "◼️Lightweight and simple CSS grid",
+  "defaultBranch": "master",
+  "owner": "felipeorlando",
+  "slug": "felipeorlando-tetris-grid",
+  "dest": "third-party/felipeorlando-tetris-grid",
+  "readme": "<p align=\"center\">\n  <img alt=\"tetris-grid\" src=\"https://felipeorlando.github.io/tetris-grid/favicon.jpg\" />\n</p>\n<h1 align=\"center\">tetris-grid</h1>\n\n[![npm version](https://badge.fury.io/js/tetris-grid.svg)](https://badge.fury.io/js/tetris-grid)\n\n[git.io/tetris-grid](https://git.io/tetris-grid)\n\nGrid based on the `flex` display property. Created with [neat](https://neat.bourbon.io/) and [sass](https://sass-lang.com/).\n\nSuper lightweight:\n- 12kb minified\n- 2kb minified and gziped\n\nInstall\n---------\n### npm\n`npm i tetris-grid`\n\n### css\n* [Development](https://github.com/felipeorlando/tetris-grid/blob/master/src/tetris.scss)\n* [Production](https://raw.githubusercontent.com/felipeorlando/tetris-grid/master/dist/tetris.min.css)\n\n\nInspiration\n-----------\nAll credits to [flexboxgrid](https://github.com/kristoferjoseph/flexboxgrid) 🖤\n",
+  "licenceFile": "LICENSE",
+  "entry": "docs/index.html",
+  "validated": true
+}

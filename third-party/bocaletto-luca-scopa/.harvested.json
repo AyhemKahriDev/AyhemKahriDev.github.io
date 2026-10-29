@@ -1,0 +1,16 @@
+{
+  "repo": "bocaletto-luca/Scopa",
+  "stars": 9,
+  "licence": "GPL-3.0",
+  "sizeKB": 25,
+  "pushedAt": "2025-06-22T14:01:48Z",
+  "description": "Scopa Web Game Single Player is a browser-based implementation of the classic Italian card game Scopa. Built using HTML5, CSS3, and JavaScript, it offers intuitive gameplay, score tracking, and a simple AI opponent. No installation is needed—just load it in your browser. Developed by Bocaletto Luca.",
+  "defaultBranch": "main",
+  "owner": "bocaletto-luca",
+  "slug": "bocaletto-luca-scopa",
+  "dest": "third-party/bocaletto-luca-scopa",
+  "readme": "# Scopa Cardgame Web Game Single Player\n\n![HTML5](https://img.shields.io/badge/HTML5-E34F26?logo=html5&style=for-the-badge)\n![CSS3](https://img.shields.io/badge/CSS3-1572B6?logo=css3&style=for-the-badge)\n![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&style=for-the-badge)\n![WebGame](https://img.shields.io/badge/WebGame-Scopa-blue?style=for-the-badge)\n![Project Completed](https://img.shields.io/badge/Project-Completed-green?style=for-the-badge)\n![GPLv3](https://img.shields.io/badge/License-GPLv3-blue?style=for-the-badge)\n\n## Overview\n\n**Scopa Web Game Single Player** is a browser‑based implementation of the traditional Italian card game Scopa. Enjoy competitive gameplay with an intuitive interface, score tracking, and a simple AI opponent that challenges you according to the official rules of Scopa. All you need is your browser—no installation required!\n\n## Installation\n\nNo installation is required. Simply host the files on any HTTP/HTTPS server (for example, using Apache or a static hosting service) and open `index.html` in your browser.\n\n## Usage\n\n- **Objective:**  \n  Capture cards from the table using matching tactics as defined by the Scopa rules. Clear cards, earn points, and aim for the ultimate “scopa” to maximize your score.\n\n- **Game Features:**  \n  - **Intuitive Controls:** Click to select your cards and interact with the game.\n  - **Score Tracking:** Keep track of captured cards and points.\n  - **AI Opponent:** Challenge a simple AI that plays according to traditional Scopa strategies.\n  - **Responsive Design:** Enjoy the classic card game experience on desktops and mobile devices.\n\n- **How to Play:**  \n  Follow the on‑screen instructions to play your cards, capture matching cards from the table, and achieve a “scopa” (sweep) when no cards remain on the table.\n\n## Technologies Used\n\n- **HTML5** – Provides the semantic structure.\n- **CSS3** – Handles styling, layout, and animations.\n- **JavaScript** – Implements game logic, interactivity, and AI.\n- **Custom Scopa Engine** – Implements the traditional card rules and scoring.\n- **Bootstrap 5** – Ensures a modern, responsive UI.\n\n## License\n\nThis project is released under the [GPLv3 License](https://www.gnu.org/licenses/gpl-3.0.en.html).\n\n## Author\n\n**Bocaletto Luca**  \n[GitHub](https://bocaletto-luca.github.io) • [Official Site](https://bocalettoluca.altervista.org)\n\n---\n\nEnjoy playing Scopa and relive the charm of this classic Italian card game!\n",
+  "licenceFile": "LICENSE",
+  "entry": "scopa.html",
+  "validated": true
+}

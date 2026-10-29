@@ -1,0 +1,58 @@
+import "imports/advanced_text_effect.onjschema" as _;
+
+use Common;
+
+$NextDialogPartSelector {
+
+    $Continue { }
+
+    $FixedNextPart {
+        next: int
+    }
+
+    $ChooseNextPart {
+        choices: {
+            name: string,
+            next: int
+        }[]
+    }
+
+    $EndOfDialog {
+        changeToScreen: string
+    }
+
+    $GiftCardEnd {
+        card: string,
+        changeToScreen: string
+    }
+
+    $ToCreditScreenEnd { }
+
+}
+
+var dialog = {
+    parts: {
+        rawText: string,
+        effects?: $AdvancedTextEffect[],
+        next: $NextDialogPartSelector
+    }[],
+    defaults: {
+        font: string,
+        fontScale: float,
+        color: Color
+    },
+};
+
+var image = {
+        textureName: string,
+        offsetX?: float,
+        offsetY?: float,
+        scale: float,
+};
+
+npcs: {
+    name: string,
+    displayName: string,
+    dialog: dialog,
+    image: image,
+}[]

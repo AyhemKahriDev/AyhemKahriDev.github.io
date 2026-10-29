@@ -1,0 +1,16 @@
+{
+  "repo": "Avokadoen/tetris_wasm",
+  "stars": 9,
+  "licence": "Apache-2.0",
+  "sizeKB": 974,
+  "pushedAt": "2023-01-07T14:08:26Z",
+  "description": "Tetris implemented in rust and targetting wasm",
+  "defaultBranch": "master",
+  "owner": "Avokadoen",
+  "slug": "avokadoen-tetris-wasm",
+  "dest": "third-party/avokadoen-tetris-wasm",
+  "readme": "## WASM Tetris\nTetris implemented in rust and exported as wasm! Currently has most of the basic functionality you can expect from Tetris, bugs included!\n\nA live demo can be found [here!](https://avokadoen.github.io/tetris-wasm-deploy/)\n\n![Tetris gameplay](tetris_wasm_example_2.gif \"Gameplay from 23 feb 2020\")\n\n## Prerequisite\nYou will need [wasm-pack](https://rustwasm.github.io/wasm-pack/installer/) and [npm](https://www.npmjs.com/get-npm)\nProject is built mainly in windows, but it works on linux too!\n\n## How do to build and run 🚀\n\n- clone the repository i.e ssh:\n```bash\ngit clone git@github.com:Avokadoen/tetris_wasm.git\n```\n- navigate to project root\n```bash\ncd ./tetris-wasm\n```\n- run wasm-pack\n```bash\nwasm-pack build\n```\n- navigate to ./www from root\n```bash\ncd ./www\n```\n- install dependencies through npm\n```bash\nnpm install\n```\n- run npm to host local server (make sure you are not hosting anything on 8080, or change port)\n```bash\nnpm run start (to change port: -- --port 8008)\n```\n- go to localhost:8080 in your favourite browser 🎉\n\n\n## Contributers\n\nThanks to [leudz](https://github.com/leudz) for fixing my ugly c-style loops and recommending some lint tools. See #17",
+  "licenceFile": "LICENSE",
+  "entry": "www/index.html",
+  "validated": true
+}

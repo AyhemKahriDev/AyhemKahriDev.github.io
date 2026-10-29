@@ -1,0 +1,93 @@
+<html>
+  <link rel="icon" href="stc/favicon.png" type="image/png"></link>
+  <link rel="stylesheet" href="stc/game.css" type="text/css"></link>
+  <script src="stc/third-party/jquery-3.3.1.min.js" language="javascript"></script>
+  <script src="stc/game.js" language="javascript"></script>
+  <meta name="viewport" content="user-scalable=no">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta description="A puzzle game in the style of Sudoku or Picross.">
+  <meta property="og:title" content="Linjat - a puzzle game">
+  <meta property="og:description" content="A puzzle game in the style of Sudoku or Picross.">
+  <meta property="og:image" content="https://linjat.snellman.net/stc/linjat-big.png">  
+  <meta name="twitter:creator" content="@juhosnellman">
+  <meta name="twitter:card" content="summary">
+  <head>
+    <title>Linjat - a puzzle game</title>
+  </head>
+  <body onload="javascript:init()">
+    <div id="help-container" class="fp" style="display: none">
+      <h1>Linjat</h1>
+      <div class="help">
+        <h2>How to play</h2>
+        <ul>
+          <li>Cover each number with a line of that length.
+          <li>Cover all the dots with lines. 
+          <li>Lines can't cross.
+          <li>No trial and error / backtracking needed, just logical deduction.
+        </ul>
+        <div id="back-help" class="button">Back</div>
+      </div>
+    </div>
+    <div id="about-container" class="fp" style="display: none">
+      <h1>Linjat</h1>
+      <div class="help">
+        <h2>About</h2>
+        <p>
+          <i>Linjat</i> designed and written by <a href="https://www.snellman.net/">
+            Juho Snellman</a>. Source on <a href="https://github.com/jsnell/linjat">GitHub</a>.
+        </p>
+
+        <h2>Open source</h2>
+        <p>
+          <ul>
+            <li>jQuery v3.3.1, (c) JS Foundation and other contributors
+              <a href="https://github.com/jquery/jquery/blob/master/LICENSE.txt">
+                (license)
+              </a>
+            <li><a href="https://github.com/marcelommp/Coiny">Coiny</a>, 
+              (c) Marcelo Magalh&atilde;es
+              <a href=https://github.com/marcelommp/Coiny/blob/gh-pages/OFL.txt>(license)</a>
+          </ul>
+        </p>
+        </ul>
+        <div id="back-about" class="button">Back</div>
+      </div>
+    </div>
+    <div id="main-container" style="display: none">
+      <div id="board-container">
+        <div id="board" class="playgrid">
+        </div>
+      </div>
+      <div id="controls">
+        <div id="message" class="help" style="display: none">
+        </div>
+        <div id="buttons">
+          <div id="reset" class="button">Reset</div>
+          <div class="separator"></div>
+          <div id="done" class="button">Done</div>
+          <div class="separator"></div>
+          <div id="back" class="button">Back</div>
+        </div>
+      </div>
+    </div>
+    <div id="error-container" class="fp" style="display: none">
+      <h1>Linjat</h1>
+      <div class="help" id="error-loading-game-data">
+        <h2>Error</h2>
+        <p>Couldn't load the game data. Try reloading the page?</p>
+      </div>
+    </div>
+    <div id="fp-container" class="fp" style="display: none">
+      <h1>Linjat</h1>
+      <div id="howto" class="button">How to Play</div>
+      <div id="tutorial" class="button">Tutorial</div>
+      <div id="easy" class="button">Easy</div>
+      <div id="medium" class="button">Medium</div>
+      <div id="hard" class="button">Hard</div>
+      <div id="expert" class="button">Expert</div>
+      <div id="about" class="button">About</div>
+    </div>
+  </body>
+</html>

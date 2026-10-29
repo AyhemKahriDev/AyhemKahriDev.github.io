@@ -1,0 +1,16 @@
+{
+  "repo": "yakkomajuri/brython-snake",
+  "stars": 36,
+  "licence": "MIT",
+  "sizeKB": 25,
+  "pushedAt": "2021-10-02T13:42:58Z",
+  "description": "A web snake game built 100% with Python for the browser.",
+  "defaultBranch": "master",
+  "owner": "yakkomajuri",
+  "slug": "yakkomajuri-brython-snake",
+  "dest": "third-party/yakkomajuri-brython-snake",
+  "readme": "# A Browser Snake Game Built With Vanilla ~~JS~~ Python!\n\n### More details: [Sick Of JavaScript For The Web? Just Write Browser Python Instead](https://medium.com/@yakko.majuri/sick-of-javascript-just-use-browser-python-4b9679efe08b?source=friends_link&sk=40e664d45bfea34d35189c32cd5d0a51)\n\nWant to improve the game? Feel free to submit a pull request!\n",
+  "licenceFile": "LICENSE",
+  "entry": "brython.html",
+  "validated": true
+}

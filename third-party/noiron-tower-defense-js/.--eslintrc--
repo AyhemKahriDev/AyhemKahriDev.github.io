@@ -1,0 +1,27 @@
+{
+    "env": {
+        "browser": true,
+        "node": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "module",
+        "ecmaFeatures": {
+            "experimentalObjectRestSpread": true
+        }
+    },
+    "globals": {
+        "$": true
+    },
+    "rules": {
+        "camelcase": 2,
+        "curly": 2,
+        "brace-style": [2, "1tbs"],
+        "quotes": [2, "single"],
+        "semi": [2, "always"],
+        "space-infix-ops": 2,
+        "indent": ["warn", 4, {"SwitchCase": 1}],
+        "no-undef": 2,
+        "no-unused-vars": "warn"
+    }
+}

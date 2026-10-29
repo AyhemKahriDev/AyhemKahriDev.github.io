@@ -1,0 +1,37 @@
+.App-Restart {
+  margin-top: 16px;
+}
+
+.App-Restart > button {
+  padding: 10px 20px;
+  background: var(--tile-color);
+  font-weight: 400;
+  font-size: 0.85em;
+  border: none;
+  color: var(--text-light);
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.App-Restart > button:focus {
+  outline: none;
+}
+
+.App-Restart > button:hover {
+  background: var(--tile-hover);
+}
+
+.App-Restart > button:active {
+  transform: scale(0.98);
+}
+
+@media (max-width: 480px) {
+  .App-Restart {
+    margin-top: 12px;
+  }
+
+  .App-Restart > button {
+    padding: 8px 16px;
+    font-size: 0.8em;
+  }
+}

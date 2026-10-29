@@ -1,0 +1,15 @@
+{
+  "repo": "mpirescarvalho/react-tetris",
+  "stars": 18,
+  "licence": "MIT",
+  "sizeKB": 4471,
+  "pushedAt": "2023-03-03T10:14:46Z",
+  "description": "👾 Responsive tetris game built with React 🎮",
+  "defaultBranch": "master",
+  "owner": "mpirescarvalho",
+  "slug": "mpirescarvalho-react-tetris",
+  "dest": "third-party/mpirescarvalho-react-tetris",
+  "readme": "# React Tetris\n\n> Fully responsive tetris game built with ReactJS\n\n<p align=\"start\">\n\t  <img alt=\"GitHub language count\" src=\"https://img.shields.io/github/languages/count/mpirescarvalho/react-tetris?style=flat\">\n\t  <img alt=\"GitHub top language\" src=\"https://img.shields.io/github/languages/top/mpirescarvalho/react-tetris\">\n\t  <img alt=\"GitHub stars\" src=\"https://img.shields.io/github/stars/mpirescarvalho/react-tetris?style=social\">\n\t  <img alt=\"GitHub last commit\" src=\"https://img.shields.io/github/last-commit/mpirescarvalho/react-tetris\">\n\t  <a href=\"https://mpirescarvalho.github.io/react-tetris/\">\n\t\t\t<img alt=\"Website\" src=\"https://img.shields.io/website?url=https%3A%2F%2Fmpirescarvalho.github.io/react-tetris\">\n    </a>\n</p>\n\n## Live\n\nYou can find the application live here:\nhttps://mpirescarvalho.github.io/react-tetris/\n\n<h1 align=\"center\">\n  <img alt=\"React tetris desktop\" title=\"#React tetris desktop\" src=\"./assets/react-tetris-desktop-1.png\" />\n  <img width=\"35%\" alt=\"React tetris mobile 2\" title=\"#React tetris mobile 2\" src=\"./assets/react-tetris-mobile-2.png\" />\n  <img width=\"35%\" alt=\"React tetris mobile 1\" title=\"#React tetris mobile 1\" src=\"./assets/react-tetris-mobile-1.png\" />\n</h1>\n\n## Building\n\nYou'll need [Node.js](https://nodejs.org) installed on your computer in order to build this app.\n\n```bash\n$ git clone https://github.com/mpirescarvalho/react-tetris.git\n$ cd react-tetris\n$ npm install\n$ npm run start\n```\n\nRuns the app in the development mode.<br/>\n\n## Contact\n\n<a href=\"https://github.com/mpirescarvalho\">\n  <img alt=\"made by Marcelo Carvalho\" src=\"https://img.shields.io/badge/made%20by-Marcelo Carvalho-%237519C1\">\n</a>\n<a href=\"mailto:mpirescarvalho17@gmail.com\">\n  <img alt=\"made by Marcelo Carvalho\" src=\"https://img.shields.io/badge/-mpirescarvalho17@gmail.com-c14438?style=flat-square&logo=Gmail&logoColor=white&link=mailto:mpirescarvalho17@gmail.com\" />\n</a>\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html"
+}

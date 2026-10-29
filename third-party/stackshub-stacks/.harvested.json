@@ -1,0 +1,16 @@
+{
+  "repo": "stackshub/stacks",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 159,
+  "pushedAt": "2018-12-14T09:21:53Z",
+  "description": "A simple puzzle game like the Tower of Hanoi in mobile and desktop browser",
+  "defaultBranch": "master",
+  "owner": "stackshub",
+  "slug": "stackshub-stacks",
+  "dest": "third-party/stackshub-stacks",
+  "readme": "# Stacks\n\nStacks is a simple puzzle game to rearrange the same kind of the pieces in a horizontal row.\n\nAfter rearranging, all the stacks will be in the same order of the pieces.\n\nThe order of the pieces is not a fixed order, so it may be different depending on the problem.\n\nIf it is arranged within the limit of moves, the problem is cleared.\n\nThis game is playable in mobile and desktop browser.\n\n- Playable: https://stackshub.github.io/stacks/\n- Repository: https://github.com/stackshub/stacks\n\n## How to play\n\n- First, tap a stack to pop a piece.\n- Then, tap another stack to push the piece.\n- Alternatively, drag between stacks to move a piece.\n\n### Keyboard controls\n\n| Key           | Control                          |\n| ------------- | -------------------------------- |\n| Left, A       | Move cursor left                 |\n| Right, D      | Move cursor right                |\n| Up, W         | Pop / Push (at cursor)           |\n| Down, S, \\-   | Undo                             |\n| Escape, 0     | Retry                            |\n| 1, 2, 3, 4, 5 | Pop / Push (corresponding stack) |\n| Enter, Space  | Next                             |\n| Shift + Q     | Quit                             |\n",
+  "licenceFile": "LICENSE",
+  "entry": "docs/index.html",
+  "validated": true
+}

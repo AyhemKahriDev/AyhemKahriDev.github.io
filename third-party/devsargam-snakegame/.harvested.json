@@ -1,0 +1,16 @@
+{
+  "repo": "devsargam/SnakeGame",
+  "stars": 42,
+  "licence": "MIT",
+  "sizeKB": 333,
+  "pushedAt": "2024-04-10T01:45:16Z",
+  "description": "A simple snake game made with vanilla javascript.",
+  "defaultBranch": "main",
+  "owner": "devsargam",
+  "slug": "devsargam-snakegame",
+  "dest": "third-party/devsargam-snakegame",
+  "readme": "# Snake Game\n\n## A game developed in vanilla javascript.\n\n### Steps to run\n\n#### Make sure you have node installed\n   *Fork the repository (Click the Fork button in the top right of this page)\n    *Clone the forked repository to your local machine.\n```bash\ngit clone https://github.com/<your-username>/SnakeGame.git\ncd SnakeGame\nyarn\nyarn start\n```\n\nThis game works by drawing rectangles in canvas while making them seem like food and snake\n\n### Feel free to contribute to this project by forking this project\n\n### Don't forget to leave a star ⭐\n\n## How to contribute:\n\n- Drop a :star: on the Github repository (optional)<br/>\n\n- Before Contribute Please read [CONTRIBUTING.md](https://github.com/devsargam/SnakeGame/blob/master/CONTRIBUTING.md) and [CODE_OF_CONDUCT.md](https://github.com/devsargam/SnakeGame/blob/master/CODE_OF_CONDUCT.md)\n\n- Create an issue of the project or a feature you would like to add in the project and get the task assigned for youself.(Issue can be any bug fixes or any feature you want to add in this project).\n\n- Fork the repo to your Github.<br/>\n\n- Clone the Repo by going to your local Git Client in a particular local folder in your local machine by using this command with your forked repository link in place of below given link: <br/>\n  `git clone https://github.com/<enter your git username here>/SnakeGame.git`\n- Create a branch using below command.\n  `git branch <your branch name>`\n- Checkout to your branch.\n  `git checkout <your branch name>`\n- Add your code in your local machine folder.\n  `git add . `\n- Commit your changes.\n  `git commit -m\"<add your message here>\"`\n- Push your changes.\n  `git push --set-upstream origin <your branch name>`\n\n- Make a pull request! (compare your branch with the owner main branch)\n\n# Our Amazing Contributors 🌟\n<br>\n<a href=\"https://github.com/devsargam/SnakeGame/graphs/contributors\">\n  <img src=\"https://contrib.rocks/image?repo=devsargam/SnakeGame&&max=817\" />\n</a>\n",
+  "licenceFile": "LICENSE",
+  "entry": "src/index.html",
+  "validated": true
+}

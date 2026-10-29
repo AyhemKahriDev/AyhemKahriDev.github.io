@@ -1,0 +1,118 @@
+<?xml version = "1.0"?>
+<initVals>
+	<highScoresQuickPlay>
+		<score name = "SMF">50000</score>
+		<score name = "BMW">40000</score>
+		<score name = "POP">30000</score>
+		<score name = "JEN">20000</score>
+		<score name = "ABN">10000</score>
+		<score name = "DAG">7500</score>
+		<score name = "LNA">5000</score>
+		<score name = "BRT">2500</score>
+		<score name = "MAB">1000</score>
+		<score name = "VTC">500</score>
+	</highScoresQuickPlay>
+	<highScoresArcade>
+		<score name = "GRG">250000</score>
+		<score name = "A/A">200000</score>
+		<score name = "DEV">150000</score>
+		<score name = "LAR">100000</score>
+		<score name = "ANT">75000</score>
+		<score name = "JOA">50000</score>
+		<score name = "mod">25000</score>
+		<score name = "MLO">10000</score>
+		<score name = "LAI">7500</score>
+		<score name = "M.J">5000</score>
+	</highScoresArcade>
+	<highScoresCampaign>
+		<score name = "AAA">1000000</score>
+		<score name = "DYL">750000</score>
+		<score name = "THI">500000</score>
+		<score name = "S I">250000</score>
+		<score name = "S A">100000</score>
+		<score name = " HI">75000</score>
+		<score name = "DDE">50000</score>
+		<score name = "N M">25000</score>
+		<score name = "ESS">10000</score>
+		<score name = "AGE">5000</score>
+	</highScoresCampaign>
+	<shortestTimesQuickPlay>
+		<score name = "TAM">10</score>
+		<score name = "TEM">20</score>
+		<score name = "TIM">30</score>
+		<score name = "TOM">40</score>
+		<score name = "TUM">50</score>
+		<score name = "TYM">60</score>
+		<score name = "FEE">90</score>
+		<score name = "FII">120</score>
+		<score name = "FOO">240</score>
+		<score name = "FUM">300</score>
+	</shortestTimesQuickPlay>
+	<shortestTimesArcade>
+		<score name = "SON">180</score>
+		<score name = "TAI">240</score>
+		<score name = "KNX">300</score>
+		<score name = "RBT">360</score>
+		<score name = "SHD">421</score>
+		<score name = "AMY">480</score>
+		<score name = "EGG">540</score>
+		<score name = "SCR">600</score>
+		<score name = "GRN">660</score>
+		<score name = "BIG">900</score>
+	</shortestTimesArcade>
+	<longestTimesCampaign>
+		<score name = "BOB">3600</score>
+		<score name = "WIL">1800</score>
+		<score name = "YOU">1200</score>
+		<score name = "BEE">900</score>
+		<score name = "MAI">720</score>
+		<score name = "HUS">600</score>
+		<score name = "BND">480</score>
+		<score name = "PLZ">300</score>
+		<score name = "RES">240</score>
+		<score name = "PND">180</score>
+	</longestTimesCampaign>
+	<characterFreqs>
+		<score name = "George">0</score>
+		<score name = "Milo">0</score>
+		<score name = "Devin">0</score>
+		<score name = "MJ">0</score>
+		<score name = "Andrew">0</score>
+		<score name = "Joan">0</score>
+		<score name = "Depeche">0</score>
+		<score name = "Lars">0</score>
+		<score name = "Laila">0</score>
+		<score name = "AliceAna">0</score>
+		<score name = "White">0</score>
+		<score name = "September">0</score>
+	</characterFreqs>
+	<characterWinsArcade>
+		<score name = "Total">0</score>
+		<score name = "George">0</score>
+		<score name = "AliceAna">0</score>
+		<score name = "Laila">0</score>
+		<score name = "Milo">0</score>
+		<score name = "Joan">0</score>
+		<score name = "Devin">0</score>
+		<score name = "Lars">0</score>
+		<score name = "Andrew">0</score>
+		<score name = "Depeche">0</score>
+		<score name = "MJ">0</score>
+		<score name = "White">0</score>
+		<score name = "September">0</score>
+	</characterWinsArcade>
+	<timePlayed>
+		<score mode = "Quick Play">0</score>
+		<score mode = "Arcade">0</score>
+		<score mode = "Campaign">0</score>
+		<score mode = "Training">0</score>
+		<score mode = "Versus">0</score>
+		<score mode = "Puzzle">0</score>
+	</timePlayed>
+	<remainingInfo>
+		<score name = "highestCampaignMoneyEarned">0</score>
+		<score name = "highestCampaignLevelReached">0</score>
+		<score name = "totalMoneyEarned">0</score>
+		<score name = "totalMoneySpent">0</score>
+	</remainingInfo>
+</initVals>

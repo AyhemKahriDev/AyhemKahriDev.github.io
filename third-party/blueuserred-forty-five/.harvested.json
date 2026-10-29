@@ -1,0 +1,15 @@
+{
+  "repo": "blueUserRed/forty-five",
+  "stars": 68,
+  "licence": "GPL-3.0",
+  "sizeKB": 5639,
+  "pushedAt": "2026-10-23T22:39:40Z",
+  "description": ".Forty-Five is a deckbuilding card game set in the wild west.  Collect and master powerful cards, battle different enemies and try not to end up six feet deep!",
+  "defaultBranch": "main",
+  "owner": "blueUserRed",
+  "slug": "blueuserred-forty-five",
+  "dest": "third-party/blueuserred-forty-five",
+  "readme": "![logo](./assets/textures/logo_red.png)\n\n<br>\n<br>\n<br>\n<br>\n\n#### A perfect mix of card game, rogue-lite, and pure wild west mayhem. Explore an ever-changing map, collect interesting cards, and battle enemies.\n\nCheck out our website:\nhttps://www.forty-five.at/\n\nCheck out our steam page:\nhttps://store.steampowered.com/app/2691350/FortyFive/\n\n\n### Explore and Collect\n\nExplore the Frontier and add powerful cards - bullets - to your collection. Each one equipped with its own unique effect.\n\n### Build\n\nEach bullet has an individual effect, used to create powerful synergies. Use them to build your deck and to become an\nOutlaw Legend!\n\n### Load and shoot to kill!\n\nLoad your cards into the revolver and use the effects to your advantage, while also utilizing the\nlimited amount of chambers and the rotations of the revolver. Then, shoot the enemies and send\nthem 6 feet deep! But watch out, he won't just stand there letting you shoot him down so easily...\n\n## Features\n\n- **It's completely free:** And thats a great price if you ask me. No ads or any kind of microtransactions, I promise.\n- **Over 50 unique cards,** some serious and some … a little bit … less serious.\n- **Innovative gameplay,** allowing the player to achieve creative combos with the revolvers rotation.\n- **100% handdrawn assets,** I might not be the next picasso, but hey, I'm trying okay …\n- **A procedurally generated map,** ever-changing, guaranteeing a new experience every run.\n- **Deckbuilding,** to truly personalize your way of … shooting people.\n- **Different enemy types,** so you'll never run out of things to shoot at.\n- **Unique biomes,** each … you know what just download and find out it's free.\n\n---\n\n<br>\n<br>\n\n## Technical\n\nIf you want to build the project for yourself, you can check out this [guide](./project_setup_and_build.md)\n\nFor basic technical information, check out this [file](./technical_design.md) **Warning: outdated** (I'll update it when I have the time)\n\nIf you need help with anything, you can ask questions in our discord: https://discord.gg/2caBPyXK9B\n",
+  "licenceFile": "LICENSE",
+  "entry": "website/index.html"
+}

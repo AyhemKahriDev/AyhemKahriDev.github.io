@@ -6,7 +6,7 @@
       "title": "2048",
       "copy": {
         "tagline": "Slide, merge and build the biggest number on the board.",
-        "description": "A sliding-tile puzzle: merge matching numbers, build bigger tiles and keep the board moving. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Slide the whole board with each move, merge matching numbers and build the largest tile you can.",
         "howToPlay": [
           "Slide every tile with the arrow keys, or use the on-screen pad.",
           "Two tiles with the same number merge into one when they meet.",
@@ -36,7 +36,7 @@
       "title": "Blockrain",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -66,7 +66,7 @@
       "title": "Quantum",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Quantum Game (old version) - a puzzle game with real quantum mechanics in a browser. Free to play in your browser, with no download and no sign-up.",
+        "description": "Quantum Game (old version) - a puzzle game with real quantum mechanics in a browser.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -104,18 +104,18 @@
         ],
         "faq": [
           {
-            "q": "Is SpaceHuggers free to play?",
-            "a": "Yes. SpaceHuggers is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Space Huggers free to play?",
+            "a": "Yes. Space Huggers is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does SpaceHuggers work on a phone?",
+            "q": "Does Space Huggers work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "spacehuggers game",
-          "play spacehuggers online",
-          "free spacehuggers",
+          "space huggers game",
+          "play space huggers online",
+          "free space huggers",
           "online platform game",
           "arcade game"
         ]
@@ -126,7 +126,7 @@
       "title": "Tetris (Ytiurin)",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "The original Tetris game simulator. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -156,7 +156,7 @@
       "title": "Pong",
       "copy": {
         "tagline": "Keep the ball in play and return every shot.",
-        "description": "The classic 1972 arcade game Pong. Free in your browser, with no download and no sign-up at all.",
+        "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
         "howToPlay": [
           "Move your paddle with the up and down arrows, or use the on-screen pad.",
           "Swipe up or down on a phone to move the paddle.",
@@ -186,7 +186,7 @@
       "title": "Tiny Platformer",
       "copy": {
         "tagline": "Run, jump and reach the end of the level.",
-        "description": "A side-on platform game: run, jump across the gaps and reach the end of the level. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Jump with Space or the up arrow.",
@@ -216,7 +216,7 @@
       "title": "Pacman",
       "copy": {
         "tagline": "Clear the maze while the ghosts hunt you down.",
-        "description": "A maze chase: eat every dot, dodge the ghosts and clear the level before they corner you. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run the maze, eat every dot along the way and slip past the ghosts before they close in.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to turn at the next corner.",
@@ -246,7 +246,7 @@
       "title": "Tetr",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -276,7 +276,7 @@
       "title": "Tower Platformer",
       "copy": {
         "tagline": "Run, jump and reach the end of the level.",
-        "description": "A side-on platform game: run, jump across the gaps and reach the end of the level. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Jump with Space or the up arrow.",
@@ -306,7 +306,7 @@
       "title": "Anti Pac Man",
       "copy": {
         "tagline": "Clear the maze while the ghosts hunt you down.",
-        "description": "Pac-Man game with gesture recognition. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run the maze, eat every dot along the way and slip past the ghosts before they close in.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to turn at the next corner.",
@@ -314,18 +314,18 @@
         ],
         "faq": [
           {
-            "q": "Is AntiPacMan free to play?",
-            "a": "Yes. AntiPacMan is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Anti Pac Man free to play?",
+            "a": "Yes. Anti Pac Man is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does AntiPacMan work on a phone?",
+            "q": "Does Anti Pac Man work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "antipacman game",
-          "play antipacman online",
-          "free antipacman",
+          "anti pac man game",
+          "play anti pac man online",
+          "free anti pac man",
           "online pacman game",
           "arcade game"
         ]
@@ -363,7 +363,7 @@
     },
     "horse-racing-game-javascript": {
       "category": "racing",
-      "title": "Horse Racing Game Java Script",
+      "title": "Horse Racing",
       "copy": {
         "tagline": "Steer for the line and keep your foot down.",
         "description": "Engaging and interactive Horse Racing Game. Free in your browser, with no download and no sign-up at all.",
@@ -423,10 +423,10 @@
     },
     "snake-io": {
       "category": "arcade",
-      "title": "Snake Io",
+      "title": "Snake",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "Slither.io clone in plain. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -434,18 +434,18 @@
         ],
         "faq": [
           {
-            "q": "Is Snake Io free to play?",
-            "a": "Yes. Snake Io is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Snake free to play?",
+            "a": "Yes. Snake is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Snake Io work on a phone?",
+            "q": "Does Snake work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "snake io game",
-          "play snake io online",
-          "free snake io",
+          "snake game",
+          "play snake online",
+          "free snake",
           "online snake game",
           "arcade game"
         ]
@@ -486,7 +486,7 @@
       "title": "Hangman",
       "copy": {
         "tagline": "Guess the hidden word before the picture is complete.",
-        "description": "A word game: guess the hidden word one letter at a time before your chances run out. Free in your browser, with no download and no sign-up at all.",
+        "description": "Guess the hidden word one letter at a time and keep your wrong guesses down to a handful.",
         "howToPlay": [
           "Choose a letter with a tap or a click.",
           "Move between letters with the arrow keys or the on-screen pad.",
@@ -516,7 +516,7 @@
       "title": "Lona",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -546,7 +546,7 @@
       "title": "Vanilla Hangman",
       "copy": {
         "tagline": "Guess the hidden word before the picture is complete.",
-        "description": "Pure Javavascript Hangman Game. Free in your browser, with no download and no sign-up at all.",
+        "description": "Guess the hidden word one letter at a time and keep your wrong guesses down to a handful.",
         "howToPlay": [
           "Choose a letter with a tap or a click.",
           "Move between letters with the arrow keys or the on-screen pad.",
@@ -576,7 +576,7 @@
       "title": "Tetris (Parzibyte)",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "Nearly perfect port of Tetris in pure / Port casi perfecto del juego de tetris en puro. Play free in your browser, with no download and no account.",
+        "description": "Nearly perfect port of Tetris in pure / Port casi perfecto del juego de tetris en puro.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -606,7 +606,7 @@
       "title": "Crazy Racing",
       "copy": {
         "tagline": "Steer for the line and keep your foot down.",
-        "description": "A race against the clock: steer through the course, hold your line and finish first. Free in your browser, with no download and no sign-up at all.",
+        "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
         "howToPlay": [
           "Steer with the left and right arrows, or use the on-screen pad.",
           "Accelerate with the up arrow and brake with the down arrow.",
@@ -636,7 +636,7 @@
       "title": "The Maze",
       "copy": {
         "tagline": "Find the way out before the walls close in.",
-        "description": "The Maze Game offers straightforward maze navigation challenges, built with Prim's & DFS Algorithms. Play free in your browser, with no download and no account.",
+        "description": "The Maze Game offers straightforward maze navigation challenges, built with Prim's & DFS Algorithms.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to turn at the next junction.",
@@ -663,10 +663,10 @@
     },
     "snake-html5": {
       "category": "arcade",
-      "title": "Snake",
+      "title": "Snake (Zuramai)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -726,7 +726,7 @@
       "title": "2048 (Mahmudnibir)",
       "copy": {
         "tagline": "Slide, merge and build the biggest number on the board.",
-        "description": "A sliding-tile puzzle: merge matching numbers, build bigger tiles and keep the board moving. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Slide the whole board with each move, merge matching numbers and build the largest tile you can.",
         "howToPlay": [
           "Slide every tile with the arrow keys, or use the on-screen pad.",
           "Two tiles with the same number merge into one when they meet.",
@@ -756,7 +756,7 @@
       "title": "Platformer",
       "copy": {
         "tagline": "Run, jump and reach the end of the level.",
-        "description": "A side-on platform game: run, jump across the gaps and reach the end of the level. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Jump with Space or the up arrow.",
@@ -786,7 +786,7 @@
       "title": "Block Ninja",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "A browser game that is quick to learn and easy to pick up again. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -794,18 +794,18 @@
         ],
         "faq": [
           {
-            "q": "Is BlockNinja free to play?",
-            "a": "Yes. BlockNinja is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Block Ninja free to play?",
+            "a": "Yes. Block Ninja is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does BlockNinja work on a phone?",
+            "q": "Does Block Ninja work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "blockninja game",
-          "play blockninja online",
-          "free blockninja",
+          "block ninja game",
+          "play block ninja online",
+          "free block ninja",
           "online quick game",
           "sandbox game"
         ]
@@ -816,7 +816,7 @@
       "title": "Bytes",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -846,7 +846,7 @@
       "title": "Classic Tetris",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "Implementation of Tetris that takes after the older versions of the game. Play free in your browser, with no download and no account.",
+        "description": "Implementation of Tetris that takes after the older versions of the game.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -876,7 +876,7 @@
       "title": "Snake Game 2D",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "The famous 2D snake game in which your goal is to eat until you get huge and accumulate many points. Free to play in your browser, with no download and no sign-up.",
+        "description": "The famous 2D snake game in which your goal is to eat until you get huge and accumulate many points.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -906,7 +906,7 @@
       "title": "Tetris (Jiasm)",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -936,7 +936,7 @@
       "title": "Breakout",
       "copy": {
         "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
-        "description": "A brick-breaking game: keep the ball in play, aim it with the paddle and clear the wall. Free to play in your browser, with no download and no sign-up.",
+        "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
         "howToPlay": [
           "Slide the paddle with the left and right arrows, or use the on-screen pad.",
           "Bounce the ball into the bricks without letting it past you.",
@@ -966,7 +966,7 @@
       "title": "I Just Want to Play Tetris",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -974,11 +974,11 @@
         ],
         "faq": [
           {
-            "q": "Is I Just Want To Play Tetris free to play?",
-            "a": "Yes. I Just Want To Play Tetris is free to play in your browser, with no account, no download and no payment."
+            "q": "Is I Just Want to Play Tetris free to play?",
+            "a": "Yes. I Just Want to Play Tetris is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does I Just Want To Play Tetris work on a phone?",
+            "q": "Does I Just Want to Play Tetris work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
@@ -996,7 +996,7 @@
       "title": "Fifteen Puzzle",
       "copy": {
         "tagline": "Slide the tiles into order, one move at a time.",
-        "description": "Fifteen puzzle game. Free to play in your browser, with no download and no sign-up.",
+        "description": "Move one tile at a time into the empty space and put the whole picture back in order.",
         "howToPlay": [
           "Move a tile into the empty space with the arrow keys.",
           "Swipe on a phone to slide the tile in that direction.",
@@ -1026,7 +1026,7 @@
       "title": "Pong (Bocaletto Luca)",
       "copy": {
         "tagline": "Keep the ball in play and return every shot.",
-        "description": "Pong Single Player is a modern remake of the classic Pong arcade game. Free in your browser, with no download and no sign-up at all.",
+        "description": "Pong Single Player is a modern remake of the classic Pong arcade game.",
         "howToPlay": [
           "Move your paddle with the up and down arrows, or use the on-screen pad.",
           "Swipe up or down on a phone to move the paddle.",
@@ -1056,7 +1056,7 @@
       "title": "Pong Almost From Scratch",
       "copy": {
         "tagline": "Keep the ball in play and return every shot.",
-        "description": "A paddle-and-ball classic: return every shot, find the angle and win the point. Free in your browser, with no download and no sign-up at all.",
+        "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
         "howToPlay": [
           "Move your paddle with the up and down arrows, or use the on-screen pad.",
           "Swipe up or down on a phone to move the paddle.",
@@ -1086,7 +1086,7 @@
       "title": "Breakout (Melcor76)",
       "copy": {
         "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
-        "description": "A brick-breaking game: keep the ball in play, aim it with the paddle and clear the wall. Free to play in your browser, with no download and no sign-up.",
+        "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
         "howToPlay": [
           "Slide the paddle with the left and right arrows, or use the on-screen pad.",
           "Bounce the ball into the bricks without letting it past you.",
@@ -1116,7 +1116,7 @@
       "title": "Snake (Pleiterson)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "Game Snake criado no Bootcamp Developer da Digital Innovation One. Free to play in your browser, with no download and no sign-up.",
+        "description": "Game Snake criado no Bootcamp Developer da Digital Innovation One.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -1146,7 +1146,7 @@
       "title": "Tetris (Bocaletto Luca)",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "Tetris Single Player is a modern, browser‑based remake of the timeless Tetris puzzle game. Play free in your browser, with no download and no account.",
+        "description": "Tetris Single Player is a modern, browser‑based remake of the timeless Tetris puzzle game.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -1176,7 +1176,7 @@
       "title": "Who Wants to Be a Millionaire",
       "copy": {
         "tagline": "Answer the questions and see how much you know.",
-        "description": "Who Wants To Be A Millionaire is an interactive web quiz game inspired by the famous TV show. Play free in your browser, with no download and no account.",
+        "description": "Who Wants To Be A Millionaire is an interactive web quiz game inspired by the famous TV show.",
         "howToPlay": [
           "Pick an answer with a tap or a click.",
           "Move between answers with the arrow keys or the on-screen pad.",
@@ -1184,11 +1184,11 @@
         ],
         "faq": [
           {
-            "q": "Is Who Wants To Be A Millionaire free to play?",
-            "a": "Yes. Who Wants To Be A Millionaire is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Who Wants to Be a Millionaire free to play?",
+            "a": "Yes. Who Wants to Be a Millionaire is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Who Wants To Be A Millionaire work on a phone?",
+            "q": "Does Who Wants to Be a Millionaire work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
@@ -1236,7 +1236,7 @@
       "title": "Omok",
       "copy": {
         "tagline": "Take turns, think ahead and win the board.",
-        "description": "A board game: take turns, plan a few moves ahead and protect your pieces. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Take turns moving your pieces, plan a few moves ahead and protect your own side of the board.",
         "howToPlay": [
           "Pick a piece with a tap or a click, then pick where it moves.",
           "Move the selection with the arrow keys or the on-screen pad.",
@@ -1296,7 +1296,7 @@
       "title": "Bonoeil",
       "copy": {
         "tagline": "Run, jump and reach the end of the level.",
-        "description": "Browser platformer game environment. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Jump with Space or the up arrow.",
@@ -1326,7 +1326,7 @@
       "title": "Racing",
       "copy": {
         "tagline": "Steer for the line and keep your foot down.",
-        "description": "A race against the clock: steer through the course, hold your line and finish first. Free in your browser, with no download and no sign-up at all.",
+        "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
         "howToPlay": [
           "Steer with the left and right arrows, or use the on-screen pad.",
           "Accelerate with the up arrow and brake with the down arrow.",
@@ -1383,10 +1383,10 @@
     },
     "tv-show-explorer": {
       "category": "brain",
-      "title": "Tv Show Explorer",
+      "title": "TV Show Explorer",
       "copy": {
         "tagline": "Find the way out before the walls close in.",
-        "description": "TV Show Explorer - Complete Edition is a professional, full-featured web application that empowers users to explore TV shows through. Play free in your browser, with no download and no account.",
+        "description": "TV Show Explorer - Complete Edition is a professional, full-featured web application that empowers users to explore TV shows through multiple discovery modes.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to turn at the next junction.",
@@ -1416,7 +1416,7 @@
       "title": "Ping Pong",
       "copy": {
         "tagline": "Keep the ball in play and return every shot.",
-        "description": "A paddle-and-ball classic: return every shot, find the angle and win the point. Free in your browser, with no download and no sign-up at all.",
+        "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
         "howToPlay": [
           "Move your paddle with the up and down arrows, or use the on-screen pad.",
           "Swipe up or down on a phone to move the paddle.",
@@ -1446,7 +1446,7 @@
       "title": "Great Racing League",
       "copy": {
         "tagline": "Steer for the line and keep your foot down.",
-        "description": "A race against the clock: steer through the course, hold your line and finish first. Free in your browser, with no download and no sign-up at all.",
+        "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
         "howToPlay": [
           "Steer with the left and right arrows, or use the on-screen pad.",
           "Accelerate with the up arrow and brake with the down arrow.",
@@ -1506,7 +1506,7 @@
       "title": "Snake (Bocaletto Luca)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "Snake Single Player is a modern remake of the classic Snake game. Free to play in your browser, with no download and no sign-up.",
+        "description": "Snake Single Player is a modern remake of the classic Snake game.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -1536,7 +1536,7 @@
       "title": "Ludo",
       "copy": {
         "tagline": "Take turns, think ahead and win the board.",
-        "description": "Ludo Webgame is a complete version of the classic board game Ludo. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Ludo Webgame is a complete version of the classic board game Ludo.",
         "howToPlay": [
           "Pick a piece with a tap or a click, then pick where it moves.",
           "Move the selection with the arrow keys or the on-screen pad.",
@@ -1566,7 +1566,7 @@
       "title": "Arkanoid",
       "copy": {
         "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
-        "description": "Arkanoid Game is a modern browser remake of the classic brick-breaker that blends retro charm with contemporary challenges. Free to play in your browser, with no download and no sign-up.",
+        "description": "Arkanoid Game is a modern browser remake of the classic brick-breaker that blends retro charm with contemporary challenges.",
         "howToPlay": [
           "Slide the paddle with the left and right arrows, or use the on-screen pad.",
           "Bounce the ball into the bricks without letting it past you.",
@@ -1596,7 +1596,7 @@
       "title": "Bouble",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Bouble Single Player is a classic arcade game where you pop colourful bubbles to score points. Free to play in your browser, with no download and no sign-up.",
+        "description": "Bouble Single Player is a classic arcade game where you pop colourful bubbles to score points.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -1626,7 +1626,7 @@
       "title": "Dungeons",
       "copy": {
         "tagline": "One life, a fresh dungeon and a fight to the last floor.",
-        "description": "Dungeons is a roguelike game &. Free to play in your browser, with no download and no sign-up.",
+        "description": "Take one life into a fresh dungeon, fight what you meet and see how deep you can get.",
         "howToPlay": [
           "Move one square at a time with the arrow keys, or use the on-screen pad.",
           "Walk into a monster to attack it and step on an item to pick it up.",
@@ -1656,7 +1656,7 @@
       "title": "Mahjong Solitaire",
       "copy": {
         "tagline": "Build the four suits from ace to king and clear the table.",
-        "description": "A card game for one: build the suits in order, turn over the hidden cards and clear the table. Free to play in your browser, with no download and no sign-up.",
+        "description": "Deal the cards, build each suit from ace to king and turn over the hidden cards as you go.",
         "howToPlay": [
           "Pick up a card with a tap or a click, then pick the pile it belongs on.",
           "Move the selection with the arrow keys or the on-screen pad.",
@@ -1686,7 +1686,7 @@
       "title": "Square Dodger",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Square Dodger Single Player is an arcade-style browser game where you control a square to dodge falling obstacles. Free to play in your browser, with no download and no sign-up.",
+        "description": "Square Dodger Single Player is an arcade-style browser game where you control a square to dodge falling obstacles.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -1716,7 +1716,7 @@
       "title": "Tetris (Sbdh11)",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "Tetris Game made from &. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -1746,7 +1746,7 @@
       "title": "Flappy",
       "copy": {
         "tagline": "Tap to flap and thread every gap.",
-        "description": "Flappy Wyzuk is a high-octane, modern indie browser game engineered from scratch web technologies. Free to play in your browser, with no download and no sign-up.",
+        "description": "Flappy Wyzuk is a high-octane, modern indie browser game engineered from scratch web technologies.",
         "howToPlay": [
           "Tap the screen or press Space to flap.",
           "Pass through each gap without touching the edges.",
@@ -1776,7 +1776,7 @@
       "title": "Hangman (Parzibyte)",
       "copy": {
         "tagline": "Guess the hidden word before the picture is complete.",
-        "description": "A word game: guess the hidden word one letter at a time before your chances run out. Free in your browser, with no download and no sign-up at all.",
+        "description": "Guess the hidden word one letter at a time and keep your wrong guesses down to a handful.",
         "howToPlay": [
           "Choose a letter with a tap or a click.",
           "Move between letters with the arrow keys or the on-screen pad.",
@@ -1806,7 +1806,7 @@
       "title": "Tetris (123survesh)",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -1836,7 +1836,7 @@
       "title": "Tic Tac Toe",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "Tetris Single Player is a modern, browser‑based remake of the timeless Tetris puzzle game. Play free in your browser, with no download and no account.",
+        "description": "Tetris Single Player is a modern, browser‑based remake of the timeless Tetris puzzle game.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -1866,7 +1866,7 @@
       "title": "Labyrinth",
       "copy": {
         "tagline": "Find the way out before the walls close in.",
-        "description": "Labyrinth | Maze Explorer. Play free in your browser, with no download and no account.",
+        "description": "Find the route through the walls, remember the dead ends and make your way to the exit.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to turn at the next junction.",
@@ -1896,7 +1896,7 @@
       "title": "Pinball",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "A browser game that is quick to learn and easy to pick up again. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -1926,7 +1926,7 @@
       "title": "Bomberman",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Bomberman Dynablaster - Single Player Edition is a modern, remake of the classic Bomberman series with a twist inspired by the Italian. Free to play in your browser, with no download and no sign-up.",
+        "description": "Bomberman Dynablaster - Single Player Edition is a modern, remake of the classic Bomberman series with a twist inspired by the Italian Dynablaster variant.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -1956,7 +1956,7 @@
       "title": "Puzzle Numbers",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Puzzle-Numbers is a fun and interactive number puzzle game that challenges players with logic-based mathematical puzzles. Free to play in your browser, with no download and no sign-up.",
+        "description": "Puzzle-Numbers is a fun and interactive number puzzle game that challenges players with logic-based mathematical puzzles.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -1986,7 +1986,7 @@
       "title": "Gasteroids",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "Game inspired by Galaga and Asteroids. Play free in your browser, with no download and no account.",
+        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",
@@ -2016,7 +2016,7 @@
       "title": "Space Invaders",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "The classic Space Invaders game. Play free in your browser, with no download and no account.",
+        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",
@@ -2043,7 +2043,7 @@
     },
     "missile-command-javascript-clone": {
       "category": "arcade",
-      "title": "Missile Command Java Script",
+      "title": "Missile Command",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
         "description": "The classic video game Missile Command for the Atari. Play free in your browser, with no download and no account.",
@@ -2076,7 +2076,7 @@
       "title": "Plants vs Zombies",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Simpla Plants vs Zombies game. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -2084,18 +2084,18 @@
         ],
         "faq": [
           {
-            "q": "Is PlantsVsZombies free to play?",
-            "a": "Yes. PlantsVsZombies is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Plants vs Zombies free to play?",
+            "a": "Yes. Plants vs Zombies is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does PlantsVsZombies work on a phone?",
+            "q": "Does Plants vs Zombies work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "plantsvszombies game",
-          "play plantsvszombies online",
-          "free plantsvszombies",
+          "plants vs zombies game",
+          "play plants vs zombies online",
+          "free plants vs zombies",
           "online quick game",
           "sandbox game"
         ]
@@ -2106,7 +2106,7 @@
       "title": "Oregon Trail",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "The classic game, Oregon Trail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -2163,10 +2163,10 @@
     },
     "gogame": {
       "category": "table",
-      "title": "Gogame",
+      "title": "Go (Boppreh)",
       "copy": {
         "tagline": "Take turns, think ahead and win the board.",
-        "description": "A board game: take turns, plan a few moves ahead and protect your pieces. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Take turns moving your pieces, plan a few moves ahead and protect your own side of the board.",
         "howToPlay": [
           "Pick a piece with a tap or a click, then pick where it moves.",
           "Move the selection with the arrow keys or the on-screen pad.",
@@ -2174,18 +2174,18 @@
         ],
         "faq": [
           {
-            "q": "Is Gogame free to play?",
-            "a": "Yes. Gogame is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Go free to play?",
+            "a": "Yes. Go is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Gogame work on a phone?",
+            "q": "Does Go work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "gogame game",
-          "play gogame online",
-          "free gogame",
+          "go game",
+          "play go online",
+          "free go",
           "online board game",
           "table game"
         ]
@@ -2193,10 +2193,10 @@
     },
     "games-master": {
       "category": "arcade",
-      "title": "Games Master",
+      "title": "Games",
       "copy": {
         "tagline": "Run, jump and reach the end of the level.",
-        "description": "A side-on platform game: run, jump across the gaps and reach the end of the level. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Jump with Space or the up arrow.",
@@ -2204,18 +2204,18 @@
         ],
         "faq": [
           {
-            "q": "Is Games Master free to play?",
-            "a": "Yes. Games Master is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Games free to play?",
+            "a": "Yes. Games is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Games Master work on a phone?",
+            "q": "Does Games work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "games master game",
-          "play games master online",
-          "free games master",
+          "games game",
+          "play games online",
+          "free games",
           "online platform game",
           "arcade game"
         ]
@@ -2226,7 +2226,7 @@
       "title": "Snake (Goncadanilo)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "Snake Game desenvolvido com. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -2256,7 +2256,7 @@
       "title": "Doodle Jump",
       "copy": {
         "tagline": "Run, jump and reach the end of the level.",
-        "description": "Doodle jump game clone. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Jump with Space or the up arrow.",
@@ -2316,7 +2316,7 @@
       "title": "Solitaire",
       "copy": {
         "tagline": "Build the four suits from ace to king and clear the table.",
-        "description": "Golfed web version of the Molek-Syntez solitaire by Zachtronics. Free to play in your browser, with no download and no sign-up.",
+        "description": "Golfed web version of the Molek-Syntez solitaire by Zachtronics.",
         "howToPlay": [
           "Pick up a card with a tap or a click, then pick the pile it belongs on.",
           "Move the selection with the arrow keys or the on-screen pad.",
@@ -2346,7 +2346,7 @@
       "title": "Bird",
       "copy": {
         "tagline": "Tap to flap and thread every gap.",
-        "description": "A one-button game: flap to stay in the air and thread through every gap. Free to play in your browser, with no download and no sign-up.",
+        "description": "Tap to keep the bird in the air, thread every gap and see how far one run will take you.",
         "howToPlay": [
           "Tap the screen or press Space to flap.",
           "Pass through each gap without touching the edges.",
@@ -2354,18 +2354,18 @@
         ],
         "faq": [
           {
-            "q": "Is Canvas Bird free to play?",
-            "a": "Yes. Canvas Bird is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Bird free to play?",
+            "a": "Yes. Bird is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Canvas Bird work on a phone?",
+            "q": "Does Bird work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "canvas bird game",
-          "play canvas bird online",
-          "free canvas bird",
+          "bird game",
+          "play bird online",
+          "free bird",
           "online one-button game",
           "arcade game"
         ]
@@ -2376,7 +2376,7 @@
       "title": "2D Breakout",
       "copy": {
         "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
-        "description": "A brick-breaking game: keep the ball in play, aim it with the paddle and clear the wall. Free to play in your browser, with no download and no sign-up.",
+        "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
         "howToPlay": [
           "Slide the paddle with the left and right arrows, or use the on-screen pad.",
           "Bounce the ball into the bricks without letting it past you.",
@@ -2436,7 +2436,7 @@
       "title": "Snake (Sergiss)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -2496,7 +2496,7 @@
       "title": "Snake (Augustin7698)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -2523,10 +2523,10 @@
     },
     "2d-breakout-web-browser-game": {
       "category": "arcade",
-      "title": "2D Breakout Web Browser",
+      "title": "2D Breakout Browser",
       "copy": {
         "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
-        "description": "A brick-breaking game: keep the ball in play, aim it with the paddle and clear the wall. Free to play in your browser, with no download and no sign-up.",
+        "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
         "howToPlay": [
           "Slide the paddle with the left and right arrows, or use the on-screen pad.",
           "Bounce the ball into the bricks without letting it past you.",
@@ -2586,7 +2586,7 @@
       "title": "Space Invaders (MatthewPageUK)",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "Space Invaders type game - OO ES6. Play free in your browser, with no download and no account.",
+        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",
@@ -2613,10 +2613,10 @@
     },
     "adoertetris-js": {
       "category": "arcade",
-      "title": "Adoer Tetris",
+      "title": "Tetris (Adoer)",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -2646,7 +2646,7 @@
       "title": "Flapcopy",
       "copy": {
         "tagline": "Tap to flap and thread every gap.",
-        "description": "Flappy Bird inspired game. Free to play in your browser, with no download and no sign-up.",
+        "description": "Tap to keep the bird in the air, thread every gap and see how far one run will take you.",
         "howToPlay": [
           "Tap the screen or press Space to flap.",
           "Pass through each gap without touching the edges.",
@@ -2676,7 +2676,7 @@
       "title": "Snek",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -2706,7 +2706,7 @@
       "title": "Virtual Weiqi Go Surround Chess",
       "copy": {
         "tagline": "Take turns, think ahead and win the board.",
-        "description": "A board game: take turns, plan a few moves ahead and protect your pieces. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Take turns moving your pieces, plan a few moves ahead and protect your own side of the board.",
         "howToPlay": [
           "Pick a piece with a tap or a click, then pick where it moves.",
           "Move the selection with the arrow keys or the on-screen pad.",
@@ -2736,7 +2736,7 @@
       "title": "Resolv the Puzzle",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "A browser game that is quick to learn and easy to pick up again. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -2774,18 +2774,18 @@
         ],
         "faq": [
           {
-            "q": "Is ADemonsMaze free to play?",
-            "a": "Yes. ADemonsMaze is free to play in your browser, with no account, no download and no payment."
+            "q": "Is A Demons Maze free to play?",
+            "a": "Yes. A Demons Maze is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does ADemonsMaze work on a phone?",
+            "q": "Does A Demons Maze work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "ademonsmaze game",
-          "play ademonsmaze online",
-          "free ademonsmaze",
+          "a demons maze game",
+          "play a demons maze online",
+          "free a demons maze",
           "online dungeon game",
           "strategy game"
         ]
@@ -2796,7 +2796,7 @@
       "title": "Game Demos",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Series of example programs to teach video game concepts to beginners. Free to play in your browser, with no download and no sign-up.",
+        "description": "Series of example programs to teach video game concepts to beginners.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -2826,7 +2826,7 @@
       "title": "Crayon Contraptions",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Rube Goldberg puzzle game drawn in crayon: 100 levels, seven crayons with their own physics, live levels and boss monsters. Free to play in your browser, with no download and no sign-up.",
+        "description": "Rube Goldberg puzzle game drawn in crayon: 100 levels, seven crayons with their own physics, live levels and boss monsters.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -2856,7 +2856,7 @@
       "title": "Nostalgic Snake",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "The Nostalgic Snake Game - a journey back to the simplicity and joy of childhood gaming. Free to play in your browser, with no download and no sign-up.",
+        "description": "The Nostalgic Snake Game - a journey back to the simplicity and joy of childhood gaming.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -2894,20 +2894,20 @@
         ],
         "faq": [
           {
-            "q": "Is PuzzleGame free to play?",
-            "a": "Yes. PuzzleGame is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Puzzle free to play?",
+            "a": "Yes. Puzzle is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does PuzzleGame work on a phone?",
+            "q": "Does Puzzle work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "puzzlegame game",
-          "play puzzlegame online",
-          "free puzzlegame",
+          "puzzle game",
+          "play puzzle online",
+          "free puzzle",
           "online sliding puzzle game",
-          "puzzle game"
+          "browser game"
         ]
       }
     },
@@ -2916,7 +2916,7 @@
       "title": "Asteroids",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "Bullet hell asteroids game. Play free in your browser, with no download and no account.",
+        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",
@@ -2946,7 +2946,7 @@
       "title": "15 Puzzle",
       "copy": {
         "tagline": "Slide the tiles into order, one move at a time.",
-        "description": "Classic Fifteen Puzzle. Free to play in your browser, with no download and no sign-up.",
+        "description": "Move one tile at a time into the empty space and put the whole picture back in order.",
         "howToPlay": [
           "Move a tile into the empty space with the arrow keys.",
           "Swipe on a phone to slide the tile in that direction.",
@@ -2976,7 +2976,7 @@
       "title": "Flappy Bird",
       "copy": {
         "tagline": "Tap to flap and thread every gap.",
-        "description": "Flappy bird game build 5. Free to play in your browser, with no download and no sign-up.",
+        "description": "Tap to keep the bird in the air, thread every gap and see how far one run will take you.",
         "howToPlay": [
           "Tap the screen or press Space to flap.",
           "Pass through each gap without touching the edges.",
@@ -3006,7 +3006,7 @@
       "title": "Snake (DevMagno)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "Jogo da cobrinha com. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -3063,10 +3063,10 @@
     },
     "websnakegame": {
       "category": "arcade",
-      "title": "Web Snake",
+      "title": "Snake (BaseMax)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -3074,18 +3074,18 @@
         ],
         "faq": [
           {
-            "q": "Is WebSnakeGame free to play?",
-            "a": "Yes. WebSnakeGame is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Snake free to play?",
+            "a": "Yes. Snake is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does WebSnakeGame work on a phone?",
+            "q": "Does Snake work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "websnakegame game",
-          "play websnakegame online",
-          "free websnakegame",
+          "snake game",
+          "play snake online",
+          "free snake",
           "online snake game",
           "arcade game"
         ]
@@ -3096,7 +3096,7 @@
       "title": "Snake (Nikhil Ladha)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -3126,7 +3126,7 @@
       "title": "Snake (NyctibiusVII)",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "A browser game that is quick to learn and easy to pick up again. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -3134,18 +3134,18 @@
         ],
         "faq": [
           {
-            "q": "Is SnakeGame free to play?",
-            "a": "Yes. SnakeGame is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Snake free to play?",
+            "a": "Yes. Snake is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does SnakeGame work on a phone?",
+            "q": "Does Snake work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "snakegame game",
-          "play snakegame online",
-          "free snakegame",
+          "snake game",
+          "play snake online",
+          "free snake",
           "online quick game",
           "sandbox game"
         ]
@@ -3156,7 +3156,7 @@
       "title": "Maze",
       "copy": {
         "tagline": "Find the way out before the walls close in.",
-        "description": "A maze to solve: find the route through the walls and reach the way out. Play free in your browser, with no download and no account.",
+        "description": "Find the route through the walls, remember the dead ends and make your way to the exit.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to turn at the next junction.",
@@ -3186,7 +3186,7 @@
       "title": "Canvasinvaders",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "A wave shooter: move along the bottom, fire upwards and clear the formation before it lands. Play free in your browser, with no download and no account.",
+        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",
@@ -3246,7 +3246,7 @@
       "title": "Battle Tank",
       "copy": {
         "tagline": "Keep moving, keep firing and stay alive.",
-        "description": "The classic Battle City arcade game. Play free in your browser, with no download and no account.",
+        "description": "Keep moving, aim at whatever comes for you and clear the screen without taking a hit.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",
@@ -3276,7 +3276,7 @@
       "title": "Flappy Jump",
       "copy": {
         "tagline": "Tap to flap and thread every gap.",
-        "description": "And stupid game which works on modern browsers, iOS and Android touch devices. Free to play in your browser, with no download and no sign-up.",
+        "description": "And stupid game which works on modern browsers, iOS and Android touch devices.",
         "howToPlay": [
           "Tap the screen or press Space to flap.",
           "Pass through each gap without touching the edges.",
@@ -3314,18 +3314,18 @@
         ],
         "faq": [
           {
-            "q": "Is JsBlockout free to play?",
-            "a": "Yes. JsBlockout is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Blockout free to play?",
+            "a": "Yes. Blockout is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does JsBlockout work on a phone?",
+            "q": "Does Blockout work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "jsblockout game",
-          "play jsblockout online",
-          "free jsblockout",
+          "blockout game",
+          "play blockout online",
+          "free blockout",
           "online block puzzle game",
           "arcade game"
         ]
@@ -3336,7 +3336,7 @@
       "title": "Breathmint Phalange Gaiden",
       "copy": {
         "tagline": "Take turns, think ahead and win the board.",
-        "description": "Just a simple browser implementation of the classic game: Tic Tac Toe. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Just a simple browser implementation of the classic game: Tic Tac Toe.",
         "howToPlay": [
           "Pick a piece with a tap or a click, then pick where it moves.",
           "Move the selection with the arrow keys or the on-screen pad.",
@@ -3366,7 +3366,7 @@
       "title": "Subdecadence",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Browser card game rooted in occult numerology and Lemurian demonology. Free to play in your browser, with no download and no sign-up.",
+        "description": "Browser card game rooted in occult numerology and Lemurian demonology.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -3396,7 +3396,7 @@
       "title": "Space Invaders (LORDANTH)",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "Space Invaders game. Play free in your browser, with no download and no account.",
+        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",
@@ -3404,18 +3404,18 @@
         ],
         "faq": [
           {
-            "q": "Is Space Invaders Canvas free to play?",
-            "a": "Yes. Space Invaders Canvas is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Space Invaders free to play?",
+            "a": "Yes. Space Invaders is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Space Invaders Canvas work on a phone?",
+            "q": "Does Space Invaders work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "space invaders canvas game",
-          "play space invaders canvas online",
-          "free space invaders canvas",
+          "space invaders game",
+          "play space invaders online",
+          "free space invaders",
           "online space shooter game",
           "arcade game"
         ]
@@ -3426,7 +3426,7 @@
       "title": "Cheese Escape",
       "copy": {
         "tagline": "Find the way out before the walls close in.",
-        "description": "A maze to solve: find the route through the walls and reach the way out. Play free in your browser, with no download and no account.",
+        "description": "Find the route through the walls, remember the dead ends and make your way to the exit.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to turn at the next junction.",
@@ -3456,7 +3456,7 @@
       "title": "Scramble",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "A browser game that is quick to learn and easy to pick up again. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -3486,7 +3486,7 @@
       "title": "Sudoku",
       "copy": {
         "tagline": "Fill the grid so every row, column and box is complete.",
-        "description": "A number puzzle: fill every row, column and box with the digits one to nine, each used once. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Fill every row, column and box with the digits one to nine, each of them used exactly once.",
         "howToPlay": [
           "Pick a square with a tap or a click, then choose the number you want.",
           "Move between squares with the arrow keys or the on-screen pad.",
@@ -3513,7 +3513,7 @@
     },
     "web-snake-game": {
       "category": "arcade",
-      "title": "Web Snake (Dev Ggomes)",
+      "title": "Snake (Dev Ggomes)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
         "description": "Classic Snake Game recreated for the web. Free to play in your browser, with no download and no sign-up.",
@@ -3543,10 +3543,10 @@
     },
     "breakout-web-game": {
       "category": "arcade",
-      "title": "Breakout Web",
+      "title": "Breakout (Dev Ggomes)",
       "copy": {
         "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
-        "description": "A brick-breaking game: keep the ball in play, aim it with the paddle and clear the wall. Free to play in your browser, with no download and no sign-up.",
+        "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
         "howToPlay": [
           "Slide the paddle with the left and right arrows, or use the on-screen pad.",
           "Bounce the ball into the bricks without letting it past you.",
@@ -3576,7 +3576,7 @@
       "title": "2048 (Ruzhila)",
       "copy": {
         "tagline": "Slide, merge and build the biggest number on the board.",
-        "description": "A sliding-tile puzzle: merge matching numbers, build bigger tiles and keep the board moving. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Slide the whole board with each move, merge matching numbers and build the largest tile you can.",
         "howToPlay": [
           "Slide every tile with the arrow keys, or use the on-screen pad.",
           "Two tiles with the same number merge into one when they meet.",
@@ -3606,7 +3606,7 @@
       "title": "Motor Cross",
       "copy": {
         "tagline": "Steer for the line and keep your foot down.",
-        "description": "A race against the clock: steer through the course, hold your line and finish first. Free in your browser, with no download and no sign-up at all.",
+        "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
         "howToPlay": [
           "Steer with the left and right arrows, or use the on-screen pad.",
           "Accelerate with the up arrow and brake with the down arrow.",
@@ -3614,18 +3614,18 @@
         ],
         "faq": [
           {
-            "q": "Is MotorCross free to play?",
-            "a": "Yes. MotorCross is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Motor Cross free to play?",
+            "a": "Yes. Motor Cross is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does MotorCross work on a phone?",
+            "q": "Does Motor Cross work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "motorcross game",
-          "play motorcross online",
-          "free motorcross",
+          "motor cross game",
+          "play motor cross online",
+          "free motor cross",
           "online racing game",
           "racing game"
         ]
@@ -3636,7 +3636,7 @@
       "title": "Courier City",
       "copy": {
         "tagline": "Tap to flap and thread every gap.",
-        "description": "Courier City - A GTA-inspired 3D open world browser game & Cannon-ES. Free to play in your browser, with no download and no sign-up.",
+        "description": "Courier City - A GTA-inspired 3D open world browser game & Cannon-ES.",
         "howToPlay": [
           "Tap the screen or press Space to flap.",
           "Pass through each gap without touching the edges.",
@@ -3693,10 +3693,10 @@
     },
     "tetris3d": {
       "category": "arcade",
-      "title": "Tetris3d",
+      "title": "Tetris 3D",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -3704,18 +3704,18 @@
         ],
         "faq": [
           {
-            "q": "Is Tetris3d free to play?",
-            "a": "Yes. Tetris3d is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Tetris 3D free to play?",
+            "a": "Yes. Tetris 3D is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Tetris3d work on a phone?",
+            "q": "Does Tetris 3D work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "tetris3d game",
-          "play tetris3d online",
-          "free tetris3d",
+          "tetris 3d game",
+          "play tetris 3d online",
+          "free tetris 3d",
           "online block puzzle game",
           "arcade game"
         ]
@@ -3726,7 +3726,7 @@
       "title": "Bible Puzzle",
       "copy": {
         "tagline": "Type the words as fast and as accurately as you can.",
-        "description": "Typing game on Bible verses. Free in your browser, with no download and no sign-up at all.",
+        "description": "Type each word that appears as quickly and accurately as you can, and keep the run going.",
         "howToPlay": [
           "Type each word that appears, then press Space to move on.",
           "Keep your hands on the keyboard and your eyes on the text.",
@@ -3734,18 +3734,18 @@
         ],
         "faq": [
           {
-            "q": "Is BiblePuzzle free to play?",
-            "a": "Yes. BiblePuzzle is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Bible Puzzle free to play?",
+            "a": "Yes. Bible Puzzle is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does BiblePuzzle work on a phone?",
+            "q": "Does Bible Puzzle work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "biblepuzzle game",
-          "play biblepuzzle online",
-          "free biblepuzzle",
+          "bible puzzle game",
+          "play bible puzzle online",
+          "free bible puzzle",
           "online typing game",
           "word game"
         ]
@@ -3753,10 +3753,10 @@
     },
     "platformer-by-gpt4": {
       "category": "arcade",
-      "title": "Platformer by Gpt4",
+      "title": "Platformer by Gpt 4",
       "copy": {
         "tagline": "Run, jump and reach the end of the level.",
-        "description": "Platformer Game by GPT4 in 1 hour. Runs in your browser, free, with no download and no sign-up.",
+        "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Jump with Space or the up arrow.",
@@ -3764,18 +3764,18 @@
         ],
         "faq": [
           {
-            "q": "Is Platformer By Gpt4 free to play?",
-            "a": "Yes. Platformer By Gpt4 is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Platformer by Gpt 4 free to play?",
+            "a": "Yes. Platformer by Gpt 4 is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Platformer By Gpt4 work on a phone?",
+            "q": "Does Platformer by Gpt 4 work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "platformer by gpt4 game",
-          "play platformer by gpt4 online",
-          "free platformer by gpt4",
+          "platformer by gpt 4 game",
+          "play platformer by gpt 4 online",
+          "free platformer by gpt 4",
           "online platform game",
           "arcade game"
         ]
@@ -3794,18 +3794,18 @@
         ],
         "faq": [
           {
-            "q": "Is PingPong free to play?",
-            "a": "Yes. PingPong is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Ping Pong free to play?",
+            "a": "Yes. Ping Pong is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does PingPong work on a phone?",
+            "q": "Does Ping Pong work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "pingpong game",
-          "play pingpong online",
-          "free pingpong",
+          "ping pong game",
+          "play ping pong online",
+          "free ping pong",
           "online pong game",
           "classics game"
         ]
@@ -3816,7 +3816,7 @@
       "title": "Snake (CodeWithSupriyo)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "In this project I have build a snake game which is and compatable with a mobile device and also in a computer. Free to play in your browser, with no download and no sign-up.",
+        "description": "In this project I have build a snake game which is and compatable with a mobile device and also in a computer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -3846,7 +3846,7 @@
       "title": "Snake (Gabrielcostarep Zz)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -3876,7 +3876,7 @@
       "title": "Mario Murru",
       "copy": {
         "tagline": "Run, jump and reach the end of the level.",
-        "description": "2D platformer game inspired by classic Mario Bros games, featuring a character named Mario Murru. Runs in your browser, free, with no download and no sign-up.",
+        "description": "2D platformer game inspired by classic Mario Bros games, featuring a character named Mario Murru.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Jump with Space or the up arrow.",
@@ -3906,7 +3906,7 @@
       "title": "2D Racing",
       "copy": {
         "tagline": "Steer for the line and keep your foot down.",
-        "description": "Minimalist 2D racing game. Free in your browser, with no download and no sign-up at all.",
+        "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
         "howToPlay": [
           "Steer with the left and right arrows, or use the on-screen pad.",
           "Accelerate with the up arrow and brake with the down arrow.",
@@ -3936,7 +3936,7 @@
       "title": "Fantastic Potato",
       "copy": {
         "tagline": "Tap to flap and thread every gap.",
-        "description": "A one-button game: flap to stay in the air and thread through every gap. Free to play in your browser, with no download and no sign-up.",
+        "description": "Tap to keep the bird in the air, thread every gap and see how far one run will take you.",
         "howToPlay": [
           "Tap the screen or press Space to flap.",
           "Pass through each gap without touching the edges.",
@@ -3966,7 +3966,7 @@
       "title": "Ping Pong (Ramazancetinkaya)",
       "copy": {
         "tagline": "Keep the ball in play and return every shot.",
-        "description": "Classic Ping Pong game. Free in your browser, with no download and no sign-up at all.",
+        "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
         "howToPlay": [
           "Move your paddle with the up and down arrows, or use the on-screen pad.",
           "Swipe up or down on a phone to move the paddle.",
@@ -3996,7 +3996,7 @@
       "title": "Ping Pong (Vruntime Labs)",
       "copy": {
         "tagline": "Keep the ball in play and return every shot.",
-        "description": "Classic 2D Ping Pong game. Free in your browser, with no download and no sign-up at all.",
+        "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
         "howToPlay": [
           "Move your paddle with the up and down arrows, or use the on-screen pad.",
           "Swipe up or down on a phone to move the paddle.",
@@ -4026,7 +4026,7 @@
       "title": "Tetris (Rajatkumar1011)",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "Experience classic Tetris reimagined with a vibrant neon aesthetic. Play free in your browser, with no download and no account.",
+        "description": "Experience classic Tetris reimagined with a vibrant neon aesthetic.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -4094,18 +4094,18 @@
         ],
         "faq": [
           {
-            "q": "Is TetrisGame free to play?",
-            "a": "Yes. TetrisGame is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Tetris free to play?",
+            "a": "Yes. Tetris is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does TetrisGame work on a phone?",
+            "q": "Does Tetris work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "tetrisgame game",
-          "play tetrisgame online",
-          "free tetrisgame",
+          "tetris game",
+          "play tetris online",
+          "free tetris",
           "online block puzzle game",
           "arcade game"
         ]
@@ -4116,7 +4116,7 @@
       "title": "Snake (BeingGuru7)",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "A game of quick turns: eat what you can, grow longer and keep clear of the walls and your own tail. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -4146,7 +4146,7 @@
       "title": "Racing (Gaetz)",
       "copy": {
         "tagline": "Steer for the line and keep your foot down.",
-        "description": "2d top-down racing game as a game kata. Free in your browser, with no download and no sign-up at all.",
+        "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
         "howToPlay": [
           "Steer with the left and right arrows, or use the on-screen pad.",
           "Accelerate with the up arrow and brake with the down arrow.",
@@ -4176,7 +4176,7 @@
       "title": "Tetrisjs",
       "copy": {
         "tagline": "Stack the falling blocks and clear every line.",
-        "description": "A falling-block puzzle: stack the shapes, fill the rows and keep the board from filling up. Play free in your browser, with no download and no account.",
+        "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
         "howToPlay": [
           "Move with the left and right arrows, rotate with the up arrow.",
           "Soft-drop with the down arrow and hard-drop with Space.",
@@ -4206,7 +4206,7 @@
       "title": "Hoojang Local",
       "copy": {
         "tagline": "Clear the board by pairing matching tiles from the edges.",
-        "description": "A tile-matching puzzle: pair identical tiles from the edges and work your way inwards. Play free in your browser, with no download and no account.",
+        "description": "Pair identical tiles from the edges and work inwards until the whole board has been cleared.",
         "howToPlay": [
           "Pick two matching tiles with a tap or a click.",
           "Move the selection with the arrow keys or the on-screen pad.",
@@ -4236,7 +4236,7 @@
       "title": "Snake and Ladder",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "Modern, animated Snake & Ladder game. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -4244,11 +4244,11 @@
         ],
         "faq": [
           {
-            "q": "Is Snake And Ladder free to play?",
-            "a": "Yes. Snake And Ladder is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Snake and Ladder free to play?",
+            "a": "Yes. Snake and Ladder is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does Snake And Ladder work on a phone?",
+            "q": "Does Snake and Ladder work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
@@ -4266,7 +4266,7 @@
       "title": "Snakeneoncircuit",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "Neon-inspired Snake game. Free to play in your browser, with no download and no sign-up.",
+        "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -4296,7 +4296,7 @@
       "title": "Space Invaders (Barqawiz)",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "Space Invaders classic arcade game. Play free in your browser, with no download and no account.",
+        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",
@@ -4326,7 +4326,7 @@
       "title": "Greentendo",
       "copy": {
         "tagline": "Eat, grow and keep clear of your own tail.",
-        "description": "Nostalgic Game Boy simulator with Snake, Pong & Space Invaders | Pure | Modern styling | 8-bit sounds. Free to play in your browser, with no download and no sign-up.",
+        "description": "Nostalgic Game Boy simulator with Snake, Pong & Space Invaders | Pure | Modern styling | 8-bit sounds.",
         "howToPlay": [
           "Steer with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to send the snake a new direction.",
@@ -4356,7 +4356,7 @@
       "title": "Tangram",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "Tangram dissection puzzle. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -4386,7 +4386,7 @@
       "title": "Wordofday",
       "copy": {
         "tagline": "Answer the questions and see how much you know.",
-        "description": "A quiz: answer the questions, keep the score ticking and see how far you get. Play free in your browser, with no download and no account.",
+        "description": "Answer a run of questions, pick from the choices on screen and see how many you get right.",
         "howToPlay": [
           "Pick an answer with a tap or a click.",
           "Move between answers with the arrow keys or the on-screen pad.",
@@ -4443,10 +4443,10 @@
     },
     "huejumper2k": {
       "category": "racing",
-      "title": "Hue Jumper2k",
+      "title": "Hue Jumper 2 K",
       "copy": {
         "tagline": "Steer for the line and keep your foot down.",
-        "description": "2 Kilobyte 3D racing game. Free in your browser, with no download and no sign-up at all.",
+        "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
         "howToPlay": [
           "Steer with the left and right arrows, or use the on-screen pad.",
           "Accelerate with the up arrow and brake with the down arrow.",
@@ -4454,18 +4454,18 @@
         ],
         "faq": [
           {
-            "q": "Is HueJumper2k free to play?",
-            "a": "Yes. HueJumper2k is free to play in your browser, with no account, no download and no payment."
+            "q": "Is Hue Jumper 2 K free to play?",
+            "a": "Yes. Hue Jumper 2 K is free to play in your browser, with no account, no download and no payment."
           },
           {
-            "q": "Does HueJumper2k work on a phone?",
+            "q": "Does Hue Jumper 2 K work on a phone?",
             "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
           }
         ],
         "keywords": [
-          "huejumper2k game",
-          "play huejumper2k online",
-          "free huejumper2k",
+          "hue jumper 2 k game",
+          "play hue jumper 2 k online",
+          "free hue jumper 2 k",
           "online racing game",
           "racing game"
         ]
@@ -4476,7 +4476,7 @@
       "title": "Maze (Knightyun)",
       "copy": {
         "tagline": "Find the way out before the walls close in.",
-        "description": "A maze to solve: find the route through the walls and reach the way out. Play free in your browser, with no download and no account.",
+        "description": "Find the route through the walls, remember the dead ends and make your way to the exit.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Swipe on a phone to turn at the next junction.",
@@ -4506,7 +4506,7 @@
       "title": "Hangmanizr",
       "copy": {
         "tagline": "Guess the hidden word before the picture is complete.",
-        "description": "A word game: guess the hidden word one letter at a time before your chances run out. Free in your browser, with no download and no sign-up at all.",
+        "description": "Guess the hidden word one letter at a time and keep your wrong guesses down to a handful.",
         "howToPlay": [
           "Choose a letter with a tap or a click.",
           "Move between letters with the arrow keys or the on-screen pad.",
@@ -4566,7 +4566,7 @@
       "title": "Breakout (Igameproject)",
       "copy": {
         "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
-        "description": "A brick-breaking game: keep the ball in play, aim it with the paddle and clear the wall. Free to play in your browser, with no download and no sign-up.",
+        "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
         "howToPlay": [
           "Slide the paddle with the left and right arrows, or use the on-screen pad.",
           "Bounce the ball into the bricks without letting it past you.",
@@ -4596,7 +4596,7 @@
       "title": "Guess the Flag",
       "copy": {
         "tagline": "Answer the questions and see how much you know.",
-        "description": "Guess the Flag is a fun quiz where players identify countries by their flags. Play free in your browser, with no download and no account.",
+        "description": "Guess the Flag is a fun quiz where players identify countries by their flags.",
         "howToPlay": [
           "Pick an answer with a tap or a click.",
           "Move between answers with the arrow keys or the on-screen pad.",
@@ -4626,7 +4626,7 @@
       "title": "Balljs",
       "copy": {
         "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
-        "description": "A brick-breaking game: keep the ball in play, aim it with the paddle and clear the wall. Free to play in your browser, with no download and no sign-up.",
+        "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing it.",
         "howToPlay": [
           "Slide the paddle with the left and right arrows, or use the on-screen pad.",
           "Bounce the ball into the bricks without letting it past you.",
@@ -4656,7 +4656,7 @@
       "title": "Flying Tower",
       "copy": {
         "tagline": "One life, a fresh dungeon and a fight to the last floor.",
-        "description": "Open source roguelike dungeon crawler that uses ES6 features. Free to play in your browser, with no download and no sign-up.",
+        "description": "Open source roguelike dungeon crawler that uses ES6 features.",
         "howToPlay": [
           "Move one square at a time with the arrow keys, or use the on-screen pad.",
           "Walk into a monster to attack it and step on an item to pick it up.",
@@ -4686,7 +4686,7 @@
       "title": "Sokoban",
       "copy": {
         "tagline": "Push every crate into place without getting stuck.",
-        "description": "A box-pushing puzzle: walk the room, push every crate onto its mark and never trap yourself. Play free in your browser, with no download and no account.",
+        "description": "Walk the room, push each crate onto its mark and take care never to trap it against a wall.",
         "howToPlay": [
           "Move with the arrow keys, or use the on-screen pad.",
           "Walk into a crate to push it one square.",
@@ -4716,7 +4716,7 @@
       "title": "Wardens Duty",
       "copy": {
         "tagline": "One life, a fresh dungeon and a fight to the last floor.",
-        "description": "Warden's Duty: a game created for the 7-day Roguelike 2015 challenge. Free to play in your browser, with no download and no sign-up.",
+        "description": "Warden's Duty: a game created for the 7-day Roguelike 2015 challenge.",
         "howToPlay": [
           "Move one square at a time with the arrow keys, or use the on-screen pad.",
           "Walk into a monster to attack it and step on an item to pick it up.",
@@ -4746,7 +4746,7 @@
       "title": "Spaceguard",
       "copy": {
         "tagline": "A quick game to pick up and play in the browser.",
-        "description": "A browser game that is quick to learn and easy to pick up again. Free to play in your browser, with no download and no sign-up.",
+        "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
         "howToPlay": [
           "Tap or click to start, then follow the prompts inside the game.",
           "Move with the arrow keys, or use the on-screen pad.",
@@ -4776,7 +4776,7 @@
       "title": "Invasores Espaciais",
       "copy": {
         "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "A wave shooter: move along the bottom, fire upwards and clear the formation before it lands. Play free in your browser, with no download and no account.",
+        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
         "howToPlay": [
           "Move with the left and right arrows, or use the on-screen pad.",
           "Fire with Space or the A button on the pad.",

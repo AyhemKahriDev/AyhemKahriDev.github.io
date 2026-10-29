@@ -1,0 +1,337 @@
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu',
+    'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: $dark;
+  color: $light;
+  font-weight: 600;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.top-anxiety {
+  $spacing: 1rem;
+  padding-top: $spacing;
+
+  &.big {
+    padding-top: $spacing * 2;
+  }
+}
+
+.bottom-anxiety {
+  padding-bottom: 1rem;
+}
+
+.full-screen {
+  min-height: 100vh;
+  height: 100%;
+
+  &.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    & .focus-center {
+      text-align: center;
+      max-width: 22rem;
+    }
+  }
+}
+
+.logo {
+  font-family: 'BadaBoom BB';
+  font-weight: normal;
+  font-size: 6.5em;
+  margin-bottom: 25px;
+  margin-top: 0;
+  user-select: none;
+}
+
+label {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  min-width: 6.25rem;
+  width: 100%;
+  color: $light;
+  text-align: left;
+  padding-bottom: 5px;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.char-remaining {
+  float: right;
+}
+
+input {
+  display: inline-block;
+  box-sizing: border-box;
+  min-width: 6.25rem;
+  width: 100%;
+  height: 3.875rem;
+  background-color: $light;
+  text-shadow: rgba(0, 0, 0, 0.25) 0px -1px 0px;
+  color: $grey;
+  font-weight: 800;
+  font-size: 20px;
+  margin: 0 auto 25px;
+  padding: 0.25rem 0.875rem;
+  border-width: 0.125rem;
+  border-style: solid;
+  border-image: initial;
+  border-color: $grey;
+  border-radius: 0.125rem;
+  text-decoration: none;
+  outline: 0px;
+  transition: all 0.2s ease;
+
+  &:focus {
+    border-color: $orange;
+  }
+
+  &.invalid {
+    border-color: $errorBorder;
+    background: $errorColor;
+  }
+
+  &::placeholder {
+    text-transform: none !important;
+  }
+}
+
+button {
+  display: inline-block;
+  box-sizing: border-box;
+  min-width: 6.25rem;
+  width: 100%;
+  min-height: 3.875rem;
+  background-color: $orange;
+  text-shadow: rgba(0, 0, 0, 0.25) 0px -1px 0px;
+  color: $light;
+  font-weight: 800;
+  font-size: 20px;
+  margin: 0 auto;
+  padding: 0.25rem 0.875rem;
+  border-width: 0.125rem;
+  border-style: solid;
+  border-image: initial;
+  border-color: $grey;
+  border-radius: 0.125rem;
+  text-decoration: none;
+  outline: 0px;
+  transition: all 0.2s ease;
+  user-select: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    border-color: $light;
+  }
+
+  &:disabled {
+    filter: grayscale(100%);
+    cursor: not-allowed;
+  }
+
+  &.small {
+    max-width: 5em;
+  }
+
+  &.secondary {
+    background-color: $light;
+    color: $grey;
+
+    &:active {
+      border-color: $orange;
+    }
+  }
+
+  &.recover {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 3.1em;
+    min-width: auto;
+
+    svg {
+      margin-top: 8px;
+    }
+
+    &:disabled {
+      filter: none;
+      cursor: wait;
+    }
+  }
+}
+
+.item-list {
+  padding: 0;
+  height: 100%;
+
+  h2 {
+    margin: 0;
+  }
+
+  .content {
+    height: 100%;
+    border: 0.125rem solid $light;
+    background-color: $grey;
+
+    ul {
+      padding: 0;
+      margin: 0;
+
+      li {
+        list-style: none;
+        margin: 0;
+        padding: 1rem;
+        cursor: pointer;
+        user-select: none;
+
+        &.selected {
+          background-color: $orange;
+        }
+      }
+    }
+  }
+}
+
+.button-stack > button {
+  margin-bottom: 25px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.center-stick-bottom {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  $m: 15px;
+  margin-left: $m;
+  width: calc(100% - #{$m * 2});
+}
+
+.round-question {
+  position: absolute;
+  top: 1em;
+  font-size: 2em;
+
+  span {
+    display: block;
+  }
+}
+
+.team-guess {
+  background-color: $grey;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.team-status {
+  background-color: $grey;
+  padding: 0.75rem;
+  border: 0.125rem solid $light;
+
+  .info {
+    $marginBetweenInfo: 1.5rem;
+    font-size: 2.5rem;
+    font-weight: normal;
+    position: relative;
+
+    .pos {
+      font-weight: 600;
+
+      &::before {
+        content: '#';
+        font-size: 0.75em;
+      }
+    }
+
+    .round-score {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: 0;
+
+      &::after {
+        content: ' ✔/round';
+        font-size: 0.75em;
+      }
+    }
+
+    .round-points {
+      float: right;
+
+      &::after {
+        content: ' RP';
+        font-size: 0.75em;
+      }
+    }
+  }
+
+  $nameFontSize: 3.5rem;
+  .team {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .name {
+      font-size: $nameFontSize;
+    }
+
+    .status {
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      font-size: $nameFontSize / 1.25;
+    }
+  }
+
+  .guess {
+    font-size: $nameFontSize / 1.5;
+    font-weight: lighter;
+  }
+}
+
+.home-page {
+  & > div > div {
+    padding-bottom: 15px;
+  }
+}
+
+.card {
+  position: relative;
+  background: $grey;
+  border: 0.125rem solid $light;
+  padding: 15px;
+  text-align: center;
+  height: 100%;
+
+  h2 {
+    font-family: 'BadaBoom BB';
+    font-weight: normal;
+    font-size: 3em;
+  }
+
+  button {
+    margin-top: 25px;
+  }
+}

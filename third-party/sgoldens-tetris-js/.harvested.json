@@ -1,0 +1,16 @@
+{
+  "repo": "sgoldens/tetris-js",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 5,
+  "pushedAt": "2021-11-27T07:12:20Z",
+  "description": "A demo of Tetris in JavaScript, copied from the listed YouTube video.",
+  "defaultBranch": "main",
+  "owner": "sgoldens",
+  "slug": "sgoldens-tetris-js",
+  "dest": "third-party/sgoldens-tetris-js",
+  "readme": "# tetris-js\n\n## [Live demo](https://sgoldens.github.io/tetris-js/tetris_demo.html)\n\nA basic demo of Tetris written in JavaScript, from the tutorial [here](https://www.youtube.com/watch?v=H2aW5V46khA) \n",
+  "licenceFile": "LICENSE",
+  "entry": "tetris_demo.html",
+  "validated": true
+}

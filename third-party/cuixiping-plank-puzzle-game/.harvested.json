@@ -1,0 +1,16 @@
+{
+  "repo": "cuixiping/plank-puzzle-game",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 19,
+  "pushedAt": "2023-08-01T13:19:10Z",
+  "description": "Plank is a puzzle game, has very simple rules and are very challenging for your brain.",
+  "defaultBranch": "main",
+  "owner": "cuixiping",
+  "slug": "cuixiping-plank-puzzle-game",
+  "dest": "third-party/cuixiping-plank-puzzle-game",
+  "readme": "# plank-puzzle-game\nPlank is a html5 puzzle game, has very simple rules and are very challenging for your brain.\n\n![plank-puzzle-game](https://cuixiping.github.io/plank-puzzle-game/screenshot.png)\n\nThere are 19 puzzles you can challenge.\n\n[Play it online](https://cuixiping.github.io/plank-puzzle-game/plank-puzzle.html)\n\nThe online solver can find the best solution for each plank puzzle.\n\nAlso you can play 118 puzzles [here](https://oss.humwo.com/plank-puzzle/), it's developed by one of my friends.\n\nThe original game is [here](http://www.clickmazes.com/planks/new-planks66.htm).\n",
+  "licenceFile": "LICENSE",
+  "entry": "plank-puzzle.html",
+  "validated": true
+}

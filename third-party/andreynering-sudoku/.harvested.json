@@ -1,0 +1,15 @@
+{
+  "repo": "andreynering/sudoku",
+  "stars": 73,
+  "licence": "MIT",
+  "sizeKB": 237,
+  "pushedAt": "2020-05-26T16:50:44Z",
+  "description": "Simple sudoku web game made with ReactJS and Redux.",
+  "defaultBranch": "master",
+  "owner": "andreynering",
+  "slug": "andreynering-sudoku",
+  "dest": "third-party/andreynering-sudoku",
+  "readme": "## Sudoku\n\nA simple web sudoku game made with [ReactJS][reactjs] and [Redux][redux].\n[Play online here][play].\n\nSee the [VueJS version here][vuejssudoku].\n\n### Features\n\n- Mobile-friendly\n- Uses [LocalStorage][localstorage] to save the current game state\n\n### Building locally\n\nPrerequisites:\n\n- NodeJS\n- NPM\n- [Webpack][webpack] (installed globally)\n- [LESS][less] and the [clean CSS plugin][lesscleancss] (installed globally)\n\n```bash\n$ git clone https://github.com/andreynering/sudoku.git\n$ cd sudoku\n$ npm install\n$ npm run buildjs\n$ npm run buildcss\n```\n\n[reactjs]: https://facebook.github.io/react/\n[redux]: http://redux.js.org/\n[play]: https://sudoku.js.org/\n[vuejssudoku]: https://github.com/andreynering/vuejs-sudoku\n[webpack]: https://webpack.github.io/\n[localstorage]: https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage\n[less]: http://lesscss.org/\n[lesscleancss]: https://github.com/less/less-plugin-clean-css\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

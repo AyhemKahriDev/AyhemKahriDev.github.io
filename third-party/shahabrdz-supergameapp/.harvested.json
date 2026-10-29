@@ -1,0 +1,16 @@
+{
+  "repo": "shahabRDZ/SuperGameApp",
+  "stars": 6,
+  "licence": "MIT",
+  "sizeKB": 516,
+  "pushedAt": "2026-04-17T08:30:28Z",
+  "description": "Mobile Super Game App with multiple mini-games — Water Sort Puzzle — Unity (C#) + Python/Pygame",
+  "defaultBranch": "main",
+  "owner": "shahabRDZ",
+  "slug": "shahabrdz-supergameapp",
+  "dest": "third-party/shahabrdz-supergameapp",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "web/index.html",
+  "validated": true
+}

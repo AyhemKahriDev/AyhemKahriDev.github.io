@@ -1,0 +1,16 @@
+{
+  "repo": "mikkun/evade-and-destroy",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 101,
+  "pushedAt": "2020-09-03T07:30:13Z",
+  "description": "HTML5 space shooter game using pure JavaScript",
+  "defaultBranch": "master",
+  "owner": "mikkun",
+  "slug": "mikkun-evade-and-destroy",
+  "dest": "third-party/mikkun-evade-and-destroy",
+  "readme": "EVADE AND DESTROY\n=================\n\n![Screenshot](./md-images/screenshot.png)\n\nHTML5 space shooter game using pure JavaScript\n\nDescription\n-----------\n\n**EVADE AND DESTROY** is a vertically scrolling shooter written in pure JavaScript (without any framework).\n\nPlayable Demo\n-------------\n\nYou can play the game directly at <https://mikkun.github.io/evade-and-destroy/>.\n\nIf you want to play the game offline, you can install the game as a Progressive Web App (PWA).\n\nBrowser Support\n---------------\n\n**EVADE AND DESTROY** has been tested in the following browsers:\n\n* Desktop\n    * Chromium 83.0.4103.116 (32-bit): Fast\n    * Firefox ESR 68.12.0 (32-bit): Very fast\n    * Firefox Release 79.0 (64-bit): Very fast\n    * Internet Explorer 11 (64-bit): Very fast\n    * Microsoft Edge 85.0.564.41 (64-bit): Very fast\n    * Vivaldi 3.2.1967.47 (32-bit): Fast\n* Mobile\n    * Chrome for Android 85.0.4183.81: Very fast\n    * Firefox for Android 79.0.5: Very fast\n    * Microsoft Edge for Android 45.07.4.5057: Very fast\n\nHow to Play\n-----------\n\n### Controls ###\n\n* Desktop\n    * <kbd>Mouse left/right</kbd>: Move the spaceship left/right on the horizontal axis\n    * <kbd>Mouse over the button</kbd>: Fire\n* Mobile\n    * <kbd>Swipe left/right</kbd>: Move the spaceship left/right on the horizontal axis\n    * <kbd>Touch the button</kbd>: Fire\n\n### Power-Up Items ###\n\n* ![Red power-up capsule](./md-images/item-red.png) - __Plasma Cannon__ - Increases fire power. Max ammo is 600 shots.\n* ![Green power-up capsule](./md-images/item-green.png) - __Invincible__ - Temporary invincibility.\n* ![Blue power-up capsule](./md-images/item-blue.png) - __Flash Bomb__ - Destroys all enemies on the screen.\n\n### Extra Lives ###\n\nYou start with three lives and get an extra life every 100,000 points.\n\nCustomizing the Map\n-------------------\n\n1. Edit TMX file(s) in the `maps/tmx` directory with [Tiled Map Editor](http://www.mapeditor.org/).\n2. Execute the shell script in the `maps` directory to convert from TMX file(s) to JS file.\n    1. Run `cd maps`.\n    2. Run `./convmap-bg01.sh`, `./convmap-bg02.sh`, or `./convmap-enemies.sh` to suit your needs.\n3. Move the generated JS file to `docs/js` directory.\n\nThe following table shows the correspondence between the shell scripts, source files, and destination files.\n\n| Script Name          | TMX-Sourcefile(s) | Target Layer | JS-Destfile      |\n| -------------------- | ----------------- | ------------ | ---------------- |\n| `convmap-bg01.sh`    | `starfield.tmx`   | bg01         | `map-bg01.js`    |\n| `convmap-bg02.sh`    | `area-[0-7].tmx`  | bg02         | `map-bg02.js`    |\n| `convmap-enemies.sh` | `area-[0-7].tmx`  | enemies      | `map-enemies.js` |\n\nAuthor\n------\n\n[KUSANAGI Mitsuhisa](https://github.com/mikkun)\n\nLicense\n-------\n\n[MIT License](./LICENSE)\n",
+  "licenceFile": "LICENSE",
+  "entry": "docs/index.html",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "IEEE-VIT/hangman-react",
+  "stars": 15,
+  "licence": "MIT",
+  "sizeKB": 801,
+  "pushedAt": "2021-11-03T22:27:59Z",
+  "description": "A simple React app that lets you play Hangman in your browser",
+  "defaultBranch": "master",
+  "owner": "IEEE-VIT",
+  "slug": "ieee-vit-hangman-react",
+  "dest": "third-party/ieee-vit-hangman-react",
+  "readme": "<p align=\"center\"><img width=\"40%\" src=\"https://hacktoberfest.digitalocean.com/_nuxt/img/logo-hacktoberfest-full.f42e3b1.svg\"/></p>\n\n# Hacktoberfest 2021 with IEEE-VIT ❤️\n\nHangman-React is a simple Hangman Game built using React JS.\n\nSupport open source software by participating in [Hacktoberfest](https://hacktoberfest.digitalocean.com) and get goodies and a free t-shirt! 💛\n\n> Please check all issues labelled as `hacktoberfest` to start contributing!\n\nKindly consider leaving a ⭐ if you like the repository and our organisation.\n\n## Getting Started\n\n-   Fork it.\n\n-   Clone your forked repo and move inside it:\n\n`git clone https://github.com/IEEE-VIT/hangman-react.git && cd hangman-react`\n\n-   Checkout to a new branch to work on an issue:\n\n`git checkout -b my-amazing-feature`\n\n-   Setup\n\n1. To setup this project, simply run the following command:\n\n```bash\n$ yarn install\n```\n\nor\n\n```bash\n$ npm install\n```\n\nIt should create a `node_modules` folder, and you're good to go! :)\n\n2. All the components are setup inside `hangman-react/src/components`. Most of your code should go there.\n\n3. To start the project, simply run the following command:\n\n```bash\n$ yarn start\n```\n\nor\n\n```bash\n$ npm start\n```\n\n-   Once you're all done coding, it's time to open a PR :)\n    Run the following commands from the root of the project directory:\n\n`git add .`\n\n`git commit -m \"A short description about the feature.\"`\n\n`git push origin <my-amazing-feature>`\n\nOpen your forked repo in your browser and then raise a PR to the `master` branch of this repository!\n\n## Contributing\n\nTo start contributing, check out [CONTRIBUTING.md](https://github.com/IEEE-VIT/hangman-react/blob/master/CONTRIBUTING.md). New contributors are always welcome to support this project. If you want something gentle to start with, check out issues labelled as `easy` or `good-first-issue`. Check out issues labelled as `hacktoberfest` if you are up for some grabs! :)\n\n## License\n\nThis project is licensed under [MIT](https://github.com/IEEE-VIT/hangman-react/blob/master/LICENSE.md)\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html"
+}
