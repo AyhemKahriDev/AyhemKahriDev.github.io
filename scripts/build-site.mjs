@@ -18,6 +18,18 @@ import { sanitizeHtml } from './sanitize-embed.mjs';
 import { mergeCatalogue, layerGames } from './catalogue.mjs';
 import { pruneVendored } from './prune-vendored.mjs';
 import {
+  LOCALES,
+  DEFAULT_LOCALE,
+  loadCatalog,
+  t as translate,
+  tList,
+  localePath,
+  alternatesFor,
+  categoryTitle,
+  categoryDescription,
+  familyFor,
+} from './i18n.mjs';
+import {
   generateWordBoard,
   boardAnswers,
   dateSeed,
@@ -225,6 +237,87 @@ const esc = (s) =>
 
 const abs = (path) => new URL(path, SITE.baseUrl).href;
 
+/* ------------------------------------------------------------- locales */
+
+/**
+ * The locale being emitted right now.
+ *
+ * The builder is synchronous and single threaded, so the active locale is
+ * module state rather than a parameter on fifteen functions: `useLocale()` is
+ * called once per tree in main(), and everything below - paths, headings,
+ * sitemap entries - reads it. Rendering English is exactly what it always
+ * was, because English's prefix is the empty string.
+ */
+const catalogs = new Map();
+function catalogOf(id) {
+  if (!catalogs.has(id)) catalogs.set(id, loadCatalog(id));
+  return catalogs.get(id);
+}
+function makeLocale(id) {
+  const meta = LOCALES.find((l) => l.id === id) ?? LOCALES[0];
+  return { ...meta, catalog: catalogOf(meta.id) };
+}
+let L = makeLocale(LOCALES[0].id);
+
+/** Switch the active locale; returns it so a caller can log or assert. */
+function useLocale(id) {
+  L = makeLocale(id);
+  return L;
+}
+
+/** A path inside the active tree: '/games/x/' -> '/fr/games/x/'. */
+const lp = (path = '/') => localePath(L, path);
+
+/** Absolute URL of a page in the active tree (canonicals, sitemaps, JSON-LD). */
+const pageUrl = (path = '/') => abs(lp(path));
+
+/**
+ * Escape for text and double-quoted attributes.
+ *
+ * Same as esc() minus the apostrophe: `Today&#39;s grid` is valid but it
+ * churns every hashed byte of the English pages for no benefit, and a bare
+ * apostrophe is legal in both text nodes and double-quoted attributes.
+ */
+const tesc = (s) =>
+  String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+/** Localised text, escaped. Falls back to English per key, never to undefined. */
+function tn(key, vars) {
+  return tesc(translate(L.catalog, key, vars ?? {}));
+}
+
+/**
+ * Localised text for a place that escapes on its own - <title>, a meta
+ * description, an og: field. layout() runs esc() over all of them, so a
+ * value escaped here as well would reach the page as `&amp;amp;`.
+ */
+function plain(key, vars) {
+  return translate(L.catalog, key, vars ?? {});
+}
+
+/**
+ * Localised text that carries markup, emitted as-is.
+ *
+ * Some sentences have a link in the middle of them ("...the daily puzzle
+ * archive keeps every past grid"), and the link has to be translatable in
+ * place, not glued on afterwards. Those catalog strings are trusted markup -
+ * they live in this repo - and the values in `vars` are escaped by the caller
+ * (an href, a count), so the only thing a translator controls is where the
+ * link sits.
+ */
+function rich(key, vars = {}) {
+  return translate(L.catalog, key, vars);
+}
+
+/** Category title / short label / description in the active locale. */
+const catTitle = (c) => categoryTitle(L.catalog, c.id, c.title);
+const catShort = (c) => {
+  const own = L.catalog?.categories?.[c.id]?.short;
+  if (typeof own === 'string' && own.trim()) return own;
+  return catTitle(c).replace(/\s+Games$/i, '');
+};
+const catDesc = (c) => categoryDescription(L.catalog, c.id, c.description);
+
 /**
  * The "how to play" lines of a game, as plain sentences.
  *
@@ -238,24 +331,63 @@ function howToLines(game) {
     .filter((s) => typeof s === 'string')
     .map((s) => s.trim())
     .filter((s) => s.length > 12);
+  // A genre template in the catalog is a translation of the steps for this
+  // kind of game. It only outranks the game's own text outside English: the
+  // English catalogue already has the specific, hand-written steps and a
+  // generic template would be a regression.
+  const family = familyFor(L.catalog, game);
+  const fromFamily = Array.isArray(family?.howToPlay)
+    ? family.howToPlay.filter((s) => typeof s === 'string' && s.trim().length > 3)
+    : [];
+  if (L.id !== DEFAULT_LOCALE && fromFamily.length) return fromFamily.slice(0, 5);
   if (lines.length) return lines.slice(0, 5);
+  if (fromFamily.length) return fromFamily.slice(0, 5);
   return [
-    `Open ${game.title} and follow the on-screen instructions.`,
-    'Play with the keyboard, the mouse or touch - the controls are shown in the game.',
-    'Score points and try to beat your best run.',
+    translate(L.catalog, 'game.howToDefault1', { title: game.title }),
+    translate(L.catalog, 'game.howToDefault2', { title: game.title }),
+    translate(L.catalog, 'game.howToDefault3', { title: game.title }),
   ];
 }
 
 
+/** Write a page into the active locale's tree: 'index.html' -> /fr/index.html. */
 function write(relPath, html) {
-  const file = join(dist, relPath);
+  const clean = String(relPath).replace(/^\/+/, '');
+  const file = L.prefix ? join(dist, L.prefix.slice(1), clean) : join(dist, clean);
   mkdirSync(dirname(file), { recursive: true });
   writeFileSync(file, html);
+}
+
+/** Write a file once at the site root (sitemaps, robots): never per locale. */
+function writeRoot(relPath, body) {
+  const file = join(dist, String(relPath).replace(/^\/+/, ''));
+  mkdirSync(dirname(file), { recursive: true });
+  writeFileSync(file, body);
+}
+
+/** The strings ui.js needs to finish a page after load, shipped as JSON. */
+function uiStrings() {
+  const s = (key) => translate(L.catalog, key);
+  return {
+    locale: L.id,
+    prefix: L.prefix,
+    dir: L.dir,
+    strings: {
+      match: s('index.status.match'),
+      in: s('index.status.in'),
+      all: s('index.status.all'),
+      broken: s('index.status.broken'),
+      page: s('index.status.page'),
+      one: s('count.games_one'),
+      many: s('count.games'),
+    },
+  };
 }
 
 function layout({
   title,
   description,
+  path = '/',
   canonical,
   head = '',
   body = '',
@@ -263,25 +395,41 @@ function layout({
   bodyAttrs = '',
   script = '',
   jsonLd = null,
+  alternates = true,
+  indexable = true,
 }) {
+  // Canonical is self-referencing and absolute, in this page's own tree: a
+  // page that points at another language's URL is telling Google not to
+  // serve it.
+  const canon = canonical ?? pageUrl(path);
+  const altTags = alternates
+    ? alternatesFor(path, SITE.baseUrl)
+        .map((a) => `<link rel="alternate" hreflang="${a.hreflang}" href="${esc(a.href)}">`)
+        .join('\n')
+    : '';
+  const ogAlt = LOCALES.filter((l) => l.id !== L.id)
+    .map((l) => `<meta property="og:locale:alternate" content="${esc(l.ogLocale)}">`)
+    .join('\n');
   return `<!doctype html>
-<html lang="en" class="no-js">
+<html lang="${L.id}" dir="${L.dir}" data-locale="${L.id}" class="no-js">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${esc(canonical)}">
+${indexable ? '' : '<meta name="robots" content="noindex">\n'}<link rel="canonical" href="${esc(canon)}">
+${altTags}
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="${esc(SITE.name)}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:url" content="${esc(canonical)}">
+<meta property="og:url" content="${esc(canon)}">
 <meta property="og:image" content="${esc(abs('/og.png'))}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="${esc(SITE.name)} — ${esc(SITE.tagline)}">
-<meta property="og:locale" content="en">
+<meta property="og:image:alt" content="${esc(SITE.name)} — ${tn('site.tagline')}">
+<meta property="og:locale" content="${esc(L.ogLocale)}">
+${ogAlt}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="${esc(title)}">
 <meta name="twitter:description" content="${esc(description)}">
@@ -315,11 +463,12 @@ function layout({
 ${head}
 ${jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : ''}
 </head>
-<body class="${bodyClass}"${bodyAttrs ? ' ' + bodyAttrs : ''}>
-<a class="skip-link" href="#main">Skip to content</a>
+<body class="${bodyClass}"${bodyAttrs ? ' ' + bodyAttrs : ''}${L.dir === 'rtl' ? ' dir="rtl"' : ''}>
+<a class="skip-link" href="#main">${tn('a11y.skip')}</a>
 ${iconSprite()}
 ${body}
 ${script}
+<script id="af-i18n" type="application/json">${JSON.stringify(uiStrings()).replace(/</g, '\\u003c')}</script>
 <script src="/ui.js?v=${assetVersion}" defer></script>
 </body>
 </html>`;
@@ -366,15 +515,15 @@ function advertiseSlots(count = 2) {
   const real = sponsors.slots.slice(0, count);
   const cards = real.map((s) =>
     `<a class="ad-slot ad-real" href="${esc(s.href)}" target="_blank" rel="sponsored nofollow">
-      <b>${esc(s.title)}</b><span>${esc(s.subtitle ?? '')}</span><em>Sponsored</em>
+      <b>${esc(s.title)}</b><span>${esc(s.subtitle ?? '')}</span><em>${tn('home.sponsored')}</em>
     </a>`,
   );
   for (let i = real.length; i < count; i++) {
     cards.push(
-      `<a class="ad-slot ad-open" href="/advertise/">
-        <b>Your game here</b>
-        <span>A labelled sponsor card beside one category of games — an indie game, a dev tool, a newsletter. No pop-ups, ever.</span>
-        <em>Open — from $15/month</em>
+      `<a class="ad-slot ad-open" href="${lp('/advertise/')}">
+        <b>${tn('home.slot.title')}</b>
+        <span>${tn('home.slot.body')}</span>
+        <em>${tn('home.slot.price')}</em>
       </a>`,
     );
   }
@@ -383,35 +532,62 @@ function advertiseSlots(count = 2) {
 
 /* ------------------------------------------------------------ site pages */
 
-function siteHeader(active = '') {
+/**
+ * The language switcher: three real links, not a menu.
+ *
+ * Every link points at the same page in another tree, so a reader who is on
+ * page 3 of the games index (or on a 2001 daily answer page) stays exactly
+ * where they are and only the language changes. It works with JavaScript
+ * off, which a <select> would not.
+ */
+function langSwitcher(path) {
+  const items = LOCALES.map((l) => {
+    const current = l.id === L.id ? ' aria-current="page"' : '';
+    return `<a href="${esc(localePath(l, path))}" data-lang="${l.id}" lang="${l.id}" title="${esc(l.name)}"${current}>${l.id.toUpperCase()}</a>`;
+  }).join('');
+  return `<nav class="lang-switch" aria-label="${tn('a11y.lang')}" data-locale="${L.id}">${items}</nav>`;
+}
+
+function siteHeader(path = '/') {
+  // A nav item is current for a whole subtree: page 3 of the index keeps
+  // /games/ lit, a dated daily page keeps /daily/ lit.
+  const active = path.startsWith('/games/page/')
+    ? '/games/'
+    : path.startsWith('/daily/')
+      ? '/daily/'
+      : path;
   const links = [
-    { href: '/games/', label: 'All games' },
-    ...CATEGORIES.slice(0, 5).map((c) => ({ href: `/categories/${c.id}/`, label: c.title.replace(/ Games$/, '') })),
-    { href: '/daily/', label: 'Daily' },
+    { href: '/games/', label: tn('nav.games') },
+    ...CATEGORIES.slice(0, 5).map((c) => ({
+      href: `/categories/${c.id}/`,
+      label: esc(catShort(c)),
+    })),
+    { href: '/daily/', label: tn('nav.daily') },
   ];
   const nav = links
     .map(
       (l) =>
-        `<a href="${l.href}"${l.href === active ? ' aria-current="page"' : ''}>${esc(l.label)}</a>`,
+        `<a href="${lp(l.href)}"${l.href === active ? ' aria-current="page"' : ''}>${l.label}</a>`,
     )
     .join('');
   return `<header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="/" aria-label="arcadefork — home">${brandMark()}<span>arcade<b>fork</b></span></a>
-    <nav class="site-nav" aria-label="Main">${nav}</nav>
+    <a class="brand" href="${lp('/')}" aria-label="${tn('brand.home')}">${brandMark()}<span>arcade<b>fork</b></span></a>
+    <nav class="site-nav" aria-label="${tn('nav.main')}">${nav}</nav>
     <div class="top-tools">
-      <form class="search" action="/games/" method="get" role="search">
+      ${langSwitcher(path)}
+      <form class="search" action="${lp('/games/')}" method="get" role="search">
         ${glyph('a-search', 15)}
-        <input type="search" name="q" placeholder="Search ${GAMES.length} games" aria-label="Search all games" autocomplete="off" spellcheck="false">
+        <input type="search" name="q" placeholder="${tn('search.placeholder', { count: GAMES.length })}" aria-label="${tn('search.label')}" autocomplete="off" spellcheck="false">
         <kbd>/</kbd>
       </form>
       <div class="theme-menu">
         <button class="theme-btn" id="btn-theme" type="button" aria-haspopup="menu"
-                aria-expanded="false" aria-controls="theme-pop" aria-label="Theme: Signal">
+                aria-expanded="false" aria-controls="theme-pop" aria-label="${tn('theme.button', { name: THEMES[0].name })}">
           <span class="sw" aria-hidden="true"></span>
         </button>
-        <div class="theme-pop" id="theme-pop" role="menu" aria-label="Theme" hidden>
-          <p class="theme-pop-label">Theme</p>
+        <div class="theme-pop" id="theme-pop" role="menu" aria-label="${tn('theme.label')}" hidden>
+          <p class="theme-pop-label">${tn('theme.label')}</p>
           ${THEMES.map(
             (t) => `<button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
               data-theme-id="${t.id}"${t.light ? ' data-light="1"' : ''} style="--sw:${t.sw};--sw2:${t.sw2}">
@@ -423,11 +599,11 @@ function siteHeader(active = '') {
       </div>
     </div>
   </div>
-  <nav class="nav-strip" aria-label="Categories">${nav}</nav>
+  <nav class="nav-strip" aria-label="${tn('nav.categories')}">${nav}</nav>
 </header>`;
 }
 
-function siteFooter() {
+function siteFooter(path = '/') {
   const year = new Date().getUTCFullYear();
   const thirdParty = GAMES.filter((g) => g.credit);
   const tips = sponsors.tips ?? {};
@@ -441,25 +617,29 @@ function siteFooter() {
     .map(([k, label]) => `<a href="${esc(tips[k])}" rel="noopener nofollow" target="_blank">${label}</a>`)
     .join(' · ');
   const tipsLine = tipLinks
-    ? `Like the arcade? Tips keep it free: ${tipLinks}.`
-    : `Free forever — funded by sponsor slots. One is <a href="/advertise/">open right now</a>.`;
+    ? rich('foot.tips', { links: tipLinks })
+    : rich('foot.free', { href: esc(lp('/advertise/')) });
   return `<footer class="site-footer"><div class="wrap">
-  <a class="brand" href="/">${brandMark(24)}<span>arcade<b>fork</b></span></a>
-  <p><strong>${GAMES.length} free browser games.</strong> No download, no sign-up, no paywall — the whole arcade is one HTML file's worth of JavaScript.</p>
+  <a class="brand" href="${lp('/')}">${brandMark(24)}<span>arcade<b>fork</b></span></a>
+  <p><strong>${tn('foot.count', { count: GAMES.length })}</strong> ${tn('foot.blurb')}</p>
   <p class="foot-tips">${tipsLine}</p>
-  <nav class="foot-nav" aria-label="Footer">
-    <a href="/games/">All games</a>
-    <a href="/daily/">Daily puzzle archive</a>
-    <a href="/advertise/">Sponsor a slot</a>
-    <a href="/credits/">Credits</a>
-    <a href="/sitemap.xml">Sitemap</a>
+  <nav class="foot-nav" aria-label="${tn('nav.footer')}">
+    <a href="${lp('/games/')}">${tn('foot.nav.games')}</a>
+    <a href="${lp('/daily/')}">${tn('foot.nav.archive')}</a>
+    <a href="${lp('/advertise/')}">${tn('foot.nav.sponsor')}</a>
+    <a href="${lp('/credits/')}">${tn('foot.nav.credits')}</a>
+    <a href="/sitemap.xml">${tn('foot.nav.sitemap')}</a>
   </nav>
   ${
     thirdParty.length
-      ? `<p class="foot-note">Includes ${thirdParty.length} open-source games, credited on the <a href="/credits/">credits page</a>.</p>`
+      ? `<p class="foot-note">${rich('foot.thirdParty', {
+          count: thirdParty.length,
+          href: esc(lp('/credits/')),
+        })}</p>`
       : ''
   }
-  <p class="copyright">&copy; ${year} Ayhem Kahri · ${esc(SITE.name)} — free to play, forever.</p>
+  ${langSwitcher(path)}
+  <p class="copyright">${tn('foot.copyright', { year, site: SITE.name })}</p>
 </div></footer>`;
 }
 
@@ -470,18 +650,18 @@ function gameTiles(ids, opts = {}) {
     .map((g, i) => {
       const cat = CATEGORIES.find((c) => c.id === g.category);
       const accent = tileAccent(g);
-      const kw = [g.title, g.category, cat?.title, ...(g.keywords ?? [])]
+      const kw = [g.title, g.category, cat ? catTitle(cat) : '', ...(g.keywords ?? [])]
         .filter(Boolean)
         .join(' ')
         .toLowerCase();
-      return `<a class="tile${opts.noReveal ? '' : ' reveal'}" href="/games/${g.id}/"
+      return `<a class="tile${opts.noReveal ? '' : ' reveal'}" href="${lp(`/games/${g.id}/`)}"
    data-name="${esc(g.title.toLowerCase())}" data-cat="${esc(g.category)}" data-kw="${esc(kw)}"
    style="--tile-accent:${esc(accent)};--glow:${esc(accent)};--i:${i + start}">
       <div class="thumb">${gameIcon(g.id, g.accent, g.category)}</div>
-      ${g.credit ? '<span class="badge">Open source</span>' : ''}
+      ${g.credit ? `<span class="badge">${tn('tile.openSource')}</span>` : ''}
       <h3>${esc(g.title)}</h3>
       <p>${esc(cleanTagline(g))}</p>
-      ${cat ? `<span class="tag">${esc(cat.title.replace(/ Games$/, ''))}</span>` : ''}
+      ${cat ? `<span class="tag">${esc(catShort(cat))}</span>` : ''}
     </a>`;
     })
     .join('')}</div>`;
@@ -554,27 +734,29 @@ function buildHome() {
     ].filter((g, i, a) => a.findIndex((x) => x.id === g.id) === i),
     64,
   );
+  const siteDesc = translate(L.catalog, 'site.description');
 
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: SITE.name,
-    url: SITE.baseUrl,
-    description: SITE.description,
+    url: pageUrl('/'),
+    inLanguage: L.id,
+    description: siteDesc,
     potentialAction: {
       '@type': 'SearchAction',
-      target: `${SITE.baseUrl}/games/?q={search_term_string}`,
+      target: `${pageUrl('/games/')}?q={search_term_string}`,
       'query-input': 'required name=search_term_string',
     },
   };
 
   const catCard = (c) => {
     const n = GAMES.filter((g) => g.category === c.id).length;
-    return `<a class="cat-card" href="/categories/${c.id}/" style="--c:${esc(c.accent)}">
+    return `<a class="cat-card" href="${lp(`/categories/${c.id}/`)}" style="--c:${esc(c.accent)}">
       <span class="cat-dot" aria-hidden="true"></span>
-      <h3>${esc(c.title)}</h3>
-      <p>${esc(c.description)}</p>
-      <span class="cat-count">${n} game${n === 1 ? '' : 's'} →</span>
+      <h3>${esc(catTitle(c))}</h3>
+      <p>${esc(catDesc(c))}</p>
+      <span class="cat-count">${tn(n === 1 ? 'count.games_one' : 'count.games', { count: n })} →</span>
     </a>`;
   };
 
@@ -583,29 +765,29 @@ function buildHome() {
 <div class="wrap">
   <section class="hero hero-split">
     <div class="hero-copy">
-      <p class="kicker"><i></i>${GAMES.length} games · free forever</p>
-      <h1>Free browser games that <em>start instantly</em>.</h1>
-      <p class="lede">${esc(SITE.description)} Pick a game and you are playing in one second — nothing to install, nothing to unlock, no account.</p>
+      <p class="kicker"><i></i>${tn('home.kicker', { count: GAMES.length })}</p>
+      <h1>${tn('home.h1.pre')}<em>${tn('home.h1.em')}</em>${tn('home.h1.post')}</h1>
+      <p class="lede">${esc(siteDesc)} ${tn('home.lede')}</p>
       <div class="hero-cta">
-        <a class="btn btn-primary" href="/games/">Browse all ${GAMES.length} games</a>
-        <button class="btn" id="btn-random" type="button">${glyph('a-dice', 18)} Play something random</button>
+        <a class="btn btn-primary" href="${lp('/games/')}">${tn('home.browseAll', { count: GAMES.length })}</a>
+        <button class="btn" id="btn-random" type="button">${glyph('a-dice', 18)} ${tn('home.random')}</button>
       </div>
       <ul class="trust">
-        <li>${glyph('a-bolt', 15)} Loads in about a second</li>
-        <li>${glyph('a-wifi-off', 15)} Plays offline after first visit</li>
-        <li>${glyph('a-shield', 15)} No tracking, no ads that follow you</li>
+        <li>${glyph('a-bolt', 15)} ${tn('home.trust1')}</li>
+        <li>${glyph('a-wifi-off', 15)} ${tn('home.trust2')}</li>
+        <li>${glyph('a-shield', 15)} ${tn('home.trust3')}</li>
       </ul>
     </div>
 
     <aside class="hero-card" aria-labelledby="today-card-title">
       <div class="hero-card-head">
-        <h2 id="today-card-title">Today's grid</h2>
+        <h2 id="today-card-title">${tn('home.today')}</h2>
         <span class="ticket">${ticketStamp(today)}</span>
       </div>
       ${miniBoard(board)}
       <div class="hero-card-foot">
-        <span class="meta">${esc(theme.title)} · ${wordCount} words · ${today}</span>
-        <a class="btn btn-primary" href="/daily/${today}/" style="height:38px;padding:0 14px;font-size:13.5px">Play ${glyph('a-arrow', 15)}</a>
+        <span class="meta">${esc(theme.title)} · ${tn(wordCount === 1 ? 'home.words_one' : 'home.words', { count: wordCount })} · ${today}</span>
+        <a class="btn btn-primary" href="${lp(`/daily/${today}/`)}" style="height:38px;padding:0 14px;font-size:13.5px">${tn('home.play')} ${glyph('a-arrow', 15)}</a>
       </div>
     </aside>
   </section>
@@ -613,119 +795,122 @@ function buildHome() {
 </main>
 
 <section class="ticker" aria-hidden="true"><div class="ticker-track"><span class="ticker-set">${[
-    'ONE NEW GRID EVERY DAY',
-    `${GAMES.length} GAMES, ZERO DOWNLOADS`,
-    'NO ACCOUNT, NO EMAIL, NO PAYWALL',
-    'PLAYS OFFLINE AFTER FIRST LOAD',
-    'MADE OF HTML, JAVASCRIPT AND NOTHING ELSE',
+    tn('home.ticker1'),
+    tn('home.ticker2', { count: GAMES.length }),
+    tn('home.ticker3'),
+    tn('home.ticker4'),
+    tn('home.ticker5'),
   ]
     .map((t) => `<b>${t}</b><i>◆</i>`)
     .join('')}</span></div></section>
 
 <div class="wrap">
-  <section class="stats-strip" aria-label="The arcade in numbers">
-    <span><b>${GAMES.length}</b><i>games</i></span>
-    <span><b>1</b><i>new grid daily</i></span>
-    <span><b>0</b><i>accounts needed</i></span>
-    <span><b>$0</b><i>forever</i></span>
+  <section class="stats-strip" aria-label="${tn('home.stats.label')}">
+    <span><b>${GAMES.length}</b><i>${tn('home.stats.games')}</i></span>
+    <span><b>1</b><i>${tn('home.stats.daily')}</i></span>
+    <span><b>0</b><i>${tn('home.stats.accounts')}</i></span>
+    <span><b>$0</b><i>${tn('home.stats.forever')}</i></span>
   </section>
 
   <section class="section">
     <div class="section-head">
-      <h2>Start here</h2>
-      <a class="section-more" href="/games/">All ${GAMES.length} games ${glyph('a-arrow', 15)}</a>
+      <h2>${tn('home.start')}</h2>
+      <a class="section-more" href="${lp('/games/')}">${tn('home.allGames', { count: GAMES.length })} ${glyph('a-arrow', 15)}</a>
     </div>
     ${gameTiles(featured.slice(0, 12))}
   </section>
 
   <section class="section">
     <div class="section-head">
-      <h2>Browse by mood</h2>
-      <a class="section-more" href="/games/">Everything ${glyph('a-arrow', 15)}</a>
+      <h2>${tn('home.mood')}</h2>
+      <a class="section-more" href="${lp('/games/')}">${tn('home.everything')} ${glyph('a-arrow', 15)}</a>
     </div>
     <div class="cat-grid">${CATEGORIES.map(catCard).join('')}</div>
   </section>
 
   <section class="section">
     <div class="section-head">
-      <h2>Today's puzzle</h2>
-      <span class="pill"><i></i>new at midnight UTC</span>
+      <h2>${tn('home.todayPuzzle')}</h2>
+      <span class="pill"><i></i>${tn('home.midnight')}</span>
     </div>
     <div class="grid grid-featured">
-      <a class="tile" href="/daily/${today}/" style="--glow:var(--coin)">
+      <a class="tile" href="${lp(`/daily/${today}/`)}" style="--glow:var(--coin)">
         <div class="thumb">${gameIcon('wordsearch', theme.accent)}</div>
-        <h3>Daily Word Search</h3>
-        <p>${esc(theme.title)} — ${today}. Ten by ten, ${wordCount} words, 100 seconds. Everyone plays the same grid.</p>
-        <span class="tag">Play today's grid</span>
+        <h3>${tn('home.daily.title')}</h3>
+        <p>${tn('home.daily.body', { theme: theme.title, date: today, count: wordCount })}</p>
+        <span class="tag">${tn('home.daily.tag')}</span>
       </a>
-      <a class="tile" href="/daily/${today}/answers/" style="--glow:var(--coin)">
+      <a class="tile" href="${lp(`/daily/${today}/answers/`)}" style="--glow:var(--coin)">
         <div class="thumb thumb-plain" style="font-size:34px">?</div>
-        <h3>Today's answers</h3>
-        <p>The full solved grid with every word, and a row and column for where each one starts.</p>
-        <span class="tag">Look it up</span>
+        <h3>${tn('home.answers.title')}</h3>
+        <p>${tn('home.answers.body')}</p>
+        <span class="tag">${tn('home.answers.tag')}</span>
       </a>
     </div>
   </section>
 
   <section class="section">
     <div class="section-head">
-      <h2>The whole cabinet</h2>
-      <a class="section-more" href="/games/">See all ${GAMES.length} ${glyph('a-arrow', 15)}</a>
+      <h2>${tn('home.cabinet')}</h2>
+      <a class="section-more" href="${lp('/games/')}">${tn('home.seeAll', { count: GAMES.length })} ${glyph('a-arrow', 15)}</a>
     </div>
     ${gameTiles(featured.slice(12, 36), { start: 6, id: 'cabinet-grid' })}
   </section>
 
   <section class="section" id="recent-section">
     <div class="section-head">
-      <h2>Pick up where you left off</h2>
-      <span class="pill">on this device</span>
+      <h2>${tn('home.recent')}</h2>
+      <span class="pill">${tn('home.device')}</span>
     </div>
     <div class="hscroll" aria-live="polite"></div>
   </section>
 
   <section class="section" id="sponsor-slots">
     <div class="section-head">
-      <h2>Cabinet slots</h2>
-      <a class="section-more" href="/advertise/">Advertise ${glyph('a-arrow', 15)}</a>
+      <h2>${tn('home.slots')}</h2>
+      <a class="section-more" href="${lp('/advertise/')}">${tn('home.advertise')} ${glyph('a-arrow', 15)}</a>
     </div>
     <div class="ad-grid">${advertiseSlots()}</div>
   </section>
 
   <section class="section">
     <div class="section-head">
-      <h2>Why it is free</h2>
+      <h2>${tn('home.why')}</h2>
     </div>
     <div class="feature-grid">
       <div class="feature">${glyph('a-bolt', 22)}
-        <h3>Nothing to load first</h3>
-        <p>Every game is plain JavaScript and canvas. No install, no engine download, no loading bar.</p>
+        <h3>${tn('home.f1.title')}</h3>
+        <p>${tn('home.f1.body')}</p>
       </div>
       <div class="feature">${glyph('a-shield', 22)}
-        <h3>Nothing to sign up for</h3>
-        <p>No account, no email, no cookie wall. Your scores and recents stay in your own browser.</p>
+        <h3>${tn('home.f2.title')}</h3>
+        <p>${tn('home.f2.body')}</p>
       </div>
       <div class="feature">${glyph('a-coin', 22)}
-        <h3>Nothing to pay</h3>
-        <p>The arcade is funded by labelled sponsor slots, not by interrupting a game you are winning.</p>
+        <h3>${tn('home.f3.title')}</h3>
+        <p>${tn('home.f3.body')}</p>
       </div>
     </div>
   </section>
 
   <section class="section prose">
-    <h2>About arcadefork</h2>
-    <p>Every game here runs entirely in your browser. The page is under a megabyte, so it starts instantly on a phone connection, and the <a href="/daily/">daily puzzle archive</a> keeps every past grid so you can look up the answers or replay an old board.</p>
-    <p>${GAMES.filter((g) => g.credit).length} of the games are open source, vendored with their original licences and credited on the <a href="/credits/">credits page</a>. The rest are built on the arcadefork engine.</p>
+    <h2>${tn('home.about', { site: SITE.name })}</h2>
+    <p>${rich('home.about1', { archive: esc(lp('/daily/')) })}</p>
+    <p>${rich('home.about2', {
+      count: GAMES.filter((g) => g.credit).length,
+      credits: esc(lp('/credits/')),
+    })}</p>
   </section>
 </div>
 </main>
 <script id="af-catalog-json" type="application/json">${JSON.stringify(
     GAMES.map((g) => ({ i: g.id, t: g.title, c: g.category, a: g.accent })),
   ).replace(/</g, '\\u003c')}</script>
-${siteFooter()}`;
+${siteFooter('/')}`;
   write('index.html', layout({
-    title: `${SITE.name} — free browser games, no download`,
-    description: SITE.description,
-    canonical: abs('/'),
+    title: `${SITE.name} — ${plain('home.title')}`,
+    description: siteDesc,
+    path: '/',
     body,
     jsonLd,
   }));
@@ -733,78 +918,170 @@ ${siteFooter()}`;
 
 function buildCategory(cat) {
   const games = GAMES.filter((g) => g.category === cat.id);
+  const title = catTitle(cat);
+  const description = catDesc(cat);
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
-    name: cat.title,
-    url: abs(`/categories/${cat.id}/`),
-    description: cat.description,
+    name: title,
+    url: pageUrl(`/categories/${cat.id}/`),
+    inLanguage: L.id,
+    description,
     hasPart: games.map((g) => ({
       '@type': 'VideoGame',
       name: g.title,
-      url: abs(`/games/${g.id}/`),
-      genre: cat.title,
+      url: pageUrl(`/games/${g.id}/`),
+      genre: title,
       gamePlatform: 'Web Browser',
       offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     })),
   };
   const body = `${siteHeader(`/categories/${cat.id}/`)}
 <main class="wrap" id="main">
-  <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="/">Home</a><span>/</span><a href="/games/">All games</a><span>/</span><span>${esc(cat.title)}</span>
+  <nav class="crumbs" aria-label="${tn('nav.breadcrumb')}">
+    <a href="${lp('/')}">${tn('nav.home')}</a><span>/</span><a href="${lp('/games/')}">${tn('nav.games')}</a><span>/</span><span>${esc(title)}</span>
   </nav>
   <section class="hero" style="padding-top:24px;padding-bottom:8px">
     <div>
-      <p class="kicker"><i style="background:${esc(cat.accent)};box-shadow:0 0 0 4px ${esc(cat.accent)}22"></i>${games.length} free ${esc(
-        cat.title.toLowerCase(),
-      )}</p>
-      <h1>${esc(cat.title)}</h1>
-      <p class="lede">${esc(cat.description)}</p>
+      <p class="kicker"><i style="background:${esc(cat.accent)};box-shadow:0 0 0 4px ${esc(cat.accent)}22"></i>${tn('cat.kicker', {
+        count: games.length,
+        category: title,
+        categoryLower: title.toLowerCase(),
+      })}</p>
+      <h1>${esc(title)}</h1>
+      <p class="lede">${esc(description)}</p>
       <div class="hero-cta">
-        <button class="btn" id="btn-random" type="button" data-scope="${esc(cat.id)}">${glyph('a-dice', 18)} Random ${esc(
-          cat.title.replace(/ Games$/, '').toLowerCase(),
-        )} game</button>
+        <button class="btn" id="btn-random" type="button" data-scope="${esc(cat.id)}">${glyph('a-dice', 18)} ${tn('cat.random', {
+          category: catShort(cat),
+          categoryLower: catShort(cat).toLowerCase(),
+        })}</button>
       </div>
     </div>
   </section>
   <section class="section">${gameTiles(games)}</section>
   <section class="section prose">
     ${sponsorBanner(cat.id)}
-    <h2>More arcadefork games</h2>
+    <h2>${tn('cat.more', { site: SITE.name })}</h2>
     <div class="linklist">${GAMES.filter((g) => g.category !== cat.id)
       .slice(0, 24)
-      .map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`)
+      .map((g) => `<a href="${lp(`/games/${g.id}/`)}">${esc(g.title)}</a>`)
       .join('')}</div>
   </section>
 </main>
-${siteFooter()}`;
+${siteFooter(`/categories/${cat.id}/`)}`;
   write(
     `categories/${cat.id}/index.html`,
     layout({
-      title: `${cat.title} — free online games | ${SITE.name}`,
-      description: `${cat.description} Play free ${cat.title.toLowerCase()} in your browser on ${SITE.name}.`,
-      canonical: abs(`/categories/${cat.id}/`),
+      title: `${title} — ${plain('cat.titleSuffix')} | ${SITE.name}`,
+      description: `${description} ${plain('cat.metaSuffix', {
+        category: title.toLowerCase(),
+        site: SITE.name,
+      })}`,
+      path: `/categories/${cat.id}/`,
       body,
       jsonLd,
     }),
   );
 }
 
+/**
+ * Game pages wear the in-game shell, which owns its own topbar, so the
+ * language switcher is spliced into that topbar: a reader deep in a game
+ * must be able to switch language without going back to the index first.
+ */
+function shellWithSwitcher(html, path) {
+  const nav = langSwitcher(path);
+  for (const marker of ['<div class="top-actions">', '<div class="embed-actions">']) {
+    const at = html.indexOf(marker);
+    if (at !== -1) return html.slice(0, at) + nav + html.slice(at);
+  }
+  return `${nav}${html}`;
+}
+
+/**
+ * Translate the in-game shell for a non-English tree.
+ *
+ * scripts/shell.mjs is shared with the itch.io packager, which builds one
+ * English bundle, so its labels live there and not in the catalog. Rather
+ * than fork that file, the shell's own English fragments are replaced here -
+ * each one appears exactly once - and its root-relative links are moved into
+ * this tree. If the shell is edited the replacements become no-ops: the page
+ * falls back to English rather than breaking.
+ *
+ * `/third-party/` is deliberately left alone: vendored games are copied once,
+ * at the root, and a prefixed iframe src would 404.
+ */
+function localiseShell(html, game = null) {
+  if (L.id === DEFAULT_LOCALE) return html;
+  let out = html
+    .replace(/href="\/games\//g, `href="${L.prefix}/games/`)
+    .replace(/href="\/categories\//g, `href="${L.prefix}/categories/`)
+    .replace(/href="\/"/g, `href="${L.prefix}/"`);
+  const swaps = [
+    ['aria-label="arcadefork — home"', `aria-label="${tn('brand.home')}"`],
+    ['aria-label="About this game"', `aria-label="${tn('game.aboutLabel')}"`],
+    [' All games</a>', ` ${tn('game.allGames')}</a>`],
+    ['>More like this</a>', `>${tn('game.moreLikeThis')}</a>`],
+    ['<div class="side-label">Keep playing</div>', `<div class="side-label">${tn('game.keepPlaying')}</div>`],
+    ['<div class="side-label">Sponsored</div>', `<div class="side-label">${tn('game.sponsored')}</div>`],
+    ['<div class="side-label">Original</div>', `<div class="side-label">${tn('game.original')}</div>`],
+    [
+      '<p class="side-foot">Free to play · no sign-up · works on any device</p>',
+      `<p class="side-foot">${tn('game.sideFoot')}</p>`,
+    ],
+    ['aria-label="Difficulty"', `aria-label="${tn('game.difficulty')}"`],
+    ['title="Easy difficulty"', `title="${tn('game.easy')}"`],
+    ['title="Normal difficulty"', `title="${tn('game.normal')}"`],
+    ['title="Hard difficulty"', `title="${tn('game.hard')}"`],
+    ['<span class="diff-long">Easy</span>', `<span class="diff-long">${tn('game.easy')}</span>`],
+    ['<span class="diff-long">Normal</span>', `<span class="diff-long">${tn('game.normal')}</span>`],
+    ['<span class="diff-long">Hard</span>', `<span class="diff-long">${tn('game.hard')}</span>`],
+    ['aria-label="Toggle sound"', `aria-label="${tn('game.sound')}"`],
+    ['aria-label="Fullscreen"', `aria-label="${tn('game.fullscreen')}"`],
+    [' Press space to start."', ` ${tn('game.pressSpace')}"`],
+    ['aria-label="On-screen controls"', `aria-label="${tn('game.pad')}"`],
+    ['aria-label="Full screen"', `aria-label="${tn('game.fullScreen')}"`],
+    ['>Open full ', `>${tn('game.openFull')} `],
+    ['>View source</a>', `>${tn('game.viewSource')}</a>`],
+  ];
+  for (const [from, to] of swaps) out = out.split(from).join(to);
+  // The splash line carries the game's own name, so it is matched as a whole.
+  if (game?.title) {
+    out = out.replace(`Loading ${game.title}…`, tn('game.loading', { title: game.title }));
+  }
+  return out;
+}
+
 function buildGamePage(game) {
   const cat = CATEGORIES.find((c) => c.id === game.category);
+  const path = `/games/${game.id}/`;
   const related = GAMES.filter(
     (g) => (game.related ?? []).includes(g.id) || g.category === game.category,
   )
     .filter((g) => g.id !== game.id)
     .slice(0, 6);
+  // Outside English, a genre template supplies the FAQ in the reader's
+  // language. The game's own answer text is English catalogue copy and stays
+  // as the fallback: better an English answer than no answer.
+  const family = familyFor(L.catalog, game);
+  const familyFaq = Array.isArray(family?.faq)
+    ? family.faq.filter((f) => f && typeof f.q === 'string' && typeof f.a === 'string')
+    : [];
+  const faq =
+    L.id !== DEFAULT_LOCALE && familyFaq.length
+      ? familyFaq
+      : (Array.isArray(game.faq) ? game.faq : []).filter(
+          (f) => f && typeof f.q === 'string' && typeof f.a === 'string',
+        );
   const jsonLd = [
     {
       '@context': 'https://schema.org',
       '@type': 'VideoGame',
       name: game.title,
-      url: abs(`/games/${game.id}/`),
+      url: pageUrl(path),
+      inLanguage: L.id,
       description: game.description,
-      genre: cat?.title ?? 'Arcade',
+      genre: cat ? catTitle(cat) : 'Arcade',
       gamePlatform: 'Web Browser',
       applicationCategory: 'Game',
       operatingSystem: 'Any',
@@ -814,7 +1091,7 @@ function buildGamePage(game) {
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: game.faq.map((f) => ({
+      mainEntity: faq.map((f) => ({
         '@type': 'Question',
         name: f.q,
         acceptedAnswer: { '@type': 'Answer', text: f.a },
@@ -827,50 +1104,55 @@ function buildGamePage(game) {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: abs('/') },
+        { '@type': 'ListItem', position: 1, name: translate(L.catalog, 'nav.home'), item: pageUrl('/') },
         {
           '@type': 'ListItem',
           position: 2,
-          name: cat?.title ?? 'Games',
-          item: abs(`/categories/${game.category}/`),
+          name: cat ? catTitle(cat) : translate(L.catalog, 'nav.games'),
+          item: pageUrl(`/categories/${game.category}/`),
         },
-        { '@type': 'ListItem', position: 3, name: game.title, item: abs(`/games/${game.id}/`) },
+        { '@type': 'ListItem', position: 3, name: game.title, item: pageUrl(path) },
       ],
     },
   ];
   const isEmbed = Boolean(game.embed);
   const shellOpts = { related, sponsor: sponsorBanner(game.category) };
-  const body = `${isEmbed ? embedShell(game, shellOpts) : gameShell(game, shellOpts)}
+  const shell = localiseShell(isEmbed ? embedShell(game, shellOpts) : gameShell(game, shellOpts), game);
+  const body = `${shellWithSwitcher(shell, path)}
 <section class="wrap prose" style="padding-bottom:48px" id="about">
-  <nav class="crumbs" aria-label="Breadcrumb">
-    <a href="/">Home</a><span>/</span><a href="/categories/${esc(game.category)}/">${esc(
-      cat?.title ?? 'Games',
+  <nav class="crumbs" aria-label="${tn('nav.breadcrumb')}">
+    <a href="${lp('/')}">${tn('nav.home')}</a><span>/</span><a href="${lp(`/categories/${esc(game.category)}/`)}">${esc(
+      cat ? catTitle(cat) : translate(L.catalog, 'nav.games'),
     )}</a><span>/</span><span>${esc(game.title)}</span>
   </nav>
-  <h1 style="margin-top:18px">${esc(game.title)} — play free online</h1>
+  <h1 style="margin-top:18px">${tn('game.h1', { title: game.title })}</h1>
   <p>${esc(game.description)}</p>
   ${
     game.credit
-      ? `<p class="credit-line">Originally by ${esc(game.credit.author)} · ${esc(creditLicence(game.credit))} licence · <a href="${esc(game.credit.source)}" rel="noopener nofollow" target="_blank">source</a></p>`
+      ? `<p class="credit-line">${rich('game.credit', {
+          author: esc(game.credit.author),
+          licence: esc(creditLicence(game.credit)),
+          source: esc(game.credit.source),
+        })}</p>`
       : ''
   }
-  <h2>How to play ${esc(game.title)}</h2>
+  <h2>${tn('game.howTo', { title: game.title })}</h2>
   <ul>${howToLines(game).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
-  <h2>Frequently asked questions</h2>
-  <div class="faq">${game.faq
+  <h2>${tn('game.faq')}</h2>
+  <div class="faq">${faq
     .map((f) => `<details><summary>${esc(f.q)}</summary><p>${esc(f.a)}</p></details>`)
     .join('')}</div>
-  <h2>More free games</h2>
-  <div class="linklist">${related.map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`).join('')}</div>
+  <h2>${tn('game.more')}</h2>
+  <div class="linklist">${related.map((g) => `<a href="${lp(`/games/${g.id}/`)}">${esc(g.title)}</a>`).join('')}</div>
 </section>
 ${isEmbed ? '' : `<script type="module" src="${hostBundle}"></script>`}
 <script src="/play.js?v=${assetVersion}" defer></script>`;
   write(
     `games/${game.id}/index.html`,
     layout({
-      title: `${game.title} — play free online | ${SITE.name}`,
-      description: game.description,
-      canonical: abs(`/games/${game.id}/`),
+      title: `${game.title} — ${plain('game.titleSuffix')} | ${SITE.name}`,
+      description: plain('game.metaDesc', { title: game.title, desc: game.description }),
+      path,
       body,
       bodyClass: 'is-game',
       bodyAttrs: `data-game="${game.id}" data-gtitle="${esc(game.title)}" data-gcat="${esc(
@@ -907,8 +1189,8 @@ function buildDailyPages() {
     const theme = themeForDate(date, dateSeed(date));
     const isToday = date === today;
     hubRows.push(
-      `<tr><td><a href="/daily/${date}/">${date}</a></td><td>${esc(theme.title)}</td><td><a href="/daily/${date}/answers/">answers</a></td>${
-        isToday ? '<td>today</td>' : '<td></td>'
+      `<tr><td><a href="${lp(`/daily/${date}/`)}">${date}</a></td><td>${esc(theme.title)}</td><td><a href="${lp(`/daily/${date}/answers/`)}">${tn('daily.answers')}</a></td>${
+        isToday ? `<td>${tn('daily.today')}</td>` : '<td></td>'
       }</tr>`,
     );
   }
@@ -916,27 +1198,27 @@ function buildDailyPages() {
   const hubBody = `${siteHeader('/daily/')}
 <main class="wrap" id="main">
   <section class="hero">
-    <span class="pill">New puzzle every day</span>
-    <h1>Daily Word Search archive</h1>
-    <p>One new 10x10 word search every day. Everyone plays the same grid, so you can compare scores with friends or look back at a puzzle you missed.</p>
+    <span class="pill">${tn('daily.pill')}</span>
+    <h1>${tn('daily.h1')}</h1>
+    <p>${tn('daily.intro')}</p>
   </section>
   <section class="section">
-    <table class="answer-table"><thead><tr><th>Date</th><th>Theme</th><th></th><th></th></tr></thead><tbody>${hubRows.join(
+    <table class="answer-table"><thead><tr><th>${tn('daily.col.date')}</th><th>${tn('daily.col.theme')}</th><th></th><th></th></tr></thead><tbody>${hubRows.join(
       '',
     )}</tbody></table>
   </section>
   <section class="section prose">
-    <h2>How the daily puzzle works</h2>
-    <p>The grid is generated from the date, which means every player gets exactly the same board at the same time. Drag across a straight line of letters to select a word — horizontally, vertically or diagonally. You have 100 seconds.</p>
+    <h2>${tn('daily.howTitle')}</h2>
+    <p>${tn('daily.howBody')}</p>
   </section>
 </main>
-${siteFooter()}`;
+${siteFooter('/daily/')}`;
   write(
     'daily/index.html',
     layout({
-      title: `Daily Word Search archive — every puzzle and answer | ${SITE.name}`,
-      description: `Play or look up every daily word search puzzle. A new free 10x10 grid every day with the full answer list for each one.`,
-      canonical: abs('/daily/'),
+      title: `${plain('daily.title')} | ${SITE.name}`,
+      description: plain('daily.desc'),
+      path: '/daily/',
       body: hubBody,
     }),
   );
@@ -948,44 +1230,42 @@ ${siteFooter()}`;
     const answerWords = answers.map((a) => a.word).join(', ');
 
     // Puzzle page
-    const puzzleBody = `${siteHeader('/daily/')}
+    const puzzleBody = `${siteHeader(`/daily/${date}/`)}
 <main class="wrap" id="main">
   <section class="hero">
     <span class="pill">${esc(theme.title)}</span>
-    <h1>Daily Word Search — ${date}</h1>
-    <p>Free daily word search puzzle for ${date}. 10x10 grid, ${answers.length} hidden words, 100 seconds on the clock. The same grid for every player.</p>
+    <h1>${tn('daily.puzzle.h1', { date })}</h1>
+    <p>${tn('daily.puzzle.lede', { date, count: answers.length, theme: theme.title })}</p>
   </section>
   <section class="section">
     ${boardHtml(board, null)}
-    <div class="row"><a class="btn btn-primary" href="/games/wordsearch/">Play the full game</a> <a class="btn" href="/daily/${date}/answers/">See the answers</a></div>
+    <div class="row"><a class="btn btn-primary" href="${lp('/games/wordsearch/')}">${tn('daily.playFull')}</a> <a class="btn" href="${lp(`/daily/${date}/answers/`)}">${tn('daily.seeAnswers')}</a></div>
   </section>
   <section class="section prose">
-    <h2>Words in the ${date} puzzle</h2>
-    <p>${answers.length} words are hidden in this grid. If you are stuck, the <a href="/daily/${date}/answers/">answer page for ${date}</a> lists every word and where it starts and ends.</p>
-    <h2>How to play</h2>
+    <h2>${tn('daily.wordsIn', { date })}</h2>
+    <p>${rich('daily.stuck', { count: answers.length, date, href: esc(lp(`/daily/${date}/answers/`)) })}</p>
+    <h2>${tn('daily.howPlayTitle')}</h2>
     <ul>
-      <li>Drag across a straight line of letters — horizontal, vertical or diagonal.</li>
-      <li>Release to submit. Correct words stay highlighted.</li>
-      <li>100 seconds. Longer words and faster finds score more.</li>
+      <li>${tn('daily.howPlay1')}</li>
+      <li>${tn('daily.howPlay2')}</li>
+      <li>${tn('daily.howPlay3')}</li>
     </ul>
-    <h2>Other daily puzzles</h2>
+    <h2>${tn('daily.other')}</h2>
     <div class="linklist">${dates
       .filter((d) => d !== date)
       .slice(-14)
       .reverse()
-      .map((d) => `<a href="/daily/${d}/">${d}</a>`)
+      .map((d) => `<a href="${lp(`/daily/${d}/`)}">${d}</a>`)
       .join('')}</div>
   </section>
 </main>
-${siteFooter()}`;
+${siteFooter(`/daily/${date}/`)}`;
     write(
       `daily/${date}/index.html`,
       layout({
-        title: `Daily Word Search ${date} — free puzzle and answers | ${SITE.name}`,
-        description: `Free daily word search for ${date}. ${esc(
-          theme.title,
-        )} theme, ${answers.length} hidden words, 100 seconds to find them. Same grid for every player.`,
-        canonical: abs(`/daily/${date}/`),
+        title: `${plain('daily.puzzle.title', { date })} | ${SITE.name}`,
+        description: plain('daily.puzzle.desc', { date, count: answers.length, theme: theme.title }),
+        path: `/daily/${date}/`,
         body: puzzleBody,
       }),
     );
@@ -1000,36 +1280,42 @@ ${siteFooter()}`;
     }
     const hitSet = new Set(hits.keys());
 
-    const answersBody = `${siteHeader('/daily/')}
+    const answersBody = `${siteHeader(`/daily/${date}/answers/`)}
 <main class="wrap" id="main">
   <section class="hero">
     <span class="pill">${esc(theme.title)}</span>
-    <h1>Daily Word Search answers — ${date}</h1>
-    <p>Every word hidden in the ${date} puzzle, with the row and column where each one starts and ends. ${answers.length} words in total.</p>
+    <h1>${tn('daily.answers.h1', { date })}</h1>
+    <p>${tn('daily.answers.lede', { date, count: answers.length })}</p>
   </section>
   <section class="section">
     ${boardHtml(board, hitSet)}
-    <table class="answer-table"><thead><tr><th>Word</th><th>Starts (row, col)</th><th>Ends (row, col)</th></tr></thead><tbody>${answers
+    <table class="answer-table"><thead><tr><th>${tn('daily.col.word')}</th><th>${tn('daily.col.starts')}</th><th>${tn('daily.col.ends')}</th></tr></thead><tbody>${answers
       .map((a) => `<tr><td><strong>${esc(a.word)}</strong></td><td>${esc(a.start)}</td><td>${esc(a.end)}</td></tr>`)
       .join('')}</tbody></table>
-    <p class="prose">Words: ${esc(answerWords)}.</p>
+    <p class="prose">${tn('daily.wordsList', { words: answerWords })}</p>
   </section>
   <section class="section prose">
-    <h2>About this puzzle</h2>
-    <p>This puzzle was generated on ${date} using the ${esc(
-      theme.title,
-    )} word list. Every player gets the same grid, and a new one appears every day at midnight UTC. Play it free on <a href="/games/wordsearch/">arcadefork</a> or browse the <a href="/daily/">full archive</a>.</p>
+    <h2>${tn('daily.about')}</h2>
+    <p>${rich('daily.aboutBody', {
+      date,
+      theme: esc(theme.title),
+      game: esc(lp('/games/wordsearch/')),
+      site: SITE.name,
+      archive: esc(lp('/daily/')),
+    })}</p>
   </section>
 </main>
-${siteFooter()}`;
+${siteFooter(`/daily/${date}/answers/`)}`;
     write(
       `daily/${date}/answers/index.html`,
       layout({
-        title: `Word search answers for ${date} — ${answers.length} words | ${SITE.name}`,
-        description: `Full answer list for the ${date} daily word search: ${esc(
-          answerWords,
-        )}. Solved grid and start/end positions for every word.`,
-        canonical: abs(`/daily/${date}/answers/`),
+        title: `${plain('daily.answersTitle', { date, count: answers.length })} | ${SITE.name}`,
+        description: plain('daily.answersDesc', {
+          date,
+          words: answerWords,
+          count: answers.length,
+        }),
+        path: `/daily/${date}/answers/`,
         body: answersBody,
       }),
     );
@@ -1038,19 +1324,45 @@ ${siteFooter()}`;
 
 /* --------------------------------------------------------- misc + sitemap */
 
-function buildSitemap(urls) {
-  const xml = `<?xml version="1.0" encoding="UTF-8"?>
+/**
+ * The sitemap index over the three language sitemaps.
+ *
+ * A sitemap must list URLs of one language: mixing them is how a French page
+ * gets indexed as the English one. So each tree gets its own urlset and
+ * /sitemap.xml becomes an index of the three - the one URL robots.txt points
+ * at, and the one that does not change when a language is added.
+ */
+export function sitemapIndexXml(baseUrl, lastmod = '') {
+  const base = String(baseUrl).replace(/\/+$/, '');
+  const rows = LOCALES.map(
+    (l) =>
+      `  <sitemap><loc>${esc(`${base}/sitemap-${l.hreflang}.xml`)}</loc>${lastmod ? `<lastmod>${lastmod}</lastmod>` : ''}</sitemap>`,
+  ).join('\n');
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${rows}
+</sitemapindex>
+`;
+}
+
+/** One urlset per locale, plus the index. Called once, after every tree exists. */
+function buildSitemaps(byLocale, today) {
+  for (const l of LOCALES) {
+    const urls = byLocale[l.id] ?? [];
+    const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${urls.map((u) => `  <url><loc>${esc(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}</url>`).join('\n')}
 </urlset>
 `;
-  write('sitemap.xml', xml);
+    writeRoot(`sitemap-${l.hreflang}.xml`, xml);
+  }
+  writeRoot('sitemap.xml', sitemapIndexXml(SITE.baseUrl, today));
 }
 
 function buildRobots() {
   // SITE.baseUrl already ends in a slash ("https://arcadefork.pages.dev/"),
   // so appending "/sitemap.xml" produced a doubled slash in the live file.
-  write(
+  writeRoot(
     'robots.txt',
     `User-agent: *
 Allow: /
@@ -1130,33 +1442,32 @@ function copyThirdParty() {
 function buildCredits() {
   const thirdParty = GAMES.filter((g) => g.credit);
   const original = GAMES.filter((g) => !g.credit);
-  const year = new Date().getUTCFullYear();
 
   const body = `${siteHeader('/credits/')}
 <main class="wrap" id="main">
   <section class="hero">
-    <span class="pill">${GAMES.length} games</span>
-    <h1>Credits</h1>
-    <p>arcadefork is built by Ayhem Kahri. Some games are original; the rest are open-source projects by other people, vendored here with their original licences and a link back to the source.</p>
+    <span class="pill">${tn('count.games', { count: GAMES.length })}</span>
+    <h1>${tn('credits.h1')}</h1>
+    <p>${tn('credits.intro', { site: SITE.name })}</p>
   </section>
 
   <section class="section prose">
-    <h2>Original games</h2>
-    <p>Written for arcadefork, running on a custom TypeScript engine with no third-party runtime dependencies.</p>
+    <h2>${tn('credits.original')}</h2>
+    <p>${tn('credits.originalBody', { site: SITE.name })}</p>
     <div class="linklist">${original
-      .map((g) => `<a href="/games/${g.id}/">${esc(g.title)}</a>`)
+      .map((g) => `<a href="${lp(`/games/${g.id}/`)}">${esc(g.title)}</a>`)
       .join('')}</div>
   </section>
 
   <section class="section prose">
-    <h2>Open-source games</h2>
-    <p>Each of these is the author's original work, vendored under its own licence. The full licence text ships inside each game's folder.</p>
+    <h2>${tn('credits.oss')}</h2>
+    <p>${tn('credits.ossBody')}</p>
     <table class="answer-table credits-table">
-      <thead><tr><th>Game</th><th>By</th><th>Licence</th><th>Source</th></tr></thead>
+      <thead><tr><th>${tn('credits.col.game')}</th><th>${tn('credits.col.by')}</th><th>${tn('credits.col.licence')}</th><th>${tn('credits.col.source')}</th></tr></thead>
       <tbody>${thirdParty
         .map(
           (g) =>
-            `<tr><td><a href="/games/${g.id}/">${esc(g.title)}</a></td><td>${esc(
+            `<tr><td><a href="${lp(`/games/${g.id}/`)}">${esc(g.title)}</a></td><td>${esc(
               g.credit.author,
             )}</td><td>${esc(creditLicence(g.credit))}</td><td><a href="${esc(
               g.credit.source,
@@ -1167,18 +1478,18 @@ function buildCredits() {
   </section>
 
   <section class="section prose">
-    <h2>Thanks</h2>
-    <p>Nicky Case for Trust and Loopy, Jake Gordon for Javascript Tetris, and mumuy for Pacman. Their work made this collection what it is.</p>
+    <h2>${tn('credits.thanks')}</h2>
+    <p>${tn('credits.thanksBody')}</p>
   </section>
 </main>
-${siteFooter()}`;
+${siteFooter('/credits/')}`;
 
   write(
     'credits/index.html',
     layout({
-      title: `Credits — the games and people behind arcadefork`,
-      description: `Credits for arcadefork: original games by Ayhem Kahri plus open-source games by Nicky Case, Jake Gordon and mumuy, with licences and source links.`,
-      canonical: abs('/credits/'),
+      title: plain('credits.title', { site: SITE.name }),
+      description: plain('credits.desc', { site: SITE.name }),
+      path: '/credits/',
       body,
     }),
   );
@@ -1211,14 +1522,15 @@ export function pageCountFor(total, perPage = GAMES_PER_PAGE) {
  * sitemap is the shallow one; deeper pages are real paths, not query strings,
  * so they are crawlable, cacheable and shareable without JavaScript.
  */
-export function pageHref(page) {
+export function pageHref(page, prefix = '') {
   const n = Math.max(1, Math.floor(Number(page) || 1));
-  return n === 1 ? '/games/' : `/games/page/${n}/`;
+  const p = n === 1 ? '/games/' : `/games/page/${n}/`;
+  return localePath(prefix, p);
 }
 
 /** The absolute, self-referencing canonical URL for page `page`. */
-export function pageCanonical(page) {
-  return abs(pageHref(page));
+export function pageCanonical(page, prefix = '') {
+  return abs(pageHref(page, prefix));
 }
 
 /** The games on page `page`, in catalogue order. Past the end: empty. */
@@ -1263,23 +1575,26 @@ export function catalogJson(games) {
 export function pagerHtml(page, pages, opts = {}) {
   const total = Math.max(1, Math.floor(Number(pages) || 1));
   const at = Math.min(Math.max(1, Math.floor(Number(page) || 1)), total);
+  const prefix = opts.prefix ?? '';
   const numbers = [];
   for (let n = 1; n <= total; n++) {
     numbers.push(
       n === at
-        ? `<li><a href="${pageHref(n)}" aria-current="page">${n}</a></li>`
-        : `<li><a href="${pageHref(n)}">${n}</a></li>`,
+        ? `<li><a href="${pageHref(n, prefix)}" aria-current="page">${n}</a></li>`
+        : `<li><a href="${pageHref(n, prefix)}">${n}</a></li>`,
     );
   }
+  const prevLabel = translate(L.catalog, 'pager.prev');
+  const nextLabel = translate(L.catalog, 'pager.next');
   const prev =
     at > 1
-      ? `<a class="pager-step" href="${pageHref(at - 1)}" rel="prev"><span aria-hidden="true">‹</span> Prev</a>`
-      : `<span class="pager-step is-off" aria-hidden="true"><span>‹</span> Prev</span>`;
+      ? `<a class="pager-step" href="${pageHref(at - 1, prefix)}" rel="prev"><span aria-hidden="true">‹</span> ${prevLabel}</a>`
+      : `<span class="pager-step is-off" aria-hidden="true"><span>‹</span> ${prevLabel}</span>`;
   const next =
     at < total
-      ? `<a class="pager-step" href="${pageHref(at + 1)}" rel="next">Next <span aria-hidden="true">›</span></a>`
-      : `<span class="pager-step is-off" aria-hidden="true">Next <span>›</span></span>`;
-  return `<nav class="pager"${opts.id ? ` id="${opts.id}"` : ''} data-pager aria-label="Game pages">
+      ? `<a class="pager-step" href="${pageHref(at + 1, prefix)}" rel="next">${nextLabel} <span aria-hidden="true">›</span></a>`
+      : `<span class="pager-step is-off" aria-hidden="true">${nextLabel} <span>›</span></span>`;
+  return `<nav class="pager"${opts.id ? ` id="${opts.id}"` : ''} data-pager aria-label="${translate(L.catalog, 'nav.gamePages')}">
   ${prev}
   <ol class="pager-list">${numbers.join('')}</ol>
   ${next}
@@ -1290,22 +1605,25 @@ function buildGamesIndex() {
   const total = GAMES.length;
   const perPage = GAMES_PER_PAGE;
   const pages = pageCountFor(total, perPage);
+  const prefix = L.prefix;
   const byCategory = CATEGORIES.map((c) => ({
     ...c,
     games: GAMES.filter((g) => g.category === c.id),
   })).filter((c) => c.games.length);
 
   const chips = [
-    `<button class="chip is-on" type="button" data-cat-chip="all" data-cat-title="everything" aria-pressed="true">Everything <b>${total}</b></button>`,
+    `<button class="chip is-on" type="button" data-cat-chip="all" data-cat-title="${esc(
+      catShort({ id: 'all', title: 'Everything' }),
+    )}" aria-pressed="true">${tn('index.everything')} <b>${total}</b></button>`,
     ...byCategory.map((c) => {
-      const label = c.title.replace(/ Games$/, '');
+      const label = catShort(c);
       return `<button class="chip" type="button" data-cat-chip="${esc(c.id)}" data-cat-title="${esc(
         label,
       )}" aria-pressed="false">${esc(label)} <b>${c.games.length}</b></button>`;
     }),
   ].join('');
 
-  const categoryList = byCategory.map((c) => c.title.toLowerCase()).join(', ');
+  const categoryList = byCategory.map((c) => catTitle(c).toLowerCase()).join(', ');
 
   /** Deeper pages are discovered from page 1 and from each other. */
   const pageUrls = [];
@@ -1317,57 +1635,59 @@ function buildGamesIndex() {
     const isFirst = page === 1;
 
     const title = isFirst
-      ? `All ${total} free browser games — the full arcade | ${SITE.name}`
-      : `All ${total} free browser games — page ${page} of ${pages} | ${SITE.name}`;
+      ? `${plain('index.title1', { count: total })} | ${SITE.name}`
+      : `${plain('index.titleN', { count: total, page, pages })} | ${SITE.name}`;
     const description = isFirst
-      ? `Browse all ${total} free browser games on ${SITE.name}: ${categoryList}. Instant play, no download, no sign-up.`
-      : `Games ${from}–${to} of ${total} free browser games on ${SITE.name}, page ${page} of ${pages}. Instant play, no download, no sign-up.`;
+      ? plain('index.desc1', { count: total, site: SITE.name, categories: categoryList })
+      : plain('index.descN', { count: total, from, to, page, pages, site: SITE.name });
 
     const head = [
-      page > 1 ? `<link rel="prev" href="${esc(pageCanonical(page - 1))}">` : '',
-      page < pages ? `<link rel="next" href="${esc(pageCanonical(page + 1))}">` : '',
+      page > 1 ? `<link rel="prev" href="${esc(pageCanonical(page - 1, prefix))}">` : '',
+      page < pages ? `<link rel="next" href="${esc(pageCanonical(page + 1, prefix))}">` : '',
     ]
       .filter(Boolean)
       .join('\n');
 
-    const pager = pages > 1 ? pagerHtml(page, pages) : '';
+    const pager = pages > 1 ? pagerHtml(page, pages, { prefix }) : '';
 
-    const body = `${siteHeader('/games/')}
+    const body = `${siteHeader(pageHref(page))}
 <main class="wrap" id="main">
   <section class="hero" style="padding-bottom:8px">
     <div>
       <p class="kicker"><i></i>${
         isFirst
-          ? `${total} games · ${byCategory.length} categories · all free`
-          : `Page ${page} of ${pages} · games ${from}–${to} of ${total}`
+          ? tn('index.kicker1', { count: total, cats: byCategory.length })
+          : tn('index.kickerN', { page, pages, from, to, count: total })
       }</p>
-      <h1>${isFirst ? 'Every game in the arcade' : `All games — page ${page} of ${pages}`}</h1>
+      <h1>${isFirst ? tn('index.h1.1') : tn('index.h1.n', { page, pages })}</h1>
       <p class="lede">${
-        isFirst
-          ? 'No download, no sign-up, no paywall. Search by name, filter by category, or just press the random button and see what happens.'
-          : `The same arcade, split across ${pages} pages so it opens fast. Search reaches all ${total} games, whichever page they live on.`
+        isFirst ? tn('index.lede1') : tn('index.ledeN', { pages, count: total })
       }</p>
       <form class="filter-bar" role="search" onsubmit="return false">
-        <input id="game-filter" class="filter-input" type="search" name="q" placeholder="Search ${total} games…"
-               autocomplete="off" spellcheck="false" aria-label="Search games by name"
+        <input id="game-filter" class="filter-input" type="search" name="q" placeholder="${tn('index.placeholder', { count: total })}"
+               autocomplete="off" spellcheck="false" aria-label="${tn('index.searchLabel')}"
                aria-describedby="filter-status">
-        <select id="sort-games" class="sort-select" aria-label="Sort games">
-          <option value="default">Arcade order</option>
+        <select id="sort-games" class="sort-select" aria-label="${tn('index.sortLabel')}">
+          <option value="default">${tn('index.sortDefault')}</option>
           <option value="az">A → Z</option>
           <option value="za">Z → A</option>
         </select>
-        <button class="btn" id="btn-random" type="button">${glyph('a-dice', 18)} Random</button>
+        <button class="btn" id="btn-random" type="button">${glyph('a-dice', 18)} ${tn('index.random')}</button>
       </form>
       <div class="chips" id="cat-chips">${chips}</div>
       <p id="filter-status" class="filter-status" role="status" aria-live="polite"></p>
     </div>
   </section>
   <div id="game-sections" data-catalog="/games/catalog.json">
-    ${pages > 1 ? pagerHtml(page, pages, { id: 'game-pager-top' }) : ''}
+    ${pages > 1 ? pagerHtml(page, pages, { id: 'game-pager-top', prefix }) : ''}
     <section class="section" id="index-tiles" data-page="${page}">
       <div class="section-head">
-        <h2>${isFirst ? `Showing ${from}–${to} of ${total}` : `Games ${from}–${to}`}</h2>
-        <span class="pill">page ${page} of ${pages}</span>
+        <h2>${
+          isFirst
+            ? tn('index.showing', { from, to, count: total })
+            : tn('index.range', { from, to })
+        }</h2>
+        <span class="pill">${tn('index.pagePill', { page, pages })}</span>
       </div>
       ${gameTiles(slice)}
     </section>
@@ -1375,41 +1695,42 @@ function buildGamesIndex() {
     ${pager}
   </div>
   <div class="empty" id="filter-empty" hidden>
-    <b>No game matches that.</b>
-    Try a shorter word, or <a href="/games/">clear the filter</a>.
+    <b>${tn('index.emptyTitle')}</b>
+    ${rich('index.emptyBody', { href: esc(lp('/games/')) })}
   </div>
 ${
   isFirst
     ? `
   <section class="section" id="recent-section">
     <div class="section-head">
-      <h2>Pick up where you left off</h2>
-      <span class="pill">on this device</span>
+      <h2>${tn('home.recent')}</h2>
+      <span class="pill">${tn('home.device')}</span>
     </div>
     <div class="hscroll" aria-live="polite"></div>
   </section>`
     : ''
 }
 </main>
-${siteFooter()}`;
+${siteFooter(pageHref(page))}`;
 
     write(
       isFirst ? 'games/index.html' : `games/page/${page}/index.html`,
       layout({
         title,
         description,
-        canonical: pageCanonical(page),
+        path: pageHref(page),
         head,
         body,
       }),
     );
 
-    if (!isFirst) pageUrls.push(pageCanonical(page));
+    if (!isFirst) pageUrls.push(pageCanonical(page, prefix));
   }
 
   // The whole catalogue in four fields per game, fetched on the first
-  // keystroke rather than shipped with the page.
-  write('games/catalog.json', catalogJson(GAMES));
+  // keystroke rather than shipped with the page. Titles are proper nouns, so
+  // one copy serves all three trees.
+  if (L.id === DEFAULT_LOCALE) writeRoot('games/catalog.json', catalogJson(GAMES));
 
   return { total, perPage, pages, urls: pageUrls };
 }
@@ -1425,98 +1746,146 @@ function buildAdvertise() {
   const body = `${siteHeader('/advertise/')}
 <main class="wrap" id="main">
   <section class="hero">
-    <span class="pill">Sponsors only — no ad networks</span>
-    <h1>Put your thing in the cabinet.</h1>
-    <p>arcadefork is a free arcade with a daily puzzle that brings people back every day. A few quiet, labelled sponsor slots are what keep it free — and one of them can be yours.</p>
+    <span class="pill">${tn('ad.pill')}</span>
+    <h1>${tn('ad.h1')}</h1>
+    <p>${tn('ad.intro')}</p>
   </section>
 
   <section class="section prose">
-    <h2>What a slot is</h2>
-    <p>A text (or small image) card, always marked <strong>Sponsored</strong>, shown beside the games of one category and on that category's hub pages. One sponsor per category — a player sees yours, and only yours.</p>
+    <h2>${tn('ad.whatTitle')}</h2>
+    <p>${rich('ad.whatBody', {})}</p>
     <ul>
-      <li>No pop-ups, interstitials, auto-playing sound or floating panels — those would kill an arcade like this.</li>
-      <li>Never mixed into game results, scores or the puzzle grid.</li>
-      <li>No tracking scripts at any price.</li>
+      <li>${tn('ad.rule1')}</li>
+      <li>${tn('ad.rule2')}</li>
+      <li>${tn('ad.rule3')}</li>
     </ul>
-    <p>What you buy is placement, not scale: traffic here is real, small, and growing through the daily puzzle. Prices match that.</p>
+    <p>${tn('ad.whatFoot')}</p>
   </section>
 
   <section class="section">
-    <h2>Prices</h2>
+    <h2>${tn('ad.prices')}</h2>
     <table class="answer-table">
-      <thead><tr><th>Slot</th><th>Where it shows</th><th>Price</th></tr></thead>
+      <thead><tr><th>${tn('ad.col.slot')}</th><th>${tn('ad.col.where')}</th><th>${tn('ad.col.price')}</th></tr></thead>
       <tbody>
-        <tr><td><strong>Launch week</strong></td><td>Any slot, one week, first month only</td><td>$5</td></tr>
-        <tr><td><strong>Category slot</strong></td><td>Every page of one category</td><td>$15 / month</td></tr>
-        <tr><td><strong>Site-wide slot</strong></td><td>Every game and category page</td><td>$35 / month</td></tr>
+        <tr><td><strong>${tn('ad.row1.name')}</strong></td><td>${tn('ad.row1.where')}</td><td>${tn('ad.row1.price')}</td></tr>
+        <tr><td><strong>${tn('ad.row2.name')}</strong></td><td>${tn('ad.row2.where')}</td><td>${tn('ad.row2.price')}</td></tr>
+        <tr><td><strong>${tn('ad.row3.name')}</strong></td><td>${tn('ad.row3.where')}</td><td>${tn('ad.row3.price')}</td></tr>
       </tbody>
     </table>
-    <p class="prose">Flat. No impressions, no bidding, no renewals held hostage — cancel any month.</p>
+    <p class="prose">${tn('ad.flat')}</p>
   </section>
 
   <section class="section prose">
-    <h2>How it starts</h2>
+    <h2>${tn('ad.startTitle')}</h2>
     <ol>
-      <li>Write to me with your name, what you advertise and the link.</li>
-      <li>Your slot goes live on the next build — usually the same day — and you see it on the real site before paying anything.</li>
-      <li>The payment link arrives with the confirmation. You only pay once it is live.</li>
+      <li>${tn('ad.start1')}</li>
+      <li>${tn('ad.start2')}</li>
+      <li>${tn('ad.start3')}</li>
     </ol>
   </section>
 
   <section class="section prose">
-    <h2>What fits</h2>
-    <p>Games, game-dev tools, word-game and puzzle books, education, indie newsletters. Family-friendly only: no gambling, no crypto, no loot boxes, nothing you couldn't explain to a nine-year-old.</p>
+    <h2>${tn('ad.fits')}</h2>
+    <p>${tn('ad.fitsBody')}</p>
   </section>
 
   <section class="section prose">
-    <h2>Contact</h2>
-    <p>One line is enough to start:</p>
+    <h2>${tn('ad.contact')}</h2>
+    <p>${tn('ad.contactBody')}</p>
     <div class="linklist">${contactLinks}</div>
   </section>
 </main>
-${siteFooter()}`;
+${siteFooter('/advertise/')}`;
   write(
     'advertise/index.html',
     layout({
-      title: `Advertise — sponsor a slot in the arcade | ${SITE.name}`,
-      description: `Put your game, tool or newsletter in front of arcadefork players: one labelled sponsor slot per category, no pop-ups, from $5. Sponsors only — no ad networks.`,
-      canonical: abs('/advertise/'),
+      title: `${plain('ad.title')} | ${SITE.name}`,
+      description: plain('ad.desc', { site: SITE.name }),
+      path: '/advertise/',
       body,
     }),
   );
 }
 
+/**
+ * The 404 page is built once, in English, at the site root.
+ *
+ * A host serves /404.html for any miss, whichever tree the miss was in, so
+ * three copies would be three files nobody is served. It carries no
+ * alternates for the same reason, and noindex: a 404 in the index is a
+ * self-inflicted wound.
+ */
 function buildNotFound() {
   const body = `${siteHeader('/')}
 <main class="wrap" id="main">
   <section class="hero" style="min-height:38vh;justify-content:center">
     <p class="kicker"><i></i>404</p>
-    <h1>That page is not in the cabinet.</h1>
-    <p>It may have moved, or it never existed. The games all still work — pick one, or go back to the start.</p>
+    <h1>${tn('nf.h1')}</h1>
+    <p>${tn('nf.body')}</p>
     <div class="hero-cta">
-      <a class="btn btn-primary" href="/games/">Browse all ${GAMES.length} games</a>
-      <a class="btn" href="/">Home</a>
+      <a class="btn btn-primary" href="${lp('/games/')}">${tn('home.browseAll', { count: GAMES.length })}</a>
+      <a class="btn" href="${lp('/')}">${tn('nav.home')}</a>
     </div>
   </section>
   <section class="section">${gameTiles(GAMES.slice(0, 10))}</section>
 </main>
-${siteFooter()}`;
-  write(
+${siteFooter('/')}`;
+  writeRoot(
     '404.html',
     layout({
-      title: `Page not found | ${SITE.name}`,
-      description: 'That page does not exist on arcadefork.',
-      canonical: abs('/404.html'),
+      title: `${plain('nf.title')} | ${SITE.name}`,
+      description: plain('nf.desc', { site: SITE.name }),
+      path: '/404.html',
       body,
+      alternates: false,
+      indexable: false,
     }),
   );
+}
+
+/**
+ * Render one page's skeleton in memory, for the tests.
+ *
+ * lang/dir, the canonical, the alternate set and the switcher are page-level
+ * contracts; the only honest way to check them is to run the real layout()
+ * instead of asserting on its source.
+ */
+export function renderProbePage(localeId = DEFAULT_LOCALE, opts = {}) {
+  const previous = L;
+  useLocale(localeId);
+  const path = opts.path ?? '/games/snake/';
+  try {
+    return layout({
+      title: 'Probe page',
+      description: 'Probe description',
+      path,
+      body: `${siteHeader(path)}<main id="main"></main>${siteFooter(path)}`,
+    });
+  } finally {
+    L = previous;
+  }
 }
 
 /* ------------------------------------------------------------------ main */
 
 function main() {
   if (existsSync(dist)) {
-    for (const entry of ['index.html', 'games', 'categories', 'daily', 'sitemap.xml', '404.html']) {
+    for (const entry of [
+      'index.html',
+      'games',
+      'categories',
+      'daily',
+      'credits',
+      'advertise',
+      'sitemap.xml',
+      'sitemap-en.xml',
+      'sitemap-fr.xml',
+      'sitemap-ar.xml',
+      '404.html',
+      // The language trees, so a locale removed from the registry does not
+      // leave a stale /fr/ behind in dist/ or in the deploy.
+      ...LOCALES.map((l) => l.prefix.replace(/^\//, '')).filter(Boolean),
+    ]) {
       rmSync(join(dist, entry), { recursive: true, force: true });
     }
   }
@@ -1527,47 +1896,61 @@ function main() {
   versionServiceWorker();
   writeHeaders();
   const today = todayISO();
-  const urls = [];
+  /** URL list per locale: one sitemap each, never a mixed one. */
+  const byLocale = {};
 
-  buildHome();
-  urls.push({ loc: abs('/'), lastmod: today });
+  for (const locale of LOCALES) {
+    useLocale(locale.id);
+    const urls = [];
 
-  for (const c of CATEGORIES) {
-    buildCategory(c);
-    urls.push({ loc: abs(`/categories/${c.id}/`), lastmod: today });
+    buildHome();
+    urls.push({ loc: pageUrl('/'), lastmod: today });
+
+    for (const c of CATEGORIES) {
+      buildCategory(c);
+      urls.push({ loc: pageUrl(`/categories/${c.id}/`), lastmod: today });
+    }
+
+    for (const g of GAMES) {
+      buildGamePage(g);
+      urls.push({ loc: pageUrl(`/games/${g.id}/`), lastmod: today });
+    }
+
+    buildCredits();
+    urls.push({ loc: pageUrl('/credits/'), lastmod: today });
+    urls.push({ loc: pageUrl('/games/'), lastmod: today });
+    urls.push({ loc: pageUrl('/advertise/'), lastmod: today });
+
+    buildDailyPages();
+    urls.push({ loc: pageUrl('/daily/'), lastmod: today });
+    for (let i = -PAST_DAYS; i <= FUTURE_DAYS; i++) {
+      const d = addDays(today, i);
+      urls.push({ loc: pageUrl(`/daily/${d}/`), lastmod: d });
+      urls.push({ loc: pageUrl(`/daily/${d}/answers/`), lastmod: d });
+    }
+
+    // The index is paged, so it is built before the sitemap that lists its
+    // pages. buildGamesIndex also writes the shared catalog.json, once.
+    const index = buildGamesIndex();
+    for (const loc of index.urls) urls.push({ loc, lastmod: today });
+
+    buildAdvertise();
+
+    byLocale[locale.id] = urls;
   }
 
-  for (const g of GAMES) {
-    buildGamePage(g);
-    urls.push({ loc: abs(`/games/${g.id}/`), lastmod: today });
-  }
-
-  urls.push({ loc: abs('/credits/'), lastmod: today });
-  urls.push({ loc: abs('/games/'), lastmod: today });
-  urls.push({ loc: abs('/advertise/'), lastmod: today });
-
-  buildDailyPages();
-  urls.push({ loc: abs('/daily/'), lastmod: today });
-  for (let i = -PAST_DAYS; i <= FUTURE_DAYS; i++) {
-    const d = addDays(today, i);
-    urls.push({ loc: abs(`/daily/${d}/`), lastmod: d });
-    urls.push({ loc: abs(`/daily/${d}/answers/`), lastmod: d });
-  }
-
+  // Site-wide files, written once, outside any tree.
   buildRobots();
-  buildCredits();
-  // The index is paged, so it is built before the sitemap that lists its pages.
-  const index = buildGamesIndex();
-  for (const loc of index.urls) urls.push({ loc, lastmod: today });
-
-  buildSitemap(urls);
+  buildSitemaps(byLocale, today);
+  useLocale(DEFAULT_LOCALE);
   buildNotFound();
-  buildAdvertise();
 
   const vendored = copyThirdParty();
-  const total = urls.length;
+  const total = LOCALES.reduce((n, l) => n + (byLocale[l.id]?.length ?? 0), 0);
+  const perLocale = LOCALES.map((l) => `${l.id} ${byLocale[l.id]?.length ?? 0}`).join(', ');
   console.log(
-    `arcadefork: built ${total} URLs (${GAMES.length} games, ${CATEGORIES.length} categories, ${vendored} vendored third-party)`,
+    `arcadefork: built ${total} URLs across ${LOCALES.length} languages (${perLocale}) — ` +
+      `${GAMES.length} games, ${CATEGORIES.length} categories, ${vendored} vendored third-party`,
   );
 }
 

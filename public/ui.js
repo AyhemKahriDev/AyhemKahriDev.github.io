@@ -17,6 +17,31 @@
   'use strict';
 
   var root = document.documentElement;
+
+  /* The page ships its own locale: the URL prefix for in-tree links, and the
+     handful of strings this file owns. Without it (an older cached document)
+     English at the root is the safe default. */
+  var AF = { locale: 'en', prefix: '', strings: {} };
+  try {
+    var afNode = document.getElementById('af-i18n');
+    if (afNode) AF = JSON.parse(afNode.textContent) || AF;
+  } catch (e) {
+    /* keep English */
+  }
+  var PREFIX = AF.prefix || '';
+  var STR = AF.strings || {};
+
+  /** A site path in this page's language tree. */
+  function lp(path) {
+    return PREFIX + path;
+  }
+
+  /** {name} interpolation, same contract as the builder's t(). */
+  function fill(template, vars) {
+    return String(template).replace(/\{(\w+)\}/g, function (whole, name) {
+      return Object.prototype.hasOwnProperty.call(vars, name) ? String(vars[name]) : whole;
+    });
+  }
   var reduceMotion =
     window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -244,7 +269,7 @@
     var sym = GAME_GLYPHS[r.i] || GLYPHS[r.c] || 'a-spark';
     var gradId = 'gxr-' + String(r.i).toLowerCase().replace(/[^a-z0-9-]/g, '');
     return (
-      '<a class="recent-tile" href="/games/' + encodeURIComponent(r.i) + '/">' +
+      '<a class="recent-tile" href="' + lp('/games/' + encodeURIComponent(r.i) + '/') + '">' +
       '<svg viewBox="0 0 96 96" aria-hidden="true">' +
       '<defs><linearGradient id="' + gradId + '" x1="0" y1="0" x2="0.85" y2="1">' +
       '<stop offset="0" stop-color="hsl(' + h + ' 72% 54%)"/>' +
@@ -337,12 +362,12 @@
           return !scope || e.c === scope;
         })
         .map(function (e) {
-          return '/games/' + encodeURIComponent(e.i) + '/';
+          return lp('/games/' + encodeURIComponent(e.i) + '/');
         });
     }
     if (!pool.length) {
       pool = Array.prototype.slice
-        .call(document.querySelectorAll('a.tile[href^="/games/"]'))
+        .call(document.querySelectorAll('a.tile[href^="' + lp('/games/') + '"]'))
         .filter(function (a) {
           return !scope || a.getAttribute('data-cat') === scope;
         })
@@ -443,7 +468,7 @@
       var pageSorted = false;
 
       function hrefFor(id) {
-        return '/games/' + encodeURIComponent(id) + '/';
+        return lp('/games/' + encodeURIComponent(id) + '/');
       }
 
       function everyWord(hay) {
@@ -580,12 +605,13 @@
         if (status) {
           var bits = [];
           if (filtering) {
-            bits.push(hits + ' game' + (hits === 1 ? '' : 's'));
-            if (state.q) bits.push('matching “' + input.value.trim() + '”');
-            if (state.cat !== 'all') bits.push('in ' + (catName[state.cat] || state.cat));
-            if (crossPage) bits.push('· all ' + catalogCache.length + ' games');
-            else if (catalogBroken) bits.push('· catalogue unavailable, this page only');
-            else bits.push('· this page, loading the rest');
+            bits.push(fill(hits === 1 ? STR.one : STR.many, { count: hits }));
+            if (state.q) bits.push(fill(STR.match, { q: input.value.trim() }));
+            if (state.cat !== 'all')
+              bits.push(fill(STR.in, { category: catName[state.cat] || state.cat }));
+            if (crossPage) bits.push(fill(STR.all, { count: catalogCache.length }));
+            else if (catalogBroken) bits.push(STR.broken);
+            else bits.push(STR.page);
           }
           status.textContent = bits.join(' ');
         }
@@ -750,7 +776,7 @@
       var warm = function (a) {
         if (!a || spent >= 14) return;
         var href = a.getAttribute('href') || '';
-        if (href.indexOf('/games/') !== 0 || href.indexOf('#') !== -1) return;
+        if (href.indexOf(lp('/games/')) !== 0 || href.indexOf('#') !== -1) return;
         if (seen[href]) return;
         seen[href] = 1;
         spent++;
@@ -763,7 +789,9 @@
       document.addEventListener(
         'pointerover',
         function (e) {
-          var a = e.target && e.target.closest ? e.target.closest('a[href^="/games/"]') : null;
+          var a = e.target && e.target.closest
+            ? e.target.closest('a[href^="' + lp('/games/') + '"]')
+            : null;
           if (a) warm(a);
         },
         { passive: true },
@@ -771,7 +799,9 @@
       document.addEventListener(
         'focusin',
         function (e) {
-          var a = e.target && e.target.closest ? e.target.closest('a[href^="/games/"]') : null;
+          var a = e.target && e.target.closest
+            ? e.target.closest('a[href^="' + lp('/games/') + '"]')
+            : null;
           if (a) warm(a);
         },
         { passive: true },
