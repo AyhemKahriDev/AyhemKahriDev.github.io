@@ -15,6 +15,8 @@ import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { familyFor as classifyFamily } from './harvest/copy.mjs';
+
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 /**
@@ -569,7 +571,20 @@ export function categoryDescription(catalog, id, fallback) {
   return en ?? fallback ?? '';
 }
 
-/** The genre template for a game, if the catalog carries one. */
+/**
+ * The genre template for a game, if the catalog carries one.
+ *
+ * A locale catalog only has the families someone wrote, so this resolves a
+ * family id first and then asks the catalog whether it has that family: a
+ * French catalog without a `sudoku` template falls back to `generic` (through
+ * `gameCopy`), never to another genre's paragraph.
+ *
+ * The id comes from the catalogue's own record, not from the title alone. A
+ * harvested title is often just the repository name (`Kavun Flabbybox`), so
+ * `familyFor()` in scripts/harvest/copy.mjs reads the description, the keyword
+ * list, the category and the repository path too - the fields the fallback
+ * description was generated from in the first place.
+ */
 export function familyFor(catalog, game) {
   const families = catalog?.families;
   if (!families || typeof families !== 'object') return null;
@@ -590,7 +605,19 @@ export function familyFor(catalog, game) {
   for (const [key, value] of Object.entries(families)) {
     if (value && typeof value === 'object' && wanted.has(slug(key))) return value;
   }
-  return null;
+  // Nothing is named after the game itself: classify the record, then keep the
+  // answer only if this catalog carries that family.
+  const genre = classifyFamily('', {
+    title: game?.title,
+    id: game?.id,
+    description: game?.description,
+    tagline: game?.tagline,
+    keywords: game?.keywords,
+    category: game?.category,
+    repo: game?.credit?.source,
+  });
+  const family = genre && genre !== 'generic' ? families[genre] : null;
+  return family && typeof family === 'object' ? family : null;
 }
 
 /**

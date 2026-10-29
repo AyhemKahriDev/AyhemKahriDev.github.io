@@ -1368,18 +1368,251 @@ function normalise(text) {
 }
 
 /**
- * Pick the family whose pattern matches the title and description.
+ * Genre words the catalogue carries that `FAMILIES[].match` does not cover.
+ *
+ * Those patterns stay as they are: `copyFor()` publishes the English copy with
+ * them, so widening them would rewrite the English pages on the next harvest.
+ * This table is for `familyFor()`'s second job - choosing the genre template a
+ * localised page shows - where the caller hands over the whole catalogue
+ * record and there is nothing to regenerate.
+ *
+ * Every entry is a word a game's own author put in the name, the keywords or
+ * the repository, not a guess about the genre: that is the difference between
+ * reading a signal and inventing one.
+ */
+const GENRE_WORDS = {
+  snake: /serpent|\bnibbles?\b|\bworms?\b|\bwormgame\b|\bsnakey\b/,
+  tetris: /tetromino|falling ?blocks?|line ?clear|block ?rain/,
+  pong: /ping ?pong|bat and ball/,
+  pacman: /dot muncher|gobble/,
+  breakout: /brick ?breaker|brick ?break\b|breakout|arkanoid|brickles/,
+  invaders: /space ?shooter|star ?fighter|\bshmup\b|galaga|space invaders/,
+  racing: /speedway|pit ?stop|\btrack ?racing\b/,
+  platformer: /doodle ?jump|endless (?:[a-z]+ )?run\b|side ?scroll|\bjumper\b|crossy road|\bhopper\b|jump and run|\bdino\b/,
+  flappy: /one ?button|helicopter/,
+  maze: /labyrinth|\bamaze\b|\bmazes?\b/,
+  match3: /match[- ]?(?:3|three)|bejewel|candy crush|\bjewels?\b|\bgems?\b/,
+  2048: /\b2048\b|\bthrees\b|number merge|merge tiles/,
+  sliding: /sliding puzzle|slide puzzle|fifteen puzzle|15 puzzle|picture puzzle|tile puzzle/,
+  sokoban: /sokoban|box ?push|crate ?push/,
+  memory: /simon says|matching pairs|\bpairs\b|concentration/,
+  sudoku: /sudoku|number place/,
+  solitaire: /solitaire|klondike|freecell|\bpatience\b/,
+  mahjong: /mah ?jong/,
+  hangman: /hang ?man/,
+  wordsearch: /word ?search|word ?find/,
+  wordle: /wordle|word guess|guess the word/,
+  quiz: /\bquiz|trivia|questions? and answers?/,
+  typing: /typing|type ?test|type ?racer|keysprint|keyboard hero/,
+  towerdefense: /tower ?defen[cs]e|\btd\b|defend the (?:base|tower|path)|plants vs\.? zombies/,
+  roguelike: /rogue[- ]?like|\bdungeon\b|procgen|permadeath/,
+  shooter: /\bshoot(?:er|ing)?\b|bullet ?hell|space ?war|\bgun\b|\bturret\b|\bfps\b|river raid/,
+  idle: /\bidle\b|clicker|incremental|tycoon|\bfactory\b|\bminer\b|farming/,
+  board: /board ?game|\bchess\b|checkers|draughts|reversi|othello|backgammon|\bludo\b|domino|poker|blackjack|connect ?4|four in a row|tic tac toe|noughts and crosses|gomoku|gobang|quoridor|monopoly|scopa|mah ?jong/,
+};
+
+/**
+ * Phrases that outrank a family word they happen to contain.
+ *
+ * "Snake and Ladder" is a board game, not a snake game, and no amount of
+ * matching `snake` makes the serpent template right for it.
+ */
+const EXCEPTIONS = [[/snakes? (?:and|&) ladders?/, 'board']];
+
+/**
+ * The order a claim is believed when two families both match the same field.
+ *
+ * Distinctive names come first: a game that says "quiz" or "sudoku" or
+ * "tetris" in its own title is that game, and a description that also says
+ * "shoot" does not make it a shooter. Broad, easily-borrowed words (racing,
+ * platform, shooter, idle) come last so they cannot outvote a specific claim.
+ */
+const FAMILY_ORDER = [
+  'tetris',
+  '2048',
+  'sudoku',
+  'mahjong',
+  'solitaire',
+  'hangman',
+  'wordsearch',
+  'wordle',
+  'quiz',
+  'typing',
+  'sokoban',
+  'snake',
+  'pong',
+  'pacman',
+  'breakout',
+  'towerdefense',
+  'invaders',
+  'match3',
+  'memory',
+  'maze',
+  'sliding',
+  'board',
+  'roguelike',
+  'racing',
+  'platformer',
+  'flappy',
+  'shooter',
+  'idle',
+];
+
+/** One matcher per family: the harvest pattern plus the words above. */
+const MATCHERS = (() => {
+  const byId = new Map(FAMILIES.map((family) => [family.id, family]));
+  const ordered = [
+    ...FAMILY_ORDER.filter((id) => byId.has(id)),
+    ...FAMILIES.map((family) => family.id).filter((id) => id !== 'generic' && !FAMILY_ORDER.includes(id)),
+  ];
+  return ordered.map((id) => {
+    const base = byId.get(id).match.source;
+    const extra = GENRE_WORDS[id]?.source;
+    return { id, match: new RegExp(extra ? `${base}|${extra}` : base) };
+  });
+})();
+
+/**
+ * The family whose own description template the text repeats.
+ *
+ * `copyFor()` writes a family's template into a catalogue description when the
+ * repository's own words were unusable, so a record whose description *is* the
+ * shooter template was classified as a shooter when it was harvested. Reading
+ * it back is not circular rounding: it recovers the classification the English
+ * page already ships, so the French page can agree with it instead of falling
+ * back to the generic paragraph. A record that carries the *generic* template
+ * says nothing and is skipped.
+ */
+const TEMPLATES = FAMILIES.filter((family) => family.id !== 'generic').map((family) => ({
+  id: family.id,
+  text: normalise(family.description('')).split(/(?<=[.!?]) /)[0],
+}));
+
+/** The family whose template sentence the prose opens with, if any. */
+function templateFamily(prose) {
+  if (!prose) return '';
+  for (const { id, text } of TEMPLATES) {
+    if (text && prose.startsWith(text)) return id;
+  }
+  return '';
+}
+
+/** The first family in belief order whose matcher fires on one haystack. */
+function matchFamily(haystack) {
+  if (!haystack) return '';
+  for (const [pattern, id] of EXCEPTIONS) {
+    if (pattern.test(haystack)) return id;
+  }
+  for (const { id, match } of MATCHERS) {
+    if (match.test(haystack)) return id;
+  }
+  return '';
+}
+
+/**
+ * The genre a category implies when the record itself named nothing.
+ *
+ * `arcade` and `classics` carry no genre at all - that is 292 of the 464 games
+ * - so they stay generic rather than guess.
+ *
+ * The other five name a *kind* of game without naming a *genre*: a puzzle can
+ * be a sliding puzzle, a jigsaw, a Tower of Hanoi or a maths teaser, a word
+ * game can be a word search or a crossword, a brain game can be memory or
+ * logic. Letting the category alone pick `sliding` for those pages told
+ * Lights Out to slide a tile into an empty space and Tangram to rebuild a
+ * picture, so each of these mappings carries the vocabulary that makes it true
+ * and abstains without it.
+ */
+const CATEGORY_DEFAULT = {
+  puzzle: { family: 'sliding', evidence: /tile|slide|image|picture|jigsaw|\b1[0-9]\b|fifteen|shift|swap/ },
+  word: { family: 'wordsearch', evidence: /word ?search|word ?find|hidden word|grid of letters|hide the words/ },
+  brain: { family: 'memory', evidence: /memor|pairs?\b|sequence|simon/ },
+  strategy: { family: 'towerdefense', evidence: /tower|\btd\b|wave|creep|base|defen[cs]e/ },
+  racing: { family: 'racing' },
+  table: { family: 'board' },
+};
+
+/**
+ * Words that make a default a lie even when its evidence word is there: a
+ * Water Sort clone is not a sliding puzzle however many tiles it shows, and a
+ * Monopoly board is not a tower defence.
+ */
+const DEFAULT_VETO = {
+  sliding: /crossword|nonogram|picross|jigsaw|hanoi|\bsort\b|bubble|hidden object|spot the difference|minesweeper|word/,
+  wordsearch: /crossword|anagram|boggle|scrabble|spelling/,
+  board: /mah ?jong|minesweeper/,
+  memory: /minesweeper|sort|sudoku/,
+  towerdefense: /trust|evolution|simulat|monopoly|chess|quoridor|board game|poker|card/,
+  racing: /parking|driving school/,
+};
+
+/**
+ * Pick the family a record belongs to, reading everything the catalogue says.
+ *
+ * The one-string form is the original contract (`familyFor(`${title}
+ * ${description}`)`) and still works: a lone string is believed as the game's
+ * own name. Callers that hold the whole record pass the fields it carries as a
+ * second argument, and each is read in the order it can be trusted:
+ *
+ *   1. the name - title, id and repository slug. An author names their game
+ *      after what it is, so a genre word here is the strongest thing a record
+ *      says, and `Kavun Flabbybox` still says `flabby`.
+ *   2. the record's own description, when it is one of our templates: that is
+ *      the family it was harvested as.
+ *   3. the free prose (description, tagline) - developer text, but often the
+ *      only sentence that says what the thing is.
+ *   4. the keyword list, where the harvest writes `online <genre> game`. It
+ *      ranks below the prose because it was generated from the harvest's
+ *      classification, and a generated keyword must not outvote the words the
+ *      game's author wrote: `Courier City` says it is a GTA-style open world,
+ *      so a stray `one-button` keyword does not make it a flappy game. Where
+ *      the description was unusable and only our template is left, the
+ *      keyword list is the last place that classification survived.
+ *   5. the category, where the category implies a genre and the record says
+ *      nothing that contradicts it.
+ *
+ * Where nothing fires the answer is `'generic'`: a paragraph that is true of
+ * every browser game beats a genre the record never claimed.
  *
  * @param {string} text  Usually `${title} ${description}`.
+ * @param {{title?: string, id?: string, description?: string, tagline?: string,
+ *   keywords?: string[]|string, category?: string, repo?: string}} [record]
+ *   The rest of the catalogue entry, when the caller has it.
  * @returns {string} A family id from FAMILIES, or `'generic'`.
  */
-export function familyFor(text) {
-  const haystack = normalise(text);
-  for (const family of FAMILIES) {
-    if (family.id === 'generic') continue;
-    if (family.match.test(haystack)) return family.id;
-  }
-  return 'generic';
+export function familyFor(text, record = {}) {
+  const extra = record && typeof record === 'object' ? record : {};
+  const str = (value) => (typeof value === 'string' ? value : '');
+  const keywords = Array.isArray(extra.keywords)
+    ? extra.keywords.filter((word) => typeof word === 'string').join(' ')
+    : str(extra.keywords);
+
+  const prose = normalise([str(text), str(extra.description), str(extra.tagline)].filter(Boolean).join(' '));
+  const name = normalise([str(extra.title), str(extra.id), str(extra.repo)].filter(Boolean).join(' '));
+  const words = normalise(keywords);
+  // A lone string is the legacy call: it is a name, not prose, because the
+  // callers that pass one are passing a title.
+  const lone = !name && !words;
+  const template = templateFamily(prose);
+
+  return (
+    matchFamily(lone ? prose : name) ||
+    template ||
+    (lone ? '' : matchFamily(prose)) ||
+    (!prose || template ? matchFamily(words) : '') ||
+    categoryHint(str(extra.category), `${name} ${words} ${prose}`) ||
+    'generic'
+  );
+}
+
+/** The category's genre, when the record supports it and does not contradict it. */
+function categoryHint(category, evidence) {
+  const entry = CATEGORY_DEFAULT[normalise(category)];
+  if (!entry) return '';
+  const veto = DEFAULT_VETO[entry.family];
+  if (veto && veto.test(evidence)) return '';
+  if (entry.evidence && !entry.evidence.test(evidence)) return '';
+  return entry.family;
 }
 
 /** Resolve a supplied family id, falling back to the title guess. */
