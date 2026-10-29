@@ -1,0 +1,708 @@
+{
+  "locale": "fr",
+  "name": "Français",
+  "dir": "ltr",
+  "strings": {
+    "nav.games": "Tous les jeux",
+    "nav.categories": "Catégories",
+    "nav.daily": "Jeu du jour",
+    "nav.credits": "Crédits",
+    "nav.advertise": "Publicité",
+    "nav.home": "Accueil",
+    "nav.theme": "Thème",
+    "nav.language": "Langue",
+    "nav.skipToContent": "Aller au contenu",
+    "nav.main": "Navigation principale",
+
+    "index.searchPlaceholder": "Rechercher parmi {count} jeux",
+    "index.searchAria": "Rechercher un jeu par nom",
+    "index.sort": "Trier les jeux",
+    "index.sortDefault": "Ordre de l'arcade",
+    "index.sortAZ": "A → Z",
+    "index.sortZA": "Z → A",
+    "index.random": "Au hasard",
+    "index.randomAria": "Choisir un jeu au hasard",
+    "index.results": "Jeux {from} à {to} sur {total}",
+    "index.pageOf": "Page {page} sur {pages}",
+    "index.previous": "Précédent",
+    "index.next": "Suivant",
+    "index.filters": "Filtrer par catégorie",
+    "index.allCategories": "Toutes les catégories",
+    "index.noResults": "Aucun jeu ne correspond.",
+    "index.noResultsHint": "Essayez un mot plus court ou effacez le filtre.",
+    "index.clearFilter": "Effacer le filtre",
+    "index.title": "Tous les jeux de l'arcade",
+    "index.titlePaged": "Tous les jeux, page {page} sur {pages}",
+    "index.lede": "Sans téléchargement, sans inscription, sans accès payant. Cherchez par nom, filtrez par catégorie ou lancez le hasard pour voir ce qui sort.",
+
+    "home.title": "Des jeux dans le navigateur, gratuits. Sans téléchargement, sans inscription.",
+    "home.tagline": "Une arcade en ligne de {count} jeux : mots, casse-tête, classiques de l'arcade, jeux de mémoire, stratégie et jeux de table. Rien à installer.",
+    "home.startHere": "Pour commencer",
+    "home.browseByCategory": "Parcourir par catégorie",
+    "home.featured": "Jeux à la une",
+    "home.keepPlaying": "Reprendre où vous en étiez",
+    "home.keepPlayingNote": "sur cet appareil",
+    "home.allGames": "Les {count} jeux",
+    "home.today": "Le puzzle du jour",
+    "home.todayNote": "nouveau à minuit UTC",
+    "home.playToday": "Jouer la grille du jour",
+    "home.whyFree": "Pourquoi c'est gratuit",
+
+    "game.howToPlay": "Comment jouer à {title}",
+    "game.faq": "Questions fréquentes",
+    "game.moreGames": "D'autres jeux gratuits",
+    "game.playNow": "Jouer",
+    "game.backToArcade": "Retour à l'arcade",
+    "game.difficulty": "Difficulté",
+    "game.easy": "Facile",
+    "game.normal": "Normal",
+    "game.hard": "Difficile",
+    "game.soundOn": "Son activé",
+    "game.soundOff": "Son coupé",
+    "game.fullscreen": "Plein écran",
+    "game.exitFullscreen": "Quitter le plein écran",
+    "game.restart": "Recommencer",
+    "game.pause": "Pause",
+    "game.resume": "Reprendre",
+    "game.controls": "Commandes",
+    "game.about": "À propos de ce jeu",
+    "game.loading": "Chargement du jeu",
+    "game.related": "Jeux similaires",
+    "game.credit": "Créé à l'origine par {author}",
+    "game.bestScore": "Meilleur score",
+    "game.newGame": "Nouvelle partie",
+
+    "daily.title": "Mots mêlés du jour",
+    "daily.subtitle": "Une nouvelle grille chaque jour à minuit UTC. Tout le monde joue la même.",
+    "daily.play": "Jouer la grille du jour",
+    "daily.answers": "Les réponses du jour",
+    "daily.archive": "Archives des puzzles du jour",
+    "daily.answersTitle": "Réponses des mots mêlés du jour",
+    "daily.grid": "La grille du jour",
+    "daily.words": "{count} mots",
+    "daily.time": "100 secondes",
+    "daily.yesterday": "La grille d'hier",
+    "daily.tomorrow": "La grille de demain",
+    "daily.theme": "Thème",
+
+    "footer.tagline": "{count} jeux gratuits dans le navigateur.",
+    "footer.note": "Sans téléchargement, sans inscription, sans accès payant.",
+    "footer.archive": "Archives des puzzles du jour",
+    "footer.sponsor": "Parrainer un emplacement",
+    "footer.credits": "Crédits",
+    "footer.sitemap": "Plan du site",
+    "footer.tips": "Vous aimez l'arcade ? Les pourboires la gardent gratuite.",
+    "footer.thirdParty": "Comprend des jeux libres, crédités sur la page des crédits.",
+    "footer.copyright": "© {year} Ayhem Kahri — jeu gratuit, pour toujours.",
+
+    "meta.home": "arcadefork est une arcade gratuite dans le navigateur : jeux de mots, casse-tête et classiques de l'arcade. Jouez tout de suite, sur n'importe quel appareil, sans rien installer.",
+    "meta.category": "{description} À jouer gratuitement dans le navigateur, sans compte, sur arcadefork.",
+    "meta.game": "Jouez à {title} gratuitement dans votre navigateur. {description}",
+    "meta.daily": "Mots mêlés du jour du {date} : thème {theme}, {count} mots cachés et 100 secondes pour les trouver. La même grille pour tous les joueurs.",
+
+    "common.close": "Fermer",
+    "common.menu": "Menu",
+    "common.loading": "Chargement",
+    "common.error": "Une erreur est survenue.",
+    "common.retry": "Réessayer",
+    "common.freeToPlay": "Gratuit",
+    "common.newTab": "ouvre un nouvel onglet",
+    "common.advertisement": "Publicité",
+    "common.sponsored": "Sponsorisé",
+
+    "lang.en": "English",
+    "lang.fr": "Français",
+    "lang.ar": "العربية"
+  },
+  "categories": {
+    "word": {
+      "title": "Jeux de mots",
+      "description": "Des jeux de mots à finir en moins d'une minute. De nouveaux défis chaque jour."
+    },
+    "puzzle": {
+      "title": "Casse-tête",
+      "description": "Des casse-tête de logique et de chiffres, avec redémarrage immédiat et sans attente."
+    },
+    "arcade": {
+      "title": "Jeux d'arcade",
+      "description": "L'action des salles d'arcade, reconstruite pour le navigateur et jouable au téléphone."
+    },
+    "brain": {
+      "title": "Jeux de réflexion",
+      "description": "Mémoire, attention et reconnaissance de formes : on s'entraîne en jouant."
+    },
+    "strategy": {
+      "title": "Jeux de stratégie",
+      "description": "Des jeux de décisions, de confiance et de systèmes. Réfléchissez avant de jouer."
+    },
+    "sandbox": {
+      "title": "Bac à sable et outils",
+      "description": "Des jouets ouverts pour manipuler des idées. Pas de score, pas de chrono, juste créer."
+    },
+    "classics": {
+      "title": "Classiques",
+      "description": "Pong, Breakout, Space Invaders et les bornes d'où ils viennent. Mêmes règles, sans pièces."
+    },
+    "racing": {
+      "title": "Jeux de course",
+      "description": "Des courses vues de dessus ou de côté, que l'on pilote avec deux pouces."
+    },
+    "table": {
+      "title": "Jeux de table",
+      "description": "Jeux de plateau et de cartes sans installation : sudoku, solitaire, mahjong, petits chevaux, go."
+    }
+  },
+  "families": {
+    "snake": {
+      "tagline": "Mangez, allongez-vous et évitez votre propre queue.",
+      "description": "Dirigez le serpent sur le plateau, mangez ce qui apparaît et évitez votre queue à mesure que le corps s'allonge.",
+      "howToPlay": [
+        "Dirigez le serpent avec les flèches ou le pavé à l'écran.",
+        "Sur téléphone, balayez l'écran pour lui donner une nouvelle direction.",
+        "Mangez la nourriture, allongez-vous et ne touchez ni les murs ni votre queue."
+      ],
+      "faq": [
+        {
+          "q": "Qu'est-ce qui met fin à une partie ?",
+          "a": "Un mur ou votre propre queue. Dans la plupart des versions, les bords ne se traversent pas : le bord du plateau, c'est la fin."
+        },
+        {
+          "q": "Pourquoi le jeu devient-il plus dur ?",
+          "a": "Le serpent accélère et occupe de plus en plus le plateau à mesure qu'il grandit : les virages arrivent plus vite et laissent moins de place."
+        }
+      ]
+    },
+    "tetris": {
+      "tagline": "Empilez les blocs et complétez chaque ligne.",
+      "description": "Faites tomber les blocs à leur place, complétez une ligne entière et gardez la pile loin du haut du plateau.",
+      "howToPlay": [
+        "Déplacez avec les flèches gauche et droite, tournez avec la flèche du haut.",
+        "Descente douce avec la flèche du bas, descente directe avec la barre d'espace.",
+        "Complétez une ligne entière pour l'effacer et garder la pile basse."
+      ],
+      "faq": [
+        {
+          "q": "Que se passe-t-il quand la pile atteint le haut ?",
+          "a": "La partie s'arrête. Effacer une ligne récupère de la hauteur : gardez les bords gauche et droit bas."
+        },
+        {
+          "q": "Effacer quatre lignes d'un coup rapporte-t-il plus ?",
+          "a": "Dans la plupart des versions, oui, et plus que quatre lignes séparées. Garder un puits pour une pièce longue vaut l'attente."
+        }
+      ]
+    },
+    "pong": {
+      "tagline": "Gardez la balle en jeu et renvoyez chaque tir.",
+      "description": "Bougez votre raquette pour intercepter chaque tir, anglez la balle loin de l'adversaire et marquez le point.",
+      "howToPlay": [
+        "Bougez la raquette avec les flèches haut et bas, ou le pavé à l'écran.",
+        "Sur téléphone, balayez vers le haut ou le bas pour déplacer la raquette.",
+        "Renvoyez la balle derrière la raquette adverse pour gagner le point."
+      ],
+      "faq": [
+        {
+          "q": "Comment gagne-t-on ?",
+          "a": "En renvoyant la balle derrière la raquette adverse. Le premier camp à atteindre le score cible remporte la manche."
+        },
+        {
+          "q": "Peut-on jouer contre quelqu'un ?",
+          "a": "Dans la plupart des versions, la raquette du fond est l'ordinateur. Certaines proposent aussi deux joueurs sur le même clavier."
+        }
+      ]
+    },
+    "pacman": {
+      "tagline": "Videz le labyrinthe pendant que les fantômes vous traquent.",
+      "description": "Parcourez le labyrinthe, mangez tous les points sur votre passage et esquivez les fantômes avant qu'ils ne se referment.",
+      "howToPlay": [
+        "Déplacez-vous avec les flèches ou le pavé à l'écran.",
+        "Sur téléphone, balayez l'écran pour tourner au coin suivant.",
+        "Mangez tous les points du labyrinthe en restant loin des fantômes."
+      ],
+      "faq": [
+        {
+          "q": "À quoi servent les gros points ?",
+          "a": "Ils font faire demi-tour aux fantômes pendant quelques secondes, et un fantôme attrapé pendant ce temps retourne dans son coin."
+        },
+        {
+          "q": "Y a-t-il une sortie du labyrinthe ?",
+          "a": "Videz tous les points du plateau. Dans la plupart des versions, un nouveau labyrinthe suit, avec des fantômes un peu plus rapides."
+        }
+      ]
+    },
+    "breakout": {
+      "tagline": "Faites rebondir la balle, cassez le mur et gardez la raquette prête.",
+      "description": "Faites glisser la raquette, envoyez la balle dans les briques et videz le mur sans perdre la balle.",
+      "howToPlay": [
+        "Faites glisser la raquette avec les flèches gauche et droite, ou le pavé à l'écran.",
+        "Renvoyez la balle dans les briques sans la laisser passer.",
+        "Cassez toutes les briques pour finir le mur et passer au suivant."
+      ],
+      "faq": [
+        {
+          "q": "Que se passe-t-il si je rate la balle ?",
+          "a": "Vous perdez une vie et la balle repart de la raquette. La plupart des versions en donnent trois."
+        },
+        {
+          "q": "Puis-je diriger la balle ?",
+          "a": "En partie. La balle repart selon l'endroit où elle a touché la raquette : les extrémités l'envoient plus sur le côté."
+        }
+      ]
+    },
+    "invaders": {
+      "tagline": "Tenez la ligne et nettoyez le ciel, vague après vague.",
+      "description": "Tenez la ligne en bas de l'écran, tirez vers le haut et nettoyez chaque formation avant qu'elle n'atterrisse.",
+      "howToPlay": [
+        "Déplacez-vous avec les flèches gauche et droite, ou le pavé à l'écran.",
+        "Tirez avec la barre d'espace ou le bouton A du pavé.",
+        "Nettoyez chaque vague avant qu'elle n'atteigne le bas de l'écran."
+      ],
+      "faq": [
+        {
+          "q": "Pourquoi les envahisseurs accélèrent-ils ?",
+          "a": "Moins il en reste, plus les autres vont vite : les derniers sont donc les plus difficiles à toucher."
+        },
+        {
+          "q": "Que se passe-t-il s'ils atteignent le bas ?",
+          "a": "La partie s'arrête. Gardez la rangée la plus proche dégagée et travaillez des bords vers le centre."
+        }
+      ]
+    },
+    "racing": {
+      "tagline": "Filez vers la ligne et gardez le pied au plancher.",
+      "description": "Négociez le circuit, freinez avant les virages et tenez votre trajectoire jusqu'au drapeau à damier.",
+      "howToPlay": [
+        "Pilotez avec les flèches gauche et droite, ou le pavé à l'écran.",
+        "Accélérez avec la flèche du haut et freinez avec celle du bas.",
+        "Sur téléphone, balayez à gauche ou à droite pour prendre le virage."
+      ],
+      "faq": [
+        {
+          "q": "Faut-il finir premier ?",
+          "a": "Non. Apprenez les virages à votre rythme et les temps au tour baisseront d'eux-mêmes."
+        },
+        {
+          "q": "Quelle est la trajectoire la plus rapide en virage ?",
+          "a": "Freinez avant le virage plutôt que dedans, puis réaccélérez une fois la voiture orientée dans la bonne direction."
+        }
+      ]
+    },
+    "platformer": {
+      "tagline": "Courez, sautez et atteignez la fin du niveau.",
+      "description": "Courez le long du niveau, franchissez les trous et dosez chaque saut pour retomber sur un sol stable.",
+      "howToPlay": [
+        "Déplacez-vous avec les flèches gauche et droite, ou le pavé à l'écran.",
+        "Sautez avec la barre d'espace ou la flèche du haut.",
+        "Sur téléphone, balayez vers le haut pour sauter et sur les côtés pour courir."
+      ],
+      "faq": [
+        {
+          "q": "Comment savoir jusqu'où je peux sauter ?",
+          "a": "Regardez le trou plutôt que le personnage. S'il est plus large que le précédent, sautez depuis le bord extrême."
+        },
+        {
+          "q": "Que se passe-t-il si je tombe ?",
+          "a": "Dans la plupart des versions, vous repartez du dernier point de contrôle, ou du début du niveau s'il n'y en a pas."
+        }
+      ]
+    },
+    "flappy": {
+      "tagline": "Touchez pour battre des ailes et passez chaque ouverture.",
+      "description": "Touchez l'écran pour garder l'oiseau en l'air, passez chaque ouverture et voyez jusqu'où mène une partie.",
+      "howToPlay": [
+        "Touchez l'écran ou appuyez sur la barre d'espace pour battre des ailes.",
+        "Passez dans chaque ouverture sans toucher les bords.",
+        "Appuyez sur R pour recommencer après une chute."
+      ],
+      "faq": [
+        {
+          "q": "Pourquoi je m'écrase tout le temps ?",
+          "a": "Trop de touchers. Des touchers courts maintiennent l'altitude, un appui long fait monter, et l'oiseau garde la vitesse qu'on lui a donnée."
+        },
+        {
+          "q": "Y a-t-il une fin ?",
+          "a": "Non. Les ouvertures défilent sans fin et la partie s'arrête au premier choc : le score n'est que la distance parcourue."
+        }
+      ]
+    },
+    "maze": {
+      "tagline": "Trouvez la sortie avant que les murs ne se referment.",
+      "description": "Trouvez le passage entre les murs, retenez les impasses et rejoignez la sortie du labyrinthe.",
+      "howToPlay": [
+        "Déplacez-vous avec les flèches, ou le pavé à l'écran.",
+        "Sur téléphone, balayez l'écran pour tourner à la prochaine intersection.",
+        "Rejoignez la sortie sans vous enfermer dans une impasse."
+      ],
+      "faq": [
+        {
+          "q": "Et si je me perds ?",
+          "a": "La plupart des labyrinthes se résolvent depuis n'importe quel point. Suivez un seul mur et vous atteindrez la sortie ou le départ."
+        },
+        {
+          "q": "Y a-t-il une limite de temps ?",
+          "a": "Dans la plupart des versions, oui. Le chrono met la pression : avancez plutôt que d'étudier toute la carte d'abord."
+        }
+      ]
+    },
+    "match3": {
+      "tagline": "Échangez deux tuiles et alignez-en trois.",
+      "description": "Échangez deux tuiles voisines, alignez trois couleurs identiques et effacez-les pour ouvrir le plateau.",
+      "howToPlay": [
+        "Choisissez une tuile d'un toucher ou d'un clic, puis celle d'à côté.",
+        "Alignez trois tuiles ou plus de la même couleur pour les effacer.",
+        "Déplacez la sélection avec les flèches ou le pavé à l'écran."
+      ],
+      "faq": [
+        {
+          "q": "Qu'est-ce qui compte comme un alignement ?",
+          "a": "Trois tuiles ou plus de la même couleur, à l'horizontale ou à la verticale. Les séries plus longues effacent davantage de plateau."
+        },
+        {
+          "q": "Que se passe-t-il après un alignement ?",
+          "a": "Les tuiles du dessus tombent dans le vide et de nouvelles arrivent par le haut, ce qui peut former un second alignement gratuit."
+        }
+      ]
+    },
+    "2048": {
+      "tagline": "Faites glisser, fusionnez et atteignez le plus grand nombre.",
+      "description": "Faites glisser tout le plateau à chaque coup, fusionnez les nombres identiques et montez le plus haut possible.",
+      "howToPlay": [
+        "Faites glisser toutes les tuiles avec les flèches, ou le pavé à l'écran.",
+        "Deux tuiles portant le même nombre fusionnent quand elles se rencontrent.",
+        "Sur téléphone, balayez l'écran pour envoyer tout le plateau dans cette direction."
+      ],
+      "faq": [
+        {
+          "q": "Quand la partie se termine-t-elle ?",
+          "a": "Quand le plateau est plein et qu'aucune tuile voisine ne peut fusionner. Avant cela, chaque balayage a toujours une direction possible."
+        },
+        {
+          "q": "Quelle stratégie adopter ?",
+          "a": "Gardez la plus grande tuile dans un coin et construisez dans une seule direction, pour ne jamais avoir à réorganiser le plateau."
+        }
+      ]
+    },
+    "sliding": {
+      "tagline": "Remettez les tuiles dans l'ordre, un coup à la fois.",
+      "description": "Faites glisser une tuile à la fois dans la case vide et remettez toute l'image dans le bon ordre.",
+      "howToPlay": [
+        "Faites glisser une tuile dans la case vide avec les flèches.",
+        "Sur téléphone, balayez l'écran pour pousser la tuile dans cette direction.",
+        "Remettez chaque tuile dans l'ordre pour terminer le puzzle."
+      ],
+      "faq": [
+        {
+          "q": "Toutes les positions sont-elles solubles ?",
+          "a": "Non. La moitié des arrangements ne peut pas être obtenue depuis le puzzle terminé, et le jeu distribue une position qui, elle, se résout."
+        },
+        {
+          "q": "Combien de coups faut-il ?",
+          "a": "Une bonne résolution demande environ quatre-vingts coups après un mélange. Le compteur à l'écran vous dit où vous en êtes."
+        }
+      ]
+    },
+    "sokoban": {
+      "tagline": "Poussez chaque caisse à sa place sans rester coincé.",
+      "description": "Parcourez la salle, poussez chaque caisse sur sa marque et évitez de l'emprisonner contre un mur.",
+      "howToPlay": [
+        "Déplacez-vous avec les flèches, ou le pavé à l'écran.",
+        "Avancez dans une caisse pour la pousser d'une case.",
+        "Sur téléphone, balayez l'écran pour pousser la caisse dans cette direction."
+      ],
+      "faq": [
+        {
+          "q": "Peut-on tirer une caisse ?",
+          "a": "Non, on ne peut que pousser. C'est pourquoi une caisse contre un mur peut être perdue : prévoyez la dernière poussée avant la première."
+        },
+        {
+          "q": "Comment annuler une erreur ?",
+          "a": "La plupart des versions ont une annulation ou un redémarrage. Servez-vous-en vite, car une seule poussée ratée peut coûter le niveau."
+        }
+      ]
+    },
+    "memory": {
+      "tagline": "Retournez deux cartes, retenez leur place, trouvez les paires.",
+      "description": "Retournez deux cartes à la fois, retenez où se trouve chaque image et reformez toutes les paires du plateau.",
+      "howToPlay": [
+        "Choisissez une carte d'un toucher ou d'un clic pour la retourner.",
+        "Retournez une seconde carte et gardez la paire si les deux correspondent.",
+        "Déplacez la sélection avec les flèches ou le pavé à l'écran."
+      ],
+      "faq": [
+        {
+          "q": "L'ordre des cartes retournées a-t-il une importance ?",
+          "a": "Pas pour les règles, mais oui pour la mémoire. Retournez d'abord une carte inconnue, ensuite une carte dont vous vous souvenez."
+        },
+        {
+          "q": "Comment le score est-il calculé ?",
+          "a": "Au nombre de coups nécessaires pour vider le plateau. Moins de coups, c'est une meilleure mémoire, pas un clic plus rapide."
+        }
+      ]
+    },
+    "sudoku": {
+      "tagline": "Remplissez la grille pour compléter chaque ligne, colonne et bloc.",
+      "description": "Remplissez chaque ligne, chaque colonne et chaque bloc avec les chiffres de un à neuf, utilisés une seule fois.",
+      "howToPlay": [
+        "Choisissez une case d'un toucher ou d'un clic, puis le chiffre voulu.",
+        "Passez d'une case à l'autre avec les flèches ou le pavé à l'écran.",
+        "Chaque ligne, colonne et bloc doit contenir chaque chiffre une seule fois."
+      ],
+      "faq": [
+        {
+          "q": "Faut-il deviner ?",
+          "a": "Une grille bien construite ne demande jamais de deviner. Si deux chiffres tiennent dans une case, l'un des deux casse une ligne plus loin."
+        },
+        {
+          "q": "Quelle est la règle des blocs ?",
+          "a": "Chacun des neuf petits blocs contient les chiffres de un à neuf une seule fois, comme chaque ligne et chaque colonne."
+        }
+      ]
+    },
+    "solitaire": {
+      "tagline": "Montez les quatre couleurs de l'as au roi.",
+      "description": "Distribuez les cartes, montez chaque couleur de l'as au roi et retournez les cartes cachées au passage.",
+      "howToPlay": [
+        "Prenez une carte d'un toucher ou d'un clic, puis la pile où elle va.",
+        "Déplacez la sélection avec les flèches ou le pavé à l'écran.",
+        "Montez chaque couleur dans l'ordre et retournez les cartes cachées au passage."
+      ],
+      "faq": [
+        {
+          "q": "Que peut-on poser sur une colonne ?",
+          "a": "Une carte d'un rang inférieur et de la couleur opposée. Une colonne vide accepte n'importe quelle carte ou n'importe quelle suite."
+        },
+        {
+          "q": "Que faire s'il n'y a plus de coup ?",
+          "a": "Retournez le talon si la version le permet. La plupart des donnes sont gagnables, mais pas toutes."
+        }
+      ]
+    },
+    "mahjong": {
+      "tagline": "Videz le plateau en associant les tuiles identiques.",
+      "description": "Associez les tuiles identiques depuis les bords et progressez vers le centre jusqu'à vider tout le plateau.",
+      "howToPlay": [
+        "Choisissez deux tuiles identiques d'un toucher ou d'un clic.",
+        "Déplacez la sélection avec les flèches ou le pavé à l'écran.",
+        "Seules les tuiles avec un côté libre se prennent : travaillez des bords vers le centre."
+      ],
+      "faq": [
+        {
+          "q": "Pourquoi cette tuile est-elle inaccessible ?",
+          "a": "Une tuile doit avoir un côté gauche ou droit libre. Coincée aux deux bouts, elle reste bloquée tant que le plateau ne s'ouvre pas."
+        },
+        {
+          "q": "Toutes les dispositions sont-elles solubles ?",
+          "a": "La plupart le sont, mais l'ordre compte. Si une paire isole deux tuiles, annulez et essayez l'autre paire d'abord."
+        }
+      ]
+    },
+    "hangman": {
+      "tagline": "Devinez le mot caché avant que le dessin ne soit complet.",
+      "description": "Devinez le mot caché lettre par lettre et gardez vos erreurs dans la limite de ce que le dessin permet.",
+      "howToPlay": [
+        "Choisissez une lettre d'un toucher ou d'un clic.",
+        "Passez d'une lettre à l'autre avec les flèches ou le pavé à l'écran.",
+        "Six erreurs mettent fin à la partie : commencez par les lettres courantes."
+      ],
+      "faq": [
+        {
+          "q": "Combien d'erreurs sont autorisées ?",
+          "a": "Six dans la plupart des versions. Commencer par les voyelles est une bonne habitude, puis les consonnes qu'on retrouve partout."
+        },
+        {
+          "q": "Une lettre répétée compte-t-elle deux fois ?",
+          "a": "Non. Une lettre est une seule proposition, quel que soit le nombre de fois où elle apparaît : les mots longs sont souvent plus faciles."
+        }
+      ]
+    },
+    "wordsearch": {
+      "tagline": "Trouvez tous les mots cachés dans la grille.",
+      "description": "Balayez la grille à l'horizontale, à la verticale et en diagonale pour trouver chaque mot de la liste avant la fin.",
+      "howToPlay": [
+        "Faites glisser le long d'une ligne de lettres, ou déplacez le curseur avec les flèches.",
+        "Les mots peuvent aller à l'horizontale, à la verticale, vers le haut ou en diagonale.",
+        "Marquez tous les mots de la liste pour terminer la grille."
+      ],
+      "faq": [
+        {
+          "q": "Dans quelles directions vont les mots ?",
+          "a": "À l'horizontale, à la verticale et en diagonale, dans les deux sens dans la plupart des grilles. Gardez un œil sur la liste."
+        },
+        {
+          "q": "Que se passe-t-il si je marque la mauvaise ligne ?",
+          "a": "Rien. La sélection s'efface et la grille reste telle quelle : essayer une ligne ne coûte rien."
+        }
+      ]
+    },
+    "wordle": {
+      "tagline": "Six essais pour trouver le mot de cinq lettres.",
+      "description": "Trouvez le mot de cinq lettres en six essais, en utilisant les indices de couleur après chaque tentative.",
+      "howToPlay": [
+        "Tapez un mot, ou choisissez les lettres sur le clavier affiché dans le jeu.",
+        "Vert : la lettre est à la bonne place. Jaune : elle est dans le mot, ailleurs.",
+        "Appuyez sur Entrée ou sur le bouton B du pavé pour valider votre essai."
+      ],
+      "faq": [
+        {
+          "q": "Que signifient les couleurs ?",
+          "a": "Vert, la lettre est à la bonne place. Jaune, la lettre fait partie du mot mais pas à cet endroit."
+        },
+        {
+          "q": "Peut-on proposer deux fois le même mot ?",
+          "a": "Oui, mais c'est une ligne perdue. Chaque essai doit être un vrai mot : impossible de tester des lettres en vrac."
+        }
+      ]
+    },
+    "quiz": {
+      "tagline": "Répondez aux questions et voyez ce que vous savez.",
+      "description": "Enchaînez les questions, choisissez parmi les réponses proposées et voyez combien vous en trouvez.",
+      "howToPlay": [
+        "Choisissez une réponse d'un toucher ou d'un clic.",
+        "Passez d'une réponse à l'autre avec les flèches ou le pavé à l'écran.",
+        "Chaque bonne réponse ajoute au score, et les questions continuent d'arriver."
+      ],
+      "faq": [
+        {
+          "q": "Y a-t-il une limite de temps ?",
+          "a": "Dans la plupart des versions, chaque question en a une. Répondez d'abord à celles que vous savez, puis revenez aux autres si possible."
+        },
+        {
+          "q": "Peut-on voir les réponses ?",
+          "a": "En général à la fin de la série. Le score est l'enjeu, donc la plupart des quiz gardent les réponses pour la fin."
+        }
+      ]
+    },
+    "typing": {
+      "tagline": "Tapez les mots aussi vite et aussi juste que possible.",
+      "description": "Tapez chaque mot qui s'affiche aussi vite et aussi justement que possible, et gardez la série en cours.",
+      "howToPlay": [
+        "Tapez chaque mot qui apparaît, puis appuyez sur la barre d'espace pour continuer.",
+        "Gardez les mains sur le clavier et les yeux sur le texte.",
+        "La justesse et la vitesse comptent toutes deux dans le score."
+      ],
+      "faq": [
+        {
+          "q": "Qu'est-ce qui compte le plus, la vitesse ou la justesse ?",
+          "a": "La justesse. Une lettre fausse coûte plus de temps qu'une lettre lente, car la corriger demande une frappe de plus."
+        },
+        {
+          "q": "Faut-il regarder le clavier ?",
+          "a": "Non. Gardez les yeux sur le texte et laissez les doigts apprendre les touches, même si les premières séries sont lentes."
+        }
+      ]
+    },
+    "towerdefense": {
+      "tagline": "Bâtissez vos tours et tenez la ligne face aux vagues.",
+      "description": "Placez des tours le long du chemin, dépensez vos gains en améliorations et arrêtez chaque vague avant la base.",
+      "howToPlay": [
+        "Choisissez une tour d'un toucher ou d'un clic, puis un emplacement au bord du chemin.",
+        "Passez d'un emplacement à l'autre avec les flèches ou le pavé à l'écran.",
+        "Chaque vague est plus forte que la précédente : améliorez avant qu'elle n'arrive."
+      ],
+      "faq": [
+        {
+          "q": "Où placer les tours ?",
+          "a": "Dans les virages. Une tour couvre davantage de chemin là où il tourne : un coin vaut deux lignes droites."
+        },
+        {
+          "q": "Faut-il améliorer ou construire ?",
+          "a": "Améliorez d'abord les tours du tronçon le plus passant. Quelques tours solides battent souvent une longue file de tours faibles."
+        }
+      ]
+    },
+    "roguelike": {
+      "tagline": "Une seule vie, un donjon neuf et un combat jusqu'au dernier étage.",
+      "description": "Emportez une seule vie dans un donjon neuf, affrontez ce que vous croisez et voyez jusqu'où vous descendez.",
+      "howToPlay": [
+        "Avancez d'une case à la fois avec les flèches, ou le pavé à l'écran.",
+        "Avancez sur un monstre pour l'attaquer, sur un objet pour le ramasser.",
+        "Sur téléphone, balayez l'écran pour avancer d'une case."
+      ],
+      "faq": [
+        {
+          "q": "Y a-t-il une sauvegarde ?",
+          "a": "En général non. La vie unique est le principe du genre : la partie s'arrête avec vous et le donjon suivant est nouveau."
+        },
+        {
+          "q": "Faut-il tout combattre ?",
+          "a": "Non. L'expérience est utile, mais un combat qu'on peut éviter est un combat qu'on ne peut pas perdre."
+        }
+      ]
+    },
+    "shooter": {
+      "tagline": "Bougez sans arrêt, tirez sans arrêt et restez en vie.",
+      "description": "Restez en mouvement, visez ce qui vient vers vous et videz l'écran sans encaisser un seul coup.",
+      "howToPlay": [
+        "Déplacez-vous avec les flèches, ou le pavé à l'écran.",
+        "Tirez avec la barre d'espace ou le bouton A du pavé.",
+        "Esquivez ce qui arrive et videz l'écran."
+      ],
+      "faq": [
+        {
+          "q": "Pourquoi faut-il bouger sans arrêt ?",
+          "a": "Rester immobile fait de vous une cible facile. La plupart de ces jeux visent l'endroit où vous êtes : un pas de côté est une esquive."
+        },
+        {
+          "q": "Comment nettoyer une vague ?",
+          "a": "Travaillez de l'extérieur vers le centre et gardez-vous une issue, plutôt que de reculer dans un coin."
+        }
+      ]
+    },
+    "idle": {
+      "tagline": "Commencez petit, gagnez régulièrement et regardez les chiffres monter.",
+      "description": "Touchez pour gagner vos premières pièces, dépensez-les en améliorations et regardez les chiffres grimper.",
+      "howToPlay": [
+        "Touchez ou cliquez pour gagner vos premières pièces.",
+        "Dépensez vos gains en améliorations qui rapportent plus vite.",
+        "Passez d'une amélioration à l'autre avec les flèches ou le pavé à l'écran."
+      ],
+      "faq": [
+        {
+          "q": "Faut-il garder la page ouverte ?",
+          "a": "En général oui, mais beaucoup de ces jeux continuent de produire quand l'onglet reste en arrière-plan."
+        },
+        {
+          "q": "Quoi acheter en premier ?",
+          "a": "L'amélioration qui se rembourse le plus vite. Calculez le temps qu'il lui faut pour rendre son coût avant de dépenser."
+        }
+      ]
+    },
+    "board": {
+      "tagline": "Jouez chacun votre tour, anticipez et gagnez le plateau.",
+      "description": "Déplacez vos pièces chacun votre tour, prévoyez quelques coups d'avance et protégez votre camp.",
+      "howToPlay": [
+        "Choisissez une pièce d'un toucher ou d'un clic, puis sa destination.",
+        "Déplacez la sélection avec les flèches ou le pavé à l'écran.",
+        "Jouez chacun votre tour et protégez vos propres pièces."
+      ],
+      "faq": [
+        {
+          "q": "Peut-on jouer seul ?",
+          "a": "Dans la plupart des versions, l'adversaire est l'ordinateur. Certaines proposent aussi deux joueurs sur un même écran."
+        },
+        {
+          "q": "Y a-t-il un temps limité par tour ?",
+          "a": "Parfois. Quand c'est le cas, le chrono s'affiche à côté de votre nom et le tour passe quand il arrive à zéro."
+        }
+      ]
+    },
+    "generic": {
+      "tagline": "Un jeu rapide à lancer directement dans le navigateur.",
+      "description": "Lisez les consignes, prenez les commandes en main et voyez jusqu'où mène une partie de ce jeu de navigateur.",
+      "howToPlay": [
+        "Touchez ou cliquez pour démarrer, puis suivez les consignes affichées dans le jeu.",
+        "Déplacez-vous avec les flèches, ou le pavé à l'écran.",
+        "Sur téléphone, balayez l'écran pour remplacer les flèches attendues par le jeu."
+      ],
+      "faq": [
+        {
+          "q": "Comment démarrer ?",
+          "a": "Touchez ou cliquez une fois sur le jeu et suivez l'invite affichée. La plupart de ces jeux démarrent à la première action."
+        },
+        {
+          "q": "Et si les commandes ne répondent pas ?",
+          "a": "Cliquez une fois dans la zone de jeu pour lui donner le focus, puis réessayez. Les touches n'atteignent le jeu que s'il a le focus."
+        }
+      ]
+    }
+  }
+}

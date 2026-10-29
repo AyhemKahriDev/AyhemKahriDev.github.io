@@ -1,0 +1,708 @@
+{
+  "locale": "en",
+  "name": "English",
+  "dir": "ltr",
+  "strings": {
+    "nav.games": "All games",
+    "nav.categories": "Categories",
+    "nav.daily": "Daily",
+    "nav.credits": "Credits",
+    "nav.advertise": "Advertise",
+    "nav.home": "Home",
+    "nav.theme": "Theme",
+    "nav.language": "Language",
+    "nav.skipToContent": "Skip to content",
+    "nav.main": "Main",
+
+    "index.searchPlaceholder": "Search {count} games",
+    "index.searchAria": "Search games by name",
+    "index.sort": "Sort games",
+    "index.sortDefault": "Arcade order",
+    "index.sortAZ": "A → Z",
+    "index.sortZA": "Z → A",
+    "index.random": "Random",
+    "index.randomAria": "Pick a random game",
+    "index.results": "Showing {from} to {to} of {total}",
+    "index.pageOf": "Page {page} of {pages}",
+    "index.previous": "Previous",
+    "index.next": "Next",
+    "index.filters": "Filter by category",
+    "index.allCategories": "All categories",
+    "index.noResults": "No game matches that.",
+    "index.noResultsHint": "Try a shorter word, or clear the filter.",
+    "index.clearFilter": "Clear the filter",
+    "index.title": "Every game in the arcade",
+    "index.titlePaged": "All games, page {page} of {pages}",
+    "index.lede": "No download, no sign-up, no paywall. Search by name, filter by category, or press the random button and see what happens.",
+
+    "home.title": "Free browser games. No download, no sign-up.",
+    "home.tagline": "A browser arcade with {count} games: word, puzzle, arcade classics, brain trainers, strategy and table games. Nothing to install.",
+    "home.startHere": "Start here",
+    "home.browseByCategory": "Browse by category",
+    "home.featured": "Featured games",
+    "home.keepPlaying": "Pick up where you left off",
+    "home.keepPlayingNote": "on this device",
+    "home.allGames": "All {count} games",
+    "home.today": "Today's puzzle",
+    "home.todayNote": "new at midnight UTC",
+    "home.playToday": "Play today's grid",
+    "home.whyFree": "Why it is free",
+
+    "game.howToPlay": "How to play {title}",
+    "game.faq": "Frequently asked questions",
+    "game.moreGames": "More free games",
+    "game.playNow": "Play now",
+    "game.backToArcade": "Back to the arcade",
+    "game.difficulty": "Difficulty",
+    "game.easy": "Easy",
+    "game.normal": "Normal",
+    "game.hard": "Hard",
+    "game.soundOn": "Sound on",
+    "game.soundOff": "Sound off",
+    "game.fullscreen": "Fullscreen",
+    "game.exitFullscreen": "Exit fullscreen",
+    "game.restart": "Restart",
+    "game.pause": "Pause",
+    "game.resume": "Resume",
+    "game.controls": "Controls",
+    "game.about": "About this game",
+    "game.loading": "Loading the game",
+    "game.related": "Related games",
+    "game.credit": "Originally by {author}",
+    "game.bestScore": "Best score",
+    "game.newGame": "New game",
+
+    "daily.title": "Daily word search",
+    "daily.subtitle": "A new grid every day at midnight UTC. Everyone plays the same one.",
+    "daily.play": "Play today's grid",
+    "daily.answers": "Today's answers",
+    "daily.archive": "Daily puzzle archive",
+    "daily.answersTitle": "Daily word search answers",
+    "daily.grid": "Today's grid",
+    "daily.words": "{count} words",
+    "daily.time": "100 seconds",
+    "daily.yesterday": "Yesterday's grid",
+    "daily.tomorrow": "Tomorrow's grid",
+    "daily.theme": "Theme",
+
+    "footer.tagline": "{count} free browser games.",
+    "footer.note": "No download, no sign-up, no paywall.",
+    "footer.archive": "Daily puzzle archive",
+    "footer.sponsor": "Sponsor a slot",
+    "footer.credits": "Credits",
+    "footer.sitemap": "Sitemap",
+    "footer.tips": "Like the arcade? Tips keep it free.",
+    "footer.thirdParty": "Includes open-source games, credited on the credits page.",
+    "footer.copyright": "© {year} Ayhem Kahri — free to play, forever.",
+
+    "meta.home": "arcadefork is a free browser arcade with word games, puzzle games and arcade classics. Play instantly on any device, no install required.",
+    "meta.category": "{description} Play free {category} in your browser on arcadefork.",
+    "meta.game": "Play {title} free in your browser. {description}",
+    "meta.daily": "Free daily word search for {date}: {theme} theme, {count} hidden words and 100 seconds to find them. Same grid for every player.",
+
+    "common.close": "Close",
+    "common.menu": "Menu",
+    "common.loading": "Loading",
+    "common.error": "Something went wrong.",
+    "common.retry": "Try again",
+    "common.freeToPlay": "Free to play",
+    "common.newTab": "opens in a new tab",
+    "common.advertisement": "Advertisement",
+    "common.sponsored": "Sponsored",
+
+    "lang.en": "English",
+    "lang.fr": "Français",
+    "lang.ar": "العربية"
+  },
+  "categories": {
+    "word": {
+      "title": "Word Games",
+      "description": "Word puzzles you can play in under a minute. New challenges every day."
+    },
+    "puzzle": {
+      "title": "Puzzle Games",
+      "description": "Logic and number puzzles with instant restart and no waiting."
+    },
+    "arcade": {
+      "title": "Arcade Games",
+      "description": "Classic arcade action, rebuilt for the browser and playable on a phone."
+    },
+    "brain": {
+      "title": "Brain Games",
+      "description": "Memory, attention and pattern games that train while you play."
+    },
+    "strategy": {
+      "title": "Strategy Games",
+      "description": "Games about decisions, trust and systems. Think it through before you play."
+    },
+    "sandbox": {
+      "title": "Sandbox & Tools",
+      "description": "Open-ended toys for playing with ideas. No score, no timer, just make something."
+    },
+    "classics": {
+      "title": "Classics",
+      "description": "Pong, Breakout, Space Invaders and the cabinets they came from. Same rules, no quarters."
+    },
+    "racing": {
+      "title": "Racing Games",
+      "description": "Top-down and side-scrolling racers you can steer with two thumbs."
+    },
+    "table": {
+      "title": "Table Games",
+      "description": "Board and card games with no setup: sudoku, solitaire, mahjong, ludo, go."
+    }
+  },
+  "families": {
+    "snake": {
+      "tagline": "Eat, grow longer and keep clear of your own tail.",
+      "description": "Steer a snake around the board, eat what spawns and avoid your own tail as the body gets longer.",
+      "howToPlay": [
+        "Steer with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the snake a new direction.",
+        "Eat the food, grow longer and never touch the walls or your own tail."
+      ],
+      "faq": [
+        {
+          "q": "What ends a round?",
+          "a": "Hitting a wall or your own tail. In most versions the walls do not wrap, so the edge of the board is the end."
+        },
+        {
+          "q": "Why does it get harder?",
+          "a": "The snake speeds up and takes up more of the board as it grows, so the turns come sooner and leave less room."
+        }
+      ]
+    },
+    "tetris": {
+      "tagline": "Stack the falling blocks and clear every line.",
+      "description": "Drop the falling blocks into place, fill a full row across the board and keep the stack away from the top.",
+      "howToPlay": [
+        "Move with the left and right arrows, rotate with the up arrow.",
+        "Soft-drop with the down arrow and hard-drop with Space.",
+        "Fill a whole row across the board to clear it and keep the stack low."
+      ],
+      "faq": [
+        {
+          "q": "What happens when the stack reaches the top?",
+          "a": "The round ends. Clearing a row buys the height back, so keep the left and right edges low."
+        },
+        {
+          "q": "Does clearing four rows at once score more?",
+          "a": "In most versions it does, and by more than four single rows. Saving a well for a long piece is worth the wait."
+        }
+      ]
+    },
+    "pong": {
+      "tagline": "Keep the ball in play and return every shot.",
+      "description": "Move your paddle to meet every shot, angle the ball past your opponent and take the point.",
+      "howToPlay": [
+        "Move your paddle with the up and down arrows, or use the on-screen pad.",
+        "Swipe up or down on a phone to move the paddle.",
+        "Return the ball past your opponent to win the point."
+      ],
+      "faq": [
+        {
+          "q": "How do I win?",
+          "a": "Return the ball past your opponent's paddle. The first side to reach the target score takes the match."
+        },
+        {
+          "q": "Can I play against a person?",
+          "a": "In most versions the far paddle is the computer. Some of them also offer two players on the same keyboard."
+        }
+      ]
+    },
+    "pacman": {
+      "tagline": "Clear the maze while the ghosts hunt you down.",
+      "description": "Run the maze, eat every dot along the way and slip past the ghosts before they close in.",
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next corner.",
+        "Eat every dot in the maze and keep away from the ghosts."
+      ],
+      "faq": [
+        {
+          "q": "What do the big dots do?",
+          "a": "They turn the ghosts around for a few seconds, and a ghost caught in that time goes back to its corner."
+        },
+        {
+          "q": "Is there a way out of the maze?",
+          "a": "Clear every dot on the board. In most versions a fresh maze follows, with ghosts that move a little faster."
+        }
+      ]
+    },
+    "breakout": {
+      "tagline": "Bounce the ball, break the wall and keep the paddle ready.",
+      "description": "Slide the paddle, bounce the ball into the bricks and clear the whole wall without losing the ball.",
+      "howToPlay": [
+        "Slide the paddle with the left and right arrows, or use the on-screen pad.",
+        "Bounce the ball into the bricks without letting it past you.",
+        "Clear every brick to finish the wall and move on."
+      ],
+      "faq": [
+        {
+          "q": "What happens when I miss the ball?",
+          "a": "You lose a life and the ball starts again from the paddle. Most versions give you three lives."
+        },
+        {
+          "q": "Can I control where the ball goes?",
+          "a": "Partly. The ball leaves the paddle at an angle set by where it struck, so the edges of the paddle send it wider."
+        }
+      ]
+    },
+    "invaders": {
+      "tagline": "Hold the line and clear the sky, wave after wave.",
+      "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Clear each wave before it reaches the bottom of the screen."
+      ],
+      "faq": [
+        {
+          "q": "Why do the invaders speed up?",
+          "a": "The fewer that are left, the faster the rest move, so the last few are the hardest to hit."
+        },
+        {
+          "q": "What happens if they reach the bottom?",
+          "a": "The round ends. Keep the nearest row clear and work from the edges inwards."
+        }
+      ]
+    },
+    "racing": {
+      "tagline": "Steer for the line and keep your foot down.",
+      "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
+      "howToPlay": [
+        "Steer with the left and right arrows, or use the on-screen pad.",
+        "Accelerate with the up arrow and brake with the down arrow.",
+        "Swipe left or right on a phone to steer through the corner."
+      ],
+      "faq": [
+        {
+          "q": "Do I have to finish first?",
+          "a": "No. Learn the corners at your own pace and the lap times come down on their own."
+        },
+        {
+          "q": "What is the quickest way round a corner?",
+          "a": "Brake before the turn rather than in it, then accelerate out once the car is pointing the right way."
+        }
+      ]
+    },
+    "platformer": {
+      "tagline": "Run, jump and reach the end of the level.",
+      "description": "Run along the level, jump the gaps and time each leap so you land on solid ground.",
+      "howToPlay": [
+        "Move with the left and right arrows, or use the on-screen pad.",
+        "Jump with Space or the up arrow.",
+        "Swipe up on a phone to jump, and swipe left or right to run."
+      ],
+      "faq": [
+        {
+          "q": "How do I know how far I can jump?",
+          "a": "Watch the gap rather than the character. If it is wider than the last one you cleared, jump from the very edge."
+        },
+        {
+          "q": "What happens when I fall?",
+          "a": "In most versions you restart from the last checkpoint, or from the start of the level if there is none."
+        }
+      ]
+    },
+    "flappy": {
+      "tagline": "Tap to flap and thread every gap.",
+      "description": "Tap to keep the bird in the air, thread every gap and see how far one run will take you.",
+      "howToPlay": [
+        "Tap the screen or press Space to flap.",
+        "Pass through each gap without touching the edges.",
+        "Press R to start again after a crash."
+      ],
+      "faq": [
+        {
+          "q": "Why do I keep crashing?",
+          "a": "Too many taps. Short taps hold your height, long presses climb, and the bird keeps whatever speed you gave it."
+        },
+        {
+          "q": "Is there an end?",
+          "a": "No. The gaps keep coming and the run stops at the first crash, so the score is simply how far you got."
+        }
+      ]
+    },
+    "maze": {
+      "tagline": "Find the way out before the walls close in.",
+      "description": "Find the route through the walls, remember the dead ends and make your way to the exit.",
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to turn at the next junction.",
+        "Reach the way out without getting stuck in a dead end."
+      ],
+      "faq": [
+        {
+          "q": "What if I get stuck?",
+          "a": "Most mazes can be solved from any point. Follow one wall and you will reach either the exit or the start again."
+        },
+        {
+          "q": "Is there a time limit?",
+          "a": "In most versions, yes. The clock is the pressure, so keep moving rather than studying the whole map first."
+        }
+      ]
+    },
+    "match3": {
+      "tagline": "Swap two tiles and line up three.",
+      "description": "Swap two neighbouring tiles, line up three of a colour and clear them to open up the board.",
+      "howToPlay": [
+        "Pick a tile with a tap or a click, then pick the one next to it.",
+        "Line up three or more of the same colour to clear them.",
+        "Move the selection with the arrow keys or the on-screen pad."
+      ],
+      "faq": [
+        {
+          "q": "What counts as a match?",
+          "a": "Three or more of the same colour in a row, across or down. Longer runs clear more of the board at once."
+        },
+        {
+          "q": "What happens after a match?",
+          "a": "The tiles above fall into the gap and new ones come in at the top, which can set up a second match for free."
+        }
+      ]
+    },
+    "2048": {
+      "tagline": "Slide, merge and build the biggest number.",
+      "description": "Slide the whole board with each move, merge matching numbers and build the largest tile you can.",
+      "howToPlay": [
+        "Slide every tile with the arrow keys, or use the on-screen pad.",
+        "Two tiles with the same number merge into one when they meet.",
+        "Swipe on a phone to send the whole board that way."
+      ],
+      "faq": [
+        {
+          "q": "When does the game end?",
+          "a": "When the board is full and no two neighbours match. Until then, every swipe has somewhere to go."
+        },
+        {
+          "q": "What is a good strategy?",
+          "a": "Keep the largest tile in one corner and build in a single direction, so the board never needs rearranging."
+        }
+      ]
+    },
+    "sliding": {
+      "tagline": "Slide the tiles into order, one move at a time.",
+      "description": "Move one tile at a time into the empty space and put the whole picture back in order.",
+      "howToPlay": [
+        "Move a tile into the empty space with the arrow keys.",
+        "Swipe on a phone to slide the tile in that direction.",
+        "Put every tile back in order to finish the puzzle."
+      ],
+      "faq": [
+        {
+          "q": "Can every position be solved?",
+          "a": "Not every one. Half of the arrangements cannot be reached from the finished puzzle, and the game deals you one that can."
+        },
+        {
+          "q": "How many moves does it take?",
+          "a": "A good solve takes about eighty moves from a shuffle. The count on screen tells you how you are doing."
+        }
+      ]
+    },
+    "sokoban": {
+      "tagline": "Push every crate into place without getting stuck.",
+      "description": "Walk the room, push each crate onto its mark and take care never to trap it against a wall.",
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Walk into a crate to push it one square.",
+        "Swipe on a phone to push the crate in that direction."
+      ],
+      "faq": [
+        {
+          "q": "Can I pull a crate?",
+          "a": "No, you can only push. That is why a crate against a wall can be lost, so plan the last push before the first."
+        },
+        {
+          "q": "How do I undo a mistake?",
+          "a": "Most versions have an undo or a restart. Use it early, because a single wrong push can cost the whole level."
+        }
+      ]
+    },
+    "memory": {
+      "tagline": "Turn two cards, remember where they were, find the pairs.",
+      "description": "Turn two cards at a time, remember where each picture sits and pair up the whole board.",
+      "howToPlay": [
+        "Pick a card with a tap or a click to turn it over.",
+        "Turn a second card and keep the pair when the two match.",
+        "Move the selection with the arrow keys or the on-screen pad."
+      ],
+      "faq": [
+        {
+          "q": "Does it matter which card I turn first?",
+          "a": "Not for the rules, but it helps your memory. Turn an unknown card first and a card you remember second."
+        },
+        {
+          "q": "How is the score kept?",
+          "a": "By how few turns it takes to clear the board. Fewer turns mean a better memory, not a faster click."
+        }
+      ]
+    },
+    "sudoku": {
+      "tagline": "Fill the grid so every row, column and box is complete.",
+      "description": "Fill every row, column and box with the digits one to nine, each of them used exactly once.",
+      "howToPlay": [
+        "Pick a square with a tap or a click, then choose the number you want.",
+        "Move between squares with the arrow keys or the on-screen pad.",
+        "Every row, column and box must hold each number exactly once."
+      ],
+      "faq": [
+        {
+          "q": "Do I have to guess?",
+          "a": "A well-made puzzle never needs a guess. If two numbers both fit a square, one of them breaks a row further along."
+        },
+        {
+          "q": "What is the box rule?",
+          "a": "Each of the nine small boxes holds one to nine exactly once, the same as every row and every column."
+        }
+      ]
+    },
+    "solitaire": {
+      "tagline": "Build the four suits from ace to king.",
+      "description": "Deal the cards, build each suit from ace to king and turn over the hidden cards as you go.",
+      "howToPlay": [
+        "Pick up a card with a tap or a click, then pick the pile it belongs on.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Build each suit in order and turn over the hidden cards as you go."
+      ],
+      "faq": [
+        {
+          "q": "What can I move onto a column?",
+          "a": "A card one rank lower and of the opposite colour. An empty column will take any card or any run."
+        },
+        {
+          "q": "What if no move is left?",
+          "a": "Turn the stock again if the version allows it. Most deals can be won, but not every one of them can."
+        }
+      ]
+    },
+    "mahjong": {
+      "tagline": "Clear the board by pairing matching tiles.",
+      "description": "Pair identical tiles from the edges and work inwards until the whole board has been cleared.",
+      "howToPlay": [
+        "Pick two matching tiles with a tap or a click.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Only tiles with a free side can be taken, so work inwards from the edges."
+      ],
+      "faq": [
+        {
+          "q": "Why can I not take that tile?",
+          "a": "A tile needs a free left or right side. Tiles boxed in at both ends stay locked until the board opens up."
+        },
+        {
+          "q": "Is every layout solvable?",
+          "a": "Most are, but the order matters. If a pair leaves two tiles stranded, undo it and try the other pair first."
+        }
+      ]
+    },
+    "hangman": {
+      "tagline": "Guess the hidden word before the picture is complete.",
+      "description": "Guess the hidden word one letter at a time and keep your wrong guesses down to a handful.",
+      "howToPlay": [
+        "Choose a letter with a tap or a click.",
+        "Move between letters with the arrow keys or the on-screen pad.",
+        "Six wrong guesses end the round, so start with the common letters."
+      ],
+      "faq": [
+        {
+          "q": "How many wrong guesses do I get?",
+          "a": "Six in most versions. Vowels first is a good habit, then the consonants that turn up in everything."
+        },
+        {
+          "q": "Does a repeated letter count twice?",
+          "a": "No. A letter is one guess however many times it appears, so long words are often easier than short ones."
+        }
+      ]
+    },
+    "wordsearch": {
+      "tagline": "Find every hidden word in the grid.",
+      "description": "Scan the grid across, down and diagonally to find every word on the list before the round ends.",
+      "howToPlay": [
+        "Drag across a line of letters, or move the cursor with the arrow keys.",
+        "Words can run across, down, up or diagonally.",
+        "Mark every word on the list to finish the puzzle."
+      ],
+      "faq": [
+        {
+          "q": "Which directions do words run?",
+          "a": "Across, down and diagonally, forwards and backwards in most grids. Keep an eye on the list as you go."
+        },
+        {
+          "q": "What happens if I mark the wrong line?",
+          "a": "Nothing. The selection clears and the grid stays as it was, so there is no cost to trying a line."
+        }
+      ]
+    },
+    "wordle": {
+      "tagline": "Six guesses to find the five-letter word.",
+      "description": "Guess the five-letter word in six tries, using the colour clues after each attempt to narrow it down.",
+      "howToPlay": [
+        "Type a word, or pick the letters on the keyboard shown in the game.",
+        "Green means the right letter in the right place; yellow means it belongs elsewhere.",
+        "Press Enter or the B button on the pad to submit your guess."
+      ],
+      "faq": [
+        {
+          "q": "What do the colours mean?",
+          "a": "Green is the right letter in the right place. Yellow is a letter that belongs in the word but somewhere else."
+        },
+        {
+          "q": "Can I guess the same word twice?",
+          "a": "You can, but it wastes a row. Every guess has to be a real word, so there is no way to test letters in bulk."
+        }
+      ]
+    },
+    "quiz": {
+      "tagline": "Answer the questions and see how much you know.",
+      "description": "Answer a run of questions, pick from the choices on screen and see how many you get right.",
+      "howToPlay": [
+        "Pick an answer with a tap or a click.",
+        "Move between answers with the arrow keys or the on-screen pad.",
+        "Every correct answer adds to your score, and the questions keep coming."
+      ],
+      "faq": [
+        {
+          "q": "Is there a time limit?",
+          "a": "In most versions each question has one. Answer the ones you know first and come back to the rest if you can."
+        },
+        {
+          "q": "Can I see the answers?",
+          "a": "Usually at the end of the run. The score is the point, so most quizzes hold the answers back until then."
+        }
+      ]
+    },
+    "typing": {
+      "tagline": "Type the words as fast and as accurately as you can.",
+      "description": "Type each word that appears as quickly and as accurately as you can, and keep the run going.",
+      "howToPlay": [
+        "Type each word that appears, then press Space to move on.",
+        "Keep your hands on the keyboard and your eyes on the text.",
+        "Accuracy and speed both count towards your score."
+      ],
+      "faq": [
+        {
+          "q": "Which matters more, speed or accuracy?",
+          "a": "Accuracy. A wrong letter costs more time than a slow one, because fixing it costs another keystroke."
+        },
+        {
+          "q": "Should I look at the keyboard?",
+          "a": "No. Keep your eyes on the text and let your fingers learn the keys, even if the first few runs are slow."
+        }
+      ]
+    },
+    "towerdefense": {
+      "tagline": "Build your towers and hold the line against the waves.",
+      "description": "Place towers along the path, spend what you earn on upgrades and stop every wave before it reaches the base.",
+      "howToPlay": [
+        "Pick a tower with a tap or a click, then pick a spot beside the path.",
+        "Move between build spots with the arrow keys or the on-screen pad.",
+        "Each wave is stronger than the last, so upgrade before it arrives."
+      ],
+      "faq": [
+        {
+          "q": "Where should towers go?",
+          "a": "At the bends. A tower covers more of the path where it turns, so a corner is worth two straight stretches."
+        },
+        {
+          "q": "Should I upgrade or build?",
+          "a": "Upgrade the towers on the busiest stretch first. A few strong towers usually beat a long line of weak ones."
+        }
+      ]
+    },
+    "roguelike": {
+      "tagline": "One life, a fresh dungeon and a fight to the last floor.",
+      "description": "Take one life into a fresh dungeon, fight what you meet and see how deep you can get.",
+      "howToPlay": [
+        "Move one square at a time with the arrow keys, or use the on-screen pad.",
+        "Walk into a monster to attack it and step on an item to pick it up.",
+        "Swipe on a phone to move one square at a time."
+      ],
+      "faq": [
+        {
+          "q": "Is there a save?",
+          "a": "Usually not. One life is the point of the genre, so the run ends with you and the next dungeon is new."
+        },
+        {
+          "q": "Should I fight everything?",
+          "a": "No. Experience is useful, but a fight you can walk away from is a fight you cannot lose."
+        }
+      ]
+    },
+    "shooter": {
+      "tagline": "Keep moving, keep firing and stay alive.",
+      "description": "Keep moving, aim at whatever comes for you and clear the screen without taking a hit.",
+      "howToPlay": [
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Fire with Space or the A button on the pad.",
+        "Dodge what comes at you and clear the screen."
+      ],
+      "faq": [
+        {
+          "q": "Why should I keep moving?",
+          "a": "Standing still makes you an easy target. Most of these games aim where you are, so a step sideways is a dodge."
+        },
+        {
+          "q": "What is the best way to clear a wave?",
+          "a": "Work from the outside in and leave yourself a way out, rather than backing into a corner."
+        }
+      ]
+    },
+    "idle": {
+      "tagline": "Start small, earn steadily and watch the numbers grow.",
+      "description": "Tap to earn your first coins, spend them on upgrades and watch the numbers climb while you wait.",
+      "howToPlay": [
+        "Tap or click to earn your first coins.",
+        "Spend what you earn on upgrades that earn faster.",
+        "Move between upgrades with the arrow keys or the on-screen pad."
+      ],
+      "faq": [
+        {
+          "q": "Do I have to keep the page open?",
+          "a": "Usually yes, though many of these games keep earning while the tab sits in the background."
+        },
+        {
+          "q": "What should I buy first?",
+          "a": "The upgrade with the shortest payback. Work out how long it takes to earn its cost back before you spend."
+        }
+      ]
+    },
+    "board": {
+      "tagline": "Take turns, think ahead and win the board.",
+      "description": "Take turns moving your pieces, plan a few moves ahead and protect your own side of the board.",
+      "howToPlay": [
+        "Pick a piece with a tap or a click, then pick where it moves.",
+        "Move the selection with the arrow keys or the on-screen pad.",
+        "Take turns with your opponent and protect your own pieces."
+      ],
+      "faq": [
+        {
+          "q": "Can I play alone?",
+          "a": "In most versions the other side is the computer. Some of them also offer two players on one screen."
+        },
+        {
+          "q": "Is there a time limit per turn?",
+          "a": "Sometimes. Where there is one, the clock sits next to your name and the turn passes when it runs out."
+        }
+      ]
+    },
+    "generic": {
+      "tagline": "A quick game to pick up and play in the browser.",
+      "description": "Read the prompts, pick up the controls as you go and see how far one run of this browser game takes you.",
+      "howToPlay": [
+        "Tap or click to start, then follow the prompts inside the game.",
+        "Move with the arrow keys, or use the on-screen pad.",
+        "Swipe on a phone to send the arrow keys the game expects."
+      ],
+      "faq": [
+        {
+          "q": "How do I start?",
+          "a": "Tap or click the game once and follow the prompt it shows. Most of these games start on the first input."
+        },
+        {
+          "q": "What if the controls do not respond?",
+          "a": "Click the game area once to give it focus, then try again. Keys only reach the game while it has focus."
+        }
+      ]
+    }
+  }
+}
