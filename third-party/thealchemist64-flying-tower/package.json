@@ -1,0 +1,32 @@
+{
+  "name": "flying-tower",
+  "version": "0.1.0-alpha",
+  "description": "\u0016Open source roguelike that uses ES6 features",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TheAlchemist64/Flying-Tower.git"
+  },
+  "keywords": [
+    "javascript",
+    "es6-javascript",
+    "rougelike",
+    "dungeon-crawler"
+  ],
+  "author": "TheAlchemist64",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/TheAlchemist64/Flying-Tower/issues"
+  },
+  "homepage": "https://github.com/TheAlchemist64/Flying-Tower#readme",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^14.0.0",
+    "rollup": "^2.23.0"
+  },
+  "dependencies": {}
+}

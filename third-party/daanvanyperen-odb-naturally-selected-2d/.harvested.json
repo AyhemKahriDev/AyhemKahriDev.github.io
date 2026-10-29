@@ -1,0 +1,15 @@
+{
+  "repo": "DaanVanYperen/odb-naturally-selected-2d",
+  "stars": 32,
+  "licence": "MIT",
+  "sizeKB": 3848,
+  "pushedAt": "2015-08-04T14:44:28Z",
+  "description": "Jam game, a demake of natural selection 2 using libgdx and artemis-odb",
+  "defaultBranch": "master",
+  "owner": "DaanVanYperen",
+  "slug": "daanvanyperen-odb-naturally-selected-2d",
+  "dest": "third-party/daanvanyperen-odb-naturally-selected-2d",
+  "readme": "naturally-selected-2d\n=====================\n\n#### Summary\nJam game made in 72 hours, Scifi defense platformer made with [LibGDX](https://github.com/libgdx/libgdx) and [Artemis-ODB](https://github.com/junkdog/artemis-odb). Tested for desktop and html5 via gwt.\n\n#### Grab what you need!\nArtemis Entity System takes a way a lot of the lifecycle management, and composition is a natural match for a time constrained Jam. While made in a rush, I hope this code gives you an idea or two how to benefit from using an entity system in your project.\n\n#### Usage details\nWhile the meat is with peeking at the systems and components, you might like to compile the game! The project was created using libgdx-setup (not libgdx-setup-ui), which uses gradle for build automation, and snapshot versions of artemis and libgdx. ```gradlew desktop:run``` should run the game. See the [libgdx wiki](https://github.com/libgdx/libgdx/wiki) for how to use gradle with your ide.\n\n#### License summary\nCode and graphics are under a separate license. Feel free to do whatever with the code, the graphics however remain copyrighted and are restricted in use anyway, since it's a demake of a commercial game (Natural Selection 2).\n\n#### Play it!\n*\"Left by his team, this marine has been naturally selected to defend his commander from waves of Sulks and Gorgels. He must juggle his natural desire to shoot things with an overzealous jet-pack and resource greedy turrets!\" *\n\nDownload the game [Ludum Dare page](http://www.ludumdare.com/compo/minild-50/?action=preview&amp;uid=22396)\nor [Play online](http://ludum.mostlyoriginal.net/game/ns2d/)\n\n\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "gwt/webapp/index.html"
+}

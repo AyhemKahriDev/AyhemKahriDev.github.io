@@ -1,0 +1,15 @@
+{
+  "repo": "usecodelee/Vue-auto-Puzzle",
+  "stars": 138,
+  "licence": "MIT",
+  "sizeKB": 3940,
+  "pushedAt": "2019-04-04T10:07:03Z",
+  "description": "Jigsaw puzzle based on Vue（基于Vue的拼图小游戏，可自动拼图。还包含Weex版）",
+  "defaultBranch": "master",
+  "owner": "usecodelee",
+  "slug": "usecodelee-vue-auto-puzzle",
+  "dest": "third-party/usecodelee-vue-auto-puzzle",
+  "readme": "# Vue-auto-Puzzle\n\n[![star this repo](http://githubbadges.com/star.svg?user=usecodelee&repo=Vue-auto-Puzzle&style=flat&color=fff&background=CC6633)](https://github.com/usecodelee/Vue-auto-Puzzle)\n[![fork this repo](http://githubbadges.com/fork.svg?user=usecodelee&repo=Vue-auto-Puzzle&style=flat&color=fff&background=CC6633)](https://github.com/usecodelee/Vue-auto-Puzzle/fork) ![](https://img.shields.io/badge/license-MIT-blue.svg)  \n\nJigsaw puzzle based on Vue  \n基于Vue的拼图小游戏  \n  \n带有打乱时很炫酷的动画  \n![example](https://github.com/usecodelee/Vue-auto-Puzzle/blob/master/vue/img/20190328.gif?raw=true) \n\n## 增加自动拼图的功能\n\n## 增加自动重新打乱开始的功能\n\n## 增加Weex（Android & iOS） \n\n## 使用：\n\n1. npm install\n\n2. npm run serve\n",
+  "licenceFile": "LICENSE",
+  "entry": "vue/public/index.html"
+}

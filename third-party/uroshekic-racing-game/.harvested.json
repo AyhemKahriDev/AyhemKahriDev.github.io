@@ -1,0 +1,15 @@
+{
+  "repo": "uroshekic/racing-game",
+  "stars": 13,
+  "licence": "MIT",
+  "sizeKB": 356,
+  "pushedAt": "2014-06-18T06:42:21Z",
+  "description": "2D racing game written in JavaScript",
+  "defaultBranch": "master",
+  "owner": "uroshekic",
+  "slug": "uroshekic-racing-game",
+  "dest": "third-party/uroshekic-racing-game",
+  "readme": "racing-game\n===========\n\n2D racing game written in JavaScript.\n\nYou can see the latest version in action <a href=\"http://urosh.net/race\" target=\"_blank\">here</a>.\nOr you can try <a href=\"http://urosh.net/race/v1.0/\" target=\"_blank\">v1.0</a>.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

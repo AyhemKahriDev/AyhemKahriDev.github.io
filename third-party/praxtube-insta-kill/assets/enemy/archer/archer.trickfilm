@@ -1,0 +1,22 @@
+[
+    (
+        name: "idling",
+        keyframes: KeyframesRange((start: 32, end: 36)),
+        duration: 0.5,
+    ),
+    (
+        name: "walking",
+        keyframes: KeyframesRange((start: 0, end: 8)),
+        duration: 0.9,
+    ),
+    (
+        name: "shooting",
+        keyframes: KeyframesRange((start: 16, end: 30)),
+        duration: 2.0,
+    ),
+    (
+        name: "stunned",
+        keyframes: KeyframesVec([40]),
+        duration: 1.0,
+    ),
+]

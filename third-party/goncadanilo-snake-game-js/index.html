@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Snake Game</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <link rel="stylesheet" href="src/styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="content"> 
+        <a href="https://github.com/goncadanilo/snake-game" target="_blank">
+          Snake Game
+        </a>
+        <div class="score">
+          <p>Score: &nbsp;</p>
+          <p id="count"></p>
+        </div>
+      </div>
+      <canvas id="stage" width="500" height="500"></canvas>
+    </div>
+
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <p id="game-over">GAME OVER</p>
+        <span>
+          Your score: &nbsp;
+          <p id="max-score"></p>
+        </span>
+        <button id="btn" type="button">Try again</button>
+      </div>
+    </div>
+
+    <script src="src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,20 @@
+.content {
+  max-height: 78vh;
+  overflow: auto;
+}
+
+.win-text {
+  color: #51b36e;
+}
+
+.win-text.colorblind {
+  color: #2271B2;
+}
+
+.lose-text {
+  color: #943e3c;
+}
+
+.lose-text.colorblind {
+  color: #D55E00;
+}

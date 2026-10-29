@@ -1,0 +1,16 @@
+{
+  "repo": "BuonOmo/snake",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 42,
+  "pushedAt": "2018-12-06T22:36:31Z",
+  "description": "A one afternoon discovery of Javascript's canvas",
+  "defaultBranch": "master",
+  "owner": "BuonOmo",
+  "slug": "buonomo-snake",
+  "dest": "third-party/buonomo-snake",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

@@ -1,0 +1,80 @@
+
+var dragAndDropBehaviourSharedKeys = {
+    group: string
+};
+
+$DragAndDropBehaviour {
+
+    $SimpleDragSource {
+        useDimensionsOfCell?: string,
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $TestDropTarget {
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+
+    $SlotDragSource {
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $SlotDropTarget {
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $CardDragSource {
+        moveToLastIndex?: boolean,
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $RevolverDropTarget {
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $CardDropTarget {
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $CoverAreaDropTarget {
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $ShopDropTarget{
+        isToDeck: boolean,
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $ShopCardDrag{
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $ShopDragSource{
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $ChooseCardDragSource{
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+   $ChooseCardDropTarget{
+        isToDeck: boolean,
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $BackpackDragSource{
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $DeckSlotDropTarget{
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $BackpackDropTarget{
+        ...dragAndDropBehaviourSharedKeys
+    }
+
+    $PutCardsUnderDeckDropTarget {
+        ...dragAndDropBehaviourSharedKeys
+    }
+}

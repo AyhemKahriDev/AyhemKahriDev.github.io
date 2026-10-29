@@ -1,0 +1,15 @@
+{
+  "repo": "nicolas-dutertry/balljs",
+  "stars": 7,
+  "licence": "Apache-2.0",
+  "sizeKB": 207,
+  "pushedAt": "2017-08-17T12:20:45Z",
+  "description": "Brick breaker game",
+  "defaultBranch": "master",
+  "owner": "nicolas-dutertry",
+  "slug": "nicolas-dutertry-balljs",
+  "dest": "third-party/nicolas-dutertry-balljs",
+  "readme": "# balljs\nBrick breaker game\n\nTouch the screen, move down and release to launch the ball. You can also use a mouse on standard computer.\n\nYou can try the game here : https://nicolas.dutertry.com/balljs/\n\n## Screenshots\n\n![Screenshot 1](screen-shot-1.png?raw=true) ![Screenshot 2](screen-shot-2.png?raw=true)\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "morkro/tetrys",
+  "stars": 107,
+  "licence": "Apache-2.0",
+  "sizeKB": 305,
+  "pushedAt": "2016-10-23T15:27:14Z",
+  "description": "𝌶 Tetris as Progressive Web Application",
+  "defaultBranch": "master",
+  "owner": "morkro",
+  "slug": "morkro-tetrys",
+  "dest": "third-party/morkro-tetrys",
+  "readme": "# Tetrys ☳ [![Build Status](https://travis-ci.org/morkro/tetrys.svg?branch=master)](https://travis-ci.org/morkro/tetrys)\nTetris as Progressive Web Application _(currently still in active development)_.\n\n## News :fire:\nI am currently searching for a designer to partner me! Please get in touch with [me](https://github.com/morkro), if you're interested in collaboration.\n\n## Development :wrench:\nThis application _requires_ Node.js `>=6.0.0` to run locally and the [Redux DevTools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en) for debugging Redux applications.\n\nTo get started, `npm install` all dependencies. To run the application in **development** mode, use the `npm run dev` command. A **production** build can be created with `npm run build`.\n\n### Updating service worker version\nThe service worker version is tied to the `package.json` version. To bump the applications and service worker versions, use [`npm version`](https://docs.npmjs.com/cli/version) command:\n```\nnpm version [ major | minor | patch ]\n```\n\n### Architecture\nTetrys uses [Redux](http://redux.js.org/) as state container, and no view library. The Sass architecture follows the [7-1 Pattern](http://sass-guidelin.es/#architecture) from Sass-Guidelines.\n\n## Tools, Resources and Credits :heart:\nThis project couldn't have been build without the awesome open source tools from the community, free online tutorials, articles, and other resources. Credits goes to:\n\n- [Implementing Tetris](http://gamedevelopment.tutsplus.com/series/implementing-tetris--gamedev-12717) by [Michael James Williams](http://tutsplus.com/authors/mjw)\n- [@dionyziz/canvas-tetris](https://github.com/dionyziz/canvas-tetris) _(This project helped me a lot understanding a Tetris implementation in JavaScript. I used and modified parts of his codebase.)_\n- Various StackOverflow answers\n\n## License :copyright:\n[Apache License, Version 2.0](LICENSE.md)\n",
+  "licenceFile": "LICENSE",
+  "entry": "dist/index.html"
+}

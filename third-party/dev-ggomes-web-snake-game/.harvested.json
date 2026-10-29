@@ -1,0 +1,15 @@
+{
+  "repo": "dev-ggomes/web-snake-game",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 77,
+  "pushedAt": "2025-07-08T16:58:59Z",
+  "description": ":snake:A classic Snake Game recreated for the web using HTML, CSS, and JavaScript. Includes smooth movement and basic collision mechanics.",
+  "defaultBranch": "main",
+  "owner": "dev-ggomes",
+  "slug": "dev-ggomes-web-snake-game",
+  "dest": "third-party/dev-ggomes-web-snake-game",
+  "readme": "<div align=\"center\">\n  \n  ## 🐍 Snake Game\n  \n</div>\n\n<p align=\"center\">\n  A funny way to spend some time with one of the most classic games in the world! <br>\n  ⭐ If you enjoy this project, please give it a star\n</p>\n\n<!-- |||||||||||||||||||| SPONSORS & STARS |||||||||||||||||||| -->\n<p align='center'>\n  <a href=\"https://github.com/sponsors/dev-ggomes\"><img alt=\"Sponsor\" src=\"https://img.shields.io/badge/sponsor-30363D?style=social&logo=GitHub-Sponsors&logoColor=#white\" /></a>\n  &nbsp;\n  <a href=\"#\"><img alt=\"GitHub Repo stars\" src=\"https://img.shields.io/github/stars/dev-ggomes/web-snake-game?style=social\" /></a>\n</p>\n\n<br>\n\n---\n\n<div align=\"left\">\n  \n  ### 📈 Possible improvements:\n   - Add scoreboard\n   - Add difficult levels\n</div>\n\n---\n\n<div align=\"center\">\n\n  ### 3️⃣2️⃣1️⃣ Countdown Started! Get ready!\n  ![image](https://github.com/user-attachments/assets/43fd9a68-b670-4dca-96a2-6b349e0ff8a7)\n  \n  ### 🕹️ Mid-game:\n  ![image](https://github.com/user-attachments/assets/0a280379-890d-42d7-a41d-dfda8da45516)\n  \n  ### 🤬 You lost...\n  ![image](https://github.com/user-attachments/assets/040f3e76-0908-43ac-a816-d34cc1a2f626)\n  \n</div>\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

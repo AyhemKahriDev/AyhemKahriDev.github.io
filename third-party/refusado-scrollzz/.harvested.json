@@ -1,0 +1,15 @@
+{
+  "repo": "refusado/scrollzz",
+  "stars": 34,
+  "licence": "MIT",
+  "sizeKB": 630,
+  "pushedAt": "2023-08-03T19:41:43Z",
+  "description": "A complete puzzle developed exclusively in HTML & CSS 🧩",
+  "defaultBranch": "main",
+  "owner": "refusado",
+  "slug": "refusado-scrollzz",
+  "dest": "third-party/refusado-scrollzz",
+  "readme": "<details>\n\n<summary>Ler em português 🇧🇷</summary>\n\n# Scrollzz 🧩\n\nScrollzz é um jogo de quebra-cabeças minimalista e geométrico que se baseia apenas no movimento de scroll. Deixe a sua estrela no repositório se curtiu o projeto e confira o resultado em [refusado.github.io/scrollzz](https://refusado.github.io/scrollzz/)\n\nO puzzle foi desenvolvido exclusivamente em CSS, todo o projeto é composto por apenas HTML e folhas de estilo, sem tags de script!\n\n![Demonstração](./images/demo.png)\n\n## Caracterísitcas 🎀\n\n  - Jogo simples, fácil de entender e desafiador;\n  - 100% responsivo, funciona até em relógio de pulso;\n  - Design bonito, minimalista e dark mode;\n  - Tradução para os idiomas português e inglês;\n  - Alta compatibilidade entre os navegadores (só não vai funcionar para quem está viajando no tempo em 2009 para baixo).\n  \n## Autor ✍️\n\nRefu\n\n- [Discord](https://discord.com/users/412685400847679508)\n- [Github](https://github.com/refusado)\n- [Youtube](https://www.youtube.com/@refusado)\n- [Email](mailto:refusado@gmail.com)\n- [Twitter](https://twitter.com/refusado)\n\n## Licença 🔓\n\nO Scrollzz é distribuído sob a Licença MIT. Consulte o arquivo [LICENSE](https://github.com/refusado/scrollzz/blob/main/LICENSE) para obter mais informações sobre os termos de uso.\n\n---\n\n</details>\n\n# Scrollzz 🧩\n\nScrollzz is a minimalistic, geometric puzzle based on scrolling movement. Star the repository if you like it and check out the result at [refusado.github.io/scrollzz](https://refusado.github.io/scrollzz/)\n\nThe game was developed exclusively in CSS, the whole project consists of HTML and style sheets only, no script tags!\n\n![Demo](./images/demo.png)\n\n## Features 🎀\n\n- Simple, easy to understand, and challenging game;\n- 100% responsive, works even on a wristwatch;\n- Beautiful, minimalist, and dark mode design;\n- Translation for Portuguese and English languages;\n- High cross-browser compatibility (just won't work for time travelers who are in 2009 or earlier).\n  \n## Author ✍️\n\nRefu\n\n- [Discord](https://discord.com/users/412685400847679508)\n- [Github](https://github.com/refusado)\n- [Youtube](https://www.youtube.com/@refusado)\n- [Email](mailto:refusado@gmail.com)\n- [Twitter](https://twitter.com/refusado)\n\n## License 🔓\n\nScrollzz is distributed under the MIT License. See the [LICENSE](https://github.com/refusado/scrollzz/blob/main/LICENSE) file for more information about the terms of use.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

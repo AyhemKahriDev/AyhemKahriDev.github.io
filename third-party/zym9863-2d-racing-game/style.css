@@ -1,0 +1,465 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Racing Sans One', 'Arial', sans-serif;
+    background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+    color: #fff;
+    position: relative;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 87, 51, 0.03) 2px,
+            rgba(255, 87, 51, 0.03) 4px
+        ),
+        repeating-linear-gradient(
+            90deg,
+            transparent,
+            transparent 2px,
+            rgba(255, 87, 51, 0.03) 2px,
+            rgba(255, 87, 51, 0.03) 4px
+        );
+    pointer-events: none;
+    animation: backgroundMove 20s linear infinite;
+}
+
+@keyframes backgroundMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(4px, 4px); }
+}
+
+.game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background: linear-gradient(135deg, #1e1e2f 0%, #2a2a3e 100%);
+    border-radius: 20px;
+    box-shadow: 
+        0 20px 60px rgba(0, 0, 0, 0.8),
+        0 0 40px rgba(255, 87, 51, 0.4),
+        inset 0 0 30px rgba(255, 87, 51, 0.1);
+    overflow: hidden;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+    position: relative;
+    animation: containerGlow 3s ease-in-out infinite alternate;
+}
+
+.game-container::before {
+    content: '';
+    position: absolute;
+    top: -3px;
+    left: -3px;
+    right: -3px;
+    bottom: -3px;
+    background: linear-gradient(45deg, #ff5733, #ff8a5b, #ff5733, #c0392b);
+    border-radius: 20px;
+    z-index: -1;
+    animation: borderRotate 3s linear infinite;
+}
+
+@keyframes containerGlow {
+    0% { box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(255, 87, 51, 0.4); }
+    100% { box-shadow: 0 25px 70px rgba(0, 0, 0, 0.9), 0 0 60px rgba(255, 87, 51, 0.6); }
+}
+
+@keyframes borderRotate {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 100% 50%; }
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 20px;
+    background: linear-gradient(90deg, #0f0c29, #302b63, #24243e);
+    color: white;
+    font-size: 18px;
+    border-bottom: 3px solid transparent;
+    background-image: 
+        linear-gradient(90deg, #0f0c29, #302b63, #24243e),
+        linear-gradient(90deg, #ff5733, #ff8a5b, #ff5733);
+    background-origin: border-box;
+    background-clip: padding-box, border-box;
+    box-shadow: 
+        0 4px 15px rgba(0, 0, 0, 0.5),
+        inset 0 -2px 5px rgba(255, 87, 51, 0.2);
+    position: relative;
+    z-index: 2;
+}
+
+#gameCanvas {
+    display: block;
+    background: linear-gradient(180deg, #1a1a2e 0%, #2c3e50 100%);
+    width: 100%;
+    height: calc(100% - 100px);
+    box-shadow: 
+        inset 0 0 50px rgba(0, 0, 0, 0.7),
+        inset 0 0 100px rgba(0, 0, 0, 0.3);
+    position: relative;
+    filter: contrast(1.1) brightness(1.05);
+}
+
+.controls-info {
+    padding: 8px 10px;
+    background: linear-gradient(90deg, #24243e, #302b63, #0f0c29);
+    color: #ddd;
+    font-size: 14px;
+    text-align: center;
+    border-top: 1px solid rgba(255, 87, 51, 0.5);
+}
+
+.controls-info .key {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 4px;
+    padding: 0 6px;
+    margin: 0 2px;
+    font-family: 'Orbitron', monospace;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.game-over, .start-screen {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle, rgba(25, 25, 50, 0.95) 0%, rgba(10, 10, 30, 0.98) 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    z-index: 10;
+    backdrop-filter: blur(5px);
+}
+
+.game-over {
+    display: none;
+}
+
+.modal-content {
+    background: linear-gradient(135deg, #302b63 0%, #24243e 100%);
+    padding: 30px 50px;
+    border-radius: 15px;
+    border: 2px solid #ff5733;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(255, 87, 51, 0.3);
+    text-align: center;
+    transform: scale(0.9);
+    animation: modalAppear 0.5s forwards;
+}
+
+@keyframes modalAppear {
+    0% { transform: scale(0.8); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.logo-container {
+    text-align: center;
+    margin-bottom: 30px;
+    animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+.game-title {
+    font-size: 48px;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px rgba(255, 87, 51, 0.7), 0 0 20px rgba(255, 87, 51, 0.5);
+    letter-spacing: 2px;
+}
+
+.highlight {
+    color: #ff5733;
+}
+
+.car-icon {
+    font-size: 60px;
+    color: #ff5733;
+    margin: 20px 0;
+    text-shadow: 0 0 15px rgba(255, 87, 51, 0.8);
+    animation: carMove 2s ease-in-out infinite;
+}
+
+@keyframes carMove {
+    0% { transform: translateX(-50px) rotate(0deg); }
+    50% { transform: translateX(50px) rotate(0deg); }
+    100% { transform: translateX(-50px) rotate(0deg); }
+}
+
+button {
+    margin-top: 20px;
+    padding: 12px 25px;
+    font-size: 18px;
+    background: linear-gradient(135deg, #ff5733 0%, #e74c3c 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+    font-family: 'Orbitron', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
+}
+
+button:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 10px rgba(231, 76, 60, 0.4);
+}
+
+.btn-primary {
+    position: relative;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+}
+
+.btn-primary:hover::before {
+    transform: translateX(0);
+}
+
+.pulse-effect {
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 87, 51, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 15px rgba(255, 87, 51, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 87, 51, 0);
+    }
+}
+
+.score, .speed, .lives {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6) 0%, rgba(50, 50, 80, 0.5) 100%);
+    padding: 8px 15px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    box-shadow: 
+        0 2px 10px rgba(0, 0, 0, 0.3),
+        inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.score::before, .speed::before, .lives::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.score:hover::before, .speed:hover::before, .lives:hover::before {
+    left: 100%;
+}
+
+.score:hover, .speed:hover, .lives:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 
+        0 6px 20px rgba(255, 87, 51, 0.4),
+        inset 0 1px 2px rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 87, 51, 0.3);
+}
+
+.score i, .speed i, .lives i {
+    color: #ff5733;
+    font-size: 18px;
+    text-shadow: 
+        0 0 10px rgba(255, 87, 51, 0.8),
+        0 0 20px rgba(255, 87, 51, 0.4);
+    animation: iconPulse 2s ease-in-out infinite;
+}
+
+@keyframes iconPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.font-digital {
+    color: #fff;
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.9),
+        0 0 10px rgba(255, 87, 51, 0.3);
+    font-weight: bold;
+    letter-spacing: 2px;
+    font-size: 20px;
+    animation: digitalGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes digitalGlow {
+    0% { text-shadow: 0 0 5px rgba(255, 255, 255, 0.9), 0 0 10px rgba(255, 87, 51, 0.3); }
+    100% { text-shadow: 0 0 10px rgba(255, 255, 255, 1), 0 0 20px rgba(255, 87, 51, 0.5); }
+}
+
+/* 生命值特殊动画 */
+.lives span {
+    transition: all 0.3s ease;
+}
+
+.lives span[data-lives="1"] {
+    color: #e74c3c;
+    animation: criticalPulse 0.5s ease-in-out infinite;
+}
+
+@keyframes criticalPulse {
+    0%, 100% { transform: scale(1); color: #e74c3c; }
+    50% { transform: scale(1.2); color: #ff6b6b; }
+}
+
+/* 添加加载动画 */
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top: 3px solid #ff5733;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: translate(-50%, -50%) rotate(0deg); }
+    100% { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* 游戏容器特效 */
+.game-container.game-active {
+    animation: gameStart 0.5s ease-out;
+}
+
+@keyframes gameStart {
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.02); }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+/* 控制信息动画 */
+.controls-info {
+    position: relative;
+    overflow: hidden;
+}
+
+.controls-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 87, 51, 0.2), transparent);
+    animation: slideInfo 8s linear infinite;
+}
+
+@keyframes slideInfo {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+/* 按键提示特效 */
+.controls-info .key:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 87, 51, 0.3);
+    border-color: #ff5733;
+    box-shadow: 0 4px 8px rgba(255, 87, 51, 0.4);
+}
+
+/* 模态框增强 */
+.modal-content h2 {
+    animation: titleBounce 0.6s ease-out;
+}
+
+@keyframes titleBounce {
+    0% { transform: translateY(-20px); opacity: 0; }
+    50% { transform: translateY(5px); }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+.modal-content p {
+    animation: fadeInUp 0.8s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+    0% { transform: translateY(20px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+}
+
+/* 响应式设计 */
+@media (max-width: 850px) {
+    .game-container {
+        transform: scale(0.9);
+    }
+}
+
+@media (max-width: 750px) {
+    .game-container {
+        transform: scale(0.8);
+    }
+}
+
+/* 性能优化 */
+.game-container * {
+    will-change: auto;
+}
+
+#gameCanvas {
+    will-change: transform;
+    image-rendering: optimizeSpeed;
+    image-rendering: -webkit-optimize-contrast;
+}

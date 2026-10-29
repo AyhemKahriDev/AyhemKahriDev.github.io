@@ -1,0 +1,87 @@
+﻿@model MIMWebClient.Models.CreatePlayer
+
+
+<div id="select-char" class="notVisible">
+    @using (@Html.BeginForm("CreateCharacter", "Home", FormMethod.Post, new { id = "createCharaterForm" }))
+    {
+        <div class="row">
+            <div class="col-xs-12">
+
+                <div class="form-group" id="CreateCharName">
+                    <label for="Name">Character Name</label>
+                    @{
+                        @Html.TextBoxFor(input => input.Name, string.Empty, new { @class = "form-control", placeholder = "Character name" })
+                        @Html.ValidationMessageFor(input => input.Name, string.Empty, new { @class="errorMsg"} )
+
+                    }
+
+                    <a href="javascript:void(0)" class="btn btn-success js-generateName" title="Choose a random name">Random Name</a>
+
+                    <small>Choose a good unique fantasy name.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="male">Gender</label>
+                    <label class="radio-inline">
+
+                        @{
+                            @Html.RadioButtonFor(input => input.Gender, "Male", new { id = "Male", @checked = true, name = "Male" })
+                            @:Male
+                        }
+                    </label>
+
+                    <label class="radio-inline">
+
+                        @{
+                            @Html.RadioButtonFor(input => input.Gender, "Female", new { id = "Female", name = "Female" })
+                            @:Female
+                        }
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label for="Email">Email</label>
+                    @{
+                        @Html.TextBoxFor(input => input.Email, string.Empty, new { type = "email", @class = "form-control", placeholder = "Email Address" })
+                        @Html.ValidationMessageFor(input => input.Email, string.Empty, new { @class = "errorMsg" })
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    @{
+                        @Html.TextBoxFor(input => input.Password, string.Empty, new { id = "password", type = "password", @class = "form-control", placeholder = "Password" })
+                        @Html.ValidationMessageFor(input => input.Password, string.Empty, new { @class = "errorMsg" })
+                    }
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Confirm Password</label>
+                    @{
+                        @Html.TextBoxFor(input => input.ConfirmPassword, string.Empty, new { id = "confirmPassword", type = "password", @class = "form-control", placeholder = "Confirm Password" })
+                        @Html.ValidationMessageFor(input => input.ConfirmPassword, string.Empty, new { @class = "errorMsg" })
+                    }
+                    <p id="passwordMatchError" class="notVisible alert alert-danger">Your passwords do not match</p>
+                </div>
+
+                @{
+//hidden fields for stats
+                    @Html.HiddenFor(input => input.Strength, string.Empty);
+                    @Html.HiddenFor(input => input.Dexterity, string.Empty);
+                    @Html.HiddenFor(input => input.Constitution, string.Empty);
+                    @Html.HiddenFor(input => input.Intelligence, string.Empty);
+                    @Html.HiddenFor(input => input.Wisdom, string.Empty);
+                    @Html.HiddenFor(input => input.Charisma, string.Empty);
+                    @Html.HiddenFor(input => input.Race, string.Empty);
+                    @Html.HiddenFor(input => input.Class, string.Empty);
+                }
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12">
+                <button type="submit" class="btn btn-success pull-right" id="CreateCharBt">Create Character</button>
+                <button type="button" class="btn btn-default pull-right margin-right-10" id="backToClass">Prev: Change stats?</button>
+            </div>
+        </div>
+                    }
+</div>

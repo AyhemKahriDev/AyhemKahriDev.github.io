@@ -1,0 +1,15 @@
+{
+  "repo": "rjanjic/js-solitaire",
+  "stars": 83,
+  "licence": "MIT",
+  "sizeKB": 851,
+  "pushedAt": "2022-12-07T04:52:43Z",
+  "description": "JavaScript Solitaire Game",
+  "defaultBranch": "master",
+  "owner": "rjanjic",
+  "slug": "rjanjic-js-solitaire",
+  "dest": "third-party/rjanjic-js-solitaire",
+  "readme": "# JavaScript Solitaire Game\n\nDEV env: `yarn && yarn start`\n\nProduction build: `yarn build`\n\n![JavaScript Solitaire](https://raw.githubusercontent.com/uzi88/js-solitaire/master/screen-shot.png)\n\n![JavaScript Solitaire Win](https://raw.githubusercontent.com/uzi88/js-solitaire/master/screen-shot-win.png)\n\nDemo: http://radovanjanjic.com/js-solitaire/\n",
+  "licenceFile": "LICENSE",
+  "entry": "src/index.html"
+}

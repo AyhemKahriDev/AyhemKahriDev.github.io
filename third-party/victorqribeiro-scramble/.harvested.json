@@ -1,0 +1,15 @@
+{
+  "repo": "victorqribeiro/scramble",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 60,
+  "pushedAt": "2020-10-25T09:41:15Z",
+  "description": "A puzzle game in JavaScript",
+  "defaultBranch": "master",
+  "owner": "victorqribeiro",
+  "slug": "victorqribeiro-scramble",
+  "dest": "third-party/victorqribeiro-scramble",
+  "readme": "# Scramble\n\nPut the numbers in the right order.\n\n[![new screenshot](screenshot.png)](https://victorribeiro.com/scramble/)\n\nPlay it [here](https://victorribeiro.com/scramble)\n\n\n# How to play\n\nClick the number for it to move to the next empty space. Your goal is to put the numbers in the right sequence (top to bottom, left to right) from 1 to 8\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

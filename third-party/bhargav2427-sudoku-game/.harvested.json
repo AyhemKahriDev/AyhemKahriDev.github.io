@@ -1,0 +1,15 @@
+{
+  "repo": "bhargav2427/sudoku-game",
+  "stars": 4,
+  "licence": "MIT",
+  "sizeKB": 13,
+  "pushedAt": "2021-03-30T02:50:19Z",
+  "description": "Sudoku game using Javascript, HTML and CSS.",
+  "defaultBranch": "main",
+  "owner": "bhargav2427",
+  "slug": "bhargav2427-sudoku-game",
+  "dest": "third-party/bhargav2427-sudoku-game",
+  "readme": "# sudoku-game\nSudoku game using Javascript, HTML and CSS.<br>\nLive Demo: https://sudoku-bhargav.netlify.app/\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

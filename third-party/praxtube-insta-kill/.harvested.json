@@ -1,0 +1,15 @@
+{
+  "repo": "PraxTube/insta-kill",
+  "stars": 43,
+  "licence": "MIT",
+  "sizeKB": 3446,
+  "pushedAt": "2024-06-13T08:29:44Z",
+  "description": "Fast paced arcade like 2D game where everything dies in one hit",
+  "defaultBranch": "master",
+  "owner": "PraxTube",
+  "slug": "praxtube-insta-kill",
+  "dest": "third-party/praxtube-insta-kill",
+  "readme": "# Insta Kill\n\nA fast paced arcade like 2D game where everything dies in one hit, both the enemies as well as the player.\nYou can play the game [in your web browser over on itch](https://praxtube.itch.io/insta-kill)!\n\n<p align=\"center\">\n    <img src=\"docs/demo/screenshot.jpg\" alt=\"screenshot\" />\n</p>\n\n<p align=\"center\">\n    <img src=\"docs/demo/showcase.gif\" alt=\"showcase\" />\n</p>\n\n## Appendix\n\n[Online Leaderboard](https://rancic.org/games/insta-kill/)\n\n[Credits](https://github.com/PraxTube/insta-kill/blob/master/CREDITS.md)\n\n[License](https://github.com/PraxTube/insta-kill/blob/master/LICENSE),\napplies to everything that doesn't already have a license.\n",
+  "licenceFile": "LICENSE",
+  "entry": "wasm/index.html"
+}

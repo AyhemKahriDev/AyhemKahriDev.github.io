@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas class="canvas"></canvas>
+    <button id="start-btn" onclick="gameStart()">START</button>
+    <h1 id="gameOver">GAME OVER</h1>
+    <button id="playAgain" onclick="restart()">PLAY AGAIN?</button>
+    <audio id="player"><source src="sfx/bgMusic.mp3" type="audio/mp3"></audio>
+    <audio id="bite"><source src="sfx/bite.mp3" type="audio/mp3"></audio>
+    <audio id="button"><source src="sfx/button.mp3" type="audio/mp3"></audio>
+    <audio id="lose"><source src="sfx/gameOver.mp3" type="audio/mp3"></audio>
+    <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+    <script src="jquery.touch.min.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

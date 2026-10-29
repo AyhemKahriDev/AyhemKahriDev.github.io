@@ -1,0 +1,15 @@
+{
+  "repo": "CodeFoxLk/quizzle_public",
+  "stars": 117,
+  "licence": "MIT",
+  "sizeKB": 4189,
+  "pushedAt": "2022-06-16T10:31:32Z",
+  "description": "flutter quiz app",
+  "defaultBranch": "master",
+  "owner": "CodeFoxLk",
+  "slug": "codefoxlk-quizzle-public",
+  "dest": "third-party/codefoxlk-quizzle-public",
+  "readme": "# FREE FLUTTER QUIZ APP WITH GETX STATE-MANAGEMENT\n\nThis is free code for a flutter quiz app. all you need is just set up firebase for this project.\n\n| Home | Question  | Overview  |\n| ------------ | ------------ | ------------ |\n| <img src=\"https://i.ibb.co/tby4hC7/Screenshot-2022-02-17-14-18-04-879-com-example-quizzledemo.jpg\" alt=\"Screenshot-2022-02-17-14-18-04-879-com-example-quizzledemo\" border=\"0\" width = \"150\">  |  <img src=\"https://i.ibb.co/93ChWZP/Screenshot-2022-02-17-14-18-30-410-com-example-quizzledemo.jpg\" alt=\"Screenshot-2022-02-17-14-18-30-410-com-example-quizzledemo\" border=\"0\"  width = \"150\"> |  <img src=\"https://i.ibb.co/g3226zx/Screenshot-2022-02-17-14-18-57-932-com-example-quizzledemo.jpg\" alt=\"Screenshot-2022-02-17-14-18-57-932-com-example-quizzledemo\" border=\"0\" width = \"150\"> |\n\n| Answer review  |  Notification |  Leaderboard |\n| ------------ | ------------ | ------------ |\n| <img src=\"https://i.ibb.co/0j06rgX/Screenshot-2022-02-17-14-19-08-715-com-example-quizzledemo.jpg\" alt=\"Screenshot-2022-02-17-14-19-08-715-com-example-quizzledemo\" border=\"0\" width = \"150\">  |  <img src=\"https://i.ibb.co/G2FXJqZ/Screenshot-2022-02-17-14-19-35-955-com-example-quizzledemo.jpg\" alt=\"Screenshot-2022-02-17-14-19-35-955-com-example-quizzledemo\" border=\"0\" width = \"150\"> |  <img src=\"https://i.ibb.co/PYnpCsV/Screenshot-2022-02-17-14-19-45-025-com-example-quizzledemo.jpg\" alt=\"Screenshot-2022-02-17-14-19-45-025-com-example-quizzledemo\" border=\"0\" width = \"150\"> |\n\n\n\n### The speed firebase setup video.\nhttps://youtu.be/bMTrKMcJW6k\n\n### The firebase setup documentation\nhttps://docs.google.com/document/d/1IDeTYJK--xBgjc_8qMtYTwvS6WUrxHsm_moqMl3nygs/edit?usp=sharing\n\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "quizzle/web/index.html"
+}

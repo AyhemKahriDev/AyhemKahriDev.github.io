@@ -1,0 +1,14 @@
+.vs
+Win32
+x64
+Debug
+Release
+*.user
+*.sdf
+*.opensdf
+*.VC.db
+*.VC.opendb
+
+*.log
+*.gam
+*.fh

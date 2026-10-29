@@ -1,0 +1,15 @@
+{
+  "repo": "JIEJOE-Visual/snakeball",
+  "stars": 170,
+  "licence": "MIT",
+  "sizeKB": 2831,
+  "pushedAt": "2025-04-01T10:31:36Z",
+  "description": "SNAKEBALL - 休闲的敏捷类WEB小游戏",
+  "defaultBranch": "main",
+  "owner": "JIEJOE-Visual",
+  "slug": "jiejoe-visual-snakeball",
+  "dest": "third-party/jiejoe-visual-snakeball",
+  "readme": "<div align=\"center\">\n  <img alt=\"Logo\" src=\"https://snakeball.jiejoe.com/meta/favicon_512.png\" width=\"100\" />\n</div>\n<h1 align=\"center\">\n  SNAKEBALL\n</h1>\n<p align=\"center\">\n  ⌨Tech stack: <b>HTML, CSS, JS, SVG, Vue, Pinia, GSAP, Howler, Matter</b>\n</p>\n\n![screenshot](https://snakeball.jiejoe.com/meta/screenshot.jpg)\n\n<br>\n\n## 📜 About this project\nSNAKEBALL是一个休闲网页小游戏，在游戏中，玩家可以操控一条由球体组成的小蛇、在屏幕范围内随意移动，<br>\n小蛇的身体每隔随机的时间会进行重置：小蛇的移动速度、以及身体的延迟都会发生改变，<br>\n在关卡时间里，屏幕内会出现各种各样的子弹球，玩家需要根据情况来“吃”或者“碰撞”它们，并获得一定的分数，以计入排行榜。<br>\n\n<br>\n\n## ✊️ Support me\n如果不懂这个网站怎么交互、或者想了解更多内容的小伙伴可以查看演示视频👇\n\n<a href=\"https://www.bilibili.com/video/BV1gqZ4Y1ETA/\">\n<img src=\"https://i2.hdslb.com/bfs/archive/c6c949165f5b927c70ebd240267f177f887305ea.jpg\" width=\"40%\">\n</a>\n\n如果你觉得这个项目还不错的话，欢迎你的**Fork**或**Star**，非常感谢🙇‍\n\n<br>\n\n## 🛠 Set up\n1. 初始化node_modules，构建项目\n\n   ```sh\n   npm install\n   ```\n\n2. 启动Vue开发服务器\n\n   ```sh\n   npm run serve\n   ```\n\n3. 将项目打包成静态网页\n\n   ```sh\n   npm run build\n   ```\n   \n4. 所有代码的中文注释已全部添加，因为JIEJOE是第一次做WEB游戏，所以有的地方难免存在不合理的代码和BUG，还请见谅。\n5. 该项目会涉及到后端服务和数据库，但是因为涉及隐私包括其他部分原因，上传的项目里面、不包含后端服务和数据库代码，项目里对应的数据请求链接被JIEJOE替换成了占位字符串，但总体不影响游戏的游玩体验（只有排名部分无法正常进行），有后端服务和数据库需求的小伙伴还请自己配置相应内容。\n6. JIEJOE已经尽量将交互内容和游戏逻辑内容给独立分开，项目的主交互界面在src/components/sections里面，游戏的主逻辑代码在src/components/game/stage里面，感兴趣的小伙伴可以自己研究。\n<br>\n\n## 🎨 Color reference\n| Color         | Hex      | Block\n| --------      | ---------| -------------\n| black         | #080808  | ![#080808](https://placehold.co/15/080808/080808)\n| white         | #f8f8f8  | ![#f8f8f8](https://placehold.co/15/f8f8f8/f8f8f8)\n| gray          | #8b8b8b  | ![#8b8b8b](https://placehold.co/15/8b8b8b/8b8b8b)\n| yellow        | #e3d80f  | ![#e3d80f](https://placehold.co/15/e3d80f/e3d80f)\n| fireball      | #dc1130  | ![#dc1130](https://placehold.co/15/dc1130/dc1130)\n| medicineball  | #0ee515  | ![#0ee515](https://placehold.co/15/0ee515/0ee515)\n| frozenball    | #16b7df  | ![#16b7df](https://placehold.co/15/16b7df/16b7df)\n| scaleball     | #a37e22  | ![#a37e22](https://placehold.co/15/a37e22/a37e22)\n| splitball     | #ef7706  | ![#ef7706](https://placehold.co/15/ef7706/ef7706)\n| magneticball  | #113ede  | ![#113ede](https://placehold.co/15/113ede/113ede)\n| shadowball    | #9f4df0  | ![#9f4df0](https://placehold.co/15/9f4df0/9f4df0)\n| invisibleball | #808080  | ![#808080](https://placehold.co/15/808080/808080)\n| signalball    | #ea4fc0  | ![#ea4fc0](https://placehold.co/15/ea4fc0/ea4fc0)\n| hball         | #046312  | ![#046312](https://placehold.co/15/046312/046312)\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "public/index.html"
+}

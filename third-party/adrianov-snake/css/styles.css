@@ -1,0 +1,81 @@
+/* Main styles file - imports all modularized CSS files */
+@import 'base.css';
+@import 'layout.css';
+@import 'game-elements.css';
+@import 'ui-elements.css';
+@import 'buttons.css';
+@import 'mobile-controls.css';
+@import 'panels.css';
+@import 'animations.css';
+@import 'responsive.css';
+
+/* Global utility classes */
+.hidden {
+    display: none !important;
+}
+
+/* Tip Area Styles */
+.tip-area {
+    /* Base styles */
+    color: var(--color-text);
+    background: rgba(46, 204, 113, 0.15);
+    border: 1px solid rgba(46, 204, 113, 0.25);
+    border-radius: var(--radius-sm);
+    text-align: center;
+    padding: 6px 18px;  /* Increased padding */
+    margin: 0;
+    display: block;
+    min-height: 1.5em;
+    max-width: 92vw;
+    width: fit-content;
+    margin: 0 auto;
+    box-shadow: none;
+    transition: all 0.2s ease-in-out;
+    pointer-events: none;
+    position: relative;
+    z-index: 1;
+    
+    /* Prevent text wrapping */
+    white-space: nowrap;
+    
+    /* Auto-sizing font properties - Increased sizes */
+    font-size: clamp(0.5rem, 2.2vw, 1.1rem);
+    
+    /* Advanced text scaling for very long messages */
+    transform-origin: center center;
+    
+    /* Use CSS containment for better performance */
+    contain: content;
+    box-sizing: border-box;
+    overflow: visible;
+}
+
+/* Use CSS hacks to help with text fitting */
+@supports (font-size-adjust: from-font) {
+    .tip-area {
+        font-size-adjust: from-font;
+    }
+}
+
+/* Media query for different screen sizes */
+@media (max-width: 768px) {
+    .tip-area {
+        font-size: clamp(0.7rem, 3vw, 1.2rem);
+        padding: 6px 18px;
+        max-width: 90vw;
+    }
+}
+
+/* Even smaller text for very small screens */
+@media (max-width: 480px) {
+    .tip-area {
+        font-size: clamp(0.45rem, 2.7vw, 1rem);
+        padding: 5px 12px;
+    }
+}
+
+/* Ensure body allows fixed positioning */
+body {
+    position: relative; /* Or ensure it doesn't interfere */
+    /* ... existing body styles ... */
+}

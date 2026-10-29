@@ -1,0 +1,15 @@
+{
+  "repo": "jordyvanraalte/Flappy-bird",
+  "stars": 4,
+  "licence": "GPL-3.0",
+  "sizeKB": 1250,
+  "pushedAt": "2022-06-16T13:12:19Z",
+  "description": "Flappy bird game build in HTML canvas 5",
+  "defaultBranch": "main",
+  "owner": "jordyvanraalte",
+  "slug": "jordyvanraalte-flappy-bird",
+  "dest": "third-party/jordyvanraalte-flappy-bird",
+  "readme": "# Flappy Bird in HTML 5 canvas\n![Flappy bird intro](intro.png)\nThis repository provides the code for my Flappy bird game, build in HTML 5 canvas. \nThe project had as goal to give myself an introduction to game development and to provide an example how a Flappy Bird game could be created.\n\nThe game can be played on [flappy.jordyvanraalte.nl](https://flappy.jordyvanraalte.nl)\n\nThe game can be run through the Dockerfile, which provides an NGINX websever which serves the index.html. \nWith the following command, the Docker image can be build:\n\n````\ndocker build -t flappy-bird:v1 .\n````\n\nAnd with the following command, the Docker container can be run on the desired port.\n\n````\ndocker run -d -p 80:80 flappy-bird:v1 .\n````\n\nA special thanks to Ylva Tröjbom for recreating some assets and special thanks to [Samuelcust](https://github.com/samuelcust/flappy-bird-assets) providing some Flappy bird assets.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "jsnell/linjat",
+  "stars": 32,
+  "licence": "MIT",
+  "sizeKB": 1489,
+  "pushedAt": "2021-09-24T04:53:04Z",
+  "description": "A puzzle game",
+  "defaultBranch": "master",
+  "owner": "jsnell",
+  "slug": "jsnell-linjat",
+  "dest": "third-party/jsnell-linjat",
+  "readme": "# Linjat\n\nA puzzle game, which started as a substrate for experimenting with procedural puzzle generation but ended up kind of fun to play.\n\nPlayable version at https://linjat.snellman.net/\n\n\n",
+  "licenceFile": "LICENSE",
+  "entry": "www/index.html"
+}

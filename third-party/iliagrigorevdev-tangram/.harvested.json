@@ -1,0 +1,15 @@
+{
+  "repo": "iliagrigorevdev/tangram",
+  "stars": 4,
+  "licence": "GPL-3.0",
+  "sizeKB": 297,
+  "pushedAt": "2019-08-02T17:12:25Z",
+  "description": "Tangram dissection puzzle",
+  "defaultBranch": "master",
+  "owner": "iliagrigorevdev",
+  "slug": "iliagrigorevdev-tangram",
+  "dest": "third-party/iliagrigorevdev-tangram",
+  "readme": "# Tangram\n![Screenshot](screenshot.png)\n\n## Description\nThe tangram is a dissection puzzle consisting of seven flat shapes, called tans, which are put together to form shapes. The objective of the puzzle is to form a specific shape using all seven pieces, which can not overlap.\n\n## How to Play\nClick on empty area to show or hide floating tans.\n\nDrag the tan to an empty place to land it.\n\nTo rotate the tan drag its corner.\n\nClick the button at the bottom right to see an example.\n\nTo zoom, switch to view mode and drag up or down.\n\nTans automatically snap to the edges, their midpoints and corner points.\n\nWhen all tans touch each other, a button appears to share with friends.\n\n## Run\n[Open on GitHub Pages](https://iliagrigorevdev.github.io/tangram/)\n\n[Open on Google App Engine](https://tangram.appspot.com)\n\n## Built With\n[three.js](https://github.com/mrdoob/three.js), JavaScript 3D library.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -46,15 +46,18 @@ function tempDir(t) {
 /* ------------------------------------------------------------ slugify */
 
 test('slugify is stable and reproduces the slugs already on disk', () => {
-  // These directories exist in the repository today; a change here would
-  // orphan (or duplicate) every vendored game on the next harvest.
+  // These slugs are the on-disk contract: a change orphans (or duplicates)
+  // every vendored game on the next harvest. The assertion is on the string,
+  // not on a specific directory - validation deletes games that do not play,
+  // so any particular slug may legitimately be gone.
   assert.equal(slugify('bocaletto-luca/snake'), 'bocaletto-luca-snake');
   assert.equal(
     slugify('bocaletto-luca/who-wants-to-be-a-millionaire'),
     'bocaletto-luca-who-wants-to-be-a-millionaire',
   );
   assert.equal(slugify('123survesh/tetris'), '123survesh-tetris');
-  assert.ok(existsSync(join(root, 'third-party/123survesh-tetris')));
+  assert.equal(slugify('Axel-B/Neon Snake'), 'axel-b-neon-snake');
+  assert.ok(slugify('123survesh/tetris').length <= 60);
 
   // Punctuation, spacing and case all collapse to single dashes, trimmed.
   assert.equal(slugify('  Foo_Bar.Baz  '), 'foo-bar-baz');

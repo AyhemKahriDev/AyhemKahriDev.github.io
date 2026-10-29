@@ -1,0 +1,67 @@
+.tetrys-view {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100%;
+	transform: translateX(-110%);
+	display: flex;
+	justify-content: center;
+	overflow: hidden;
+
+	&:last-of-type,
+	&:target {
+		transform: translateX(0);
+	}
+
+	&:target ~ & {
+		transform: translateX(-110%);
+	}
+}
+
+.view-inner {
+	width: 100%;
+	max-width: 650px;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+
+.tetrys-view header {
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	padding: 1.5vw;
+
+	a {
+		margin: 0 3vw;
+	}
+
+	h1 {
+		text-transform: uppercase;
+		font-size: 13vw;
+		text-align: center;
+		line-height: 19vw;
+	}
+}
+
+.view-symbol {
+	position: absolute;
+	z-index: -1;
+	width: 30vw;
+	height: 30vw;
+	left: -5vw;
+	top: -5vw;
+	fill: rgba(0,0,0,.1);
+}
+
+.tetrys-view footer {
+	width: 100vw;
+	padding: 0vw 4vw;
+	height: 20vw;
+	text-align: center;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}

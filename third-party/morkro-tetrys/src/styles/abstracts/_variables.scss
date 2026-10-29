@@ -1,0 +1,20 @@
+// Fonts
+$default-font-stack: 'Open Sans', 'Helvetica Neue Light', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+$source-code-pro: 'Source Code Pro', monospace;
+
+// Colors
+$white: #ffffff;
+$black: #000000;
+$green: #45cb96;
+$blue: #474283;
+
+$app-background: $green;
+$normal-text: $white;
+$special-text: $blue;
+$link-text: $blue;
+
+// Assets
+$base-url: '/assets/';
+
+// Easings
+$ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);

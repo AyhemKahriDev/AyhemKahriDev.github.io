@@ -1,0 +1,16 @@
+{
+  "repo": "zeynepkeskin/Snake-Game",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 2711,
+  "pushedAt": "2022-09-02T02:17:10Z",
+  "description": "snake game using javascript, HTML and CSS",
+  "defaultBranch": "main",
+  "owner": "zeynepkeskin",
+  "slug": "zeynepkeskin-snake-game",
+  "dest": "third-party/zeynepkeskin-snake-game",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

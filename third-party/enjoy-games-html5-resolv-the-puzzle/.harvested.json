@@ -1,0 +1,15 @@
+{
+  "repo": "enjoy-games/html5-resolv-the-puzzle",
+  "stars": 5,
+  "licence": "GPL-3.0",
+  "sizeKB": 452,
+  "pushedAt": "2020-06-01T15:12:34Z",
+  "description": "A puzzle game written in JavaScript using canvas (html5)",
+  "defaultBranch": "gh-pages",
+  "owner": "enjoy-games",
+  "slug": "enjoy-games-html5-resolv-the-puzzle",
+  "dest": "third-party/enjoy-games-html5-resolv-the-puzzle",
+  "readme": "html5-resolv-the-puzzle\n=======================\n\nA puzzle game written in JavaScript using canvas (html5).\n\nIt is multi-plattform game -you need a web browser compatible with canvas and JavaScript.\n\n[Play it!](http://enjoy-games.github.io/html5-resolv-the-puzzle/)\n\n<img src=\"screenshot-resolv-the-puzzle.jpg\" style=\"border:0;\">\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,89 @@
+{
+    "name": "litecanvas",
+    "version": "0.404.0",
+    "description": "Lightweight HTML5 canvas 2D game engine suitable for small projects and creative coding. Inspired by PICO-8 and p5.js/Processing.",
+    "license": "MIT",
+    "author": "Luiz Bills <luizbills@pm.me>",
+    "contributors": [],
+    "homepage": "https://litecanvas.js.org",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/litecanvas/game-engine.git"
+    },
+    "bugs": {
+        "url": "https://github.com/litecanvas/game-engine/issues"
+    },
+    "type": "module",
+    "main": "./src/index.js",
+    "module": "./src/index.js",
+    "types": "./types/index.d.ts",
+    "unpkg": "./dist/dist.dev.js",
+    "jsdelivr": "./dist/dist.dev.js",
+    "keywords": [
+        "tiny",
+        "micro",
+        "javascript",
+        "html5",
+        "canvas",
+        "2d",
+        "game",
+        "gamedev",
+        "js13k",
+        "creative coding"
+    ],
+    "devDependencies": {
+        "@happy-dom/global-registrator": "^21.0.4",
+        "@size-limit/preset-small-lib": "^14.3.0",
+        "@swc/core": "^1.16.20",
+        "ava": "^8.1.2",
+        "esbuild": "^0.28.2",
+        "genversion": "^3.2.0",
+        "gzip-size": "^7.0.0",
+        "prettier": "^3.9.10",
+        "sinon": "^22.1.0",
+        "size-limit": "^14.3.0",
+        "tap-min": "^3.0.0"
+    },
+    "trustedDependencies": [
+        "@swc/core"
+    ],
+    "scripts": {
+        "prepare": "npm run build",
+        "prepublishOnly": "npm test",
+        "test": "ava --tap | tap-min",
+        "test:watch": "ava --watch",
+        "dev": "esbuild src/web.js --bundle --watch --outfile=samples/dist.js --servedir=samples",
+        "build": "npm run genversion && node script/build.js && size-limit",
+        "format": "prettier -w src/* samples/* types/* script/* tests/*",
+        "check-types": "npx tsc ./types/*",
+        "genversion": "genversion --es6 src/version.js"
+    },
+    "files": [
+        "dist",
+        "src",
+        "types"
+    ],
+    "ava": {
+        "files": [
+            "tests/**/*.js",
+            "!tests/_preload/**/*.js"
+        ],
+        "require": [
+            "./tests/_preload/happy-dom.js"
+        ],
+        "failFast": true,
+        "timeout": "10s"
+    },
+    "size-limit": [
+        {
+            "path": "dist/dist.min.js",
+            "limit": "4kb",
+            "gzip": true
+        },
+        {
+            "path": "dist/dist.min.js",
+            "limit": "4kb",
+            "gzip": false
+        }
+    ]
+}

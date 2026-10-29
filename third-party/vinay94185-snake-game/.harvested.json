@@ -1,0 +1,16 @@
+{
+  "repo": "vinay94185/Snake-Game",
+  "stars": 0,
+  "licence": "GPL-3.0",
+  "sizeKB": 104,
+  "pushedAt": "2018-12-30T09:27:12Z",
+  "description": "Snake Game is just my personal project for learning and exploring javascript",
+  "defaultBranch": "master",
+  "owner": "vinay94185",
+  "slug": "vinay94185-snake-game",
+  "dest": "third-party/vinay94185-snake-game",
+  "readme": "# Snake-Game\nSnake Game is just my personal project for learning and exploring javascript<br><br>\n\n<b>#How to play :</b> <br>\nEnter your player name.<br>\nSelect appropriate control sheme.<br>\nhit the play button.<br>\n\n<b>#Aim of player :</b> <br> \nkill others snakes and eat there remains to grow.\n\n<b>#Rules :</b><br>\n  if a snake bites other snake's tail then the snake who bit will die.<br>\n  if a snake hit the boundries of the world they will die.<br><br>\n\n\nThere isn't really much to say about the game.. haven't really added much.\nfor keeping the performance optimal we can't really afford to add alot of \nactivits or complex calculations. so for now the project is abandoned but\ni might come back to it some day if got some idea or anything.<br><br>\n\nfeel free to fork or send a pull request.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

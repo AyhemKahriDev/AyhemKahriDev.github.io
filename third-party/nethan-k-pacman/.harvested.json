@@ -1,0 +1,16 @@
+{
+  "repo": "nethan-k/pacman",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 202,
+  "pushedAt": "2024-08-26T13:35:11Z",
+  "description": "A clone of pacman made with javascript along with the HTML canvas api",
+  "defaultBranch": "main",
+  "owner": "nethan-k",
+  "slug": "nethan-k-pacman",
+  "dest": "third-party/nethan-k-pacman",
+  "readme": "# Pacman\n[Click here](https://pacman-q1go.onrender.com/) for the live version of this repository!\n\nThis game is still under development and is not functional yet. This clone of pacman is a game built with javascript along with the HTML canvas API.\n\n## Suggesting Features\nIf you want to suggest a feature, but do not want to write code, you can do that by opening an issue. \nTo open an issue :\n   1. Navigate to the main page of the repository\n   2. Under the repository name click `Issues`.\n   3. Click on the button on the right side which says `New issue`.\n   4. In the \"Title\" field, type a title for your issue.\n   5. In the comment body field, type a description of your issue.\n   6. When you're finished, click `Submit new issue`.\n\n## Contributing Code\n\nTo contribute code, follow these steps:\n\n   1. Fork the repository - At the top right corner, you will see the term \"fork\".\n       All you need to do is click it and you will have created a copy of the same project in your account.\n       After this operation the URL of the project will change to:\n       `https://github.com/<YourUserName>/pacman`\n       \n   2. Clone the project into your local machine.\n       In order for you to perform this step, you must have Git installed locally in your machine. \n       If you don't, refer to the official [Git docs](https://git-scm.com/) on how to get started.\n       Now open the cmd on your computer and use the following command to clone the directory:\n       `git clone https://github.com/<YourUserName>/pacman`\n       \n   3. Change the path to point to repository directory. To do that use this command: \n       `cd pacman`\n      \n   5. Now, to create a new branch use the command: \n       `git checkout -b your-new-branch-name`\n      \n   7. After making all the changes use the command:\n       `git add`\n      \n   9. Now commit the changes by:\n       `git commit -m \"<message here>\"`\n      \n   11. Finally push your changes to the main repository by using the command:\n       `git push origin <add-your-branch-name>`\n       \n   13. Submit the changes. If you go to your repository on GitHub and refresh the page, you'll see a Compare and pull request button. Click on that button.\n\nA good way to find something to work on is by looking for todo comments in the code, or by going to the issues tab.\n\nTo get a working development environment on your local machine, you must setup a server and access the main HTML file through the server. An easy way to accomplish this is by using the live server extension on VSCode.\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html",
+  "validated": true
+}

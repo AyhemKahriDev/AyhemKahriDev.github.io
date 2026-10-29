@@ -1,0 +1,304 @@
+// Ocean Five palette (http://www.colourlovers.com/palette/1473/Ocean_Five)
+@cyan:    #00A0B0;
+@brown:   #6A4A3C;
+@red:     #CC333F;
+@orange:  #EB6841;
+@yellow:  #EDC951;
+
+@transformerGray:  #eee;
+@borderGray:       #ccc;
+
+// Font
+@fontSize:      16px;
+@fontSizeSmall: 14px;
+@fontSizeLarge: 24px;
+
+// Dimensions
+@width:               800px;
+
+@canvasWidth:         @width;
+@canvasHeight:        430px;
+
+@logoWidth:           216px;
+@logoMargin:          10px;
+
+@panelWidth:          200px;
+
+@boxWidth:            240px;
+@boxSpacing:          80px;
+@boxHeightMin:        100px;
+
+@transformerHeight:   30px;
+@transformerSpacing:  7px;
+
+@cubeSize:            11px;
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+body, select {
+    font-family: 'Roboto Condensed', sans;
+    font-weight: 400;
+    font-size: @fontSize;
+}
+
+.bold() {
+    font-weight: 700;
+}
+
+b {
+    .bold;
+}
+
+#logo {
+    position: absolute;
+    top: @logoMargin;
+    left: (@width - @logoWidth) / 2;
+    width: @logoWidth;
+}
+
+#container {
+    position: relative;
+    margin: 0 auto;
+    width: @width;
+}
+
+#canvas {
+    margin: 0 auto;
+    width: @canvasWidth;
+    height: @canvasHeight;
+}
+
+.border() {
+    border-radius: 5px;
+    border: 1px solid @borderGray;
+}
+
+#panel {
+    position: absolute;
+    width: @panelWidth;
+    top: 10px;
+    right: 0px;
+
+    padding: 0px;
+}
+
+#goal {
+    height: 120px;
+    width: 100%;
+}
+
+#levels {
+    width: 100%;
+
+    margin: 4px 0 15px 0;
+    padding: 3px 0px;
+    font-size: @fontSize;
+    background-color: #fff;
+
+    border: 1px solid @borderGray;
+    border-bottom: 1px solid #aaa;
+    border-radius: 3px;
+    outline: none;
+}
+
+#help {
+    font-size: @fontSizeSmall;
+    margin-top: 0;
+}
+
+#message {
+    visibility: hidden;
+
+    position: absolute;
+    top: 310px;
+    left: 50px;
+
+    padding: 1px;
+
+    #solved {
+        font-size: @fontSizeLarge;
+        .bold;
+    }
+}
+
+#controls {
+    overflow: hidden;
+}
+
+.controlBox {
+    text-align: center;
+    float: left;
+}
+
+.left {
+    margin-left: (@width - 2 * @boxWidth - @boxSpacing) / 2;
+}
+
+.right {
+    margin-left: @boxSpacing;
+}
+
+.sortable {
+    margin: 0;
+
+    width: @boxWidth;
+    min-height: @boxHeightMin;
+
+    // always leave space for one more transformer
+    padding: @transformerSpacing 0 @transformerHeight 0;
+
+    list-style-type: none;
+
+    .border;
+}
+
+#program:empty::after {
+    content: "Drop functions here";
+    font-weight: bold;
+    color: #ccc;
+}
+
+#available:empty::after {
+    content: "No functions available";
+    font-weight: bold;
+    color: #ccc;
+}
+
+.transformerStyle() {
+    background-color: @transformerGray;
+    border-bottom: 1px solid darken(@transformerGray, 30);
+    border-radius: 5px;
+}
+
+.transformer {
+    display: inline-block;
+    padding: 1px 4px;
+    margin: 0;
+
+    .transformerStyle;
+}
+
+.sortable li {
+    width: @boxWidth - 26px;
+    line-height: 24px;
+    margin: 0px auto @transformerSpacing auto;
+    padding: 2px @transformerSpacing 2px @transformerSpacing;
+
+    .transformerStyle;
+
+    cursor: move;
+}
+
+li.sortable-ghost {
+    opacity: 0.4;
+}
+
+.buttons {
+    margin: 5px 0;
+}
+
+.button {
+    cursor: pointer;
+
+    color: #000;
+    font-size: @fontSizeSmall;
+    text-decoration: none;
+
+    @bgCol: #f0f0f0;
+    background-color: @bgCol;
+    padding: 2px 5px;
+
+    border: 1px solid #666;
+    border-bottom: 1px solid #000;
+    border-radius: 3px;
+
+    &:hover {
+        background-color: darken(@bgCol, 10);
+    }
+}
+
+p.footer {
+    margin-top: 30px;
+    font-size: @fontSizeSmall;
+    text-align: center;
+    color: #444;
+}
+
+a {
+    color: @red;
+}
+
+.cube {
+    display: inline-block;
+    vertical-align: middle;
+    width: @cubeSize;
+    height: @cubeSize;
+    margin: 0 1px;
+    border: 1px solid #444;
+    border-radius: 3px;
+}
+
+.stack {
+    // Set this to 0. They would determine the height, otherwise.
+    font-size: 0;
+
+    // Spacing between the two cubes
+    line-height: 2px;
+
+    display: inline-block;
+    vertical-align: middle;
+    width: @cubeSize + 4px;
+
+    .cube {
+        width: @cubeSize - 2px;
+        height: @cubeSize - 2px;
+        vertical-align: baseline;
+    }
+}
+
+.X      { background-color: #fff; border: 1px dotted #222; }
+.Cyan   { background-color: @cyan; }
+.Brown  { background-color: @brown; }
+.Red    { background-color: @red; }
+.Orange { background-color: @orange; }
+.Yellow { background-color: @yellow; }
+
+// 'flash' animation from Animate.css (https://github.com/daneden/animate.css)
+.animated {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+@-webkit-keyframes flash {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+
+    25%, 75% {
+        opacity: 0;
+    }
+}
+
+@keyframes flash {
+    0%, 50%, 100% {
+        opacity: 1;
+    }
+
+    25%, 75% {
+        opacity: 0;
+    }
+}
+
+.flash {
+    -webkit-animation-name: flash;
+    animation-name: flash;
+}
+
+#ghstars {
+    margin-top: 8px;
+}

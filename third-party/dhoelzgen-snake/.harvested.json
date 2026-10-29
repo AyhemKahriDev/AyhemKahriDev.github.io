@@ -1,0 +1,15 @@
+{
+  "repo": "dhoelzgen/snake",
+  "stars": 36,
+  "licence": "MIT",
+  "sizeKB": 172,
+  "pushedAt": "2011-07-20T14:11:59Z",
+  "description": "Multiplayer snake game, based on canvas and node.js with websockets",
+  "defaultBranch": "socketio",
+  "owner": "dhoelzgen",
+  "slug": "dhoelzgen-snake",
+  "dest": "third-party/dhoelzgen-snake",
+  "readme": "",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

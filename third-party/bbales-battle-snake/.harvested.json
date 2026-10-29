@@ -1,0 +1,15 @@
+{
+  "repo": "bbales/battle-snake",
+  "stars": 12,
+  "licence": "GPL-2.0",
+  "sizeKB": 147,
+  "pushedAt": "2016-07-26T16:19:31Z",
+  "description": ":snake: 2 Player twist on the classic game \"Snake\" - Demo:",
+  "defaultBranch": "master",
+  "owner": "bbales",
+  "slug": "bbales-battle-snake",
+  "dest": "third-party/bbales-battle-snake",
+  "readme": "# BattleSnake\nA two player twist on the classic game 'snake', written in pure javascript.\n\n<img src='http://i.giphy.com/l0HlLDBzsculjU0vK.gif' width=\"1200\" />\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

@@ -1,0 +1,2452 @@
+@font-face {
+	font-family: 'Splatoon 1';
+	src: url('assets/external/splatoon1.woff2') format('woff2');
+}
+
+@font-face {
+	font-family: 'Splatoon 2';
+	src: url('assets/external/splatoon2.woff2') format('woff2');
+}
+
+html, body {
+	overflow-x: hidden;  /* TODO: This stops the page from scrolling into whitespace on mobile Chrome. A better solution is probably possible. */
+}
+
+body {
+	margin: 0;
+	font-family: 'Splatoon 2', sans-serif;
+	/* Default colours - normally the game data sent from the server will override these */
+	--primary-colour-1       : hsl(63, 99%, 49%);
+	--special-colour-1       : hsl(38, 100%, 49%);
+	--special-accent-colour-1: hsl(60, 95%, 55%);
+	--primary-colour-2       : hsl(234, 97%, 64%);
+	--special-colour-2       : hsl(184, 99%, 50%);
+	--special-accent-colour-2: hsl(180, 17%, 86%);
+	--primary-colour-3       : hsl(306, 95%, 50%);
+	--special-colour-3       : hsl(270, 95%, 50%);
+	--special-accent-colour-3: hsl(285, 95%, 85%);
+	--primary-colour-4       : hsl(155, 95%, 50%);
+	--special-colour-4       : hsl(120, 95%, 50%);
+	--special-accent-colour-4: hsl(135, 95%, 85%);
+	--player-primary-colour: var(--primary-colour-1);
+	--player-special-colour: var(--special-colour-1);
+	--player-special-accent-colour: var(--special-accent-colour-1);
+	--theme-colour: #0c92f2;
+	color: white;
+	background: url('assets/external/BannerBackground.webp') black;
+	background-position: 50% -72px;
+	color-scheme: dark;
+}
+dialog {
+	background: black;
+}
+
+#gamePage {
+	background: linear-gradient(to bottom, #3B3064 80%, #3B3B3D);
+	--player-primary-colour: var(--primary-colour-1);
+	--player-special-colour: var(--special-colour-1);
+	--player-special-accent-colour: var(--special-accent-colour-1);
+	--player-ui-base-colour: var(--player-primary-colour);
+	--player-ui-highlight-colour: var(--player-special-colour);
+	--player-ui-highlight2-colour: var(--player-special-accent-colour);
+}
+#gamePage[data-my-player-index="0"], .playContainer[data-index="0"] {
+	--player-primary-colour: var(--primary-colour-1);
+	--player-special-colour: var(--special-colour-1);
+	--player-special-accent-colour: var(--special-accent-colour-1);
+}
+#gamePage[data-my-player-index="1"], .playContainer[data-index="1"] {
+	--player-primary-colour: var(--primary-colour-2);
+	--player-special-colour: var(--special-colour-2);
+	--player-special-accent-colour: var(--special-accent-colour-2);
+}
+#gamePage[data-my-player-index="2"], .playContainer[data-index="2"] {
+	--player-primary-colour: var(--primary-colour-3);
+	--player-special-colour: var(--special-colour-3);
+	--player-special-accent-colour: var(--special-accent-colour-3);
+}
+#gamePage[data-my-player-index="3"], .playContainer[data-index="3"] {
+	--player-primary-colour: var(--primary-colour-4);
+	--player-special-colour: var(--special-colour-4);
+	--player-special-accent-colour: var(--special-accent-colour-4);
+}
+#gamePage[data-ui-base-colour-is-special-colour="true"] {
+	--player-ui-base-colour: var(--player-special-colour);
+	--player-ui-highlight-colour: var(--player-primary-colour);
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Splatoon 1', sans-serif;
+	font-weight: 599;
+}
+
+.error {
+	border: 1px solid red;
+	background: #ff000040;
+	padding: 0 0.5em;
+}
+
+/* Home page */
+
+#preGamePage {
+	text-align: center;
+	padding-top: 40px;
+}
+
+#logoBanner {
+	background: grey;
+}
+
+#logo {
+	height: 8em;
+}
+
+footer {
+	font-family: sans-serif;
+}
+
+#preGameImplicitSubmitButton {
+	position: absolute;
+	left: -9999px;
+}
+
+#turnTimeLimitBox {
+	width: 8ch;
+	text-align: right;
+}
+
+#stageSwitch button { display: block; }
+#stageSwitch button[data-status='0'] { color: lime; }
+#stageSwitch button[data-status='1'] { color: yellow; }
+#stageSwitch button[data-status='2'] { color: red; }
+#stageSwitch button * { display: inline-block; }
+#stageSwitch button .stageName { width: 12em; text-align: start; }
+#stageSwitch button .stageStatus { width: 8em; text-align: end; }
+
+option[value='red'] { color: #f2200d; }
+option[value='orange'] { color: #f2740d; }
+option[value='yellow'] { color: #ecf901; }
+option[value='limegreen'] { color: #c0f915; }
+option[value='green'] { color: #06e006; }
+option[value='turquoise'] { color: #00ffea; }
+option[value='blue'] { color: #4a5cfc; }
+option[value='purple'] { color: #a106ef; }
+option[value='magenta'] { color: #f906e0; }
+
+/* Lobby page */
+
+#lobbyPage:not([hidden]) {
+	display: grid;
+	grid-template-columns: 27em 1fr;
+	grid-template-rows: auto 1fr;
+}
+
+.submitButtonContainer {
+	display: flex;
+	gap: 0.5em;
+	align-items: center;
+}
+
+#lobbyPlayerListSection {
+	overflow-y: auto;
+	box-sizing: border-box;
+	grid-row: 1;
+	grid-column: 1;
+}
+
+#lobbySelectedStageSection {
+	grid-row: 2;
+	grid-column: 1;
+}
+
+#lobbyStageSection, #lobbyDeckSection {
+	overflow-y: auto;
+	height: calc(100vh - 16px);
+	box-sizing: border-box;
+	grid-row: 1 / -1;
+	grid-column: 2;
+}
+
+#playerList {
+	padding-left: 0;
+	list-style: none;
+}
+
+#playerList li {
+	width: calc(100% - 2em);
+	margin: 0.5em 1em;
+	position: relative;
+}
+
+#playerList li > div {
+	padding: 0.5em;
+	border-radius: 0.5em;
+	background: #111;
+	text-shadow: 1px 1px black;
+	box-sizing: border-box;
+}
+
+#playerList li .placeholder {
+	user-select: none;
+}
+
+#playerList .filled {
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	bottom: 0;
+	background: var(--theme-colour);
+	animation: 0.33s linear forwards playerListFlyIn;
+}
+
+#playerList .removed {
+	animation: 0.33s linear forwards playerListFlyOut;
+}
+
+#playerList .ready::after {
+	content: '\2714';
+	position: absolute;
+	bottom: 0;
+	right: 0.5em;
+	font-weight: bold;
+	font-size: x-large;
+}
+
+#playerList .disconnected {
+	color: darkgrey;
+}
+
+@keyframes playerListFlyIn {
+	from { left: -120%; }
+	to { left: 0; }
+}
+
+@keyframes playerListFlyOut {
+	from { left: 0%; }
+	to { left: -120%; }
+}
+
+.disconnectedIcon {
+	display: none;
+	height: 1.5rem;
+	margin-left: 0.5em;
+	vertical-align: middle;
+}
+
+.disconnected .disconnectedIcon {
+	display: inline;
+}
+
+.wins {
+	display: flex;
+}
+.wins > div {
+	display: inline-block;
+	background: url('assets/external/IconMedal_00.webp') center/cover;
+	width: 2em;
+	height: 2em;
+}
+.winCount {
+	font-size: larger;
+	text-align: center;
+	text-shadow: 0.1em 0.1em 0 black;
+}
+.winCount:not(:first-child) { display: none; }
+
+#playerList .wins {
+	float: right;
+	margin-right: 1.5em;
+}
+
+#lobbyPage label:not([hidden]) {
+	display: block;
+}
+
+#lobbyTimeLimitBox {
+	width: 8ch;
+	text-align: right;
+}
+
+dialog {
+	text-align: center;
+}
+dialog::backdrop {
+	background: black;
+	opacity: 0.5;
+}
+
+#qrCode {
+	background: white;
+	border: 1em solid white;
+}
+
+.deckList {
+	display: flex;
+	flex-flow: column;
+}
+
+.deckList button, #addDeckControls button {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font: inherit;
+	color: inherit;
+	border: inherit;
+	text-shadow: 0 0 4px black;
+}
+
+.deckButton, #addDeckControls {
+	width: 20rem;
+	height: 4rem;
+	margin: 0.5em;
+}
+.deckButton {
+	position: relative;
+	background: linear-gradient(#00000040, #00000040), url('assets/external/sleeves.webp') 0 11%/800%;
+	outline: 0.25em solid grey;
+	border-radius: 0.5em;
+	outline-offset: -0.2em;
+}
+
+.deckButton[data-sleeves="0"] { background-position: 0 11%; }
+.deckButton[data-sleeves="1"] { background-position: 14.3% 11%; }
+.deckButton[data-sleeves="2"] { background-position: 28.6% 11%; }
+.deckButton[data-sleeves="3"] { background-position: 42.9% 11%; }
+.deckButton[data-sleeves="4"] { background-position: 57.1% 11%; }
+.deckButton[data-sleeves="5"] { background-position: 71.4% 11%; }
+.deckButton[data-sleeves="6"] { background-position: 85.7% 11%; }
+.deckButton[data-sleeves="7"] { background-position: 100% 11%; }
+.deckButton[data-sleeves="8"] { background-position: 0 37%; }
+.deckButton[data-sleeves="9"] { background-position: 14.3% 37%; }
+.deckButton[data-sleeves="10"] { background-position: 28.6% 37%; }
+.deckButton[data-sleeves="11"] { background-position: 42.9% 37%; }
+.deckButton[data-sleeves="12"] { background-position: 57.1% 37%; }
+.deckButton[data-sleeves="13"] { background-position: 71.4% 37%; }
+.deckButton[data-sleeves="14"] { background-position: 85.7% 37%; }
+.deckButton[data-sleeves="15"] { background-position: 100% 37%; }
+.deckButton[data-sleeves="16"] { background-position: 0 63%; }
+.deckButton[data-sleeves="17"] { background-position: 14.3% 63%; }
+.deckButton[data-sleeves="18"] { background-position: 28.6% 63%; }
+.deckButton[data-sleeves="19"] { background-position: 42.9% 63%; }
+.deckButton[data-sleeves="20"] { background-position: 57.1% 63%; }
+.deckButton[data-sleeves="21"] { background-position: 71.4% 63%; }
+.deckButton[data-sleeves="22"] { background-position: 85.7% 63%; }
+.deckButton[data-sleeves="23"] { background-position: 100% 63%; }
+.deckButton[data-sleeves="24"] { background-position: 0 89%; }
+.deckButton[data-sleeves="25"] { background-position: 14.3% 89%; }
+.deckButton[data-sleeves="26"] { background-position: 28.6% 89%; }
+.deckButton[data-sleeves="27"] { background-position: 42.9% 89%; }
+.deckButton[data-sleeves="28"] { background-position: 57.1% 89%; }
+.deckButton[data-sleeves="29"] { background-position: 71.4% 89%; }
+.deckButton[data-sleeves="30"] { background-position: 85.7% 89%; }
+
+.deckButton:is(:active, .checked) {
+	outline-color: lightgrey;
+}
+.deckButton:hover {
+	outline-color: white;
+}
+.deckButton:focus-within {
+	outline-color: white;
+}
+.deckButton.disabled {
+	opacity: 0.5;
+}
+
+/* Stages */
+
+#stageList {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.stage, .stageRandom:not([hidden]) {
+	font: inherit;
+	color: currentColor;  /* Override disabled colour */
+	background: black;
+	width: 12em;
+	height: 18em;
+	border: 1px solid grey;
+	position: relative;
+	align-items: center;
+	display: flex;
+	flex-flow: column;
+	margin: 5px;
+}
+.stage.banned { display: none; }
+.stage.struck { opacity: 0.25; }
+
+.stageBody {
+	flex-grow: 1;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+}
+
+.stageGrid {
+	margin: 0 auto;
+	border-spacing: 0;
+}
+
+.stageGrid td {
+	width: 0.5em;
+	height: 0.5em;
+	box-sizing: border-box;
+}
+
+.stageGrid rect.Ink1 { fill: var(--primary-colour-1); }
+.stageGrid rect.Ink2 { fill: var(--primary-colour-2); }
+.stageGrid rect.Ink3 { fill: var(--primary-colour-3); }
+.stageGrid rect.Ink4 { fill: var(--primary-colour-4); }
+.stageGrid rect.SpecialInactive1 { fill: var(--special-colour-1); }
+.stageGrid rect.SpecialInactive2 { fill: var(--special-colour-2); }
+.stageGrid rect.SpecialInactive3 { fill: var(--special-colour-3); }
+.stageGrid rect.SpecialInactive4 { fill: var(--special-colour-4); }
+
+:is(.stage, .stageRandom):is(:hover, :focus-within):not(.checked, .disabled)::before {
+	content: '';
+	background: #808080;
+}
+:is(.stage, .stageRandom).checked::before {
+	content: '';
+	background: #FFFFFF;
+}
+
+/* Cards */
+
+.cardButton, .cardBack {
+	box-sizing: border-box;
+	width: 10em;
+	height: 12em;
+	border: 1px solid var(--colour);
+	border-radius: 0.5em;
+}
+
+.cardBack {
+	--colour: grey;
+	background: url(assets/external/sleeves.webp) 0 0/800%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 14em;
+	animation: 0.25s ease-out forwards cardBackFadeIn;
+}
+.cardBack[data-sleeves="0"] { background-position: 0% 0%; }
+.cardBack[data-sleeves="1"] { background-position: 14.3% 0%; }
+.cardBack[data-sleeves="2"] { background-position: 28.6% 0%; }
+.cardBack[data-sleeves="3"] { background-position: 42.9% 0%; }
+.cardBack[data-sleeves="4"] { background-position: 57.1% 0%; }
+.cardBack[data-sleeves="5"] { background-position: 71.4% 0%; }
+.cardBack[data-sleeves="6"] { background-position: 85.7% 0%; }
+.cardBack[data-sleeves="7"] { background-position: 100% 0%; }
+.cardBack[data-sleeves="8"] { background-position: 0% 33.3% }
+.cardBack[data-sleeves="9"] { background-position: 14.3% 33.3% }
+.cardBack[data-sleeves="10"] { background-position: 28.6% 33.3% }
+.cardBack[data-sleeves="11"] { background-position: 42.9% 33.3% }
+.cardBack[data-sleeves="12"] { background-position: 57.1% 33.3% }
+.cardBack[data-sleeves="13"] { background-position: 71.4% 33.3% }
+.cardBack[data-sleeves="14"] { background-position: 85.7% 33.3% }
+.cardBack[data-sleeves="15"] { background-position: 100% 33.3% }
+.cardBack[data-sleeves="16"] { background-position: 0% 66.7% }
+.cardBack[data-sleeves="17"] { background-position: 14.3% 66.7% }
+.cardBack[data-sleeves="18"] { background-position: 28.6% 66.7% }
+.cardBack[data-sleeves="19"] { background-position: 42.9% 66.7% }
+.cardBack[data-sleeves="20"] { background-position: 57.1% 66.7% }
+.cardBack[data-sleeves="21"] { background-position: 71.4% 66.7% }
+.cardBack[data-sleeves="22"] { background-position: 85.7% 66.7% }
+.cardBack[data-sleeves="23"] { background-position: 100% 66.7% }
+.cardBack[data-sleeves="24"] { background-position: 0% 66.7% }
+.cardBack[data-sleeves="25"] { background-position: 14.3% 100% }
+.cardBack[data-sleeves="26"] { background-position: 28.6% 100% }
+.cardBack[data-sleeves="27"] { background-position: 42.9% 100% }
+.cardBack[data-sleeves="28"] { background-position: 57.1% 100% }
+.cardBack[data-sleeves="29"] { background-position: 71.4% 100% }
+.cardBack[data-sleeves="30"] { background-position: 85.7% 100% }
+
+@keyframes cardBackFadeIn {
+	from {
+		opacity: 0;
+		transform: translateY(-4rem);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.cardButton {
+	position: relative;
+	color: currentColor;  /* Override disabled colour */
+	background: black;
+	font-family: 'Splatoon 1', 'Arial Black', sans-serif;
+	font-size: inherit;
+	font-weight: 599;
+	margin: 0.5em;
+}
+.cardButton:not([hidden]) {
+	display: inline-block;
+}
+
+:is(#deckCardListView, #deckCardListEdit, .cardListGrid) .cardButton.upcoming { background: midnightblue; }
+
+.cardButton.common { --colour: rgb(89, 49, 255); }
+.cardButton.rare { --colour: rgb(231, 180, 39); }
+.cardButton.fresh { --colour: white; }
+
+.cardButton .cardArt {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	opacity: 0.333;
+}
+
+.cardHeader {
+	height: 2.5em;
+	display: flex;
+	position: relative;
+	align-items: center;
+	justify-content: center;
+	z-index: 1;
+}
+
+.cardNumber {
+	display: none;
+	position: absolute;
+	background: grey;
+	border: 1px solid black;
+	top: -1.5em;
+	left: -1em;
+	padding: 0 1em;
+	transform: rotate(-10deg);
+	z-index: 1;
+}
+
+.cardListGrid .cardButton:hover .cardNumber {
+	display: block;
+}
+
+.cardName {
+	text-align: center;
+	line-height: 1.25em;
+	flex-grow: 1;
+}
+.cardButton:is([data-card-number="163"], [data-card-number="166"], [data-card-number="196"], [data-card-number="197"], [data-card-number="199"],
+	[data-card-number="202"], [data-card-number="216"], [data-card-number="-20"]) .cardName {
+	position: absolute;
+	left: -1em;
+	right: -1em;
+	transform: scaleX(0.8);
+}
+
+.cardButton.common .cardName {
+	color: var(--colour);
+}
+.cardButton.rare .cardName {
+	background: var(--colour);
+	background: linear-gradient(90deg, rgb(255, 242, 129) 0%, rgb(255, 255, 224) 15%, rgb(231, 180, 39) 50%, rgb(255, 255, 224) 85%, rgb(255, 242, 129) 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+}
+.cardButton.fresh .cardName {
+	background: var(--colour);
+	background: linear-gradient(120deg, rgba(253, 217, 169, 1) 0%, rgba(200, 58, 141, 1) 50%, rgba(55, 233, 207, 1) 100%);
+	background-clip: text;
+	-webkit-background-clip: text;
+	color: transparent;
+	flex-grow: 0;
+}
+.cardButton .cardGrid {
+	position: relative;
+	margin: 0 auto;
+	border-spacing: 0;
+	width: 12ex;
+	display: block;
+}
+
+.cardFooter {
+	position: relative;
+	display: flex;
+	align-items: center;
+	height: 2.5em;
+}
+
+.cardSize {
+	display: inline-block;
+	width: 2em;
+	text-align: center;
+}
+
+.cardSpecialCost {
+	display: inline-flex;
+	width: 6em;
+	flex-wrap: wrap-reverse;
+	row-gap: 4px;
+}
+
+.cardSpecialPoint, .playHintSpecial {
+	display: inline-block;
+	color: transparent;
+	background: url('assets/SpecialOverlay.webp') center/cover, var(--player-special-colour);
+	width: 1ch;
+	height: 1ch;
+	vertical-align: middle;
+}
+.cardSpecialPoint {
+	margin-right: 0.3em;
+}
+.playHintSpecial {
+	width: 1.5ch;
+	height: 1.5ch;
+}
+.playHintSpecial:nth-of-type(1):not(:last-of-type) { background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-1); }
+.playHintSpecial:nth-of-type(2) { background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-2); }
+.playHintSpecial:nth-of-type(3) { background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-3); }
+.playHintSpecial:nth-of-type(4) { background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-4); }
+
+.card {
+	position: relative;
+	color: currentColor;  /* Override disabled colour */
+	font-family: 'Splatoon 1', 'Arial Black', sans-serif;
+	font-size: 2rem;
+	font-weight: 599;
+	aspect-ratio: 5/7;
+	border-radius: 1rem;
+}
+.playContainer .card {
+	animation: 0.1s ease-out forwards flipCardIn;
+	height: 100%;
+}
+.playContainer .card.preview {
+	animation: none;
+}
+
+@keyframes flipCardOut {
+	from { transform: scaleX(1); }
+	to { transform: scaleX(0); }
+}
+@keyframes flipCardIn {
+	from { transform: scaleX(0); }
+	to { transform: scaleX(1); }
+}
+
+svg.card {
+	display: block;
+}
+
+svg.card text {
+	text-anchor: middle;
+}
+
+svg.card text.cardDisplayName {
+	transform: scaleX(var(--scale));
+}
+
+#cardDisplayAssets {
+	position: absolute;
+	width: 0;
+	height: 0;
+}
+
+rect.Empty, rect.empty {
+	fill: #00000080;
+	stroke: #60606080;
+	stroke-width: 6;
+}
+.stageGrid rect.Empty {
+	stroke: grey;
+	stroke-width: 12;
+}
+rect.Wall { fill: grey; }
+
+rect.ink {
+	fill: var(--player-primary-colour);
+}
+
+rect.special, g.specialCost rect {
+	fill: var(--player-special-colour);
+}
+
+:is(.cardButton, .stage, .stageRandom)::before {
+	/* If it exists */
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 0.5em;
+	opacity: 0.25;
+	z-index: 0;
+}
+.cardButton.checked, .cardButton:is(:hover, :focus-within):not([disabled]) {
+	transform: rotate(-2deg);
+}
+.cardButton:is(:hover, :focus-within):not(.checked, .disabled, [disabled])::before {
+	content: '';
+	background: grey;
+}
+.cardButton.checked::before {
+	content: '';
+	background: var(--colour);
+}
+
+.cardButton.disabled {
+	opacity: 0.5;
+}
+
+/* Board */
+
+#gameBoard {
+	height: calc(3.5% * var(--board-height));
+	aspect-ratio: var(--board-width)/var(--board-height);
+	table-layout: fixed;
+	border-spacing: 0;
+	margin: auto;
+	z-index: 1;
+}
+
+#gameBoard td.Empty { background: #000000C0; outline: 1px solid #80808080; outline-offset: -1px; }
+#gameBoard td.Wall { background: url('assets/Wall.webp') center/cover, grey; }
+#gameBoard td.Ink1 { background: url('assets/InkOverlay.webp') center/cover, var(--primary-colour-1); }
+#gameBoard td.Ink2 { background: url('assets/InkOverlay.webp') center/cover, var(--primary-colour-2); }
+#gameBoard td.Ink3 { background: url('assets/InkOverlay.webp') center/cover, var(--primary-colour-3); }
+#gameBoard td.Ink4 { background: url('assets/InkOverlay.webp') center/cover, var(--primary-colour-4); }
+#gameBoard td.SpecialInactive1 { background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-1); }
+#gameBoard td.SpecialInactive2 { background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-2); }
+#gameBoard td.SpecialInactive3 { background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-3); }
+#gameBoard td.SpecialInactive4 { background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-4); }
+#gameBoard td.SpecialActive1 { background: url('assets/SpecialOverlay.webp') center/cover, radial-gradient(circle, var(--special-accent-colour-1) 25%, var(--special-colour-1) 75%); }
+#gameBoard td.SpecialActive2 { background: url('assets/SpecialOverlay.webp') center/cover, radial-gradient(circle, var(--special-accent-colour-2) 25%, var(--special-colour-2) 75%); }
+#gameBoard td.SpecialActive3 { background: url('assets/SpecialOverlay.webp') center/cover, radial-gradient(circle, var(--special-accent-colour-3) 25%, var(--special-colour-3) 75%); }
+#gameBoard td.SpecialActive4 { background: url('assets/SpecialOverlay.webp') center/cover, radial-gradient(circle, var(--special-accent-colour-4) 25%, var(--special-colour-4) 75%); }
+
+#gameBoard.specialAttackVisual td:is(.Ink1, .Ink2, .Ink3, .Ink4) {
+	opacity: 0.5;
+}
+
+#gameBoard.enableInkAnimation td.inkAnimation { animation: 0.333s inkPlaceAnimation; }
+#gameBoard td.submitted { animation: 0.333s inkPlaceAnimation; }
+
+@keyframes inkPlaceAnimation {
+	from { box-shadow: 0 0 0px 0 #ffffffff; }
+	to { box-shadow: 0 0 50px 10px #ffffff00; }
+}
+
+:is(#gameBoard td, .specialAnimation) > div {
+	position: absolute;
+	border-radius: var(--anim-size);
+	filter: blur(calc(var(--anim-size) * 0.1));
+	animation: 1.5s linear infinite specialSpaceAnimation;
+	left: calc(var(--x) * 0.01 * var(--anim-size));
+	top: calc(var(--y) * 0.01 * var(--anim-size));
+	width: calc(var(--w) * 0.01 * var(--anim-size));
+	height: calc(var(--w) * 0.01 * var(--anim-size));
+	z-index: 1;
+}
+#gameBoard td > div { --anim-size: min(3.5vh, 3.5vw); }
+#gameBoard td.SpecialActive1 > div { background: color-mix(in srgb, var(--special-colour-1), var(--special-accent-colour-1) 75%); }
+#gameBoard td.SpecialActive2 > div { background: color-mix(in srgb, var(--special-colour-2), var(--special-accent-colour-2) 75%); }
+#gameBoard td.SpecialActive3 > div { background: color-mix(in srgb, var(--special-colour-3), var(--special-accent-colour-3) 75%); }
+#gameBoard td.SpecialActive4 > div { background: color-mix(in srgb, var(--special-colour-4), var(--special-accent-colour-4) 75%); }
+
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 1) { --x: -12; --y: 29; --w: 36; animation-delay:  -900ms; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 2) { --x: -10; --y: 20; --w: 52; animation-delay:  -300ms; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 3) { --x:   1; --y:  4; --w: 48; animation-delay:  -600ms; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 4) { --x:  12; --y:  7; --w: 46; animation-delay:  -750ms; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 5) { --x:  20; --y: -1; --w: 52; animation-delay: -1350ms; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 6) { --x:  29; --y:  3; --w: 52; animation-delay:  -150ms; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 7) { --x:  44; --y: 11; --w: 42; animation-delay:  -450ms; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 8) { --x:  50; --y:  9; --w: 50; animation-delay: -1200ms; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type( 9) { --x:  66; --y: 20; --w: 36; animation-delay:     0  ; }
+:is(#gameBoard td, .specialAnimation) > div:nth-of-type(10) { --x:  72; --y: 16; --w: 46; animation-delay: -1050ms; }
+
+@keyframes specialSpaceAnimation {
+	from { transform: translateY(0) scale(0); }
+	 20% { transform: translateY(calc(var(--anim-size) * -0.15)) scale(1); }
+	 60% { transform: translateY(calc(var(--anim-size) * -0.45)) scale(1); }
+	  to { transform: translateY(calc(var(--anim-size) * -0.75)) scale(0); }
+}
+
+#gameBoard td {
+	position: relative;
+}
+
+#gameBoard td.testHighlight::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: radial-gradient(#ffffff40, #ffffffc0 75%);
+}
+
+#gameBoard td.hover::after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0.5;
+	background: repeating-linear-gradient(135deg, var(--hover-colour) 0, var(--hover-colour) 0.6ex, transparent 0.6ex, transparent 1.2ex);
+	background-attachment: fixed;
+}
+#gameBoard td.hoverspecial { overflow: hidden; }
+#gameBoard td.hoverspecial::after {
+	left: -50%;
+	top: -50%;
+	right: -50%;
+	bottom: -50%;
+	background: radial-gradient(circle, var(--hover-colour) 0, var(--hover-colour) 0.25ex, transparent 0.35ex, transparent 0.6ex);
+	background-size: 1ex 1ex;
+	transform: rotate(-20deg);
+}
+
+#gamePage[data-my-player-index="0"] #gameBoard td.hover:not(.hoverillegal)::after { --hover-colour: var(--primary-colour-1); }
+#gamePage[data-my-player-index="1"] #gameBoard td.hover:not(.hoverillegal)::after { --hover-colour: var(--primary-colour-2); }
+#gamePage[data-my-player-index="2"] #gameBoard td.hover:not(.hoverillegal)::after { --hover-colour: var(--primary-colour-3); }
+#gamePage[data-my-player-index="3"] #gameBoard td.hover:not(.hoverillegal)::after { --hover-colour: var(--primary-colour-4); }
+#gamePage[data-my-player-index="0"] #gameBoard td.hoverspecial:not(.hoverillegal)::after { --hover-colour: var(--special-colour-1); }
+#gamePage[data-my-player-index="1"] #gameBoard td.hoverspecial:not(.hoverillegal)::after { --hover-colour: var(--special-colour-2); }
+#gamePage[data-my-player-index="2"] #gameBoard td.hoverspecial:not(.hoverillegal)::after { --hover-colour: var(--special-colour-3); }
+#gamePage[data-my-player-index="3"] #gameBoard td.hoverspecial:not(.hoverillegal)::after { --hover-colour: var(--special-colour-4); }
+#gameBoard td.hoverillegal::after { --hover-colour: grey; }
+
+/* Card list */
+
+#cardList {
+	grid-row: 2;
+	grid-column: 1 / -1;
+	padding-bottom: 4rem;
+}
+.cardListControl {
+	display: grid;
+	grid-template-rows: auto 1fr;
+}
+.cardListGrid:not([hidden]) {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(10em, 1fr));
+	overflow-y: auto;
+	justify-items: center;
+	grid-auto-rows: max-content;
+}
+
+#deckEditorRemoveButton {
+	position: absolute;
+	right: 1em;
+	bottom: 1em;
+	font-size: 100%;
+	padding: 0.5em;
+}
+
+/* Game page */
+
+#gamePage:not([hidden]) {
+	--controls-width: 11em;
+	display: grid;
+	grid-template-columns: var(--controls-width) var(--controls-width) [score-column] 1fr [board-column] auto 1fr [play-column-1] 10em [play-column-2] 10em;
+	grid-template-rows: [player-row-1] auto [player-row-3] auto [hand-row] 1fr [player-row-2] auto [player-row-0] auto;
+	height: 100vh;
+}
+#gamePage.deckTest {
+	--controls-width: 14em;
+}
+#gamePage:where([data-players="2"]):not([hidden]) {
+	grid-template-columns: var(--controls-width) var(--controls-width) [score-column] 1fr [board-column] auto 1fr [play-column-1 play-column-2] 20em;
+}
+
+.playerBar[data-index="0"] {
+	--colour: var(--primary-colour-1);
+	--special-colour: var(--special-colour-1);
+	--special-accent-colour: var(--special-accent-colour-1);
+	grid-row: player-row-0;
+}
+.playerBar[data-index="1"] {
+	--colour: var(--primary-colour-2);
+	--special-colour: var(--special-colour-2);
+	--special-accent-colour: var(--special-accent-colour-2);
+	grid-row: player-row-1;
+}
+.playerBar[data-index="2"] {
+	--colour: var(--primary-colour-3);
+	--special-colour: var(--special-colour-3);
+	--special-accent-colour: var(--special-accent-colour-3);
+	grid-row: player-row-2;
+}
+.playerBar[data-index="3"] {
+	--colour: var(--primary-colour-4);
+	--special-colour: var(--special-colour-4);
+	--special-accent-colour: var(--special-accent-colour-4);
+	grid-row: player-row-3;
+}
+
+#gamePage.boardFlipped .playerBar[data-index="0"] { grid-row: player-row-1; }
+#gamePage.boardFlipped .playerBar[data-index="1"] { grid-row: player-row-0; }
+#gamePage.boardFlipped .playerBar[data-index="2"] { grid-row: player-row-3; }
+#gamePage.boardFlipped .playerBar[data-index="3"] { grid-row: player-row-2; }
+
+.playerBar {
+	grid-column: 1 / span 2;
+	margin: 0 10px;
+	border-left: 8px solid var(--colour);
+	padding-left: 10px;
+}
+#gamePage:not(.boardFlipped):not([data-players="2"]) .playerBar:is([data-index="1"], [data-index="2"]),
+#gamePage.boardFlipped:not([data-players="2"]) .playerBar:is([data-index="0"], [data-index="3"]) {
+	text-align: right;
+	border-left: none;
+	border-right: 8px solid var(--colour);
+	padding-right: 10px;
+}
+
+#gamePage:not(.boardFlipped):not([data-players="2"]) .playerBar:is([data-index="1"], [data-index="2"]) .wins,
+#gamePage.boardFlipped:not([data-players="2"]) .playerBar:is([data-index="0"], [data-index="3"]) .wins {
+	float: left;
+}
+
+#gamePage.deckTest #scoreSection { display: none; }
+#scoreSection:not([hidden]) {
+	grid-column: score-column;
+	grid-row: 2 / -2;
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+	align-items: center;
+	gap: 2em;
+}
+
+#gamePage.boardFlipped .pointsContainer[data-index="2"] { order: 0; }
+#gamePage.boardFlipped .pointsContainer[data-index="0"] { order: 1; }
+#gamePage.boardFlipped .pointsContainer[data-index="3"] { order: 2; }
+#gamePage.boardFlipped .pointsContainer[data-index="1"] { order: 3; }
+
+#gameControls {
+	grid-column: 1 / span 2;
+	grid-row: hand-row;
+	align-self: center;
+}
+#gameControls:not([hidden]) {
+	display: flex;
+	flex-flow: column;
+	justify-content: center;
+}
+
+#handContainer:not([hidden]) {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr;
+	background: #00000080;
+	border-radius: 0 0.5em 0.5em 0;
+	text-align: center;
+}
+
+#playRow:not([hidden]) {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+
+.gameButton {
+	border: none;
+	margin: 0.25rem;
+	padding: 0.25rem 0.5rem;
+	font: inherit;
+	text-align: center;
+	background: var(--player-ui-base-colour);
+	text-shadow: 0 0 4px black;
+	border-radius: 0.5rem;
+	line-height: 1.5em;
+}
+.gameButton:hover { background: var(--player-ui-highlight-colour); }
+.gameButton:focus-within { outline: 2px solid var(--player-ui-highlight2-colour); }
+.gameButton:is(:active, .checked) { background: var(--player-ui-highlight2-colour); }
+.gameButton.disabled:not(.checked) { background: grey; }
+
+:is(#playRow, #testControlsHeader, #spectatorRow) > button.replayButton:not([hidden]) {
+	font-size: 60%;
+	flex-basis: 7em;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	gap: 0.5em;
+}
+
+#spectatorRow:not([hidden]) {
+	display: flex;
+	gap: 0.25em;
+}
+#spectatorRow > * {
+	flex-grow: 1;
+}
+
+#nextGameButton:not([hidden]) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.25em;
+}
+
+#debugColour input {
+	width: 6ch;
+	text-align: right;
+	font-family: monospace;
+}
+#debugColour input[type="text"] {
+	width: 10ch;
+}
+
+#showDeckContainer {
+	grid-column: 1 / span 3;
+	grid-row: 2 / -2;
+	background: #000000C0;
+	z-index: 2;
+}
+#showDeck {
+	display: flex;
+	flex-flow: column;
+	height: 100%;
+	text-align: center;
+}
+#showDeckList, #testDeckList {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	list-style-type: none;
+	font-size: smaller;
+	overflow-y: auto;
+	padding: 0;
+	margin: 0;
+	justify-items: center;
+	align-items: center;
+}
+#showDeckList > li {
+	margin: 0.25em;
+	border-radius: 0.5em;
+	text-align: center;
+}
+#showDeckList > li.inHand {
+	outline: 0.25em solid var(--player-ui-highlight-colour);
+}
+#showDeckList > li.used {
+	opacity: 0.35;
+}
+#showDeckCloseButton {
+	width: 40%;
+}
+
+#testControls:not([hidden]) {
+	grid-column: 1 / span 2;
+	grid-row: 1 / -1;
+	display: grid;
+	grid-template-rows: [header] auto [list] 1fr [buttons] auto;
+}
+#testControlsHeader, #testControlsFooter {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+}
+#testDeckContainer {
+	grid-row: list;
+	overflow: hidden;
+}
+#testDeckList {
+	height: 100%;
+}
+#testAllCardsContainer:not([hidden]) {
+	overflow: hidden;
+	display: grid;
+	grid-template-rows: auto 1fr;
+	grid-row: 2;
+}
+#testAllCardsMobileButton {
+	display: none;
+	font: inherit;
+	color: inherit;
+	background: transparent;
+	border: 0.25em solid var(--player-ui-base-colour);
+}
+#testAllCardsMobileButton:hover { border-color: var(--player-ui-highlight-colour); }
+#testAllCardsMobileButton:focus-within { outline: 2px solid var(--player-special-accent-colour); }
+#testAllCardsMobileButton:active { border-color: var(--player-special-accent-colour); }
+
+#testDeckList, #testAllCardsList {
+	flex-grow: 1;
+}
+
+#testAllCardsHeader {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5em;
+	justify-content: end;
+}
+
+#testAllCardsList:not([hidden]) {
+	font-size: 62%;
+}
+#testCardListBackdrop {
+	background: #00000080;
+	z-index: 1;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+}
+
+.playContainer:not([hidden]) {
+	position: relative;
+	margin: 8em 0;
+	width: 10em;
+	height: 14em;
+	border: 1px solid grey;
+	border-radius: 1em;
+	background: #00000080;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.playContainer .waiting {
+	width: 2em;
+	height: 2em;
+	background: url(assets/external/IconUp_00.webp) center/cover;
+	animation: 2s infinite linear loadingSpinner;
+	opacity: 0.333;
+}
+
+.playContainer[data-index="2"] { grid-column: play-column-2; grid-row: 2 / -1; align-self: end; }
+.playContainer[data-index="1"] { grid-column: play-column-2; grid-row: 1 / 4; align-self: start; }
+.playContainer[data-index="0"] { grid-column: play-column-1; grid-row: 2 / -1; align-self: end; }
+.playContainer[data-index="3"] { grid-column: play-column-1; grid-row: 1 / 4; align-self: start; }
+
+#gamePage.boardFlipped .playContainer[data-index="3"] { grid-column: play-column-2; grid-row: 2 / -1; align-self: end; }
+#gamePage.boardFlipped .playContainer[data-index="0"] { grid-column: play-column-2; grid-row: 1 / 4; align-self: start; }
+#gamePage.boardFlipped .playContainer[data-index="1"] { grid-column: play-column-1; grid-row: 2 / -1; align-self: end; }
+#gamePage.boardFlipped .playContainer[data-index="2"] { grid-column: play-column-1; grid-row: 1 / 4; align-self: start; }
+
+.playContainer .cardButton {
+	margin: 0;
+}
+
+.hintError {
+	animation: 1s infinite hintError;
+}
+.hintError.repeated {
+	animation: 1s infinite hintError, 0.5s linear 1 hintShake;
+}
+@keyframes hintError {
+	from { background: #ff0000ff; }
+	50% { background: #ff000080; }
+	to { background: #ff0000ff; }
+}
+@keyframes hintShake {
+	0% { transform: translate(1px, 1px); }
+	10% { transform: translate(-1px, -2px); }
+	20% { transform: translate(-3px, 0px); }
+	30% { transform: translate(3px, 2px); }
+	40% { transform: translate(1px, -1px); }
+	50% { transform: translate(-1px, 2px); }
+	60% { transform: translate(-3px, 1px); }
+	70% { transform: translate(3px, 1px); }
+	80% { transform: translate(-1px, -1px); }
+	90% { transform: translate(1px, 2px); }
+	100% { transform: translate(0px, 0px); }
+}
+
+.hintSpecial:before {
+	content: '';
+	position: absolute;
+	left: -24em;
+	top: -31em;
+	right: -24em;
+	bottom: -31em;
+	transform: scaleY(0.05) rotateZ(0deg);
+	z-index: -1;
+	background: radial-gradient(grey, transparent 50%), conic-gradient(hsl(0, 100%, 75%), hsl(45, 100%, 75%), hsl(90, 100%, 75%), hsl(135, 100%, 75%), hsl(180, 100%, 75%), hsl(225, 100%, 75%), hsl(270, 100%, 75%), hsl(315, 100%, 75%), hsl(360, 100%, 75%));
+	animation: 3s linear infinite hintSpecial;
+}
+
+@keyframes hintSpecial {
+	to { transform: scaleY(0.05) rotateZ(360deg); }
+}
+
+#cardHint:not([hidden]) {
+	position: absolute;
+	left: -1em;
+	width: 16em;
+	margin: 0 0 30em 0em;
+	padding: 0 1em 0 3em;
+	font-size: larger;
+	background: #80808080;
+	border-radius: 0.5em;
+	z-index: 0;
+	overflow: hidden;
+}
+#playHint:not([hidden]) {
+	position: relative;
+	grid-column: -3 / -1; grid-row: -2 / -1; align-self: end;
+	justify-self: end;
+	width: 16em;
+	margin: 0 -1em 1.5em 0;
+	padding: 0 3em 0 1.5em;
+	font-size: larger;
+	background: #00000080;
+	border-radius: 0.5em;
+	z-index: 1;
+	overflow: hidden;
+}
+
+#testPlacementList {
+	display: none;
+}
+#gamePage.deckTest #testPlacementList {
+	grid-column: -3 / -1;
+	grid-row: 1 / -1;
+	display: flex;
+	flex-flow: column;
+	margin: 1em;
+	gap: 1em;
+}
+#testPlacementList button {
+	background: #222;
+	padding: 0.5em;
+	border: none;
+	font: inherit;
+	text-align: initial;
+}
+#testPlacementList button:hover {
+	background: #444;
+}
+#testPlacementList button.testHighlight {
+	background: #555;
+}
+#testPlacementList button.deckCard {
+	background: #246;
+}
+#testPlacementList button.deckCard:hover {
+	background: #468;
+}
+#testPlacementList button.deckCard.testHighlight {
+	background: #579;
+}
+
+#gameButtonsContainer {
+	grid-column: score-column;
+	grid-row: 1 / -1;
+	align-self: end;
+	flex-flow: column;
+	align-items: center;
+	z-index: 1;
+}
+#gameButtonsContainer:not([hidden]) {
+	display: flex;
+}
+
+#gameButtonsContainer button {
+	background: none;
+	border: none;
+	color: var(--player-ui-base-colour);
+	opacity: 0.5;
+	font-size: 400%;
+	width: 1.5em;
+	height: 1.5em;
+}
+#gameButtonsContainer button:is(:hover, :focus) {
+	opacity: 1;
+}
+#gameButtonsContainer button:active {
+	opacity: 1;
+	color: var(--player-ui-highlight-colour);
+}
+#gamePage.deckTest #gameDeckButton {
+	display: none;
+}
+#gamePage.replay :is(#rotateLeftButton, #rotateRightButton) {
+	display: none;
+}
+
+#boardSection {
+	grid-column: board-column;
+	grid-row: 1 / -1;
+	align-self: center;
+	position: relative;
+	height: min(100vh, calc(100vw - 30em));
+	aspect-ratio: 19 / 26;
+	display: flex;
+}
+
+/* Player bars */
+
+.name {
+	font-size: 150%;
+	font-weight: 599;
+	margin: 0.5em 0;
+}
+
+.disconnected .name {
+	color: darkgrey;
+}
+
+.specialPoints div {
+	display: inline-block;
+	width: 1.25em;
+	height: 1.25em;
+	text-align: center;
+}
+
+.playerBar .specialPoint {
+	position: relative;
+	color: transparent;
+  background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour);
+}
+.playerBar .specialPoint.specialAnimation {
+	background: url('assets/SpecialOverlay.webp') center/cover, radial-gradient(circle, var(--special-accent-colour) 25%, var(--special-colour) 75%);
+}
+.playerBar .specialPoint.specialAnimation > div {
+	background: color-mix(in srgb, var(--special-colour), var(--special-accent-colour) 75%);
+	--anim-size: 1.25em;
+}
+
+.specialPoints div {
+	margin-right: 0.25em;
+}
+
+.specialPoint:nth-of-type(5n) {
+	margin-right: 0.5em;
+}
+
+.playerBar .specialPoint:after {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	border-radius: 100%;
+	outline: 2px solid var(--special-accent-colour);
+	animation: 333ms linear forwards specialPointRing;
+}
+
+@keyframes specialPointRing {
+	from { outline-offset: 1em; }
+	66% { outline-offset: -0.5em; background: transparent; }
+	67% { left: 0; top: 0; right: 0; bottom: 0; background: var(--special-accent-colour); }
+	to { left: 50%; top: 50%; right: 50%; bottom: 50%; background: var(--special-accent-colour); visibility: hidden; }
+}
+
+#gamePage .wins {
+	float: right;
+	margin-top: 1.25em;
+}
+
+.result {
+	font-family: 'Splatoon 1';
+	color: var(--colour);
+	text-transform: uppercase;
+}
+.result.win {
+	font-size: larger;
+}
+
+.playerStats {
+	margin: 0 1em;
+	background: rgba(64, 64, 64);
+	color: white;
+	display: flex;
+	justify-content: space-around;
+	text-align: center;
+}
+#gamePage:not(.gameEnded) .playerStats {
+	display: none;
+}
+
+.statValue {
+	font-family: 'Splatoon 1';
+	font-size: 150%;
+	line-height: 1.5em;
+}
+
+#midGameContainer {
+	height: 28em;
+}
+
+/* Score bar */
+
+#timeSection {
+	grid-column: score-column;
+	grid-row: 1 / 4;
+	width: 5em;
+	height: 5em;
+	font-family: 'Splatoon 1', sans-serif;
+	justify-self: center;
+	margin-top: 2em;
+	z-index: 1;
+}
+
+#turnNumberContainer:not([hidden]) {
+	background: radial-gradient(circle, rgb(128, 128, 128) 0%, rgb(128, 128, 128) 70%, rgba(0, 0, 0, 0) 70%);
+	height: 5em;
+	width: 5em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+#turnNumberContainer p {
+	text-align: center;
+	margin: 0;
+	font-size: smaller;
+	position: absolute;
+	margin-bottom: 4em;
+}
+
+#turnNumberLabel {
+	text-align: center;
+	font-size: 200%;
+	margin-top: 0.333em;
+  text-shadow: #00000040 0.2rem 0.2rem 0;
+}
+#turnNumberLabel.nowOrNever {
+	color: red;
+}
+
+#timeContainer:not([hidden]) {
+	margin-top: 1em;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 125%;
+	font-family: 'Splatoon 2', sans-serif;
+	background:
+		radial-gradient(circle 1em at 25% 50%, grey 100%, transparent),
+		radial-gradient(circle 1em at 75% 50%, grey 100%, transparent),
+		linear-gradient(90deg, transparent 25%, grey 25%, grey 75%, transparent 75%)
+}
+#timeContainerContent {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.25em;
+}
+#timeContainerContent.warning {
+	color: yellow;
+	animation: 0.2s timeWarning;
+}
+#timeContainerContent.faded {
+	opacity: 0.5;
+}
+#timeContainer svg {
+	height: 1.5ch;
+	fill: currentColor;
+	vertical-align: middle;
+}
+#timeContainer p {
+	margin: 0;
+}
+#timeLabel {
+	width: 2ch;
+	text-align: center;
+}
+
+@keyframes timeWarning {
+	from { transform: scale(1); }
+	 50% { transform: scale(1.5); }
+	  to { transform: scale(1); }
+}
+
+.pointsContainer {
+	width: 5em;
+	height: 5em;
+}
+
+.pointsContainer:not([hidden]) {
+	position: relative;
+	display: flex;
+	font-family: 'Splatoon 1', sans-serif;
+	justify-content: center;
+	align-items: center;
+}
+
+.points {
+	font-size: 300%;
+	font-style: italic;
+	text-align: justify;
+	padding-right: 0.15em;
+	text-shadow: #00000040 0.05em 0.05em 0;
+	z-index: 1;
+}
+
+.pointsToContainer {
+	position: absolute;
+	bottom: -1.2rem;
+	right: 0;
+	font-size: 150%;
+}
+.pointsTo {
+	font-style: italic;
+}
+
+.pointsContainer[data-index="0"] { --colour: var(--primary-colour-1); }
+.pointsContainer[data-index="1"] { --colour: var(--primary-colour-2); }
+.pointsContainer[data-index="2"] { --colour: var(--primary-colour-3); }
+.pointsContainer[data-index="3"] { --colour: var(--primary-colour-4); }
+
+.pointsContainer::before {
+	content: '';
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	opacity: 0.5;
+	background: radial-gradient(circle, color-mix(in srgb, var(--colour) 80%, black) 70%, rgba(0, 0, 0, 0) 70%);
+}
+
+.pointsContainer {
+	color: var(--colour);
+}
+
+.pointsDelta {
+	position: absolute;
+	top: -0.5em;
+	right: -0.5em;
+	font-size: 150%;
+	width: 2em;
+	height: 2em;
+	background: radial-gradient(circle, color-mix(in srgb, var(--colour) 90%, black) 70%, rgba(0, 0, 0, 0) 70%);
+	z-index: 1;
+	text-align: center;
+	color: white;
+	text-shadow: #00000080 0.1rem 0.1rem 0;
+}
+.pointsDelta.minus {
+	--colour: darkgrey;
+}
+
+/* Board section */
+
+#redrawModal {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: -50vw;
+	bottom: 0;
+  padding-right: 50vw;  /* Centre the dialog over the board but extend the backdrop all the way to the right of the page. */
+	background: #000000C0;
+	z-index: 1;
+}
+
+#redrawModal:not([hidden]) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#redrawBox {
+	border: 1px solid grey;
+	width: 15em;
+	height: 10em;
+	background: black;
+	text-align: center;
+}
+
+#playsSection {
+	display: flex;
+	flex-flow: column;
+	justify-content: space-between;
+}
+
+/* Error UI */
+
+#errorDialog[open] {
+	width: 20em;
+	height: 12em;
+	display: flex;
+	flex-flow: column;
+	align-items: center;
+	justify-content: center;
+}
+
+
+.specialAttack, .specialAttackLabel {
+	box-shadow: 0px 0 8px 4px var(--player-colour);
+}
+
+.specialAttackLabel {
+	position: absolute;
+	font-family: 'Splatoon 1', sans-serif;
+	left: -2em;
+	top: 4em;
+	right: -2em;
+	height: 2em;
+	background: var(--player-colour);
+	color: black;
+	text-align: center;
+	font-size: larger;
+	border-radius: 0.5em;
+	animation: 3s forwards specialAttackAnimation;
+}
+
+@keyframes specialAttackAnimation {
+	from {
+		transform: scale(0);
+		opacity: 0;
+	}
+	15% {
+		transform: scale(0.9);
+		opacity: 1;
+	}
+	85% {
+		transform: scale(1.1);
+		opacity: 1;
+	}
+	to {
+		transform: scale(1.1);
+		opacity: 0;
+	}
+}
+
+.playContainer[data-index="0"] { --player-colour: var(--primary-colour-1); }
+.playContainer[data-index="1"] { --player-colour: var(--primary-colour-2); }
+.playContainer[data-index="2"] { --player-colour: var(--primary-colour-3); }
+.playContainer[data-index="3"] { --player-colour: var(--primary-colour-4); }
+
+.passLabel {
+	font-family: 'Splatoon 2', sans-serif;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	display: flex;
+	background: #00000080;
+	justify-content: center;
+	align-items: center;
+	font-size: larger;
+}
+.passLabel.timeout {
+	color: red;
+}
+
+/* Deck editor */
+
+:is(#deckListPage, #deckEditPage):not([hidden]) {
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	gap: 3em;
+}
+
+button.dragging {
+	opacity: 0.5;
+}
+
+#addDeckControls {
+	display: flex;
+	align-items: stretch;
+	gap: 1em;
+}
+#addDeckControls > button {
+	flex-basis: 8em;
+	flex-grow: 1;
+	background: black;
+	border: 0.25em solid var(--primary-colour-2);
+}
+#addDeckControls > button:hover { border-color: var(--special-colour-2); }
+#addDeckControls > button:focus-within { outline: 2px solid var(--special-accent-colour-2); }
+#addDeckControls > button:is(:active, .checked) { border-color: var(--special-accent-colour-2); }
+
+.handle {
+	background: url('assets/grip-horizontal.svg') 0.5em center/1em no-repeat;
+}
+.deckList .handle {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+.touchmode .deckList .handle {
+	width: 2em;
+}
+.cardButton .handle {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	height: 3em;
+}
+
+.cardButton.emptySlot {
+	--colour: dimgrey;
+	background: url('assets/plus-circle.svg') center/2em no-repeat, black;
+}
+
+#deckCardListView, #deckCardListEdit {
+	display: grid;
+	grid-template-columns: auto auto auto;
+	justify-items: center;
+	grid-column: 2;
+	grid-row: 2 / -1;
+	overflow-y: scroll;
+	min-width: 33em;
+}
+
+#deckEditorDeckViewSection:not([hidden]), #deckEditorDeckEditPage {
+	display: grid;
+	grid-template-columns: 1fr auto;
+	grid-template-rows: auto auto 1fr;
+	height: 100vh;
+	position: relative;
+}
+
+#deckViewBackButton, #deckCardListBackButton {
+	display: none;
+}
+
+#deckName, #deckName2 {
+	grid-column: 1 / -1;
+	grid-row: 1;
+}
+
+.menuButton {
+	display: none;
+}
+
+.menu {
+	grid-column: 1;
+	grid-row: 3;
+	display: flex;
+	flex-flow: column;
+}
+.menu button {
+	margin: 0.25em;
+	width: 5em;
+	height: 4em;
+}
+
+.deckSizeContainer {
+	grid-column: 1;
+	grid-row: 2;
+	background: dimgrey;
+	text-align: center;
+	line-height: 1.5em;
+	margin: 0.25em;
+	min-width: 4em;
+}
+
+#deckEditorCardListSection {
+	flex-grow: 1;
+	background: #00000080;
+	height: 100vh;
+	display: grid;
+	grid-template-rows: auto 1fr;
+	grid-template-columns: 1fr;
+	gap: 1em;
+}
+
+#deckEditorCardListSection > label {
+	grid-column: 2;
+	grid-row: 1;
+}
+
+#cardListHeader {
+	display: flex;
+	align-items: baseline;
+	gap: 0.5em;
+	margin: 0 0.5em;
+}
+#cardListHeader h3 {
+	flex-grow: 1;
+}
+
+#deckEditorCardListBackdrop {
+	display: none;
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	background: black;
+	opacity: 0.5;
+}
+
+#testStageSelectionList {
+	max-width: 72em;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+
+#deckImportForm, #deckImportTextSection:not([hidden]) {
+	display: flex;
+	flex-flow: column;
+}
+
+#deckImportDialog ol {
+	text-align: start;
+}
+
+#deckSleevesList {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	max-width: 88em;
+	gap: 1em;
+}
+
+#deckSleevesList input {
+	visibility: hidden;
+	position: absolute;
+}
+#deckSleevesList label {
+	display: inline-block;
+	width: 10em;
+	height: 14em;
+	border-radius: 0.75em;
+	background: url('assets/external/sleeves.webp') 0px 0px/800%;
+}
+#deckSleevesList input:hover+label {
+	outline: 0.25em solid grey;
+}
+#deckSleevesList input:focus+label {
+	outline: 0.25em solid grey;
+}
+#deckSleevesList input:checked+label {
+	outline: 0.25em solid yellow;
+}
+#deckSleevesList label:nth-of-type(1) { background-position: 0% 0%; }
+#deckSleevesList label:nth-of-type(2) { background-position: -100% 0%; }
+#deckSleevesList label:nth-of-type(3) { background-position: -200% 0%; }
+#deckSleevesList label:nth-of-type(4) { background-position: -300% 0%; }
+#deckSleevesList label:nth-of-type(5) { background-position: -400% 0%; }
+#deckSleevesList label:nth-of-type(6) { background-position: -500% 0%; }
+#deckSleevesList label:nth-of-type(7) { background-position: -600% 0%; }
+#deckSleevesList label:nth-of-type(8) { background-position: -700% 0%; }
+#deckSleevesList label:nth-of-type(9) { background-position: 0% -100%; }
+#deckSleevesList label:nth-of-type(10) { background-position: -100% -100%; }
+#deckSleevesList label:nth-of-type(11) { background-position: -200% -100%; }
+#deckSleevesList label:nth-of-type(12) { background-position: -300% -100%; }
+#deckSleevesList label:nth-of-type(13) { background-position: -400% -100%; }
+#deckSleevesList label:nth-of-type(14) { background-position: -500% -100%; }
+#deckSleevesList label:nth-of-type(15) { background-position: -600% -100%; }
+#deckSleevesList label:nth-of-type(16) { background-position: -700% -100%; }
+#deckSleevesList label:nth-of-type(17) { background-position: 0% -200%; }
+#deckSleevesList label:nth-of-type(18) { background-position: -100% -200%; }
+#deckSleevesList label:nth-of-type(19) { background-position: -200% -200%; }
+#deckSleevesList label:nth-of-type(20) { background-position: -300% -200%; }
+#deckSleevesList label:nth-of-type(21) { background-position: -400% -200%; }
+#deckSleevesList label:nth-of-type(22) { background-position: -500% -200%; }
+#deckSleevesList label:nth-of-type(23) { background-position: -600% -200%; }
+#deckSleevesList label:nth-of-type(24) { background-position: -700% -200%; }
+#deckSleevesList label:nth-of-type(25) { background-position: 0% -300%; }
+#deckSleevesList label:nth-of-type(26) { background-position: -100% -300%; }
+#deckSleevesList label:nth-of-type(27) { background-position: -200% -300%; }
+#deckSleevesList label:nth-of-type(28) { background-position: -300% -300%; }
+#deckSleevesList label:nth-of-type(29) { background-position: -400% -300%; }
+#deckSleevesList label:nth-of-type(30) { background-position: -500% -300%; }
+#deckSleevesList label:nth-of-type(31) { background-position: -600% -300%; }
+
+/* Card list */
+
+#galleryPage:not([hidden]) {
+	height: 100vh;
+	display: flex;
+	flex-flow: column;
+}
+
+#galleryPage > header {
+	padding: 0.5em;
+}
+
+#galleryCardList {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, 10em);
+	grid-auto-rows: auto;
+	gap: 0.5em;
+	justify-content: space-evenly;
+	overflow-y: scroll;
+	padding-top: 0.5em;
+}
+
+#galleryCardList .card {
+	height: 14rem;
+	border: none;
+	background: none;
+	padding: 0;
+	transition: transform 0.25s ease;
+}
+
+#galleryCardList .card.unowned svg {
+	opacity: 0.333;
+}
+
+#galleryCardList .card:hover {
+	transform: scale(1.1);
+}
+
+#galleryCardList .card:hover .cardNumber {
+	display: block;
+	font-size: 1rem;
+	top: -0.5em;
+}
+
+#galleryCardDialog > .card {
+	height: min(75vh, 100vw);
+}
+
+#galleryCardEditor {
+	position: absolute;
+	left: 0;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	font-size: calc(min(75vh, 100vw) * 0.08);
+}
+
+#galleryCardEditorProperties {
+	position: absolute;
+	left: 5%;
+	top: 3%;
+	font: 33% 'Splatoon 2', sans-serif;
+	background: grey;
+	padding: 0 1em;
+}
+
+#galleryCardEditorName {
+	position: absolute;
+	left: 5%;
+	top: 8%;
+	width: 90%;
+	height: 20%;
+	color: black;
+	background: none;
+	border: none;
+	font: inherit;
+	line-height: 1.25em;
+	text-align: center;
+}
+
+.card.common #galleryCardEditorName { color: rgb(89, 49, 255); }
+.card.rare #galleryCardEditorName { color: rgb(231, 180, 39); }
+.card.fresh #galleryCardEditorName { color: white; }
+
+.card.editing :is(.cardDisplayName, .cardGrid) {
+	display: none;
+}
+
+#galleryCardEditorGrid {
+	position: absolute;
+	left: 20%;
+	right: 20%;
+	top: 25%;
+	aspect-ratio: 1;
+	display: grid;
+	grid-template-columns: repeat(8, 1fr);
+	grid-template-rows: repeat(8, 1fr);
+}
+
+#galleryCardEditorGrid button {
+	position: relative;
+	border: none;
+}
+:is(#galleryCardEditorGrid, #galleryCardEditorSpecialCost) button:is(:hover, :focus)::before  {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	background: #ffffff80;
+	content: '';
+}
+
+#galleryCardEditorGrid button[data-state="0"] {
+	border: 1px solid grey;
+	background: #00000080;
+}
+#galleryCardEditorGrid button[data-state="4"] {
+	border: 1px solid grey;
+	background: url('assets/InkOverlay.webp') center/cover, var(--primary-colour-1);
+}
+#galleryCardEditorGrid button[data-state="8"] {
+	border: 1px solid grey;
+	background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-1);
+}
+
+.galleryCardEditorToolbar {
+	position: absolute;
+	right: 5%;
+	font: 33% 'Splatoon 2', sans-serif;
+	background: grey;
+	padding: 0 0.25em;
+}
+
+.galleryCardEditorToolbar footer {
+	font-size: 60%;
+}
+
+#galleryCardEditorImageToolbar { bottom: 18%; }
+#galleryCardEditorColoursToolbar { bottom: 12%; }
+#galleryCardEditorRarityToolbar { bottom: 6%; }
+
+#galleryCardEditorImageFile { display: none; }
+
+#galleryCardEditorColoursToolbar input {
+	width: 3em;
+}
+
+#galleryCardEditorColourPresetBox {
+	width: 1.8em;
+}
+
+#galleryCardEditorSpecialCost {
+	display: grid;
+	position: absolute;
+	grid-template-columns: repeat(5, 1fr);
+	left: 26.8%;
+	top: 86.2%;
+	gap: 0.15em 0.075em;
+}
+
+#galleryCardEditorSpecialCost button {
+	width: 2.5vh;
+	aspect-ratio: 1;
+	border: none;
+	background: #00000080;
+	position: relative;
+}
+#galleryCardEditorSpecialCost button.active {
+	background: url('assets/SpecialOverlay.webp') center/cover, var(--special-colour-1);
+}
+
+#galleryCardEditorSpecialCost label {
+	position: absolute;
+	left: 0;
+	top: 105%;
+	font: 33% 'Splatoon 2', sans-serif;
+	background: grey;
+	padding: 0 1em;
+}
+
+/* Help */
+
+#helpControls {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+}
+#helpControls table { border-spacing: 1ch 0; }
+#helpControls th { text-align: right; }
+#helpControls td { text-align: left; }
+
+/* Small display layout */
+@media (max-width: 89rem) or (max-height: 42rem) {
+	#gamePage, #deckCardListView, #deckCardListEdit {
+		font-size: small;
+	}
+	#cardList {
+		font-size: 75%;
+		grid-row: 2;
+		grid-column: 1 / -1;
+	}
+
+	#gamePage:not([hidden]) {
+		grid-template-columns: var(--controls-width) var(--controls-width) [score-column] 1fr [board-column] auto 1fr [play-column-1 play-column-2] 10em;
+	}
+
+	.playContainer { position: relative; }
+	#gamePage:not([data-players="2"]) .playContainer[data-index="0"] {
+		left: -3em;
+	}
+	#gamePage:not([data-players="2"]) .playContainer[data-index="2"] {
+		top: -3em;
+	}
+	#gamePage:not([data-players="2"]) .playContainer[data-index="3"] {
+		left: -3em;
+		top: 3em;
+	}
+	.playerBar[data-index="0"] { grid-row: player-row-0; }
+	.playerBar[data-index="1"] { grid-row: player-row-1; }
+	.playerBar[data-index="2"] { grid-row: player-row-0; }
+	.playerBar[data-index="3"] { grid-row: player-row-1; }
+
+  #gamePage.boardFlipped .playerBar[data-index="0"] { grid-row: player-row-1; }
+	#gamePage.boardFlipped .playerBar[data-index="1"] { grid-row: player-row-0; }
+	#gamePage.boardFlipped .playerBar[data-index="2"] { grid-row: player-row-1; }
+	#gamePage.boardFlipped .playerBar[data-index="3"] { grid-row: player-row-0; }
+
+	#gamePage:not(.boardFlipped):not([data-players="2"]) .playerBar:is([data-index="1"], [data-index="2"]) .wins,
+	#gamePage.boardFlipped:not([data-players="2"]) .playerBar:is([data-index="0"], [data-index="3"]) .wins {
+		float: initial;
+		justify-content: end;
+	}
+}
+
+@media (max-width: 40rem) {
+	.cardButton {
+		margin: 0;
+		width: auto;
+		justify-self: stretch;
+	}
+	.cardListGrid:not([hidden]) {
+		justify-items: stretch;
+	}
+	.cardListGrid .cardButton {
+		width: auto;
+		justify-self: stretch;
+	}
+
+	/* Lobby - Mobile layout */
+
+	#lobbyPage:not([hidden]) {
+		grid-template-rows: auto 1fr;
+		grid-template-columns: 1fr auto;
+		height: 100vh;
+	}
+
+	#lobbyStageSection, #lobbyDeckSection {
+		height: initial;
+		grid-column: 1 / -1;
+		grid-row: 2;
+	}
+
+	#lobbySelectedStageSection {
+		grid-row: 1;
+		grid-column: 2;
+		align-self: center;
+	}
+
+	#lobbySelectedStageSection .stage {
+		font-size: 60%;
+	}
+
+	#stageList, #testStageSelectionList {
+		font-size: 75%;
+	}
+
+	.stage, .stageRandom {
+		flex-basis: 10em;
+		flex-grow: 1;
+	}
+
+	/* Game - Mobile layout */
+
+	#gamePage:not([hidden]) {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-rows: auto 1fr auto auto auto;
+		height: 100vh;
+	}
+
+	.playerBar[data-index="0"] { grid-column: 1 / span 4; grid-row: 3; }
+	.playerBar[data-index="1"] { grid-column: 1 / span 4; grid-row: 1; }
+	.playerBar[data-index="2"] { grid-column: 1 / span 4; grid-row: 3; }
+	.playerBar[data-index="3"] { grid-column: 1 / span 4; grid-row: 1; }
+
+	.wins { margin-right: 8em; }
+
+	#gamePage.boardFlipped .playerBar[data-index="3"] { grid-column: 1 / span 4; grid-row: 3; }
+	#gamePage.boardFlipped .playerBar[data-index="2"] { grid-column: 1 / span 4; grid-row: 1; }
+	#gamePage.boardFlipped .playerBar[data-index="1"] { grid-column: 1 / span 4; grid-row: 3; }
+	#gamePage.boardFlipped .playerBar[data-index="0"] { grid-column: 1 / span 4; grid-row: 1; }
+
+	#boardSection {
+		grid-column: 2 / -1;
+		grid-row: 2;
+		height: initial;
+		align-self: stretch;
+	}
+
+	#gameBoard {
+		height: min(calc(min(3.5%, calc(75vw / var(--board-width))) * var(--board-height)));
+		margin: auto;
+	}
+
+	#gameControls:not([hidden]) {
+		grid-template-rows: [button-row] auto [hand-row] auto;
+	}
+
+	#gameControls {
+		grid-column: 1 / -1;
+		grid-row: 5;
+		width: initial;
+		min-height: 12em;
+	}
+
+	#cardHint:not([hidden]) {
+		left: auto;
+		align-self: center;
+		margin: 0 0 16em 0;
+		padding: 0;
+		text-align: center;
+	}
+
+	#playHint:not([hidden]) {
+		grid-column: 1 / -1;
+		grid-row: 2;
+		margin-bottom: 0;
+	}
+
+	#scoreSection:not([hidden]) {
+		grid-column: 1;
+		grid-row: 2;
+		grid-template-rows: 1fr;
+		grid-template-columns: 1fr;
+	}
+
+	#timeSection {
+		grid-column: 1;
+		grid-row: 2;
+		margin: 0;
+	}
+
+	.pointsContainer {
+		margin: 0.5em 0;
+	}
+
+	#handContainer:not([hidden]) {
+		font-size: x-small;
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-rows: auto;
+		width: 100vw;
+		overflow: scroll hidden;
+	}
+
+	#showDeckContainer {
+		grid-column: 1 / -1;
+		grid-row: 2 / -1;
+	}
+	#showDeckList .cardButton {
+		width: 30vw;
+	}
+
+	#gamePage:is(.boardFlipped, *) .playContainer:is([data-index="0"], [data-index="1"], [data-index="2"], [data-index="3"]) {
+		font-size: x-small;
+		grid-column: 1 / -1;
+		left: auto;
+		top: auto;
+		display: flex;
+	}
+	.playContainer[data-index="0"] { grid-row: 2 / span 2; justify-self: start; margin: 0 0 2em 1em; }
+	.playContainer[data-index="1"] { grid-row: 1 / span 2; justify-self: end; margin: 4em 0 0 0; }
+	.playContainer[data-index="2"] { grid-row: 2 / span 2; justify-self: end; margin: 0 0 2em 0; }
+	.playContainer[data-index="3"] { grid-row: 1 / span 2; justify-self: start; margin: 4em 0 0 1em; }
+	#gamePage[data-players="2"] .playContainer[data-index="0"] { justify-self: end; margin: 0; }
+	#gamePage[data-players="2"] .playContainer[data-index="1"] { justify-self: end; margin: 0; }
+
+	#gamePage.boardFlipped .playContainer[data-index="1"] { grid-row: 2 / span 2; justify-self: start; margin: 0 0 2em 1em; }
+	#gamePage.boardFlipped .playContainer[data-index="0"] { grid-row: 1 / span 2; justify-self: end; margin: 2em 0 0 0; }
+	#gamePage.boardFlipped .playContainer[data-index="3"] { grid-row: 2 / span 2; justify-self: end; margin: 0 0 2em 0; }
+	#gamePage.boardFlipped .playContainer[data-index="2"] { grid-row: 1 / span 2; justify-self: start; margin: 2em 0 0 1em; }
+	#gamePage.boardFlipped[data-players="2"] .playContainer[data-index="0"] { justify-self: end; margin: 0; }
+	#gamePage.boardFlipped[data-players="2"] .playContainer[data-index="1"] { justify-self: end; margin: 0; }
+
+	#gameButtonsContainer {
+		grid-column: 1;
+		grid-row: 2;
+	}
+
+	#gameButtonsContainer button {
+		font-size: 250%;
+	}
+
+	#gamePage > #testAllCardsContainer:not([hidden]) {
+		grid-row: 1 / -1;
+		grid-column: 1 / -1;
+		background: black;
+		z-index: 2;
+		margin-top: 5em;
+	}
+
+	/* Deck editor - Mobile layout */
+
+	:is(#deckListPage, #deckEditPage):not([hidden]) {
+		display: block;
+	}
+
+	:is(#deckListPage, #deckEditPage) > section {
+		position: absolute;
+		left: 0;
+		right: 0;
+		top: 0;
+	}
+
+	#deckListPage:not(.showingDeck) #deckEditorDeckViewSection {
+		display: none;
+	}
+	#deckListPage.showingDeck #deckEditorDeckListSection {
+		display: none;
+	}
+
+	#deckEditorDeckViewSection:not([hidden]) {
+		z-index: 10;
+		grid-template-columns: auto 1fr auto;
+	}
+
+	#deckViewBackButton {
+		display: block;
+		grid-column: 1;
+		grid-row: 1;
+	}
+
+	#deckCardListBackButton {
+		display: block;
+		flex-grow: 1;
+	}
+
+	#deckName, #deckName2 {
+		margin: 0.5em 0;
+	}
+
+	#deckName {
+		grid-column: 2 / -1;
+	}
+
+	#cardListHeader h3 {
+		display: none;
+	}
+
+	.menuButton {
+		display: block;
+		grid-row: 1;
+		grid-column: -2;
+		background: none;
+		border: none;
+	}
+	.menuButton svg {
+		width: 2em;
+		height: 2em;
+	}
+
+	.menu {
+		grid-row: 2;
+		grid-column: 1 / -2;
+		flex-flow: row;
+	}
+
+	.menu:not(.showing) {
+		display: none;
+	}
+
+	.menu.showing {
+		grid-row: 2 / -1;
+		grid-column: 1 / -1;
+		z-index: 2;
+		display: flex;
+		flex-flow: column;
+		background: #000000c0;
+		align-items: end;
+	}
+
+	.menu button {
+		grid-column: -2;
+		grid-row: 2;
+		justify-self: end;
+		flex-grow: 0;
+	}
+
+	.deckSizeContainer {
+		grid-column: -2;
+		grid-row: 2;
+		justify-self: end;
+		padding: 0.25em 0;
+	}
+
+	.sizeLabel { display: none; }
+
+	#deckCardListView, #deckCardListEdit {
+		grid-column: 1 / -1;
+		grid-row: 3;
+		overflow-y: scroll;
+		font-size: 80%;
+		grid-template-columns: 1fr 1fr 1fr;
+		width: 100%;
+		min-width: 0;
+	}
+
+	#deckEditorCardListSection:not(.selecting) {
+		display: none;
+	}
+
+	#deckEditorCardListSection.selecting + #deckEditorCardListBackdrop {
+		display: block;
+	}
+
+	#deckEditPage #deckEditorCardListSection {
+		z-index: 1;
+		top: 4em;
+		height: calc(100vh - 4em);
+	}
+
+	#cardList {
+		font-size: 55%;
+	}
+
+	#testControls:not([hidden]) {
+		grid-column: 1 / -1;
+		grid-row: -2;
+	}
+	#testControlsHeader {
+		display: none;
+	}
+	#testAllCardsMobileButton {
+		display: inline-block;
+		width: 7em;
+	}
+	#testDeckContainer:not([hidden]) {
+		display: grid;
+		grid-template-columns: auto auto;
+		overflow-x: scroll;
+	}
+	#testDeckList {
+		width: max-content;
+		display: inline-block;
+		padding: 0;
+		margin: 0;
+		justify-items: center;
+		align-items: center;
+		overflow: initial;
+	}
+
+	#gamePage.deckTest #testPlacementList {
+		grid-column: 1 / -1;
+		grid-row: 1;
+		height: 7em;
+		flex-flow: row wrap;
+		align-content: flex-start;
+		margin: 0.5em;
+		gap: 0.5em;
+	}
+	#testPlacementList div {
+		padding: 0 0.5em;
+	}
+
+	#deckSleevesList label {
+		width: 20%;
+		height: auto;
+		aspect-ratio: 5 / 7;
+	}
+}
+
+/* Loading spinner */
+
+.loadingContainer:not([hidden]) {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 0.5em;
+}
+.loadingSpinner {
+	background: url(assets/external/IconUp_00.webp) center/cover;
+	position: relative;
+	width: 1.5em;
+	height: 1.5em;
+	display: inline-block;
+	animation: 2s infinite linear loadingSpinner;
+}
+@keyframes loadingSpinner {
+	to { transform: rotate(360deg); }
+}

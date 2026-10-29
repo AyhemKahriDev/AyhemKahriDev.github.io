@@ -1,0 +1,15 @@
+{
+  "repo": "fazo96/aDemonsMaze",
+  "stars": 5,
+  "licence": "MIT",
+  "sizeKB": 284,
+  "pushedAt": "2014-08-30T11:51:49Z",
+  "description": "Small roguelike game entirely playable in the browser",
+  "defaultBranch": "gh-pages",
+  "owner": "fazo96",
+  "slug": "fazo96-ademonsmaze",
+  "dest": "third-party/fazo96-ademonsmaze",
+  "readme": "# A Demon's Maze\nJust a little game built with [rot.js](http://ondras.github.io)\n\n## Play\nClick [here](http://fazo96.github.io/aDemonsMaze) to play!\n\nIf you clone this repo or download the zip, you can open the index.html file to\nplay the game.\n\n## License\nThe MIT License (MIT)\n\nCopyright (c) Enrico Fasoli 2014\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in all\ncopies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\nSOFTWARE.\n",
+  "licenceFile": "LICENSE.txt",
+  "validated": true
+}

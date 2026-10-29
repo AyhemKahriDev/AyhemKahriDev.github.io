@@ -1,0 +1,5 @@
+game.o
+sdl_main
+raylib_main
+*.swp
+*.zip

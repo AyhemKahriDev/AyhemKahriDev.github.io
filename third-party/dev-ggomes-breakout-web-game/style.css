@@ -1,0 +1,134 @@
+*{
+    font-family: 'Gill Sans MT';
+    margin: 0;
+    padding: 0;
+}
+
+.logo-png{
+    position: fixed;
+    top: 50px;
+    left: 50px;
+    z-index: 1000;
+}
+
+.logo-png img{
+    width: 80px;
+    height: 80px;
+}
+
+.water-mark {
+    display: flex;
+    position: fixed;
+    bottom: 10px;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.2);
+    pointer-events: none;
+    gap: .5rem;
+}
+
+.water-mark strong{
+    color: #a259ff;
+}
+
+.water-mark img{
+    width: 20px;
+    height: 20px;
+    opacity: 0.5;
+    margin-bottom: -0.2rem;
+}
+
+body{
+    background-color: #111;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+canvas {
+    background-color: #333;
+    border: 2px solid #fff;
+}
+
+.score-display {
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    text-align: center;
+    color: white;
+    font-size: 25px;
+    font-family: 'Gill Sans MT';
+    z-index: 100;
+}
+
+#scoreValue {
+    color: #a259ff;
+}
+
+.score-history {
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    text-align: center;
+    color: #aaa;
+    font-size: 14px;
+    font-family: 'Gill Sans MT';
+    z-index: 100;
+}
+
+.arcade-scoreboard {
+    position: absolute;
+    top: 50%;
+    left: calc(50% + 360px); /* metade do canvas + margem */
+    transform: translateY(-50%);
+    background: #000;
+    border: 3px solid #a259ff;
+    padding: 20px;
+    color: #a259ff;
+    font-family: 'Courier New', monospace;
+    text-align: center;
+    box-shadow: 0 0 20px #a259ff;
+    width: 160px;
+    z-index: 100;
+}
+
+.arcade-scoreboard h3 {
+    margin-bottom: 10px;
+    font-size: 20px;
+    text-shadow: 0 0 5px #a259ff;
+}
+
+.arcade-scoreboard ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.arcade-scoreboard li {
+    font-size: 18px;
+    margin: 5px 0;
+    text-shadow: 0 0 3px #a259ff;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 5px;
+}
+
+.score-rank {
+    text-align: left;
+    flex: 1;
+}
+
+.score-value {
+    text-align: right;
+    flex: 1;
+}
+
+.top-score-first {
+    font-size: 20px;
+    color: #fff;
+    text-shadow: 0 0 5px #a259ff;
+    font-weight: bold;
+}

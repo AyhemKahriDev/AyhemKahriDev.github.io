@@ -1,0 +1,59 @@
+@use "./custom_checkbox";
+
+.options {
+	display: flex;
+	flex-flow: column;
+
+	position: absolute;
+	top: 0;
+
+	background: var(--options-background);
+	box-shadow: 2px 3px 5px 0px rgba(0,0,0,0.75);
+
+	padding: 2rem 3rem;
+
+	border-radius: 15px;
+
+	transform: translateY(-20rem);
+
+	transition: transform 1s ease-out, color 0.2s ease-in, background 0.2s ease-in;
+
+	&__group {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		width: 21rem;
+		margin-bottom: 1.5rem;
+
+		position: relative;
+
+		label {
+			font-size: 1.5rem;
+			font-weight: bold;
+		}
+
+		select {
+			/*
+				For some reason, select tags do not inherit the font-size
+				and font-family properties. You have to explicitly specify this.
+			*/
+			font-family: inherit;
+			font-size: inherit;
+		}
+	}
+
+	&.open {
+		transform: translateY(20rem);
+	}
+}
+
+@media (max-width: 576px) {
+	.options {
+		padding: 2rem;
+		
+		&__group {
+			width: 20rem;
+		}
+	}
+}

@@ -1,0 +1,15 @@
+{
+  "repo": "Gaetz/js-Racing",
+  "stars": 3,
+  "licence": "MIT",
+  "sizeKB": 58,
+  "pushedAt": "2017-06-19T13:00:38Z",
+  "description": "A javascript 2d top-down racing game as a game kata.",
+  "defaultBranch": "master",
+  "owner": "Gaetz",
+  "slug": "gaetz-js-racing",
+  "dest": "third-party/gaetz-js-racing",
+  "readme": "# js-Racing\nA javascript 2d top-down racing game as a game kata.\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

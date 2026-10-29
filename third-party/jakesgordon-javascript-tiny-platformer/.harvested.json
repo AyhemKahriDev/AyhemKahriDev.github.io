@@ -1,0 +1,15 @@
+{
+  "repo": "jakesgordon/javascript-tiny-platformer",
+  "stars": 193,
+  "licence": "MIT",
+  "sizeKB": 6,
+  "pushedAt": "2025-06-01T22:09:28Z",
+  "description": "A very minimal javascript platform game",
+  "defaultBranch": "master",
+  "owner": "jakesgordon",
+  "slug": "jakesgordon-javascript-tiny-platformer",
+  "dest": "third-party/jakesgordon-javascript-tiny-platformer",
+  "readme": "Javascript Tiny-Platformer\n==========================\n\nA very minimal javascript platform game\n\n * [play the game](https://jakesgordon.com/games/tiny-platformer/)\n * read the [original article](https://jakesgordon.com/writing/tiny-platformer/)\n * read a [follow up article](https://jakesgordon.com/writing/tiny-platformer-revisited/) about adding monsters and treasure\n * view the [source](https://github.com/jakesgordon/javascript-tiny-platformer)\n\nJust a sinple example of how to have a tiny rectangle run around some rectangle platforms, \ncollecting rectangular gold and avoiding rectangular monsters.\n\nSUPPORTED BROWSERS\n==================\n\nShould work in any modern browser with canvas support\n\nDEVELOPMENT\n===========\n\nThe game is 100% client side javascript, html and css. It should run when served up by any web server.\n\nLicense\n=======\n\n[MIT](http://en.wikipedia.org/wiki/MIT_License) license.\n\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

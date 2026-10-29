@@ -1,0 +1,15 @@
+{
+  "repo": "simonlc/tetr.js",
+  "stars": 107,
+  "licence": "MIT",
+  "sizeKB": 145,
+  "pushedAt": "2018-11-11T11:26:58Z",
+  "description": "🕹️ Tetris clone in HTML5 and JavaScript",
+  "defaultBranch": "master",
+  "owner": "simonlc",
+  "slug": "simonlc-tetr-js",
+  "dest": "third-party/simonlc-tetr-js",
+  "readme": "# Tetr.js\n\n### Default Controls:\n\nControls are configurable\n\n- **Rotate Left:** Z\n- **Rotate Right:** X\n- **Rotate 180:** Shift\n- **Hold:** C\n- **Hard Drop:** Space\n- **Shift Left:** Left Arrow\n- **Shift Right:** Right Arrow\n- **Restart:** R\n\n## mechanics and features\n\n- Tetris Guideline compliant\n  - Random generator, first bag never spawns Z, S, or O piece first.\n  - SRS\n  - Hold\n  - Piece preview\n  - Ghost piece\n- Multiple block skins\n- Stack outline option\n- Configurable gravity\n- 60 FPS\n- DAS and DAS delay settings\n- Adaptable game size\n- Last game replay\n",
+  "licenceFile": "LICENSE",
+  "validated": true
+}

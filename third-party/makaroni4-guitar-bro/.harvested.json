@@ -1,0 +1,15 @@
+{
+  "repo": "makaroni4/guitar_bro",
+  "stars": 158,
+  "licence": "MIT",
+  "sizeKB": 407,
+  "pushedAt": "2018-03-15T20:10:53Z",
+  "description": "Guitar Bro – browser game that helps you learn notes on guitar",
+  "defaultBranch": "master",
+  "owner": "makaroni4",
+  "slug": "makaroni4-guitar-bro",
+  "dest": "third-party/makaroni4-guitar-bro",
+  "readme": "# Guitar Bro – browser game that helps you learn notes on guitar\n\n![Guitar Bro Snapshot](https://user-images.githubusercontent.com/768070/27518743-17a23ec4-59e7-11e7-8873-5b8ee3be5251.png)\n\n## Description\n\nGuitar Bro works completely in browser and is based on [Web Audio API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Audio_API). Currently Guitar Bro works only in Chrome, since only Chrome allows to change the [resolution of FFT](https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/fftSize) to distinguish different notes on guitar.\n\n[Try it out!](https://makaroni4.github.io/guitar_bro/)\n",
+  "licenceFile": "LICENSE",
+  "entry": "index.html"
+}

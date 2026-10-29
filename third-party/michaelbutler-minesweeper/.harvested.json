@@ -1,0 +1,15 @@
+{
+  "repo": "michaelbutler/minesweeper",
+  "stars": 39,
+  "licence": "GPL-3.0",
+  "sizeKB": 204,
+  "pushedAt": "2026-10-01T03:26:11Z",
+  "description": "WebWorker powered Minesweeper game written in JavaScript, HTML and CSS.",
+  "defaultBranch": "master",
+  "owner": "michaelbutler",
+  "slug": "michaelbutler-minesweeper",
+  "dest": "third-party/michaelbutler-minesweeper",
+  "readme": "# Minesweeper.js\n\n[![Build Status](https://api.travis-ci.com/michaelbutler/minesweeper.svg?branch=master)](https://travis-ci.com/michaelbutler/minesweeper)\n\nBy Michael Butler\n\nA WebWorker powered Minesweeper game written in JavaScript, HTML and CSS. Yes, using webworkers\njust for minesweepr might be overkill but for when this was first written around 2013 it actually\nmade a visible difference in Firefox at least. But it is also an exercise to\nunderstand how they work and pass messages between the main UI thread and the background thread.\n\nDemo: https://michaelbutler.github.io/minesweeper/\n\n## Features:\n\n- User can choose difficulty level\n- Custom option with configurable grid size (X, Y) and number of mines\n- Stopwatch with score keeping (LocalStorage)\n- Stack based grid traversal algorithm for memory efficiency\n- HTML5 web worker (if supported) will be used to perform the stack algorithm outside of the UI thread\n\n## How to use:\n\nDownload all the files and open `index.html` in a modern web browser.\n\n## Example HTML usage:\n\n```\n<!-- requires jQuery -->\n<h1 class=\"logo\">JavaScript MineSweeper\n    <div class=\"invisible ajax-loading\"><img src=\"load.gif\" alt=\"Processing...\"/></div>\n</h1>\n<div id=\"minesweeper\"></div>\n\n<script src=\"js/MineSweeper.js\" type=\"text/javascript\"></script>\n<script>\n    // set a global instance of Minesweeper\n    minesweeper = new MineSweeper();\n    minesweeper.init();\n</script>\n```\n\n## To Do:\n\n- Add animation and better graphics\n- Enhance UI for a sleek new look\n\n## Contributing:\n\nSee [CONTRIBUTE.md](https://github.com/michaelbutler/minesweeper/blob/master/CONTRIBUTE.md) for how to contribute.\n\n## License (GPL v3):\n\n    Minesweeper.js is free software: you can redistribute it and/or modify\n    it under the terms of the GNU General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n\n    Minesweeper.js is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU General Public License for more details.\n\n    You should have received a copy of the GNU General Public License\n    along with Minesweeper.js.  If not, see <http://www.gnu.org/licenses/>.\n",
+  "licenceFile": "license.txt",
+  "entry": "index.html"
+}

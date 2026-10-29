@@ -1,0 +1,106 @@
+/*
+ * Balljs - A brick breaker game
+ * http://github.com/nicolas-dutertry/balljs
+ * 
+ * Written by Nicolas Dutertry.
+ * 
+ * This file is provided under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
+ * 
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ */
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.ui-loader {
+    display: none;
+}
+
+#toucharea {
+	display: block;
+    position: fixed;
+    background: transparent;
+    z-index: 5;
+}
+
+#main {
+    display: block;
+    position: fixed;
+    background-color: #222222;
+}
+
+canvas {
+    position: fixed;
+	background: transparent;
+}
+
+#canvas-background {
+    z-index: 1;
+}
+
+#canvas-blocks {
+    z-index: 2;
+}
+
+#canvas-balls {
+    z-index: 3;
+}
+
+#header {
+    position: fixed;
+    font-family: Tahoma;
+    background-color: #222222;    
+    color: #FFFFFF;
+    text-align: center;
+}
+
+#reload, #sound {
+	position: fixed;
+	cursor: pointer;
+	z-index: 5;
+}
+
+#best {
+    position: fixed;
+    display: block;
+}
+
+#help {
+	position: fixed;
+    text-align: center;
+    color: #BBBBBB;
+    z-index: 4;
+}
+
+#game-over {
+	position: fixed;
+    text-align: center;
+    background-color: rgb(211,10,15);
+    color: #FFFFFF;
+    z-index: -1;
+}
+
+#about {
+    position: fixed;
+    display: block;
+    text-align: right;
+    color: #FFFFFF;
+    font-family: Tahoma;
+    font-style: italic;
+    z-index: 5;
+}
+
+#about a, #about a:HOVER, #about a:VISITED {
+	color: #FFFFFF;
+}

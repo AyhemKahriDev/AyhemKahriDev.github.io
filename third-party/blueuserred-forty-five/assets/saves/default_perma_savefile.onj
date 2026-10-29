@@ -1,0 +1,14 @@
+
+version: 0,
+lastRandom: null,
+collection: [
+    "bullet",
+    "bullet",
+    "bullet",
+    "bigBullet",
+],
+visitedAreas: [
+],
+playerHasCompletedTutorial: false,
+playerFoughtMultipleEnemies: false,
+hasSeenInDevPopup: false

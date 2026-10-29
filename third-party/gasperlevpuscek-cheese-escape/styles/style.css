@@ -1,0 +1,95 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    margin: 0;
+    overflow-y: hidden;
+    font-family: "Sour Gummy", sans-serif;
+}
+
+h1 {
+    margin: 0 auto;
+    font-size: 50px;
+    color: rgb(255, 231, 11);
+    text-shadow: 1px 1px 10px black;
+}
+
+.bottom {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background-image: url("../images/cement.jpg");
+    align-items: center;
+    justify-content: flex-start;
+    padding: 24px 0 32px;
+    gap: 16px;
+    margin: 0;
+}
+
+.gameDiv {
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.cheeseSideDiv {
+    position: absolute;
+    right: 10%;
+    top: 40%;
+    margin-top: 16px;
+    font-size: 30px;
+}
+
+.cheeseDiv {
+    height: 220px;
+    width: 220px;
+}
+
+.cheesePanelImage {
+    width: 256px;
+    height: 256px;
+    object-fit: contain;
+    display: block;
+    flex-shrink: 0;
+}
+
+
+.mazeDiv {
+    position: relative;
+    width: 870px;
+    height: 870px;
+}
+
+.mazeCanvas {
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+}
+
+#rat {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+#cat {
+    position: absolute;
+    width: 60px;
+    height: 60px;
+    z-index: 2;
+    pointer-events: none;
+}

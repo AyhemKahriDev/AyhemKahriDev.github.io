@@ -1,0 +1,542 @@
+[
+  {
+    "question": "Qual è la capitale d'Italia?",
+    "answers": {
+      "a": "Roma",
+      "b": "Milano",
+      "c": "Napoli",
+      "d": "Torino"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Chi ha scritto 'La Divina Commedia'?",
+    "answers": {
+      "a": "Giovanni Boccaccio",
+      "b": "Dante Alighieri",
+      "c": "Francesco Petrarca",
+      "d": "Alessandro Manzoni"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "In che anno fu fondata Roma secondo la leggenda?",
+    "answers": {
+      "a": "753 a.C.",
+      "b": "509 a.C.",
+      "c": "476 d.C.",
+      "d": "100 a.C."
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Qual è la lingua ufficiale del Brasile?",
+    "answers": {
+      "a": "Spagnolo",
+      "b": "Italiano",
+      "c": "Portoghese",
+      "d": "Inglese"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "Quale dei seguenti è un pianeta del Sistema Solare?",
+    "answers": {
+      "a": "Plutone",
+      "b": "Nettuno",
+      "c": "Marte",
+      "d": "Saturno"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Chi ha dipinto la Gioconda?",
+    "answers": {
+      "a": "Leonardo da Vinci",
+      "b": "Michelangelo",
+      "c": "Raffaello",
+      "d": "Caravaggio"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Qual è il fiume più lungo del mondo?",
+    "answers": {
+      "a": "Nilo",
+      "b": "Amazonas",
+      "c": "Mississippi",
+      "d": "Yangtze"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Quale invenzione attribuita a Guglielmo Marconi ha rivoluzionato le comunicazioni?",
+    "answers": {
+      "a": "La televisione",
+      "b": "Il telefono",
+      "c": "La radio",
+      "d": "Il telegrafo"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "Chi fu il primo uomo a mettere piede sulla Luna?",
+    "answers": {
+      "a": "Yuri Gagarin",
+      "b": "Neil Armstrong",
+      "c": "Buzz Aldrin",
+      "d": "Michael Collins"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Qual è lo sport più popolare in Italia?",
+    "answers": {
+      "a": "Calcio",
+      "b": "Basket",
+      "c": "Pallavolo",
+      "d": "Rugby"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Qual è la moneta ufficiale del Giappone?",
+    "answers": {
+      "a": "Yen",
+      "b": "Won",
+      "c": "Euro",
+      "d": "Dollaro"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "In quale città si trova la Torre Eiffel?",
+    "answers": {
+      "a": "Roma",
+      "b": "Parigi",
+      "c": "Londra",
+      "d": "Berlino"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale elemento chimico ha il simbolo O?",
+    "answers": {
+      "a": "Ossigeno",
+      "b": "Oro",
+      "c": "Osmio",
+      "d": "Oganesson"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Cos'è il Teorema di Pitagora?",
+    "answers": {
+      "a": "In un triangolo rettangolo, il quadrato dell'ipotenusa è uguale alla somma dei quadrati dei cateti",
+      "b": "L'ipotenusa è la somma dei cateti",
+      "c": "La somma degli angoli interni di un triangolo è 180°",
+      "d": "Il perimetro di un triangolo è la somma delle sue altezze"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Quale scrittore italiano ha scritto 'Il Barone Rampante'?",
+    "answers": {
+      "a": "Italo Calvino",
+      "b": "Giovanni Verga",
+      "c": "Alessandro Manzoni",
+      "d": "Primo Levi"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Qual è il monte più alto del mondo?",
+    "answers": {
+      "a": "Monte Bianco",
+      "b": "Monte Everest",
+      "c": "K2",
+      "d": "Kangchenjunga"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale tra questi paesi non fa parte dell'Unione Europea?",
+    "answers": {
+      "a": "Svezia",
+      "b": "Grecia",
+      "c": "Norvegia",
+      "d": "Spagna"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "Quale film ha vinto l'Oscar come miglior film nel 2020?",
+    "answers": {
+      "a": "Parasite",
+      "b": "1917",
+      "c": "Joker",
+      "d": "Once Upon a Time in Hollywood"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "In che anno è avvenuta la caduta del Muro di Berlino?",
+    "answers": {
+      "a": "1989",
+      "b": "1991",
+      "c": "1987",
+      "d": "1990"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Chi ha composto la Nona Sinfonia?",
+    "answers": {
+      "a": "Mozart",
+      "b": "Beethoven",
+      "c": "Bach",
+      "d": "Vivaldi"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale pianeta è considerato il più caldo del Sistema Solare?",
+    "answers": {
+      "a": "Venere",
+      "b": "Marte",
+      "c": "Mercurio",
+      "d": "Giove"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Qual è il più grande oceano del mondo?",
+    "answers": {
+      "a": "Atlantico",
+      "b": "Pacifico",
+      "c": "Indiano",
+      "d": "Artico"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale scienziato è noto per la teoria della relatività?",
+    "answers": {
+      "a": "Newton",
+      "b": "Einstein",
+      "c": "Galileo",
+      "d": "Tesla"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Chi ha scritto 'Il Nome della Rosa'?",
+    "answers": {
+      "a": "Umberto Eco",
+      "b": "Italo Calvino",
+      "c": "Primo Levi",
+      "d": "Dante Alighieri"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Quale fiume attraversa la città di Roma?",
+    "answers": {
+      "a": "Arno",
+      "b": "Po",
+      "c": "Tevere",
+      "d": "Adige"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "In quale anno fu scoperta l'America da Cristoforo Colombo?",
+    "answers": {
+      "a": "1492",
+      "b": "1500",
+      "c": "1482",
+      "d": "1510"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Qual è il simbolo chimico dell'oro?",
+    "answers": {
+      "a": "Ag",
+      "b": "Au",
+      "c": "Fe",
+      "d": "O"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale invenzione è attribuita a Alexander Graham Bell?",
+    "answers": {
+      "a": "Il telefono",
+      "b": "La radio",
+      "c": "La televisione",
+      "d": "Il computer"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Chi è l'autore de 'I Promessi Sposi'?",
+    "answers": {
+      "a": "Giovanni Verga",
+      "b": "Alessandro Manzoni",
+      "c": "Luigi Pirandello",
+      "d": "Francesco De Sanctis"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Qual è il numero atomico del Carbonio?",
+    "answers": {
+      "a": "6",
+      "b": "8",
+      "c": "12",
+      "d": "14"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Quale città è conosciuta come 'la città eterna'?",
+    "answers": {
+      "a": "Atene",
+      "b": "Roma",
+      "c": "Istanbul",
+      "d": "Gerusalemme"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale poeta italiano ha scritto 'L'infinito'?",
+    "answers": {
+      "a": "Giacomo Leopardi",
+      "b": "Ugo Foscolo",
+      "c": "Giuseppe Ungaretti",
+      "d": "Salvatore Quasimodo"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Quale tra questi pittori è esponente del movimento impressionista?",
+    "answers": {
+      "a": "Claude Monet",
+      "b": "Pablo Picasso",
+      "c": "Leonardo da Vinci",
+      "d": "Salvador Dalí"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "In quale continente si trova il deserto del Sahara?",
+    "answers": {
+      "a": "Asia",
+      "b": "Africa",
+      "c": "America",
+      "d": "Oceania"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Qual è il risultato della formula matematica 8 x 7?",
+    "answers": {
+      "a": "54",
+      "b": "56",
+      "c": "64",
+      "d": "49"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale paese ha vinto il campionato mondiale di calcio nel 2006?",
+    "answers": {
+      "a": "Italia",
+      "b": "Francia",
+      "c": "Brasile",
+      "d": "Germania"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Quale cantautore statunitense ha ricevuto il Premio Nobel per la Letteratura nel 2016?",
+    "answers": {
+      "a": "Bob Dylan",
+      "b": "Bruce Springsteen",
+      "c": "Leonard Cohen",
+      "d": "Billy Joel"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Quale fu il primo paese a concedere il diritto di voto alle donne?",
+    "answers": {
+      "a": "Stati Uniti",
+      "b": "Regno Unito",
+      "c": "Nuova Zelanda",
+      "d": "Canada"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "Quale animale terrestre è il più veloce?",
+    "answers": {
+      "a": "Leone",
+      "b": "Ghepardo",
+      "c": "Impala",
+      "d": "Cammello"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale è il paese con la più grande superficie geografica?",
+    "answers": {
+      "a": "Canada",
+      "b": "Cina",
+      "c": "Russia",
+      "d": "Stati Uniti"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "Quale squadra di calcio italiana ha vinto più scudetti?",
+    "answers": {
+      "a": "Inter",
+      "b": "Milan",
+      "c": "Juventus",
+      "d": "AS Roma"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "Quale invenzione ha reso possibile la trasmissione della corrente elettrica ad alta tensione su lunghe distanze?",
+    "answers": {
+      "a": "Il trasformatore",
+      "b": "La dinamo",
+      "c": "La pila",
+      "d": "La lampadina"
+    },
+    "correct": "a"
+  },
+  {
+    "question": "Quale compositore ha scritto la Sinfonia n. 5 in Do Minore?",
+    "answers": {
+      "a": "Mozart",
+      "b": "Beethoven",
+      "c": "Brahms",
+      "d": "Schubert"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "In quale città italiana si trova il celebre Teatro alla Scala?",
+    "answers": {
+      "a": "Roma",
+      "b": "Napoli",
+      "c": "Milano",
+      "d": "Firenze"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "Quale tipo di corrente fu adottata come standard negli Stati Uniti per la trasmissione di energia elettrica?",
+    "answers": {
+      "a": "Corrente continua (DC)",
+      "b": "Corrente alternata (AC)",
+      "c": "Corrente trifase",
+      "d": "Corrente monofase"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Chi è lo scienziato noto per la teoria dell'evoluzione tramite selezione naturale?",
+    "answers": {
+      "a": "Gregor Mendel",
+      "b": "Charles Darwin",
+      "c": "Albert Einstein",
+      "d": "Isaac Newton"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale vulcano attivo si trova in Italia?",
+    "answers": {
+      "a": "Vesuvio",
+      "b": "Etna",
+      "c": "Stromboli",
+      "d": "Campi Flegrei"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale pianeta del Sistema Solare è famoso per i suoi anelli spettacolari?",
+    "answers": {
+      "a": "Giove",
+      "b": "Saturno",
+      "c": "Urano",
+      "d": "Nettuno"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale città fu la capitale dell'Impero Ottomano per secoli?",
+    "answers": {
+      "a": "Ankara",
+      "b": "Istanbul",
+      "c": "Izmir",
+      "d": "Bursa"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Chi è l'autore dell'iconico dipinto 'Notte stellata'?",
+    "answers": {
+      "a": "Claude Monet",
+      "b": "Rembrandt",
+      "c": "Vincent Van Gogh",
+      "d": "Paul Cézanne"
+    },
+    "correct": "c"
+  },
+  {
+    "question": "Quale sport si gioca al torneo di Roland Garros?",
+    "answers": {
+      "a": "Pallavolo",
+      "b": "Tennis",
+      "c": "Golf",
+      "d": "Cricket"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale famoso dessert italiano è preparato con mascarpone, caffè e savoiardi?",
+    "answers": {
+      "a": "Pandoro",
+      "b": "Tiramisù",
+      "c": "Cannoli",
+      "d": "Panna cotta"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Quale invenzione ha trasformato le comunicazioni globali nel XX secolo collegando mondi interi?",
+    "answers": {
+      "a": "La radio",
+      "b": "Internet",
+      "c": "La televisione",
+      "d": "Il telefono"
+    },
+    "correct": "b"
+  },
+  {
+    "question": "Chi ha creato il famoso detective Sherlock Holmes?",
+    "answers": {
+      "a": "Agatha Christie",
+      "b": "Arthur Conan Doyle",
+      "c": "Edgar Allan Poe",
+      "d": "Stephen King"
+    },
+    "correct": "b"
+  }
+]

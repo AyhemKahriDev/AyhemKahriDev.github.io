@@ -1,0 +1,141 @@
+
+import "imports/game_predicates.onjschema" as _;
+import "imports/textEffectEmitterConfig.onjschema" as textEmitterConfig;
+
+use Common;
+use Cards; // include Card namespace for status effects
+
+var enemyActionSharedKeys = {
+    weight: int,
+    showProbability: float,
+    icon: string,
+    scaleFactor?: float,
+    predicates?: $GamePredicate[],
+    hasSpecialAnimation: boolean,
+    hasUnlikelyPredicates?: boolean,
+    commonPanel1?: string,
+    commonPanel2?: string,
+    commonPanel3?: string,
+    specialPanel?: string,
+    title: string,
+    descriptionTemplate: string,
+};
+
+$EnemyAction {
+
+    $DamagePlayer {
+        damage: int[2],
+        ...enemyActionSharedKeys
+    }
+
+    $DestroyCardsInHand {
+        maxCards: int,
+        ...enemyActionSharedKeys
+    }
+
+    $RotateRevolver {
+        maxTurns: int,
+        forceDirection?: string,
+        ...enemyActionSharedKeys
+    }
+
+    $ReturnCardToHand {
+        ...enemyActionSharedKeys
+    }
+
+    $TakeCover {
+        cover: int[2],
+        ...enemyActionSharedKeys
+    }
+
+    $GivePlayerStatusEffect {
+        statusEffect: StatusEffect,
+        ...enemyActionSharedKeys
+    }
+
+    $GiveSelfStatusEffect {
+        statusEffect: StatusEffect,
+        ...enemyActionSharedKeys
+    }
+
+    $GivePlayerCard {
+        card: string,
+        ...enemyActionSharedKeys
+    }
+
+}
+
+$EnemyBrain {
+
+    $RandomEnemyBrain {
+        actions: $EnemyAction[],
+        actionProbability: float,
+    }
+
+    $OutlawBrain {
+        phase1End: int,
+        phase2End: int,
+        damagePhase1: int[2],
+        damagePhase2: int[2],
+        damagePhase3: int[2],
+        coverPhase1: int[2],
+        coverPhase2: int[2],
+        coverPhase3: int[2],
+        actionProbability: float,
+        attackProbability: float,
+    }
+
+    $PyroBrain {
+        possibleBurningTurns: int[2],
+        burningRotations: int[2],
+        hideBurningProbability: float,
+        hotPotatoProbability: float,
+        hideHotPotatoProbability: float,
+        infernoHealthPercentage: float,
+        damage: int[2],
+        cover: int[2],
+        actionProbability: float,
+        attackProbability: float,
+    }
+
+    $WitchBrain {
+        bewitchedProbability: float,
+        bewitchedTurns: int[2],
+        bewitchedRotations: int[2],
+        hideBewitchedProbability: float,
+        leftTurnProbability: float,
+        damage: int[2],
+        cover: int[2],
+        actionProbability: float,
+        attackProbability: float,
+    }
+
+    $ScriptedEnemyBrain {
+        actions: {
+            turn: int,
+            action: $EnemyAction,
+            show: boolean
+        }[]
+    }
+
+}
+
+var enemy = {
+    name: string,
+    title: string,
+    baseHealth: int,
+    texture: string,
+    coverIcon: string,
+    hiddenActionIcon: string,
+    scale: float,
+    coverIconScale: float,
+    indicatorIconScale: float,
+    detailFont: string,
+    detailFontScale: float,
+    textEmitterConfig: textEmitterConfig[],
+    brain: $EnemyBrain,
+    detailFontColor: Color,
+    detailFontColorDark: Color,
+};
+
+enemies: enemy[]

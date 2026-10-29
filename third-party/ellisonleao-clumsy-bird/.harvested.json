@@ -1,0 +1,15 @@
+{
+  "repo": "ellisonleao/clumsy-bird",
+  "stars": 1630,
+  "licence": "GPL-3.0",
+  "sizeKB": 4475,
+  "pushedAt": "2018-04-13T23:19:54Z",
+  "description": ":bird: :video_game: A MelonJS port of the famous Flappy Bird Game",
+  "defaultBranch": "master",
+  "owner": "ellisonleao",
+  "slug": "ellisonleao-clumsy-bird",
+  "dest": "third-party/ellisonleao-clumsy-bird",
+  "readme": "Clumsy Bird\n===========\n\nA MelonJS made \"Flappy Bird\" clone.\n\n![](http://i.imgur.com/Slbvt65.png)\n\nPlay online at http://ellisonleao.github.io/clumsy-bird/\n\n[![Deploy](https://www.herokucdn.com/deploy/button.png)](https://heroku.com/deploy?template=https://github.com/ellisonleao/clumsy-bird/tree/gh-pages)\n\n## Running Locally\n\n- Install [Node](http://nodejs.org/download/) and [Grunt](http://gruntjs.com/)\n- Install the dependencies\n\n```\nnpm install\n```\n\nThen just type on your shell:\n\n```\ngrunt connect\n```\n\nOpen your browser at `http://localhost:8001/`\n\n## Making your customization\n\nSee [CUSTOMIZING](https://github.com/ellisonleao/clumsy-bird/blob/master/CUSTOMIZING.md)\n\n## Some nice games made with this project\n\n[Checkout here](https://github.com/ellisonleao/clumsy-bird/wiki/Games-using-clumsy-bird-code)\n\nSome thoughts about this code you can find on [my blog post](https://medium.com/@ellisonleao/clumsy-bird-an-open-source-flappy-bird-clone-cf615724730f)\n",
+  "licenceFile": "LICENSE.md",
+  "validated": true
+}

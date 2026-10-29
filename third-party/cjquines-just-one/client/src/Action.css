@@ -1,0 +1,14 @@
+.Action-Wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 5em;
+  justify-content: center;
+  margin-bottom: 1.5em;
+}
+
+.Action-Wrapper div {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 0.25em;
+}
