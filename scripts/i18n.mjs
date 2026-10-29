@@ -104,6 +104,7 @@ const EN = {
     'home.trust2': 'Plays offline after first visit',
     'home.trust3': 'No tracking, no ads that follow you',
     'home.today': "Today's grid",
+    'home.ticket': "TODAY'S TOKEN * {date}",
     'home.words_one': '{count} word',
     'home.words': '{count} words',
     'home.play': 'Play',
@@ -219,6 +220,8 @@ const EN = {
     'index.searchLabel': 'Search games by name',
     'index.sortLabel': 'Sort games',
     'index.sortDefault': 'Arcade order',
+    'index.sortAZ': 'A → Z',
+    'index.sortZA': 'Z → A',
     'index.random': 'Random',
     'index.everything': 'Everything',
     'index.showing': 'Showing {from}–{to} of {count}',
@@ -264,6 +267,18 @@ const EN = {
       'One new 10x10 word search every day. Everyone plays the same grid, so you can compare scores with friends or look back at a puzzle you missed.',
     'daily.col.date': 'Date',
     'daily.col.theme': 'Theme',
+    /* The ten rotating word lists. The words stay English (they are the
+       puzzle); the theme's name is chrome and gets translated. */
+    'daily.theme.haunt': 'Ghost Haunt',
+    'daily.theme.neon': 'Neon City',
+    'daily.theme.space': 'Deep Space',
+    'daily.theme.magic': 'Ancient Magic',
+    'daily.theme.nature': 'Wild Nature',
+    'daily.theme.candy': 'Candy Rush',
+    'daily.theme.ocean': 'Deep Ocean',
+    'daily.theme.retro': 'Retro Arcade',
+    'daily.theme.kitchen': 'The Kitchen',
+    'daily.theme.sport': 'Game Day',
     'daily.answers': 'answers',
     'daily.today': 'today',
     'daily.howTitle': 'How the daily puzzle works',
@@ -399,6 +414,23 @@ const EN = {
   },
   families: {},
 };
+
+/**
+ * Every leaf path the built-in map exposes: `site.*`, the flat `strings`
+ * vocabulary and the three fields of each category. Tests compare the
+ * catalogues against this list, so a key the builder asks for cannot exist in
+ * one place only. `families.*` is data (genre templates over a harvested id
+ * list) and is pinned by that list instead.
+ */
+function flattenKeys(value, path = '', out = []) {
+  if (Array.isArray(value)) value.forEach((v, i) => flattenKeys(v, path ? `${path}.${i}` : String(i), out));
+  else if (value && typeof value === 'object') {
+    for (const [k, v] of Object.entries(value)) flattenKeys(v, path ? `${path}.${k}` : k, out);
+  } else out.push(path);
+  return out;
+}
+
+export const CATALOG_KEYS = Object.freeze(flattenKeys(EN));
 
 /** Deep merge of plain objects; arrays and scalars from `over` win outright. */
 function merge(base, over) {
