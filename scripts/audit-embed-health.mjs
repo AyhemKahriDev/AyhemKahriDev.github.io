@@ -185,11 +185,19 @@ async function main() {
       // page the timeout is already the verdict.
       if (retried) navWarnings.push('first navigation attempt timed out - retried once');
       docStatus = res?.status() ?? 0;
-      // Three seconds: a game that builds its DOM from a script (a crossword
-      // grid, a Phaser scene, a React start screen) has 83 characters at 1.2 s
-      // and 839 at 3 s. The audit read the first number and filed a working
-      // game as dead.
-      await sleep(3000);
+      // Settle instead of guessing a dwell. A game that builds its DOM from a
+      // script (a crossword grid, a Phaser scene, a React start screen) has 83
+      // characters at 1.2 s and 839 at 3 s, and a loaded runner is slower than a
+      // quiet one: waiting for the network to go quiet and then a short beat is
+      // both faster on light pages and fairer on heavy ones. The retry gets a
+      // longer grace, because a page that only fails the first look is a
+      // statement about the runner, not the game.
+      try {
+        await page.waitForNetworkIdle({ idleTime: 700, timeout: retried ? 20000 : 12000 });
+      } catch {
+        /* a page that keeps polling never goes idle; the beat below is the floor */
+      }
+      await sleep(retried ? 3000 : 1200);
       // Many games wait for a click before they draw, and many of them want
       // a name before they start. Start one if the page offers a start
       // button, so a game behind a start screen is not mistaken for a dead
