@@ -36,6 +36,23 @@ const JUNK_DIR = new Set([
   'android', 'ios', 'macos', 'windows', 'linux_build', 'build-tools',
 ]);
 
+/**
+ * Source files for languages the browser has no interpreter for, plus editor
+ * metadata. These can never be executed by a page, so they are always dead
+ * weight — no reachability test needed, and none is done.
+ *
+ * `.ts` is deliberately NOT in this set: a few demos transpile TypeScript in
+ * the browser and fetch the .ts file as text, so those are pruned only after
+ * the reference check below.
+ */
+const DEAD_SOURCE_EXT = new Set([
+  '.py', '.go', '.java', '.kt', '.rs', '.cs', '.rb', '.php', '.swift',
+  '.meta', '.blend', '.ps1', '.bat',
+]);
+
+/** Dead unless a text file in the same game names them. */
+const CHECKED_EXT = new Set(['.ts', '.tsx', '.flf', '.ini']);
+
 /** Text files we scan for references before calling media unreachable. */
 const TEXT_EXT = new Set(['.html', '.htm', '.js', '.mjs', '.css', '.json', '.xml', '.txt']);
 const MEDIA_EXT = new Set(['.gif', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.mp3', '.ogg', '.wav', '.m4a', '.mp4', '.webm']);
@@ -44,14 +61,54 @@ const KEEP_FILE = /^(licen[cs]e|copying|notice|unlicense|spielkunst-notice)(\.|$
 
 export function pruneVendored(dir) {
   const stats = { removed: 0, bytes: 0 };
-  walk(dir, stats);
+  const refs = textIndex(dir);
+  walk(dir, stats, refs);
   // No reachability pass on media: clumsy-bird loads its BGM by concatenating
   // a filename at runtime, so "not mentioned in any text file" is not the same
-  // as "unused". Extension and directory rules only - they cannot lie.
+  // as "unused". Extension and directory rules only - they cannot lie - plus a
+  // reference check limited to .ts/.flf/.ini, which a page only ever loads as
+  // text and therefore always names.
   return stats;
 }
 
-function walk(dir, stats) {
+/**
+ * Every text file in a game, concatenated once, so the reference check is one
+ * string search per candidate instead of one file read per candidate.
+ *
+ * Capped: a game with a 40 MB bundle should not be re-read 200 times, and a
+ * filename only ever appears in the first megabytes of a build output.
+ */
+function textIndex(dir, budget = { bytes: 0 }) {
+  const parts = [];
+  (function collect(current) {
+    let entries;
+    try {
+      entries = readdirSync(current, { withFileTypes: true });
+    } catch {
+      return;
+    }
+    for (const entry of entries) {
+      if (budget.bytes > 12 * 1024 * 1024) return;
+      const path = join(current, entry.name);
+      if (entry.isDirectory()) {
+        if (!JUNK_DIR.has(entry.name)) collect(path);
+        continue;
+      }
+      if (!TEXT_EXT.has(extname(entry.name).toLowerCase())) continue;
+      try {
+        const size = statSync(path).size;
+        if (size > 4 * 1024 * 1024) continue;
+        parts.push(readFileSync(path, 'utf8'));
+        budget.bytes += size;
+      } catch {
+        /* unreadable text file: treat as absent */
+      }
+    }
+  })(dir);
+  return parts.join('\n');
+}
+
+function walk(dir, stats, refs = '') {
   let entries;
   try {
     entries = readdirSync(dir, { withFileTypes: true });
@@ -67,14 +124,16 @@ function walk(dir, stats) {
         stats.removed += 1;
         continue;
       }
-      walk(path, stats);
+      walk(path, stats, refs);
       continue;
     }
     const ext = extname(entry.name).toLowerCase();
     const isDoc = ext === '.md' || ext === '.markdown' || ext === '.rst';
     if (KEEP_FILE.test(entry.name)) continue;
     if (ext === '.md' && entry.name.toLowerCase().startsWith('spielkunst-notice')) continue;
-    if (JUNK_EXT.has(ext) || isDoc) {
+    const deadSource = DEAD_SOURCE_EXT.has(ext);
+    const checked = CHECKED_EXT.has(ext) && !refs.includes(entry.name);
+    if (JUNK_EXT.has(ext) || isDoc || deadSource || checked) {
       stats.bytes += statSync(path).size;
       rmSync(path, { force: true });
       stats.removed += 1;
