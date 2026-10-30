@@ -64,7 +64,8 @@
     "Omar-Mazen/weatherio",
     "minecraft8997/mclordchess-frontend",
     "avokadoen/tetris-wasm",
-    "s2031215/pixijs-solitaire"
+    "s2031215/pixijs-solitaire",
+    "yunzhu-li/multiplayer-snake"
   ],
   "notes": {
     "luleoa12/wordle_craft": "The daily answer comes from a third-party API: script.js:193 fetch(`https://wordle-craft.luleoa12.workers.dev?datetime=...`). index.html also pulls html2canvas from html2canvas.hertzen.com (line 614), Google Tag Manager (line 623) and Google Fonts (line 53). The site's CSP is connect-src 'self' / script-src 'self' (public/_headers), so the word never arrives and there is nothing to guess.",
@@ -83,6 +84,7 @@
     "richie-rich90454/hackathon-game": "A Tauri + Go desktop project: the vendored tree holds src/, src-tauri/ and public/ with no built entry, so the module script the page asks for is served as application/octet-stream and the page dies on the MIME check. Needs a vite build.",
     "minecraft8997/mclordchess-frontend": "Multiplayer-only client: it opens ws://<host>:5557/socket, which a static host cannot serve - connection refused on every visit.",
     "avokadoen/tetris-wasm": "The page dynamically imports www/index.js and the repository does not contain it (only the C sources), so the import 404s and the frame stays blank.",
-    "s2031215/pixijs-solitaire": "The entry page asks for a script that is not in the repository (404 on load); nothing renders."
+    "s2031215/pixijs-solitaire": "The entry page asks for a script that is not in the repository (404 on load); nothing renders.",
+    "yunzhu-li/multiplayer-snake": "Multiplayer client for a socket.io server: client/index.html:99 loads socket.io and the page needs the node backend the README ships as a docker image (SERVER_URI, /socket.io/). A static host serves neither, so the frame never loads a playable game - the browser gate reports 'third-party iframe never loaded'."
   }
 }

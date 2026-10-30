@@ -16634,50 +16634,6 @@
       ]
     },
     {
-      "id": "yunzhu-li-multiplayer-snake",
-      "title": "Multiplayer Snake",
-      "tagline": "Eat, grow and keep clear of your own tail.",
-      "description": "Multiplayer network snake game and socket.io. Free to play in your browser, with no download and no sign-up.",
-      "category": "arcade",
-      "accent": "hsl(61 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/yunzhu-li-multiplayer-snake/client/index.html"
-      },
-      "credit": {
-        "author": "yunzhu-li",
-        "licence": "MIT",
-        "source": "https://github.com/yunzhu-li/multiplayer-snake"
-      },
-      "keywords": [
-        "multiplayer snake game",
-        "play multiplayer snake online",
-        "free multiplayer snake",
-        "online snake game",
-        "arcade game"
-      ],
-      "howToPlay": [
-        "Steer with the arrow keys, or use the on-screen pad.",
-        "Swipe on a phone to send the snake a new direction.",
-        "Eat the food, grow longer and never touch the walls or your own tail."
-      ],
-      "faq": [
-        {
-          "q": "Is Multiplayer Snake free to play?",
-          "a": "Yes. Multiplayer Snake is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Multiplayer Snake work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "ondras-rot-js",
-        "ssusnic-machine-learning-flappy-bird"
-      ]
-    },
-    {
       "id": "zhg7-cifras",
       "title": "Cifras",
       "tagline": "A quick game to pick up and play in the browser.",

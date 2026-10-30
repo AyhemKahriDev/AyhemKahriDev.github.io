@@ -8,7 +8,7 @@ Free browser arcade. Many games, many categories, **zero running cost**.
   anywhere until someone buys it (see `docs/BRAND.md`).
 
 No accounts, no tracking walls, no paywalls, and **no purchase is required at any
-point**. Ten games are built on the spielkunst engine; the other 544 are
+point**. Ten games are built on the spielkunst engine; the other 543 are
 open-source projects vendored with their own licences. The engine bundle — the
 code that boots a first-party game — is **24.1 kB gzipped** (75 kB raw). A
 vendored game ships what its author wrote and none of our code.
@@ -106,9 +106,9 @@ is lost on the next sweep. Curation belongs in a layer above it
 
 ## The games
 
-**554 games in 9 categories** — 10 built on the spielkunst engine, 544 vendored
+**553 games in 9 categories** — 10 built on the spielkunst engine, 543 vendored
 from open-source repositories. Every page is built in four languages (en, fr,
-ar, de): 2,612 URLs, 653 per locale. The count in this line is the only one that
+ar, de): 2,608 URLs, 652 per locale. The count in this line is the only one that
 goes stale: `npm run build` prints the live figure.
 
 **Original** — built on the spielkunst engine (`content/games.json` and
@@ -127,12 +127,12 @@ goes stale: `npm run build` prints the live figure.
 | Simon Says | Brain | Repeat a growing colour-and-tone sequence |
 | Typing Sprint | Word | One-minute typing test with live words-per-minute and a score per character |
 
-**Open source** — 544 repositories vendored verbatim with their original
+**Open source** — 543 repositories vendored verbatim with their original
 licences, credited on [/credits/](https://spielkunst.pages.dev/credits/) with a
 link back to each source. Five were hand-picked: three live in
 `content/games.json` next to the engine games (The Evolution of Trust and Loopy
 by Nicky Case, CC0; Javascript Tetris by Jake Gordon, MIT), two in
-`content/curated.json` (Nova Lancer; Triangle Light Maze); the other 539 arrive
+`content/curated.json` (Nova Lancer; Triangle Light Maze); the other 538 arrive
 through the harvest below.
 
 ### The harvest pipeline
@@ -175,7 +175,7 @@ delivered iframe get caught.
 The catalogues are capped, not just filtered: `import.mjs` publishes at most 200
 games per genre family when the batch driver runs it (40 is the importer's own
 default), at most `--budget` new pages per run, keeps at most three of any one
-title, and refuses any game without a passing browser verdict. 64 repositories
+title, and refuses any game without a passing browser verdict. 65 repositories
 are on `content/blocked.json` — vendored, opened in a browser and rejected (a
 landing page rather than a game, a build step a browser cannot run, or a script
 the content policy refuses) — so they cannot come back on the next sweep.
@@ -238,7 +238,7 @@ is baked into the script.
 Cloudflare Pages Free caps a deployment at **20,000 files** and **25 MiB per
 asset**, and a rejected upload fails after the whole build. `npm run audit:size`
 therefore gates the count as well as the bytes - 18,500 files, 20 MiB per file,
-800 MiB in total - and the current build is 18,225 files and 624.3 MB, 275
+800 MiB in total - and the current build is 18,208 files and 623.2 MB, 292
 files under the 18,500 budget.
 
 To have Cloudflare build on every push instead, connect the repository in the
@@ -405,7 +405,7 @@ check runs in CI with the other audits.
 - `/games/` filters as you type across titles, categories and keywords, with
   category chips, A→Z / Z→A sorting, a live count in an `aria-live` region and
   an honest empty state.
-- The index is paged: 60 games a page, 10 pages for 554, with `rel=prev` /
+- The index is paged: 60 games a page, 10 pages for 553, with `rel=prev` /
   `rel=next` and a pager above and below the grid. The filter and the sort read
   `/games/catalog.json`, so they still cover the whole catalogue rather than the
   page on screen.
@@ -423,7 +423,7 @@ shortcuts.
 
 The cache name carries the deploy's asset hash, injected by the site builder,
 so each deploy starts a fresh cache and `activate` deletes the previous one.
-It also trims itself to 800 entries: 555 navigable pages per locale — 554 games
+It also trims itself to 800 entries: 554 navigable pages per locale — 553 games
 plus the `/games/` index — with room for the play bundle, a thumbnail and a font
 subset per page, so a walk through the catalogue stops evicting pages the
 visitor still needs. The old cap of 140 was written when the arcade had 153
@@ -610,7 +610,7 @@ into the spec, and post.
 | `npm run audit:links` | Every internal link and every sitemap URL resolves to a real file |
 | `npm run audit:embeds` | No embedded game is a personal page or can navigate out of the arcade |
 | `npm run audit:assets` | Every script, style and asset a published game asks for exists. Fails the build on a `DEAD` embed — an entry page that loads a script missing from its repository — and only warns on `DEGRADED` (a missing cosmetic asset) |
-| `npm run audit:size` | 10 MiB per game, 20 MiB per file, 18,500 files, 800 MiB for all of `dist/` — today 18,225 files / 624.3 MB |
+| `npm run audit:size` | 10 MiB per game, 20 MiB per file, 18,500 files, 800 MiB for all of `dist/` — today 18,208 files / 623.2 MB |
 | `npm run audit:health` | Every published game loads, starts and paints in a real browser |
 | `npm run smoke` | Headless Chrome test: every page, every game, SEO assertions. `SMOKE_SAMPLE=80` visits every structural page and engine game plus 80 evenly spaced vendored games (~6.7 min instead of the full sweep's ~28) |
 | `npm run check:mobile` | Phone viewport: pad, swipe → arrow, scroll lock, no pull-to-refresh |
