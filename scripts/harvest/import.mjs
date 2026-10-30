@@ -31,6 +31,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { dedupeByTitle, defaultFamilyOf } from './dedupe.mjs';
 import { HARDWARE } from './filters.mjs';
+import { SITE_NAME } from '../site.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -166,7 +167,7 @@ export function defaultCopy(record = {}) {
   return {
     title,
     tagline: blurb.slice(0, 90),
-    description: `${blurb} Play ${title} instantly on arcadefork - no download, no sign-up, works on any device.`.slice(0, 320),
+    description: `${blurb} Play ${title} instantly on ${SITE_NAME} - no download, no sign-up, works on any device.`.slice(0, 320),
     keywords: [
       `${title.toLowerCase()} game`,
       `play ${title.toLowerCase()} online`,
@@ -185,7 +186,7 @@ export function defaultCopy(record = {}) {
     faq: [
       {
         q: `Is ${title} free?`,
-        a: `Yes. ${title} runs entirely in your browser on arcadefork - no download, no account, no payment.`,
+        a: `Yes. ${title} runs entirely in your browser on ${SITE_NAME} - no download, no account, no payment.`,
       },
       {
         q: `Who made this version of ${title}?`,

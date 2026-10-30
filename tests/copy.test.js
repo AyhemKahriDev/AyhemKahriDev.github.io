@@ -160,13 +160,13 @@ test('cleanDescription strips markdown, links, URLs and emoji', () => {
   // Regression: the old generator's boilerplate and emoji shortcodes must not
   // survive a round trip, or 500 pages inherit the same developer sentence.
   const recycled = cleanDescription(
-    'HTML5 Tetris Game for jQuery Play Tetris instantly on arcadefork - no download, no sign-up, works on any device.',
+    'HTML5 Tetris Game for jQuery Play Tetris instantly on spielkunst - no download, no sign-up, works on any device.',
   );
   assert.ok(/block|tetris/i.test(recycled), recycled);
-  assert.ok(!/instantly on arcadefork|no download|jquery/i.test(recycled), recycled);
+  assert.ok(!/instantly on spielkunst|no download|jquery/i.test(recycled), recycled);
 
   const shortcode = cleanDescription(
-    ':space_invader: The original TETRIS game simulator Play Tetris instantly on arcadefork.',
+    ':space_invader: The original TETRIS game simulator Play Tetris instantly on spielkunst.',
   );
   assert.ok(/block|tetris/i.test(shortcode), shortcode);
   assert.ok(!/space_invader|:/i.test(shortcode), shortcode);

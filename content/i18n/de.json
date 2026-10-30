@@ -1,0 +1,880 @@
+{
+  "site": {
+    "tagline": "Kostenlose Browserspiele. Kein Download, keine Anmeldung, keine Werbung vor dem Spiel.",
+    "description": "spielkunst ist eine kostenlose Spielhalle mit Wortspielen, Rätseln und Arcade-Klassikern. Sofort auf jedem Gerät spielbar, ohne Installation."
+  },
+  "strings": {
+    "a11y.skip": "Zum Inhalt springen",
+    "a11y.lang": "Sprache",
+    "brand.home": "spielkunst — Startseite",
+    "nav.main": "Hauptnavigation",
+    "nav.categories": "Kategorien",
+    "nav.footer": "Fußzeile",
+    "nav.breadcrumb": "Pfadnavigation",
+    "nav.games": "Alle Spiele",
+    "nav.daily": "Tägliches Rätsel",
+    "nav.home": "Startseite",
+    "nav.gamePages": "Spielseiten",
+    "search.placeholder": "{count} Spiele durchsuchen",
+    "search.label": "Alle Spiele durchsuchen",
+    "theme.label": "Design",
+    "theme.button": "Design: {name}",
+    "theme.signal.name": "Signal",
+    "theme.signal.hint": "Tinte + Limette",
+    "theme.lights.name": "Licht an",
+    "theme.lights.hint": "Papier",
+    "theme.coinop.name": "Arcade-Automat",
+    "theme.coinop.hint": "bernsteinfarbenes Gehäuse",
+    "theme.ice.name": "Eis",
+    "theme.ice.hint": "Cyan",
+    "theme.dmg.name": "DMG",
+    "theme.dmg.hint": "Grün von 1989",
+    "theme.vapor.name": "Vapor",
+    "theme.vapor.hint": "heißes Pink",
+    "theme.pixel.name": "Pixel",
+    "theme.pixel.hint": "16-Bit-Modul",
+    "theme.crt.name": "CRT",
+    "theme.crt.hint": "Phosphor + Scanlines",
+    "theme.newsprint.name": "Zeitungspapier",
+    "theme.newsprint.hint": "gedruckte Seite",
+    "pager.prev": "Zurück",
+    "pager.next": "Weiter",
+    "count.games_zero": "{count} Spiele",
+    "count.games_one": "{count} Spiel",
+    "count.games_two": "{count} Spiele",
+    "count.games_few": "{count} Spiele",
+    "count.games_many": "{count} Spiele",
+    "count.games_other": "{count} Spiele",
+    "count.games": "{count} Spiele",
+    "foot.count": "{count} kostenlose Browserspiele.",
+    "foot.blurb": "Kein Download, keine Anmeldung, keine Paywall — die ganze Arcade passt in das JavaScript einer einzigen HTML-Datei.",
+    "foot.tips": "Gefällt dir die Arcade? Mit Trinkgeld bleibt sie kostenlos: {links}.",
+    "foot.free": "Für immer kostenlos — finanziert über Sponsorenplätze. <a href=\"{href}\">Einer ist gerade frei</a>.",
+    "foot.nav.games": "Alle Spiele",
+    "foot.nav.archive": "Archiv der täglichen Rätsel",
+    "foot.nav.sponsor": "Platz sponsern",
+    "foot.nav.credits": "Credits",
+    "foot.nav.sitemap": "Sitemap",
+    "foot.thirdParty": "Enthält {count} Open-Source-Spiele, genannt auf der <a href=\"{href}\">Credits-Seite</a>.",
+    "foot.copyright": "© {year} Ayhem Kahri · {site} — für immer kostenlos spielbar.",
+    "home.title": "kostenlose Browserspiele, kein Download",
+    "home.kicker": "{count} Spiele · für immer kostenlos",
+    "home.h1.pre": "Kostenlose Browserspiele, die ",
+    "home.h1.em": "sofort losgehen",
+    "home.h1.post": ".",
+    "home.lede": "Spiel auswählen und eine Sekunde später bist du im Spiel — nichts zu installieren, nichts freizuschalten, kein Konto.",
+    "home.browseAll": "Alle {count} Spiele ansehen",
+    "home.random": "Zufälliges Spiel",
+    "home.trust1": "Lädt in etwa einer Sekunde",
+    "home.trust2": "Nach dem ersten Besuch offline spielbar",
+    "home.trust3": "Kein Tracking, keine Werbung, die dir folgt",
+    "home.today": "Das Raster von heute",
+    "home.ticket": "HEUTIGE MARKE * {date}",
+    "home.words_one": "{count} Wort",
+    "home.words": "{count} Wörter",
+    "home.play": "Spielen",
+    "home.ticker1": "JEDEN TAG EIN NEUES RASTER",
+    "home.ticker2": "{count} SPIELE, NULL DOWNLOADS",
+    "home.ticker3": "KEIN KONTO, KEINE E-MAIL, KEINE PAYWALL",
+    "home.ticker4": "NACH DEM ERSTEN LADEN OFFLINE SPIELBAR",
+    "home.ticker5": "AUS HTML, JAVASCRIPT UND SONST NICHTS",
+    "home.stats.label": "Die Arcade in Zahlen",
+    "home.stats.games": "Spiele",
+    "home.stats.daily": "neues Raster pro Tag",
+    "home.stats.accounts": "Konten nötig",
+    "home.stats.forever": "für immer",
+    "home.start": "Hier anfangen",
+    "home.allGames": "Alle {count} Spiele",
+    "home.mood": "Nach Stimmung stöbern",
+    "home.everything": "Alles",
+    "home.todayPuzzle": "Das Rätsel von heute",
+    "home.midnight": "neu um Mitternacht UTC",
+    "home.daily.title": "Tägliche Wortsuche",
+    "home.daily.body": "{theme} — {date}. Zehn mal zehn, {count} Wörter, 100 Sekunden. Alle spielen dasselbe Raster.",
+    "home.daily.tag": "Heutiges Raster spielen",
+    "home.answers.title": "Die Lösungen von heute",
+    "home.answers.body": "Das komplette gelöste Raster mit allen Wörtern, dazu Zeile und Spalte, wo jedes beginnt.",
+    "home.answers.tag": "Nachschauen",
+    "home.cabinet": "Der ganze Automat",
+    "home.seeAll": "Alle {count} ansehen",
+    "home.recent": "Weiterspielen, wo du aufgehört hast",
+    "home.device": "auf diesem Gerät",
+    "home.slots": "Plätze im Automaten",
+    "home.advertise": "Werbung",
+    "home.why": "Warum das kostenlos ist",
+    "home.f1.title": "Nichts, was erst laden muss",
+    "home.f1.body": "Jedes Spiel ist reines JavaScript und Canvas. Keine Installation, keine Engine zum Herunterladen, kein Ladebalken.",
+    "home.f2.title": "Nichts, wofür du dich anmeldest",
+    "home.f2.body": "Kein Konto, keine E-Mail, keine Cookie-Wand. Deine Bestwerte und deine letzten Spiele bleiben in deinem Browser.",
+    "home.f3.title": "Nichts zu bezahlen",
+    "home.f3.body": "Die Arcade finanziert sich über gekennzeichnete Sponsorenplätze, nicht dadurch, dass ein Spiel unterbrochen wird, das du gerade gewinnst.",
+    "home.about": "Über {site}",
+    "home.about1": "Jedes Spiel hier läuft komplett in deinem Browser. Die Seite ist unter einem Megabyte groß, startet also auch mit Mobilfunk sofort, und das <a href=\"{archive}\">Archiv der täglichen Rätsel</a> behält jedes vergangene Raster, damit du Lösungen nachschlagen oder eine alte Runde nachspielen kannst.",
+    "home.about2": "{count} der Spiele sind Open Source, mit ihren Originallizenzen eingebunden und auf der <a href=\"{credits}\">Credits-Seite</a> genannt. Der Rest läuft auf der spielkunst-Engine.",
+    "home.slot.title": "Dein Spiel hier",
+    "home.slot.body": "Eine gekennzeichnete Sponsorenkarte neben einer Spielkategorie — ein Indie-Spiel, ein Dev-Tool, ein Newsletter. Keine Pop-ups, nie.",
+    "home.slot.price": "Frei — ab 15 $/Monat",
+    "home.sponsored": "Gesponsert",
+    "cat.kicker": "{count} kostenlose {categoryLower}",
+    "cat.random": "Zufälliges Spiel · {categoryLower}",
+    "cat.more": "Weitere Spiele auf {site}",
+    "cat.titleSuffix": "kostenlose Online-Spiele",
+    "cat.metaSuffix": "{category} kostenlos spielen — im Browser auf {site}.",
+    "cat.metaInBrowser": "kostenlose Online-Spiele im Browser",
+    "game.h1": "{title} — kostenlos online spielen",
+    "game.titleSuffix": "kostenlos online spielen",
+    "game.metaDesc": "{desc}",
+    "game.howTo": "So spielst du {title}",
+    "game.faq": "Häufige Fragen",
+    "game.more": "Weitere kostenlose Spiele",
+    "game.credit": "Ursprünglich von {author} · Lizenz {licence} · <a href=\"{source}\" rel=\"noopener nofollow\" target=\"_blank\">Quellcode</a>",
+    "game.howToDefault1": "Öffne {title} und folge den Anweisungen im Spiel.",
+    "game.howToDefault2": "Spiele mit Tastatur, Maus oder Finger — die Steuerung wird im Spiel angezeigt.",
+    "game.howToDefault3": "Sammle Punkte und versuch, deinen besten Lauf zu schlagen.",
+    "game.aboutLabel": "Über dieses Spiel",
+    "game.allGames": "Alle Spiele",
+    "game.moreLikeThis": "Ähnliche Spiele",
+    "game.keepPlaying": "Weiterspielen",
+    "game.sponsored": "Gesponsert",
+    "game.sideFoot": "Kostenlos spielen · ohne Anmeldung · auf jedem Gerät",
+    "game.difficulty": "Schwierigkeit",
+    "game.easy": "Leicht",
+    "game.normal": "Normal",
+    "game.hard": "Schwer",
+    "game.sound": "Ton an oder aus",
+    "game.fullscreen": "Vollbild",
+    "game.canvas": "{title}. Leertaste zum Starten.",
+    "game.pressSpace": "Leertaste zum Starten.",
+    "game.original": "Original",
+    "game.viewSource": "Quellcode ansehen",
+    "game.openFull": "Groß öffnen",
+    "game.loading": "{title} lädt …",
+    "game.pad": "Steuerung auf dem Bildschirm",
+    "game.fullScreen": "Vollbild",
+    "tile.openSource": "Open Source",
+    "index.title1": "Alle {count} kostenlosen Browserspiele — die ganze Arcade",
+    "index.titleN": "Alle {count} kostenlosen Browserspiele — Seite {page} von {pages}",
+    "index.desc1": "Alle {count} kostenlosen Browserspiele auf {site}: {categories}. Sofort spielen, kein Download, keine Anmeldung.",
+    "index.descN": "Spiele {from}–{to} von {count} kostenlosen Browserspielen auf {site}, Seite {page} von {pages}. Sofort spielen, kein Download, keine Anmeldung.",
+    "index.kicker1": "{count} Spiele · {cats} Kategorien · alle kostenlos",
+    "index.kickerN": "Seite {page} von {pages} · Spiele {from}–{to} von {count}",
+    "index.h1.1": "Alle Spiele der Arcade",
+    "index.h1.n": "Alle Spiele — Seite {page} von {pages}",
+    "index.lede1": "Kein Download, keine Anmeldung, keine Paywall. Such nach Namen, filtere nach Kategorie, oder drück einfach auf Zufall und schau, was passiert.",
+    "index.ledeN": "Dieselbe Arcade, auf {pages} Seiten verteilt, damit sie schnell öffnet. Die Suche erreicht alle {count} Spiele, egal auf welcher Seite sie liegen.",
+    "index.placeholder": "{count} Spiele durchsuchen…",
+    "index.searchLabel": "Spiele nach Namen suchen",
+    "index.sortLabel": "Spiele sortieren",
+    "index.sortDefault": "Arcade-Reihenfolge",
+    "index.sortAZ": "A → Z",
+    "index.sortZA": "Z → A",
+    "index.random": "Zufall",
+    "index.everything": "Alles",
+    "index.showing": "{from}–{to} von {count}",
+    "index.range": "Spiele {from}–{to}",
+    "index.pagePill": "Seite {page} von {pages}",
+    "index.emptyTitle": "Dazu passt kein Spiel.",
+    "index.emptyBody": "Versuch ein kürzeres Wort oder <a href=\"{href}\">setz den Filter zurück</a>.",
+    "index.status.match": "passend zu „{q}“",
+    "index.status.in": "in {category}",
+    "index.status.all": "· alle {count} Spiele",
+    "index.status.broken": "· Katalog nicht verfügbar, nur diese Seite",
+    "index.status.page": "· diese Seite, der Rest wird geladen",
+    "credits.title": "Credits — die Spiele und Menschen hinter {site}",
+    "credits.desc": "Credits für {site}: eigene Spiele von Ayhem Kahri sowie Open-Source-Spiele von Nicky Case, Jake Gordon und mumuy, mit Lizenzen und Links zum Quellcode.",
+    "credits.h1": "Credits",
+    "credits.pill": "{count} Spiele",
+    "credits.intro": "{site} wird von Ayhem Kahri gebaut. Einige Spiele sind eigene Arbeiten, die übrigen sind Open-Source-Projekte anderer Leute, hier mit ihren Originallizenzen und einem Link zur Quelle eingebunden.",
+    "credits.original": "Eigene Spiele",
+    "credits.originalBody": "Für {site} geschrieben, auf einer eigenen TypeScript-Engine ohne Laufzeitabhängigkeiten von Drittanbietern.",
+    "credits.oss": "Open-Source-Spiele",
+    "credits.ossBody": "Jedes davon ist die Originalarbeit seines Autors und unter seiner eigenen Lizenz eingebunden. Der vollständige Lizenztext liegt im Ordner jedes Spiels.",
+    "credits.thanks": "Danke",
+    "credits.thanksBody": "Nicky Case für Trust und Loopy, Jake Gordon für Javascript Tetris und mumuy für Pacman. Dank ihrer Arbeit ist diese Sammlung, was sie ist.",
+    "credits.col.game": "Spiel",
+    "credits.col.by": "Von",
+    "credits.col.licence": "Lizenz",
+    "credits.col.source": "Quelle",
+    "daily.title": "Archiv der täglichen Wortsuche — jedes Rätsel und jede Lösung",
+    "daily.desc": "Spiel jedes Rätsel der täglichen Wortsuche oder schlag die Lösung nach. Jeden Tag ein neues kostenloses 10x10-Raster mit der vollständigen Lösungsliste.",
+    "daily.pill": "Jeden Tag ein neues Rätsel",
+    "daily.h1": "Archiv der täglichen Wortsuche",
+    "daily.intro": "Jeden Tag eine neue 10x10-Wortsuche. Alle spielen dasselbe Raster, du kannst deine Punkte also mit Freunden vergleichen oder ein verpasstes Rätsel nachholen.",
+    "daily.col.date": "Datum",
+    "daily.col.theme": "Thema",
+    "daily.theme.haunt": "Geisterschloss",
+    "daily.theme.neon": "Neonstadt",
+    "daily.theme.space": "Weltraum",
+    "daily.theme.magic": "Alte Magie",
+    "daily.theme.nature": "Wilde Natur",
+    "daily.theme.candy": "Süßigkeitenrausch",
+    "daily.theme.ocean": "Tiefsee",
+    "daily.theme.retro": "Retro-Arcade",
+    "daily.theme.kitchen": "Die Küche",
+    "daily.theme.sport": "Spieltag",
+    "daily.answers": "Lösungen",
+    "daily.today": "heute",
+    "daily.howTitle": "So funktioniert das tägliche Rätsel",
+    "daily.howBody": "Das Raster wird aus dem Datum erzeugt, deshalb bekommt jeder Spieler genau dasselbe Feld zur selben Zeit. Zieh über eine gerade Linie aus Buchstaben, um ein Wort zu markieren — waagerecht, senkrecht oder diagonal. Du hast 100 Sekunden.",
+    "daily.puzzle.title": "Wortsuche {date} — kostenloses Rätsel mit Lösungen",
+    "daily.puzzle.desc": "Kostenlose Wortsuche für {date}. Thema {theme}, {count} versteckte Wörter, 100 Sekunden Zeit. Dasselbe Raster für alle.",
+    "daily.puzzle.h1": "Wortsuche — {date}",
+    "daily.puzzle.lede": "Kostenloses Wortsuche-Rätsel für {date}. 10x10-Raster, {count} versteckte Wörter, 100 Sekunden auf der Uhr. Dasselbe Raster für alle.",
+    "daily.playFull": "Das ganze Spiel spielen",
+    "daily.seeAnswers": "Lösungen ansehen",
+    "daily.wordsIn": "Wörter im Rätsel vom {date}",
+    "daily.stuck": "{count} Wörter stecken in diesem Raster. Wenn du festhängst, listet die <a href=\"{href}\">Lösungsseite für {date}</a> jedes Wort mit Anfang und Ende.",
+    "daily.howPlayTitle": "So wird gespielt",
+    "daily.howPlay1": "Zieh über eine gerade Linie aus Buchstaben — waagerecht, senkrecht oder diagonal.",
+    "daily.howPlay2": "Loslassen zum Abschicken. Richtige Wörter bleiben markiert.",
+    "daily.howPlay3": "100 Sekunden. Lange Wörter und schnelle Treffer bringen mehr Punkte.",
+    "daily.other": "Weitere tägliche Rätsel",
+    "daily.answersTitle": "Lösungen der Wortsuche vom {date} — {count} Wörter",
+    "daily.answersDesc": "Vollständige Lösungsliste der Wortsuche vom {date}: {words}. Gelöstes Raster und Start- und Endposition jedes Wortes.",
+    "daily.answers.h1": "Lösungen der Wortsuche — {date}",
+    "daily.answers.lede": "Jedes Wort im Rätsel vom {date}, mit Zeile und Spalte, wo es beginnt und endet. Insgesamt {count} Wörter.",
+    "daily.col.word": "Wort",
+    "daily.col.starts": "Anfang (Zeile, Spalte)",
+    "daily.col.ends": "Ende (Zeile, Spalte)",
+    "daily.wordsList": "Wörter: {words}.",
+    "daily.about": "Über dieses Rätsel",
+    "daily.aboutBody": "Dieses Rätsel wurde am {date} mit der Wortliste {theme} erzeugt. Jeder Spieler bekommt dasselbe Raster, und jeden Tag um Mitternacht UTC kommt ein neues. Spiel kostenlos auf <a href=\"{game}\">{site}</a> oder durchstöbere das <a href=\"{archive}\">ganze Archiv</a>.",
+    "ad.title": "Werbung — sponsere einen Platz in der Arcade",
+    "ad.desc": "Bring dein Spiel, dein Tool oder deinen Newsletter vor die Spieler von {site}: ein gekennzeichneter Sponsorenplatz pro Kategorie, keine Pop-ups, ab 5 $. Nur Sponsoren — keine Werbenetzwerke.",
+    "ad.pill": "Nur Sponsoren — keine Werbenetzwerke",
+    "ad.h1": "Stell dein Projekt in den Automaten.",
+    "ad.intro": "spielkunst ist eine kostenlose Arcade mit einem täglichen Rätsel, das die Leute jeden Tag zurückbringt. Ein paar stille, gekennzeichnete Sponsorenplätze halten sie kostenlos — und einer davon kann deiner sein.",
+    "ad.whatTitle": "Was ein Platz ist",
+    "ad.whatBody": "Eine Textkarte (oder ein kleines Bild), immer mit <strong>Gesponsert</strong> markiert, neben den Spielen einer Kategorie und auf den Seiten dieser Kategorie. Ein Sponsor pro Kategorie — Spieler sehen deinen, und nur deinen.",
+    "ad.rule1": "Keine Pop-ups, Interstitials, automatisch startenden Sounds oder schwebenden Panels — das würde eine Arcade wie diese kaputt machen.",
+    "ad.rule2": "Nie zwischen Spielergebnissen, Bestwerten oder im Rätselraster.",
+    "ad.rule3": "Keine Tracking-Skripte, zu keinem Preis.",
+    "ad.whatFoot": "Was du kaufst, ist Platzierung, nicht Reichweite: Der Traffic hier ist echt, klein und wächst mit dem täglichen Rätsel. Die Preise passen dazu.",
+    "ad.prices": "Preise",
+    "ad.col.slot": "Platz",
+    "ad.col.where": "Wo er erscheint",
+    "ad.col.price": "Preis",
+    "ad.row1.name": "Startwoche",
+    "ad.row1.where": "Jeder Platz, eine Woche, nur im ersten Monat",
+    "ad.row1.price": "5 $",
+    "ad.row2.name": "Kategorie-Platz",
+    "ad.row2.where": "Jede Seite einer Kategorie",
+    "ad.row2.price": "15 $ / Monat",
+    "ad.row3.name": "Platz auf der ganzen Seite",
+    "ad.row3.where": "Jede Spiel- und Kategorieseite",
+    "ad.row3.price": "35 $ / Monat",
+    "ad.flat": "Pauschal. Keine Impressionen, keine Auktionen, keine erzwungene Verlängerung — monatlich kündbar.",
+    "ad.startTitle": "So läuft der Start",
+    "ad.start1": "Schreib mir deinen Namen, was du bewirbst und den Link.",
+    "ad.start2": "Dein Platz geht mit dem nächsten Build online, meist noch am selben Tag, und du siehst ihn auf der echten Seite, bevor du etwas zahlst.",
+    "ad.start3": "Der Zahlungslink kommt mit der Bestätigung. Du zahlst erst, wenn er live ist.",
+    "ad.fits": "Was passt",
+    "ad.fitsBody": "Spiele, Game-Dev-Tools, Wortspiel- und Rätselbücher, Bildung, Indie-Newsletter. Nur familienfreundlich: kein Glücksspiel, keine Krypto, keine Lootboxen, nichts, was du nicht einem Neunjährigen erklären könntest.",
+    "ad.contact": "Kontakt",
+    "ad.contactBody": "Eine Zeile reicht für den Anfang:",
+    "nf.title": "Seite nicht gefunden",
+    "nf.desc": "Diese Seite gibt es auf {site} nicht.",
+    "nf.h1": "Diese Seite ist nicht im Automaten.",
+    "nf.body": "Vielleicht ist sie umgezogen, oder sie hat nie existiert. Die Spiele funktionieren alle noch — such dir eins aus oder geh zurück zum Anfang."
+  },
+  "categories": {
+    "word": {
+      "short": "Wörter",
+      "title": "Wortspiele",
+      "description": "Worträtsel, die in einer Minute durch sind. Jeden Tag neue Aufgaben."
+    },
+    "puzzle": {
+      "short": "Puzzle",
+      "title": "Puzzlespiele",
+      "description": "Logik- und Zahlenrätsel, sofort neu startbar und ohne Wartezeit."
+    },
+    "arcade": {
+      "short": "Arcade",
+      "title": "Arcade-Spiele",
+      "description": "Klassische Arcade-Action, auf Handy und Rechner gleich gut spielbar."
+    },
+    "brain": {
+      "short": "Kopftraining",
+      "title": "Kopftraining",
+      "description": "Gedächtnis, Aufmerksamkeit und Muster: Du trainierst, während du spielst."
+    },
+    "strategy": {
+      "short": "Strategie",
+      "title": "Strategiespiele",
+      "description": "Spiele über Entscheidungen, Vertrauen und Systeme. Überlege erst, dann spiel."
+    },
+    "sandbox": {
+      "short": "Sandkasten",
+      "title": "Sandkasten & Werkzeuge",
+      "description": "Offene Werkzeuge zum Ausprobieren von Ideen. Kein Punktestand, keine Uhr, nur machen."
+    },
+    "classics": {
+      "short": "Klassiker",
+      "title": "Klassiker",
+      "description": "Pong, Breakout, Space Invaders und die Automaten, aus denen sie kamen. Gleiche Regeln, kein Münzeinwurf."
+    },
+    "racing": {
+      "short": "Rennen",
+      "title": "Rennspiele",
+      "description": "Rennen von oben und von der Seite, die du mit zwei Daumen lenkst."
+    },
+    "table": {
+      "short": "Tisch",
+      "title": "Tischspiele",
+      "description": "Brett- und Kartenspiele ohne Aufbau: Sudoku, Solitaire, Mahjong, Mensch ärgere dich nicht, Go."
+    }
+  },
+  "families": {
+    "2048": {
+      "tagline": "Schieb, verschmelze und bau die größte Zahl.",
+      "description": "Schieb das ganze Feld mit jedem Zug, verschmelze gleiche Zahlen und arbeite dich zur größten Kachel hoch.",
+      "howToPlay": [
+        "Schieb alle Kacheln mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Zwei Kacheln mit derselben Zahl verschmelzen, sobald sie aufeinandertreffen.",
+        "Wisch auf dem Handy in eine Richtung, und das ganze Feld folgt."
+      ],
+      "faq": [
+        {
+          "q": "Wann ist das Spiel vorbei?",
+          "a": "Wenn das Feld voll ist und keine zwei Nachbarn mehr zusammenpassen. Bis dahin findet jeder Wisch noch ein Ziel."
+        },
+        {
+          "q": "Welche Strategie zahlt sich aus?",
+          "a": "Halt die größte Kachel in einer Ecke und bau nur in eine Richtung, dann musst du das Feld nie umsortieren."
+        }
+      ]
+    },
+    "snake": {
+      "tagline": "Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.",
+      "description": "Lenke die Schlange über das Feld, friss, was auftaucht, und weiche dem eigenen Schwanz aus, je länger sie wird.",
+      "howToPlay": [
+        "Lenke mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Wisch auf dem Handy, um der Schlange eine neue Richtung zu geben.",
+        "Friss das Futter, wachse und berühre weder die Wand noch deinen Schwanz."
+      ],
+      "faq": [
+        {
+          "q": "Was beendet eine Runde?",
+          "a": "Die Wand oder der eigene Schwanz. In den meisten Versionen endet das Feld am Rand, statt umzuspringen – der Rand ist also das Aus."
+        },
+        {
+          "q": "Warum wird es schwerer?",
+          "a": "Die Schlange wird schneller und füllt mehr vom Feld, die Kurven kommen also früher und lassen weniger Platz."
+        }
+      ]
+    },
+    "tetris": {
+      "tagline": "Stapel die fallenden Steine und räum jede Reihe ab.",
+      "description": "Setz die fallenden Steine ab, füll eine Reihe über die ganze Breite und halt den Stapel von der Decke fern.",
+      "howToPlay": [
+        "Bewege die Steine mit den Pfeiltasten nach links und rechts, dreh sie mit der Pfeiltaste nach oben.",
+        "Lass sie mit der Pfeiltaste nach unten sachte fallen, mit der Leertaste stürzen.",
+        "Füll eine ganze Reihe, um sie abzuräumen, und halt den Stapel flach."
+      ],
+      "faq": [
+        {
+          "q": "Was passiert, wenn der Stapel oben ankommt?",
+          "a": "Die Runde ist vorbei. Eine abgeräumte Reihe schafft wieder Höhe, halte also die Ränder links und rechts niedrig."
+        },
+        {
+          "q": "Bringt es mehr, vier Reihen auf einmal abzuräumen?",
+          "a": "In den meisten Versionen ja, und deutlich mehr als vier einzelne. Eine Lücke für den langen Stein offen zu halten lohnt sich."
+        }
+      ]
+    },
+    "pong": {
+      "tagline": "Halt den Ball im Spiel und spiel jeden Schlag zurück.",
+      "description": "Führ dein Paddel zum Ball, spiel ihn am Gegner vorbei und hol dir den Punkt.",
+      "howToPlay": [
+        "Bewege das Paddel mit den Pfeiltasten nach oben und unten, oder mit dem Steuerkreuz auf dem Bildschirm.",
+        "Wisch auf dem Handy nach oben oder unten, um das Paddel zu bewegen.",
+        "Spiel den Ball am Gegner vorbei und hol den Punkt."
+      ],
+      "faq": [
+        {
+          "q": "Wie gewinne ich?",
+          "a": "Bring den Ball am Paddel des Gegners vorbei. Wer zuerst die vorgegebene Punktzahl erreicht, gewinnt das Match."
+        },
+        {
+          "q": "Kann ich gegen einen Menschen spielen?",
+          "a": "In den meisten Versionen spielt der Computer das gegenüberliegende Paddel. Manche bieten auch zwei Spieler an einer Tastatur."
+        }
+      ]
+    },
+    "pacman": {
+      "tagline": "Räum das Labyrinth, während die Geister hinter dir her sind.",
+      "description": "Lauf durch das Labyrinth, friss jeden Punkt und schlüpf an den Geistern vorbei, bevor sie dich einkreisen.",
+      "howToPlay": [
+        "Bewege dich mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Wisch auf dem Handy, um an der nächsten Ecke abzubiegen.",
+        "Friss jeden Punkt im Labyrinth und halt Abstand zu den Geistern."
+      ],
+      "faq": [
+        {
+          "q": "Was machen die großen Punkte?",
+          "a": "Sie drehen die Geister für ein paar Sekunden um. Wer in der Zeit erwischt wird, muss zurück in seine Ecke."
+        },
+        {
+          "q": "Gibt es einen Ausweg aus dem Labyrinth?",
+          "a": "Räum jeden Punkt auf dem Feld ab. In den meisten Versionen folgt ein neues Labyrinth mit etwas schnelleren Geistern."
+        }
+      ]
+    },
+    "breakout": {
+      "tagline": "Lass den Ball springen, brich die Mauer und bleib am Paddel.",
+      "description": "Schieb das Paddel, lenk den Ball in die Steine und räum die ganze Mauer ab, ohne ihn zu verlieren.",
+      "howToPlay": [
+        "Schieb das Paddel mit den Pfeiltasten nach links und rechts, oder mit dem Steuerkreuz auf dem Bildschirm.",
+        "Lenk den Ball in die Steine, ohne dass er an dir vorbeifliegt.",
+        "Räum jeden Stein ab, um die Mauer zu beenden und weiterzukommen."
+      ],
+      "faq": [
+        {
+          "q": "Was passiert, wenn ich den Ball verpasse?",
+          "a": "Du verlierst ein Leben, und der Ball startet wieder am Paddel. Meist hast du drei Versuche."
+        },
+        {
+          "q": "Kann ich bestimmen, wohin der Ball fliegt?",
+          "a": "Zum Teil. Der Ball verlässt das Paddel in dem Winkel, in dem er aufgeschlagen ist – an den Enden fliegt er steiler weg."
+        }
+      ]
+    },
+    "invaders": {
+      "tagline": "Halt die Stellung und räum den Himmel, Welle für Welle.",
+      "description": "Bleib unten in Stellung, feuere nach oben und räum jede Formation ab, bevor sie unten ankommt.",
+      "howToPlay": [
+        "Bewege dich mit den Pfeiltasten nach links und rechts, oder mit dem Steuerkreuz auf dem Bildschirm.",
+        "Feuere mit der Leertaste oder der A-Taste am Steuerkreuz.",
+        "Räum jede Welle ab, bevor sie den unteren Rand erreicht."
+      ],
+      "faq": [
+        {
+          "q": "Warum werden die Invasoren schneller?",
+          "a": "Je weniger übrig sind, desto schneller bewegt sich der Rest – die letzten paar sind am schwersten zu treffen."
+        },
+        {
+          "q": "Was passiert, wenn sie unten ankommen?",
+          "a": "Die Runde ist vorbei. Halt die vorderste Reihe frei und arbeite dich von den Rändern nach innen."
+        }
+      ]
+    },
+    "racing": {
+      "tagline": "Lenk zur Ziellinie und bleib auf dem Gas.",
+      "description": "Lenk durch die Strecke, brems vor den Kurven und halt die Linie bis zur Fahne.",
+      "howToPlay": [
+        "Lenk mit den Pfeiltasten nach links und rechts, oder mit dem Steuerkreuz auf dem Bildschirm.",
+        "Gib mit der Pfeiltaste nach oben Gas und brems mit der nach unten.",
+        "Wisch auf dem Handy nach links oder rechts, um durch die Kurve zu lenken."
+      ],
+      "faq": [
+        {
+          "q": "Muss ich Erster werden?",
+          "a": "Nein. Lern die Kurven in deinem Tempo, die Rundenzeiten sinken von allein."
+        },
+        {
+          "q": "Wie fährst du am schnellsten durch eine Kurve?",
+          "a": "Brems vor der Kurve, nicht in ihr, und beschleunige wieder, sobald der Wagen richtig steht."
+        }
+      ]
+    },
+    "platformer": {
+      "tagline": "Lauf, spring und erreiche das Ende des Levels.",
+      "description": "Lauf durch das Level, spring über die Lücken und triff jeden Absprung so, dass du auf festem Boden landest.",
+      "howToPlay": [
+        "Bewege dich mit den Pfeiltasten nach links und rechts, oder mit dem Steuerkreuz auf dem Bildschirm.",
+        "Spring mit der Leertaste oder der Pfeiltaste nach oben.",
+        "Wisch auf dem Handy nach oben, um zu springen, und nach links oder rechts, um zu laufen."
+      ],
+      "faq": [
+        {
+          "q": "Woher weiß ich, wie weit ich springen kann?",
+          "a": "Schau auf die Lücke, nicht auf die Figur. Ist sie breiter als die letzte, spring vom äußersten Rand."
+        },
+        {
+          "q": "Was passiert, wenn ich falle?",
+          "a": "Meist startest du am letzten Kontrollpunkt neu, und ohne Kontrollpunkt am Anfang des Levels."
+        }
+      ]
+    },
+    "flappy": {
+      "tagline": "Tippen, flattern und durch jede Lücke.",
+      "description": "Tipp, damit der Vogel oben bleibt, fädle jede Lücke und schau, wie weit eine Runde reicht.",
+      "howToPlay": [
+        "Tipp auf den Bildschirm oder drück die Leertaste, um zu flattern.",
+        "Flieg durch jede Lücke, ohne den Rand zu berühren.",
+        "Drück R, um nach einem Crash neu zu starten."
+      ],
+      "faq": [
+        {
+          "q": "Warum stürze ich dauernd ab?",
+          "a": "Zu viele Tipps. Kurze Tipps halten die Höhe, langes Drücken lässt ihn steigen, und der Vogel behält das Tempo, das du ihm gibst."
+        },
+        {
+          "q": "Gibt es ein Ende?",
+          "a": "Nein. Die Lücken kommen immer weiter, und die Runde endet beim ersten Crash – der Punktestand ist einfach, wie weit du gekommen bist."
+        }
+      ]
+    },
+    "maze": {
+      "tagline": "Finde den Ausgang, bevor die Wände enger werden.",
+      "description": "Finde den Weg durch die Wände, merk dir die Sackgassen und arbeite dich zum Ausgang vor.",
+      "howToPlay": [
+        "Bewege dich mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Wisch auf dem Handy, um an der nächsten Abzweigung abzubiegen.",
+        "Erreich den Ausgang, ohne in einer Sackgasse hängen zu bleiben."
+      ],
+      "faq": [
+        {
+          "q": "Was, wenn ich mich festfahre?",
+          "a": "Die meisten Labyrinthe lassen sich von jedem Punkt aus lösen. Halt dich an einer Wand, und du kommst entweder am Ausgang oder wieder am Start an."
+        },
+        {
+          "q": "Gibt es ein Zeitlimit?",
+          "a": "In den meisten Versionen ja. Die Uhr ist der Druck, also bleib in Bewegung, statt erst die ganze Karte zu studieren."
+        }
+      ]
+    },
+    "match3": {
+      "tagline": "Tausch zwei Steine und bring drei in eine Reihe.",
+      "description": "Tausch zwei benachbarte Steine, bring drei gleiche in eine Reihe und räum sie ab, um das Feld zu öffnen.",
+      "howToPlay": [
+        "Wähl einen Stein per Tipp oder Klick und dann den daneben.",
+        "Bring drei oder mehr gleiche Farben in eine Reihe, um sie abzuräumen.",
+        "Bewege die Auswahl mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm."
+      ],
+      "faq": [
+        {
+          "q": "Was zählt als Treffer?",
+          "a": "Drei oder mehr gleiche Farben waagerecht oder senkrecht nebeneinander. Längere Reihen räumen mehr auf einmal ab."
+        },
+        {
+          "q": "Was passiert nach einem Treffer?",
+          "a": "Die Steine darüber rutschen nach, oben kommen neue dazu – das kann ohne weiteres Zutun einen zweiten Treffer vorbereiten."
+        }
+      ]
+    },
+    "sliding": {
+      "tagline": "Schieb die Steine in die richtige Ordnung, Zug für Zug.",
+      "description": "Schieb einen Stein nach dem anderen in das freie Feld und bring das ganze Bild wieder in Ordnung.",
+      "howToPlay": [
+        "Schieb einen Stein mit den Pfeiltasten in das freie Feld.",
+        "Wisch auf dem Handy, um den Stein in diese Richtung zu schieben.",
+        "Bring jeden Stein in die richtige Reihenfolge, um das Rätsel zu lösen."
+      ],
+      "faq": [
+        {
+          "q": "Lässt sich jede Stellung lösen?",
+          "a": "Nicht jede. Die Hälfte der Anordnungen ist vom gelösten Bild aus nicht erreichbar, und das Spiel gibt dir eine, die sich lösen lässt."
+        },
+        {
+          "q": "Wie viele Züge braucht man?",
+          "a": "Eine gute Lösung braucht etwa achtzig Züge nach dem Mischen. Der Zähler auf dem Bildschirm zeigt dir, wo du stehst."
+        }
+      ]
+    },
+    "sokoban": {
+      "tagline": "Schieb jede Kiste an ihren Platz, ohne dich festzufahren.",
+      "description": "Lauf durch den Raum, schieb jede Kiste auf ihr Feld und pass auf, dass du sie nicht an einer Wand einklemmst.",
+      "howToPlay": [
+        "Bewege dich mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Lauf in eine Kiste, um sie ein Feld weit zu schieben.",
+        "Wisch auf dem Handy, um die Kiste in diese Richtung zu schieben."
+      ],
+      "faq": [
+        {
+          "q": "Kann ich eine Kiste ziehen?",
+          "a": "Nein, du kannst nur schieben. Deshalb ist eine Kiste an der Wand verloren – plan den letzten Schub, bevor du den ersten machst."
+        },
+        {
+          "q": "Wie mache ich einen Fehler rückgängig?",
+          "a": "Die meisten Versionen haben einen Zug zurück oder einen Neustart. Nutz ihn früh, denn ein falscher Schub kann das ganze Level kosten."
+        }
+      ]
+    },
+    "memory": {
+      "tagline": "Dreh zwei Karten um, merk dir die Bilder und find die Paare.",
+      "description": "Dreh zwei Karten auf einmal um, merk dir, wo welches Bild liegt, und finde alle Paare.",
+      "howToPlay": [
+        "Wähl eine Karte per Tipp oder Klick, um sie umzudrehen.",
+        "Dreh eine zweite Karte um und behalte das Paar, wenn beide passen.",
+        "Bewege die Auswahl mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm."
+      ],
+      "faq": [
+        {
+          "q": "Spielt es eine Rolle, welche Karte ich zuerst umdrehe?",
+          "a": "Für die Regeln nicht, für dein Gedächtnis schon. Dreh zuerst eine unbekannte Karte um und dann eine, an die du dich erinnerst."
+        },
+        {
+          "q": "Wie wird gezählt?",
+          "a": "Nach der Zahl der Züge, bis das Feld leer ist. Weniger Züge heißt besseres Gedächtnis, nicht schnelleres Klicken."
+        }
+      ]
+    },
+    "sudoku": {
+      "tagline": "Füll das Gitter, bis jede Reihe, jede Spalte und jeder Block stimmt.",
+      "description": "Füll jede Reihe, jede Spalte und jeden Block mit den Ziffern eins bis neun, jede genau einmal.",
+      "howToPlay": [
+        "Wähl ein Feld per Tipp oder Klick und dann die passende Zahl.",
+        "Wechsle mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm zwischen den Feldern.",
+        "In jeder Reihe, jeder Spalte und jedem Block steht jede Zahl genau einmal."
+      ],
+      "faq": [
+        {
+          "q": "Muss ich raten?",
+          "a": "Ein gut gebautes Rätsel braucht nie einen Rateversuch. Wenn zwei Zahlen in ein Feld passen, passt eine davon später in einer anderen Reihe nicht mehr."
+        },
+        {
+          "q": "Was besagt die Blockregel?",
+          "a": "Jeder der neun kleinen Blöcke enthält eins bis neun genau einmal – so wie jede Reihe und jede Spalte."
+        }
+      ]
+    },
+    "solitaire": {
+      "tagline": "Bau die vier Farben vom Ass bis zum König auf.",
+      "description": "Leg die Karten aus, bau jede Farbe vom Ass bis zum König auf und deck die verdeckten Karten nach und nach auf.",
+      "howToPlay": [
+        "Nimm eine Karte per Tipp oder Klick auf und dann den Stapel, auf den sie gehört.",
+        "Bewege die Auswahl mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Bau jede Farbe der Reihe nach auf und deck die verdeckten Karten dabei auf."
+      ],
+      "faq": [
+        {
+          "q": "Was darf ich auf eine Spalte legen?",
+          "a": "Eine Karte einen Rang tiefer und in der anderen Farbe. Eine leere Spalte nimmt jede Karte und jede Folge."
+        },
+        {
+          "q": "Was, wenn kein Zug mehr geht?",
+          "a": "Dreh den Stapel noch einmal um, wenn die Version es zulässt. Die meisten Spiele lassen sich gewinnen, aber nicht alle."
+        }
+      ]
+    },
+    "mahjong": {
+      "tagline": "Räum das Feld ab, indem du gleiche Steine paarst.",
+      "description": "Such gleiche Steine von den Rändern her zusammen und arbeite dich nach innen, bis das ganze Feld leer ist.",
+      "howToPlay": [
+        "Wähl zwei gleiche Steine per Tipp oder Klick.",
+        "Bewege die Auswahl mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Nur Steine mit einer freien Seite lassen sich nehmen, also arbeite von den Rändern nach innen."
+      ],
+      "faq": [
+        {
+          "q": "Warum kann ich diesen Stein nicht nehmen?",
+          "a": "Ein Stein braucht links oder rechts eine freie Seite. Steine, die an beiden Seiten eingeschlossen sind, bleiben gesperrt, bis sich das Feld öffnet."
+        },
+        {
+          "q": "Lässt sich jede Anordnung lösen?",
+          "a": "Die meisten schon, aber die Reihenfolge entscheidet. Bleiben nach einem Paar zwei Steine übrig, mach den Zug rückgängig und nimm das andere Paar zuerst."
+        }
+      ]
+    },
+    "hangman": {
+      "tagline": "Rate das Wort, bevor das Bild fertig ist.",
+      "description": "Rate das versteckte Wort Buchstabe für Buchstabe und halt die Fehlversuche in Grenzen.",
+      "howToPlay": [
+        "Wähl einen Buchstaben per Tipp oder Klick.",
+        "Wechsle mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm zwischen den Buchstaben.",
+        "Sechs Fehlversuche beenden die Runde, also fang mit den häufigen Buchstaben an."
+      ],
+      "faq": [
+        {
+          "q": "Wie viele Fehlversuche habe ich?",
+          "a": "In den meisten Versionen sechs. Erst die Vokale ist eine gute Angewohnheit, dann die Konsonanten, die überall vorkommen."
+        },
+        {
+          "q": "Zählt ein doppelter Buchstabe zweimal?",
+          "a": "Nein. Ein Buchstabe ist ein Versuch, egal wie oft er im Wort steht – lange Wörter sind deshalb oft leichter als kurze."
+        }
+      ]
+    },
+    "wordsearch": {
+      "tagline": "Finde jedes versteckte Wort im Gitter.",
+      "description": "Such das Gitter waagerecht, senkrecht und diagonal ab und finde jedes Wort auf der Liste, bevor die Runde endet.",
+      "howToPlay": [
+        "Zieh über eine Buchstabenreihe oder bewege den Zeiger mit den Pfeiltasten.",
+        "Wörter laufen waagerecht, senkrecht, nach oben oder diagonal.",
+        "Markier jedes Wort auf der Liste, um das Rätsel zu lösen."
+      ],
+      "faq": [
+        {
+          "q": "In welche Richtungen laufen die Wörter?",
+          "a": "Waagerecht, senkrecht und diagonal, vorwärts wie rückwärts in den meisten Gittern. Behalt die Liste im Blick."
+        },
+        {
+          "q": "Was passiert, wenn ich die falsche Reihe markiere?",
+          "a": "Nichts. Die Auswahl löst sich auf und das Gitter bleibt, wie es war – ein Versuch kostet dich also nichts."
+        }
+      ]
+    },
+    "wordle": {
+      "tagline": "Sechs Versuche für das Wort mit fünf Buchstaben.",
+      "description": "Finde das Wort mit fünf Buchstaben in sechs Versuchen und nutz die Farbhinweise nach jedem Tipp, um dich heranzuarbeiten.",
+      "howToPlay": [
+        "Tipp ein Wort oder wähl die Buchstaben auf der Tastatur im Spiel.",
+        "Grün heißt: richtiger Buchstabe an der richtigen Stelle. Gelb heißt: im Wort, aber woanders.",
+        "Drück die Eingabetaste oder die B-Taste am Steuerkreuz, um deinen Tipp abzugeben."
+      ],
+      "faq": [
+        {
+          "q": "Was bedeuten die Farben?",
+          "a": "Grün ist der richtige Buchstabe an der richtigen Stelle. Gelb ist ein Buchstabe, der im Wort vorkommt, aber nicht dort."
+        },
+        {
+          "q": "Kann ich dasselbe Wort zweimal raten?",
+          "a": "Ja, aber das kostet eine Reihe. Jeder Tipp muss ein echtes Wort sein, Buchstaben lassen sich also nicht auf Vorrat testen."
+        }
+      ]
+    },
+    "quiz": {
+      "tagline": "Beantworte die Fragen und schau, wie viel du weißt.",
+      "description": "Beantworte eine Reihe von Fragen, wähl aus den Antworten auf dem Bildschirm und zähl mit, wie viele sitzen.",
+      "howToPlay": [
+        "Wähl eine Antwort per Tipp oder Klick.",
+        "Wechsle mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm zwischen den Antworten.",
+        "Jede richtige Antwort bringt Punkte, und die Fragen gehen weiter."
+      ],
+      "faq": [
+        {
+          "q": "Gibt es ein Zeitlimit?",
+          "a": "In den meisten Versionen hat jede Frage eins. Beantworte zuerst, was du weißt, und komm später zurück, wenn es geht."
+        },
+        {
+          "q": "Sehe ich die Lösungen?",
+          "a": "Meist am Ende der Runde. Der Punktestand ist der Reiz, deshalb halten die meisten Quizze die Antworten bis dahin zurück."
+        }
+      ]
+    },
+    "typing": {
+      "tagline": "Tipp die Wörter so schnell und so genau du kannst.",
+      "description": "Tipp jedes Wort, das erscheint, so schnell und so sauber du kannst, und halt die Runde am Laufen.",
+      "howToPlay": [
+        "Tipp jedes Wort, das erscheint, und drück dann die Leertaste.",
+        "Lass die Hände auf der Tastatur und die Augen am Text.",
+        "Genauigkeit und Tempo zählen beide für deine Punkte."
+      ],
+      "faq": [
+        {
+          "q": "Was zählt mehr, Tempo oder Genauigkeit?",
+          "a": "Genauigkeit. Ein falscher Buchstabe kostet mehr Zeit als ein langsamer, denn die Korrektur braucht einen Anschlag mehr."
+        },
+        {
+          "q": "Soll ich auf die Tastatur schauen?",
+          "a": "Nein. Bleib mit den Augen am Text und lass die Finger die Tasten lernen, auch wenn die ersten Runden langsam sind."
+        }
+      ]
+    },
+    "towerdefense": {
+      "tagline": "Bau deine Türme und halt die Stellung gegen die Wellen.",
+      "description": "Stell Türme am Weg auf, gib dein Geld für Verbesserungen aus und stopp jede Welle, bevor sie die Basis erreicht.",
+      "howToPlay": [
+        "Wähl einen Turm per Tipp oder Klick und dann einen Platz am Weg.",
+        "Wechsle mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm zwischen den Bauplätzen.",
+        "Jede Welle ist stärker als die letzte, also verbessere, bevor sie kommt."
+      ],
+      "faq": [
+        {
+          "q": "Wohin gehören die Türme?",
+          "a": "An die Kurven. Wo der Weg abbiegt, deckt ein Turm mehr davon ab – eine Ecke ist so viel wert wie zwei gerade Stücke."
+        },
+        {
+          "q": "Verbessern oder neu bauen?",
+          "a": "Verbessere zuerst die Türme am stärksten Abschnitt. Ein paar starke Türme schlagen meist eine lange Reihe schwacher."
+        }
+      ]
+    },
+    "roguelike": {
+      "tagline": "Ein Leben, ein neuer Dungeon und ein Kampf bis zum letzten Stock.",
+      "description": "Geh mit einem Leben in einen neuen Dungeon, kämpf gegen alles, was kommt, und schau, wie tief du kommst.",
+      "howToPlay": [
+        "Bewege dich Feld für Feld mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Lauf in ein Monster, um es anzugreifen, und auf einen Gegenstand, um ihn aufzuheben.",
+        "Wisch auf dem Handy, um dich Feld für Feld zu bewegen."
+      ],
+      "faq": [
+        {
+          "q": "Gibt es einen Spielstand?",
+          "a": "Meist nicht. Ein Leben ist der Kern des Genres, also endet der Lauf mit dir und der nächste Dungeon ist neu."
+        },
+        {
+          "q": "Sollte ich alles bekämpfen?",
+          "a": "Nein. Erfahrung ist nützlich, aber ein Kampf, dem du ausweichen kannst, ist ein Kampf, den du nicht verlieren kannst."
+        }
+      ]
+    },
+    "shooter": {
+      "tagline": "Bleib in Bewegung, bleib am Abzug und bleib am Leben.",
+      "description": "Beweg dich, ziel auf alles, was auf dich zukommt, und räum den Bildschirm ab, ohne getroffen zu werden.",
+      "howToPlay": [
+        "Bewege dich mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Feuere mit der Leertaste oder der A-Taste am Steuerkreuz.",
+        "Weich aus, was auf dich zukommt, und räum den Bildschirm."
+      ],
+      "faq": [
+        {
+          "q": "Warum soll ich in Bewegung bleiben?",
+          "a": "Wer steht, ist ein leichtes Ziel. Die meisten dieser Spiele zielen dorthin, wo du bist – ein Schritt zur Seite ist schon ein Ausweichen."
+        },
+        {
+          "q": "Wie räume ich eine Welle am besten ab?",
+          "a": "Arbeite von außen nach innen und lass dir einen Weg frei, statt dich in eine Ecke zu drängen."
+        }
+      ]
+    },
+    "idle": {
+      "tagline": "Fang klein an, verdien stetig und sieh den Zahlen beim Wachsen zu.",
+      "description": "Tipp für deine ersten Münzen, gib sie für Verbesserungen aus und sieh zu, wie die Zahlen steigen, während du wartest.",
+      "howToPlay": [
+        "Tipp oder klick, um die ersten Münzen zu verdienen.",
+        "Gib, was du verdienst, für Verbesserungen aus, die schneller einbringen.",
+        "Wechsle mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm zwischen den Verbesserungen."
+      ],
+      "faq": [
+        {
+          "q": "Muss die Seite offen bleiben?",
+          "a": "Meist ja, wobei viele dieser Spiele weiter verdienen, wenn die Seite im Hintergrund offen ist."
+        },
+        {
+          "q": "Was kaufe ich zuerst?",
+          "a": "Die Verbesserung, die sich am schnellsten bezahlt macht. Rechne aus, wie lange sie braucht, um ihren Preis wieder einzuspielen, bevor du zahlst."
+        }
+      ]
+    },
+    "board": {
+      "tagline": "Setz Zug um Zug, denk voraus und gewinn das Brett.",
+      "description": "Setz deine Figuren abwechselnd, plan ein paar Züge voraus und deck deine eigene Hälfte des Bretts.",
+      "howToPlay": [
+        "Wähl eine Figur per Tipp oder Klick und dann das Feld, auf das sie zieht.",
+        "Bewege die Auswahl mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Zieh abwechselnd mit deinem Gegner und deck deine eigenen Figuren."
+      ],
+      "faq": [
+        {
+          "q": "Kann ich allein spielen?",
+          "a": "In den meisten Versionen spielt der Computer die andere Seite. Manche bieten auch zwei Spieler an einem Bildschirm."
+        },
+        {
+          "q": "Gibt es ein Zeitlimit pro Zug?",
+          "a": "Manchmal. Wo es eins gibt, läuft die Uhr neben deinem Namen, und der Zug geht an den Gegner, sobald sie abläuft."
+        }
+      ]
+    },
+    "generic": {
+      "tagline": "Ein schnelles Spiel für zwischendurch.",
+      "description": "Lies die Hinweise, finde dich in die Steuerung und schau, wie weit du in einer Runde kommst.",
+      "howToPlay": [
+        "Tipp oder klick zum Start und folg dann den Hinweisen im Spiel.",
+        "Bewege dich mit den Pfeiltasten oder dem Steuerkreuz auf dem Bildschirm.",
+        "Wisch auf dem Handy in die Richtung, die das Spiel als Pfeiltaste erwartet."
+      ],
+      "faq": [
+        {
+          "q": "Wie starte ich?",
+          "a": "Tipp oder klick einmal ins Spiel und folg der Anzeige. Die meisten dieser Spiele starten beim ersten Eingeben."
+        },
+        {
+          "q": "Was, wenn die Steuerung nicht reagiert?",
+          "a": "Klick einmal ins Spielfeld, damit es die Tasten annimmt, und versuch es erneut. Tasten kommen nur an, solange das Spiel ausgewählt ist."
+        }
+      ]
+    }
+  }
+}

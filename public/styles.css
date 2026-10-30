@@ -1,5 +1,5 @@
 /* ============================================================
-   arcadefork — identity "SIGNAL"
+   spielkunst — identity "SIGNAL"
    ------------------------------------------------------------
    One system, three ingredients:
      ink      near-black stage with warm paper type
@@ -3654,7 +3654,7 @@ body.af-size-lg .af-key-sm {
    Font: Noto Sans Arabic, SIL Open Font License 1.1, self-hosted from
    /fonts as a woff2 subset holding the Arabic blocks only (no Latin glyphs).
    That absence is the trick: with 'Noto Sans Arabic' first in the stack,
-   per-character fallback sends any Latin run on an Arabic page — "arcadefork",
+   per-character fallback sends any Latin run on an Arabic page — "spielkunst",
    a game title, "FPS" — back to Bricolage/Outfit/Geist Mono, so the Latin
    voice survives inside Arabic pages instead of being replaced.
    ============================================================ */

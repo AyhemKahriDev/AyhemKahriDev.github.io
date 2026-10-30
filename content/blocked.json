@@ -1,5 +1,5 @@
 {
-  "_comment": "Repositories that must never be published on arcadefork. Each one was vendored, opened in a real browser and rejected: the published page is a landing page rather than a game, or the game needs a build step (webpack, vite, emscripten) and can never run in a browser. The harvest pipeline skips them, so they cannot come back on the next run.",
+  "_comment": "Repositories that must never be published on spielkunst. Each one was vendored, opened in a real browser and rejected: the published page is a landing page rather than a game, or the game needs a build step (webpack, vite, emscripten) and can never run in a browser. The harvest pipeline skips them, so they cannot come back on the next run.",
   "repos": [
     "olzhasar/sdl-tetris",
     "noiron/tower-defense-js",

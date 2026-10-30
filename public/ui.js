@@ -1,5 +1,5 @@
 /**
- * arcadefork UI runtime — deliberately tiny, dependency-free.
+ * spielkunst UI runtime — deliberately tiny, dependency-free.
  *
  * 1. Lights on/off: the theme is set before paint by an inline head script;
  *    this file only flips and persists it.

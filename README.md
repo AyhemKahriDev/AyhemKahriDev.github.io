@@ -1,15 +1,16 @@
-# arcadefork
+# spielkunst
 
 Free browser arcade. Many games, many categories, **zero running cost**.
 
-- **Live:** `https://arcadefork.pages.dev/` — Cloudflare Pages, free forever
+- **Live:** `https://spielkunst.pages.dev/` — Cloudflare Pages, free forever
 - **Fallback:** `https://ayhemkahridev.github.io/` — GitHub Pages, same build
-- **Optional, never required:** `arcadefork.com` (also free to register: `.net` `.io` `.gg` `.games` `.fun`)
+- **Domain:** none. `spielkunst.com` is unowned and unverified — do not print it
+  anywhere until someone buys it (see `docs/BRAND.md`).
 
 No accounts, no tracking walls, no paywalls, and **no purchase is required at any
-point**. Ten games are built on the arcadefork engine; the other 243 are
+point**. Thirteen games are built on the spielkunst engine; the other 552 are
 open-source projects vendored with their own licences. The engine bundle — the
-code that boots a first-party game — is **24.9 kB gzipped** (75 kB raw). A
+code that boots a first-party game — is **24.1 kB gzipped** (75 kB raw). A
 vendored game ships what its author wrote and none of our code.
 
 ---
@@ -19,7 +20,7 @@ vendored game ships what its author wrote and none of our code.
 ```bash
 npm ci                 # install exactly what the lockfile pins
 npm run dev            # vite dev server
-npm test               # 91 node:test cases - the catalogue and harvest rules, no browser
+npm test               # 231 node:test cases - the catalogue and harvest rules, no browser
 npm run build          # -> dist/ (static site, deployable as-is)
 npm run audit          # content, links, embeds, assets, size, then live game health
 npm run smoke          # headless-chrome smoke test of every page + game
@@ -105,11 +106,11 @@ is lost on the next sweep. Curation belongs in a layer above it
 
 ## The games
 
-**464 games in 9 categories** — 13 built on the arcadefork engine, 451 vendored
+**565 games in 9 categories** — 13 built on the spielkunst engine, 552 vendored
 from open-source repositories. The count in this line is the only one that goes
 stale: `npm run build` prints the live figure.
 
-**Original** — built on the arcadefork engine (`content/games.json` and
+**Original** — built on the spielkunst engine (`content/games.json` and
 `content/engine-new.json`):
 
 | Game | Category | What it is |
@@ -126,7 +127,7 @@ stale: `npm run build` prints the live figure.
 | Typing Sprint | Word | Type the falling words before they land |
 
 **Open source** — 243 repositories vendored verbatim with their original
-licences, credited on [/credits/](https://arcadefork.pages.dev/credits/) with a
+licences, credited on [/credits/](https://spielkunst.pages.dev/credits/) with a
 link back to each source. Three were hand-picked and live in `content/games.json`
 next to the engine games (The Evolution of Trust and Loopy by Nicky Case, CC0;
 Javascript Tetris by Jake Gordon, MIT); the rest arrive through the harvest below.
@@ -144,7 +145,7 @@ node scripts/harvest/batch.mjs --target 500 --batch 250   # rounds of vendor -> 
 | Phase | What it does |
 |---|---|
 | `sweep` | 124 GitHub search queries across 8 genre families (arcade, puzzle, word, action, board, racing, strategy, sandbox), each crossed with 9 licences, filtered by `scripts/harvest/filters.mjs`: a licence on the allowlist (permissive **and** copyleft — GPL/LGPL/MPL are fine because the vendored copy ships its original licence and this repository is the corresponding source), a plausible size, a game signal in the name or description, and nothing that says library, tutorial, framework, portfolio — or firmware. |
-| `vendor` | One `git/trees?recursive=1` call per repo discovers the entry HTML (`docs/index.html`, `dist/index.html`, a root `game.html`, ...; see `scripts/harvest/entry.mjs`). Passing repos are downloaded concurrently, pruned of files a browser can never use, and shipped with their `LICENSE` plus an `ARCADEFORK-NOTICE.md` crediting author, licence and source. |
+| `vendor` | One `git/trees?recursive=1` call per repo discovers the entry HTML (`docs/index.html`, `dist/index.html`, a root `game.html`, ...; see `scripts/harvest/entry.mjs`). Passing repos are downloaded concurrently, pruned of files a browser can never use, and shipped with their `LICENSE` plus an `SPIELKUNST-NOTICE.md` crediting author, licence and source. |
 | `validate` | **The quality gate.** Opens each vendored game in headless Chrome, several at a time, and judges it with the same `judgeGame()` the post-build audit uses. It must paint or present a real interface, and must not have a missing script, a fatal JS error or a 4xx page. Failures are deleted, not published. |
 | `generate` | Rewrites `content/games.generated.json` from the survivors. No hand-written copy goes in there — it is the one file a harvest overwrites. |
 
@@ -218,8 +219,8 @@ session. When a real network is connected, the same call site uses it instead.
 
 ### Cloudflare Pages — the live site
 
-`https://arcadefork.pages.dev/` is served from the Cloudflare Pages project
-`arcadefork`. Deploy from the terminal:
+`https://spielkunst.pages.dev/` is served from the Cloudflare Pages project
+`spielkunst`. Deploy from the terminal:
 
 ```bash
 npm run build
@@ -231,7 +232,7 @@ never has to appear in a terminal history or a chat transcript. The account id
 is baked into the script.
 
 To have Cloudflare build on every push instead, connect the repository in the
-dashboard: **Workers & Pages → arcadefork → Settings → Builds & deployments →
+dashboard: **Workers & Pages → spielkunst → Settings → Builds & deployments →
 Connect to Git repository**. Build command `npm run build`, output directory
 `dist`. That needs no token in the repo at all, which is the safer option for a
 public repository.
@@ -253,7 +254,7 @@ To publish a change to both:
 
 ```bash
 git push                        # -> GitHub Pages
-npm run deploy:cloudflare       # -> arcadefork.pages.dev
+npm run deploy:cloudflare       # -> spielkunst.pages.dev
 ```
 
 ---
@@ -417,7 +418,7 @@ and a Permissions-Policy that denies camera, microphone and location.
 That file is a Cloudflare Pages feature. GitHub Pages ignores it and sends its
 own `Cache-Control: max-age=600` for everything, so the fallback host is
 unprotected by these headers — one more reason the canonical URLs point at
-`arcadefork.pages.dev`.
+`spielkunst.pages.dev`.
 
 ---
 
@@ -495,7 +496,7 @@ money would buy you. It is also the thing you do not need yet:
 - AdSense needs traffic volume to be worth enabling at all
 - The revenue above (itch.io + Poki + CrazyGames + direct sponsors) requires no
   domain and no approval
-- If `arcadefork.com` ever becomes worth registering, it is a one-line change to
+- If `spielkunst.com` ever becomes worth registering, it is a one-line change to
   `content/games.json → site.baseUrl` plus a 301 redirect map. Nothing in the code
   assumes a domain exists.
 
@@ -561,7 +562,7 @@ into the spec, and post.
 | Command | What it does |
 |---|---|
 | `npm run dev` | Vite dev server |
-| `npm test` | 91 `node:test` cases: catalogue merge, harvest rules, copy, import. No browser, ~150 ms |
+| `npm test` | 231 `node:test` cases: catalogue merge, harvest rules, copy, import. No browser, ~150 ms |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run build` | Bundle + generate the static site into `dist/` |
 | `npm run serve:dist` | Serve `dist/` on :4178 |
@@ -588,7 +589,7 @@ The health check also runs against the live site, so production can be
 verified without a deploy:
 
 ```bash
-AUDIT_ORIGIN=https://arcadefork.pages.dev npm run audit:health
+AUDIT_ORIGIN=https://spielkunst.pages.dev npm run audit:health
 ```
 
 It checks four games at a time (`AUDIT_JOBS=8` to go wider). Any gate needs
@@ -646,7 +647,7 @@ from `/third-party/<name>/` it breaks in three ways, and
 
 A repair only fires when the target file really exists inside the game
 folder, so nothing is guessed, and every change is written into that game's
-`ARCADEFORK-NOTICE.md` — the vendored copy is no longer byte-for-byte
+`SPIELKUNST-NOTICE.md` — the vendored copy is no longer byte-for-byte
 upstream, and the notice says so.
 
 ### Games that can never work
@@ -698,7 +699,7 @@ The whole gate was run from a clean clone — `typecheck`, `build`, `audit:links
 | `scripts/audit-embed-assets.mjs` | Two games failed the asset gate because `src=` values like `${show.image ? …` and `imagePath()` were treated as filenames. | Refs that cannot be a path are skipped, so the gate only reports real misses. |
 | `scripts/*.mjs` | Five copies of `findChrome`, each assuming one exact cache layout — all of them failed on a machine where the browser was installed correctly. | One `scripts/chrome.mjs` that walks the cache, then tries system paths, then `CHROME_PATH`. |
 | `scripts/audit-embed-health.mjs` | Serial: one page at a time, 27 s for 15 games — the sweep was dominated by navigations and settle delays. | Four-way pool (`AUDIT_JOBS`); 7 s for the same 15, ~1 m 50 s for all 149. |
-| `third-party/yongchaofan-jsblockout` | Four sound files the author never committed: four 404s on every load, silent game. | Four generated tones, documented in that game's `ARCADEFORK-NOTICE.md`. |
+| `third-party/yongchaofan-jsblockout` | Four sound files the author never committed: four 404s on every load, silent game. | Four generated tones, documented in that game's `SPIELKUNST-NOTICE.md`. |
 
 ### Accessibility and polish
 

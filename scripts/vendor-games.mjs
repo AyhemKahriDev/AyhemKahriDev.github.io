@@ -155,7 +155,7 @@ function notice(game, licenseText) {
 - **Author:** ${game.author}
 - **Source:** ${game.url}
 - **License:** ${game.license}
-- **Vendored by:** arcadefork (Ayhem Kahri)
+- **Vendored by:** spielkunst (Ayhem Kahri)
 
 The original ${game.license} license text is in the LICENSE file in this folder
 and applies to this folder's contents.
@@ -217,7 +217,7 @@ async function main() {
       licenseText = `See ${game.url} for the full license text.`;
     }
 
-    writeFileSync(join(dest, 'ARCADEFORK-NOTICE.md'), notice(game, licenseText));
+    writeFileSync(join(dest, 'SPIELKUNST-NOTICE.md'), notice(game, licenseText));
 
     // pacman: bring the author's site chrome local so the game is self-contained.
     if (game.id === 'pacman') {

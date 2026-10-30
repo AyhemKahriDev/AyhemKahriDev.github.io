@@ -1,12 +1,12 @@
 {
   "site": {
     "tagline": "Des jeux gratuits dans le navigateur. Aucun téléchargement, aucune inscription, aucune pub avant de jouer.",
-    "description": "arcadefork est une arcade gratuite dans le navigateur : jeux de mots, puzzles et classiques de l'arcade. Jouez immédiatement sur n'importe quel appareil, sans rien installer."
+    "description": "spielkunst est une arcade gratuite dans le navigateur : jeux de mots, puzzles et classiques de l'arcade. Jouez immédiatement sur n'importe quel appareil, sans rien installer."
   },
   "strings": {
     "a11y.skip": "Aller au contenu",
     "a11y.lang": "Langue",
-    "brand.home": "arcadefork — accueil",
+    "brand.home": "spielkunst — accueil",
     "nav.main": "Navigation principale",
     "nav.categories": "Catégories",
     "nav.footer": "Pied de page",
@@ -110,7 +110,7 @@
     "home.f3.body": "L'arcade est financée par des emplacements de sponsors clairement signalés, pas en interrompant une partie que vous êtes en train de gagner.",
     "home.about": "À propos de {site}",
     "home.about1": "Tous les jeux ici tournent entièrement dans votre navigateur. La page fait moins d'un mégaoctet, elle démarre donc instantanément sur une connexion mobile, et <a href=\"{archive}\">les archives des puzzles du jour</a> gardent chaque grille passée pour consulter les réponses ou rejouer une ancienne grille.",
-    "home.about2": "{count} des jeux sont open source, intégrés avec leurs licences d'origine et crédités sur la <a href=\"{credits}\">page des crédits</a>. Les autres tournent sur le moteur arcadefork.",
+    "home.about2": "{count} des jeux sont open source, intégrés avec leurs licences d'origine et crédités sur la <a href=\"{credits}\">page des crédits</a>. Les autres tournent sur le moteur spielkunst.",
     "home.slot.title": "Votre jeu ici",
     "home.slot.body": "Une carte de sponsor signalée à côté d'une catégorie de jeux — un jeu indé, un outil de dev, une newsletter. Jamais de pop-up.",
     "home.slot.price": "Libre — à partir de 15 $/mois",
@@ -243,7 +243,7 @@
     "ad.desc": "Placez votre jeu, votre outil ou votre newsletter devant les joueurs de {site} : un emplacement de sponsor signalé par catégorie, sans pop-up, à partir de 5 $. Sponsors uniquement — aucun réseau publicitaire.",
     "ad.pill": "Sponsors uniquement — aucun réseau publicitaire",
     "ad.h1": "Mettez votre projet dans la borne.",
-    "ad.intro": "arcadefork est une arcade gratuite avec un puzzle du jour qui fait revenir les gens chaque jour. Quelques emplacements de sponsors discrets et signalés la gardent gratuite — et l'un d'eux peut être le vôtre.",
+    "ad.intro": "spielkunst est une arcade gratuite avec un puzzle du jour qui fait revenir les gens chaque jour. Quelques emplacements de sponsors discrets et signalés la gardent gratuite — et l'un d'eux peut être le vôtre.",
     "ad.whatTitle": "Ce qu'est un emplacement",
     "ad.whatBody": "Une carte texte (ou une petite image), toujours marquée <strong>Sponsorisé</strong>, affichée à côté des jeux d'une catégorie et sur les pages de cette catégorie. Un sponsor par catégorie — le joueur voit le vôtre, et seulement le vôtre.",
     "ad.rule1": "Aucun pop-up, interstitiel, son automatique ni panneau flottant — cela tuerait une arcade comme celle-ci.",

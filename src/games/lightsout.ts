@@ -107,7 +107,7 @@ class LightsOut implements GameInstance {
     ctx.fillText(`${this.moves} moves`, w / 2, 300);
     ctx.fillStyle = MUTED;
     ctx.font = '600 40px Outfit, system-ui, sans-serif';
-    ctx.fillText('every light off · arcadefork.com', w / 2, 420);
+    ctx.fillText('every light off · spielkunst.com', w / 2, 420);
   }
 }
 

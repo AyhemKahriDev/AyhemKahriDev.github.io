@@ -1,9 +1,9 @@
 {
-  "name": "arcadefork",
+  "name": "spielkunst",
   "private": true,
   "version": "0.1.0",
   "type": "module",
-  "description": "arcadefork — a free browser arcade. Many games, many categories, zero cost to run.",
+  "description": "spielkunst — a free browser arcade. Many games, many categories, zero cost to run.",
   "scripts": {
     "dev": "vite",
     "build": "vite build && node scripts/build-site.mjs",

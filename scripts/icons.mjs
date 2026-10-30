@@ -1,5 +1,5 @@
 /**
- * arcadefork icon system.
+ * spielkunst icon system.
  *
  * Every game gets a deterministic icon: a two-hue gradient tile (hashed from
  * the game's id/accent) with a category glyph on top. Four hand-drawn icons

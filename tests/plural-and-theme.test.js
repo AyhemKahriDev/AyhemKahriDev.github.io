@@ -253,6 +253,6 @@ test('the language switcher carries no inline layout: the stylesheet owns it', (
     const switcher = nav[0].match(/<nav class="lang-switch"[\s\S]*?<\/nav>/);
     assert.ok(switcher, `${id}: the switcher is in the header`);
     assert.doesNotMatch(switcher[0], /style="/, `${id}: no inline styles to override the sheet`);
-    assert.equal((switcher[0].match(/<a /g) ?? []).length, 3, `${id}: three links`);
+    assert.equal((switcher[0].match(/<a /g) ?? []).length, LOCALES.length, `${id}: one link per language`);
   }
 });

@@ -38,7 +38,7 @@ function item(overrides = {}) {
 }
 
 function tempDir(t) {
-  const dir = mkdtempSync(join(tmpdir(), 'arcadefork-harvest-'));
+  const dir = mkdtempSync(join(tmpdir(), 'spielkunst-harvest-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   return dir;
 }

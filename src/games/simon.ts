@@ -177,7 +177,7 @@ class Simon implements GameInstance {
     ctx.fillText(`${Math.max(0, this.length - 1)} steps`, w / 2, 300);
     ctx.fillStyle = MUTED;
     ctx.font = '600 40px Outfit, system-ui, sans-serif';
-    ctx.fillText('arcadefork.com', w / 2, 420);
+    ctx.fillText('spielkunst.com', w / 2, 420);
   }
 }
 

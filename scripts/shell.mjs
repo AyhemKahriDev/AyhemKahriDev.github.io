@@ -64,7 +64,7 @@ export function gameShell(game, opts = {}) {
   return `<main id="main" class="game-layout">
   <div class="game-main">
     <div class="topbar">
-      <a class="brand" href="/" aria-label="arcadefork — home">${brandMark(26)}<span>arcade<b>fork</b></span></a>
+      <a class="brand" href="/" aria-label="spielkunst — home">${brandMark(26)}<span>spiel<b>kunst</b></span></a>
       <div class="hud" id="hud"></div>
       <div class="top-actions">
         ${difficultyControl()}
@@ -98,7 +98,7 @@ export function embedShell(game, opts = {}) {
   return `<main id="main" class="game-layout">
   <div class="game-main embed-main">
     <div class="embed-bar">
-      <a class="brand" href="/" aria-label="arcadefork — home">${brandMark(26)}<span>arcade<b>fork</b></span></a>
+      <a class="brand" href="/" aria-label="spielkunst — home">${brandMark(26)}<span>spiel<b>kunst</b></span></a>
       <span class="embed-title">${gameIcon(game.id, game.accent, game.category)}<span class="embed-name">${game.title}</span></span>
       <div class="embed-actions">
         <button class="icon-btn" id="af-pad-toggle" type="button" aria-pressed="false" aria-label="On-screen controls">${glyph('a-pad', 17)}</button>

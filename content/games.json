@@ -1,9 +1,9 @@
 {
   "site": {
-    "name": "arcadefork",
+    "name": "spielkunst",
     "tagline": "Free browser games. No download, no sign-up, no ads before you play.",
-    "description": "arcadefork is a free browser arcade with word games, puzzle games and arcade classics. Play instantly on any device, no install required.",
-    "baseUrl": "https://arcadefork.pages.dev/",
+    "description": "spielkunst is a free browser arcade with word games, puzzle games and arcade classics. Play instantly on any device, no install required.",
+    "baseUrl": "https://spielkunst.pages.dev/",
     "contactEmail": ""
   },
   "categories": [
@@ -88,7 +88,7 @@
       "faq": [
         {
           "q": "Is the daily word search free?",
-          "a": "Yes. Every game on arcadefork is free to play in your browser. There is no account, no download and no paywall."
+          "a": "Yes. Every game on spielkunst is free to play in your browser. There is no account, no download and no paywall."
         },
         {
           "q": "Do I get a new puzzle every day?",
@@ -136,7 +136,7 @@
           "a": "Swipe or press an arrow key to slide all tiles in that direction. Matching tiles merge into a single tile with double the value. Keep sliding until you reach 2048."
         },
         {
-          "q": "Is 2048 free on arcadefork?",
+          "q": "Is 2048 free on spielkunst?",
           "a": "Yes, completely free with no sign-up. Your best score is saved locally on your device."
         },
         {
@@ -218,7 +218,7 @@
           "a": "Tap one card to flip it, then tap a second. Matching pairs stay face up, mismatched pairs flip back after a moment. Clear the whole board in the fewest moves."
         },
         {
-          "q": "Is Memory Match free on arcadefork?",
+          "q": "Is Memory Match free on spielkunst?",
           "a": "Yes - completely free, no account and no download. Your best score is saved on your device."
         },
         {

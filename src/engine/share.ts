@@ -24,7 +24,7 @@ export async function shareResult(opts: {
           canvas.toBlob(resolve, 'image/png'),
         );
         if (blob) {
-          const file = new File([blob], 'arcadefork.png', { type: 'image/png' });
+          const file = new File([blob], 'spielkunst.png', { type: 'image/png' });
           if (navigator.canShare({ files: [file] })) {
             await navigator.share({ title: opts.title, text: opts.text, files: [file] });
             return 'shared';
