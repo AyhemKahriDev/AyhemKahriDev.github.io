@@ -32,6 +32,7 @@ export const LOCALES = [
   { id: 'en', prefix: '', name: 'English', hreflang: 'en', dir: 'ltr', ogLocale: 'en_GB' },
   { id: 'fr', prefix: '/fr', name: 'Français', hreflang: 'fr', dir: 'ltr', ogLocale: 'fr_FR' },
   { id: 'ar', prefix: '/ar', name: 'العربية', hreflang: 'ar', dir: 'rtl', ogLocale: 'ar_AR' },
+  { id: 'de', prefix: '/de', name: 'Deutsch', hreflang: 'de', dir: 'ltr', ogLocale: 'de_DE', nounCase: 'caps' },
 ];
 
 export const DEFAULT_LOCALE = 'en';
@@ -515,6 +516,10 @@ export function loadCatalog(id, { reload = false } = {}) {
     name: own.name || locale.name,
     hreflang: locale.hreflang,
     dir: own.dir || locale.dir,
+    // How this language writes a common noun mid-sentence. English and French
+    // lowercase it; German capitalises every noun, so a sentence template
+    // cannot assume `title.toLowerCase()` is correct there.
+    nounCase: own.nounCase || locale.nounCase || 'lower',
   };
   cache.set(locale.id, catalog);
   return catalog;

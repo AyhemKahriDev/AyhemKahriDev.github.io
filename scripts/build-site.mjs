@@ -402,6 +402,15 @@ const catShort = (c) => {
   if (typeof own === 'string' && own.trim()) return own;
   return catTitle(c).replace(/\s+Games$/i, '');
 };
+/**
+ * The category name as it reads mid-sentence.
+ *
+ * English wants it lowercased ("565 free word games"); German capitalises
+ * every noun, so `title.toLowerCase()` produced "565 kostenlose wortspiele".
+ * The registry says which way a language writes a common noun (`nounCase`),
+ * so no locale is branched on by name here.
+ */
+const catLower = (c) => (L.nounCase === 'caps' ? catTitle(c) : catTitle(c).toLowerCase());
 const catDesc = (c) => categoryDescription(L.catalog, c.id, c.description);
 
 /**
@@ -1081,14 +1090,14 @@ function buildCategory(cat) {
       <p class="kicker"><i style="background:${esc(cat.accent)};box-shadow:0 0 0 4px ${esc(cat.accent)}22"></i>${tn('cat.kicker', {
         count: games.length,
         category: title,
-        categoryLower: title.toLowerCase(),
+        categoryLower: catLower(cat),
       })}</p>
       <h1>${esc(title)}</h1>
       <p class="lede">${esc(description)}</p>
       <div class="hero-cta">
         <button class="btn" id="btn-random" type="button" data-scope="${esc(cat.id)}">${glyph('a-dice', 18)} ${tn('cat.random', {
           category: catShort(cat),
-          categoryLower: catShort(cat).toLowerCase(),
+          categoryLower: catLower(cat),
         })}</button>
       </div>
     </div>
@@ -1109,7 +1118,7 @@ ${siteFooter(`/categories/${cat.id}/`)}`;
     layout({
       title: `${title} — ${plain('cat.titleSuffix')} | ${SITE.name}`,
       description: `${description} ${plain('cat.metaSuffix', {
-        category: title.toLowerCase(),
+        category: catLower(cat),
         site: SITE.name,
       })}`,
       path: `/categories/${cat.id}/`,

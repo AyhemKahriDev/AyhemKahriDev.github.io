@@ -22,7 +22,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 
 /** The Open Graph spelling each tree must advertise. */
-const OG = { en: 'en_GB', fr: 'fr_FR', ar: 'ar_AR' };
+const OG = { en: 'en_GB', fr: 'fr_FR', ar: 'ar_AR', de: 'de_DE' };
 
 /** JSON-LD nodes that describe content, so they must state their language. */
 const CONTENT_TYPES = new Set(['WebSite', 'CollectionPage', 'VideoGame', 'FAQPage']);
@@ -51,7 +51,9 @@ function builtPages() {
   for (const file of walk(dist)) {
     const rel = relative(dist, file);
     const first = rel.split(sep)[0];
-    const locale = first === 'fr' || first === 'ar' ? first : 'en';
+    // Every tree is a registry prefix; anything else is the root (English).
+    const byPrefix = new Map(LOCALES.filter((l) => l.prefix).map((l) => [l.prefix.slice(1), l.id]));
+    const locale = byPrefix.get(first) ?? 'en';
     cached.push({ file: rel, locale, html: readFileSync(file, 'utf8') });
   }
   return cached;

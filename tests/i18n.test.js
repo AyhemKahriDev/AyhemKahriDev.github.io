@@ -36,27 +36,28 @@ const BASE = 'https://spielkunst.pages.dev/';
 
 /* ------------------------------------------------------------- registry */
 
-test('LOCALES: three trees, English at the root, fr and ar under prefixes', () => {
-  assert.equal(LOCALES.length, 3);
+test('LOCALES: English at the root, every other tree under a prefix', () => {
+  assert.equal(LOCALES.length, 4);
   assert.deepEqual(
     LOCALES.map((l) => l.id),
-    ['en', 'fr', 'ar'],
+    ['en', 'fr', 'ar', 'de'],
   );
   assert.deepEqual(
     LOCALES.map((l) => l.prefix),
-    ['', '/fr', '/ar'],
+    ['', '/fr', '/ar', '/de'],
   );
   assert.deepEqual(
     LOCALES.map((l) => l.hreflang),
-    ['en', 'fr', 'ar'],
+    ['en', 'fr', 'ar', 'de'],
   );
   assert.equal(DEFAULT_LOCALE, 'en');
-  // Only Arabic reads right to left; French is ltr like English.
-  assert.equal(LOCALES[0].dir, 'ltr');
-  assert.equal(LOCALES[1].dir, 'ltr');
-  assert.equal(LOCALES[2].dir, 'rtl');
+  // Only Arabic reads right to left; the rest, German included, are ltr.
+  assert.deepEqual(
+    LOCALES.filter((l) => l.dir === 'rtl').map((l) => l.id),
+    ['ar'],
+  );
   // An unknown id must resolve to something, never undefined.
-  assert.equal(localeById('de').id, 'en');
+  assert.equal(localeById('xx').id, 'en');
   assert.equal(localeById(undefined).id, 'en');
   for (const l of LOCALES) assert.ok(l.name && l.name.length > 1, `${l.id} has a name`);
 });
@@ -146,33 +147,35 @@ test('localePath: /fr/ and /ar/ prefixes, English left alone', () => {
 
 /* ------------------------------------------------------------- hreflang */
 
-test('alternates: exactly en, fr, ar and x-default, all absolute', () => {
+test('alternates: one per locale plus x-default, all absolute', () => {
   const alts = alternatesFor('/games/snake/', BASE);
   assert.deepEqual(
     alts.map((a) => a.hreflang),
-    ['en', 'fr', 'ar', 'x-default'],
+    [...LOCALES.map((l) => l.hreflang), 'x-default'],
   );
   for (const a of alts) assert.match(a.href, /^https:\/\//, `${a.hreflang} is absolute`);
-  assert.equal(new URL(alts[0].href).pathname, '/games/snake/');
-  assert.equal(new URL(alts[1].href).pathname, '/fr/games/snake/');
-  assert.equal(new URL(alts[2].href).pathname, '/ar/games/snake/');
+  for (const l of LOCALES) {
+    const alt = alts.find((a) => a.hreflang === l.hreflang);
+    assert.equal(new URL(alt.href).pathname, localePath(l.id, '/games/snake/'), `${l.id} points at its own tree`);
+  }
   // x-default is the English page: the one a reader with no matching
   // language should land on.
-  assert.equal(alts[3].href, alts[0].href);
+  const xDefault = alts.find((a) => a.hreflang === 'x-default');
+  assert.equal(xDefault.href, alts[0].href);
   assert.equal(absoluteUrl('fr', '/games/snake/', BASE), 'https://spielkunst.pages.dev/fr/games/snake/');
 });
 
 /* -------------------------------------------------------------- sitemaps */
 
-test('sitemap index lists exactly three sitemaps, one per locale', () => {
+test('sitemap index lists one sitemap per locale', () => {
   const xml = sitemapIndexXml(BASE, '2026-10-29');
   const locs = [...xml.matchAll(/<loc>([^<]+)<\/loc>/g)].map((m) => m[1]);
-  assert.equal(locs.length, 3);
+  assert.equal(locs.length, LOCALES.length);
   assert.ok(xml.includes('<sitemapindex'));
   assert.ok(!xml.includes('<urlset'), 'the index is not a urlset');
   assert.deepEqual(
     locs.map((l) => new URL(l).pathname),
-    ['/sitemap-en.xml', '/sitemap-fr.xml', '/sitemap-ar.xml'],
+    LOCALES.map((l) => `/sitemap-${l.hreflang}.xml`),
   );
   for (const l of locs) assert.match(l, /^https:\/\//);
 });
@@ -192,27 +195,28 @@ test('rendered pages: lang, dir, self-canonical and four alternates', () => {
     const hreflangs = [...html.matchAll(/<link rel="alternate" hreflang="([^"]+)" href="([^"]+)">/g)];
     assert.deepEqual(
       hreflangs.map((m) => m[1]),
-      ['en', 'fr', 'ar', 'x-default'],
+      [...LOCALES.map((l) => l.hreflang), 'x-default'],
       `${loc.id}: the alternate set is complete on every tree`,
     );
     for (const [, hl, href] of hreflangs) {
       assert.match(href, /^https:\/\//, `${loc.id}/${hl} is absolute`);
     }
     // The English page carries the set too: a cluster needs both ends.
-    assert.equal(new URL(hreflangs[3][2]).pathname, path);
+    const xDefault = hreflangs.find((m) => m[1] === 'x-default');
+    assert.equal(new URL(xDefault[2]).pathname, path);
   }
 });
 
-test('language switcher: three real links to the same page, active one marked', () => {
+test('language switcher: one real link per language to the same page, active one marked', () => {
   for (const loc of LOCALES) {
     const html = renderProbePage(loc.id, { path: '/games/snake/' });
     const nav = html.match(/<nav class="lang-switch"[\s\S]*?<\/nav>/);
     assert.ok(nav, `${loc.id}: the switcher is in the header`);
     const links = [...nav[0].matchAll(/<a [^>]*href="([^"]+)"[^>]*>/g)];
-    assert.equal(links.length, 3, `${loc.id}: three links, not a menu`);
+    assert.equal(links.length, LOCALES.length, `${loc.id}: one link per language, not a menu`);
     assert.deepEqual(
       links.map((m) => new URL(m[1], 'https://example.test').pathname),
-      ['/games/snake/', '/fr/games/snake/', '/ar/games/snake/'],
+      LOCALES.map((l) => localePath(l.id, '/games/snake/')),
       `${loc.id}: the switcher keeps the reader on the same page`,
     );
     const current = [...nav[0].matchAll(/<a [^>]*aria-current="page"[^>]*>([A-Z]{2})</g)];

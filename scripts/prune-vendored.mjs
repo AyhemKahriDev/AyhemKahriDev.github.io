@@ -34,6 +34,11 @@ const JUNK_EXT = new Set([
 const JUNK_DIR = new Set([
   '.git', '.github', '.idea', '.vscode', '__MACOSX', 'node_modules',
   'android', 'ios', 'macos', 'windows', 'linux_build', 'build-tools',
+  // Test suites and screenshot galleries are never the game. Verified against
+  // the catalogue: no game's embed entry lives under any of these three, so
+  // removing them wholesale cannot break a page. `docs/` is deliberately NOT
+  // here - 21 games ARE a GitHub Pages docs/ demo and ship their own assets.
+  'test', 'tests', 'screenshots',
 ]);
 
 /**
