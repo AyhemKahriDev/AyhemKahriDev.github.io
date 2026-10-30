@@ -16,6 +16,8 @@
  *   - or it shows nothing playable at all.
  */
 
+import { AUDIO_ENV } from './smoke-rules.mjs';
+
 /** Files that are allowed to be missing without breaking the game. */
 const COSMETIC = /favicon|apple-touch|manifest|android-chrome|site\.webmanifest/i;
 
@@ -54,7 +56,13 @@ export function judgeGame({ failed = [], jsErrors = [], status = 200, probe = {}
     warnings.push(`${brokenAssets.length} missing asset`);
   }
 
-  const jsError = jsErrors.find((e) => !COSMETIC.test(e) && !/ERR_BLOCKED/i.test(e));
+  // Headless Chrome has no audio device, so an AudioWorklet module cannot load
+  // and every p5.sound game throws AbortError on its loading screen. That is
+  // the runner, not the game - the same build plays in a real browser - so it
+  // is judged by whether the page came to life, not by the throw.
+  const jsError = jsErrors.find(
+    (e) => !COSMETIC.test(e) && !/ERR_BLOCKED/i.test(e) && !AUDIO_ENV.test(e),
+  );
   if (jsError) {
     reasons.push(`js error: ${jsError.slice(0, 70)}`);
     fatal.push(jsError);
