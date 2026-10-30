@@ -449,10 +449,18 @@ load their engine from a CDN and were being blocked. A game is contained by the
 iframe in `scripts/shell.mjs` (`sandbox`, no top navigation, no access to the
 arcade's pages), not by refusing it the libraries it was written against.
 
-`scripts/serve-dist.mjs` sends the same two policies, so `npm run smoke` and
-`npm run check:mobile` test what Cloudflare will serve instead of a friendlier
-local approximation. Before that, a page could pass every local gate and be dead
-in production.
+The strict half is a `<meta http-equiv="Content-Security-Policy">` in
+`scripts/shell.mjs`, not a response header. Cloudflare applies *every* matching
+`_headers` rule to a path and the browser intersects two CSP headers - so a
+permissive `/third-party/*` rule could never relax a global `/*` one, and the
+first deployment of this split shipped both headers on every game page, which
+left the games blocked exactly as before. A meta tag applies to the pages that
+carry it and to nothing else.
+
+`scripts/serve-dist.mjs` sends the same effective policies, so `npm run smoke`
+and `npm run check:mobile` test what Cloudflare will serve instead of a
+friendlier local approximation. Before that, a page could pass every local gate
+and be dead in production.
 
 That file is a Cloudflare Pages feature. GitHub Pages ignores it and sends its
 own `Cache-Control: max-age=600` for everything, so the fallback host is

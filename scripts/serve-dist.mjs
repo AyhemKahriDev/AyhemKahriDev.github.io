@@ -62,11 +62,11 @@ const HEADERS = {
   'referrer-policy': 'strict-origin-when-cross-origin',
   'x-frame-options': 'SAMEORIGIN',
   'permissions-policy': 'geolocation=(), microphone=(), camera=()',
-  'content-security-policy':
-    "default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; " +
-    "script-src 'self' 'unsafe-inline' blob:; worker-src 'self' blob:; font-src 'self'; " +
-    "frame-src 'self'; connect-src 'self'; " +
-    "object-src 'none'; base-uri 'self'; form-action 'self'",
+  // No CSP here, and that is not an omission: Cloudflare cannot send a strict
+  // header to our pages and a permissive one to the games, because two matching
+  // headers intersect. The strict policy travels as a meta tag in every page
+  // `scripts/build-site.mjs` emits, so it is present in this server's output
+  // exactly as it is in production - served by the document, not by the socket.
 };
 
 /**

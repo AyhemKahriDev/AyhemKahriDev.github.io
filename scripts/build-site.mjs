@@ -12,6 +12,27 @@ import content from '../content/games.json' with { type: 'json' };
 import generated from '../content/games.generated.json' with { type: 'json' };
 import sponsors from '../content/sponsors.json' with { type: 'json' };
 import { gameShell, embedShell } from './shell.mjs';
+
+// The arcade's own pages get the strict policy as a meta tag rather than a
+// response header: Cloudflare applies *every* matching _headers rule to a path
+// and the browser intersects two CSP headers, so a permissive /third-party/*
+// rule could never relax a global /* one. The first deployment of that split
+// carried both headers on every game page and the games stayed blocked. A meta
+// tag applies to the pages that carry it, and to nothing else.
+const STRICT_CSP = [
+  "default-src 'self'",
+  "img-src 'self' data: blob:",
+  "style-src 'self' 'unsafe-inline'",
+  "script-src 'self' 'unsafe-inline' blob:",
+  "worker-src 'self' blob:",
+  "font-src 'self'",
+  "frame-src 'self'",
+  "connect-src 'self'",
+  "object-src 'none'",
+  "base-uri 'self'",
+  "form-action 'self'",
+].join('; ');
+const STRICT_CSP_META = `<meta http-equiv="Content-Security-Policy" content="${STRICT_CSP}">`;
 import { gameIcon, iconSprite, glyph, brandMark, tileAccent } from './icons.mjs';
 import { cleanTagline, creditLicence } from './content-utils.mjs';
 import { sanitizeHtml } from './sanitize-embed.mjs';
@@ -543,6 +564,7 @@ function layout({
 <html lang="${L.id}" dir="${L.dir}" data-locale="${L.id}" class="no-js">
 <head>
 <meta charset="utf-8">
+${STRICT_CSP_META}
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
