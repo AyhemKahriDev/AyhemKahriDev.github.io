@@ -11,6 +11,8 @@
  *   - target="_top" becomes target="_blank" (opens a tab, never replaces us)
  *   - window.top / parent navigation is rewritten to stay in the frame
  *   - external links get rel="noopener noreferrer"
+ *   - a third-party comment widget is dropped: its SDK cannot load under our
+ *     content policy, so it only produces a console error on every visit
  *
  * Pure text transforms: no parsing, no rewriting of the original sources on
  * disk - this runs on the copy that ships to dist/.
@@ -36,6 +38,32 @@ export function refreshIsExternal(tag) {
     return true;
   }
 }
+/**
+ * Comment widgets. A vendored game may bolt on a third-party comment drawer
+ * (Diversity Comments, giscus, Disqus, Utterances, Commento...). None of them
+ * can work here: the site's CSP is `script-src 'self'`, so the SDK load fails
+ * and the page logs an error on every visit - which the smoke gate reads, quite
+ * correctly, as a broken page. The widget is not part of the game, it never
+ * appears in the play area, and it phones a host we do not allow, so the
+ * include is dropped. A tag naming the widget directly (https://giscus.app/...)
+ * is dropped too; a plain CDN script is *not* - that is a different problem and
+ * not this rule's business.
+ */
+const WIDGET_SCRIPT = /<script\b[^>]*\bsrc\s*=\s*["']([^"']+)["'][^>]*>\s*<\/script\s*>/gi;
+const WIDGET_HOST = /^https?:\/\/(?:[\w.-]*\.)?(?:giscus\.app|disqus\.com|cusdis\.com|utteranc\.es|commento\.io|huazie\.github\.io)\//i;
+const WIDGET_FILE = /^comments?(?:[-_.][\w-]+)*?(?:\.min)?\.js$/i;
+
+/** Is this <script src> a comment widget we refuse to load? */
+export function isCommentWidget(src) {
+  const clean = src.split(/[?#]/)[0];
+  if (WIDGET_HOST.test(src)) return true;
+  const base = clean.slice(clean.lastIndexOf('/') + 1);
+  return WIDGET_FILE.test(base);
+}
+
+/** The globals a widget's inline initialiser calls. */
+const WIDGET_GLOBAL = /\b(?:FleaComments|DiversityComments)\b/;
+
 const TOP_TARGET = /target\s*=\s*(["'])_top\1/gi;
 // Only real navigations are rewritten. `window.top.location !== window.self`
 // is a frame check, not a hijack, and must survive untouched.
@@ -65,7 +93,7 @@ function hardenBlankTargets(html) {
 }
 
 export function sanitizeHtml(html) {
-  const changes = { refresh: 0, topTarget: 0, topNav: 0, rel: 0 };
+  const changes = { refresh: 0, topTarget: 0, topNav: 0, rel: 0, widget: 0 };
   let out = html;
 
   out = out.replace(REFRESH, (tag) => {
@@ -81,6 +109,23 @@ export function sanitizeHtml(html) {
     out = out.replace(re, () => {
       changes.topNav++;
       return to;
+    });
+  }
+  let widgetSeen = false;
+  out = out.replace(WIDGET_SCRIPT, (tag, src) => {
+    if (!isCommentWidget(src)) return tag;
+    changes.widget++;
+    widgetSeen = true;
+    return '';
+  });
+  // The page's inline initialiser (`FleaComments.init('shudu')`) would now throw
+  // "FleaComments is not defined" - a console error the smoke gate correctly
+  // fails - so it goes with the module it calls.
+  if (widgetSeen) {
+    out = out.replace(/<script\b(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script\s*>/gi, (tag, body) => {
+      if (!WIDGET_GLOBAL.test(body)) return tag;
+      changes.widget++;
+      return '';
     });
   }
   const before = out;

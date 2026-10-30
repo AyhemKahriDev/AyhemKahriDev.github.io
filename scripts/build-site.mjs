@@ -1569,7 +1569,7 @@ function copyThirdParty() {
   let copied = 0;
   let prunedFiles = 0;
   let prunedBytes = 0;
-  const fixups = { refresh: 0, topTarget: 0, topNav: 0, rel: 0, files: 0 };
+  const fixups = { refresh: 0, topTarget: 0, topNav: 0, rel: 0, widget: 0, files: 0 };
   for (const name of wanted) {
     const from = join(src, name);
     if (!existsSync(from)) continue;
@@ -1593,6 +1593,7 @@ function copyThirdParty() {
         fixups.topTarget += changes.topTarget;
         fixups.topNav += changes.topNav;
         fixups.rel += changes.rel;
+        fixups.widget += changes.widget;
       }
     }
   }
@@ -1600,7 +1601,8 @@ function copyThirdParty() {
     console.log(
       `spielkunst: sanitised ${fixups.files} vendored pages ` +
         `(${fixups.topTarget} target=_top, ${fixups.topNav} top-navigation, ` +
-        `${fixups.refresh} meta refresh, ${fixups.rel} rel=noopener)`,
+        `${fixups.refresh} meta refresh, ${fixups.rel} rel=noopener, ` +
+        `${fixups.widget} comment widget)`,
     );
   }
   if (prunedFiles) {

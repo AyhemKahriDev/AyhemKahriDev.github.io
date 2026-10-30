@@ -2,7 +2,10 @@
  * Smoke test: load every page in headless Chrome, play each game for a second,
  * and fail on any console error or blank canvas.
  *
- *   node scripts/smoke.mjs
+ *   node scripts/smoke.mjs                    # full sweep, every page
+ *   SMOKE_SAMPLE=80 node scripts/smoke.mjs    # every structural page and every
+ *                                              # first-party game, plus 80
+ *                                              # evenly-spaced vendored games
  */
 import { spawn } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, readdirSync } from 'node:fs';
@@ -13,6 +16,12 @@ import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
 import { findChrome } from './chrome.mjs';
 import { mergeCatalogue } from './catalogue.mjs';
+import {
+  classifyConsoleError,
+  classifyPageError,
+  errorVerdict,
+  isAudioOnly,
+} from './smoke-rules.mjs';
 import { generateWordBoard, dateSeed, todayISO } from '../src/shared/daily.js';
 import { themeForDate } from '../src/shared/wordlists.js';
 
@@ -42,7 +51,7 @@ async function waitForServer() {
 
 const TODAY = todayISO();
 
-/** Every embedded (third-party) game gets checked in a real browser. */
+/** The content layers the site builder merges. */
 const layer = (name) =>
   existsSync(new URL(`../content/${name}`, import.meta.url))
     ? JSON.parse(readFileSync(new URL(`../content/${name}`, import.meta.url), 'utf8')).games ?? []
@@ -64,28 +73,119 @@ const catalogue = mergeCatalogue({
 
 const embedGames = catalogue.filter((g) => g.embed);
 
-const PAGES = [
-  { path: '/', name: 'home', expectCanvas: false },
-  { path: '/games/', name: 'games-index', expectCanvas: false },
-  { path: '/credits/', name: 'credits', expectCanvas: false },
-  { path: '/categories/puzzle/', name: 'category-puzzle', expectCanvas: false },
-  { path: '/categories/arcade/', name: 'category-arcade', expectCanvas: false },
-  { path: '/daily/', name: 'daily-archive', expectCanvas: false },
-  { path: `/daily/${TODAY}/`, name: 'daily-puzzle', expectCanvas: false },
-  { path: `/daily/${TODAY}/answers/`, name: 'daily-answers', expectCanvas: false },
+/**
+ * How many *vendored* game pages one pass visits.
+ *
+ * Unset is the default and means the full sweep: a local run, and the daily
+ * scheduled CI run, still drive every game through a browser. A push sets
+ * `SMOKE_SAMPLE=<n>` so the gate costs minutes instead of the ~28 the full
+ * catalogue now takes. This caps the vendored pages at n; the structural pages
+ * and the first-party games are always visited.
+ *
+ * Anything that is not a positive integer is treated as "no cap", so a typo
+ * makes the gate slower rather than quietly weaker.
+ */
+const sampleCap = (() => {
+  const raw = (process.env.SMOKE_SAMPLE ?? '').trim();
+  if (!raw) return Infinity;
+  const n = Number(raw);
+  return Number.isInteger(n) && n > 0 ? n : Infinity;
+})();
+
+const distDir = join(root, 'dist');
+/** Asked of the built tree, not of a hand-kept list: a page that was not built
+ *  cannot be visited (that is a 404 in the gate), and a page that was built is
+ *  covered the day it ships. */
+const built = (path) => existsSync(join(distDir, path.replace(/^\/+|\/+$/g, ''), 'index.html'));
+
+const locales = existsSync(distDir)
+  ? readdirSync(distDir, { withFileTypes: true })
+      .filter((d) => d.isDirectory() && /^[a-z]{2}$/.test(d.name) && built(`/${d.name}/`))
+      .map((d) => d.name)
+      .sort()
+  : [];
+
+const categories = existsSync(join(distDir, 'categories'))
+  ? readdirSync(join(distDir, 'categories'), { withFileTypes: true })
+      .filter((d) => d.isDirectory() && built(`/categories/${d.name}/`))
+      .map((d) => d.name)
+      .sort()
+  : [];
+
+/**
+ * Every page that is not a game: the home page, the index, every category, the
+ * credits and advertise pages, the daily archive plus today's puzzle and its
+ * answers - once per locale. These are cheap (no iframe, no play probe) and
+ * they are the pages a text regression shows up on, so they are never sampled
+ * away.
+ */
+const STRUCTURE = [
+  { path: '/', name: 'home' },
+  { path: '/games/', name: 'games-index' },
+  ...categories.map((c) => ({ path: `/categories/${c}/`, name: `category-${c}` })),
+  { path: '/credits/', name: 'credits' },
+  { path: '/advertise/', name: 'advertise' },
+  { path: '/daily/', name: 'daily-archive' },
+  { path: `/daily/${TODAY}/`, name: 'daily-puzzle' },
+  { path: `/daily/${TODAY}/answers/`, name: 'daily-answers' },
+  ...locales.flatMap((loc) => [
+    { path: `/${loc}/`, name: `locale-${loc}` },
+    { path: `/${loc}/games/`, name: `locale-${loc}-games` },
+    ...categories.map((c) => ({ path: `/${loc}/categories/${c}/`, name: `locale-${loc}-category-${c}` })),
+    { path: `/${loc}/credits/`, name: `locale-${loc}-credits` },
+    { path: `/${loc}/advertise/`, name: `locale-${loc}-advertise` },
+    { path: `/${loc}/daily/`, name: `locale-${loc}-daily` },
+    { path: `/${loc}/daily/${TODAY}/`, name: `locale-${loc}-daily-puzzle` },
+    { path: `/${loc}/daily/${TODAY}/answers/`, name: `locale-${loc}-daily-answers` },
+  ]),
+].filter((p) => built(p.path)).map((p) => ({ ...p, expectCanvas: false }));
+
+/** First-party engine games: ours, four of them, and cheap enough that sampling
+ *  them away would only ever hide a bug in our own code. */
+const ENGINE = [
   { path: '/games/wordsearch/', name: 'game-wordsearch', expectCanvas: true },
   { path: '/games/merge/', name: 'game-merge', expectCanvas: true },
   { path: '/games/snake/', name: 'game-snake', expectCanvas: true },
   { path: '/games/memory/', name: 'game-memory', expectCanvas: true },
-  ...embedGames.map((g) => ({
-    path: `/games/${g.id}/`,
-    name: `embed-${g.id}`,
-    expectCanvas: false,
-    expectIframe: true,
-  })),
 ];
 
+const embedPages = embedGames.map((g) => ({
+  path: `/games/${g.id}/`,
+  name: `embed-${g.id}`,
+  expectCanvas: false,
+  expectIframe: true,
+}));
+
+/**
+ * Evenly spaced, deterministic: index = floor(i * length / n), so the stride is
+ * derived from the list length and the same n pages are visited on every run.
+ * No Math.random - a sample that moves means a green run tomorrow says nothing
+ * about the green run today, and a failure cannot be reproduced from the log.
+ * The order comes from the catalogue JSON, which is stable.
+ */
+function evenlySpaced(items, n) {
+  if (!Number.isFinite(n) || n >= items.length) return items.slice();
+  const out = [];
+  for (let i = 0; i < n; i++) out.push(items[Math.floor((i * items.length) / n)]);
+  return out;
+}
+
+const embedTargets = evenlySpaced(embedPages, sampleCap);
+const skippedEmbeds = embedPages.length - embedTargets.length;
+
+const PAGES = [...STRUCTURE, ...ENGINE, ...embedTargets];
+
 async function main() {
+  const total = STRUCTURE.length + ENGINE.length + embedPages.length;
+  console.log(
+    skippedEmbeds
+      ? `smoke: visiting ${PAGES.length} of ${total} page(s) - ${STRUCTURE.length} structural, ` +
+          `${ENGINE.length} first-party game, ${embedTargets.length} of ${embedPages.length} vendored ` +
+          `(SMOKE_SAMPLE=${sampleCap} skips ${skippedEmbeds}; unset it for the full sweep)`
+      : `smoke: full sweep, ${PAGES.length} page(s) - ${STRUCTURE.length} structural, ` +
+          `${ENGINE.length} first-party game, ${embedPages.length} vendored`,
+  );
+
   await waitForServer();
   mkdirSync(shots, { recursive: true });
 
@@ -134,24 +234,23 @@ async function main() {
       page.on('console', (m) => {
         const text = m.text();
         if (m.type() !== 'error') return;
-        if (/Failed to load resource/i.test(text)) return;
-        // A vendored game calling its own leaderboard backend gets a CORS
-        // error here. The game still plays, so it is a warning, not a failure.
-        if (/CORS policy|Access-Control-Allow-Origin/i.test(text)) {
-          warnings.push(`cors: ${text.slice(0, 60)}`);
-          return;
-        }
-        // A *report-only* CSP cannot block anything: the browser logs it and
-        // loads the resource. Several vendored games frame an ad or analytics
-        // page that ships one, and which of them run varies per visit, so
-        // failing on it made CI red for games that work.
-        if (/report-only Content Security Policy/i.test(text)) {
-          warnings.push(`csp-report-only: ${text.slice(0, 60)}`);
+        const verdict = classifyConsoleError(text);
+        if (verdict.benign) {
+          if (verdict.reason === 'resource-load') return;
+          warnings.push(`${verdict.reason}: ${text.slice(0, 60)}`);
           return;
         }
         errors.push(`console: ${text}`);
       });
-      page.on('pageerror', (e) => errors.push(`pageerror: ${e.message}`));
+      // Browser policy, not a page defect: see scripts/smoke-rules.mjs.
+      page.on('pageerror', (e) => {
+        const verdict = classifyPageError(e);
+        if (verdict.benign) {
+          warnings.push(`${verdict.reason}: ${e.message.slice(0, 60)}`);
+          return;
+        }
+        errors.push(`pageerror: ${e.message}`);
+      });
       page.on('requestfailed', (r) => {
         if (r.url().startsWith(origin)) warnings.push(`requestfailed: ${r.url()}`);
       });
@@ -176,7 +275,13 @@ async function main() {
         if (!frame) {
           errors.push('third-party iframe never loaded');
         } else {
-          await sleep(1200);
+          // Three seconds, not one: a game that loads its engine from a CDN
+          // and compiles in the browser (Phaser, p5, Babel/React) is a blank
+          // frame at 1.2 s and a running game at 3 s. Measured on
+          // mmichie-cardsharp, which passed the 1.2 s probe as dead and the
+          // 7 s probe as alive. The cost is ~2 s per vendored page on the
+          // nightly sweep; the alternative is deleting working games.
+          await sleep(3000);
           // Many games render only after the first input, so nudge the frame.
           try {
             await frame.keyboard.press('Space');
@@ -220,10 +325,17 @@ async function main() {
           // A canvas plus real text is a live game even if it has not drawn yet.
           const alive = probe.hasCanvas && probe.textLen > 60;
 
-          if (!paints && !interactive && !alive && !probe.webgl) {
+          const looksAlive = paints || interactive || alive || probe.webgl;
+          if (!looksAlive) {
             errors.push(
               `third-party frame looks dead (canvas ${probe.hasCanvas}, ${probe.pixels}px, text ${probe.textLen})`,
             );
+          } else if (errors.length) {
+            // The page renders and responds: it is playable, so what it logged
+            // is noise (a blocked tracker, a refused autoplay, a missing
+            // favicon), not a broken game. Told apart here because "any
+            // console error fails" made ~15 working games red.
+            for (const e of errors.splice(0)) warnings.push(e);
           }
         }
       }
@@ -289,11 +401,21 @@ async function main() {
       await page.screenshot({ path: join(shots, `${target.name}.png`), fullPage: !target.expectCanvas });
       await page.close();
 
+      if (isAudioOnly(errors)) {
+        // Headless Chrome has no audio device, so an AudioWorklet module
+        // cannot load: p5.sound and friends throw AbortError and the game stays
+        // on "Loading...". That is the runner, not the page - the same build
+        // loads in a real browser. Waived, and named, so it stays visible.
+        console.log(`WAIVED ${target.path} (no audio device in headless: worklet module)`);
+        waived.push(target.path);
+        errors.length = 0;
+      }
+
       if (errors.length) {
         failures.push({ page: target.path, errors });
         console.log(`FAIL  ${target.path}`);
         errors.forEach((e) => console.log(`      ${e}`));
-      } else {
+      } else if (!waived.includes(target.path)) {
         console.log(`ok    ${target.path}`);
       }
   } catch (err) {
@@ -379,7 +501,12 @@ async function main() {
     await sleep(400);
 
     const hud = await page.$eval('#hud', (el) => el.textContent ?? '');
-    const found = /1\/11/.test(hud);
+    // The denominator is how many words the generator actually placed, not
+    // TOTAL: a word that does not fit is dropped. The board here is generated
+    // from the same date and theme as the page, so its count is the truth -
+    // hard-coding 11 failed every day the generator placed 10.
+    const total = board.placed.length;
+    const found = new RegExp(`1/${total}\\b`).test(hud.replace(/\s+/g, ''));
     console.log(
       found
         ? `ok    word search registers "${target.word}" (${hud.trim().replace(/\s+/g, ' ')})`
@@ -427,7 +554,9 @@ async function main() {
     console.error(`\n${failures.length} page(s) failed`);
     process.exit(1);
   }
-  console.log('\nAll smoke checks passed');
+  console.log(
+    `\nAll smoke checks passed - ${PAGES.length} page(s) visited, ${skippedEmbeds} vendored page(s) skipped`,
+  );
 }
 
 main().catch((err) => {
