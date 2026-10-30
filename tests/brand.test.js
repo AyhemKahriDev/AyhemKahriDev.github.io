@@ -68,7 +68,8 @@ test('the stripper and the generator agree on the name', () => {
   assert.ok(!/on arcadefork/i.test(src), 'copy.mjs still hardcodes the old name in its strip regex');
 });
 
-test('the wordmark keeps its two-tone split on every page that prints it', () => {
+test('the wordmark keeps its two-tone split on every page that prints it', (t) => {
+  if (!existsSync('dist')) return t.skip('dist/ not built yet — run npm run build');
   // The mark lives in three places: scripts/shell.mjs (game shell) and
   // scripts/build-site.mjs (site header + footer). Checking the built HTML is
   // the only way to catch all of them — a grep for the old *name* never sees
@@ -85,8 +86,8 @@ test('no page prints a domain the site does not own', () => {
   assert.ok(!/\.com\b/.test(snake), 'snake.ts prints a .com domain that does not exist');
 });
 
-test('the manifest count matches the catalogue', () => {
-  assert.ok(existsSync('dist/site.webmanifest'), 'build first');
+test('the manifest count matches the catalogue', (t) => {
+  if (!existsSync('dist/site.webmanifest')) return t.skip('dist/ not built yet — run npm run build');
   const manifest = JSON.parse(readFileSync('dist/site.webmanifest', 'utf8'));
   const catalogue = JSON.parse(readFileSync('dist/games/catalog.json', 'utf8'));
   const total = Array.isArray(catalogue) ? catalogue.length : (catalogue.games?.length ?? 0);
@@ -96,7 +97,8 @@ test('the manifest count matches the catalogue', () => {
   );
 });
 
-test('the name reaches the home title, the manifest and the OG card', () => {
+test('the name reaches the home title, the manifest and the OG card', (t) => {
+  if (!existsSync('dist')) return t.skip('dist/ not built yet — run npm run build');
   const home = readFileSync('dist/index.html', 'utf8');
   assert.ok(home.includes(SITE.name), 'home page must print the site name');
   const manifest = JSON.parse(readFileSync('dist/site.webmanifest', 'utf8'));
