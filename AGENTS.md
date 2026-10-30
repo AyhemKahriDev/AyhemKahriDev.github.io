@@ -52,10 +52,11 @@ them is wrong even if the tests pass.
 
 ## The workflow rules
 
-- `npm test` (91 cases, no browser) and `npm run typecheck` before a commit.
+- `npm test` (253 cases, no browser) and `npm run typecheck` before a commit.
   `npm run build && npm run audit && npm run smoke` before a deploy. CI runs
-  typecheck, build, audit, smoke and themes; it does not run `npm test` yet, so
-  that one is on you.
+  typecheck, build, `npm test`, audit, smoke and themes, in that order: the build
+  has to exist before the tests, because three brand cases assert on `dist/` and
+  skip themselves without it.
 - Do not commit `dist/`, `.harvest/` or `.smoke/`. They are git-ignored and they
   are build products, not sources.
 - A harvest writes `content/harvest-published.json` and `.harvest/`. It never

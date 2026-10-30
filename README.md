@@ -8,7 +8,7 @@ Free browser arcade. Many games, many categories, **zero running cost**.
   anywhere until someone buys it (see `docs/BRAND.md`).
 
 No accounts, no tracking walls, no paywalls, and **no purchase is required at any
-point**. Thirteen games are built on the spielkunst engine; the other 552 are
+point**. Ten games are built on the spielkunst engine; the other 544 are
 open-source projects vendored with their own licences. The engine bundle — the
 code that boots a first-party game — is **24.1 kB gzipped** (75 kB raw). A
 vendored game ships what its author wrote and none of our code.
@@ -20,7 +20,7 @@ vendored game ships what its author wrote and none of our code.
 ```bash
 npm ci                 # install exactly what the lockfile pins
 npm run dev            # vite dev server
-npm test               # 231 node:test cases - the catalogue and harvest rules, no browser
+npm test               # 253 node:test cases - the catalogue and harvest rules, no browser
 npm run build          # -> dist/ (static site, deployable as-is)
 npm run audit          # content, links, embeds, assets, size, then live game health
 npm run smoke          # headless-chrome smoke test of every page + game
@@ -106,9 +106,10 @@ is lost on the next sweep. Curation belongs in a layer above it
 
 ## The games
 
-**565 games in 9 categories** — 13 built on the spielkunst engine, 552 vendored
-from open-source repositories. The count in this line is the only one that goes
-stale: `npm run build` prints the live figure.
+**554 games in 9 categories** — 10 built on the spielkunst engine, 544 vendored
+from open-source repositories. Every page is built in four languages (en, fr,
+ar, de): 2,612 URLs, 653 per locale. The count in this line is the only one that
+goes stale: `npm run build` prints the live figure.
 
 **Original** — built on the spielkunst engine (`content/games.json` and
 `content/engine-new.json`):
@@ -124,19 +125,21 @@ stale: `npm run build` prints the live figure.
 | Neon Breakout | Arcade | Brick breaker with a phosphor palette |
 | Lights Out | Puzzle | Toggle the grid until every light is off |
 | Simon Says | Brain | Repeat a growing colour-and-tone sequence |
-| Typing Sprint | Word | Type the falling words before they land |
+| Typing Sprint | Word | One-minute typing test with live words-per-minute and a score per character |
 
-**Open source** — 243 repositories vendored verbatim with their original
+**Open source** — 544 repositories vendored verbatim with their original
 licences, credited on [/credits/](https://spielkunst.pages.dev/credits/) with a
-link back to each source. Three were hand-picked and live in `content/games.json`
-next to the engine games (The Evolution of Trust and Loopy by Nicky Case, CC0;
-Javascript Tetris by Jake Gordon, MIT); the rest arrive through the harvest below.
+link back to each source. Five were hand-picked: three live in
+`content/games.json` next to the engine games (The Evolution of Trust and Loopy
+by Nicky Case, CC0; Javascript Tetris by Jake Gordon, MIT), two in
+`content/curated.json` (Nova Lancer; Triangle Light Maze); the other 539 arrive
+through the harvest below.
 
 ### The harvest pipeline
 
 ```bash
 npm run harvest                                       # sweep -> vendor -> validate -> generate
-node scripts/harvest/batch.mjs --target 500 --batch 250   # rounds of vendor -> validate -> import
+node scripts/harvest/batch.mjs --target 600 --batch 250   # rounds of vendor -> validate -> import
 ```
 
 `scripts/harvest-games.mjs` runs four phases, each writing a report to
@@ -164,17 +167,18 @@ returns `''` on any error, so an unauthenticated run used to "succeed" with an
 empty catalogue.
 
 The build only copies games the catalogue references, so a harvest run in progress
-can never publish a game that has not passed the gate. The smoke test and
-`npm run audit:health` then load every published game in a real browser, which is
-how games that only break inside the delivered iframe get caught.
+can never publish a game that has not passed the gate. The smoke test (a full
+sweep unless `SMOKE_SAMPLE` caps it) and `npm run audit:health` then load every
+published game in a real browser, which is how games that only break inside the
+delivered iframe get caught.
 
-The catalogues are capped, not just filtered: `import.mjs` publishes at most 80
+The catalogues are capped, not just filtered: `import.mjs` publishes at most 200
 games per genre family when the batch driver runs it (40 is the importer's own
-default), at most `--budget` new pages per run, collapses duplicate titles to one
-page, and refuses any game without a passing browser verdict. 14 repositories are
-on `content/blocked.json` — vendored, opened in a browser and rejected (a landing
-page rather than a game, or a build step a browser cannot run) — so they cannot
-come back on the next sweep.
+default), at most `--budget` new pages per run, keeps at most three of any one
+title, and refuses any game without a passing browser verdict. 64 repositories
+are on `content/blocked.json` — vendored, opened in a browser and rejected (a
+landing page rather than a game, a build step a browser cannot run, or a script
+the content policy refuses) — so they cannot come back on the next sweep.
 
 Full detail, including the cost of each knob and what to do when a batch stops
 making progress: **[docs/HARVEST.md](docs/HARVEST.md)**.
@@ -231,6 +235,12 @@ The token is read from `CLOUDFLARE_API_TOKEN` or from `~/.cf_token`, so it
 never has to appear in a terminal history or a chat transcript. The account id
 is baked into the script.
 
+Cloudflare Pages Free caps a deployment at **20,000 files** and **25 MiB per
+asset**, and a rejected upload fails after the whole build. `npm run audit:size`
+therefore gates the count as well as the bytes - 18,500 files, 20 MiB per file,
+800 MiB in total - and the current build is 18,225 files and 624.3 MB, 275
+files under the 18,500 budget.
+
 To have Cloudflare build on every push instead, connect the repository in the
 dashboard: **Workers & Pages → spielkunst → Settings → Builds & deployments →
 Connect to Git repository**. Build command `npm run build`, output directory
@@ -274,8 +284,9 @@ One system, three ingredients — ink, signal, coin.
 
 - **Type** — Bricolage Grotesque (display), Outfit (UI), Geist Mono (labels
   and data). All three are SIL OFL and **self-hosted** from `/fonts`, latin
-  subset only: no third-party connection, no privacy leak, no font flash.
-  Total: 115 kB for all three variable faces.
+  subset only, plus a Noto Sans Arabic pair for the Arabic pages: no third-party
+  connection, no privacy leak, no font flash. Total: 115 kB for the three
+  variable faces, 77 kB for the Arabic pair.
 - **Mark** — a token with a play triangle cut into it: the coin you would
   once have inserted, and the button you press instead. It is the same drawing
   in the wordmark, the favicon, the app icons and the social card, and it
@@ -306,7 +317,7 @@ only ever listened for a keyboard. On a phone that is unplayable, and worse: the
 swipe you reach for is the browser's, so steering a game pulled the page down to
 refresh it and lost the run.
 
-`public/play.js` (game pages only, ~10 kB) fixes that in three moves:
+`public/play.js` (game pages only, 25 kB - 8 kB gzipped) fixes that in three moves:
 
 - **A pad that speaks keyboard.** Two-thumb D-pad plus A/B/P/R dispatches real
   `KeyboardEvent`s into the game's own document. Same origin, so it is allowed;
@@ -332,7 +343,7 @@ delivered *inside* the game — the three things a desktop smoke test cannot see
 
 ### Difficulty
 
-The four engine games take a level: **Easy / Normal / Hard**, chosen from the
+The engine games take a level: **Easy / Normal / Hard**, chosen from the
 segmented control in the game's top bar. It is one setting shared by the
 whole arcade (`localStorage → af:difficulty`) and it is read when a round is
 created, so changing it starts a fresh round at the new level rather than
@@ -340,8 +351,13 @@ silently altering the one in progress. On a phone the three buttons collapse
 to E / N / H so they fit beside the HUD.
 
 What the level changes, precisely: word search timer (150 / 100 / 60
-seconds), memory grid (4x3 / 4x4 / 6x4), snake tick (180 / 150 / 110 ms).
-2048 has fixed rules and ignores the setting. A `?d=easy|normal|hard` query
+seconds), memory grid (4x3 / 4x4 / 6x4), snake tick (180 / 150 / 110 ms),
+sudoku givens (46 / 36 / 30), minesweeper board (9x9 with 10 mines / 12x12
+with 22 / 14x14 with 38), breakout (3 lives at 1x ball speed and a paddle 0.3
+of the board wide / 3 lives at 1.1x and 0.22 / 2 lives at 1.25x and 0.22),
+Simon Says (opening sequence 3 / 4 / 5 pads, each lit 600 / 420 / 320 ms) and
+typing sprint (75 / 60 / 45 seconds). 2048 has fixed rules and Lights Out a
+fixed board, so both ignore the setting. A `?d=easy|normal|hard` query
 parameter overrides the stored value for one visit.
 
 ### Themes
@@ -389,9 +405,10 @@ check runs in CI with the other audits.
 - `/games/` filters as you type across titles, categories and keywords, with
   category chips, A→Z / Z→A sorting, a live count in an `aria-live` region and
   an honest empty state.
-- Categories wider than twelve games collapse behind a "Show all N" button, so
-  the page opens as a menu rather than a 253-tile wall. The tiles are still in
-  the HTML: the collapse only hides them, so search needs no request.
+- The index is paged: 60 games a page, 10 pages for 554, with `rel=prev` /
+  `rel=next` and a pager above and below the grid. The filter and the sort read
+  `/games/catalog.json`, so they still cover the whole catalogue rather than the
+  page on screen.
 - "Random" respects the category you are looking at.
 
 ### Offline
@@ -406,14 +423,36 @@ shortcuts.
 
 The cache name carries the deploy's asset hash, injected by the site builder,
 so each deploy starts a fresh cache and `activate` deletes the previous one.
-It also trims itself to 140 entries: the whole catalogue plus art is otherwise a lot of
-megabytes on a phone.
+It also trims itself to 800 entries: 555 navigable pages per locale — 554 games
+plus the `/games/` index — with room for the play bundle, a thumbnail and a font
+subset per page, so a walk through the catalogue stops evicting pages the
+visitor still needs. The old cap of 140 was written when the arcade had 153
+games.
 
 ### Security headers
 
-`public/_headers` sets a Content-Security-Policy (self-only scripts, styles,
-fonts and frames), `nosniff`, a referrer policy, `X-Frame-Options: SAMEORIGIN`
-and a Permissions-Policy that denies camera, microphone and location.
+`public/_headers` sets a Content-Security-Policy, `nosniff`, a referrer policy,
+`X-Frame-Options: SAMEORIGIN` and a Permissions-Policy that denies camera,
+microphone and location.
+
+**Two policies, deliberately.** The arcade's own pages — home, catalogue,
+category, daily, credits — get a self-only CSP: no third-party script can ever
+run next to the catalogue, the puzzle or the ad slots. The vendored games are a
+different document class and get a looser one (`/third-party/*`): CDN script and
+style origins, `'unsafe-eval'`, `blob:` workers, remote and socket connections.
+
+That split is not a hole, it is where containment actually lives. The strict
+policy was applied to every path until 2026-10-30, and the browser gate that now
+serves the same headers priced it: about one vendored game in eight rendered a
+blank frame, because Phaser, p5, Brython, Bootstrap, Cocos and emscripten builds
+load their engine from a CDN and were being blocked. A game is contained by the
+iframe in `scripts/shell.mjs` (`sandbox`, no top navigation, no access to the
+arcade's pages), not by refusing it the libraries it was written against.
+
+`scripts/serve-dist.mjs` sends the same two policies, so `npm run smoke` and
+`npm run check:mobile` test what Cloudflare will serve instead of a friendlier
+local approximation. Before that, a page could pass every local gate and be dead
+in production.
 
 That file is a Cloudflare Pages feature. GitHub Pages ignores it and sends its
 own `Cache-Control: max-age=600` for everything, so the fallback host is
@@ -562,7 +601,7 @@ into the spec, and post.
 | Command | What it does |
 |---|---|
 | `npm run dev` | Vite dev server |
-| `npm test` | 231 `node:test` cases: catalogue merge, harvest rules, copy, import. No browser, ~150 ms |
+| `npm test` | 253 `node:test` cases: catalogue merge, harvest rules, copy, import, service worker, size budget. No browser, ~2 s |
 | `npm run typecheck` | `tsc --noEmit` |
 | `npm run build` | Bundle + generate the static site into `dist/` |
 | `npm run serve:dist` | Serve `dist/` on :4178 |
@@ -570,14 +609,14 @@ into the spec, and post.
 | `npm run audit:content` | Developer jargon in player copy, duplicate titles, an overlay pointing at a missing id, a broken `robots.txt` |
 | `npm run audit:links` | Every internal link and every sitemap URL resolves to a real file |
 | `npm run audit:embeds` | No embedded game is a personal page or can navigate out of the arcade |
-| `npm run audit:assets` | Every script, style and asset a published game asks for exists |
-| `npm run audit:size` | 10 MB per game, 20 MB per file, 700 MB for all of `dist/` |
+| `npm run audit:assets` | Every script, style and asset a published game asks for exists. Fails the build on a `DEAD` embed — an entry page that loads a script missing from its repository — and only warns on `DEGRADED` (a missing cosmetic asset) |
+| `npm run audit:size` | 10 MiB per game, 20 MiB per file, 18,500 files, 800 MiB for all of `dist/` — today 18,225 files / 624.3 MB |
 | `npm run audit:health` | Every published game loads, starts and paints in a real browser |
-| `npm run smoke` | Headless Chrome test: every page, every game, SEO assertions |
+| `npm run smoke` | Headless Chrome test: every page, every game, SEO assertions. `SMOKE_SAMPLE=80` visits every structural page and engine game plus 80 evenly spaced vendored games (~6.7 min instead of the full sweep's ~28) |
 | `npm run check:mobile` | Phone viewport: pad, swipe → arrow, scroll lock, no pull-to-refresh |
 | `npm run themes` | Every text/background pair in all 9 themes is at least WCAG AA |
 | `npm run harvest` | sweep → vendor → validate → generate (see [docs/HARVEST.md](docs/HARVEST.md)) |
-| `node scripts/harvest/batch.mjs --target 500 --batch 250` | Rounds of vendor → validate → import until the catalogue hits the target |
+| `node scripts/harvest/batch.mjs --target 600 --batch 250` | Rounds of vendor → validate → import until the catalogue hits the target |
 | `npm run vendor:games` | Download and refresh the vendored open-source games |
 | `npm run fix:embeds` | Repair the vendored games (see below) |
 | `npm run package:itch` | Standalone zip per game for itch.io / Poki / CrazyGames |
@@ -621,15 +660,16 @@ npm test && npm run build && npm run audit && npm run smoke
 | `audit:links` | A link to a page that was never built, a sitemap URL with no page |
 | `audit:embeds` | An embedded game that is really the author's homepage, a donation wall, a crypto payment page or a shop selling its own source code |
 | `audit:assets` | A game whose script, style or image does not exist - the game cannot run |
-| `audit:size` | A game shipping its build tooling: 10 MB per game, 20 MB per file, 700 MB for all of `dist/` |
+| `audit:size` | A game shipping its build tooling: 10 MiB per game, 20 MiB per file, 18,500 files, 800 MiB for all of `dist/`. Cloudflare Pages rejects a deployment above 20,000 files, so the count is gated, not just the bytes |
 | `audit:health` | A game that loads but never paints, throws a JavaScript error, or waits behind a start screen nobody can find |
 | `smoke` | Every page of the site: one `h1`, a title, a description, a canonical, valid JSON-LD, a working board |
 | `themes` | A theme whose text does not reach WCAG AA on its own background (108 pairs, 9 themes) |
 | `check:mobile` | Pull-to-refresh still enabled, a swipe that scrolls instead of steering, a pad too small for a thumb |
 
-CI runs `typecheck`, `build`, `audit`, `smoke` and `themes` before every deploy,
-so a broken game cannot reach the live site. `npm test` and `check:mobile` are
-not in the workflow yet - run them yourself before a commit.
+CI runs `typecheck`, `build`, `test`, `audit`, `smoke` and `themes` before every
+deploy, so a broken game cannot reach the live site. The push run samples the
+smoke sweep (`SMOKE_SAMPLE=80`); the nightly run takes the full sweep. Only
+`check:mobile` is missing from the workflow - run it yourself before a commit.
 
 ### Repairing a vendored game
 
@@ -653,9 +693,10 @@ upstream, and the notice says so.
 ### Games that can never work
 
 Some repositories cannot be a game here: the published page is the project's
-landing page, or the game needs a build step (webpack, vite, emscripten) that
-a browser cannot run. Those are listed in `content/blocked.json` and the
-harvest pipeline skips them, so they cannot come back on the next run.
+landing page, the game needs a build step (webpack, vite, emscripten) that a
+browser cannot run, or its entry page loads a script from a host the content
+policy refuses. Those are listed in `content/blocked.json` and the harvest
+pipeline skips them, so they cannot come back on the next run.
 `content/overrides.json` does the opposite: it points a catalogue entry at the
 right file when the repository's `index.html` is not the game.
 
@@ -692,7 +733,7 @@ The whole gate was run from a clean clone — `typecheck`, `build`, `audit:links
 | `vite.config.ts`, `scripts/build-site.mjs` | `/assets/host.js` was served `immutable, max-age=31536000` but the filename never changed. Every returning visitor kept the first game bundle they ever downloaded — for a year. | The entry is content-hashed and the builder discovers the real filename. `package-itch` too. |
 | `src/host.ts` | The HUD's `innerHTML` was rebuilt on every frame: 60–120 DOM writes a second for a scoreboard that changes once a second. | Rendered into a string and written only when it changes. |
 | `src/host.ts`, `src/games/*` | `record` was computed as `score >= best` *after* `best` had been updated, so every result card announced a new personal best. | Games compare against the previous best before writing; `GameResult.record` carries it. |
-| `public/sw.js` | The cache name was a constant, so the offline cache was never versioned, never cleaned, and could serve a stale stylesheet; 404/206 bodies were cached; no size limit; a navigation could hang on the network. | Cache named by the deploy's asset hash (injected at build), trimmed to 140 entries, only complete 200s stored, 3.5 s navigation fallback, and a real offline page. |
+| `public/sw.js` | The cache name was a constant, so the offline cache was never versioned, never cleaned, and could serve a stale stylesheet; 404/206 bodies were cached; no size limit; a navigation could hang on the network. | Cache named by the deploy's asset hash (injected at build), trimmed to a bounded entry count (800 today), only complete 200s stored, 3.5 s navigation fallback, and a real offline page. |
 | `src/engine/analytics.ts` | With no analytics endpoint configured — the default — events queued forever in an array that could never drain. | Nothing is queued unless there is somewhere to send it; `pagehide` flush added. |
 | `src/engine/storage.ts` | `inc()` went through `this.number`, which breaks the moment a caller destructures the storage object. | Reads the key directly. |
 | `src/host.ts` | `Cmd/Ctrl+R` restarted the game *and* reloaded the page; keys were read while typing in a field; arrows scrolled the page mid-run; a finished round still accepted pointer input through the overlay. | Modifier, focus and input-target guards; arrows and space are claimed only while playing; `playing = false` when the result lands. |

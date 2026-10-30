@@ -1,10 +1,11 @@
 # How a game gets into the catalogue
 
-The catalogue is 253 games. Ten are hand-written engine games; the other 243 are
-third-party repositories vendored into `third-party/` and published from
-`content/harvest-published.json`. This page covers the second path: how a
-repository on GitHub becomes a page on the site, what it costs, and where the
-pipeline keeps its state.
+The catalogue is 552 games. Ten are hand-written engine games; the other 544 are
+third-party repositories vendored into `third-party/` — 539 harvested into
+`content/harvest-published.json` (or the legacy `content/games.generated.json`)
+and five hand-picked. This page covers the harvested path: how a repository on
+GitHub becomes a page on the site, what it costs, and where the pipeline keeps
+its state.
 
 The code lives in `scripts/harvest-games.mjs` (the four-phase driver) and
 `scripts/harvest/` (the modules it calls). Everything below is behaviour of those
@@ -40,7 +41,7 @@ string, and only an empty string is accepted:
   test on the way in, because a repository's description can change after it was
   swept.
 
-Repositories on `content/blocked.json` (14 of them) are dropped here, before any
+Repositories on `content/blocked.json` (61 of them) are dropped here, before any
 download, so a hand-rejected repo costs nothing on the next sweep.
 
 **2. Preflight** — one `GET /repos/{repo}/git/trees/{branch}?recursive=1` call
@@ -63,10 +64,22 @@ budget), extracted to a per-repo temp directory, and copied into
 `third-party/<slug>/`. Refusals at this step: an archive under 2 kB or over 25 MB,
 a download that times out after 180 s, no entry HTML after extraction, or an entry
 that did not survive the prune. `prune-vendored.mjs` runs *before* the copy
-reaches git: `.apk`, `.psd`, `.map`, `.yml`, platform project trees and any media
-file over 1 MB whose name appears in no HTML/JS/CSS in the same game. `docs/` is
-never pruned — many games publish from there. The game keeps its `LICENSE` and
-gains an `ARCADEFORK-NOTICE.md` naming the repository, the author and the licence.
+reaches git and tests every file twice — reachability first, rule class second.
+A file goes only when it is unreachable from the game's entry page (a transitive
+walk of `href`, `src`, `srcset`, `url()`, `import`, `fetch`, `require` and
+`new Audio` references, plus any quoted local path in the loaded text) *and*
+matches a class: dev tree, dev metadata, archive or binary format (`.zip`,
+`.apk`, `.psd`), source map, one half of a minified pair, a duplicate media
+format, an unreachable image, source in a language a browser cannot run, nested
+docs, CI config. A filename mentioned anywhere in the game's text counts as
+reachable, a game whose entry cannot be resolved is left intact, and licence or
+attribution files (`LICENSE*`, `COPYING*`, `NOTICE*`, `AUTHORS*`, the manifest)
+are never pruned at all. The pass cuts the file count as well as the bytes,
+because the deploy is rejected above 20,000 files. `docs/` is not a dev tree —
+many games publish from there. The game keeps its `LICENSE` and gains an
+`SPIELKUNST-NOTICE.md` naming the repository, the author and the licence (trees
+vendored before the rename still carry `ARCADEFORK-NOTICE.md`; both are protected
+from pruning at any depth).
 
 **4. Browser gate** — `validate.mjs` opens every vendored entry in headless
 Chrome, `--workers` pages at a time (6 by default), serving the working tree from
@@ -79,13 +92,13 @@ died) is kept for the next run. Nothing is ever appended to `content/blocked.jso
 automatically — that list is a human decision.
 
 **5. Import** — `import.mjs` is the only place a repository becomes a published
-game, and it enforces the rules a 500-game catalogue needs:
+game, and it enforces the rules a 554-game catalogue needs:
 
 - no passing verdict, no page;
 - one page per title: `dedupeByTitle()` keeps the richest of each fold
   (`"The Snake: Reloaded"` and `"snake reloaded!"` are the same game, and a title
   may repeat at most 3 times);
-- `--caps` games per genre family (80 when the batch driver runs it, 40 is the
+- `--caps` games per genre family (200 when the batch driver runs it, 40 is the
   importer's default), so snake and tetris cannot become the whole site;
 - `--budget` new pages per run.
 
@@ -156,12 +169,12 @@ its directories). The tarballs come from `codeload`, which does not count.
 ## Running a batch
 
 ```bash
-node scripts/harvest/batch.mjs --target 500 --batch 250
+node scripts/harvest/batch.mjs --target 600 --batch 250
 ```
 
 The driver repeats `vendor → validate → import` for at most 12 rounds, passing
 `HARVEST_LIMIT=<batch>`, `HARVEST_CONCURRENCY=8`, `--workers=6` and
-`--caps=80 --budget=<target>` down to each phase. It stops when
+`--caps 200 --budget=<target>` down to each phase. It stops when
 `content/harvest-published.json` reaches the target, or when a whole round adds
 nothing — at which point the honest answer is that the current queries are
 exhausted, not that the script should be run again.
