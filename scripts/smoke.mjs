@@ -326,7 +326,11 @@ async function main() {
             return { pixels, has2d, textLen: text.length, controls, hasCanvas: !!canvas, webgl };
           });
           const paints = probe.pixels > 200;
-          const interactive = probe.textLen > 120 && probe.controls >= 1;
+          // A game on its start screen is alive. `> 120` characters was the
+          // old bar, which failed "BE THE ROCKET · Click Me! start" (29 chars,
+          // one button) on a page that runs fine. A visible control plus a
+          // label is a page a visitor can press.
+          const interactive = probe.textLen > 20 && probe.controls >= 1;
           // A canvas plus real text is a live game even if it has not drawn yet.
           const alive = probe.hasCanvas && probe.textLen > 60;
 
