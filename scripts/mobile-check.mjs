@@ -19,6 +19,7 @@ import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import puppeteer from 'puppeteer-core';
 import { findChrome } from './chrome.mjs';
+import { mergeCatalogue, layerGames } from './catalogue.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const shots = join(root, '.smoke');
@@ -27,11 +28,20 @@ const base = `http://127.0.0.1:${port}`;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 const readJson = (p) => JSON.parse(readFileSync(join(root, p), 'utf8'));
-const catalogue = readJson('content/games.json');
-const generated = existsSync(join(root, 'content/games.generated.json'))
-  ? readJson('content/games.generated.json')
-  : { games: [] };
-const embeds = [...catalogue.games, ...(generated.games ?? [])].filter((g) => g.embed);
+// One catalogue merge, like every other gate (scripts/catalogue.mjs). Reading
+// games.json + games.generated.json picked a sample out of the pre-catalogue
+// subset, so the two harvested games this gate proved were never the ones a
+// visitor actually lands on.
+const embeds = mergeCatalogue({
+  base: readJson('content/games.json').games ?? [],
+  engine: layerGames(readJson('content/engine-new.json')),
+  curated: layerGames(readJson('content/curated.json')),
+  published: layerGames(readJson('content/harvest-published.json')),
+  generated: existsSync(join(root, 'content/games.generated.json'))
+    ? readJson('content/games.generated.json').games ?? []
+    : [],
+  overlays: readJson('content/overlays.json').games ?? {},
+}).filter((g) => g.embed);
 
 // The curated keyboard game that broke on the phone, plus two harvested ones.
 const TARGETS = ['tetris']

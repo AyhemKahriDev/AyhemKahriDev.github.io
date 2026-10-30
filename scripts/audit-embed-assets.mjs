@@ -18,13 +18,24 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join, posix, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { mergeCatalogue, layerGames } from './catalogue.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
 
-const curated = JSON.parse(readFileSync(join(root, 'content/games.json'), 'utf8'));
-const generated = JSON.parse(readFileSync(join(root, 'content/games.generated.json'), 'utf8'));
-const GAMES = [...curated.games, ...(generated.games ?? generated)];
+const readJson = (rel) => JSON.parse(readFileSync(join(root, rel), 'utf8'));
+// Every catalogue layer, exactly as the build merges them. This gate used to
+// resolve references for games.json + games.generated.json only - the 168-game
+// subset the site had before the catalogue grew - so 397 published games were
+// never asset-checked at all. scripts/catalogue.mjs is the one merge.
+const GAMES = mergeCatalogue({
+  base: readJson('content/games.json').games ?? [],
+  engine: layerGames(readJson('content/engine-new.json')),
+  curated: layerGames(readJson('content/curated.json')),
+  published: layerGames(readJson('content/harvest-published.json')),
+  generated: readJson('content/games.generated.json').games ?? [],
+  overlays: readJson('content/overlays.json').games ?? {},
+});
 
 /** Files that are nice to have, not required for the game to run. */
 const COSMETIC =
