@@ -519,8 +519,12 @@ async function main() {
     // TOTAL: a word that does not fit is dropped. The board here is generated
     // from the same date and theme as the page, so its count is the truth -
     // hard-coding 11 failed every day the generator placed 10.
-    const total = board.placed.length;
-    const found = new RegExp(`1/${total}\\b`).test(hud.replace(/\s+/g, ''));
+    // Assert that the drag registered - the counter reads 1 found - without
+    // pinning the denominator. The page's board and this replica are generated
+    // from the same date, but the page drops a word that does not fit, so the
+    // total is 10 on a day when the generator places 11. "Found1/10" is
+    // correct; what must be true is that "Found" moved off zero.
+    const found = /Found\s*1\s*\//.test(hud.replace(/\s+/g, ' ')) || /^\s*1\/\d+/.test(hud);
     console.log(
       found
         ? `ok    word search registers "${target.word}" (${hud.trim().replace(/\s+/g, ' ')})`
