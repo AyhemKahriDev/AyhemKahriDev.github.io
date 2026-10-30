@@ -13,6 +13,8 @@
  * only, no gamepad, no multiplayer.
  */
 
+import { SITE_NAME } from '../site.mjs';
+
 /* ------------------------------------------------------------------ jargon */
 
 /**
@@ -1175,7 +1177,7 @@ function deriveSentence(description) {
   s = squash(s);
 
   // Boilerplate appended by the older generator must never be fed back in.
-  s = s.replace(/\s*play\b[^.!?]*?\bon arcadefork\b[^.!?]*[.!?]?/gi, ' ');
+  s = s.replace(new RegExp(String.raw`\s*play\b[^.!?]*?\bon ${SITE_NAME}\b[^.!?]*[.!?]?`, 'gi'), ' ');
   s = s.replace(/\s*[-–—]?\s*no download,?\s*no sign-up[^.!?]*[.!?]?/gi, ' ');
   s = squash(s);
 

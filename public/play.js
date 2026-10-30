@@ -1,5 +1,5 @@
 /**
- * arcadefork play layer — the phone fix.
+ * spielkunst play layer — the phone fix.
  *
  * Almost every game here is somebody else's page in an iframe, and almost all
  * them only ever listened for a keyboard. On a phone that is unplayable: there
@@ -472,7 +472,7 @@
     doc.__afStyle = true;
     try {
       var st = doc.createElement('style');
-      st.setAttribute('data-arcadefork', '');
+      st.setAttribute('data-spielkunst', '');
       st.textContent =
         'html,body{overscroll-behavior:contain !important;-webkit-tap-highlight-color:transparent}';
       (doc.head || doc.documentElement).appendChild(st);

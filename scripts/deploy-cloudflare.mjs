@@ -1,5 +1,5 @@
 /**
- * Deploy the built site to Cloudflare Pages -> arcadefork.pages.dev
+ * Deploy the built site to Cloudflare Pages -> spielkunst.pages.dev
  *
  *   npm run build && npm run deploy:cloudflare
  *
@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
-const project = process.env.CF_PAGES_PROJECT ?? 'arcadefork';
+const project = process.env.CF_PAGES_PROJECT ?? 'spielkunst';
 // Account ids are not secrets - they appear in dashboard URLs and API calls.
 const account = process.env.CLOUDFLARE_ACCOUNT_ID ?? '881a840e88ac4b61c1ab06b87918c796';
 

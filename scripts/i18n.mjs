@@ -54,13 +54,13 @@ const EN = {
   site: {
     tagline: 'Free browser games. No download, no sign-up, no ads before you play.',
     description:
-      'arcadefork is a free browser arcade with word games, puzzle games and arcade classics. Play instantly on any device, no install required.',
+      'spielkunst is a free browser arcade with word games, puzzle games and arcade classics. Play instantly on any device, no install required.',
   },
   strings: {
     /* ---------------------------------------------------------- chrome */
     'a11y.skip': 'Skip to content',
     'a11y.lang': 'Language',
-    'brand.home': 'arcadefork — home',
+    'brand.home': 'spielkunst — home',
     'nav.main': 'Main',
     'nav.categories': 'Categories',
     'nav.footer': 'Footer',
@@ -184,7 +184,7 @@ const EN = {
     'home.about1':
       'Every game here runs entirely in your browser. The page is under a megabyte, so it starts instantly on a phone connection, and the <a href="{archive}">daily puzzle archive</a> keeps every past grid so you can look up the answers or replay an old board.',
     'home.about2':
-      '{count} of the games are open source, vendored with their original licences and credited on the <a href="{credits}">credits page</a>. The rest are built on the arcadefork engine.',
+      '{count} of the games are open source, vendored with their original licences and credited on the <a href="{credits}">credits page</a>. The rest are built on the spielkunst engine.',
     'home.slot.title': 'Your game here',
     'home.slot.body':
       'A labelled sponsor card beside one category of games — an indie game, a dev tool, a newsletter. No pop-ups, ever.',
@@ -353,7 +353,7 @@ const EN = {
     'ad.pill': 'Sponsors only — no ad networks',
     'ad.h1': 'Put your thing in the cabinet.',
     'ad.intro':
-      'arcadefork is a free arcade with a daily puzzle that brings people back every day. A few quiet, labelled sponsor slots are what keep it free — and one of them can be yours.',
+      'spielkunst is a free arcade with a daily puzzle that brings people back every day. A few quiet, labelled sponsor slots are what keep it free — and one of them can be yours.',
     'ad.whatTitle': 'What a slot is',
     'ad.whatBody':
       "A text (or small image) card, always marked <strong>Sponsored</strong>, shown beside the games of one category and on that category's hub pages. One sponsor per category — a player sees yours, and only yours.",

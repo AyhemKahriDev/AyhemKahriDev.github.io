@@ -16,22 +16,40 @@ import { existsSync, mkdirSync, readFileSync, rmSync, statSync, writeFileSync } 
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { findChrome } from './chrome.mjs';
+import { layerGames, mergeCatalogue } from './catalogue.mjs';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const card = join(root, 'scripts/og-card.html');
 const out = join(root, 'public/og.png');
 
+/** One catalogue layer, or [] when the file is absent. */
+function layer(name) {
+  const p = join(root, 'content', name);
+  if (!existsSync(p)) return [];
+  return layerGames(JSON.parse(readFileSync(p, 'utf8')));
+}
+
 /**
  * The number of games in the catalogue, so the card can never claim a
  * number the site does not have.
+ *
+ * This used to add only content/games.json and content/games.generated.json,
+ * which is two of the five layers — the card said "168 games" while the site
+ * served 565. It now merges exactly the way the site builder does.
  */
 function gameCount() {
-  const curated = JSON.parse(readFileSync(join(root, 'content/games.json'), 'utf8'));
-  const generatedPath = join(root, 'content/games.generated.json');
-  const generated = existsSync(generatedPath)
-    ? JSON.parse(readFileSync(generatedPath, 'utf8'))
-    : { games: [] };
-  return curated.games.length + (generated.games ?? []).length;
+  const overlaysPath = join(root, 'content/overlays.json');
+  const overlays = existsSync(overlaysPath)
+    ? (JSON.parse(readFileSync(overlaysPath, 'utf8')).games ?? {})
+    : {};
+  return mergeCatalogue({
+    base: layer('games.json'),
+    engine: layer('engine-new.json'),
+    curated: layer('curated.json'),
+    published: layer('harvest-published.json'),
+    generated: layer('games.generated.json'),
+    overlays,
+  }).length;
 }
 
 const chrome = findChrome();

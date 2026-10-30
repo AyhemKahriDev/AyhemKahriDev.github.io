@@ -50,5 +50,5 @@ const server = createServer(async (req, res) => {
 });
 
 server.listen(port, host, () => {
-  console.log(`arcadefork dist served on http://${host === '0.0.0.0' ? '<lan-ip>' : host}:${port}`);
+  console.log(`spielkunst dist served on http://${host === '0.0.0.0' ? '<lan-ip>' : host}:${port}`);
 });

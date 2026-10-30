@@ -1,5 +1,5 @@
 /**
- * Static site builder for arcadefork.
+ * Static site builder for spielkunst.
  *
  * Runs after `vite build` and writes the HTML into dist/.
  * Everything is deterministic: same inputs -> same output, so the nightly
@@ -290,7 +290,7 @@ const vendored = GAMES.filter((game) => {
   return existsSync(join(root, rel)) || existsSync(join(root, decoded));
 });
 if (vendored.length !== GAMES.length) {
-  console.log(`arcadefork: dropped ${GAMES.length - vendored.length} game(s) whose files are gone`);
+  console.log(`spielkunst: dropped ${GAMES.length - vendored.length} game(s) whose files are gone`);
 }
 GAMES.length = 0;
 GAMES.push(...vendored);
@@ -706,7 +706,7 @@ function siteHeader(path = '/') {
     .join('');
   return `<header class="site-header">
   <div class="wrap bar">
-    <a class="brand" href="${lp('/')}" aria-label="${tn('brand.home')}">${brandMark()}<span>arcade<b>fork</b></span></a>
+    <a class="brand" href="${lp('/')}" aria-label="${tn('brand.home')}">${brandMark()}<span>spiel<b>kunst</b></span></a>
     <nav class="site-nav" aria-label="${tn('nav.main')}">${nav}</nav>
     <div class="top-tools">
       ${langSwitcher(path)}
@@ -754,7 +754,7 @@ function siteFooter(path = '/') {
     ? rich('foot.tips', { links: tipLinks })
     : rich('foot.free', { href: esc(lp('/advertise/')) });
   return `<footer class="site-footer"><div class="wrap">
-  <a class="brand" href="${lp('/')}">${brandMark(24)}<span>arcade<b>fork</b></span></a>
+  <a class="brand" href="${lp('/')}">${brandMark(24)}<span>spiel<b>kunst</b></span></a>
   <p><strong>${tn('foot.count', { count: GAMES.length })}</strong> ${tn('foot.blurb')}</p>
   <p class="foot-tips">${tipsLine}</p>
   <nav class="foot-nav" aria-label="${tn('nav.footer')}">
@@ -1153,7 +1153,7 @@ function localiseShell(html, game = null) {
     .replace(/href="\/categories\//g, `href="${L.prefix}/categories/`)
     .replace(/href="\/"/g, `href="${L.prefix}/"`);
   const swaps = [
-    ['aria-label="arcadefork — home"', `aria-label="${tn('brand.home')}"`],
+    ['aria-label="spielkunst — home"', `aria-label="${tn('brand.home')}"`],
     ['aria-label="About this game"', `aria-label="${tn('game.aboutLabel')}"`],
     [' All games</a>', ` ${tn('game.allGames')}</a>`],
     ['>More like this</a>', `>${tn('game.moreLikeThis')}</a>`],
@@ -1492,7 +1492,7 @@ ${urls.map((u) => `  <url><loc>${esc(u.loc)}</loc>${u.lastmod ? `<lastmod>${u.la
 }
 
 function buildRobots() {
-  // SITE.baseUrl already ends in a slash ("https://arcadefork.pages.dev/"),
+  // SITE.baseUrl already ends in a slash ("https://spielkunst.pages.dev/"),
   // so appending "/sitemap.xml" produced a doubled slash in the live file.
   writeRoot(
     'robots.txt',
@@ -1502,6 +1502,38 @@ Allow: /
 Sitemap: ${SITE.baseUrl.replace(/\/+$/, '')}/sitemap.xml
 `,
   );
+}
+
+/**
+ * The web app manifest, generated instead of kept in public/.
+ *
+ * The description carries the real game count: as a static file it said "153"
+ * long after the catalogue had grown, and nothing in the build could notice.
+ * Everything else here is fixed chrome the install prompt reads once.
+ */
+function writeManifest() {
+  const manifest = {
+    name: `${SITE.name} — free browser games`,
+    short_name: SITE.name,
+    description: `${GAMES.length} free browser games that start instantly. No download, no sign-up, no paywall.`,
+    start_url: '/',
+    scope: '/',
+    display: 'standalone',
+    orientation: 'any',
+    background_color: '#08090a',
+    theme_color: '#08090a',
+    categories: ['games', 'entertainment'],
+    icons: [
+      { src: '/icon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+      { src: '/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
+      { src: '/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'maskable' },
+    ],
+    shortcuts: [
+      { name: "Today's word search", url: '/games/wordsearch/' },
+      { name: 'All games', url: '/games/' },
+    ],
+  };
+  writeRoot('site.webmanifest', `${JSON.stringify(manifest, null, 2)}\n`);
 }
 
 /**
@@ -1557,14 +1589,14 @@ function copyThirdParty() {
   }
   if (fixups.files) {
     console.log(
-      `arcadefork: sanitised ${fixups.files} vendored pages ` +
+      `spielkunst: sanitised ${fixups.files} vendored pages ` +
         `(${fixups.topTarget} target=_top, ${fixups.topNav} top-navigation, ` +
         `${fixups.refresh} meta refresh, ${fixups.rel} rel=noopener)`,
     );
   }
   if (prunedFiles) {
     console.log(
-      `arcadefork: pruned ${prunedFiles} non-web files ` +
+      `spielkunst: pruned ${prunedFiles} non-web files ` +
         `(${(prunedBytes / 1048576).toFixed(1)} MB) from vendored games`,
     );
   }
@@ -2077,12 +2109,13 @@ function main() {
   buildSitemaps(byLocale, today);
   useLocale(DEFAULT_LOCALE);
   buildNotFound();
+  writeManifest();
 
   const vendored = copyThirdParty();
   const total = LOCALES.reduce((n, l) => n + (byLocale[l.id]?.length ?? 0), 0);
   const perLocale = LOCALES.map((l) => `${l.id} ${byLocale[l.id]?.length ?? 0}`).join(', ');
   console.log(
-    `arcadefork: built ${total} URLs across ${LOCALES.length} languages (${perLocale}) — ` +
+    `spielkunst: built ${total} URLs across ${LOCALES.length} languages (${perLocale}) — ` +
       `${GAMES.length} games, ${CATEGORIES.length} categories, ${vendored} vendored third-party`,
   );
 }

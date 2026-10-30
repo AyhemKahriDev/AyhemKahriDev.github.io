@@ -2,7 +2,7 @@
  * Sanitizer for vendored third-party HTML.
  *
  * Vendored games are served from our own origin, so a page that navigates the
- * top frame would replace arcadefork with a stranger's site (we shipped one
+ * top frame would replace spielkunst with a stranger's site (we shipped one
  * like that once - a personal blog with a "Fork on GitHub" button). The
  * iframe sandbox in shell.mjs is the hard stop; this removes the sharp edges
  * so a click can never leave the arcade:
@@ -31,7 +31,7 @@ export function refreshIsExternal(tag) {
   if (!/^https?:\/\//i.test(target)) return false; // relative -> same site
   try {
     const host = new URL(target).hostname.replace(/^www\./, '');
-    return host !== 'arcadefork.pages.dev' && host !== 'ayhemkahridev.github.io';
+    return host !== 'spielkunst.pages.dev' && host !== 'ayhemkahridev.github.io';
   } catch {
     return true;
   }

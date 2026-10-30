@@ -315,7 +315,7 @@ class Breakout implements GameInstance {
     ctx.fillText(String(this.score), w / 2, 300);
     ctx.fillStyle = MUTED;
     ctx.font = '600 40px Outfit, system-ui, sans-serif';
-    ctx.fillText(`level ${this.stage} · arcadefork.com`, w / 2, 420);
+    ctx.fillText(`level ${this.stage} · spielkunst.com`, w / 2, 420);
   }
 }
 

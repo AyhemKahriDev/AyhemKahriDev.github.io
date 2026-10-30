@@ -35,7 +35,7 @@ export function todayISO(now = new Date()) {
 
 /** Seed for a given date string. */
 export function dateSeed(date) {
-  return hashString(`arcadefork:${date}`);
+  return hashString(`spielkunst:${date}`);
 }
 
 /** Add days to a YYYY-MM-DD string. */

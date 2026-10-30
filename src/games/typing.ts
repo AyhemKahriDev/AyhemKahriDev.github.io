@@ -179,7 +179,7 @@ class TypingSprint implements GameInstance {
     ctx.fillText(`${this.rate()} WPM`, w / 2, 300);
     ctx.fillStyle = MUTED;
     ctx.font = '600 40px Outfit, system-ui, sans-serif';
-    ctx.fillText(`${this.correct} words · arcadefork.com`, w / 2, 420);
+    ctx.fillText(`${this.correct} words · spielkunst.com`, w / 2, 420);
   }
 }
 

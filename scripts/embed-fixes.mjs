@@ -16,7 +16,7 @@
  *
  * All three are repaired here, generically: a repair only fires when the
  * target file actually exists inside the game folder, so nothing is guessed.
- * Every change is written into that game's ARCADEFORK-NOTICE.md, because the
+ * Every change is written into that game's SPIELKUNST-NOTICE.md, because the
  * vendored copy is no longer byte-for-byte upstream.
  *
  * Resolution bases follow the HTML spec, which matters:
@@ -243,7 +243,7 @@ function dropDeadScripts(file, gameDir, map, baseRel) {
   return [];
 }
 
-const NOTICE = 'ARCADEFORK-NOTICE.md';
+const NOTICE = 'SPIELKUNST-NOTICE.md';
 
 /**
  * Repairs the generic rules cannot make safely, listed one by one.
@@ -266,7 +266,7 @@ const PER_GAME = {
       file: 'index.html',
       insertBefore: '<script src="js/vue.min.js"></script>',
       insert: `<script>
-/* arcadefork: the game keeps its word list in localStorage and refuses to
+/* spielkunst: the game keeps its word list in localStorage and refuses to
    start without one, so a first-time player got a redirect to the word
    manager instead of a game. Seed a starter list when there is none. */
 (function () {

@@ -158,4 +158,4 @@ jobs:
           path: dist
       - name: deploy to Cloudflare Pages
         if: env.CLOUDFLARE_API_TOKEN != ''
-        run: npx wrangler@latest pages deploy dist --project-name=arcadefork --branch=main
+        run: npx wrangler@latest pages deploy dist --project-name=spielkunst --branch=main

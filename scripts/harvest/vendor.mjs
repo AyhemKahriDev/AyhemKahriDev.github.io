@@ -278,13 +278,13 @@ export async function vendorAll(candidates, options = {}) {
       };
       writeJson(join(dest, '.harvested.json'), meta);
       writeFileSync(
-        join(dest, 'ARCADEFORK-NOTICE.md'),
+        join(dest, 'SPIELKUNST-NOTICE.md'),
         `# ${repo} - vendored third-party game
 
 - **Repository:** https://github.com/${repo}
 - **Author:** ${owner}
 - **Licence:** ${licence} (see ${licenceFile} in this folder)
-- **Vendored by:** arcadefork (Ayhem Kahri)
+- **Vendored by:** spielkunst (Ayhem Kahri)
 
 The original ${licence} licence text ships in this folder and applies to its contents.
 `,

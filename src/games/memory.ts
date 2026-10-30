@@ -207,7 +207,7 @@ class Memory implements GameInstance {
     ctx.fillText(`${this.moves} moves`, w / 2, 300);
     ctx.fillStyle = MUTED;
     ctx.font = `600 40px Outfit, system-ui, sans-serif`;
-    ctx.fillText(`${Math.floor(this.seconds)} seconds · arcadefork.com`, w / 2, 420);
+    ctx.fillText(`${Math.floor(this.seconds)} seconds · spielkunst.com`, w / 2, 420);
   }
 }
 

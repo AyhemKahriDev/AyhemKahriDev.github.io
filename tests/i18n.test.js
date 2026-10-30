@@ -32,7 +32,7 @@ import { pageHref, pageCanonical, renderProbePage, sitemapIndexXml, GAMES } from
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const dist = join(root, 'dist');
-const BASE = 'https://arcadefork.pages.dev/';
+const BASE = 'https://spielkunst.pages.dev/';
 
 /* ------------------------------------------------------------- registry */
 
@@ -159,7 +159,7 @@ test('alternates: exactly en, fr, ar and x-default, all absolute', () => {
   // x-default is the English page: the one a reader with no matching
   // language should land on.
   assert.equal(alts[3].href, alts[0].href);
-  assert.equal(absoluteUrl('fr', '/games/snake/', BASE), 'https://arcadefork.pages.dev/fr/games/snake/');
+  assert.equal(absoluteUrl('fr', '/games/snake/', BASE), 'https://spielkunst.pages.dev/fr/games/snake/');
 });
 
 /* -------------------------------------------------------------- sitemaps */

@@ -1,6 +1,6 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "arcadefork",
+  "name": "spielkunst",
   "compatibility_date": "2026-10-19",
   "observability": {
     "enabled": true

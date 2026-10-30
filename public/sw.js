@@ -1,4 +1,4 @@
-/* arcadefork offline shell.
+/* spielkunst offline shell.
    Navigations are network-first (so a deploy is picked up immediately) with a
    cached fallback; every other same-origin GET is stale-while-revalidate, so
    a game you have played once still opens with no connection.
@@ -9,7 +9,7 @@
    copies of styles.css and ui.js around for as long as the browser kept the
    cache, and nothing ever evicted them. */
 
-const CACHE = 'af-__AF_VERSION__';
+const CACHE = 'sk-__AF_VERSION__';
 const SHELL = [
   '/',
   '/games/',
@@ -34,7 +34,7 @@ const NAV_TIMEOUT = 3500;
 const OFFLINE_HTML = `<!doctype html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Offline — arcadefork</title>
+<title>Offline — spielkunst</title>
 <style>
   html{background:#08090a;color:#f6f3eb;font:16px/1.5 system-ui,sans-serif}
   body{min-height:100dvh;display:grid;place-items:center;margin:0;padding:24px;text-align:center}

@@ -40,7 +40,7 @@ const JUNK_DIR = new Set([
 const TEXT_EXT = new Set(['.html', '.htm', '.js', '.mjs', '.css', '.json', '.xml', '.txt']);
 const MEDIA_EXT = new Set(['.gif', '.png', '.jpg', '.jpeg', '.webp', '.svg', '.mp3', '.ogg', '.wav', '.m4a', '.mp4', '.webm']);
 
-const KEEP_FILE = /^(licen[cs]e|copying|notice|unlicense|arcadefork-notice)(\.|$)/i;
+const KEEP_FILE = /^(licen[cs]e|copying|notice|unlicense|spielkunst-notice)(\.|$)/i;
 
 export function pruneVendored(dir) {
   const stats = { removed: 0, bytes: 0 };
@@ -73,7 +73,7 @@ function walk(dir, stats) {
     const ext = extname(entry.name).toLowerCase();
     const isDoc = ext === '.md' || ext === '.markdown' || ext === '.rst';
     if (KEEP_FILE.test(entry.name)) continue;
-    if (ext === '.md' && entry.name.toLowerCase().startsWith('arcadefork-notice')) continue;
+    if (ext === '.md' && entry.name.toLowerCase().startsWith('spielkunst-notice')) continue;
     if (JUNK_EXT.has(ext) || isDoc) {
       stats.bytes += statSync(path).size;
       rmSync(path, { force: true });

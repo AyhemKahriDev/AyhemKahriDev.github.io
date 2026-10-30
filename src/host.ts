@@ -70,7 +70,7 @@ const announceEl = document.getElementById('announce') as HTMLElement | null;
 if (!canvas || !stage || !spec || !meta) {
   if (overlay) {
     overlay.innerHTML =
-      '<div class="card"><h2>Game unavailable</h2><p>That game could not be loaded.</p><a class="btn" href="/">Back to arcadefork</a></div>';
+      '<div class="card"><h2>Game unavailable</h2><p>That game could not be loaded.</p><a class="btn" href="/">Back to spielkunst</a></div>';
     overlay.classList.add('is-open');
   }
 } else {
@@ -444,7 +444,7 @@ function boot(): void {
       const url = `${content.site.baseUrl.replace(/\/$/, '')}/games/${spec!.id}/`;
       const outcome = await shareResult({
         title: meta!.title,
-        text: `${meta!.title} - score ${r.score} on arcadefork`,
+        text: `${meta!.title} - score ${r.score} on spielkunst`,
         url,
         draw: (c, w, h) => {
           if (instance.shareCard) {

@@ -262,7 +262,7 @@ class WordSearch implements GameInstance {
     ctx.fillStyle = MUTED;
     ctx.font = `600 40px ${'Outfit, system-ui, sans-serif'}`;
     ctx.fillText(
-      `${this.date} · score ${this.score} · arcadefork.com`,
+      `${this.date} · score ${this.score} · spielkunst.com`,
       w / 2,
       420,
     );

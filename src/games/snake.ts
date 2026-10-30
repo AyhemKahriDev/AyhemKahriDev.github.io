@@ -275,7 +275,7 @@ class Snake implements GameInstance {
     ctx.fillText(String(this.score), w / 2, 300);
     ctx.fillStyle = MUTED;
     ctx.font = `600 40px Outfit, system-ui, sans-serif`;
-    ctx.fillText(`best ${this.best} · arcadefork.com`, w / 2, 430);
+    ctx.fillText(`best ${this.best}`, w / 2, 430);
   }
 }
 

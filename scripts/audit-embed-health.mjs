@@ -37,7 +37,7 @@ const port = Number(process.env.AUDIT_PORT ?? 4181);
  * By default the built site is served from dist/ and checked. Point
  * AUDIT_ORIGIN at a live URL to run the same gate against production:
  *
- *   AUDIT_ORIGIN=https://arcadefork.pages.dev node scripts/audit-embed-health.mjs
+ *   AUDIT_ORIGIN=https://spielkunst.pages.dev node scripts/audit-embed-health.mjs
  */
 const liveOrigin = process.env.AUDIT_ORIGIN?.replace(/\/+$/, '') ?? null;
 
