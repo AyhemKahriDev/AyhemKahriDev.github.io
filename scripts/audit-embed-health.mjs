@@ -271,6 +271,7 @@ async function main() {
       title: g.title,
       src: g.embed.src,
       verdict: verdict.ok ? 'ok' : 'DEAD',
+      unverified: verdict.unverified,
       problems: verdict.reasons,
       warnings: [...verdict.warnings, ...navWarnings],
       detail: { ...probe, failed: failed.slice(0, 6), jsErrors: jsErrors.slice(0, 3) },
@@ -337,6 +338,7 @@ async function main() {
   server?.kill();
 
   const dead = results.filter((r) => r.verdict === 'DEAD');
+  const unverified = results.filter((r) => r.unverified);
   const flaky = results.filter((r) => r.flaky);
   const warned = results.filter((r) => r.warnings?.length);
   if (process.argv.includes('--json')) {
@@ -350,8 +352,16 @@ async function main() {
   } else {
     console.log(
       `audit-embed-health: ${results.length} embedded games, ${dead.length} dead, ${warned.length} with warnings` +
-        (flaky.length ? ` (${flaky.length} passed a second attempt)` : ''),
+        (flaky.length ? ` (${flaky.length} passed a second attempt)` : '') +
+        (unverified.length ? `, ${unverified.length} unverified` : ''),
     );
+    if (unverified.length) {
+      // Named, not hidden: these were not judged because this machine cannot
+      // run them, so a human can check them on the live site.
+      console.log(
+        `  UNVERIFIED (not a failure, not a pass): ${unverified.map((u) => u.id).join(', ')}`,
+      );
+    }
     for (const d of dead) {
       console.log(`  DEAD ${d.id} (${d.src})`);
       for (const p of d.problems) console.log(`        - ${p}`);

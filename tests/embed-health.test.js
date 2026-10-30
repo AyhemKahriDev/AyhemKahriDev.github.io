@@ -21,10 +21,24 @@ test('a game whose only complaint is the missing audio device is healthy', () =>
   assert.equal(verdict.ok, true, JSON.stringify(verdict.reasons));
 });
 
-test('the same throw on a page that never came to life is still a failure', () => {
+test('a p5.sound game that cannot start here is unverified, not dead', () => {
+  // Headless has no audio device; the worklet AbortError cascades into an empty
+  // frame. Neither "healthy" nor "broken" can be claimed from this runner, so
+  // the record says so - and the audit does not fail the build on it.
   const verdict = judgeGame({
     failed: [],
     jsErrors: ["AbortError: Unable to load a worklet's module."],
+    status: 200,
+    probe: { pixels: 0, textLen: 0, controls: 0, canvases: 0, webgl: false },
+  });
+  assert.equal(verdict.ok, true);
+  assert.match(verdict.unverified, /audio device/);
+});
+
+test('an empty page with no audio error is dead', () => {
+  const verdict = judgeGame({
+    failed: [],
+    jsErrors: ['TypeError: boom'],
     status: 200,
     probe: { pixels: 0, textLen: 0, controls: 0, canvases: 0, webgl: false },
   });

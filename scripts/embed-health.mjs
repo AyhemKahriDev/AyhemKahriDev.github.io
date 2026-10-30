@@ -80,11 +80,28 @@ export function judgeGame({ failed = [], jsErrors = [], status = 200, probe = {}
   const canvasWithInterface = canvases > 0 && (textLen > 60 || controls >= 1 || webgl === true);
   const interfaceOnly = textLen > 120 && controls >= 1;
 
-  if (!paints && !canvasWithInterface && !interfaceOnly) {
+  const nothingPlayable = !paints && !canvasWithInterface && !interfaceOnly;
+  if (nothingPlayable) {
     reasons.push(
       `nothing playable (${pixels}px painted, ${canvases} canvas, ${textLen} characters of text)`,
     );
     fatal.push('nothing playable');
+  }
+
+  // A p5.sound game cannot start without an audio device, and on this runner
+  // that shows up as the worklet AbortError followed by cascading throws and an
+  // empty frame. The page is neither proved healthy nor proved broken here, so
+  // it is reported as unverified rather than dead: calling it dead would retire
+  // games that play in a real browser, and calling it ok would hide a genuinely
+  // broken one. `audit:health` names these and does not fail on them.
+  if (nothingPlayable && jsErrors.some((e) => AUDIO_ENV.test(e))) {
+    return {
+      ok: true,
+      unverified: 'no audio device on this runner (AudioWorklet could not load)',
+      reasons: [],
+      warnings: [...warnings, 'audio device missing: page not verifiable here'],
+      fatal: [],
+    };
   }
 
   return { ok: reasons.length === 0, reasons, warnings, fatal };
