@@ -19,8 +19,23 @@ permissions:
   contents: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  # One group per branch, so a push can never run beside another push: the
+  # publish step force-pushes gh-pages and a second concurrent writer is how a
+  # half-uploaded tree lands there.
+  #
+  # cancel-in-progress is what was missing. Without it a superseded push waits
+  # for the run in front of it (each one now spends most of its life in the
+  # browser gates), and the queue grows faster than it drains.
+  #
+  # The daily schedule refreshes the puzzle window and is exempt: it neither
+  # cancels a run in progress nor queues on top of one. Caveat, stated because
+  # it is a real tradeoff and not an oversight: the flag is evaluated on the
+  # *incoming* run only, so a push that arrives during a scheduled run still
+  # cancels it. Keeping every publish serialised is worth more than protecting
+  # a scheduled run from a push an operator just made; the next schedule is 24 h
+  # away and the daily puzzle window is also written by any push.
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'schedule' }}
 
 jobs:
   build:
@@ -35,6 +50,9 @@ jobs:
     #   games; x2 headroom for a slow runner leaves 90.
     # 90 < the 360-minute default, so a hang fails in 1.5 h with its log
     # attached instead of burning the full 6 h.
+    # A push no longer pays the whole smoke estimate: the step samples the
+    # vendored games (SMOKE_SAMPLE, see the step) and the daily schedule runs
+    # the full sweep. Both still fit this budget.
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
@@ -65,11 +83,18 @@ jobs:
           echo "channel lookup is down; installing a pinned build instead"
           install chrome-headless-shell@156.0.8078.47
       - run: npm run typecheck
+      # The artefact before the tests that assert on it. tests/brand.test.js
+      # checks the built wordmark, the manifest count and the OG title, and each
+      # of those cases skips itself when dist/ is absent. Running `npm test`
+      # before the build therefore did not test the brand at all - it skipped it,
+      # which is how a broken wordmark could reach a run that reports green.
+      # Build first: those three cases now read dist/ and assert.
+      - run: npm run build
       # Unit tests are ~0.2 s and catch catalogue/copy regressions before the
-      # browser gates, which cost minutes. Cheapest gate goes first.
+      # browser gates, which cost minutes. Cheapest gate that can run goes first
+      # - cheap is not a reason to run it before the input it needs exists.
       - name: Unit tests
         run: npm test
-      - run: npm run build
       # The gate. A broken game, a dead link or a page that no longer parses
       # must never reach a deploy.
       - name: Audit
@@ -87,6 +112,26 @@ jobs:
         # still reaches the upload step below instead of being cancelled by the
         # job timeout.
         timeout-minutes: 45
+        env:
+          # The gate is not weakened, it is sized. Every structural page (home,
+          # index, all nine categories, credits, advertise, daily, and each of
+          # those per locale - 64 pages, read off dist/) and every first-party
+          # game is still visited on every run; only the vendored games are
+          # sampled, and the sample is deterministic, so a green push run and a
+          # red one visit the same 80 pages.
+          #
+          # Measured, not guessed. Three timed local runs of this script against
+          # the same build: 76 pages in 158 s, 108 in 215 s, 148 in 356 s (that
+          # last one contains a single 90 s protocol-timeout waiver, so ~266 s
+          # of real work) - about 2 s per page here. CI is ~1.35x slower: the old
+          # step's own figure of ~8 min for 180 pages is 2.7 s/page against
+          # ~2 s/page here. So 148 pages in CI is ~400 s, 6.7 min, and the full
+          # sweep it replaces (623 pages) is ~28 min - which is what the push run
+          # in progress is spending right now.
+          #
+          # The daily schedule omits it and takes that full sweep, so every
+          # vendored game is still driven through a real browser once a day.
+          SMOKE_SAMPLE: ${{ github.event_name == 'schedule' && 'all' || '80' }}
         run: |
           set -euo pipefail
           mkdir -p .smoke-report
