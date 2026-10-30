@@ -22,9 +22,15 @@ const SHELL = [
   '/favicon.svg',
 ];
 
-/* Keeps the cache from growing without limit: 153 games plus art is a lot of
-   megabytes on a phone. */
-const MAX_ENTRIES = 140;
+/* Keeps the cache from growing without limit, but sized to the catalogue that
+   actually exists: 565 games, one navigable page per game plus the /games/
+   index, is 566 pages per locale. Every page also pulls its play bundle, a
+   thumbnail and a font subset, so 800 entries is the 566 pages with ~1.4x
+   headroom for artwork and per-page assets - enough that a walk through the
+   catalogue stops evicting pages the visitor still needs. The old cap of 140
+   was written when the arcade had 153 games; the catalogue outgrew it and every
+   page past the first few was re-downloaded on the next visit. */
+const MAX_ENTRIES = 800;
 
 /* How long a navigation waits for the network before using the cache. A
    captive portal or a dying 3G connection can otherwise hang the first paint
