@@ -7042,53 +7042,6 @@
       "related": []
     },
     {
-      "id": "guess-the-flag",
-      "title": "Guess Flag",
-      "tagline": "Guess the Flag Web Game is a fun browser-based quiz where players identify countries by th",
-      "description": "Guess the Flag Web Game is a fun browser-based quiz where players identify countries by their flags. It features multiple difficulty levels, timed rounds, hints, and a responsive UI—all built using HTML5, CSS3, and JavaScript. Developed by Bocaletto Luca; no installations required. Play Guess Flag instantly on arcadefo",
-      "category": "brain",
-      "accent": "hsl(126 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/bocaletto-luca-guess-the-flag/index.html"
-      },
-      "credit": {
-        "author": "bocaletto-luca",
-        "licence": "GPL-3.0",
-        "source": "https://github.com/bocaletto-luca/Guess-The-Flag"
-      },
-      "keywords": [
-        "guess flag game",
-        "play guess flag online",
-        "free guess flag",
-        "guess flag unblocked",
-        "browser game",
-        "free online game"
-      ],
-      "howToPlay": [
-        "Players are shown a flag image and must choose the correct country from multiple options.",
-        "With various difficulty levels, timed rounds, and helpful hints, this game provides an engaging and educational experience—all running directly in your browser.",
-        "Simply serve the files via an HTTP/HTTPS server (e.g.",
-        "Apache) and open index.html in your browser.",
-        "Objective: Identify the country for each displayed flag."
-      ],
-      "faq": [
-        {
-          "q": "Is Guess Flag free?",
-          "a": "Yes. Guess Flag runs entirely in your browser on spielkunst - no download, no account, no payment."
-        },
-        {
-          "q": "Who made this version of Guess Flag?",
-          "a": "Guess Flag is an open-source project by bocaletto-luca, published under the GPL-3.0 licence. The original source is linked from the credits page."
-        },
-        {
-          "q": "Does Guess Flag work on a phone?",
-          "a": "It is served as a normal web page, so it scales to your screen. If it needs a keyboard, the on-screen controls are still there."
-        }
-      ],
-      "related": []
-    },
-    {
       "id": "balljs",
       "title": "Balljs",
       "tagline": "Brick breaker game",
@@ -7314,53 +7267,6 @@
         },
         {
           "q": "Does Spaceguard work on a phone?",
-          "a": "It is served as a normal web page, so it scales to your screen. If it needs a keyboard, the on-screen controls are still there."
-        }
-      ],
-      "related": []
-    },
-    {
-      "id": "invasores-espaciais",
-      "title": "Invasores Espaciais",
-      "tagline": "Um remake moderno do clássico jogo Space Invaders, desenvolvido com HTML5 Canvas, CSS3 e J",
-      "description": "Um remake moderno do clássico jogo Space Invaders, desenvolvido com HTML5 Canvas, CSS3 e JavaScript puro. Play Invasores Espaciais instantly on spielkunst - no download, no sign-up, works on any device.",
-      "category": "arcade",
-      "accent": "hsl(301 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/ninja1375-invasores-espaciais/index.html"
-      },
-      "credit": {
-        "author": "Ninja1375",
-        "licence": "CC0-1.0",
-        "source": "https://github.com/Ninja1375/invasores-espaciais"
-      },
-      "keywords": [
-        "invasores espaciais game",
-        "play invasores espaciais online",
-        "free invasores espaciais",
-        "invasores espaciais unblocked",
-        "browser game",
-        "free online game"
-      ],
-      "howToPlay": [
-        "Totalmente responsivo, compatível com dispositivos móveis e com controles otimizados tanto para teclado como para touch screen.",
-        "Jogabilidade clássica com gráficos em Canvas 2D",
-        "Sistema de pontuação, vidas e níveis progressivos",
-        "Suporte para controles de teclado (←, →, espaço, Enter, P)",
-        "Controles tácteis otimizados para dispositivos móveis"
-      ],
-      "faq": [
-        {
-          "q": "Is Invasores Espaciais free?",
-          "a": "Yes. Invasores Espaciais runs entirely in your browser on spielkunst - no download, no account, no payment."
-        },
-        {
-          "q": "Who made this version of Invasores Espaciais?",
-          "a": "Invasores Espaciais is an open-source project by Ninja1375, published under the CC0-1.0 licence. The original source is linked from the credits page."
-        },
-        {
-          "q": "Does Invasores Espaciais work on a phone?",
           "a": "It is served as a normal web page, so it scales to your screen. If it needs a keyboard, the on-screen controls are still there."
         }
       ],

@@ -1,5 +1,5 @@
 {
-  "_comment": "Repositories that must never be published on spielkunst. Each one was vendored, opened in a real browser and rejected: the published page is a landing page rather than a game, or the game needs a build step (webpack, vite, emscripten) and can never run in a browser. The harvest pipeline skips them, so they cannot come back on the next run.",
+  "_comment": "Repositories that must never be published on spielkunst. Each one was vendored and rejected: the published page is a landing page rather than a game, the game needs a build step (webpack, vite, emscripten) and can never run in a browser, or the entry file asks a host outside spielkunst for something the site's Content-Security-Policy refuses. The harvest pipeline skips them, so they cannot come back on the next run. `notes` carries the file, line and URL behind each new rejection so a reviewer can check it without reopening the repository.",
   "repos": [
     "olzhasar/sdl-tetris",
     "noiron/tower-defense-js",
@@ -27,7 +27,6 @@
     "bogdanmoale/sudoku-game",
     "knadh/wordpluck",
     "awslabs/the-qubit-factory",
-    "md-abu-kayser/drive-mad",
     "VarunBanka/super-mario-run-using-javascript",
     "James-Livesey/bytle",
     "habibieamrullah/HTML5-Crossword-Puzzle-Game",
@@ -51,6 +50,39 @@
     "richie-rich90454/hackathon-game",
     "jjmontalban/capitalsGame",
     "pixel-fabian/loading",
-    "bogdanmoale/Sudoku-Game"
-  ]
+    "bogdanmoale/Sudoku-Game",
+    "luleoa12/wordle_craft",
+    "ramazancetinkaya/snake-game",
+    "StarKnightt/operation-ironhold",
+    "timdream/wordcloud2.js",
+    "bocaletto-luca/Guess-The-Flag",
+    "Ninja1375/invasores-espaciais",
+    "LongSteve/aquastax",
+    "AdemCanCertel-zz/electron-canvas-game",
+    "futrime/game-of-life",
+    "motasimmakki/Snake-Game-in-JavaScript",
+    "Omar-Mazen/weatherio",
+    "minecraft8997/mclordchess-frontend",
+    "avokadoen/tetris-wasm",
+    "s2031215/pixijs-solitaire"
+  ],
+  "notes": {
+    "luleoa12/wordle_craft": "The daily answer comes from a third-party API: script.js:193 fetch(`https://wordle-craft.luleoa12.workers.dev?datetime=...`). index.html also pulls html2canvas from html2canvas.hertzen.com (line 614), Google Tag Manager (line 623) and Google Fonts (line 53). The site's CSP is connect-src 'self' / script-src 'self' (public/_headers), so the word never arrives and there is nothing to guess.",
+    "ramazancetinkaya/snake-game": "The external stylesheet is what labels the interface: index.html:15 loads Font Awesome 6.6.0 from cdnjs and the five header buttons are icon-only, so with style-src 'self' they render blank. Its page title 'Snake Game' is also already used by motasimmakki-snake-game-in-javascript.",
+    "StarKnightt/operation-ironhold": "index.html:396 loads three.js r128 from cdnjs and the repository holds no local copy of the engine, so script-src 'self' leaves an empty page. Everything the game draws goes through that one script.",
+    "timdream/wordcloud2.js": "index.html is the library's demo/configurator, not a game: it is a form of width, height, mask and option fields that renders a word cloud. It loads jQuery from ajax.googleapis.com (line 14) and bootstrap from cdnjs (line 15), both refused by script-src 'self'.",
+    "bocaletto-luca/Guess-The-Flag": "index.html is an identity hub, not a game: author links to bocalettoluca.altervista.org, bocaletto-luca.github.io, github.com/bocaletto-luca/, facebook.com/people/Luca-Bocaletto, youtube.com/@Elektronoide and soundcloud.com/luca-bocaletto, a wall of technology icons, and one 'Gioca' button. The quiz behind the button (game.html) boots with $('#playerModal').modal({...}) at main.js:16 using jQuery from code.jquery.com, so under script-src 'self' the DOMContentLoaded handler throws before the start button is wired, and it posts scores to save.php/records.php, which static hosting cannot run.",
+    "Ninja1375/invasores-espaciais": "One missing asset: style.css:3 declares @font-face with url(\"Play-Regular.ttf\") and the vendored tree has no font file at all (index.html, script.js, style.css, README, LICENSE only). The browser probe returns [http 404] /third-party/ninja1375-invasores-espaciais/Play-Regular.ttf. The game itself paints and has on-screen controls, so this entry can be removed as soon as the font is vendored next to style.css or the @font-face block is dropped.",
+    "awslabs/the-qubit-factory": "Entry page loads scripts/PopWindow.js, SpeechDump.js, Achievements.js and LevelConsts.js, none of which exist in the repository (checked 2026-10-30) - the game boots to a blank canvas. No build step is documented that would produce them.",
+    "LongSteve/aquastax": "index.html loads js/cocos2d-js-v3.15-min.js and frameworks/cocos2d-html5/CCBoot.js; neither file is in the repository, so the engine never loads. Upstream ships the source of the engine, not a browser build.",
+    "AdemCanCertel-zz/electron-canvas-game": "index.html loads js/index.js, which the repository does not contain (it is an Electron desktop project with no web build committed). Blank page under static hosting.",
+    "futrime/game-of-life": "index.html loads my_collection.js, absent from the repository; nothing renders.",
+    "motasimmakki/Snake-Game-in-JavaScript": "snakeGame.html loads a local jQuery.js that is not committed and falls back to code.jquery.com, which the site CSP (script-src self) blocks - the page cannot boot.",
+    "benruijl/justone": "Multiplayer-only: include/index.html:358 opens `ws://` + location.host + `/chat`. A static host serves no WebSocket endpoint, so the page cannot start a game - the smoke gate sees the failed handshake on every visit.",
+    "Omar-Mazen/weatherio": "Needs a live third-party API and a key: assest/js/api.js:13 calls api.openweathermap.org with `appid=${apiKey}`. The site CSP is connect-src self, so every request is refused and the page has nothing to show.",
+    "richie-rich90454/hackathon-game": "A Tauri + Go desktop project: the vendored tree holds src/, src-tauri/ and public/ with no built entry, so the module script the page asks for is served as application/octet-stream and the page dies on the MIME check. Needs a vite build.",
+    "minecraft8997/mclordchess-frontend": "Multiplayer-only client: it opens ws://<host>:5557/socket, which a static host cannot serve - connection refused on every visit.",
+    "avokadoen/tetris-wasm": "The page dynamically imports www/index.js and the repository does not contain it (only the C sources), so the import 404s and the frame stays blank.",
+    "s2031215/pixijs-solitaire": "The entry page asks for a script that is not in the repository (404 on load); nothing renders."
+  }
 }

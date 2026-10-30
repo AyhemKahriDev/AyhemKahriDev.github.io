@@ -4591,36 +4591,6 @@
         ]
       }
     },
-    "guess-the-flag": {
-      "category": "word",
-      "title": "Guess the Flag",
-      "copy": {
-        "tagline": "Answer the questions and see how much you know.",
-        "description": "Guess the Flag is a fun quiz where players identify countries by their flags.",
-        "howToPlay": [
-          "Pick an answer with a tap or a click.",
-          "Move between answers with the arrow keys or the on-screen pad.",
-          "Every correct answer adds to your score, and the questions keep coming."
-        ],
-        "faq": [
-          {
-            "q": "Is Guess Flag free to play?",
-            "a": "Yes. Guess Flag is free to play in your browser, with no account, no download and no payment."
-          },
-          {
-            "q": "Does Guess Flag work on a phone?",
-            "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-          }
-        ],
-        "keywords": [
-          "guess flag game",
-          "play guess flag online",
-          "free guess flag",
-          "online quiz game",
-          "word game"
-        ]
-      }
-    },
     "balljs": {
       "category": "arcade",
       "title": "Balljs",
@@ -4768,36 +4738,6 @@
           "free spaceguard",
           "online quick game",
           "sandbox game"
-        ]
-      }
-    },
-    "invasores-espaciais": {
-      "category": "arcade",
-      "title": "Invasores Espaciais",
-      "copy": {
-        "tagline": "Hold the line and clear the sky, wave after wave.",
-        "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
-        "howToPlay": [
-          "Move with the left and right arrows, or use the on-screen pad.",
-          "Fire with Space or the A button on the pad.",
-          "Clear each wave before it reaches the bottom of the screen."
-        ],
-        "faq": [
-          {
-            "q": "Is Invasores Espaciais free to play?",
-            "a": "Yes. Invasores Espaciais is free to play in your browser, with no account, no download and no payment."
-          },
-          {
-            "q": "Does Invasores Espaciais work on a phone?",
-            "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-          }
-        ],
-        "keywords": [
-          "invasores espaciais game",
-          "play invasores espaciais online",
-          "free invasores espaciais",
-          "online space shooter game",
-          "arcade game"
         ]
       }
     }

@@ -1,4 +1,113 @@
 {
   "_comment": "Hand-written third-party picks. `npm run harvest` never touches this file; later layers (published, generated) lose to it by id. See scripts/catalogue.mjs.",
-  "games": []
+  "games": [
+    {
+      "id": "nova-lancer",
+      "title": "Nova Lancer",
+      "tagline": "Fly the last lancer squadron along a burning coastline.",
+      "description": "A free 3D rail shooter: your lancer squadron flies a set route over an ocean, a canyon and a neon fortress, and you steer, roll, brake and fire while enemy formations come at you. One mission of about three minutes ends in a boss fight. Every terrain, ship and sound is generated as you play, so a round starts the moment you press start.",
+      "category": "arcade",
+      "accent": "#2FE6FF",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/tanuu5-nova-lancer/index.html"
+      },
+      "credit": {
+        "author": "tanuu5",
+        "licence": "MIT",
+        "source": "https://github.com/tanuu5/nova-lancer"
+      },
+      "keywords": [
+        "nova lancer",
+        "3d rail shooter",
+        "free space shooter",
+        "star fox style game",
+        "browser shooter",
+        "shoot em up online"
+      ],
+      "howToPlay": [
+        "Press start, then fly the route with the on-screen ROLL, BRAKE, BOOST and FIRE buttons, or with the keyboard: arrows to steer, J to fire, K for the bomb, L to boost, Q and E to roll.",
+        "Your ship follows the route on its own. Use roll to dodge incoming fire and brake to line up a shot on a formation.",
+        "Hold fire for the laser. Boost spends energy to close a gap, and the BOMB button clears the screen once.",
+        "Reach the end of the mission to meet the boss, then beat it before your shield bar empties."
+      ],
+      "faq": [
+        {
+          "q": "Is Nova Lancer free to play?",
+          "a": "Yes. It runs in your browser with no account, no download, no advert before the game and no payment."
+        },
+        {
+          "q": "How long is a run?",
+          "a": "One mission takes about three minutes plus the boss fight, so a full round fits in a coffee break."
+        },
+        {
+          "q": "Can I play it with one thumb?",
+          "a": "The ship flies itself along the route, so a single thumb on the fire button keeps you in the game. The roll, brake, boost and bomb buttons are laid out for a second finger when you want them."
+        },
+        {
+          "q": "Do I need a fast phone?",
+          "a": "It is a 3D game, so give it a recent phone and close other tabs if a round stutters. It starts at the tap of a button, with nothing to install first."
+        }
+      ],
+      "related": [
+        "asteroids",
+        "susam-invaders",
+        "starstruck"
+      ]
+    },
+    {
+      "id": "triangle-light-maze",
+      "title": "Triangle Light Maze",
+      "tagline": "Build a triangle of lights, then let the solver find the brightest path.",
+      "description": "A build-and-solve puzzle on a triangular grid of up to 30 rows. You choose which points glow, and the solver works out the top-to-bottom route that collects the most of them, showing the path, the score and the share of lights it caught. Every board you make is a fresh puzzle, and there is no clock.",
+      "category": "sandbox",
+      "accent": "#5AD8FF",
+      "daily": false,
+      "embed": {
+        "src": "/third-party/eprogressing-triangle-light-maze-solver/index.html"
+      },
+      "credit": {
+        "author": "eprogressing",
+        "licence": "MIT",
+        "source": "https://github.com/eprogressing/triangle-light-maze-solver"
+      },
+      "keywords": [
+        "triangle maze",
+        "light maze",
+        "maze puzzle",
+        "path finding puzzle",
+        "free puzzle game",
+        "browser puzzle"
+      ],
+      "howToPlay": [
+        "Pick the number of rows and press the first button to build the triangle. The button labels are in Chinese: the left one builds the board and the right one runs the solver.",
+        "Tap any point in the triangle to switch its light on or off, then run the solver.",
+        "The path it draws runs from the top point to the bottom row and picks up the most lit points it can. The score, the number of lights caught and the capture rate appear underneath.",
+        "Use the tie-break menu to prefer the left or the right when two routes score the same, and the example button to load a ready-made board."
+      ],
+      "faq": [
+        {
+          "q": "Is Triangle Light Maze free?",
+          "a": "Yes. It runs entirely in your browser, with no account, no download and no payment."
+        },
+        {
+          "q": "Is there a time limit?",
+          "a": "No. You build the board at your own pace and run the solver when you are ready."
+        },
+        {
+          "q": "Why is the interface in Chinese?",
+          "a": "The original author wrote it in Chinese and it ships unchanged. The order is always the same: build the board, tap the points you want lit, then run the solver."
+        },
+        {
+          "q": "Does it work on a phone?",
+          "a": "Yes. Tap the points and the buttons with one finger, and the board scales to the width of the screen."
+        }
+      ],
+      "related": [
+        "maze-js",
+        "the-maze-game",
+        "evoluteur-maze-maker"
+      ]
+    }
+  ]
 }
