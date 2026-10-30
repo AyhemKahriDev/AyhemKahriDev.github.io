@@ -227,6 +227,11 @@ async function main() {
       page.setDefaultNavigationTimeout(20_000);
 
       const errors = [];
+      // What the browser complained about, kept apart from what the page
+      // structurally failed to do. A live frame's complaints are noise; a dead
+      // frame's are the evidence.
+      const browserErrors = [];
+      let frameAlive = null;
       const warnings = [];
       const origin = `http://localhost:${port}`;
       // Only failures on our own origin are build failures. Vendored games
@@ -240,7 +245,7 @@ async function main() {
           warnings.push(`${verdict.reason}: ${text.slice(0, 60)}`);
           return;
         }
-        errors.push(`console: ${text}`);
+        browserErrors.push(`console: ${text}`);
       });
       // Browser policy, not a page defect: see scripts/smoke-rules.mjs.
       page.on('pageerror', (e) => {
@@ -249,7 +254,7 @@ async function main() {
           warnings.push(`${verdict.reason}: ${e.message.slice(0, 60)}`);
           return;
         }
-        errors.push(`pageerror: ${e.message}`);
+        browserErrors.push(`pageerror: ${e.message}`);
       });
       page.on('requestfailed', (r) => {
         if (r.url().startsWith(origin)) warnings.push(`requestfailed: ${r.url()}`);
@@ -325,17 +330,11 @@ async function main() {
           // A canvas plus real text is a live game even if it has not drawn yet.
           const alive = probe.hasCanvas && probe.textLen > 60;
 
-          const looksAlive = paints || interactive || alive || probe.webgl;
-          if (!looksAlive) {
+          frameAlive = paints || interactive || alive || probe.webgl;
+          if (!frameAlive) {
             errors.push(
               `third-party frame looks dead (canvas ${probe.hasCanvas}, ${probe.pixels}px, text ${probe.textLen})`,
             );
-          } else if (errors.length) {
-            // The page renders and responds: it is playable, so what it logged
-            // is noise (a blocked tracker, a refused autoplay, a missing
-            // favicon), not a broken game. Told apart here because "any
-            // console error fails" made ~15 working games red.
-            for (const e of errors.splice(0)) warnings.push(e);
           }
         }
       }
@@ -400,6 +399,17 @@ async function main() {
 
       await page.screenshot({ path: join(shots, `${target.name}.png`), fullPage: !target.expectCanvas });
       await page.close();
+
+      // Judge the browser's complaints last, when it is known whether the page
+      // came to life. Errors that arrive after the liveness probe (a keypress
+      // handler, a lazy module) are the common case, and demoting inline missed
+      // them: four games that render and respond were failing on a pageerror
+      // thrown a few hundred ms later.
+      if (frameAlive === true) {
+        for (const e of browserErrors.splice(0)) warnings.push(e);
+      } else {
+        errors.push(...browserErrors.splice(0));
+      }
 
       if (isAudioOnly(errors)) {
         // Headless Chrome has no audio device, so an AudioWorklet module
