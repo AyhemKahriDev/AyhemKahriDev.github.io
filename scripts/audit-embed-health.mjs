@@ -185,7 +185,11 @@ async function main() {
       // page the timeout is already the verdict.
       if (retried) navWarnings.push('first navigation attempt timed out - retried once');
       docStatus = res?.status() ?? 0;
-      await sleep(1200);
+      // Three seconds: a game that builds its DOM from a script (a crossword
+      // grid, a Phaser scene, a React start screen) has 83 characters at 1.2 s
+      // and 839 at 3 s. The audit read the first number and filed a working
+      // game as dead.
+      await sleep(3000);
       // Many games wait for a click before they draw, and many of them want
       // a name before they start. Start one if the page offers a start
       // button, so a game behind a start screen is not mistaken for a dead
