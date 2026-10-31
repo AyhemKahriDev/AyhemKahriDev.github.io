@@ -94,6 +94,7 @@
   --wrap: 1180px;
   --gutter: clamp(16px, 4vw, 32px);
   --head-h: 64px;
+  --head-total: 104px;
 }
 
 /* ------------------------------------------------------------
@@ -571,12 +572,25 @@ kbd {
   -webkit-backdrop-filter: blur(16px) saturate(140%);
 }
 
+/* The header is two rows at every width: identity, search, language and theme
+   on top, the category strip underneath. It used to be one row that was
+   "mostly" wide enough, which broke twice — the nav overflowed its column and
+   painted over the language pills at 901-1180px in English, and the longer
+   German labels ("Tägliches Rätsel") never fit the 1180px wrap at any width.
+   Two rows also mean the layout is identical in all four languages. */
 .site-header .bar {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: 'brand tools';
   align-items: center;
-  gap: 18px;
-  height: var(--head-h);
+  column-gap: 14px;
+  row-gap: 0;
+  padding-block: 9px;
+}
+
+.site-header .brand {
+  grid-area: brand;
+  min-width: 0;
 }
 
 .brand {
@@ -615,12 +629,11 @@ kbd {
   color: var(--signal);
 }
 
+/* The desktop nav is gone: the one `.nav-strip` row below the bar is now the
+   only category navigation at every size, so there is no second tree to keep
+   in sync and no locale that can overflow it. */
 .site-nav {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  min-width: 0;
+  display: none;
 }
 
 .site-nav a {
@@ -648,8 +661,10 @@ kbd {
 .top-tools {
   display: flex;
   align-items: center;
+  justify-content: flex-end;
   gap: 8px;
-  justify-self: end;
+  min-width: 0;
+  grid-area: tools;
 }
 
 /* ------------------------------------------------- language switcher */
@@ -702,14 +717,130 @@ kbd {
   font-weight: 700;
 }
 
+/* ------------------------------------------------- language menu (phone) */
+
+/* The pills and the phone menu are the same four links. Wrapping them keeps
+   the search field and the theme button in place when they swap at 480px. */
+.lang-wrap {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+/* Four pills leave a phone search field ~60px wide, so below 480px the same
+   links move into a <details> menu: keyboard accessible, no JavaScript, and
+   the active language is always visible on the summary. */
+.lang-menu {
+  display: none;
+  position: relative;
+}
+
+.lang-menu summary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 40px;
+  min-height: 34px;
+  padding: 0 9px;
+  border: 1px solid var(--hair);
+  border-radius: var(--r-pill);
+  background: var(--panel);
+  color: var(--paper-2);
+  font-family: var(--f-mono);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  cursor: pointer;
+  list-style: none;
+  transition:
+    color var(--t-fast) var(--e-io),
+    border-color var(--t-fast) var(--e-io),
+    background var(--t-fast) var(--e-io);
+}
+
+.lang-menu summary::-webkit-details-marker {
+  display: none;
+}
+
+.lang-menu summary::after {
+  content: '';
+  width: 5px;
+  height: 5px;
+  margin-top: -2px;
+  border-right: 1.5px solid currentColor;
+  border-bottom: 1.5px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.7;
+}
+
+.lang-menu summary:hover,
+.lang-menu[open] > summary {
+  color: var(--paper);
+  border-color: var(--hair-2);
+  background: var(--panel-2);
+}
+
+.lang-pop {
+  position: absolute;
+  top: calc(100% + 8px);
+  /* Anchored to the start edge: the menu lives at the left of the header
+     (right in RTL), where an end-anchored 176px panel would hang off screen. */
+  inset-inline-start: 0;
+  inset-inline-end: auto;
+  z-index: 90;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 176px;
+  padding: 6px;
+  border: 1px solid var(--hair-2);
+  border-radius: var(--r-md);
+  background: var(--panel);
+  box-shadow: var(--lift-hi);
+}
+
+.lang-pop a {
+  padding: 9px 11px;
+  border-radius: var(--r-sm);
+  font-size: 13px;
+  color: var(--paper-2);
+  transition:
+    color var(--t-fast) var(--e-io),
+    background var(--t-fast) var(--e-io);
+}
+
+.lang-pop a:hover,
+.lang-pop a:focus-visible {
+  color: var(--paper);
+  background: var(--panel-2);
+}
+
+.lang-pop a[aria-current='page'] {
+  color: var(--signal-text);
+  font-weight: 600;
+}
+
+@media (max-width: 480px) {
+  .lang-switch {
+    display: none;
+  }
+
+  .lang-menu {
+    display: block;
+  }
+}
+
 .search {
   display: flex;
   align-items: center;
   gap: 8px;
   height: 36px;
+  flex: 0 1 300px;
+  min-width: 0;
   padding-block: 0;
   padding-inline: 10px 9px;
-  min-width: 236px;
   border: 1px solid var(--hair);
   border-radius: var(--r-sm);
   background: var(--panel);
@@ -902,13 +1033,24 @@ kbd {
   font-size: 12px;
 }
 
-/* mobile nav strip: same anchors, scrolled horizontally */
+/* mobile nav strip: same anchors, scrolled horizontally.
+   It is the only nav below 1180px, so it carries the active pill, a soft
+   edge fade that says "there is more to the right", and scroll-snap so a
+   thumb never parks between two categories. */
 .nav-strip {
-  display: none;
+  display: flex;
+  width: 100%;
+  max-width: var(--wrap);
+  margin-inline: auto;
   gap: 6px;
-  padding: 0 var(--gutter) 10px;
+  padding: 2px var(--gutter) 10px;
   overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 26px), transparent 100%);
 }
 
 .nav-strip::-webkit-scrollbar {
@@ -917,12 +1059,34 @@ kbd {
 
 .nav-strip a {
   flex: 0 0 auto;
+  scroll-snap-align: start;
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
   padding: 7px 13px;
   border: 1px solid var(--hair);
   border-radius: var(--r-pill);
   font-size: 13px;
+  font-weight: 500;
   color: var(--paper-2);
   background: var(--panel);
+  transition:
+    color var(--t-fast) var(--e-io),
+    background var(--t-fast) var(--e-io),
+    border-color var(--t-fast) var(--e-io);
+}
+
+.nav-strip a:hover {
+  color: var(--paper);
+  border-color: var(--hair-2);
+  background: var(--panel-2);
+}
+
+.nav-strip a[aria-current='page'] {
+  color: var(--signal-ink);
+  background: var(--signal);
+  border-color: transparent;
+  font-weight: 700;
 }
 
 /* ============================================================
@@ -1440,6 +1604,68 @@ kbd {
 
 .tile:active {
   transform: translateY(-1px) scale(0.995);
+}
+
+/* Keyboard users get the same "this opens" signal the mouse gets: the card
+   lifts, the accent glow comes up and the thumb shows a play mark. */
+.tile:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+  border-color: var(--hair-2);
+  transform: translateY(-3px);
+  box-shadow: var(--lift-hi);
+}
+
+.tile:focus-visible::before {
+  opacity: 1;
+}
+
+.tile:hover .thumb::after,
+.tile:focus-visible .thumb::after {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* The play mark is drawn in CSS so it needs no copy, no icon and no JS. */
+.thumb::after {
+  content: '';
+  position: absolute;
+  inset-block-end: 10px;
+  inset-inline-end: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--ink) 72%, transparent);
+  border: 1px solid var(--hair-2);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(4px) scale(0.9);
+  transition:
+    opacity var(--t-mid) var(--e-out),
+    transform var(--t-mid) var(--e-spring);
+}
+
+.thumb::before {
+  content: '';
+  position: absolute;
+  inset-block-end: 21px;
+  inset-inline-end: 20px;
+  z-index: 1;
+  width: 0;
+  height: 0;
+  border-block: 5px solid transparent;
+  border-inline-start: 8px solid var(--paper);
+  opacity: 0;
+  transform: translateY(4px) scale(0.9);
+  transition:
+    opacity var(--t-mid) var(--e-out),
+    transform var(--t-mid) var(--e-spring);
+}
+
+.tile:hover .thumb::before,
+.tile:focus-visible .thumb::before {
+  opacity: 1;
+  transform: translateY(0) scale(1);
 }
 
 .thumb {
@@ -2317,7 +2543,7 @@ td a {
 }
 
 #main {
-  scroll-margin-top: calc(var(--head-h) + 8px);
+  scroll-margin-top: calc(var(--head-total) + 8px);
 }
 
 .game-main {
@@ -2944,51 +3170,9 @@ td a {
     padding: 8px 9px;
     font-size: 13px;
   }
-
-  .search {
-    min-width: 180px;
-  }
 }
 
 @media (max-width: 900px) {
-  :root {
-    --head-h: 58px;
-  }
-
-  .site-header .bar {
-    grid-template-columns: auto 1fr auto;
-    grid-template-areas: 'brand tools tools';
-    row-gap: 0;
-    height: auto;
-    padding-top: 10px;
-    padding-bottom: 10px;
-  }
-
-  .site-header .brand {
-    grid-area: brand;
-    min-width: 0;
-  }
-
-  .site-header .top-tools {
-    grid-area: tools;
-    flex: 1 1 auto;
-    min-width: 0;
-    justify-self: stretch;
-  }
-
-  .search {
-    flex: 1 1 auto;
-    min-width: 0;
-  }
-
-  .site-nav {
-    display: none;
-  }
-
-  .nav-strip {
-    display: flex;
-  }
-
   .hero,
   .hero-split {
     grid-template-columns: 1fr;
@@ -3175,6 +3359,49 @@ td a {
 
   .side-title {
     font-size: 19px;
+  }
+
+  /* Game topbar on a phone: the HUD keeps its numbers, drops the tiny
+     labels; difficulty lives in the rail; everything gains real space. */
+  .hud-label {
+    display: none;
+  }
+
+  .hud {
+    gap: 13px;
+  }
+
+  .hud-value {
+    font-size: 16px;
+  }
+
+  /* Game topbar on a phone: two rows instead of five controls fighting over
+     390px. HUD on top, language/difficulty/sound/fullscreen below. */
+  .topbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 6px 8px;
+    height: auto;
+    padding: 8px 10px;
+  }
+
+  .topbar .brand {
+    order: 1;
+  }
+
+  .topbar .hud {
+    order: 2;
+    flex: 1 1 auto;
+    justify-content: flex-start;
+    margin-inline-start: 4px;
+  }
+
+  .topbar .top-actions {
+    order: 3;
+    flex: 0 0 auto;
+    justify-self: auto;
   }
 }
 

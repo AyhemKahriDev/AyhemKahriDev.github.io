@@ -691,26 +691,36 @@ function advertiseSlots(count = 2) {
 
 /* ------------------------------------------------------------ site pages */
 
-/**
- * The language switcher: three real links, not a menu.
- *
- * Every link points at the same page in another tree, so a reader who is on
- * page 3 of the games index (or on a 2001 daily answer page) stays exactly
- * where they are and only the language changes. It works with JavaScript
- * off, which a <select> would not.
- */
-function langSwitcher(path) {
-  // Three real links. Every rule that draws them - spacing, the active pill,
-  // the 32px touch target that keeps them on one row at 375px - lives in
-  // public/styles.css under .lang-switch: inline styles here would beat the
-  // stylesheet and stack the three codes on a phone.
-  const items = LOCALES.map((l) => {
+/** The four locale links, as real anchors. `full` prints the language name. */
+function langLinks(path, { full = false } = {}) {
+  return LOCALES.map((l) => {
     const current = l.id === L.id;
     return `<a href="${esc(localePath(l, path))}" data-lang="${l.id}" lang="${l.id}" title="${esc(
       l.name,
-    )}"${current ? ' aria-current="page"' : ''}>${l.id.toUpperCase()}</a>`;
+    )}"${current ? ' aria-current="page"' : ''}>${full ? esc(l.name) : l.id.toUpperCase()}</a>`;
   }).join('');
-  return `<nav class="lang-switch" aria-label="${tn('a11y.lang')}" data-locale="${L.id}">${items}</nav>`;
+}
+
+/**
+ * The language switcher: four real links, not a script.
+ *
+ * Every link points at the same page in another tree, so a reader who is on
+ * page 3 of the games index (or on a 2001 daily answer page) stays exactly
+ * where they are and only the language changes. It works with JavaScript off.
+ *
+ * Two presentations of the same links: a row of pills where there is room, and
+ * a compact <details> menu on a phone where four pills would squeeze the
+ * search field to nothing. CSS swaps them at 480px; the hidden one is
+ * display:none, so a screen reader only ever meets one set.
+ */
+function langSwitcher(path) {
+  return `<div class="lang-wrap">
+    <nav class="lang-switch" aria-label="${tn('a11y.lang')}" data-locale="${L.id}">${langLinks(path)}</nav>
+    <details class="lang-menu">
+      <summary aria-label="${tn('a11y.lang')} — ${esc(L.name)}"><span aria-hidden="true">${L.id.toUpperCase()}</span></summary>
+      <div class="lang-pop" role="group" aria-label="${tn('a11y.lang')}">${langLinks(path, { full: true })}</div>
+    </details>
+  </div>`;
 }
 
 function siteHeader(path = '/') {
@@ -1159,7 +1169,12 @@ function shellWithSwitcher(html, path) {
   const nav = langSwitcher(path);
   for (const marker of ['<div class="top-actions">', '<div class="embed-actions">']) {
     const at = html.indexOf(marker);
-    if (at !== -1) return html.slice(0, at) + nav + html.slice(at);
+    // Inside the actions row, not before it: the topbar is a three-column
+    // grid, so a new sibling would push the icons onto a second row.
+    if (at !== -1) {
+      const cut = at + marker.length;
+      return html.slice(0, cut) + nav + html.slice(cut);
+    }
   }
   return `${nav}${html}`;
 }
