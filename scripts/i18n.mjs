@@ -383,7 +383,7 @@ const EN = {
     'ad.start1': 'Write to me with your name, what you advertise and the link.',
     'ad.start2':
       'Your slot goes live on the next build — usually the same day — and you see it on the real site before paying anything.',
-    'ad.start3': 'The payment link arrives with the confirmation. You only pay once it is live.',
+    'ad.start3': 'You get an invoice (bank transfer or Payoneer) after the slot is live — you only pay once it is on the site.',
     'ad.fits': 'What fits',
     'ad.fitsBody':
       "Games, game-dev tools, word-game and puzzle books, education, indie newsletters. Family-friendly only: no gambling, no crypto, no loot boxes, nothing you couldn't explain to a nine-year-old.",
