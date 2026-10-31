@@ -1,6 +1,6 @@
 # How a game gets into the catalogue
 
-The catalogue is 552 games. Ten are hand-written engine games; the other 543 are
+The catalogue is 551 games. Ten are hand-written engine games; the other 541 are
 third-party repositories vendored into `third-party/` — 538 harvested into
 `content/harvest-published.json` (or the legacy `content/games.generated.json`)
 and five hand-picked. This page covers the harvested path: how a repository on
@@ -92,7 +92,7 @@ died) is kept for the next run. Nothing is ever appended to `content/blocked.jso
 automatically — that list is a human decision.
 
 **5. Import** — `import.mjs` is the only place a repository becomes a published
-game, and it enforces the rules a 553-game catalogue needs:
+game, and it enforces the rules a 551-game catalogue needs:
 
 - no passing verdict, no page;
 - one page per title: `dedupeByTitle()` keeps the richest of each fold

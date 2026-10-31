@@ -4930,50 +4930,6 @@
       ]
     },
     {
-      "id": "ggomaeng-be-the-rocket",
-      "title": "Be the Rocket",
-      "tagline": "Hold the line and clear the sky, wave after wave.",
-      "description": "Hold the line at the bottom of the screen, fire upwards and clear each formation before it lands.",
-      "category": "classics",
-      "accent": "hsl(320 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/ggomaeng-be-the-rocket/index.html"
-      },
-      "credit": {
-        "author": "ggomaeng",
-        "licence": "MIT",
-        "source": "https://github.com/ggomaeng/be-the-rocket"
-      },
-      "keywords": [
-        "be the rocket game",
-        "play be the rocket online",
-        "free be the rocket",
-        "online space shooter game",
-        "arcade game"
-      ],
-      "howToPlay": [
-        "Move with the left and right arrows, or use the on-screen pad.",
-        "Fire with Space or the A button on the pad.",
-        "Clear each wave before it reaches the bottom of the screen."
-      ],
-      "faq": [
-        {
-          "q": "Is Be the Rocket free to play?",
-          "a": "Yes. Be the Rocket is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Be the Rocket work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "ondras-rot-js",
-        "ssusnic-machine-learning-flappy-bird"
-      ]
-    },
-    {
       "id": "giorgosn-wallbrawl",
       "title": "Wallbrawl",
       "tagline": "A quick game to pick up and play in the browser.",
@@ -5844,50 +5800,6 @@
         },
         {
           "q": "Does Flea work on a phone?",
-          "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
-        }
-      ],
-      "related": [
-        "gabrielecirulli-2048",
-        "ondras-rot-js",
-        "ssusnic-machine-learning-flappy-bird"
-      ]
-    },
-    {
-      "id": "hustcc-pixi-action",
-      "title": "Action",
-      "tagline": "Steer for the line and keep your foot down.",
-      "description": "Steer through the course, brake into the corners and hold your line all the way to the flag.",
-      "category": "arcade",
-      "accent": "hsl(290 85% 62%)",
-      "daily": false,
-      "embed": {
-        "src": "/third-party/hustcc-pixi-action/index.html"
-      },
-      "credit": {
-        "author": "hustcc",
-        "licence": "MIT",
-        "source": "https://github.com/hustcc/pixi-action"
-      },
-      "keywords": [
-        "action game",
-        "play action online",
-        "free action",
-        "online racing game",
-        "racing game"
-      ],
-      "howToPlay": [
-        "Steer with the left and right arrows, or use the on-screen pad.",
-        "Accelerate with the up arrow and brake with the down arrow.",
-        "Swipe left or right on a phone to steer through the corner."
-      ],
-      "faq": [
-        {
-          "q": "Is Action free to play?",
-          "a": "Yes. Action is free to play in your browser, with no account, no download and no payment."
-        },
-        {
-          "q": "Does Action work on a phone?",
           "a": "Yes. It runs in a phone browser, and the on-screen pad and swipe controls send the same keys as a keyboard."
         }
       ],

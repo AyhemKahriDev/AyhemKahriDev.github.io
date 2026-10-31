@@ -65,7 +65,8 @@
     "minecraft8997/mclordchess-frontend",
     "avokadoen/tetris-wasm",
     "s2031215/pixijs-solitaire",
-    "yunzhu-li/multiplayer-snake"
+    "yunzhu-li/multiplayer-snake",
+    "hustcc/pixi-action"
   ],
   "notes": {
     "luleoa12/wordle_craft": "The daily answer comes from a third-party API: script.js:193 fetch(`https://wordle-craft.luleoa12.workers.dev?datetime=...`). index.html also pulls html2canvas from html2canvas.hertzen.com (line 614), Google Tag Manager (line 623) and Google Fonts (line 53). The site's CSP is connect-src 'self' / script-src 'self' (public/_headers), so the word never arrives and there is nothing to guess.",
