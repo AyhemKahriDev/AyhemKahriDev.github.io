@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/all.min.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="black flex-nw white-color">
+    <header class="header">
+        <div class="container central flex-w">
+            <div class="left-header flex-nw">
+                <h1>Memory</h1>
+                <a class="link-github block" href="https://github.com/ducthang-vu/Memory---game"  target="_blank rel="noopener noreferrer">
+                    <i class="fab fa-github"></i>
+                </a>  
+            </div>
+    
+            <div class="right-header flex-nw">
+                <div class="input-box">
+                    <div class="input-box-inner">
+                        <input id="level_1" name="level" type="radio" value="1" checked/>
+                        <label for="level_1">Level 1</label>
+                    </div>
+            
+                    <div class="input-box-inner">
+                        <input id="level_2"  name="level" type="radio" value="2" />
+                        <label for="level_2">Level 2</label>
+                    </div>  
+            
+                    <div class="input-box-inner">
+                        <input id="level_3"  name="level" type="radio" value="3" />
+                        <label for="level_3">Level 3</label>
+                    </div>   
+            
+                    <div class="input-box-inner">
+                        <input id="level_4"  name="level" type="radio" value="4" />
+                        <label for="level_4">Level 4</label>
+                    </div>   
+                </div>
+                
+                <button id="volume-button" class="in-block">
+                    <i id="icon-volume" class="fas fa-volume-up"></i>
+                    <i id="icon-switch" class="fas fa-toggle-on darkgreen-color"></i>
+                </button>
+            </div>
+                
+            <div class="center-header text-center">
+                <button id="play-button" class="play-button button block green white-color">
+                    Play
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container central flex-w">
+            <section class="board-section central text-center">
+                <div id="board" class="central">
+                </div>
+            </section>
+
+            <section class="info-section text-center">
+                <div class="output flex-w">
+                    <div class="wrapper text-center">
+                        <div class="wr-label">Level:</div>
+                        <div class="box inline-fl-w">
+                            <span id="level">1</span>
+                        </div>
+                    </div>
+    
+                    <div class="wrapper text-center">
+                        <div class="wr-label">Tries:</div>
+                        <div class="box inline-fl-w">
+                            <span id="attempts">0</span>
+                        </div>
+                    </div>
+
+                    <div class="wrapper text-center">
+                        <div class="wr-label">Time:</div>
+                        <div class="box inline-fl-w">
+                            <span id="time">00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-box">
+                    <span id="text-admin">Press "Play" to start the game!</span>
+                </div>
+            </section>
+        </div> 
+    </main>  
+
+    <footer>
+        <div class="container relative central">
+            <div class="main-footer flex-nw">
+                <button id="info-button" class="info-button">
+                    <i class="far fa-question-circle"></i>
+                </button>
+    
+                <div class="footer-right text-right">
+                    <p>Made by Thang<br>13/04/2020</p>
+                </div>  
+            </div> 
+        
+            <div id="rules" class="rules absolute display-none text-left ">
+                <p>
+                    Difficulty levels:<br>&nbsp;&nbsp;&nbsp;1  -  16 cards;<br>&nbsp;&nbsp;&nbsp;2  -  32 cards;<br>&nbsp;&nbsp;&nbsp;3  -  48 cards; and<br>&nbsp;&nbsp;&nbsp;4  -  64 cards
+                </p>
+    
+                <p>
+                    A deck of cards is composed of pairs of cards with the same rank (from 10 to 99).
+                </p>
+    
+                <p>
+                    The player starts by picking up two cards. If the cards are of the same rank, they are removed from the game; otherwise, they are laid back on the board face-down.<br>
+                    The player continues to pick pairs of cards. The game ends when the player manage to remove every card.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- TEMPLATES -->
+    <div class="template display-none">
+        <div class="board-wrapper inline-fl-w"></div>
+        
+        <div class="scene">
+            <div class="card relative" data-position="">
+                <div class="card-face card-down absolute">
+                    ?
+                </div>  
+                <div class="card-face card-up absolute">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- AUDIO -->
+    <audio id="audio-bleep" src="bleep.mp3"></audio>
+    <audio id="audio-success" src="success.mp3"></audio>
+    <audio id="audio-victory" src="victory.mp3"></audio>
+
+
+    <!-- SCRIPT -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="script/main.js"></script>
+</body>
+</html>

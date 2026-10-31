@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>THEG I — Grand Theg Auto</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:#000;overflow:hidden;}
+#c{display:block;width:100vw;height:100vh;cursor:none;}
+
+/* ── HUD ── */
+#hud{position:fixed;inset:0;pointer-events:none;z-index:10;font-family:'Arial Narrow',Arial,sans-serif;}
+
+/* money + wanted – top right */
+#top-right{position:absolute;top:20px;right:20px;text-align:right;}
+#money{color:#b5e853;font-size:32px;font-weight:bold;letter-spacing:1px;margin-bottom:10px;text-shadow:0 0 14px rgba(181,232,83,.35);}
+#wanted-wrap{display:flex;gap:6px;justify-content:flex-end;}
+.star{width:32px;height:32px;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%);background:#2a2a2a;transition:all .25s;}
+.star.on{background:#f39c12;box-shadow:0 0 12px #f39c12;}
+.star.red{background:#e74c3c;box-shadow:0 0 16px #e74c3c;}
+
+/* health/armor – bottom left above minimap */
+#stats{position:absolute;bottom:220px;left:20px;}
+#pname{color:#fff;font-size:14px;font-weight:bold;letter-spacing:2px;margin-bottom:5px;}
+.brow{display:flex;align-items:center;gap:8px;margin-bottom:4px;}
+.blbl{color:rgba(255,255,255,.6);font-size:11px;width:16px;}
+.bbar{width:150px;height:10px;background:rgba(0,0,0,.55);border-radius:1px;overflow:hidden;}
+#hpf{height:100%;background:#e74c3c;transition:width .2s;}
+#apf{height:100%;background:#7fb3e8;transition:width .2s;}
+
+/* minimap – bottom left */
+#mm-wrap{position:absolute;bottom:20px;left:20px;width:192px;height:192px;}
+#mm-clip{width:192px;height:192px;overflow:hidden;
+  clip-path:polygon(32px 0%,calc(100% - 32px) 0%,100% 32px,100% calc(100% - 32px),calc(100% - 32px) 100%,32px 100%,0 calc(100% - 32px),0 32px);
+  background:rgba(0,0,0,.75);border:2px solid rgba(255,255,255,.2);}
+#mm{display:block;}
+
+/* weapon – bottom right */
+#wep{position:absolute;bottom:20px;right:20px;text-align:right;}
+#wep-name{color:rgba(255,255,255,.7);font-size:13px;letter-spacing:2px;margin-bottom:3px;}
+#ammo-cur{color:#fff;font-size:28px;font-weight:bold;line-height:1;}
+#ammo-res{color:rgba(255,255,255,.45);font-size:15px;}
+
+/* crosshair */
+#xhair{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);display:none;pointer-events:none;}
+#xhair::before,#xhair::after{content:'';position:absolute;background:rgba(255,255,255,.85);}
+#xhair::before{width:2px;height:22px;left:9px;top:0;}
+#xhair::after{width:22px;height:2px;left:0;top:9px;}
+
+/* message */
+#msg{position:absolute;top:38%;left:50%;transform:translate(-50%,-50%);
+  color:#f5c518;font-size:24px;font-weight:bold;letter-spacing:3px;
+  text-shadow:2px 2px 10px rgba(0,0,0,.9);opacity:0;transition:opacity .4s;text-align:center;}
+
+/* interaction prompt */
+#prompt{position:absolute;bottom:260px;left:50%;transform:translateX(-50%);
+  color:#fff;font-size:14px;letter-spacing:1px;background:rgba(0,0,0,.55);
+  padding:6px 18px;border-radius:2px;opacity:0;transition:opacity .3s;}
+
+/* title */
+#title{position:fixed;inset:0;z-index:100;
+  background:radial-gradient(ellipse at 30% 60%,#0a1628,#0d2137,#000);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;}
+#tlogo{font-size:110px;font-weight:900;letter-spacing:-6px;color:#f5c518;
+  text-shadow:0 0 80px rgba(245,197,24,.5);margin-bottom:4px;}
+#tsub{color:rgba(255,255,255,.5);font-size:16px;letter-spacing:8px;margin-bottom:70px;}
+#tbtn{background:rgba(245,197,24,.1);border:2px solid #f5c518;color:#f5c518;
+  padding:15px 64px;font-size:20px;letter-spacing:5px;cursor:pointer;
+  font-family:inherit;text-transform:uppercase;transition:all .2s;}
+#tbtn:hover{background:#f5c518;color:#000;}
+#tnote{color:rgba(255,255,255,.3);font-size:12px;margin-top:24px;letter-spacing:2px;line-height:2;}
+
+/* wasted */
+#wasted{position:fixed;inset:0;background:rgba(0,0,0,.82);
+  display:none;flex-direction:column;align-items:center;justify-content:center;z-index:60;}
+#wasted h1{font-size:86px;color:#c0392b;letter-spacing:18px;text-shadow:0 0 50px rgba(192,57,43,.9);}
+#wasted p{color:rgba(255,255,255,.7);font-size:16px;margin:16px 0 36px;letter-spacing:2px;}
+#wasted button{background:none;border:2px solid rgba(255,255,255,.6);color:#fff;
+  padding:12px 44px;font-size:15px;letter-spacing:4px;cursor:pointer;font-family:inherit;transition:all .2s;}
+#wasted button:hover{background:#fff;color:#000;}
+</style>
+</head>
+<body>
+<canvas id="c"></canvas>
+
+<div id="hud">
+  <div id="top-right">
+    <div id="money">$0</div>
+    <div id="wanted-wrap">
+      <div class="star" id="s5"></div><div class="star" id="s4"></div>
+      <div class="star" id="s3"></div><div class="star" id="s2"></div><div class="star" id="s1"></div>
+    </div>
+  </div>
+  <div id="stats">
+    <div id="pname">MICHAEL</div>
+    <div class="brow"><span class="blbl">HP</span><div class="bbar"><div id="hpf"></div></div></div>
+    <div class="brow"><span class="blbl">AP</span><div class="bbar"><div id="apf"></div></div></div>
+  </div>
+  <div id="mm-wrap"><div id="mm-clip"><canvas id="mm" width="192" height="192"></canvas></div></div>
+  <div id="wep">
+    <div id="wep-name">UNARMED</div>
+    <div id="ammo-cur"></div>
+    <div id="ammo-res"></div>
+  </div>
+  <div id="xhair"></div>
+  <div id="msg"></div>
+  <div id="prompt"></div>
+</div>
+
+<div id="title">
+  <div id="tlogo">THEG</div>
+  <div id="tsub">GRAND THEG AUTO — I</div>
+  <button id="tbtn" onclick="startGame()">JOGAR</button>
+  <div id="tnote">
+    WASD — Mover &nbsp;|&nbsp; Mouse — Câmera &nbsp;|&nbsp; Shift — Correr<br>
+    F — Entrar/Sair Veículo &nbsp;|&nbsp; Clique — Atirar &nbsp;|&nbsp; 1·2·3·4 — Armas<br>
+    R — Recarregar &nbsp;|&nbsp; E — Interagir
+  </div>
+</div>
+
+<div id="wasted">
+  <h1>WASTED</h1>
+  <p id="wasted-stats"></p>
+  <button onclick="restartGame()">RESPAWN</button>
+</div>
+
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.module.js"
+  }
+}
+</script>
+<script type="module" src="src/main.js"></script>
+</body>
+</html>

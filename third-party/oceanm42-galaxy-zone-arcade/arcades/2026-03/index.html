@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sal's Galaxy Zone Arcade</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/crt-effects.css">
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <header class="site-header">
+    <h1 class="neon-sign">
+      <span class="neon-letter">S</span><span class="neon-letter">A</span><span class="neon-letter">L</span><span class="neon-letter">'</span><span class="neon-letter">S</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">G</span><span class="neon-letter">A</span><span class="neon-letter">L</span><span class="neon-letter">A</span><span class="neon-letter">X</span><span class="neon-letter">Y</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">Z</span><span class="neon-letter">O</span><span class="neon-letter">N</span><span class="neon-letter">E</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">A</span><span class="neon-letter">R</span><span class="neon-letter">C</span><span class="neon-letter">A</span><span class="neon-letter">D</span><span class="neon-letter">E</span>
+    </h1>
+    <p class="subtitle">Est. 1982 — Now Digital Forever</p>
+  </header>
+
+  <nav class="nav-bar">
+    <a href="#arcade-grid" class="nav-link">Games</a>
+    <a href="how-it-was-done.html" class="nav-link">About</a>
+    <a href="achievements.html" class="nav-link">Achievements</a>
+    <a href="../../index.html" class="nav-link">All Locations</a>
+  </nav>
+
+  <main>
+    <section id="arcade-grid" class="arcade-grid">
+
+      <a href="games/pac-chase/index.html" class="game-card" data-game="pac-chase">
+        <div class="card-cover" id="cover-pac-chase"><img src="assets/covers/pac-chase.svg" alt="Pac-Chase" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Pac-Chase</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="pac-chase">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/space-defenders/index.html" class="game-card" data-game="space-defenders">
+        <div class="card-cover" id="cover-space-defenders"><img src="assets/covers/space-defenders.svg" alt="Space Defenders" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Space Defenders</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="space-defenders">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/asteroid-blaster/index.html" class="game-card" data-game="asteroid-blaster">
+        <div class="card-cover" id="cover-asteroid-blaster"><img src="assets/covers/asteroid-blaster.svg" alt="Asteroid Blaster" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Asteroid Blaster</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="asteroid-blaster">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/barrel-jump/index.html" class="game-card" data-game="barrel-jump">
+        <div class="card-cover" id="cover-barrel-jump"><img src="assets/covers/barrel-jump.svg" alt="Barrel Jump" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Barrel Jump</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="barrel-jump">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/road-hopper/index.html" class="game-card" data-game="road-hopper">
+        <div class="card-cover" id="cover-road-hopper"><img src="assets/covers/road-hopper.svg" alt="Road Hopper" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Road Hopper</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="road-hopper">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/galaxy-raiders/index.html" class="game-card" data-game="galaxy-raiders">
+        <div class="card-cover" id="cover-galaxy-raiders"><img src="assets/covers/galaxy-raiders.svg" alt="Galaxy Raiders" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Galaxy Raiders</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="galaxy-raiders">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/brick-breaker/index.html" class="game-card" data-game="brick-breaker">
+        <div class="card-cover" id="cover-brick-breaker"><img src="assets/covers/brick-breaker.svg" alt="Brick Breaker" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Brick Breaker</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="brick-breaker">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/retro-tennis/index.html" class="game-card" data-game="retro-tennis">
+        <div class="card-cover" id="cover-retro-tennis"><img src="assets/covers/retro-tennis.svg" alt="Retro Tennis" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Retro Tennis</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="retro-tennis">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/bug-shooter/index.html" class="game-card" data-game="bug-shooter">
+        <div class="card-cover" id="cover-bug-shooter"><img src="assets/covers/bug-shooter.svg" alt="Bug Shooter" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Bug Shooter</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="bug-shooter">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/city-defense/index.html" class="game-card" data-game="city-defense">
+        <div class="card-cover" id="cover-city-defense"><img src="assets/covers/city-defense.svg" alt="City Defense" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">City Defense</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="city-defense">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/tunnel-hero/index.html" class="game-card" data-game="tunnel-hero">
+        <div class="card-cover" id="cover-tunnel-hero"><img src="assets/covers/tunnel-hero.svg" alt="Tunnel Hero" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Tunnel Hero</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="tunnel-hero">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/cube-hopper/index.html" class="game-card" data-game="cube-hopper">
+        <div class="card-cover" id="cover-cube-hopper"><img src="assets/covers/cube-hopper.svg" alt="Cube Hopper" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Cube Hopper</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="cube-hopper">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/knight-flyer/index.html" class="game-card" data-game="knight-flyer">
+        <div class="card-cover" id="cover-knight-flyer"><img src="assets/covers/knight-flyer.svg" alt="Knight Flyer" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Knight Flyer</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="knight-flyer">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/star-guardian/index.html" class="game-card" data-game="star-guardian">
+        <div class="card-cover" id="cover-star-guardian"><img src="assets/covers/star-guardian.svg" alt="Star Guardian" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Star Guardian</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="star-guardian">0</span></div>
+        </div>
+      </a>
+
+      <a href="games/neon-cycles/index.html" class="game-card" data-game="neon-cycles">
+        <div class="card-cover" id="cover-neon-cycles"><img src="assets/covers/neon-cycles.svg" alt="Neon Cycles" loading="lazy"></div>
+        <div class="card-info">
+          <h3 class="card-title">Neon Cycles</h3>
+          <div class="card-score">HI: <span class="hi-score" data-game="neon-cycles">0</span></div>
+        </div>
+      </a>
+
+      <a href="#" class="game-card out-of-order" data-game="secret-game" data-locked="true">
+        <div class="card-cover" id="cover-secret-game"></div>
+        <div class="card-info">
+          <h3 class="card-title">OUT OF ORDER</h3>
+        </div>
+      </a>
+
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="coin-slot"></div>
+    <p>Built with love by Sal 'Pixel' Martinez</p>
+    <a href="how-it-was-done.html" class="hidden-link">Build Decisions</a>
+    <a href="how-it-really-works.html" class="hidden-link">How It Really Works</a>
+    <p class="copyright">&copy; 2026 Sal's Galaxy Zone Arcade</p>
+  </footer>
+
+  <script src="js/lib/utils.js"></script>
+  <script src="js/lib/collision.js"></script>
+  <script src="js/lib/sprites.js"></script>
+  <script src="js/lib/audio.js"></script>
+  <script src="js/lib/input.js"></script>
+  <script src="js/lib/particles.js"></script>
+  <script src="js/lib/screen-effects.js"></script>
+  <script src="js/lib/transitions.js"></script>
+  <script src="js/lib/achievements.js"></script>
+  <script src="js/lib/engine.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+</html>

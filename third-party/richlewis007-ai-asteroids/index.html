@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Asteroids</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link rel="preconnect" href="https://generativelanguage.googleapis.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Press Start 2P', cursive;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #game-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        canvas {
+            background-color: #0a0a1a;
+            display: block;
+            cursor: crosshair;
+            touch-action: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #ui-container {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        #modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            padding: 20px 40px 40px 40px;
+            text-align: center;
+            display: none;
+            /* Start hidden */
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #0ff;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+            width: 90%;
+            max-width: 800px;
+            height: 70vh;
+            z-index: 1000;
+        }
+
+        #version-display {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 12px;
+            color: #0ff;
+            opacity: 0.7;
+            text-shadow: 1px 1px 2px #000;
+        }
+
+        #game-over-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(3);
+            color: #ff4444;
+            font-size: 80px;
+            text-shadow: 4px 4px 0 #000;
+            opacity: 0;
+            pointer-events: none;
+            /* So it doesn't block clicks */
+            display: none;
+            /* Start hidden */
+            transition: all 0.3s ease-out;
+            z-index: 999;
+        }
+
+        #game-over-overlay.show {
+            animation: gameOverAnimation 1.5s ease-out forwards;
+        }
+
+        @keyframes gameOverAnimation {
+            0% {
+                transform: translate(-50%, -50%) scale(3);
+                opacity: 0;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
+        #game-over-overlay.fade-out {
+            animation: fadeOutAnimation 0.5s ease-in forwards;
+        }
+
+        @keyframes fadeOutAnimation {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0;
+            }
+        }
+
+        #modal-header {
+            margin-bottom: 10px;
+        }
+
+        #modal h1 {
+            font-size: 48px;
+            margin-bottom: 0;
+            margin-top: 20px;
+            color: #0ff;
+        }
+
+        #modal-content {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 120px); /* Subtract space for header and buttons */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #button-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        /* After-Action Report Modal */
+        #report-modal {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.85);
+            border-radius: 15px;
+            padding: 20px 40px 40px 40px;
+            text-align: center;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            border: 2px solid #0ff;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.7);
+            width: 90%;
+            max-width: 800px;
+            height: 70vh;
+            z-index: 1000;
+        }
+
+        #report-modal-header {
+            margin-bottom: 10px;
+        }
+
+        #report-modal h1 {
+            font-size: 32px;
+            margin-bottom: 0;
+            margin-top: 0;
+            color: #0ff;
+        }
+
+        #report-modal-content {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 70px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        #report-text-container {
+            width: 85%;
+            height: calc(100% - 40px);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #report-text {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            box-sizing: border-box;
+            list-style: none;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #0ff;
+            border-radius: 5px;
+            margin: 0;
+            white-space: pre-wrap;
+            overflow-x: hidden;
+            overflow-y: auto;
+            word-wrap: break-word;
+            word-break: break-word;
+            font-size: 20px;
+            text-align: left;
+            max-height: none;
+            min-height: 0;
+        }
+
+        #report-button-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+        }
+
+        #mission-briefing-container {
+            width: 85%;
+            height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #modal h2 {
+            margin-top: 15px;
+            margin-bottom: 10px;
+            font-size: 20px;
+        }
+
+        #mission-briefing-title {
+            display: none;
+        }
+
+        #modal p {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        .action-button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 18px;
+            padding: 12px 20px;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-shadow: 2px 2px 4px #000;
+            transition: all 0.2s ease;
+            margin: 5px;
+        }
+
+        .action-button:hover:not(:disabled) {
+            transform: scale(1.05);
+        }
+
+        .action-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        #start-button {
+            background: linear-gradient(45deg, #0ff, #f0f);
+            font-size: 24px;
+            padding: 15px 30px;
+        }
+
+        #start-button:hover:not(:disabled) {
+            box-shadow: 0 0 20px #f0f, 0 0 40px #0ff;
+        }
+
+
+        #high-score-button {
+            background: linear-gradient(45deg, #ffc107, #ff9800);
+        }
+
+        #high-score-button:hover:not(:disabled) {
+            box-shadow: 0 0 20px #ff9800;
+        }
+
+        #exit-button {
+            background: linear-gradient(45deg, #f44336, #e91e63);
+        }
+
+        #exit-button:hover:not(:disabled) {
+            box-shadow: 0 0 20px #e91e63;
+        }
+
+        /* High Score & AI Styles */
+        #high-score-form {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+        #player-name-input {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            padding: 10px;
+            text-align: center;
+            background-color: #222;
+            border: 2px solid #0ff;
+            color: #fff;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+        #save-score-button {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 16px;
+            padding: 12px 18px;
+            background: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #high-score-list,
+        #after-action-report {
+            box-sizing: border-box;
+            /* Ensures padding is included in height */
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            font-size: 16px;
+            text-align: left;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #0ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 0;
+            /* Removes default margin */
+            min-height: 200px;
+            white-space: pre-wrap;
+            /* Allows line breaks */
+            max-height: 40vh;
+            /* Limit height to 40% of viewport height */
+            overflow-y: auto;
+            /* Add scrollbar if content overflows */
+        }
+
+        #mission-briefing {
+            width: 100%;
+            height: calc(100% - 40px); /* Subtract space for h2 title */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            box-sizing: border-box;
+            list-style: none;
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            border: 1px solid #0ff;
+            border-radius: 5px;
+            margin: 0;
+            white-space: pre-wrap;
+            overflow-x: hidden;
+            overflow-y: auto;
+            word-wrap: break-word;
+            word-break: break-word;
+            font-size: 20px; /* Adjust this value to change text size of the pre-mission briefing */
+            text-align: left;
+            /* Override the shared styles that limit height */
+            max-height: none;
+            min-height: 0;
+        }
+
+        #high-score-list li {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+
+        #high-score-list .score-name {
+            color: #0ff;
+        }
+
+        #high-score-list .score-value {
+            color: #f0f;
+        }
+
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 4px solid #0ff;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* High-Tech Loading Display for Mission Briefing */
+        #mission-tech-display {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 40px); /* Subtract space for h2 title */
+            background: #000000;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        #mission-tech-content {
+            text-align: center;
+            color: #0ff;
+            padding: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+
+        #mission-tech-title {
+            font-size: 18px;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px #0ff;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        #mission-tech-subtitle {
+            font-size: 14px;
+            margin-bottom: 25px;
+            color: #88f;
+            opacity: 0.8;
+        }
+
+        #mission-tech-grid {
+            display: grid;
+            grid-template-columns: repeat(17, 1fr);
+            gap: 2px;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 500px;
+            height: 200px;
+        }
+
+        .mission-tech-cell {
+            background: rgba(0, 255, 255, 0.1);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            animation: techCellPulse 2s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 0.1s);
+        }
+
+        #mission-tech-progress {
+            width: 100%;
+            height: 4px;
+            background: rgba(0, 255, 255, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+            margin: 20px 0;
+        }
+
+        #mission-tech-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0ff, #88f);
+            width: 0%;
+            animation: techProgress 3s ease-in-out infinite;
+        }
+
+        .mission-scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 255, 255, 0.8), transparent);
+            animation: scanLine 2s linear infinite;
+        }
+
+        #mission-tech-status {
+            font-size: 12px;
+            color: #88f;
+            margin-top: 15px;
+            opacity: 0.9;
+            width: 100%;
+            word-wrap: break-word;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @keyframes techCellPulse {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        @keyframes techProgress {
+            0% { width: 0%; }
+            50% { width: 70%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes scanLine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* High-Tech Loading Display */
+        #tech-loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(45deg, #000011, #001122, #000011);
+            background-size: 400% 400%;
+            animation: techBackground 3s ease-in-out infinite;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        @keyframes techBackground {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        #tech-loading-content {
+            text-align: center;
+            color: #00ffff;
+            text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff;
+        }
+
+        #tech-loading-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            animation: techPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes techPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        #tech-loading-subtitle {
+            font-size: 12px;
+            margin-bottom: 30px;
+            color: #00ff88;
+            animation: techFlicker 1.5s ease-in-out infinite;
+        }
+
+        @keyframes techFlicker {
+            0%, 100% { opacity: 1; }
+            25% { opacity: 0.8; }
+            50% { opacity: 1; }
+            75% { opacity: 0.9; }
+        }
+
+        #tech-loading-grid {
+            display: grid;
+            grid-template-columns: repeat(21, 1fr);
+            gap: 2px;
+            margin: 20px 0;
+            width: 525px;
+            height: 200px;
+        }
+
+        .tech-grid-cell {
+            background: #001133;
+            border: 1px solid #004466;
+            animation: techGridPulse 0.5s ease-in-out infinite;
+            animation-delay: calc(var(--delay) * 0.1s);
+        }
+
+        @keyframes techGridPulse {
+            0%, 100% { 
+                background: #001133; 
+                box-shadow: 0 0 5px #004466;
+            }
+            50% { 
+                background: #00ff88; 
+                box-shadow: 0 0 15px #00ff88;
+            }
+        }
+
+        #tech-loading-progress {
+            width: 525px;
+            height: 4px;
+            background: #001133;
+            border: 1px solid #004466;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #tech-loading-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #00ff88, #00ffff, #00ff88);
+            background-size: 200% 100%;
+            animation: techProgress 2s ease-in-out infinite, techBarMove 3s linear infinite;
+            width: 0%;
+        }
+
+        @keyframes techProgress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        @keyframes techBarMove {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        #tech-loading-status {
+            font-size: 10px;
+            color: #00ff88;
+            margin-top: 10px;
+            animation: techStatusFlicker 1s ease-in-out infinite;
+        }
+
+        @keyframes techStatusFlicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .tech-scan-line {
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #00ffff, transparent);
+            animation: techScan 2s linear infinite;
+        }
+
+        @keyframes techScan {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        /* Screen Fade Out Effect */
+        #screen-fade-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: #000;
+            opacity: 0;
+            z-index: 1500;
+            pointer-events: none;
+            display: none;
+        }
+
+        #screen-fade-overlay.fade-out {
+            animation: screenFadeOut 2s ease-in forwards;
+        }
+
+        @keyframes screenFadeOut {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="game-over-overlay">GAME OVER</div>
+        
+        <!-- Screen Fade Overlay -->
+        <div id="screen-fade-overlay"></div>
+        
+        <!-- High-Tech Loading Display -->
+        <div id="tech-loading-overlay">
+            <div id="tech-loading-content">
+                <div id="tech-loading-title">ANALYZING COMBAT DATA</div>
+                <div id="tech-loading-subtitle">Generating After-Action Report...</div>
+                
+                <div id="tech-loading-grid" id="tech-grid"></div>
+                
+                <div id="tech-loading-progress">
+                    <div id="tech-loading-bar"></div>
+                    <div class="tech-scan-line"></div>
+                </div>
+                
+                <div id="tech-loading-status">Processing neural networks...</div>
+            </div>
+        </div>
+
+        <!-- After-Action Report Modal -->
+        <div id="report-modal">
+            <div id="report-modal-header">
+                <h1 id="report-modal-title">After-Action Report</h1>
+            </div>
+            <div id="report-modal-content">
+                <div id="report-text-container">
+                    <div id="report-text"></div>
+                </div>
+            </div>
+            <div id="report-button-container">
+                <button id="continue-button" class="action-button">CONTINUE</button>
+            </div>
+        </div>
+        <div id="ui-container" style="display: none;">
+            <span>Score: </span><span id="scoreEl">0</span>
+        </div>
+        <div id="modal">
+            <div id="version-display">Loading...</div>
+            <div id="modal-header">
+                <h1 id="modal-title">AI ASTEROIDS</h1>
+            </div>
+            <div id="modal-content">
+                <!-- Game Over Content -->
+                <div id="game-over-content">
+                    <p id="modal-score" style="display: none;">Final Score: 0</p>
+                    <div id="high-score-form" style="display: none;">
+                        <input type="text" id="player-name-input" placeholder="Enter Your Name" maxlength="10">
+                        <button id="save-score-button">Save</button>
+                    </div>
+                </div>
+                <!-- High Score Display -->
+                <div id="high-score-display" style="display: none;">
+                    <h2>High Scores</h2>
+                    <ol id="high-score-list"></ol>
+                </div>
+                <!-- Mission Briefing -->
+                <div id="mission-briefing-container">
+                    <h2 id="mission-briefing-title">Mission Briefing</h2>
+                    <div id="mission-briefing">
+                        <div class="loader"></div>
+                    </div>
+                    <!-- High-Tech Display for Mission Briefing -->
+                    <div id="mission-tech-display">
+                        <div id="mission-tech-content">
+                            <div id="mission-tech-title">ANALYZING MISSION PLAN</div>
+                            <div id="mission-tech-subtitle">Generating Mission Briefing...</div>
+                            
+                            <div id="mission-tech-grid"></div>
+                            
+                            <div id="mission-tech-progress">
+                                <div id="mission-tech-bar"></div>
+                                <div class="mission-scan-line"></div>
+                            </div>
+                            
+                            <div id="mission-tech-status">Processing tactical intelligence...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="button-container">
+                <button id="start-button" class="action-button">Start Game</button>
+                <button id="high-score-button" class="action-button" style="display:none;">🏆 High Scores</button>
+                <button id="exit-button" class="action-button">🚪 Exit</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Basic Setup ---
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scoreEl = document.getElementById('scoreEl');
+        const uiContainer = document.getElementById('ui-container');
+        const modal = document.getElementById('modal');
+        const gameOverOverlay = document.getElementById('game-over-overlay');
+        const modalContent = document.getElementById('modal-content');
+        const modalScoreEl = document.getElementById('modal-score');
+        const modalTitleEl = document.getElementById('modal-title');
+        const startButton = document.getElementById('start-button');
+        const highScoreButton = document.getElementById('high-score-button');
+        const exitButton = document.getElementById('exit-button');
+        const versionDisplay = document.getElementById('version-display');
+        const buttonContainer = document.getElementById('button-container');
+        const highScoreForm = document.getElementById('high-score-form');
+        const playerNameInput = document.getElementById('player-name-input');
+        const saveScoreButton = document.getElementById('save-score-button');
+        const highScoreDisplay = document.getElementById('high-score-display');
+        const highScoreList = document.getElementById('high-score-list');
+        const gameOverContent = document.getElementById('game-over-content');
+        const missionBriefingContainer = document.getElementById('mission-briefing-container');
+        const missionBriefingEl = document.getElementById('mission-briefing');
+        const missionBriefingTitle = document.getElementById('mission-briefing-title');
+        const missionTechDisplay = document.getElementById('mission-tech-display');
+        const techLoadingOverlay = document.getElementById('tech-loading-overlay');
+        const techLoadingStatus = document.getElementById('tech-loading-status');
+        const screenFadeOverlay = document.getElementById('screen-fade-overlay');
+        const reportModal = document.getElementById('report-modal');
+        const reportText = document.getElementById('report-text');
+        const continueButton = document.getElementById('continue-button');
+
+        let animationId, score = 0, gameActive = false, inactivityTimer, toneStarted = false;
+        const mouse = { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        let canvasRect = null;
+        
+        // High-tech loading display for after-action report generation
+        let loadingDisplayActive = false;
+
+        // --- Audio Initialization (lazy-load Tone.js) ---
+        let toneLibraryLoadPromise;
+        let startGameSynth, shootSynth, playerBoom, playerNoise, playerWail, enemyExplosionSynth, enemyExplosionNoise;
+        const pannerPool = [];
+
+        async function startAudio() {
+            if (toneStarted) return;
+            if (!window.Tone) {
+                if (!toneLibraryLoadPromise) {
+                    toneLibraryLoadPromise = new Promise((resolve, reject) => {
+                        const s = document.createElement('script');
+                        s.src = 'https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js';
+                        s.async = true;
+                        s.defer = true;
+                        s.onload = () => resolve();
+                        s.onerror = () => reject(new Error('Failed to load Tone.js'));
+                        document.head.appendChild(s);
+                    });
+                }
+                try { await toneLibraryLoadPromise; } catch (e) { return; }
+            }
+            await Tone.start();
+            toneStarted = true;
+            // Set listener position once audio is started
+            Tone.Listener.positionX.value = 0;
+            Tone.Listener.positionY.value = 0;
+            Tone.Listener.positionZ.value = 0;
+
+            // Initialize synths and panner pool on first start
+            if (!startGameSynth) {
+                startGameSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.01, decay: 0.2, sustain: 0.1, release: 0.2 } }).toDestination();
+                shootSynth = new Tone.Synth({ oscillator: { type: 'triangle' }, envelope: { attack: 0.005, decay: 0.1, sustain: 0.0, release: 0.1 } }).toDestination();
+                playerBoom = new Tone.MembraneSynth({ pitchDecay: 0.05, octaves: 10, oscillator: { type: 'sine' }, envelope: { attack: 0.001, decay: 0.5, sustain: 0.01, release: 1.4, attackCurve: 'exponential' } }).toDestination();
+                playerBoom.volume.value = -3;
+                playerNoise = new Tone.NoiseSynth({ noise: { type: 'brown' }, envelope: { attack: 0.005, decay: 0.4, sustain: 0.1, release: 0.5 } }).toDestination();
+                playerNoise.volume.value = -5;
+                playerWail = new Tone.FMSynth({ harmonicity: 1.5, modulationIndex: 10, envelope: { attack: 0.1, decay: 0.5, sustain: 0.1, release: 1.0 }, modulationEnvelope: { attack: 0.05, decay: 0.2, sustain: 0.3, release: 1.0 } }).toDestination();
+                playerWail.volume.value = -6;
+                enemyExplosionSynth = new Tone.MembraneSynth({ pitchDecay: 0.02, octaves: 5, envelope: { attack: 0.001, decay: 0.2, sustain: 0 } });
+                enemyExplosionNoise = new Tone.NoiseSynth({ noise: { type: 'white' }, envelope: { attack: 0.001, decay: 0.1, sustain: 0 } });
+                enemyExplosionNoise.volume.value = -10;
+                for (let i = 0; i < 10; i++) { pannerPool.push(new Tone.Panner3D().toDestination()); }
+            }
+        }
+
+        function playStartGameSound() { if (!window.Tone || !startGameSynth) return; const now = Tone.now(); startGameSynth.triggerAttackRelease("C4", "16n", now); startGameSynth.triggerAttackRelease("E4", "16n", now + 0.1); startGameSynth.triggerAttackRelease("G4", "16n", now + 0.2); startGameSynth.triggerAttackRelease("C5", "8n", now + 0.3); }
+        function playShootSound() { if (!shootSynth) return; shootSynth.triggerAttackRelease("G5", "32n"); }
+        function playPlayerDeathSound() { if (!window.Tone || !playerBoom || !playerNoise || !playerWail) return; const now = Tone.now(); playerBoom.triggerAttackRelease("C1", "1n"); playerNoise.triggerAttackRelease("0.5n"); playerWail.triggerAttack("E4", now + 0.05); playerWail.frequency.rampTo("C2", 0.7, now + 0.1); playerWail.triggerRelease(now + 0.8); }
+
+        function playExplosionSound(x, y) {
+            if (!enemyExplosionSynth || !enemyExplosionNoise || pannerPool.length === 0) return;
+            const panner = pannerPool.pop();
+            const pannerX = (x / canvas.width - 0.5) * 20;
+            const pannerY = -(y / canvas.height - 0.5) * 20; // Invert Y
+            panner.positionX.value = pannerX;
+            panner.positionY.value = pannerY;
+            enemyExplosionSynth.connect(panner);
+            enemyExplosionNoise.connect(panner);
+            enemyExplosionSynth.triggerAttackRelease("C2", "8n");
+            enemyExplosionNoise.triggerAttackRelease("4n");
+            setTimeout(() => { enemyExplosionSynth.disconnect(panner); enemyExplosionNoise.disconnect(panner); pannerPool.push(panner); }, 500);
+        }
+
+        // --- Gemini API Integration ---
+        const API_KEY = ""; // Leave blank for GitHub. See README.md for what to put here to get AI part of game to work.
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${API_KEY}`;
+
+        async function fetchWithExponentialBackoff(url, payload, maxRetries = 5) {
+            let delay = 1000;
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(url, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (response.ok) return response.json();
+                } catch (error) {
+                    // Network or other fetch error
+                }
+                await new Promise(resolve => setTimeout(resolve, delay));
+                delay *= 2;
+            }
+            throw new Error("API request failed after multiple retries.");
+        }
+
+        async function generateMission() {
+            // Hide the title initially
+            missionBriefingTitle.style.display = 'none';
+            
+            // Check if API key is configured
+            if (!API_KEY || API_KEY.trim() === "") {
+                // No API key - show fallback mission briefing immediately
+                const fallbackText = "Mission: Destroy all hostiles. Good luck, pilot.";
+                missionBriefingEl.textContent = fallbackText;
+                missionBriefingTitle.style.display = 'block';
+                return;
+            }
+
+            // API key is configured - show tech display and try to generate mission
+            showMissionTechDisplay();
+            const prompt = "Generate a short, exciting, one-paragraph mission briefing for a retro arcade space shooter game. The mission should have a clear objective, like protecting something, destroying a specific enemy faction, or clearing a dangerous sector. Give the enemy faction a cool, pulpy sci-fi name. Keep it under 50 words.";
+            try {
+                const result = await fetchWithExponentialBackoff(API_URL, { contents: [{ parts: [{ text: prompt }] }] });
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                hideMissionTechDisplay();
+                const finalText = text || "Mission: Destroy all hostiles. Good luck, pilot.";
+                missionBriefingEl.textContent = finalText;
+                missionBriefingTitle.style.display = 'block';
+            } catch (error) {
+                hideMissionTechDisplay();
+                const fallbackText = "Mission: Destroy all hostiles. Good luck, pilot.";
+                missionBriefingEl.textContent = fallbackText;
+                missionBriefingTitle.style.display = 'block';
+            }
+        }
+
+        // Create animated tech grid for after-action reports
+        function createTechGrid() {
+            const grid = document.getElementById('tech-loading-grid');
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < 168; i++) { // 21x8 grid
+                const cell = document.createElement('div');
+                cell.className = 'tech-grid-cell';
+                cell.style.setProperty('--delay', i);
+                grid.appendChild(cell);
+            }
+        }
+
+        // Create animated tech grid for mission briefing
+        function createMissionTechGrid() {
+            const grid = document.getElementById('mission-tech-grid');
+            grid.innerHTML = '';
+            
+            for (let i = 0; i < 102; i++) { // 17x6 grid
+                const cell = document.createElement('div');
+                cell.className = 'mission-tech-cell';
+                cell.style.setProperty('--delay', i);
+                grid.appendChild(cell);
+            }
+        }
+
+        // Show mission tech display
+        function showMissionTechDisplay() {
+            missionTechDisplay.style.display = 'flex';
+            missionBriefingEl.style.display = 'none';
+            createMissionTechGrid();
+            
+            const statusMessages = [
+                'Processing tactical intelligence...',
+                'Analyzing threat patterns...',
+                'Generating mission parameters...',
+                'Compiling briefing data...',
+                'Finalizing mission objectives...'
+            ];
+            
+            let messageIndex = 0;
+            const statusEl = document.getElementById('mission-tech-status');
+            
+            const messageInterval = setInterval(() => {
+                statusEl.textContent = statusMessages[messageIndex];
+                messageIndex = (messageIndex + 1) % statusMessages.length;
+            }, 800);
+            
+            // Store interval ID for cleanup
+            missionTechDisplay.messageInterval = messageInterval;
+        }
+
+        // Hide mission tech display
+        function hideMissionTechDisplay() {
+            missionTechDisplay.style.display = 'none';
+            missionBriefingEl.style.display = 'block';
+            
+            // Clear the message interval
+            if (missionTechDisplay.messageInterval) {
+                clearInterval(missionTechDisplay.messageInterval);
+                missionTechDisplay.messageInterval = null;
+            }
+        }
+
+        // Show tech loading display with animated status messages
+        function showTechLoading() {
+            if (loadingDisplayActive) return;
+            
+            loadingDisplayActive = true;
+            techLoadingOverlay.style.display = 'flex';
+            createTechGrid();
+            
+            const statusMessages = [
+                'Processing neural networks...',
+                'Analyzing combat patterns...',
+                'Calculating performance metrics...',
+                'Generating tactical assessment...',
+                'Compiling mission data...',
+                'Finalizing report...'
+            ];
+            
+            let messageIndex = 0;
+            const statusInterval = setInterval(() => {
+                if (!loadingDisplayActive) {
+                    clearInterval(statusInterval);
+                    return;
+                }
+                
+                techLoadingStatus.textContent = statusMessages[messageIndex];
+                messageIndex = (messageIndex + 1) % statusMessages.length;
+            }, 2500);
+        }
+
+        // Hide tech loading display
+        function hideTechLoading() {
+            loadingDisplayActive = false;
+            techLoadingOverlay.style.display = 'none';
+        }
+
+        // Show report modal
+        function showReportModal(reportTextContent) {
+            reportText.textContent = reportTextContent;
+            reportModal.style.display = 'flex';
+            modal.style.display = 'none'; // Hide the game over screen
+        }
+
+        // Hide report modal
+        function hideReportModal() {
+            reportModal.style.display = 'none';
+            modal.style.display = 'flex'; // Show the game over screen
+        }
+
+
+        // Screen fade out effect
+        function startScreenFadeOut() {
+            screenFadeOverlay.style.display = 'block';
+            screenFadeOverlay.classList.remove('fade-out');
+            
+            // Start fade animation after a brief delay
+            setTimeout(() => {
+                screenFadeOverlay.classList.add('fade-out');
+            }, 10);
+        }
+
+        // Hide screen fade overlay
+        function hideScreenFade() {
+            screenFadeOverlay.style.display = 'none';
+            screenFadeOverlay.classList.remove('fade-out');
+        }
+
+        async function generateReport(finalScore) {
+            // Check if API key is configured
+            if (!API_KEY || API_KEY.trim() === "") {
+                // No API key - show fallback report immediately
+                const fallbackText = "Your comms were damaged in the fight. No report available. Your score was " + finalScore + ".";
+                showReportModal(fallbackText);
+                return;
+            }
+
+            // Show the cool tech loading display
+            showTechLoading();
+            
+            // Generate report with actual final score
+            const prompt = `Write a heroic after-action report for a space fighter pilot. Their final score was ${finalScore}. Describe their bravery and skill. If the score is low (under 2000), make it a bit funny, like they survived by luck. If the score is high (over 10000), describe them as a legendary ace. Keep it to a short paragraph.`;
+            
+            try {
+                const result = await fetchWithExponentialBackoff(API_URL, { contents: [{ parts: [{ text: prompt }] }] });
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                
+                // Hide loading display and show result
+                hideTechLoading();
+                const reportContent = text || "Your comms were damaged in the fight. No report available. Your score was " + finalScore + ".";
+                showReportModal(reportContent);
+            } catch (error) {
+                // Hide loading display and show error
+                hideTechLoading();
+                const errorText = "Error generating report. Please check your connection and try again.";
+                showReportModal(errorText);
+            }
+        }
+
+        // --- High Score Management ---
+        const HIGH_SCORES_KEY = 'AIAsteroidsHighScores';
+        function loadHighScores() { return JSON.parse(localStorage.getItem(HIGH_SCORES_KEY) || '[]'); }
+        function saveHighScores(scores) { localStorage.setItem(HIGH_SCORES_KEY, JSON.stringify(scores)); }
+        function addHighScore(name, score) { const scores = loadHighScores(); scores.push({ name, score }); scores.sort((a, b) => b.score - a.score); saveHighScores(scores.slice(0, 10)); }
+        function displayHighScores() {
+            gameOverContent.style.display = 'none';
+            highScoreDisplay.style.display = 'block';
+            highScoreList.innerHTML = '';
+            const scores = loadHighScores();
+            if (scores.length === 0) { highScoreList.innerHTML = '<li>No scores yet!</li>'; return; }
+            scores.forEach(score => { const li = document.createElement('li'); li.innerHTML = `<span class="score-name">${score.name}</span> <span class="score-value">${score.score}</span>`; highScoreList.appendChild(li); });
+        }
+
+        // --- Game Object Classes ---
+        class Star { constructor(x, y, r, c, v) { this.x = x; this.y = y; this.radius = r; this.color = c; this.velocity = v; } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); } update() { this.draw(); this.y += this.velocity.y; if (this.y - this.radius > canvas.height) { this.y = 0 - this.radius; this.x = Math.random() * canvas.width; } } }
+
+        class Player {
+            constructor(x, y, r, c) {
+                this.x = x; this.y = y; this.radius = r; this.color = c;
+                this.velocity = { x: 0, y: 0 }; this.speed = 0.4; this.friction = 0.97;
+            }
+
+            drawEngineFlame() {
+                // Only draw the flame if the player is accelerating
+                if (!keys.up && !keys.down && !keys.left && !keys.right) {
+                    return;
+                }
+
+                const flameLength = 20 + Math.random() * 10;
+                const flameWidth = this.radius * 0.8;
+                const backOfShip = -this.radius * 0.7;
+
+                // Use a gradient for a nicer flame effect
+                const grad = ctx.createLinearGradient(backOfShip, 0, backOfShip - flameLength, 0);
+                grad.addColorStop(0, `hsla(60, 100%, 50%, ${0.5 + Math.random() * 0.5})`); // Yellowish-white base
+                grad.addColorStop(1, `hsla(0, 100%, 50%, 0)`); // Fades to transparent red
+
+                ctx.beginPath();
+                ctx.moveTo(backOfShip, -flameWidth / 2); // Top corner of flame base
+                ctx.lineTo(backOfShip, flameWidth / 2);  // Bottom corner of flame base
+                ctx.lineTo(backOfShip - flameLength, 0); // Tip of the flame
+                ctx.closePath();
+
+                ctx.fillStyle = grad;
+                ctx.fill();
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                const a = Math.atan2(mouse.y - this.y, mouse.x - this.x);
+                ctx.rotate(a);
+
+                this.drawEngineFlame();
+
+                ctx.beginPath();
+                ctx.moveTo(this.radius, 0);
+                ctx.lineTo(-this.radius * .7, -this.radius * .8);
+                ctx.lineTo(-this.radius * .7, this.radius * .8);
+                ctx.closePath();
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.strokeStyle = '#0ff';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+                ctx.restore();
+            }
+            update() {
+                this.draw();
+                this.velocity.x *= this.friction;
+                this.velocity.y *= this.friction;
+                this.x += this.velocity.x;
+                this.y += this.velocity.y;
+
+                // Screen wrapping logic
+                if (this.x - this.radius > canvas.width) {
+                    this.x = 0 - this.radius;
+                } else if (this.x + this.radius < 0) {
+                    this.x = canvas.width + this.radius;
+                }
+                if (this.y - this.radius > canvas.height) {
+                    this.y = 0 - this.radius;
+                } else if (this.y + this.radius < 0) {
+                    this.y = canvas.height + this.radius;
+                }
+            }
+        }
+        class Projectile { constructor(x, y, r, c, v) { this.x = x; this.y = y; this.radius = r; this.color = c; this.velocity = v; } draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); } update() { this.draw(); this.x += this.velocity.x; this.y += this.velocity.y; } }
+        class Enemy { constructor(x, y, r, c, v) { this.x = x; this.y = y; this.radius = r; this.color = c; this.velocity = v; this.type = Math.random() < .7 ? 'asteroid' : 'ship'; this.sides = Math.floor(Math.random() * 3) + 5; } draw() { ctx.beginPath(); if (this.type === 'asteroid') { ctx.moveTo(this.x + this.radius * Math.cos(0), this.y + this.radius * Math.sin(0)); for (let i = 1; i <= this.sides; i++) { ctx.lineTo(this.x + this.radius * Math.cos(i * 2 * Math.PI / this.sides), this.y + this.radius * Math.sin(i * 2 * Math.PI / this.sides)); } ctx.closePath(); ctx.strokeStyle = this.color; ctx.lineWidth = 3; ctx.stroke(); } else { ctx.moveTo(this.x, this.y - this.radius); ctx.lineTo(this.x - this.radius, this.y + this.radius); ctx.lineTo(this.x + this.radius, this.y + this.radius); ctx.closePath(); ctx.fillStyle = this.color; ctx.fill(); } } update() { this.draw(); this.x += this.velocity.x; this.y += this.velocity.y; } }
+        class Particle { constructor(x, y, r, c, v) { this.x = x; this.y = y; this.radius = r; this.color = c; this.velocity = v; this.alpha = 1; } draw() { ctx.save(); ctx.globalAlpha = this.alpha; ctx.beginPath(); ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); ctx.restore(); } update() { this.draw(); this.velocity.x *= .99; this.velocity.y *= .99; this.x += this.velocity.x; this.y += this.velocity.y; this.alpha -= .01; } }
+
+        // --- Game State & Initialization ---
+        let player, projectiles, enemies, particles, stars, enemySpawnInterval;
+        function init() { 
+            gameActive = true; 
+            score = 0; 
+            scoreEl.innerHTML = score; 
+            uiContainer.style.display = 'block'; 
+            modal.style.display = 'none'; 
+            player = new Player(canvas.width / 2, canvas.height / 2, 15, 'white'); 
+            projectiles = []; 
+            enemies = []; 
+            particles = []; 
+            stars = []; 
+            
+            // Reset loading display state for new game
+            loadingDisplayActive = false;
+            hideScreenFade();
+            
+            for (let i = 0; i < 100; i++) { 
+                const r = Math.random() * 2, x = Math.random() * canvas.width, y = Math.random() * canvas.height; 
+                const c = Math.random() > 0.05 ? 'white' : `hsl(${Math.random() * 360}, 70%, 70%)`; 
+                stars.push(new Star(x, y, r, c, { x: 0, y: r * 0.5 })); 
+            } 
+            spawnEnemies(); 
+        }
+        function spawnEnemies() {
+            if (enemySpawnInterval) clearInterval(enemySpawnInterval);
+            enemySpawnInterval = setInterval(() => {
+                if (!gameActive) return;
+                const radius = Math.random() * (30 - 10) + 10;
+                const spawnMargin = 30; // Safe distance for player wrap-around
+                let x, y;
+                if (Math.random() < 0.5) {
+                    x = Math.random() < 0.5 ? 0 - radius - spawnMargin : canvas.width + radius + spawnMargin;
+                    y = Math.random() * canvas.height;
+                } else {
+                    x = Math.random() * canvas.width;
+                    y = Math.random() < 0.5 ? 0 - radius - spawnMargin : canvas.height + radius + spawnMargin;
+                }
+                const angle = Math.atan2(player.y - y, player.x - x);
+                const speed = 1 + (score / 500);
+                const vel = { x: Math.cos(angle) * speed, y: Math.sin(angle) * speed };
+                enemies.push(new Enemy(x, y, radius, `hsl(${Math.random() * 360}, 50%, 50%)`, vel));
+            }, 1000);
+        }
+
+        function showStartScreen() {
+            modal.style.display = 'flex';
+            modalTitleEl.textContent = "AI ASTEROIDS";
+            startButton.textContent = "Start Game";
+            startButton.disabled = false;
+            missionBriefingContainer.style.display = 'block';
+            gameOverContent.style.display = 'none';
+            highScoreDisplay.style.display = 'none';
+            highScoreButton.style.display = 'none';
+            
+            // Ensure mission tech display is hidden initially
+            hideMissionTechDisplay();
+            generateMission();
+        }
+
+        function showEndModal() {
+            modal.style.display = 'flex';
+            modalTitleEl.textContent = "Game Over";
+
+            missionBriefingContainer.style.display = 'none';
+            highScoreDisplay.style.display = 'none';
+
+            gameOverContent.style.display = 'block';
+            modalScoreEl.style.display = 'block';
+            modalScoreEl.innerHTML = `Final Score: ${score}`;
+            highScoreForm.style.display = 'block';
+
+            highScoreButton.style.display = 'inline-block';
+
+
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                displayHighScores();
+                highScoreForm.style.display = 'none';
+                highScoreButton.style.display = 'none';
+            }, 30000);
+
+            // Enable restart button immediately
+            startButton.disabled = false;
+            startButton.textContent = 'Restart Game';
+        }
+
+        function showEndModalWithTechDisplay() {
+            modal.style.display = 'flex';
+            modalTitleEl.textContent = "Game Over";
+
+            missionBriefingContainer.style.display = 'none';
+            highScoreDisplay.style.display = 'none';
+
+            gameOverContent.style.display = 'block';
+            modalScoreEl.style.display = 'block';
+            modalScoreEl.innerHTML = `Final Score: ${score}`;
+            highScoreForm.style.display = 'block';
+
+            highScoreButton.style.display = 'inline-block';
+
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(() => {
+                displayHighScores();
+                highScoreForm.style.display = 'none';
+                highScoreButton.style.display = 'none';
+            }, 30000);
+
+            // Enable restart button immediately
+            startButton.disabled = false;
+            startButton.textContent = 'Restart Game';
+            
+            // Automatically start generating the report with tech display
+            if (API_KEY && API_KEY.trim() !== "") {
+                generateReport(score);
+            }
+        }
+
+        function endGame() {
+            if (!gameActive) return;
+            gameActive = false;
+            cancelAnimationFrame(animationId);
+
+            drawFinalFrame(); // Manually render the last frame
+
+            playPlayerDeathSound();
+            clearInterval(enemySpawnInterval);
+
+            gameOverOverlay.style.display = 'block';
+            // Reset any previous animation classes
+            gameOverOverlay.classList.remove('show', 'fade-out');
+            
+            // Start the animation after a brief delay to ensure display is set
+            setTimeout(() => {
+                gameOverOverlay.classList.add('show');
+                
+                // After animation completes, start screen fade out
+                setTimeout(() => {
+                    gameOverOverlay.classList.add('fade-out');
+                    
+                    // Start screen fade out after game over animation
+                    setTimeout(() => {
+                        gameOverOverlay.style.display = 'none';
+                        gameOverOverlay.classList.remove('show', 'fade-out');
+                        
+                        // Start screen fade out
+                        startScreenFadeOut();
+                        
+                        // After fade completes, show tech display and generate report
+                        setTimeout(() => {
+                            hideScreenFade();
+                            showEndModalWithTechDisplay();
+                        }, 2000); // Match screenFadeOut duration
+                        
+                    }, 500); // Match fadeOutAnimation duration
+                }, 2000); // Show for 2 seconds after animation
+            }, 10);
+        }
+
+        function drawFinalFrame() {
+            ctx.fillStyle = '#0a0a1a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => s.draw());
+            particles.forEach(p => p.draw());
+            enemies.forEach(e => e.draw());
+            projectiles.forEach(p => p.draw());
+            player.draw();
+        }
+
+        // --- Animation Loop ---
+        function animate() {
+            if (!gameActive) return;
+            animationId = requestAnimationFrame(animate);
+            ctx.fillStyle = '#0a0a1a'; ctx.fillRect(0, 0, canvas.width, canvas.height);
+            stars.forEach(s => s.update());
+            handleMovement();
+            player.update();
+            particles.forEach((p, i) => { if (p.alpha <= 0) { particles.splice(i, 1); } else { p.update(); } });
+            projectiles.forEach((p, i) => { p.update(); if (p.x + p.radius < 0 || p.x - p.radius > canvas.width || p.y + p.radius < 0 || p.y - p.radius > canvas.height) { setTimeout(() => { projectiles.splice(i, 1); }, 0); } });
+            enemies.forEach((enemy, eIndex) => {
+                enemy.update();
+                const dxp = player.x - enemy.x, dyp = player.y - enemy.y; const rPlayer = enemy.radius + player.radius;
+                if ((dxp * dxp + dyp * dyp) <= rPlayer * rPlayer) { endGame(); }
+                projectiles.forEach((projectile, pIndex) => {
+                    const dx = projectile.x - enemy.x, dy = projectile.y - enemy.y; const r = enemy.radius + projectile.radius;
+                    if ((dx * dx + dy * dy) <= r * r) {
+                        for (let i = 0; i < enemy.radius * 2; i++) { particles.push(new Particle(projectile.x, projectile.y, Math.random() * 2, enemy.color, { x: (Math.random() - 0.5) * 6, y: (Math.random() - 0.5) * 6 })); }
+                        playExplosionSound(projectile.x, projectile.y);
+                        if (enemy.radius - 10 > 10) { score += 100; scoreEl.innerHTML = score; enemy.radius = enemy.radius - 10; setTimeout(() => { projectiles.splice(pIndex, 1); }, 0); }
+                        else { score += 250; scoreEl.innerHTML = score; setTimeout(() => { enemies.splice(eIndex, 1); projectiles.splice(pIndex, 1); }, 0); }
+                    }
+                });
+            });
+        }
+
+        // --- Event Listeners & Controls ---
+        const keys = { up: false, down: false, left: false, right: false };
+        function handleMovement() { if (!player) return; if (keys.up) player.velocity.y -= player.speed; if (keys.down) player.velocity.y += player.speed; if (keys.left) player.velocity.x -= player.speed; if (keys.right) player.velocity.x += player.speed; }
+        window.addEventListener('keydown', (e) => { if (e.key === 'Escape' && gameActive) endGame(); switch (e.key.toLowerCase()) { case 'arrowup': case 'w': keys.up = true; break; case 'arrowdown': case 's': keys.down = true; break; case 'arrowleft': case 'a': keys.left = true; break; case 'arrowright': case 'd': keys.right = true; break; } if (e.code === 'Space' && gameActive) shootProjectile(); });
+        window.addEventListener('keyup', (e) => { switch (e.key.toLowerCase()) { case 'arrowup': case 'w': keys.up = false; break; case 'arrowdown': case 's': keys.down = false; break; case 'arrowleft': case 'a': keys.left = false; break; case 'arrowright': case 'd': keys.right = false; break; } });
+        window.addEventListener('mousemove', (e) => { const rect = canvasRect || canvas.getBoundingClientRect(); mouse.x = e.clientX - rect.left; mouse.y = e.clientY - rect.top; }, { passive: true });
+
+        // Prevent default browser drag behavior on the canvas
+        canvas.addEventListener('mousedown', (e) => { e.preventDefault(); });
+
+        function shootProjectile() { if (!player) return; playShootSound(); const angle = Math.atan2(mouse.y - player.y, mouse.x - player.x); projectiles.push(new Projectile(player.x, player.y, 5, '#0ff', { x: Math.cos(angle) * 10, y: Math.sin(angle) * 10 })); }
+
+        canvas.addEventListener('click', async () => {
+            await startAudio();
+            if (gameActive) shootProjectile();
+        });
+
+        startButton.addEventListener('click', async () => {
+            await startAudio();
+            clearTimeout(inactivityTimer);
+            playStartGameSound();
+            setTimeout(() => { init(); animate(); }, 100);
+        });
+
+        saveScoreButton.addEventListener('click', async () => {
+            await startAudio();
+            const name = playerNameInput.value.trim();
+            if (name) {
+                addHighScore(name, score);
+                highScoreForm.style.display = 'none';
+            }
+        });
+
+        playerNameInput.addEventListener('input', () => {
+            clearTimeout(inactivityTimer);
+        });
+
+        highScoreButton.addEventListener('click', async () => {
+            await startAudio();
+            clearTimeout(inactivityTimer);
+            gameOverContent.style.display = 'none';
+            highScoreButton.style.display = 'none';
+            displayHighScores();
+        });
+
+        exitButton.addEventListener('click', () => {
+            window.location.href = 'https://RichLewis007.com';
+        });
+
+        continueButton.addEventListener('click', () => {
+            hideReportModal();
+            showEndModal();
+        });
+
+        // --- Window Resizing & Initial Setup ---
+        function resizeCanvas() { 
+            // Make canvas fill the entire screen
+            canvas.width = window.innerWidth; 
+            canvas.height = window.innerHeight; 
+            if (player) { 
+                player.x = canvas.width / 2; 
+                player.y = canvas.height / 2; 
+            } 
+            if (gameActive || !stars) { 
+                stars = []; 
+                for (let i = 0; i < 100; i++) { 
+                    const r = Math.random() * 2, x = Math.random() * canvas.width, y = Math.random() * canvas.height; 
+                    const c = Math.random() > 0.05 ? 'white' : `hsl(${Math.random() * 360}, 70%, 70%)`; 
+                    stars.push(new Star(x, y, r, c, { x: 0, y: r * 0.5 })); 
+                } 
+            } 
+            canvasRect = canvas.getBoundingClientRect(); 
+        }
+        // --- Version Management ---
+        function updateVersionDisplay() {
+            // Try to get version from git tags via API, fallback to hardcoded version
+            const fallbackVersion = "v.009";
+            
+            // For now, use the fallback version
+            // In the future, this could fetch from GitHub API or be set during build
+            versionDisplay.textContent = fallbackVersion;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        window.addEventListener('scroll', () => { canvasRect = canvas.getBoundingClientRect(); }, { passive: true });
+        resizeCanvas();
+        updateVersionDisplay();
+        showStartScreen();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en-US">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🧟 ➥ Star Zombie Chase (Made by Starciad)</title>
+
+    <!-- STYLES -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- SCRIPTS -->
+    <script src="js/main.js" type="module" defer></script>
+    <script src="js/game.js" type="module" defer></script>
+    <script src="js/render.js" type="module" defer></script>
+</head>
+
+<body>
+    <div id="dialog-container">
+        <!-- Settings -->
+        <dialog id="settings-dialog">
+            <form method="dialog">
+                <fieldset>
+                    <legend>Map Settings</legend>
+
+                    <label for="map-size">🌍 • Size:</label>
+                    <input type="number" id="map-size" min="3" max="10" value="5" required>
+                </fieldset>
+                <fieldset>
+                    <legend>Entity Settings</legend>
+
+                    <label for="zombie-count">🧟 • Zombie Count:</label>
+                    <input type="number" id="zombie-count" min="1" max="10" value="1" required>
+
+                    <label for="obstacle-count">⛔ • Obstacle Count:</label>
+                    <input type="number" id="obstacle-count" min="1" max="10" value="2" required>
+
+                    <label for="item-count">🧪 • Item Count:</label>
+                    <input type="number" id="item-count" min="1" max="10" value="1" required>
+                </fieldset>
+
+                <menu>
+                    <button id="close-settings-button" type="reset">❌ • Cancel</button>
+                    <button id="restart-game-button" type="submit">✅ • Apply</button>
+                </menu>
+            </form>
+        </dialog>
+
+        <!-- Game Over -->
+        <dialog id="game-over-dialog">
+            <section>
+                <h2>⛔ • Game Over • ⛔</h2>
+                <p>You were caught by a zombie!</p>
+            </section>
+            <menu>
+                <button type="button" id="restart-game-button">♻ • Restart Game</button>
+            </menu>
+        </dialog>
+
+        <!-- Victory -->
+        <dialog id="victory-dialog">
+            <section>
+                <h2>✨ • You Won! • ✨</h2>
+                <p>You collected all the items!</p>
+            </section>
+            <menu>
+                <button type="button" id="restart-game-button">♻ • Restart Game</button>
+            </menu>
+        </dialog>
+    </div>
+
+    <div id="app-container">
+        <header>
+            <h1>Star Zombie Chase</h1>
+            <menu>
+                <button type="button" id="open-settings-button">⚙ • Game Settings</button>
+                <button type="button" id="restart-game-button">♻ • Restart Game</button>
+            </menu>
+        </header>
+        <main>
+            <div id="game-info">
+                <p>Current Turn: <span id="round">1</span></p>
+                <p>Items Collected: <span id="collected-items">0</span>/<span id="total-items">1</span></p>
+            </div>
+            <div id="game-board" class="grid"></div>
+        </main>
+        <footer>
+            <p>Game made and developed by <a href="https://github.com/Starciad" target="_blank" rel="noopener noreferrer">Starciad</a></p>
+            <p><a href="https://github.com/Starciad/StarZombieChase.git" target="_blank" rel="noopener noreferrer">Go to the game repository</a></p>
+        </footer>
+    </div>
+
+</body>
+
+</html>

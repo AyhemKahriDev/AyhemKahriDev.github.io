@@ -1,0 +1,21 @@
+{
+  "appname": "techfunway-brick-game",
+  "display_name": "方块游戏机",
+  "version": "0.1.0",
+  "desc": "经典掌上方块游戏机 49 合 1：方块家族、贪吃蛇、赛车、打飞机、坦克、推箱子、导弹拦截、贪吃豆、2048、扫雷等，霓虹像素画面 + 8bit 芯片音乐，键盘/触屏双适配",
+  "author": "科技智趣坊",
+  "website": "https://techfunway.wycto.cn",
+  "port": 8908,
+  "docker": {
+    "image": "techfunways/brick-game",
+    "container": "techfunway-brick-game",
+    "tag_prefix": "brick-game"
+  },
+  "fnos": {
+    "os_min_version": "1.0.0",
+    "service_port": 8908,
+    "ctl_stop": true,
+    "checkport": false,
+    "disable_authorization_path": false
+  }
+}

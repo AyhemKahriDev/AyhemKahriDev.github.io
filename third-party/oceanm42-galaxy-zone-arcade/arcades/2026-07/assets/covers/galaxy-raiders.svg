@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Galaxy Raiders cover art">
+  <rect x="0" y="0" width="400" height="300" fill="#0a0a14"/>
+
+  <!-- neon border frame -->
+  <rect x="6" y="6" width="388" height="288" rx="10" fill="none" stroke="#00f0ff" stroke-width="2" opacity="0.5"/>
+  <rect x="12" y="12" width="376" height="276" rx="8" fill="none" stroke="#ff2ec4" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- tractor beam cone, projected down from the boss galaga -->
+  <polygon points="200,120 176,120 90,268 310,268 224,120" fill="#ff2ec4" opacity="0.22"/>
+  <polygon points="200,120 184,120 130,255 270,255 216,120" fill="#ff2ec4" opacity="0.18"/>
+
+  <!-- captured ship, silhouetted inside the beam -->
+  <g opacity="0.85">
+    <polygon points="200,198 186,222 200,214 214,222" fill="#00f0ff"/>
+  </g>
+
+  <!-- boss galaga emblem -->
+  <g>
+    <polygon points="200,70 234,96 220,142 180,142 166,96" fill="#00f0ff" opacity="0.16"/>
+    <polygon points="200,78 228,100 216,138 184,138 172,100" fill="none" stroke="#00f0ff" stroke-width="2"/>
+    <polygon points="200,78 228,100 216,138 184,138 172,100" fill="#0a0a14"/>
+    <polygon points="200,86 220,102 211,130 189,130 180,102" fill="#00f0ff"/>
+    <rect x="190" y="98" width="7" height="7" fill="#0a0a14"/>
+    <rect x="203" y="98" width="7" height="7" fill="#0a0a14"/>
+    <rect x="186" y="116" width="28" height="6" fill="#0a0a14"/>
+  </g>
+
+  <!-- wing swoop-path accents flanking the boss -->
+  <path d="M 60 110 C 100 90, 140 90, 170 108" fill="none" stroke="#ff2ec4" stroke-width="2" opacity="0.55"/>
+  <path d="M 340 110 C 300 90, 260 90, 230 108" fill="none" stroke="#ff2ec4" stroke-width="2" opacity="0.55"/>
+
+  <!-- bee raiders peeling off along curved dive paths -->
+  <g fill="#ff2ec4">
+    <polygon points="70,150 82,164 70,178 58,164"/>
+    <polygon points="330,150 342,164 330,178 318,164"/>
+    <polygon points="96,196 106,208 96,220 86,208"/>
+    <polygon points="304,196 314,208 304,220 294,208"/>
+  </g>
+
+  <!-- formation grid, settled ranks below -->
+  <g fill="#ff2ec4" opacity="0.7">
+    <polygon points="132,232 142,242 132,252 122,242"/>
+    <polygon points="168,232 178,242 168,252 158,242"/>
+    <polygon points="232,232 242,242 232,252 222,242"/>
+    <polygon points="268,232 278,242 268,252 258,242"/>
+  </g>
+</svg>

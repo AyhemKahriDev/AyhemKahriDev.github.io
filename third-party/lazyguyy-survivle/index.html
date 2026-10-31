@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta name="google-site-verification" content="nCTj2T7D2yA2_2Uj3sBC3kSOgQjj_VjugKWN194shuM" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="apple-touch-icon" sizes="180x180" href="./assets/fav/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/fav/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./assets/fav/favicon-16x16.png">
+    <title>Survivle</title>
+    <meta name="description" content="Survivle is like Wordle except you have to try to avoid guessing the secret word for as long as possible. It's more challenging than you might expect!">
+    <meta property="description" content="It is like Wordle, except you try to not guess the word.">
+    <meta property="og-description" content="It is like Wordle, except you try to not guess the word.">
+</head>
+<body class="old-units">
+<div class="overlay" id="help-overlay">
+    <div style="height:2vh;"></div>
+    <div class="overlay-content" id="help-overlay-content">
+        Inspired by Josh Wardle's fantastic <a href="https://www.powerlanguage.co.uk/wordle/">Wordle</a> and qntm's very cool adversarial version <a href="https://qntm.org/files/absurdle/absurdle.html">Absurdle</a>, in Survivle it is your goal to <b>lose</b>!<br><br>
+
+        The game plays just like the original in (an even stricter) hardmode: <b>All</b> revealed information has to be used. However, the goal now is to take as many <b>wrong</b> guesses as possible.<br><br>
+
+        Since it is very easy to lose track of the revealed information, the game will let you know what exactly (if anything) is wrong with your current guess. <br><br>
+
+        Good Luck! Winning in Survivle is done by achieving a score of seven or more (because you would have won with six or fewer guesses if this was Wordle). It is more difficult than you might expect.<br><br>
+
+        <hr><br>
+
+        Examples <br><br>
+
+        <table class="board">
+            <tbody>
+                <tr class="board-row">
+                    <td class="green fixed">W</td>
+                    <td>E</td>
+                    <td>A</td>
+                    <td>R</td>
+                    <td>Y</td>
+                </tr>
+            </tbody>
+        </table><br>
+        The letter <b>W</b> is in the word and in the correct spot.<br><br>
+
+        <table class="board">
+            <tbody>
+                <tr class="board-row">
+                    <td>P</td>
+                    <td class="yellow fixed">I</td>
+                    <td>L</td>
+                    <td>L</td>
+                    <td>S</td>
+                </tr>
+            </tbody>
+        </table><br>
+        The letter <b>I</b> is in the word but in a wrong spot.<br><br>
+
+        <table class="board">
+            <tbody>
+                <tr class="board-row">
+                    <td>V</td>
+                    <td>A</td>
+                    <td>G</td>
+                    <td class="gray fixed">U</td>
+                    <td>E</td>
+                </tr>
+            </tbody>
+        </table><br>
+        The letter <b>U</b> is not contained in the word at all.<br><br>
+        <hr><br>
+
+
+        Found a bug? Please report it <a href="https://github.com/lazyguyy/survivle/issues">here</a>.<br>
+        You can also contact me on <a href="https://www.reddit.com/user/lazyguyy/">reddit</a>.
+    </div>
+</div>
+<div class="overlay" id="options-overlay">
+    <div class="overlay-titlebar">
+        <button class="close-button invertable" id="close-options"></button>
+    </div>
+    <div class="overlay-content" id="options-overlay-content">
+        <div class="option-row">
+            <input id="toggle-darkmode" type="checkbox" class="toggle-button invertable" title="Toggle Darkmode">
+            <div class="button-label">Dark Theme</div>
+        </div>
+        <div class="option-row">
+            <input id="toggle-contrast" type="checkbox" class="toggle-button invertable" title="Toggle High Contrast">
+            <div class="button-label">High Contrast</div>
+        </div>
+        <div class="option-row">
+            <input id="toggle-new-units" type="checkbox" class="toggle-button invertable" title="Toggle New Styleshet">
+            <div class="button-label">New Style</div>
+        </div>
+        <div class="option-row" id="show-stats">
+            Show Stats
+        </div>
+        <div class="option-row" id="show-changelog">
+            Show Changelog again
+        </div>
+        <div style="width: 50%; padding-left: 25%;">
+            Yesterday's Daily: <span id="yesterdays-survivle" style="float: right"></span>
+        </div>
+    </div>
+</div>
+<div class="overlay" id="changelog-overlay">
+    <div style="height:2vh;"></div>
+    <div class="overlay-content">
+    Hi there!<br><br>
+
+    With this update, I added local stats tracking for daily games (I chose not to count random games in the stats, but if you feel like they should be included, let me know). Unfortunately, all previous results have not been recorded so everyone is starting from zero.<br><br>
+
+    The stats page will open by itself after the secret word has been entered, but you can also access it from the options menu by clicking on "Show Stats". If you encounter any bugs, please let me know. I hope you enjoy the update.<br><br>
+
+    Happy Playing,<br>
+    Jonas
+    </div>
+</div>
+<div class="overlay" id="stats-overlay">
+    <div style="height:2vh;"></div>
+    <div class="overlay-content">
+        Statistics
+        <ul class="bar-chart" id="stats-chart"></ul>
+        <div id="stats-summary" style="display:none">On average, you take <span id="span-average-guesses"></span> guesses and win <span id="span-winrate"></span> of your games.</div>
+    </div>
+</div>
+<div class="game">
+    <div id="titlebar">
+        <button id="help" class="option-button invertable" title="Show Help"></button><!--
+        --><button id="restart" class="option-button invertable" title="New (random) Survivle"></button><!--
+        --><div class="notifications-wrapper" ><div class="notifications-text" id="notifications"></div></div><!--
+        --><button id="reveal" class="option-button invertable" title="Reveal Secret Word"></button><!--
+        --><button id="options" class="option-button invertable" title="Show Options"></button>
+    </div>
+    <div class="game-area" id="game-area">
+        <table class="board" id="board"></table>
+        <button id="share">Share</button>
+    </div>
+    <div class="keyboard" id="keyboard"></div>
+</div>
+<script type="module" src="interact.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{
+  "name": "soccer-game",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "An arcade soccer game that runs in the browser with no build step.",
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "serve": "node tests/serve.mjs"
+  }
+}

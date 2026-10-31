@@ -1,0 +1,316 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Panel - Ludo Tournament{% endblock %}
+
+{% block extra_css %}
+<style>
+    .admin-card {
+        background-color: #fff;
+        border-radius: 10px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        margin-bottom: 20px;
+        padding: 20px;
+    }
+    
+    .stats-card {
+        background: linear-gradient(45deg, #2196F3, #1976D2);
+        color: white;
+        border-radius: 10px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .stats-number {
+        font-size: 24px;
+        font-weight: bold;
+    }
+    
+    .table-responsive {
+        margin-top: 20px;
+    }
+    
+    .action-buttons .btn {
+        margin-right: 5px;
+    }
+    
+    .status-badge {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 12px;
+    }
+    
+    .status-pending {
+        background-color: #ffd700;
+        color: #000;
+    }
+    
+    .status-completed {
+        background-color: #4caf50;
+        color: white;
+    }
+    
+    .status-rejected {
+        background-color: #f44336;
+        color: white;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <!-- Platform Statistics -->
+    <div class="col-md-12">
+        <div class="stats-card">
+            <h4>Platform Statistics</h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="stats-number">{{ stats.users.total }}</div>
+                    <div>Total Users</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-number">{{ stats.users.active }}</div>
+                    <div>Active Users</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-number">{{ stats.games.total }}</div>
+                    <div>Total Games</div>
+                </div>
+                <div class="col-md-3">
+                    <div class="stats-number">${{ "%.2f"|format(stats.transactions.platform_fees) }}</div>
+                    <div>Platform Fees</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- User Management -->
+    <div class="col-md-6">
+        <div class="admin-card">
+            <h4>User Management</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Username</th>
+                            <th>Balance</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                        <tr>
+                            <td>{{ user.username }}</td>
+                            <td>${{ "%.2f"|format(user.real_money_balance) }}</td>
+                            <td>
+                                {% if user.is_banned %}
+                                <span class="badge bg-danger">Banned</span>
+                                {% else %}
+                                <span class="badge bg-success">Active</span>
+                                {% endif %}
+                            </td>
+                            <td class="action-buttons">
+                                <button class="btn btn-sm btn-primary" onclick="viewUserDetails('{{ user.id }}')">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                                <button class="btn btn-sm btn-warning" onclick="toggleUserBan('{{ user.id }}')">
+                                    <i class="fas fa-ban"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="resetUserAccount('{{ user.id }}')">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Withdrawal Requests -->
+    <div class="col-md-6">
+        <div class="admin-card">
+            <h4>Withdrawal Requests</h4>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>User</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for withdrawal in withdrawals %}
+                        <tr>
+                            <td>{{ withdrawal.user.username }}</td>
+                            <td>${{ "%.2f"|format(withdrawal.amount) }}</td>
+                            <td>{{ withdrawal.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                            <td>
+                                <span class="status-badge status-{{ withdrawal.status }}">
+                                    {{ withdrawal.status|title }}
+                                </span>
+                            </td>
+                            <td class="action-buttons">
+                                {% if withdrawal.status == 'pending' %}
+                                <button class="btn btn-sm btn-success" onclick="processWithdrawal('{{ withdrawal.id }}', 'approve')">
+                                    <i class="fas fa-check"></i>
+                                </button>
+                                <button class="btn btn-sm btn-danger" onclick="processWithdrawal('{{ withdrawal.id }}', 'reject')">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Settings -->
+    <div class="col-md-12">
+        <div class="admin-card">
+            <h4>Game Settings</h4>
+            <form id="gameSettingsForm">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Minimum Bet Amount</label>
+                            <input type="number" class="form-control" name="min_bet" value="{{ settings.min_bet }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Maximum Bet Amount</label>
+                            <input type="number" class="form-control" name="max_bet" value="{{ settings.max_bet }}">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Platform Fee (%)</label>
+                            <input type="number" class="form-control" name="platform_fee" value="{{ settings.platform_fee }}">
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Save Settings</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- User Details Modal -->
+<div class="modal fade" id="userDetailsModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">User Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div id="userDetailsContent"></div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // User Management Functions
+    function viewUserDetails(userId) {
+        fetch(`/admin/user/${userId}`)
+            .then(response => response.json())
+            .then(data => {
+                const content = document.getElementById('userDetailsContent');
+                content.innerHTML = `
+                    <div class="mb-3">
+                        <strong>Username:</strong> ${data.username}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Email:</strong> ${data.email}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Balance:</strong> $${data.real_money_balance}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Coins:</strong> ${data.coins}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Games Played:</strong> ${data.stats.total_games}
+                    </div>
+                    <div class="mb-3">
+                        <strong>Win Rate:</strong> ${data.stats.win_rate}%
+                    </div>
+                `;
+                new bootstrap.Modal(document.getElementById('userDetailsModal')).show();
+            });
+    }
+    
+    function toggleUserBan(userId) {
+        if (confirm('Are you sure you want to toggle user ban status?')) {
+            fetch(`/admin/user/${userId}/toggle-ban`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                });
+        }
+    }
+    
+    function resetUserAccount(userId) {
+        if (confirm('Are you sure you want to reset this user\'s account? This will reset their coins and balance.')) {
+            fetch(`/admin/user/${userId}/reset`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                });
+        }
+    }
+    
+    // Withdrawal Management Functions
+    function processWithdrawal(withdrawalId, action) {
+        if (confirm(`Are you sure you want to ${action} this withdrawal?`)) {
+            fetch(`/admin/withdrawal/${withdrawalId}/${action}`, { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.error);
+                    }
+                });
+        }
+    }
+    
+    // Game Settings Form
+    document.getElementById('gameSettingsForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        
+        fetch('/admin/settings', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Settings updated successfully');
+            } else {
+                alert('Error: ' + data.error);
+            }
+        });
+    });
+</script>
+{% endblock %} 

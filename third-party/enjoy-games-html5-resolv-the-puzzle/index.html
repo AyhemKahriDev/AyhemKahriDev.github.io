@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+ <head>
+  <meta charset="UTF-8">
+  <title>html5-resolv-the-puzzle</title>
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Happy+Monkey">
+  <link href="http://fonts.googleapis.com/css?family=Londrina+Shadow" rel="stylesheet">
+  <link rel="stylesheet" href="resolv-the-puzzle.css">
+ </head>
+ <body oncontextmenu="return false;" onload="gameLoop();">
+  <section id="howTo">
+   <header>How to play?</header>
+   There are 8 pieces to move to get the image right.<br>
+   <ul>
+    <li>Complete the image.</li>
+   </ul>
+   Controls:<br>
+   Use the mouse. Click on a piece and it will move to adjacent cell if adjacent cell is empty.<br>
+   <br>
+   Get fun!
+  </section>
+  <button id="btnStartGame" onclick="startGame();">START</button>
+  <label id="lblEndGame" class="hide">Puzzle completed!</label>
+  <canvas id="gameScreen" onmousedown="mouse.listenMousedown(event);" onmouseup="mouse.listenMouseup(event);">Your browser is not compatible with canvas element (html5).</canvas>
+  <section id="gameInfo">
+   <header>Game info</header>
+   <label id="lblInfo">Click on start to play.</label>
+  </section>
+ </body>
+ <script src="stats.min.js"></script>
+ <script src="resolv-the-puzzle.js"></script>
+ <script>
+   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+   ga('create', 'UA-45433616-1', 'binary-sequence.github.io');
+   ga('send', 'pageview');
+ </script>
+</html>

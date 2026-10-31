@@ -1,0 +1,17 @@
+{
+  "name": "Fly In Chaos — the butterfly effect, made playable",
+  "short_name": "FlyInChaos",
+  "description": "A chaos-theory arcade game. Tap to bend the wind; watch a 3px twin diverge — and hear the chaos.",
+  "start_url": ".",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070a14",
+  "theme_color": "#070a14",
+  "lang": "en",
+  "categories": ["games", "education"],
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "maskable" }
+  ]
+}

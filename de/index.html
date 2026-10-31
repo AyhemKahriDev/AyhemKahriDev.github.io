@@ -1,0 +1,990 @@
+<!doctype html>
+<html lang="de" dir="ltr" data-locale="de" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' blob:; worker-src 'self' blob:; font-src 'self'; frame-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>spielkunst — kostenlose Browserspiele, kein Download</title>
+<meta name="description" content="spielkunst ist eine kostenlose Spielhalle mit Wortspielen, Rätseln und Arcade-Klassikern. Sofort auf jedem Gerät spielbar, ohne Installation.">
+<meta name="language" content="de">
+<link rel="canonical" href="https://spielkunst.pages.dev/de/">
+<link rel="alternate" hreflang="en" href="https://spielkunst.pages.dev/">
+<link rel="alternate" hreflang="fr" href="https://spielkunst.pages.dev/fr/">
+<link rel="alternate" hreflang="ar" href="https://spielkunst.pages.dev/ar/">
+<link rel="alternate" hreflang="de" href="https://spielkunst.pages.dev/de/">
+<link rel="alternate" hreflang="x-default" href="https://spielkunst.pages.dev/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="spielkunst">
+<meta property="og:title" content="spielkunst — kostenlose Browserspiele, kein Download">
+<meta property="og:description" content="spielkunst ist eine kostenlose Spielhalle mit Wortspielen, Rätseln und Arcade-Klassikern. Sofort auf jedem Gerät spielbar, ohne Installation.">
+<meta property="og:url" content="https://spielkunst.pages.dev/de/">
+<meta property="og:image" content="https://spielkunst.pages.dev/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="spielkunst — Kostenlose Browserspiele. Kein Download, keine Anmeldung, keine Werbung vor dem Spiel.">
+<meta property="og:locale" content="de_DE">
+<meta property="og:locale:alternate" content="en_GB">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:locale:alternate" content="ar_AR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="spielkunst — kostenlose Browserspiele, kein Download">
+<meta name="twitter:description" content="spielkunst ist eine kostenlose Spielhalle mit Wortspielen, Rätseln und Arcade-Klassikern. Sofort auf jedem Gerät spielbar, ohne Installation.">
+<meta name="twitter:image" content="https://spielkunst.pages.dev/og.png">
+<meta name="theme-color" id="meta-theme" content="#08090a">
+<meta name="color-scheme" content="dark light">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="preload" href="/fonts/bricolage-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/outfit-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/fonts.css?v=3604b95d">
+<link rel="stylesheet" href="/styles.css?v=3604b95d">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<script>
+/* Theme before first paint: no flash, and no render-blocking request. */
+(function () {
+  var r = document.documentElement;
+  var ok = ["signal","lights","coinop","ice","dmg","vapor","pixel","crt","newsprint"];
+  var light = ["newsprint"];
+  var t = 'signal';
+  try {
+    var saved = localStorage.getItem('af_theme');
+    if (saved && ok.indexOf(saved) !== -1) t = saved;
+  } catch (e) {}
+  r.setAttribute('data-theme', t);
+  r.setAttribute('data-chrome', light.indexOf(t) !== -1 ? 'light' : 'dark');
+  r.classList.remove('no-js');
+  r.classList.add('js');
+})();
+</script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"spielkunst","url":"https://spielkunst.pages.dev/de/","inLanguage":"de","description":"spielkunst ist eine kostenlose Spielhalle mit Wortspielen, Rätseln und Arcade-Klassikern. Sofort auf jedem Gerät spielbar, ohne Installation.","potentialAction":{"@type":"SearchAction","target":"https://spielkunst.pages.dev/de/games/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
+</head>
+<body class="">
+<a class="skip-link" href="#main">Zum Inhalt springen</a>
+<svg class="af-sprite" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+<defs>
+<linearGradient id="af-sheen" x1="0" y1="0" x2="0.6" y2="1">
+  <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+  <stop offset="0.5" stop-color="#ffffff" stop-opacity="0.04"/>
+  <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+</linearGradient>
+</defs>
+<symbol id="a-mark" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="9" fill="currentColor"/>
+  <circle cx="16" cy="16" r="9.4" fill="none" stroke="#0b1000" stroke-width="3"/>
+  <path d="M13.6 11.4 21 16l-7.4 4.6Z" fill="#0b1000"/>
+</symbol>
+<symbol id="a-sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+  <circle cx="12" cy="12" r="4.2"/>
+  <path d="M12 2.6v2.2M12 19.2v2.2M2.6 12h2.2M19.2 12h2.2M5.4 5.4l1.6 1.6M17 17l1.6 1.6M18.6 5.4L17 7M7 17l-1.6 1.6"/>
+</g></symbol>
+<symbol id="a-moon" viewBox="0 0 24 24"><path d="M20 14.6A8.4 8.4 0 0 1 9.4 4a8.5 8.5 0 1 0 10.6 10.6Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="a-arrow" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></g></symbol>
+<symbol id="a-check" viewBox="0 0 24 24"><path d="M4.5 12.8l4.6 4.4L19.5 6.6" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="a-bolt" viewBox="0 0 24 24"><path d="M13.6 2.5 4.8 13.4h6L10.4 21.5 19.2 10.6h-6l.4-8.1Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></symbol>
+<symbol id="a-shield" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 2.8 4.8 5.6v6c0 4.4 3 8 7.2 9.6 4.2-1.6 7.2-5.2 7.2-9.6v-6L12 2.8Z"/><path d="M8.8 12.2l2.4 2.4 4-4.4" stroke-linecap="round"/></g></symbol>
+<symbol id="a-wifi-off" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5.5 20.5 19"/><path d="M5.2 9.6a14 14 0 0 1 4.1-2.1M14.8 7.7a14 14 0 0 1 4 1.9M8.6 13.1a9 9 0 0 1 2.5-1.2M15.8 12.6c.6.3 1.1.6 1.6 1M12 17.4v.1"/></g></symbol>
+<symbol id="a-expand" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4H4v5M15 4h5v5M15 20h5v-5M9 20H4v-5"/></g></symbol>
+<symbol id="a-restart" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12a7.5 7.5 0 1 0 2.4-5.5"/><path d="M4.5 4.5v4h4"/></g></symbol>
+<symbol id="a-sound" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3L12 5v14L7 14.5H4v-5Z"/><path d="M16 9a4.2 4.2 0 0 1 0 6"/><path d="M18.8 6.4a8 8 0 0 1 0 11.2"/></g></symbol>
+<symbol id="a-muted" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3L12 5v14L7 14.5H4v-5Z"/><path d="M16.5 9.5l5 5M21.5 9.5l-5 5"/></g></symbol>
+<symbol id="a-coin" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8.4"/><path d="M12 7.6v8.8M9.6 10.2h3.6a1.9 1.9 0 1 1 0 3.8H9.6" stroke-linecap="round"/></g></symbol>
+<symbol id="a-grid" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.2" y="3.2" width="7" height="7" rx="1.8"/><rect x="13.8" y="3.2" width="7" height="7" rx="1.8"/><rect x="3.2" y="13.8" width="7" height="7" rx="1.8"/><rect x="13.8" y="13.8" width="7" height="7" rx="1.8"/></g></symbol>
+<symbol id="a-pad" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M7.4 7h9.2c2.3 0 3.9 1.7 4.5 4.2.5 2.2.9 4.9.7 6.4-.2 1.6-1.4 2.6-3 2.6-1.4 0-2.4-.8-3.2-2l-.8-1.2H9.2l-.8 1.2c-.8 1.2-1.8 2-3.2 2-1.6 0-2.8-1-3-2.6-.2-1.5.2-4.2.7-6.4C3.5 8.7 5.1 7 7.4 7Z"/>
+  <path d="M7 10.6v4M5 12.6h4"/>
+  <circle cx="15.4" cy="11.2" r="1" fill="currentColor" stroke="none"/>
+  <circle cx="18" cy="13.8" r="1" fill="currentColor" stroke="none"/>
+</g></symbol>
+<symbol id="a-puzzle" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="3" width="8" height="8" rx="2"/>
+  <rect x="13" y="3" width="8" height="8" rx="2"/>
+  <rect x="3" y="13" width="8" height="8" rx="2"/>
+  <circle cx="17" cy="17" r="4"/>
+</g></symbol>
+<symbol id="a-word" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2.5" y="2.5" width="19" height="19" rx="5"/>
+  <text x="12" y="16.4" text-anchor="middle" font-size="10.5" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="800" fill="currentColor" stroke="none">Aa</text>
+</g></symbol>
+<symbol id="a-bulb" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3a6 6 0 0 1 3.9 10.6c-.8.7-1.3 1.5-1.5 2.4h-4.8c-.2-.9-.7-1.7-1.5-2.4A6 6 0 0 1 12 3Z"/>
+  <path d="M9.6 19.5h4.8M10.9 22h2.2"/>
+</g></symbol>
+<symbol id="a-flag" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M5 21V4"/>
+  <path d="M5 4.5h12.6l-2.6 3.9 2.6 3.9H5"/>
+</g></symbol>
+<symbol id="a-blocks" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3.5" y="13.5" width="7.5" height="7" rx="1.6"/>
+  <rect x="13" y="13.5" width="7.5" height="7" rx="1.6"/>
+  <rect x="8.25" y="4" width="7.5" height="7" rx="1.6"/>
+</g></symbol>
+<symbol id="a-dice" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3.5" y="3.5" width="17" height="17" rx="4.5"/>
+  <circle cx="8.3" cy="8.3" r="1.35" fill="currentColor" stroke="none"/>
+  <circle cx="15.7" cy="8.3" r="1.35" fill="currentColor" stroke="none"/>
+  <circle cx="12" cy="12" r="1.35" fill="currentColor" stroke="none"/>
+  <circle cx="8.3" cy="15.7" r="1.35" fill="currentColor" stroke="none"/>
+  <circle cx="15.7" cy="15.7" r="1.35" fill="currentColor" stroke="none"/>
+</g></symbol>
+<symbol id="a-play" viewBox="0 0 24 24">
+  <path d="M8 5.5v13l10.5-6.5Z" fill="currentColor" stroke="none"/>
+</symbol>
+<symbol id="a-spark" viewBox="0 0 24 24">
+  <path d="M12 3l2.1 6.9L21 12l-6.9 2.1L12 21l-2.1-6.9L3 12l6.9-2.1Z" fill="currentColor" stroke="none"/>
+</symbol>
+<symbol id="a-search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="10.5" cy="10.5" r="6.5"/>
+  <path d="M15.3 15.3 21 21"/>
+  <path d="M8.2 9.2v3.4M10.5 9.2v3.4M12.8 9.2v3.4" stroke-width="1.4"/>
+</g></symbol>
+<symbol id="a-merge" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M4 4.5 10 10.5V7M10 10.5H6.5"/>
+  <path d="M20 4.5 14 10.5V7M14 10.5h3.5"/>
+  <path d="M4 19.5 10 13.5v3.5M10 13.5H6.5"/>
+  <path d="M20 19.5 14 13.5v3.5M14 13.5h3.5"/>
+</g></symbol>
+<symbol id="a-snake" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M18.5 4.5h-10a3.5 3.5 0 0 0 0 7h7.5a3.5 3.5 0 0 1 0 7h-11"/>
+</g></symbol>
+<symbol id="a-memory" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="4.5" width="10" height="14" rx="2.5"/>
+  <rect x="10.5" y="6.5" width="10.5" height="13.5" rx="2.5"/>
+  <path d="M15.75 15.5a1.7 1.7 0 1 0 0-3.4 1.7 1.7 0 0 0 0 3.4Z" stroke-width="1.5"/>
+</g></symbol>
+<symbol id="a-trust" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="3" width="8" height="8" rx="2"/>
+  <rect x="13" y="3" width="8" height="8" rx="2"/>
+  <rect x="3" y="13" width="8" height="8" rx="2"/>
+  <path d="M5.6 7l1.6 1.6 2.6-3"/>
+  <path d="M15.2 15.2l3.6 3.6"/>
+  <path d="M18.8 15.2l-3.6 3.6"/>
+</g></symbol>
+<symbol id="a-loopy" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 4.5a7.5 7.5 0 1 0 7.5 7.5"/>
+  <path d="M11.4 2.7l3.9-1.7.1 4.2Z" fill="currentColor" stroke="none"/>
+  <circle cx="19.5" cy="12" r="1.7" fill="currentColor" stroke="none"/>
+</g></symbol>
+</svg>
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/de/" aria-label="spielkunst — Startseite"><svg class="mark" viewBox="0 0 32 32" width="30" height="30" aria-hidden="true"><use href="#a-mark"/></svg><span>spiel<b>kunst</b></span></a>
+    <nav class="site-nav" aria-label="Hauptnavigation"><a href="/de/games/">Alle Spiele</a><a href="/de/categories/word/">Wörter</a><a href="/de/categories/puzzle/">Puzzle</a><a href="/de/categories/arcade/">Arcade</a><a href="/de/categories/brain/">Kopftraining</a><a href="/de/categories/strategy/">Strategie</a><a href="/de/daily/">Tägliches Rätsel</a></nav>
+    <div class="top-tools">
+      <div class="lang-wrap">
+    <nav class="lang-switch" aria-label="Sprache" data-locale="de"><a href="/" data-lang="en" lang="en" title="English">EN</a><a href="/fr/" data-lang="fr" lang="fr" title="Français">FR</a><a href="/ar/" data-lang="ar" lang="ar" title="العربية">AR</a><a href="/de/" data-lang="de" lang="de" title="Deutsch" aria-current="page">DE</a></nav>
+    <details class="lang-menu">
+      <summary aria-label="Sprache — Deutsch"><span aria-hidden="true">DE</span></summary>
+      <div class="lang-pop" role="group" aria-label="Sprache"><a href="/" data-lang="en" lang="en" title="English">English</a><a href="/fr/" data-lang="fr" lang="fr" title="Français">Français</a><a href="/ar/" data-lang="ar" lang="ar" title="العربية">العربية</a><a href="/de/" data-lang="de" lang="de" title="Deutsch" aria-current="page">Deutsch</a></div>
+    </details>
+  </div>
+      <form class="search" action="/de/games/" method="get" role="search">
+        <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-search"/></svg>
+        <input type="search" name="q" placeholder="551 Spiele durchsuchen" aria-label="Alle Spiele durchsuchen" autocomplete="off" spellcheck="false">
+        <kbd>/</kbd>
+      </form>
+      <div class="theme-menu">
+        <button class="theme-btn" id="btn-theme" type="button" aria-haspopup="menu"
+                aria-expanded="false" aria-controls="theme-pop" aria-label="Design: Signal">
+          <span class="sw" aria-hidden="true"></span>
+        </button>
+        <div class="theme-pop" id="theme-pop" role="menu" aria-label="Design" hidden>
+          <p class="theme-pop-label">Design</p>
+          <button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="signal" style="--sw:#c9f94b;--sw2:#08090a">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">Signal<em>· Tinte + Limette</em></span>
+            </button><button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="lights" style="--sw:#c2f23f;--sw2:#f7f4ec">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">Licht an<em>· Papier</em></span>
+            </button><button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="coinop" style="--sw:#ffb648;--sw2:#0d0907">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">Arcade-Automat<em>· bernsteinfarbenes Gehäuse</em></span>
+            </button><button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="ice" style="--sw:#4fe3ff;--sw2:#050b12">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">Eis<em>· Cyan</em></span>
+            </button><button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="dmg" style="--sw:#9bbc0f;--sw2:#0b1410">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">DMG<em>· Grün von 1989</em></span>
+            </button><button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="vapor" style="--sw:#ff6ec7;--sw2:#0d0716">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">Vapor<em>· heißes Pink</em></span>
+            </button><button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="pixel" style="--sw:#ffcc4d;--sw2:#14121f">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">Pixel<em>· 16-Bit-Modul</em></span>
+            </button><button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="crt" style="--sw:#39ff88;--sw2:#04120c">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">CRT<em>· Phosphor + Scanlines</em></span>
+            </button><button class="theme-item" type="button" role="menuitemradio" aria-checked="false"
+              data-theme-id="newsprint" data-light="1" style="--sw:#b3402e;--sw2:#f2efe4">
+              <span class="sw" aria-hidden="true"></span>
+              <span class="nm">Zeitungspapier<em>· gedruckte Seite</em></span>
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <nav class="nav-strip" aria-label="Kategorien"><a href="/de/games/">Alle Spiele</a><a href="/de/categories/word/">Wörter</a><a href="/de/categories/puzzle/">Puzzle</a><a href="/de/categories/arcade/">Arcade</a><a href="/de/categories/brain/">Kopftraining</a><a href="/de/categories/strategy/">Strategie</a><a href="/de/daily/">Tägliches Rätsel</a></nav>
+</header>
+<main id="main">
+<div class="wrap">
+  <section class="hero hero-split">
+    <div class="hero-copy">
+      <p class="kicker"><i></i>551 Spiele · für immer kostenlos</p>
+      <h1>Kostenlose Browserspiele, die <em>sofort losgehen</em>.</h1>
+      <p class="lede">spielkunst ist eine kostenlose Spielhalle mit Wortspielen, Rätseln und Arcade-Klassikern. Sofort auf jedem Gerät spielbar, ohne Installation. Spiel auswählen und eine Sekunde später bist du im Spiel — nichts zu installieren, nichts freizuschalten, kein Konto.</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="/de/games/">Alle 551 Spiele ansehen</a>
+        <button class="btn" id="btn-random" type="button"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" class="af-glyph"><use href="#a-dice"/></svg> Zufälliges Spiel</button>
+      </div>
+      <ul class="trust">
+        <li><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-bolt"/></svg> Lädt in etwa einer Sekunde</li>
+        <li><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-wifi-off"/></svg> Nach dem ersten Besuch offline spielbar</li>
+        <li><svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-shield"/></svg> Kein Tracking, keine Werbung, die dir folgt</li>
+      </ul>
+    </div>
+
+    <aside class="hero-card" aria-labelledby="today-card-title">
+      <div class="hero-card-head">
+        <h2 id="today-card-title">Das Raster von heute</h2>
+        <span class="ticket">HEUTIGE MARKE * 31. Okt.</span>
+      </div>
+      <div class="mini-grid" aria-hidden="true"><span>P</span><span>E</span><span>L</span><span>A</span><span>H</span><span>W</span><span>I</span><span>M</span><span>R</span><span>H</span><span>S</span><span>I</span><span>E</span><span>D</span><span>D</span><span>G</span><span>B</span><span>P</span><span>M</span><span>L</span><span>A</span><span>V</span><span>A</span><span>O</span><span>I</span><span>I</span><span>X</span><span>Q</span><span class="on">E</span><span>C</span><span>L</span><span>N</span><span>C</span><span>P</span><span>U</span><span>S</span><span>A</span><span class="on">L</span><span>S</span><span>G</span><span>I</span><span>I</span><span>R</span><span>O</span><span>Q</span><span>M</span><span class="on">C</span><span>A</span><span>T</span><span>L</span><span>N</span><span>L</span><span>O</span><span>S</span><span>S</span><span class="on">A</span><span>I</span><span>S</span><span>A</span><span>L</span><span>E</span><span>R</span><span>M</span><span>I</span><span class="on">N</span><span>L</span><span>A</span><span>R</span><span>B</span><span>H</span><span>A</span><span>A</span><span>R</span><span class="on">R</span><span>F</span><span>M</span><span>X</span><span>J</span><span>Y</span><span>N</span><span>T</span><span>M</span><span class="on">A</span><span>I</span><span>N</span><span>Y</span><span>I</span><span>Y</span><span>S</span><span>T</span><span>E</span><span class="on">B</span><span>N</span><span>R</span><span>E</span><span>E</span><span>F</span><span>I</span><span>S</span><span>G</span></div>
+      <div class="hero-card-foot">
+        <span class="meta">Tiefsee · 11 Wörter · 2026-10-31</span>
+        <a class="btn btn-primary" href="/de/daily/2026-10-31/" style="height:38px;padding:0 14px;font-size:13.5px">Spielen <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-arrow"/></svg></a>
+      </div>
+    </aside>
+  </section>
+</div>
+</main>
+
+<section class="ticker" aria-hidden="true"><div class="ticker-track"><span class="ticker-set"><b>JEDEN TAG EIN NEUES RASTER</b><i>◆</i><b>551 SPIELE, NULL DOWNLOADS</b><i>◆</i><b>KEIN KONTO, KEINE E-MAIL, KEINE PAYWALL</b><i>◆</i><b>NACH DEM ERSTEN LADEN OFFLINE SPIELBAR</b><i>◆</i><b>AUS HTML, JAVASCRIPT UND SONST NICHTS</b><i>◆</i></span></div></section>
+
+<div class="wrap">
+  <section class="stats-strip" aria-label="Die Arcade in Zahlen">
+    <span><b>551</b><i>Spiele</i></span>
+    <span><b>1</b><i>neues Raster pro Tag</i></span>
+    <span><b>0</b><i>Konten nötig</i></span>
+    <span><b>$0</b><i>für immer</i></span>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Hier anfangen</h2>
+      <a class="section-more" href="/de/games/">Alle 551 Spiele <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-arrow"/></svg></a>
+    </div>
+    <div class="grid"><a class="tile reveal" href="/de/games/wordsearch/"
+   data-name="daily word search" data-cat="word" data-kw="daily word search word wortspiele word search daily word search word search puzzle free word search word search online word search game"
+   style="--tile-accent:#FF4FA8;--glow:#FF4FA8;--i:0">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg"><rect x="0" y="0" width="96" height="96" rx="22" fill="#101316"/><rect x="0" y="0" width="96" height="96" rx="22" fill="#FF4FA8" opacity="0.16"/><rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/><rect x="8" y="8" width="18" height="18" rx="4" fill="#FF4FA8"/><text x="17" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#08090a" text-anchor="middle">C</text><rect x="28" y="8" width="18" height="18" rx="4" fill="#FF4FA8"/><text x="37" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#08090a" text-anchor="middle">A</text><rect x="48" y="8" width="18" height="18" rx="4" fill="#FF4FA8"/><text x="57" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#08090a" text-anchor="middle">T</text><rect x="68" y="8" width="18" height="18" rx="4" fill="#FF4FA8"/><text x="77" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#08090a" text-anchor="middle">S</text><rect x="8" y="28" width="18" height="18" rx="4" fill="#191d21"/><text x="17" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">D</text><rect x="28" y="28" width="18" height="18" rx="4" fill="#191d21"/><text x="37" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">O</text><rect x="48" y="28" width="18" height="18" rx="4" fill="#191d21"/><text x="57" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">G</text><rect x="68" y="28" width="18" height="18" rx="4" fill="#191d21"/><text x="77" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">S</text><rect x="8" y="48" width="18" height="18" rx="4" fill="#191d21"/><text x="17" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">S</text><rect x="28" y="48" width="18" height="18" rx="4" fill="#191d21"/><text x="37" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">U</text><rect x="48" y="48" width="18" height="18" rx="4" fill="#191d21"/><text x="57" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">N</text><rect x="68" y="48" width="18" height="18" rx="4" fill="#191d21"/><text x="77" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">S</text><rect x="8" y="68" width="18" height="18" rx="4" fill="#191d21"/><text x="17" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">R</text><rect x="28" y="68" width="18" height="18" rx="4" fill="#191d21"/><text x="37" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">A</text><rect x="48" y="68" width="18" height="18" rx="4" fill="#191d21"/><text x="57" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">Y</text><rect x="68" y="68" width="18" height="18" rx="4" fill="#191d21"/><text x="77" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">S</text></svg></div>
+      
+      <h3>Daily Word Search</h3>
+      <p>Finde jedes versteckte Wort im Gitter.</p>
+      <span class="tag">Wörter</span>
+    </a><a class="tile reveal" href="/de/games/merge/"
+   data-name="2048 merge" data-cat="puzzle" data-kw="2048 merge puzzle puzzlespiele 2048 2048 game merge game number merge game play 2048 online 2048 unblocked"
+   style="--tile-accent:#FFC93E;--glow:#FFC93E;--i:1">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg"><rect x="0" y="0" width="96" height="96" rx="22" fill="#101316"/><rect x="0" y="0" width="96" height="96" rx="22" fill="#FFC93E" opacity="0.16"/><rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/><rect x="8" y="8" width="38" height="38" rx="8" fill="#FFC93E"/>
+       <rect x="50" y="8" width="38" height="38" rx="8" fill="#191d21"/>
+       <rect x="8" y="50" width="38" height="38" rx="8" fill="#191d21"/>
+       <rect x="50" y="50" width="38" height="38" rx="8" fill="#FFC93E" opacity="0.5"/>
+       <text x="27" y="35" font-size="22" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="800" fill="#08090a" text-anchor="middle">2</text>
+       <text x="69" y="35" font-size="22" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="800" fill="#f6f3eb" text-anchor="middle">8</text></svg></div>
+      
+      <h3>2048 Merge</h3>
+      <p>Schieb, verschmelze und bau die größte Zahl.</p>
+      <span class="tag">Puzzle</span>
+    </a><a class="tile reveal" href="/de/games/snake/"
+   data-name="neon snake" data-cat="arcade" data-kw="neon snake arcade arcade-spiele snake game play snake online free snake game snake unblocked neon snake classic snake game"
+   style="--tile-accent:#2FE6FF;--glow:#2FE6FF;--i:2">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg"><rect x="0" y="0" width="96" height="96" rx="22" fill="#101316"/><rect x="0" y="0" width="96" height="96" rx="22" fill="#2FE6FF" opacity="0.16"/><rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/><rect x="14" y="14" width="18" height="18" rx="6" fill="#2FE6FF"/>
+       <rect x="34" y="14" width="18" height="18" rx="6" fill="#2FE6FF" opacity="0.75"/>
+       <rect x="54" y="14" width="18" height="18" rx="6" fill="#2FE6FF" opacity="0.5"/>
+       <rect x="54" y="34" width="18" height="18" rx="6" fill="#2FE6FF" opacity="0.35"/>
+       <circle cx="30" cy="60" r="7" fill="#ff8fb3"/></svg></div>
+      
+      <h3>Neon Snake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/memory/"
+   data-name="memory match" data-cat="brain" data-kw="memory match brain kopftraining memory game memory match concentration game find the pairs free memory game match game online"
+   style="--tile-accent:#3DFFA9;--glow:#3DFFA9;--i:3">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg"><rect x="0" y="0" width="96" height="96" rx="22" fill="#101316"/><rect x="0" y="0" width="96" height="96" rx="22" fill="#3DFFA9" opacity="0.16"/><rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/><rect x="8" y="14" width="38" height="52" rx="10" fill="#191d21"/>
+       <circle cx="27" cy="40" r="7" fill="#3DFFA9" opacity="0.55"/>
+       <rect x="38" y="24" width="46" height="60" rx="11" fill="#3DFFA9"/>
+       <text x="61" y="66" font-size="34" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="800" fill="#08090a" text-anchor="middle">?</text></svg></div>
+      
+      <h3>Memory Match</h3>
+      <p>Dreh zwei Karten um, merk dir die Bilder und find die Paare.</p>
+      <span class="tag">Kopftraining</span>
+    </a><a class="tile reveal" href="/de/games/trust/"
+   data-name="the evolution of trust" data-cat="strategy" data-kw="the evolution of trust strategy strategiespiele evolution of trust game trust game nicky case games strategy browser game free educational game"
+   style="--tile-accent:#FF9F6B;--glow:#FF9F6B;--i:4">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg"><rect x="0" y="0" width="96" height="96" rx="22" fill="#101316"/><rect x="0" y="0" width="96" height="96" rx="22" fill="#FF9F6B" opacity="0.16"/><rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/><rect x="6" y="6" width="38" height="38" rx="9" fill="#FF9F6B"/><path d="M14 26l5 5 9 -10" fill="none" stroke="#08090a" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/><rect x="52" y="6" width="38" height="38" rx="9" fill="#191d21"/><path d="M60 26l5 5 9 -10" fill="none" stroke="#FF9F6B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><g stroke="#8a867d" stroke-width="4" stroke-linecap="round"><path d="M75 19l14 14M89 19l-14 14"/></g><rect x="6" y="52" width="38" height="38" rx="9" fill="#191d21"/><path d="M16 70l5 5 9 -10" fill="none" stroke="#FF9F6B" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><g stroke="#8a867d" stroke-width="4" stroke-linecap="round"><path d="M31 65l14 14M45 65l-14 14"/></g><rect x="52" y="52" width="38" height="38" rx="9" fill="#191d21"/><g stroke="#ff5470" stroke-width="5" stroke-linecap="round"><path d="M67 69l14 14M81 69l-14 14"/></g></svg></div>
+      <span class="badge">Open Source</span>
+      <h3>The Evolution of Trust</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Strategie</span>
+    </a><a class="tile reveal" href="/de/games/loopy/"
+   data-name="loopy" data-cat="sandbox" data-kw="loopy sandbox sandkasten &amp; werkzeuge loopy game nicky case loopy system dynamics game feedback loop simulator interactive systems tool"
+   style="--tile-accent:#5AD8FF;--glow:#5AD8FF;--i:5">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg"><rect x="0" y="0" width="96" height="96" rx="22" fill="#101316"/><rect x="0" y="0" width="96" height="96" rx="22" fill="#5AD8FF" opacity="0.16"/><rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/><path d="M48 12a36 36 0 1 0 36 36" fill="none" stroke="#5AD8FF" stroke-width="9" stroke-linecap="round"/>
+       <path d="M43 6.5l16-4.4-1 16.5Z" fill="#5AD8FF"/>
+       <circle cx="84" cy="48" r="9" fill="#08090a" opacity="0.35"/>
+       <circle cx="84" cy="48" r="5.5" fill="#5AD8FF"/>
+       <circle cx="48" cy="48" r="7" fill="#5AD8FF" opacity="0.28"/></svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Loopy</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Sandkasten</span>
+    </a><a class="tile reveal" href="/de/games/adheesharavindu-snake-and-ladder/"
+   data-name="snake and ladder (adheesharavindu)" data-cat="arcade" data-kw="snake and ladder (adheesharavindu) arcade arcade-spiele snake and ladder game play snake and ladder online free snake and ladder online board game table game"
+   style="--tile-accent:hsl(303 80% 64%);--glow:hsl(303 80% 64%);--i:6">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-adheesharavindu-snake-and-ladder" x1="0" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="hsl(303 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(345 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-adheesharavindu-snake-and-ladder)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-pad" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Snake and Ladder (AdheeshaRavindu)</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/cookieukw-advanced-snake-game/"
+   data-name="advanced snake" data-cat="arcade" data-kw="advanced snake arcade arcade-spiele advanced snake game play advanced snake online free advanced snake online snake game arcade game"
+   style="--tile-accent:hsl(143 80% 64%);--glow:hsl(143 80% 64%);--i:7">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-cookieukw-advanced-snake-game" x1="0" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="hsl(143 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(185 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-cookieukw-advanced-snake-game)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-pad" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Advanced Snake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/italohdc-learnsnake/"
+   data-name="learn snake" data-cat="arcade" data-kw="learn snake arcade arcade-spiele learn snake game play learn snake online free learn snake online snake game arcade game"
+   style="--tile-accent:hsl(142 80% 64%);--glow:hsl(142 80% 64%);--i:8">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-italohdc-learnsnake" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="hsl(142 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(184 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-italohdc-learnsnake)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-play" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Learn Snake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/jorgesanux-ex-snake-game/"
+   data-name="ex snake" data-cat="arcade" data-kw="ex snake arcade arcade-spiele ex snake game play ex snake online free ex snake online snake game arcade game"
+   style="--tile-accent:hsl(13 80% 64%);--glow:hsl(13 80% 64%);--i:9">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-jorgesanux-ex-snake-game" x1="0" y1="0" x2="1" y2="0.4">
+    <stop offset="0" stop-color="hsl(13 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(55 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-jorgesanux-ex-snake-game)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-bolt" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Ex Snake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/lordofsunshine-snakevortex/"
+   data-name="snakevortex" data-cat="arcade" data-kw="snakevortex arcade arcade-spiele snakevortex game play snakevortex online free snakevortex online snake game arcade game"
+   style="--tile-accent:hsl(157 80% 64%);--glow:hsl(157 80% 64%);--i:10">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-lordofsunshine-snakevortex" x1="0" y1="0" x2="1" y2="0.4">
+    <stop offset="0" stop-color="hsl(157 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(199 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-lordofsunshine-snakevortex)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-bolt" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Snakevortex</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/raupulus-javascript-game-snake/"
+   data-name="game snake" data-cat="arcade" data-kw="game snake arcade arcade-spiele game snake game play game snake online free game snake online snake game arcade game"
+   style="--tile-accent:hsl(94 80% 64%);--glow:hsl(94 80% 64%);--i:11">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-raupulus-javascript-game-snake" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="hsl(94 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(136 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-raupulus-javascript-game-snake)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-play" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Game Snake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Nach Stimmung stöbern</h2>
+      <a class="section-more" href="/de/games/">Alles <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-arrow"/></svg></a>
+    </div>
+    <div class="cat-grid"><a class="cat-card" href="/de/categories/word/" style="--c:#FF4FA8">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Wortspiele</h3>
+      <p>Worträtsel, die in einer Minute durch sind. Jeden Tag neue Aufgaben.</p>
+      <span class="cat-count">31 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a><a class="cat-card" href="/de/categories/puzzle/" style="--c:#FFC93E">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Puzzlespiele</h3>
+      <p>Logik- und Zahlenrätsel, sofort neu startbar und ohne Wartezeit.</p>
+      <span class="cat-count">61 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a><a class="cat-card" href="/de/categories/arcade/" style="--c:#2FE6FF">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Arcade-Spiele</h3>
+      <p>Klassische Arcade-Action, auf Handy und Rechner gleich gut spielbar.</p>
+      <span class="cat-count">322 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a><a class="cat-card" href="/de/categories/brain/" style="--c:#3DFFA9">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Kopftraining</h3>
+      <p>Gedächtnis, Aufmerksamkeit und Muster: Du trainierst, während du spielst.</p>
+      <span class="cat-count">28 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a><a class="cat-card" href="/de/categories/strategy/" style="--c:#FF9F6B">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Strategiespiele</h3>
+      <p>Spiele über Entscheidungen, Vertrauen und Systeme. Überlege erst, dann spiel.</p>
+      <span class="cat-count">22 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a><a class="cat-card" href="/de/categories/sandbox/" style="--c:#5AD8FF">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Sandkasten &amp; Werkzeuge</h3>
+      <p>Offene Werkzeuge zum Ausprobieren von Ideen. Kein Punktestand, keine Uhr, nur machen.</p>
+      <span class="cat-count">12 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a><a class="cat-card" href="/de/categories/classics/" style="--c:#FF6B6B">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Klassiker</h3>
+      <p>Pong, Breakout, Space Invaders und die Automaten, aus denen sie kamen. Gleiche Regeln, kein Münzeinwurf.</p>
+      <span class="cat-count">28 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a><a class="cat-card" href="/de/categories/racing/" style="--c:#FFB020">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Rennspiele</h3>
+      <p>Rennen von oben und von der Seite, die du mit zwei Daumen lenkst.</p>
+      <span class="cat-count">16 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a><a class="cat-card" href="/de/categories/table/" style="--c:#B98CFF">
+      <span class="cat-dot" aria-hidden="true"></span>
+      <h3>Tischspiele</h3>
+      <p>Brett- und Kartenspiele ohne Aufbau: Sudoku, Solitaire, Mahjong, Mensch ärgere dich nicht, Go.</p>
+      <span class="cat-count">31 Spiele <span class="cat-arrow" aria-hidden="true">→</span></span>
+    </a></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Das Rätsel von heute</h2>
+      <span class="pill"><i></i>neu um Mitternacht UTC</span>
+    </div>
+    <div class="grid grid-featured">
+      <a class="tile" href="/de/daily/2026-10-31/" style="--glow:var(--coin)">
+        <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg"><rect x="0" y="0" width="96" height="96" rx="22" fill="#101316"/><rect x="0" y="0" width="96" height="96" rx="22" fill="#5AC8FA" opacity="0.16"/><rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/><rect x="8" y="8" width="18" height="18" rx="4" fill="#5AC8FA"/><text x="17" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#08090a" text-anchor="middle">C</text><rect x="28" y="8" width="18" height="18" rx="4" fill="#5AC8FA"/><text x="37" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#08090a" text-anchor="middle">A</text><rect x="48" y="8" width="18" height="18" rx="4" fill="#5AC8FA"/><text x="57" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#08090a" text-anchor="middle">T</text><rect x="68" y="8" width="18" height="18" rx="4" fill="#5AC8FA"/><text x="77" y="22" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#08090a" text-anchor="middle">S</text><rect x="8" y="28" width="18" height="18" rx="4" fill="#191d21"/><text x="17" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">D</text><rect x="28" y="28" width="18" height="18" rx="4" fill="#191d21"/><text x="37" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">O</text><rect x="48" y="28" width="18" height="18" rx="4" fill="#191d21"/><text x="57" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">G</text><rect x="68" y="28" width="18" height="18" rx="4" fill="#191d21"/><text x="77" y="42" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">S</text><rect x="8" y="48" width="18" height="18" rx="4" fill="#191d21"/><text x="17" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">S</text><rect x="28" y="48" width="18" height="18" rx="4" fill="#191d21"/><text x="37" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">U</text><rect x="48" y="48" width="18" height="18" rx="4" fill="#191d21"/><text x="57" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">N</text><rect x="68" y="48" width="18" height="18" rx="4" fill="#191d21"/><text x="77" y="62" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">S</text><rect x="8" y="68" width="18" height="18" rx="4" fill="#191d21"/><text x="17" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">R</text><rect x="28" y="68" width="18" height="18" rx="4" fill="#191d21"/><text x="37" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">A</text><rect x="48" y="68" width="18" height="18" rx="4" fill="#191d21"/><text x="57" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">Y</text><rect x="68" y="68" width="18" height="18" rx="4" fill="#191d21"/><text x="77" y="82" font-size="11" font-family="Outfit, ui-sans-serif, system-ui, sans-serif" font-weight="700" fill="#8a867d" text-anchor="middle">S</text></svg></div>
+        <h3>Tägliche Wortsuche</h3>
+        <p>Tiefsee — 2026-10-31. Zehn mal zehn, 11 Wörter, 100 Sekunden. Alle spielen dasselbe Raster.</p>
+        <span class="tag">Heutiges Raster spielen</span>
+      </a>
+      <a class="tile" href="/de/daily/2026-10-31/answers/" style="--glow:var(--coin)">
+        <div class="thumb thumb-plain" style="font-size:34px">?</div>
+        <h3>Die Lösungen von heute</h3>
+        <p>Das komplette gelöste Raster mit allen Wörtern, dazu Zeile und Spalte, wo jedes beginnt.</p>
+        <span class="tag">Nachschauen</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Der ganze Automat</h2>
+      <a class="section-more" href="/de/games/">Alle 551 ansehen <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-arrow"/></svg></a>
+    </div>
+    <div class="grid" id="cabinet-grid"><a class="tile reveal" href="/de/games/thinksink-snakeyexample/"
+   data-name="snakey" data-cat="arcade" data-kw="snakey arcade arcade-spiele snakey game play snakey online free snakey online snake game arcade game"
+   style="--tile-accent:hsl(108 80% 64%);--glow:hsl(108 80% 64%);--i:6">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-thinksink-snakeyexample" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(108 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(150 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-thinksink-snakeyexample)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Snakey</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/yakkomajuri-brython-snake/"
+   data-name="brython snake" data-cat="arcade" data-kw="brython snake arcade arcade-spiele brython snake game play brython snake online free brython snake online snake game arcade game"
+   style="--tile-accent:hsl(100 80% 64%);--glow:hsl(100 80% 64%);--i:7">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-yakkomajuri-brython-snake" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(100 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(142 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-yakkomajuri-brython-snake)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Brython Snake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/battle-snake/"
+   data-name="battle snake" data-cat="arcade" data-kw="battle snake arcade arcade-spiele battle snake game play battle snake online free battle snake online snake game arcade game"
+   style="--tile-accent:hsl(232 80% 64%);--glow:hsl(232 80% 64%);--i:8">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-battle-snake" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(232 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(274 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-battle-snake)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Battle Snake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/csnake/"
+   data-name="csnake" data-cat="arcade" data-kw="csnake arcade arcade-spiele csnake game play csnake online free csnake online snake game arcade game"
+   style="--tile-accent:hsl(268 80% 64%);--glow:hsl(268 80% 64%);--i:9">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-csnake" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(268 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(310 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-csnake)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Csnake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/block-snake-3d/"
+   data-name="block snake 3d" data-cat="arcade" data-kw="block snake 3d arcade arcade-spiele block snake 3d game play block snake 3d online free block snake 3d online snake game arcade game"
+   style="--tile-accent:hsl(281 80% 64%);--glow:hsl(281 80% 64%);--i:10">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-block-snake-3d" x1="0" y1="0" x2="1" y2="0.4">
+    <stop offset="0" stop-color="hsl(281 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(323 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-block-snake-3d)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-bolt" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Block Snake 3D</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/nostalgic-snake-game/"
+   data-name="nostalgic snake" data-cat="arcade" data-kw="nostalgic snake arcade arcade-spiele nostalgic snake game play nostalgic snake online free nostalgic snake online snake game arcade game"
+   style="--tile-accent:hsl(39 80% 64%);--glow:hsl(39 80% 64%);--i:11">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-nostalgic-snake-game" x1="0" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="hsl(39 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(81 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-nostalgic-snake-game)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-pad" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Nostalgic Snake</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/snakeneoncircuit/"
+   data-name="snakeneoncircuit" data-cat="arcade" data-kw="snakeneoncircuit arcade arcade-spiele snakeneoncircuit game play snakeneoncircuit online free snakeneoncircuit online snake game arcade game"
+   style="--tile-accent:hsl(278 80% 64%);--glow:hsl(278 80% 64%);--i:12">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-snakeneoncircuit" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="hsl(278 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(320 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-snakeneoncircuit)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-play" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Snakeneoncircuit</h3>
+      <p>Friss, wachse und bleib deinem eigenen Schwanz aus dem Weg.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/tetris/"
+   data-name="tetris" data-cat="arcade" data-kw="tetris arcade arcade-spiele tetris tetris game play tetris online free tetris block stacking game"
+   style="--tile-accent:hsl(208 80% 64%);--glow:hsl(208 80% 64%);--i:13">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-tetris" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(208 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(250 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-tetris)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Tetris</h3>
+      <p>Stapel die fallenden Steine und räum jede Reihe ab.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/minesweeper/"
+   data-name="minesweeper" data-cat="brain" data-kw="minesweeper brain kopftraining minesweeper free minesweeper minesweeper online minesweeper no download play minesweeper"
+   style="--tile-accent:hsl(185 80% 64%);--glow:hsl(185 80% 64%);--i:14">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-minesweeper" x1="0" y1="0" x2="1" y2="0.4">
+    <stop offset="0" stop-color="hsl(185 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(227 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-minesweeper)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-spark" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      
+      <h3>Minesweeper</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Kopftraining</span>
+    </a><a class="tile reveal" href="/de/games/lightsout/"
+   data-name="lights out" data-cat="puzzle" data-kw="lights out puzzle puzzlespiele lights out lights out puzzle free puzzle game logic puzzle online play lights out"
+   style="--tile-accent:hsl(334 80% 64%);--glow:hsl(334 80% 64%);--i:15">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-lightsout" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="hsl(334 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(16 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-lightsout)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-grid" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      
+      <h3>Lights Out</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Puzzle</span>
+    </a><a class="tile reveal" href="/de/games/simon/"
+   data-name="simon says" data-cat="brain" data-kw="simon says brain kopftraining simon says simon game memory game online free memory game sequence game"
+   style="--tile-accent:hsl(315 80% 64%);--glow:hsl(315 80% 64%);--i:16">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-simon" x1="0" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="hsl(315 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(357 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-simon)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-bulb" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      
+      <h3>Simon Says</h3>
+      <p>Dreh zwei Karten um, merk dir die Bilder und find die Paare.</p>
+      <span class="tag">Kopftraining</span>
+    </a><a class="tile reveal" href="/de/games/typing/"
+   data-name="typing sprint" data-cat="word" data-kw="typing sprint word wortspiele typing test typing speed test wpm test free typing game typing practice"
+   style="--tile-accent:hsl(48 80% 64%);--glow:hsl(48 80% 64%);--i:17">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-typing" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(48 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(90 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-typing)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-puzzle" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      
+      <h3>Typing Sprint</h3>
+      <p>Tipp die Wörter so schnell und so genau du kannst.</p>
+      <span class="tag">Wörter</span>
+    </a><a class="tile reveal" href="/de/games/nova-lancer/"
+   data-name="nova lancer" data-cat="arcade" data-kw="nova lancer arcade arcade-spiele nova lancer 3d rail shooter free space shooter star fox style game browser shooter shoot em up online"
+   style="--tile-accent:hsl(273 80% 64%);--glow:hsl(273 80% 64%);--i:18">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-nova-lancer" x1="0" y1="0" x2="1" y2="0.4">
+    <stop offset="0" stop-color="hsl(273 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(315 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-nova-lancer)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-bolt" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Nova Lancer</h3>
+      <p>Bleib in Bewegung, bleib am Abzug und bleib am Leben.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/triangle-light-maze/"
+   data-name="triangle light maze" data-cat="sandbox" data-kw="triangle light maze sandbox sandkasten &amp; werkzeuge triangle maze light maze maze puzzle path finding puzzle free puzzle game browser puzzle"
+   style="--tile-accent:hsl(302 80% 64%);--glow:hsl(302 80% 64%);--i:19">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-triangle-light-maze" x1="0" y1="1" x2="1" y2="0">
+    <stop offset="0" stop-color="hsl(302 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(344 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-triangle-light-maze)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-grid" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Triangle Light Maze</h3>
+      <p>Finde den Ausgang, bevor die Wände enger werden.</p>
+      <span class="tag">Sandkasten</span>
+    </a><a class="tile reveal" href="/de/games/0thernes-glidiebirdie/"
+   data-name="glidiebirdie" data-cat="arcade" data-kw="glidiebirdie arcade arcade-spiele glidiebirdie game play glidiebirdie online free glidiebirdie online one-button game arcade game"
+   style="--tile-accent:hsl(200 80% 64%);--glow:hsl(200 80% 64%);--i:20">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-0thernes-glidiebirdie" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(200 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(242 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-0thernes-glidiebirdie)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Glidiebirdie</h3>
+      <p>Tippen, flattern und durch jede Lücke.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/16yongjin-html-games/"
+   data-name="games" data-cat="arcade" data-kw="games arcade arcade-spiele games game play games online free games online quick game sandbox game"
+   style="--tile-accent:hsl(136 80% 64%);--glow:hsl(136 80% 64%);--i:21">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-16yongjin-html-games" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(136 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(178 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-16yongjin-html-games)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Games</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/33yang-mine-sweeper/"
+   data-name="mine sweeper (33yang)" data-cat="arcade" data-kw="mine sweeper (33yang) arcade arcade-spiele mine sweeper game play mine sweeper online free mine sweeper online quick game sandbox game"
+   style="--tile-accent:hsl(224 80% 64%);--glow:hsl(224 80% 64%);--i:22">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-33yang-mine-sweeper" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(224 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(266 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-33yang-mine-sweeper)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Mine Sweeper (33YANG)</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/abdumurodovazulfizar-pick-flower/"
+   data-name="pick flower" data-cat="arcade" data-kw="pick flower arcade arcade-spiele pick flower game play pick flower online free pick flower online platform game arcade game"
+   style="--tile-accent:hsl(31 80% 64%);--glow:hsl(31 80% 64%);--i:23">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-abdumurodovazulfizar-pick-flower" x1="0" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="hsl(31 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(73 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-abdumurodovazulfizar-pick-flower)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-pad" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Pick Flower</h3>
+      <p>Lauf, spring und erreiche das Ende des Levels.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/abdyek-oneguntwospells/"
+   data-name="one gun two spells" data-cat="arcade" data-kw="one gun two spells arcade arcade-spiele one gun two spells game play one gun two spells online free one gun two spells online shooter game arcade game"
+   style="--tile-accent:hsl(145 80% 64%);--glow:hsl(145 80% 64%);--i:24">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-abdyek-oneguntwospells" x1="0" y1="0" x2="1" y2="0.4">
+    <stop offset="0" stop-color="hsl(145 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(187 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-abdyek-oneguntwospells)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-bolt" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>One Gun Two Spells</h3>
+      <p>Bleib in Bewegung, bleib am Abzug und bleib am Leben.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/ad-archer-retroaudiomaker/"
+   data-name="retroaudiomaker" data-cat="arcade" data-kw="retroaudiomaker arcade arcade-spiele retroaudiomaker game play retroaudiomaker online free retroaudiomaker online quick game sandbox game"
+   style="--tile-accent:hsl(351 80% 64%);--glow:hsl(351 80% 64%);--i:25">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-ad-archer-retroaudiomaker" x1="0" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="hsl(351 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(33 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-ad-archer-retroaudiomaker)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-pad" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Retroaudiomaker</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/adrienaudouard-footballgame/"
+   data-name="football" data-cat="arcade" data-kw="football arcade arcade-spiele football game play football online free football online quick game sandbox game"
+   style="--tile-accent:hsl(127 80% 64%);--glow:hsl(127 80% 64%);--i:26">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-adrienaudouard-footballgame" x1="0" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="hsl(127 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(169 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-adrienaudouard-footballgame)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-pad" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Football</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/aicoderproject-chain-drop-lab/"
+   data-name="chain drop lab" data-cat="puzzle" data-kw="chain drop lab puzzle puzzlespiele chain drop lab game play chain drop lab online free chain drop lab online quick game sandbox game"
+   style="--tile-accent:hsl(1 80% 64%);--glow:hsl(1 80% 64%);--i:27">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-aicoderproject-chain-drop-lab" x1="0" y1="0" x2="1" y2="0.4">
+    <stop offset="0" stop-color="hsl(1 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(43 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-aicoderproject-chain-drop-lab)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-blocks" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Chain Drop Lab</h3>
+      <p>Ein schnelles Spiel für zwischendurch.</p>
+      <span class="tag">Puzzle</span>
+    </a><a class="tile reveal" href="/de/games/alexconner-79-super-claudio-brothers/"
+   data-name="super claudio brothers" data-cat="arcade" data-kw="super claudio brothers arcade arcade-spiele super claudio brothers game play super claudio brothers online free super claudio brothers online platform game arcade game"
+   style="--tile-accent:hsl(295 80% 64%);--glow:hsl(295 80% 64%);--i:28">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-alexconner-79-super-claudio-brothers" x1="0" y1="0" x2="0.85" y2="1">
+    <stop offset="0" stop-color="hsl(295 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(337 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-alexconner-79-super-claudio-brothers)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-pad" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Super Claudio Brothers</h3>
+      <p>Lauf, spring und erreiche das Ende des Levels.</p>
+      <span class="tag">Arcade</span>
+    </a><a class="tile reveal" href="/de/games/alibabama401-fishing-game-complete-source-art/"
+   data-name="fishing" data-cat="arcade" data-kw="fishing arcade arcade-spiele fishing game play fishing online free fishing online platform game arcade game"
+   style="--tile-accent:hsl(308 80% 64%);--glow:hsl(308 80% 64%);--i:29">
+      <div class="thumb"><svg viewBox="0 0 96 96" width="72" height="72" role="img" aria-hidden="true" class="gicon-svg">
+  <defs><linearGradient id="gx-alibabama401-fishing-game-complete-source-art" x1="0" y1="0" x2="0.35" y2="1">
+    <stop offset="0" stop-color="hsl(308 72% 54%)"/>
+    <stop offset="1" stop-color="hsl(350 76% 38%)"/>
+  </linearGradient></defs>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#gx-alibabama401-fishing-game-complete-source-art)"/>
+  <rect x="0" y="0" width="96" height="96" rx="22" fill="url(#af-sheen)"/>
+  <use href="#a-dice" x="21" y="21" width="54" height="54"/>
+</svg></div>
+      <span class="badge">Open Source</span>
+      <h3>Fishing</h3>
+      <p>Lauf, spring und erreiche das Ende des Levels.</p>
+      <span class="tag">Arcade</span>
+    </a></div>
+  </section>
+
+  <section class="section" id="recent-section">
+    <div class="section-head">
+      <h2>Weiterspielen, wo du aufgehört hast</h2>
+      <span class="pill">auf diesem Gerät</span>
+    </div>
+    <div class="hscroll" aria-live="polite"></div>
+  </section>
+
+  <section class="section" id="sponsor-slots">
+    <div class="section-head">
+      <h2>Plätze im Automaten</h2>
+      <a class="section-more" href="/de/advertise/">Werbung <svg viewBox="0 0 24 24" width="15" height="15" aria-hidden="true" class="af-glyph"><use href="#a-arrow"/></svg></a>
+    </div>
+    <div class="ad-grid"><a class="ad-slot ad-open" href="/de/advertise/">
+        <b>Dein Spiel hier</b>
+        <span>Eine gekennzeichnete Sponsorenkarte neben einer Spielkategorie — ein Indie-Spiel, ein Dev-Tool, ein Newsletter. Keine Pop-ups, nie.</span>
+        <em>Frei — ab 15 $/Monat</em>
+      </a><a class="ad-slot ad-open" href="/de/advertise/">
+        <b>Dein Spiel hier</b>
+        <span>Eine gekennzeichnete Sponsorenkarte neben einer Spielkategorie — ein Indie-Spiel, ein Dev-Tool, ein Newsletter. Keine Pop-ups, nie.</span>
+        <em>Frei — ab 15 $/Monat</em>
+      </a></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>Warum das kostenlos ist</h2>
+    </div>
+    <div class="feature-grid">
+      <div class="feature"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" class="af-glyph"><use href="#a-bolt"/></svg>
+        <h3>Nichts, was erst laden muss</h3>
+        <p>Jedes Spiel ist reines JavaScript und Canvas. Keine Installation, keine Engine zum Herunterladen, kein Ladebalken.</p>
+      </div>
+      <div class="feature"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" class="af-glyph"><use href="#a-shield"/></svg>
+        <h3>Nichts, wofür du dich anmeldest</h3>
+        <p>Kein Konto, keine E-Mail, keine Cookie-Wand. Deine Bestwerte und deine letzten Spiele bleiben in deinem Browser.</p>
+      </div>
+      <div class="feature"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" class="af-glyph"><use href="#a-coin"/></svg>
+        <h3>Nichts zu bezahlen</h3>
+        <p>Die Arcade finanziert sich über gekennzeichnete Sponsorenplätze, nicht dadurch, dass ein Spiel unterbrochen wird, das du gerade gewinnst.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section prose">
+    <h2>Über spielkunst</h2>
+    <p>Jedes Spiel hier läuft komplett in deinem Browser. Die Seite ist unter einem Megabyte groß, startet also auch mit Mobilfunk sofort, und das <a href="/de/daily/">Archiv der täglichen Rätsel</a> behält jedes vergangene Raster, damit du Lösungen nachschlagen oder eine alte Runde nachspielen kannst.</p>
+    <p>541 der Spiele sind Open Source, mit ihren Originallizenzen eingebunden und auf der <a href="/de/credits/">Credits-Seite</a> genannt. Der Rest läuft auf der spielkunst-Engine.</p>
+  </section>
+</div>
+</main>
+<script id="af-catalog-json" type="application/json">[{"i":"wordsearch","t":"Daily Word Search","c":"word","a":"#FF4FA8"},{"i":"merge","t":"2048 Merge","c":"puzzle","a":"#FFC93E"},{"i":"snake","t":"Neon Snake","c":"arcade","a":"#2FE6FF"},{"i":"memory","t":"Memory Match","c":"brain","a":"#3DFFA9"},{"i":"tetris","t":"Tetris","c":"arcade","a":"#B388FF"},{"i":"trust","t":"The Evolution of Trust","c":"strategy","a":"#FF9F6B"},{"i":"loopy","t":"Loopy","c":"sandbox","a":"#5AD8FF"},{"i":"sudoku","t":"Daily Sudoku","c":"puzzle","a":"#FFC93E"},{"i":"minesweeper","t":"Minesweeper","c":"brain","a":"#3DFFA9"},{"i":"breakout","t":"Neon Breakout","c":"arcade","a":"#2FE6FF"},{"i":"lightsout","t":"Lights Out","c":"puzzle","a":"#B98CFF"},{"i":"simon","t":"Simon Says","c":"brain","a":"#4FA3FF"},{"i":"typing","t":"Typing Sprint","c":"word","a":"#FF4FA8"},{"i":"nova-lancer","t":"Nova Lancer","c":"arcade","a":"#2FE6FF"},{"i":"triangle-light-maze","t":"Triangle Light Maze","c":"sandbox","a":"#5AD8FF"},{"i":"0thernes-glidiebirdie","t":"Glidiebirdie","c":"arcade","a":"hsl(259 85% 62%)"},{"i":"16yongjin-html-games","t":"Games","c":"arcade","a":"hsl(345 85% 62%)"},{"i":"33yang-mine-sweeper","t":"Mine Sweeper (33YANG)","c":"arcade","a":"hsl(243 85% 62%)"},{"i":"abdumurodovazulfizar-pick-flower","t":"Pick Flower","c":"arcade","a":"hsl(62 85% 62%)"},{"i":"abdyek-oneguntwospells","t":"One Gun Two Spells","c":"arcade","a":"hsl(108 85% 62%)"},{"i":"ad-archer-retroaudiomaker","t":"Retroaudiomaker","c":"arcade","a":"hsl(276 85% 62%)"},{"i":"adheesharavindu-snake-and-ladder","t":"Snake and Ladder (AdheeshaRavindu)","c":"arcade","a":"hsl(12 85% 62%)"},{"i":"adrienaudouard-footballgame","t":"Football","c":"arcade","a":"hsl(92 85% 62%)"},{"i":"aicoderproject-chain-drop-lab","t":"Chain Drop Lab","c":"puzzle","a":"hsl(84 85% 62%)"},{"i":"alexconner-79-super-claudio-brothers","t":"Super Claudio Brothers","c":"arcade","a":"hsl(58 85% 62%)"},{"i":"alibabama401-fishing-game-complete-source-art","t":"Fishing","c":"arcade","a":"hsl(173 85% 62%)"},{"i":"alibahrami2001-tetris-ocean","t":"Tetris Ocean","c":"puzzle","a":"hsl(170 85% 62%)"},{"i":"alirizasaral-game-of-society","t":"Game of Society","c":"arcade","a":"hsl(251 85% 62%)"},{"i":"allysonjeronimo-breakout-js","t":"Breakout (Allysonjeronimo)","c":"arcade","a":"hsl(217 85% 62%)"},{"i":"amitsagtani97-classic-arcade-game","t":"Classic Arcade","c":"arcade","a":"hsl(231 85% 62%)"},{"i":"and96-quizcapitali","t":"Quiz Capitali","c":"word","a":"hsl(55 85% 62%)"},{"i":"apoorvdarshan-zombie-game","t":"Zombie","c":"arcade","a":"hsl(312 85% 62%)"},{"i":"arjunemirchandani-skyward-flight-simulator","t":"Skyward Flight Simulator","c":"sandbox","a":"hsl(223 85% 62%)"},{"i":"ashiishme-surds-game-off","t":"Surds Game Off","c":"word","a":"hsl(84 85% 62%)"},{"i":"ashton20271-diddygame","t":"Diddygame","c":"arcade","a":"hsl(114 85% 62%)"},{"i":"atharvakulkarniit-rock-paper-scissor","t":"Rock Paper Scissor","c":"arcade","a":"hsl(175 85% 62%)"},{"i":"audioslayer-nanoarcade","t":"Nano Arcade","c":"arcade","a":"hsl(277 85% 62%)"},{"i":"aveek-saha-chrome-dinosaur-game-clone","t":"Chrome Dinosaur","c":"arcade","a":"hsl(234 85% 62%)"},{"i":"axonos-org-become-the-brain-os","t":"Become the Brain Os","c":"brain","a":"hsl(337 85% 62%)"},{"i":"barnabyshearer-kibblekhaos","t":"Kibblekhaos","c":"classics","a":"hsl(61 85% 62%)"},{"i":"barzin144-flappybird","t":"Flappy Bird (Barzin144)","c":"arcade","a":"hsl(71 85% 62%)"},{"i":"bburky-blocktoblock","t":"Block to Block","c":"puzzle","a":"hsl(335 85% 62%)"},{"i":"bdero-ocean-breeze","t":"Ocean Breeze","c":"arcade","a":"hsl(303 85% 62%)"},{"i":"bensoille-w02-javascript-clientside-mim-game","t":"W 02 Clientside Mim","c":"arcade","a":"hsl(279 85% 62%)"},{"i":"berkerol-typer","t":"Typer","c":"word","a":"hsl(321 85% 62%)"},{"i":"besasam-chroma-sort","t":"Chroma Sort","c":"arcade","a":"hsl(358 85% 62%)"},{"i":"bhanu2006-24-neon-velocity","t":"Neon Velocity","c":"racing","a":"hsl(168 85% 62%)"},{"i":"bibhuticoder-carrimboard","t":"Carrimboard","c":"arcade","a":"hsl(351 85% 62%)"},{"i":"bilalfarukozdemir-kul-ve-kivilcim","t":"Kul Ve Kivilcim","c":"racing","a":"hsl(351 85% 62%)"},{"i":"bocaletto-luca-backgammon","t":"Backgammon","c":"table","a":"hsl(260 85% 62%)"},{"i":"bocaletto-luca-connect-four","t":"Connect Four","c":"arcade","a":"hsl(269 85% 62%)"},{"i":"bocaletto-luca-dama","t":"Dama","c":"table","a":"hsl(253 85% 62%)"},{"i":"bocaletto-luca-domino","t":"Domino","c":"table","a":"hsl(340 85% 62%)"},{"i":"bocaletto-luca-games-2vs","t":"Games 2","c":"arcade","a":"hsl(247 85% 62%)"},{"i":"bocaletto-luca-guess-the-pair-two-player","t":"Guess the Pair Two Player","c":"brain","a":"hsl(191 85% 62%)"},{"i":"bocaletto-luca-mine-sweeper","t":"Mine Sweeper","c":"arcade","a":"hsl(11 85% 62%)"},{"i":"bocaletto-luca-monopoly-multiplayer","t":"Monopoly Multiplayer","c":"strategy","a":"hsl(152 85% 62%)"},{"i":"bocaletto-luca-pong-two-player","t":"Pong Two Player","c":"classics","a":"hsl(107 85% 62%)"},{"i":"bocaletto-luca-roulette","t":"Roulette","c":"arcade","a":"hsl(56 85% 62%)"},{"i":"bocaletto-luca-scopa","t":"Scopa","c":"table","a":"hsl(268 85% 62%)"},{"i":"bocaletto-luca-tama-pets","t":"Tama Pets","c":"arcade","a":"hsl(76 85% 62%)"},{"i":"bonnee-breakthefuckout","t":"Breakthefuckout","c":"arcade","a":"hsl(157 85% 62%)"},{"i":"bozar-cursedsouls","t":"Cursed Souls","c":"strategy","a":"hsl(87 85% 62%)"},{"i":"bozar-runehunter","t":"Rune Hunter","c":"strategy","a":"hsl(65 85% 62%)"},{"i":"brianali-codes-frapp-giveaways","t":"Frapp Giveaways","c":"arcade","a":"hsl(248 85% 62%)"},{"i":"bridge-mind-claude-opus-5-5-zombies-game","t":"Claude Opus 5 Zombies","c":"arcade","a":"hsl(256 85% 62%)"},{"i":"cadaverous-eris-dungeon-generator","t":"Dungeon Generator","c":"arcade","a":"hsl(330 85% 62%)"},{"i":"carlnewton-rover","t":"Rover","c":"puzzle","a":"hsl(4 85% 62%)"},{"i":"chongjiazhen-cardputer-puzzles","t":"Cardputer Puzzles","c":"arcade","a":"hsl(109 85% 62%)"},{"i":"christianoellers-live-game-editor-concept","t":"Live Game Editor Concept","c":"arcade","a":"hsl(176 85% 62%)"},{"i":"citiususc-citius-invaders","t":"Citius Invaders","c":"classics","a":"hsl(37 85% 62%)"},{"i":"codechefvit-asteroid-attack","t":"Asteroid Attack","c":"arcade","a":"hsl(323 85% 62%)"},{"i":"codingwithenjoy-type-test-html-css-js","t":"Type Test Css","c":"arcade","a":"hsl(139 85% 62%)"},{"i":"collidingscopes-manual-brick-breaker","t":"Manual Brick Breaker","c":"arcade","a":"hsl(340 85% 62%)"},{"i":"cookieukw-advanced-snake-game","t":"Advanced Snake","c":"arcade","a":"hsl(178 85% 62%)"},{"i":"ctbot000-soccer-game","t":"Soccer","c":"arcade","a":"hsl(147 85% 62%)"},{"i":"cuixiping-plank-puzzle-game","t":"Plank Puzzle","c":"brain","a":"hsl(275 85% 62%)"},{"i":"cxong-drunkenviking","t":"Drunken Viking","c":"puzzle","a":"hsl(133 85% 62%)"},{"i":"daemonsloth-flappyball-p5js","t":"Flappy Ball P 5","c":"arcade","a":"hsl(311 85% 62%)"},{"i":"daffabot-dps-calc","t":"DPS Calc","c":"arcade","a":"hsl(165 85% 62%)"},{"i":"dag7dev-jsquizee","t":"Quizee","c":"word","a":"hsl(283 85% 62%)"},{"i":"danielafarias-space-invaders","t":"Space Invaders (Danielafarias)","c":"classics","a":"hsl(96 85% 62%)"},{"i":"danieltomazi-pong-game","t":"Pong (DanielTomazi)","c":"classics","a":"hsl(191 85% 62%)"},{"i":"daocloud-dao-2048","t":"Dao 2048","c":"puzzle","a":"hsl(127 85% 62%)"},{"i":"daredev256-whats-poppin","t":"Whats Poppin","c":"brain","a":"hsl(129 85% 62%)"},{"i":"dariatsvetkova-gameof15","t":"Gameof 15","c":"puzzle","a":"hsl(50 85% 62%)"},{"i":"deathraygames-star-crasher","t":"Star Crasher","c":"arcade","a":"hsl(75 85% 62%)"},{"i":"deiniresendiz-platform-game","t":"Platform","c":"arcade","a":"hsl(110 85% 62%)"},{"i":"dev-tanay-tower-bloxx","t":"Tower Bloxx","c":"arcade","a":"hsl(245 85% 62%)"},{"i":"deveah-amuleta","t":"Amuleta","c":"strategy","a":"hsl(81 85% 62%)"},{"i":"devhitp-farmsimulator","t":"Farm Simulator","c":"sandbox","a":"hsl(19 85% 62%)"},{"i":"devilteams-s-zombie-slayer-web","t":"Zombie Slayer","c":"arcade","a":"hsl(291 85% 62%)"},{"i":"devsargam-snakegame","t":"Snake (Devsargam)","c":"arcade","a":"hsl(201 85% 62%)"},{"i":"dfop02-snake-game-with-deep-learning-js","t":"Snake Game with Deep Learning","c":"arcade","a":"hsl(48 85% 62%)"},{"i":"dgatewood-shapecrush","t":"Shape Crush","c":"arcade","a":"hsl(259 85% 62%)"},{"i":"didulagamage-lk-nebula-siege-vx-001","t":"Nebula Siege Vx 001","c":"arcade","a":"hsl(4 85% 62%)"},{"i":"dieselinc-dieselroids","t":"Dieselroids","c":"classics","a":"hsl(224 85% 62%)"},{"i":"diguifi-dude-sidescroll","t":"Dude Side Scroll","c":"arcade","a":"hsl(291 85% 62%)"},{"i":"diguifi-littlejsworld","t":"Littlejsworld","c":"arcade","a":"hsl(31 85% 62%)"},{"i":"dinizdev-pongmaster","t":"Pong Master","c":"classics","a":"hsl(244 85% 62%)"},{"i":"dlinacre-afterglow","t":"Afterglow","c":"sandbox","a":"hsl(238 85% 62%)"},{"i":"dordchn-corona-market","t":"Corona Market","c":"arcade","a":"hsl(148 85% 62%)"},{"i":"ducthang-vu-memory-game","t":"Memory","c":"brain","a":"hsl(161 85% 62%)"},{"i":"duqian42707-sokoban","t":"Sokoban (Duqian42707)","c":"puzzle","a":"hsl(84 85% 62%)"},{"i":"eigilnikolajsen-achtung-die-kurve","t":"Achtung Die Kurve","c":"arcade","a":"hsl(156 85% 62%)"},{"i":"elchin-novruzov-fight-game-with-js","t":"Fight Game","c":"arcade","a":"hsl(290 85% 62%)"},{"i":"eldermoraes-delta-strike","t":"Delta Strike","c":"arcade","a":"hsl(347 85% 62%)"},{"i":"electricg-jquery-html5-crossword","t":"Crossword","c":"word","a":"hsl(163 85% 62%)"},{"i":"elias-ba-lextris","t":"Lextris","c":"word","a":"hsl(322 85% 62%)"},{"i":"elixonus-wormgame","t":"Wormgame","c":"arcade","a":"hsl(239 85% 62%)"},{"i":"emanuelefavero-canvas-game","t":"Game (Emanuelefavero)","c":"arcade","a":"hsl(151 85% 62%)"},{"i":"ertucci674-snako","t":"Snako","c":"arcade","a":"hsl(157 85% 62%)"},{"i":"eslamashhraf-flappy-bird-game","t":"Flappy Bird (EslamAsHhraf)","c":"arcade","a":"hsl(313 85% 62%)"},{"i":"evoluteur-maze-maker","t":"Maze Maker","c":"brain","a":"hsl(254 85% 62%)"},{"i":"fangyuchuang-24-points-game","t":"24 Points","c":"puzzle","a":"hsl(108 85% 62%)"},{"i":"feldhaus-phaser-platformer","t":"Platformer (Feldhaus)","c":"arcade","a":"hsl(63 85% 62%)"},{"i":"felipeorlando-tetris-grid","t":"Tetris Grid","c":"puzzle","a":"hsl(109 85% 62%)"},{"i":"flancast90-cursor-arcade-games","t":"Cursor Arcade","c":"puzzle","a":"hsl(231 85% 62%)"},{"i":"flyinchaos-flyinchaos","t":"Flyinchaos","c":"arcade","a":"hsl(205 85% 62%)"},{"i":"frei-x-chinesechessonline","t":"Chinese Chess Online","c":"table","a":"hsl(128 85% 62%)"},{"i":"freyamade-arena","t":"Arena","c":"arcade","a":"hsl(232 85% 62%)"},{"i":"gaborbata-samegame1k","t":"Samegame 1 K","c":"arcade","a":"hsl(104 85% 62%)"},{"i":"gabrielecirulli-2048","t":"2048 (Gabrielecirulli)","c":"puzzle","a":"hsl(134 85% 62%)"},{"i":"gamedev-toolkit-loopsmith-procedural-game-music-generator","t":"Loopsmith Procedural Game Music Generator","c":"arcade","a":"hsl(129 85% 62%)"},{"i":"gamedev-toolkit-pixel-ability-fx-generator","t":"Pixel Ability Fx Generator","c":"arcade","a":"hsl(67 85% 62%)"},{"i":"gd4ark-star-battle","t":"Star Battle","c":"arcade","a":"hsl(33 85% 62%)"},{"i":"geekboysupreme-crossy-road","t":"Crossy Road","c":"arcade","a":"hsl(104 85% 62%)"},{"i":"giorgosn-wallbrawl","t":"Wallbrawl","c":"arcade","a":"hsl(39 85% 62%)"},{"i":"girishlade111-3d-runner-game","t":"3D Runner","c":"arcade","a":"hsl(203 85% 62%)"},{"i":"gmartigny-socialismsimulator","t":"Socialism Simulator","c":"sandbox","a":"hsl(205 85% 62%)"},{"i":"gnuwilliam-phaser-pong","t":"Pong (Gnuwilliam)","c":"classics","a":"hsl(334 85% 62%)"},{"i":"gonzagadavid-sudoku","t":"Sudoku (Gonzagadavid)","c":"table","a":"hsl(31 85% 62%)"},{"i":"goshdarngames-html5-maze","t":"Maze (Goshdarngames)","c":"brain","a":"hsl(332 85% 62%)"},{"i":"grypesc-getrickrolled","t":"Get Rick Rolled","c":"arcade","a":"hsl(95 85% 62%)"},{"i":"habibieamrullah-html5-crossword-puzzle-game","t":"Crossword Puzzle","c":"word","a":"hsl(170 85% 62%)"},{"i":"hamdan-saddique-ai-arrow-escape-game","t":"Arrow Escape","c":"arcade","a":"hsl(196 85% 62%)"},{"i":"hanaasagi-pinball-game","t":"Pinball (Hanaasagi)","c":"arcade","a":"hsl(251 85% 62%)"},{"i":"hardickraj-skyline-builder","t":"Skyline Builder","c":"sandbox","a":"hsl(115 85% 62%)"},{"i":"harsilspatel-pong-breakout","t":"Pong Breakout","c":"classics","a":"hsl(219 85% 62%)"},{"i":"hashempour-gablocksudoku","t":"Ga Block Sudoku","c":"table","a":"hsl(95 85% 62%)"},{"i":"hauntedbees-blockara","t":"Blockara","c":"puzzle","a":"hsl(350 85% 62%)"},{"i":"hckr-endless-horse-run","t":"Endless Horse Run","c":"arcade","a":"hsl(231 85% 62%)"},{"i":"heathdutton-gametile-designer","t":"Gametile Designer","c":"arcade","a":"hsl(107 85% 62%)"},{"i":"heaven-hm-boardgamr-engine","t":"Boardgamr Engine","c":"arcade","a":"hsl(288 85% 62%)"},{"i":"htmljsgames-game-creator","t":"Game Creator","c":"arcade","a":"hsl(257 85% 62%)"},{"i":"huaminghuangtw-web-sudoku-puzzle-game","t":"Sudoku Puzzle","c":"table","a":"hsl(74 85% 62%)"},{"i":"huazie-flea-game","t":"Flea","c":"arcade","a":"hsl(114 85% 62%)"},{"i":"i8sumpi-2048-circle","t":"2048 Circle","c":"puzzle","a":"hsl(59 85% 62%)"},{"i":"iammanish17-connect4","t":"Connect 4","c":"arcade","a":"hsl(168 85% 62%)"},{"i":"iampavangandhi-jsgames","t":"Games (Iampavangandhi)","c":"arcade","a":"hsl(73 85% 62%)"},{"i":"igapyon-klondike","t":"Klondike","c":"table","a":"hsl(201 85% 62%)"},{"i":"igorrozani-flappy-bird","t":"Flappy Bird (IgorRozani)","c":"arcade","a":"hsl(123 85% 62%)"},{"i":"iliagrigorevdev-quoridor-web","t":"Quoridor","c":"arcade","a":"hsl(356 85% 62%)"},{"i":"ilym-expl-tesla-roadster2","t":"Tesla Roadster 2","c":"arcade","a":"hsl(214 85% 62%)"},{"i":"imnxr-hangman-game","t":"Hangman (Imnxr)","c":"word","a":"hsl(88 85% 62%)"},{"i":"import-this-notbot","t":"Notbot","c":"arcade","a":"hsl(115 85% 62%)"},{"i":"import-this-supercold","t":"Supercold","c":"arcade","a":"hsl(8 85% 62%)"},{"i":"imshota1009-nyan-bomber","t":"Nyan Bomber","c":"puzzle","a":"hsl(138 85% 62%)"},{"i":"imskr-flappy-bird-ai","t":"Flappy Bird AI","c":"arcade","a":"hsl(140 85% 62%)"},{"i":"infinixius-spud","t":"Spud","c":"arcade","a":"hsl(231 85% 62%)"},{"i":"ipel-ns-shaft","t":"Ns Shaft","c":"arcade","a":"hsl(225 85% 62%)"},{"i":"italohdc-learnsnake","t":"Learn Snake","c":"arcade","a":"hsl(131 85% 62%)"},{"i":"jaaydenh-incremental-corp","t":"Incremental Corp","c":"arcade","a":"hsl(256 85% 62%)"},{"i":"jackrugile-radius-raid-js13k","t":"Radius Raid 13 K","c":"arcade","a":"hsl(192 85% 62%)"},{"i":"jackrugile-spacepi-js13k","t":"Spacepi 13 K","c":"arcade","a":"hsl(74 85% 62%)"},{"i":"jaikarans-snake-xenzia","t":"Snake Xenzia","c":"arcade","a":"hsl(31 85% 62%)"},{"i":"jakemoe-htmlmaze","t":"Maze (JakeMoe)","c":"brain","a":"hsl(301 85% 62%)"},{"i":"james-livesey-bytle","t":"Bytle","c":"word","a":"hsl(3 85% 62%)"},{"i":"jawadalmuhtasim-quiz-app","t":"Quiz App","c":"word","a":"hsl(190 85% 62%)"},{"i":"jemimaabu-dead-and-wounded","t":"Dead and Wounded","c":"arcade","a":"hsl(143 85% 62%)"},{"i":"jesselpalmer-brick-breaker","t":"Brick Breaker (Jesselpalmer)","c":"arcade","a":"hsl(196 85% 62%)"},{"i":"jesselpalmer-hangman","t":"Hangman (Jesselpalmer)","c":"word","a":"hsl(348 85% 62%)"},{"i":"jhauberg-cards-py","t":"Cards Py","c":"arcade","a":"hsl(286 85% 62%)"},{"i":"jhongdlp-flybrain","t":"Fly Brain","c":"brain","a":"hsl(130 85% 62%)"},{"i":"jithurjacob-tensorflowjs-gesture-controlled-2048","t":"Tensorflowjs Gesture Controlled 2048","c":"puzzle","a":"hsl(110 85% 62%)"},{"i":"jjmontalban-capitalsgame","t":"Capitals","c":"arcade","a":"hsl(126 85% 62%)"},{"i":"joaolbero-joaoalbero-cv","t":"Joao Albero Cv","c":"arcade","a":"hsl(174 85% 62%)"},{"i":"joaoneto-river-raid-2k","t":"River Raid 2 K","c":"arcade","a":"hsl(267 85% 62%)"},{"i":"joaonetovhc-grand-theg-auto-i","t":"Grand Theg Auto I","c":"arcade","a":"hsl(272 85% 62%)"},{"i":"joelakaufmann-lgtm-depo-doom","t":"Depo Doom","c":"arcade","a":"hsl(82 85% 62%)"},{"i":"joeseesun-mastermind-3d","t":"Mastermind 3D","c":"puzzle","a":"hsl(46 85% 62%)"},{"i":"johannruiz-daytona-usa-web","t":"Daytona USA","c":"arcade","a":"hsl(124 85% 62%)"},{"i":"johndev19-flappy-ball","t":"Flappy Ball","c":"arcade","a":"hsl(163 85% 62%)"},{"i":"jontymorris-cowboy-shooter","t":"Cowboy Shooter","c":"arcade","a":"hsl(51 85% 62%)"},{"i":"jordicenzano-transport-stream-online-segmenter","t":"Transport Stream Online Segmenter","c":"arcade","a":"hsl(228 85% 62%)"},{"i":"jorgesanux-ex-snake-game","t":"Ex Snake","c":"arcade","a":"hsl(60 85% 62%)"},{"i":"joshi-07-mini-arcade-game","t":"Mini Arcade","c":"arcade","a":"hsl(161 85% 62%)"},{"i":"jsfehler-phaser-ui-tools","t":"Ui Tools","c":"arcade","a":"hsl(324 85% 62%)"},{"i":"jsurrea-maze-online","t":"Maze Online","c":"brain","a":"hsl(92 85% 62%)"},{"i":"julianyaman-bitcoin-clicker","t":"Bitcoin Clicker","c":"sandbox","a":"hsl(270 85% 62%)"},{"i":"kamiljablonski-human-middleware-by-supcio","t":"Human Middleware by Supc","c":"arcade","a":"hsl(76 85% 62%)"},{"i":"karan19100-arcade-classic-game","t":"Arcade Classic","c":"arcade","a":"hsl(309 85% 62%)"},{"i":"kavidu-dilhara-corona-runer","t":"Corona Runer","c":"arcade","a":"hsl(32 85% 62%)"},{"i":"kavun-flabbybox","t":"Flabbybox","c":"arcade","a":"hsl(57 85% 62%)"},{"i":"keiferjoel-keysprint-typing-test","t":"Keysprint Typing Test","c":"word","a":"hsl(303 85% 62%)"},{"i":"kg-1510-quizeasy","t":"Quiz Easy","c":"word","a":"hsl(144 85% 62%)"},{"i":"kianpk-neon-serpent","t":"Neon Serpent","c":"arcade","a":"hsl(67 85% 62%)"},{"i":"killedbyapixel-os13k","t":"Os 13 K","c":"arcade","a":"hsl(209 85% 62%)"},{"i":"kingabzpro-neon-rooftops","t":"Neon Rooftops","c":"arcade","a":"hsl(327 85% 62%)"},{"i":"knadh-wordpluck","t":"Wordpluck","c":"word","a":"hsl(244 85% 62%)"},{"i":"kopylash-algorithmics-project","t":"Algorithmics Project","c":"arcade","a":"hsl(308 85% 62%)"},{"i":"krishealty-puzzle","t":"Puzzle","c":"puzzle","a":"hsl(229 85% 62%)"},{"i":"lazyguyy-survivle","t":"Survivle","c":"word","a":"hsl(55 85% 62%)"},{"i":"leireomadina-blackjack-game","t":"Blackjack","c":"table","a":"hsl(342 85% 62%)"},{"i":"lionell-smart-pacmans","t":"Smart Pacmans","c":"arcade","a":"hsl(83 85% 62%)"},{"i":"liyasthomas-snake","t":"Snake (Liyasthomas)","c":"arcade","a":"hsl(149 85% 62%)"},{"i":"ljy969-deal-or-no-deal","t":"Deal or No Deal","c":"arcade","a":"hsl(243 85% 62%)"},{"i":"lk00100100-keyboardfallingblocks","t":"Keyboard Falling Blocks","c":"puzzle","a":"hsl(264 85% 62%)"},{"i":"lordofsunshine-snakevortex","t":"Snakevortex","c":"arcade","a":"hsl(356 85% 62%)"},{"i":"lucasrmagalhaes-snake-js","t":"Snake (Lucasrmagalhaes)","c":"arcade","a":"hsl(300 85% 62%)"},{"i":"lukelawlor-asteroids-js","t":"Asteroids (Lukelawlor)","c":"classics","a":"hsl(339 85% 62%)"},{"i":"lunakurame-squirrel-tale","t":"Squirrel Tale","c":"arcade","a":"hsl(354 85% 62%)"},{"i":"luxedo-asteroids-almost-from-scratch","t":"Asteroids Almost From Scratch","c":"classics","a":"hsl(205 85% 62%)"},{"i":"luxedo-hamurabi-almost-from-scratch","t":"Hamurabi Almost From Scratch","c":"arcade","a":"hsl(76 85% 62%)"},{"i":"luxedo-spacewar-almost-from-scratch","t":"Space War Almost From Scratch","c":"arcade","a":"hsl(55 85% 62%)"},{"i":"m1chtv-t-rex-mich-runner","t":"T Rex Mich Runner","c":"arcade","a":"hsl(73 85% 62%)"},{"i":"mahmudnibir-ludo-game-web-version","t":"Ludo Game Version","c":"table","a":"hsl(208 85% 62%)"},{"i":"makaroni4-guitar-bro","t":"Guitar Bro","c":"arcade","a":"hsl(247 85% 62%)"},{"i":"manerr-pyxio","t":"Pyxio","c":"arcade","a":"hsl(243 85% 62%)"},{"i":"mateusdigital-game-nuclear-rain","t":"Game Nuclear Rain","c":"arcade","a":"hsl(70 85% 62%)"},{"i":"matronator-feed-the-flames","t":"Feed the Flames","c":"sandbox","a":"hsl(181 85% 62%)"},{"i":"maximusprime-primetetris","t":"Prime Tetris","c":"puzzle","a":"hsl(348 85% 62%)"},{"i":"mcsdwvl-to11","t":"To 11","c":"puzzle","a":"hsl(354 85% 62%)"},{"i":"md-abu-kayser-drive-mad","t":"Drive Mad","c":"racing","a":"hsl(28 85% 62%)"},{"i":"megabaka404-crucible-echoes","t":"Crucible Echoes","c":"strategy","a":"hsl(309 85% 62%)"},{"i":"menardi-tube-quiz","t":"Tube Quiz","c":"word","a":"hsl(53 85% 62%)"},{"i":"meronogbai-panda-runner","t":"Panda Runner","c":"arcade","a":"hsl(183 85% 62%)"},{"i":"mert574-gravity-pong","t":"Gravity Pong","c":"classics","a":"hsl(76 85% 62%)"},{"i":"mert574-one-more-jump","t":"One More Jump","c":"arcade","a":"hsl(66 85% 62%)"},{"i":"meshko-scorched-earth-2000","t":"Scorched Earth 2000","c":"arcade","a":"hsl(307 85% 62%)"},{"i":"mfbx9da4-treasure","t":"Treasure","c":"arcade","a":"hsl(247 85% 62%)"},{"i":"mguinea-lost-in-a-space-odyssey","t":"Lost in a Space Odyssey","c":"arcade","a":"hsl(245 85% 62%)"},{"i":"mguinea-the-void-is-online","t":"The Void Is Online","c":"arcade","a":"hsl(338 85% 62%)"},{"i":"mhhridoy7907-ludo-game","t":"Ludo (Mhhridoy7907)","c":"brain","a":"hsl(33 85% 62%)"},{"i":"michelebucelli-xonix-js","t":"Xonix","c":"arcade","a":"hsl(14 85% 62%)"},{"i":"migtibincoski-2048","t":"2048 (Migtibincoski)","c":"puzzle","a":"hsl(313 85% 62%)"},{"i":"miguelrolo-gamesjs","t":"Games (MiguelRolo)","c":"arcade","a":"hsl(102 85% 62%)"},{"i":"mikkun-evade-and-destroy","t":"Evade and Destroy","c":"arcade","a":"hsl(272 85% 62%)"},{"i":"miktaew-yet-another-idle-rpg","t":"Yet Another Idle RPG","c":"sandbox","a":"hsl(358 85% 62%)"},{"i":"milchreis-snake3d","t":"Snake 3D","c":"arcade","a":"hsl(54 85% 62%)"},{"i":"milchreis-tinydefence2","t":"Tiny Defence 2","c":"strategy","a":"hsl(5 85% 62%)"},{"i":"mishael-codes-the-min-game-hub","t":"The Min Game Hub","c":"arcade","a":"hsl(86 85% 62%)"},{"i":"mmichie-cardsharp","t":"Cardsharp","c":"table","a":"hsl(47 85% 62%)"},{"i":"mnito-factors-game","t":"Factors","c":"arcade","a":"hsl(309 85% 62%)"},{"i":"moar-tech-spacerocks","t":"Space Rocks","c":"classics","a":"hsl(333 85% 62%)"},{"i":"mohsen-niksirat-devcompass","t":"Dev Compass","c":"word","a":"hsl(44 85% 62%)"},{"i":"mordof-canvas-pacman","t":"Pacman (Mordof)","c":"classics","a":"hsl(331 85% 62%)"},{"i":"mrm8488-flappy-birds-genetic-evol","t":"Flappy Birds Genetic Evol","c":"strategy","a":"hsl(219 85% 62%)"},{"i":"mrswapnilsahu-doraemon-game","t":"Doraemon","c":"arcade","a":"hsl(197 85% 62%)"},{"i":"msakuta-factorishjs","t":"Factorish","c":"arcade","a":"hsl(317 85% 62%)"},{"i":"msakuta-farmsim","t":"Farmsim","c":"sandbox","a":"hsl(6 85% 62%)"},{"i":"muety-linkeddata-trivia","t":"Linkeddata Trivia","c":"word","a":"hsl(266 85% 62%)"},{"i":"mumuy-pacman","t":"Pacman (Mumuy)","c":"classics","a":"hsl(172 85% 62%)"},{"i":"narenkannan-breakout2dgame","t":"Breakout 2 Dgame","c":"arcade","a":"hsl(285 85% 62%)"},{"i":"narimiran-amaze","t":"Amaze","c":"brain","a":"hsl(244 85% 62%)"},{"i":"netanel-m-super-binary-man","t":"Super Binary Man","c":"arcade","a":"hsl(108 85% 62%)"},{"i":"netmanfisher-chinese-ludo","t":"Chinese Ludo","c":"table","a":"hsl(271 85% 62%)"},{"i":"nickscherbakov-very-simple-tetris-created-by-copilot","t":"Very Simple Tetris Created by Copilot","c":"puzzle","a":"hsl(231 85% 62%)"},{"i":"nicksto-assemblo","t":"Assemblo","c":"puzzle","a":"hsl(230 85% 62%)"},{"i":"niravcodes-flappy-millennial","t":"Flappy Millennial","c":"arcade","a":"hsl(231 85% 62%)"},{"i":"niubideren111-fishing-game-source-code","t":"Fishing Game Code","c":"arcade","a":"hsl(164 85% 62%)"},{"i":"niubideren111-texas-holdem-game-source-code","t":"Texas Holdem Game Code","c":"table","a":"hsl(105 85% 62%)"},{"i":"nnbnh-noi-tu","t":"Noi Tu","c":"word","a":"hsl(231 85% 62%)"},{"i":"noah-simons-stardust-tycoon","t":"Stardust Tycoon","c":"sandbox","a":"hsl(230 85% 62%)"},{"i":"noaquim-sticky-clash","t":"Sticky Clash","c":"arcade","a":"hsl(318 85% 62%)"},{"i":"nriothrreion-console-game","t":"Console","c":"arcade","a":"hsl(180 85% 62%)"},{"i":"nupamore-mcs-engine","t":"Mcs Engine","c":"arcade","a":"hsl(138 85% 62%)"},{"i":"nxr-dine-fun-games-hub","t":"Fun Games Hub","c":"arcade","a":"hsl(15 85% 62%)"},{"i":"oceanm42-galaxy-zone-arcade","t":"Galaxy Zone Arcade","c":"classics","a":"hsl(252 85% 62%)"},{"i":"olkorhon-js-mahjong","t":"Mahjong","c":"table","a":"hsl(5 85% 62%)"},{"i":"olsen232-frodos-quest","t":"Frodos Quest","c":"arcade","a":"hsl(229 85% 62%)"},{"i":"omackenzie-doodle-jump-in-js","t":"Doodle Jump (Omackenzie)","c":"arcade","a":"hsl(235 85% 62%)"},{"i":"omerkel-schnapsen","t":"Schnapsen","c":"table","a":"hsl(289 85% 62%)"},{"i":"omerkel-tiles-puzzle","t":"Tiles Puzzle","c":"puzzle","a":"hsl(228 85% 62%)"},{"i":"ondras-rot-js","t":"Rot","c":"strategy","a":"hsl(85 85% 62%)"},{"i":"oskarkv-golfgame","t":"Golf","c":"arcade","a":"hsl(46 85% 62%)"},{"i":"oussbenk-minesweeper","t":"Minesweeper (Oussbenk)","c":"arcade","a":"hsl(175 85% 62%)"},{"i":"palashbhowmick-mazify-3d","t":"Mazify 3D","c":"brain","a":"hsl(184 85% 62%)"},{"i":"phaserjs-phaser-box2d","t":"Box 2D","c":"arcade","a":"hsl(172 85% 62%)"},{"i":"philippgitpush-bunnymuralhelper","t":"Bunnymuralhelper","c":"puzzle","a":"hsl(76 85% 62%)"},{"i":"phoboslab-underrun","t":"Underrun","c":"arcade","a":"hsl(50 85% 62%)"},{"i":"pi-kei-deshgram-roller","t":"Deshgram Roller","c":"arcade","a":"hsl(32 85% 62%)"},{"i":"picosonic-js13k-2020","t":"13 K 2020","c":"arcade","a":"hsl(7 85% 62%)"},{"i":"pilotpirxie-tetris-ts","t":"Tetris (Pilotpirxie)","c":"puzzle","a":"hsl(305 85% 62%)"},{"i":"pixel-fabian-are-you","t":"Are You","c":"arcade","a":"hsl(151 85% 62%)"},{"i":"pixel-fabian-loading","t":"Loading","c":"arcade","a":"hsl(357 85% 62%)"},{"i":"prarambha369-shiny-octo","t":"Shiny Octo","c":"arcade","a":"hsl(320 85% 62%)"},{"i":"prateek121-90s-games","t":"90 S","c":"arcade","a":"hsl(13 85% 62%)"},{"i":"presiyannnn-cbba-6890","t":"Cbba 6890","c":"brain","a":"hsl(20 85% 62%)"},{"i":"promptengineer48-laya-vs-jev-arena","t":"Laya vs Jev Arena","c":"racing","a":"hsl(167 85% 62%)"},{"i":"qls-cyber-subway-dash","t":"Subway Dash","c":"arcade","a":"hsl(135 85% 62%)"},{"i":"quinten-black-hole-square","t":"Black Hole Square","c":"puzzle","a":"hsl(187 85% 62%)"},{"i":"rahix-alien-invaders","t":"Alien Invaders","c":"strategy","a":"hsl(37 85% 62%)"},{"i":"rainerwessos-daddelkiste","t":"Daddelkiste","c":"arcade","a":"hsl(264 85% 62%)"},{"i":"rajatkumar1011-emojicrush","t":"Emoji Crush","c":"brain","a":"hsl(277 85% 62%)"},{"i":"rajspeaks-2048","t":"2048 (Rajspeaks)","c":"puzzle","a":"hsl(11 85% 62%)"},{"i":"rakeshid03-arrowpathpuzzle","t":"Arrowpathpuzzle","c":"arcade","a":"hsl(259 85% 62%)"},{"i":"raupulus-javascript-game-snake","t":"Game Snake","c":"arcade","a":"hsl(135 85% 62%)"},{"i":"rbrahul-hunting-angry-bird-game","t":"Hunting Angry Bird","c":"arcade","a":"hsl(343 85% 62%)"},{"i":"rededge967-adventures-of-red","t":"Adventures of Red","c":"arcade","a":"hsl(188 85% 62%)"},{"i":"rededge967-doctor-strange","t":"Doctor Strange","c":"arcade","a":"hsl(239 85% 62%)"},{"i":"rembound-match-3-game-html5","t":"Match 3 Game","c":"brain","a":"hsl(258 85% 62%)"},{"i":"richlewis007-ai-asteroids","t":"AI Asteroids","c":"classics","a":"hsl(221 85% 62%)"},{"i":"richlewis007-ai-pong-game","t":"AI Pong","c":"classics","a":"hsl(36 85% 62%)"},{"i":"ritaban06-mini-js-games-hub","t":"Mini Games Hub","c":"arcade","a":"hsl(199 85% 62%)"},{"i":"robyt3-maze","t":"Maze (Robyt3)","c":"brain","a":"hsl(57 85% 62%)"},{"i":"rohitg00-k8sgames","t":"K 8 Sgames","c":"arcade","a":"hsl(95 85% 62%)"},{"i":"ronnyweiss-apex-tetris","t":"Apex Tetris","c":"puzzle","a":"hsl(262 85% 62%)"},{"i":"rsamwilson2323-cloud-brick-breaker-game","t":"Brick Breaker","c":"arcade","a":"hsl(141 85% 62%)"},{"i":"rsamwilson2323-cloud-tetris-game","t":"Tetris (Rsamwilson2323 Cloud)","c":"puzzle","a":"hsl(88 85% 62%)"},{"i":"ryan-menezes-asteroids","t":"Asteroids (Ryan Menezes)","c":"classics","a":"hsl(315 85% 62%)"},{"i":"s-sujan-s-serpentine-game","t":"Serpentine","c":"arcade","a":"hsl(94 85% 62%)"},{"i":"saganaki22-plinksy","t":"Plinksy","c":"arcade","a":"hsl(284 85% 62%)"},{"i":"sagar-sharma-7-number-guessing-game","t":"Number Guessing","c":"arcade","a":"hsl(302 85% 62%)"},{"i":"sagnikghoshcr7-covid-fighters","t":"Covid Fighters","c":"arcade","a":"hsl(79 85% 62%)"},{"i":"samirhodzic-sudoku-solver-js","t":"Sudoku Solver","c":"table","a":"hsl(227 85% 62%)"},{"i":"samirsaad786-team-dynamics","t":"Team Dynamics","c":"puzzle","a":"hsl(235 85% 62%)"},{"i":"samme-kristal-quest","t":"Kristal Quest","c":"arcade","a":"hsl(221 85% 62%)"},{"i":"sarahrosannabusch-dice","t":"Dice","c":"arcade","a":"hsl(170 85% 62%)"},{"i":"selenebun-bullethell","t":"Bullethell","c":"arcade","a":"hsl(171 85% 62%)"},{"i":"selenebun-combat","t":"Combat","c":"arcade","a":"hsl(88 85% 62%)"},{"i":"selenebun-towerdefense","t":"Tower Defence","c":"strategy","a":"hsl(67 85% 62%)"},{"i":"sgoldens-tetris-js","t":"Tetris (Sgoldens)","c":"puzzle","a":"hsl(271 85% 62%)"},{"i":"shahabrdz-supergameapp","t":"Super Game App","c":"puzzle","a":"hsl(222 85% 62%)"},{"i":"shahbajtahershezan-color-match-brick-breaker","t":"Colour Match Brick Breaker","c":"arcade","a":"hsl(1 85% 62%)"},{"i":"shibing624-angry-birds-gesture","t":"Angry Birds Gesture","c":"arcade","a":"hsl(129 85% 62%)"},{"i":"shifulegend-spike-sprint","t":"Spike Sprint","c":"arcade","a":"hsl(102 85% 62%)"},{"i":"shivam010-tictactoe","t":"Tic Tac Toe (Shivam010)","c":"arcade","a":"hsl(30 85% 62%)"},{"i":"shunyue1320-sokoban","t":"Sokoban (Shunyue1320)","c":"puzzle","a":"hsl(357 85% 62%)"},{"i":"shuoros-coderman","t":"Coderman","c":"arcade","a":"hsl(35 85% 62%)"},{"i":"sinc0115-scramble","t":"Scramble (Sinc0115)","c":"word","a":"hsl(146 85% 62%)"},{"i":"sinceraxy-gamehub","t":"Game Hub","c":"arcade","a":"hsl(192 85% 62%)"},{"i":"sixarata-sixarata","t":"Sixarata","c":"arcade","a":"hsl(141 85% 62%)"},{"i":"skorotkiewicz-psycho-odin","t":"Psycho Odin","c":"racing","a":"hsl(30 85% 62%)"},{"i":"softgandhi-image-puzzle-js","t":"Image Puzzle","c":"puzzle","a":"hsl(20 85% 62%)"},{"i":"soxfox42-typit","t":"Typit","c":"word","a":"hsl(290 85% 62%)"},{"i":"spacetimed-project-astro","t":"Project Astro","c":"arcade","a":"hsl(119 85% 62%)"},{"i":"spetterman66-pet-caring-game","t":"Pet Caring","c":"arcade","a":"hsl(147 85% 62%)"},{"i":"ssusnic-machine-learning-flappy-bird","t":"Machine Learning Flappy Bird","c":"arcade","a":"hsl(146 85% 62%)"},{"i":"sszczep-ray-casting-in-2d-game-engines","t":"Ray Casting in 2D Game Engines","c":"arcade","a":"hsl(343 85% 62%)"},{"i":"stackoverprof-amongus-grafkom","t":"Amongus Grafkom","c":"arcade","a":"hsl(158 85% 62%)"},{"i":"stackshub-stacks","t":"Stacks","c":"puzzle","a":"hsl(278 85% 62%)"},{"i":"stambolievv-space-shooter","t":"Space Shooter","c":"arcade","a":"hsl(254 85% 62%)"},{"i":"starciad-starzombiechase","t":"Star Zombie Chase","c":"puzzle","a":"hsl(60 85% 62%)"},{"i":"statico-gbhack","t":"Gbhack","c":"strategy","a":"hsl(112 85% 62%)"},{"i":"stefanweck-dungeongeneration","t":"Dungeon Generation","c":"strategy","a":"hsl(314 85% 62%)"},{"i":"studiobram-virtual-tabletop","t":"Virtual Tabletop","c":"arcade","a":"hsl(4 85% 62%)"},{"i":"surmon-china-javascript-gobang","t":"Gobang","c":"arcade","a":"hsl(169 85% 62%)"},{"i":"susam-invaders","t":"Invaders","c":"classics","a":"hsl(290 85% 62%)"},{"i":"sveinn-steinarsson-opposite-reaction","t":"Opposite Reaction","c":"puzzle","a":"hsl(253 85% 62%)"},{"i":"taciano-perez-santa-paravia-web","t":"Santa Paravia","c":"arcade","a":"hsl(340 85% 62%)"},{"i":"taislin-termcom","t":"Termcom","c":"strategy","a":"hsl(114 85% 62%)"},{"i":"takaneichinose-infinite-cars","t":"Infinite Cars","c":"racing","a":"hsl(99 85% 62%)"},{"i":"takaneichinose-tic-tac-toe","t":"Tic Tac Toe (Takaneichinose)","c":"arcade","a":"hsl(263 85% 62%)"},{"i":"tblazevic-moonlander","t":"Moonlander","c":"arcade","a":"hsl(244 85% 62%)"},{"i":"tddyco-canvas-td","t":"TD","c":"strategy","a":"hsl(41 85% 62%)"},{"i":"techdudie-tecremental","t":"Tecremental","c":"arcade","a":"hsl(322 85% 62%)"},{"i":"techfunway-brick-game","t":"Brick","c":"arcade","a":"hsl(277 85% 62%)"},{"i":"theadnan-kirbas-100000","t":"Kirbas 100000","c":"arcade","a":"hsl(62 85% 62%)"},{"i":"thecodingrocket-3d-pong","t":"3D Pong","c":"classics","a":"hsl(230 85% 62%)"},{"i":"theferalcode-pixel-game-master-mcp","t":"Game Master Mcp","c":"arcade","a":"hsl(328 85% 62%)"},{"i":"thewickedkarma-move-the-numbers","t":"Move the Numbers","c":"puzzle","a":"hsl(241 85% 62%)"},{"i":"thinksink-snakeyexample","t":"Snakey","c":"arcade","a":"hsl(57 85% 62%)"},{"i":"tiddly-gittly-tiddlywiki-game-2048","t":"Tiddlywiki Game 2048","c":"puzzle","a":"hsl(173 85% 62%)"},{"i":"tinawebdev-need-for-js","t":"Need","c":"racing","a":"hsl(320 85% 62%)"},{"i":"typeling1578-dino-game","t":"Dino","c":"arcade","a":"hsl(225 85% 62%)"},{"i":"vansh-codes-sudoku-visualizer","t":"Sudoku Visualizer","c":"table","a":"hsl(24 85% 62%)"},{"i":"varunbanka-super-mario-run-using-javascript","t":"Super Mario Run Using","c":"arcade","a":"hsl(83 85% 62%)"},{"i":"vertanzil-flappy-flight","t":"Flappy Flight","c":"arcade","a":"hsl(225 85% 62%)"},{"i":"vibezzzcoder-clawd-pop","t":"Clawd Pop","c":"arcade","a":"hsl(53 85% 62%)"},{"i":"viditvarshney-reaction-timer-github-io","t":"Reaction Timer","c":"arcade","a":"hsl(119 85% 62%)"},{"i":"vidushisen-elemental-tower-defence","t":"Elemental Tower Defence","c":"strategy","a":"hsl(37 85% 62%)"},{"i":"vidushisen-jack-s-escape-jodhpur-zombie-outbreak","t":"Jack S Escape Jodhpur Zombie Outbreak","c":"arcade","a":"hsl(338 85% 62%)"},{"i":"vidushisen-my-virtual-doraemon","t":"My Virtual Doraemon","c":"arcade","a":"hsl(235 85% 62%)"},{"i":"vidushisen-potter-the-runner","t":"Potter the Runner","c":"arcade","a":"hsl(356 85% 62%)"},{"i":"vincenzo-afk-xotrix","t":"Xo Trix","c":"arcade","a":"hsl(98 85% 62%)"},{"i":"vislupus-p5-games","t":"P 5 Games","c":"arcade","a":"hsl(129 85% 62%)"},{"i":"volkansah-jump-and-run","t":"Jump and Run","c":"arcade","a":"hsl(78 85% 62%)"},{"i":"voxdroid-ultimate-tic-tac-toe","t":"Ultimate Tic Tac Toe","c":"arcade","a":"hsl(216 85% 62%)"},{"i":"vzhou842-example-io-game","t":"Game","c":"arcade","a":"hsl(109 85% 62%)"},{"i":"wanikhawar-ferris-forge","t":"Ferris Forge","c":"arcade","a":"hsl(63 85% 62%)"},{"i":"wesleywerner-penny-farthing","t":"Penny Farthing","c":"table","a":"hsl(3 85% 62%)"},{"i":"wetwareworks-euglenaarcade","t":"Euglena Arcade","c":"arcade","a":"hsl(93 85% 62%)"},{"i":"xiong356-shooting-game","t":"Shooting","c":"arcade","a":"hsl(4 85% 62%)"},{"i":"yakkomajuri-brython-snake","t":"Brython Snake","c":"arcade","a":"hsl(87 85% 62%)"},{"i":"yewang-besogo","t":"Besogo","c":"arcade","a":"hsl(269 85% 62%)"},{"i":"yizhuoyan-game-flappybird-canvas","t":"Game Flappy Bird","c":"arcade","a":"hsl(170 85% 62%)"},{"i":"yl1033669613-game-with-cocoscreater","t":"Game with Cocos Creater","c":"puzzle","a":"hsl(11 85% 62%)"},{"i":"yonle-fruitshot","t":"Fruit Shot","c":"arcade","a":"hsl(26 85% 62%)"},{"i":"yulanggong-wordz-solver","t":"Wordz Solver","c":"word","a":"hsl(114 85% 62%)"},{"i":"yunohost-apps-cubiks-2048-ynh","t":"Cubiks 2048 Ynh","c":"puzzle","a":"hsl(81 85% 62%)"},{"i":"zhg7-cifras","t":"Cifras","c":"arcade","a":"hsl(67 85% 62%)"},{"i":"zwkwwwwww-null-sector","t":"Null Sector","c":"arcade","a":"hsl(5 85% 62%)"},{"i":"blockrain-js","t":"Blockrain","c":"arcade","a":"hsl(197 85% 62%)"},{"i":"quantum-game","t":"Quantum","c":"puzzle","a":"hsl(340 85% 62%)"},{"i":"spacehuggers","t":"Space Huggers","c":"arcade","a":"hsl(99 85% 62%)"},{"i":"tetris-ytiurin","t":"Tetris (Ytiurin)","c":"arcade","a":"hsl(28 85% 62%)"},{"i":"javascript-pong","t":"Pong","c":"classics","a":"hsl(352 85% 62%)"},{"i":"javascript-tiny-platformer","t":"Tiny Platformer","c":"arcade","a":"hsl(5 85% 62%)"},{"i":"pacman","t":"Pacman","c":"arcade","a":"hsl(264 85% 62%)"},{"i":"2048","t":"2048","c":"puzzle","a":"hsl(146 85% 62%)"},{"i":"tetr-js","t":"Tetr","c":"arcade","a":"hsl(359 85% 62%)"},{"i":"javascript-tower-platformer","t":"Tower Platformer","c":"arcade","a":"hsl(316 85% 62%)"},{"i":"antipacman","t":"Anti Pac Man","c":"arcade","a":"hsl(186 85% 62%)"},{"i":"fifteen-puzzle-maker","t":"Fifteen Puzzle Maker","c":"puzzle","a":"hsl(69 85% 62%)"},{"i":"horse-racing-game-javascript","t":"Horse Racing","c":"racing","a":"hsl(121 85% 62%)"},{"i":"pathfinding-platformer","t":"Pathfinding Platformer","c":"arcade","a":"hsl(49 85% 62%)"},{"i":"snake-io","t":"Snake","c":"arcade","a":"hsl(331 85% 62%)"},{"i":"go","t":"Go","c":"table","a":"hsl(64 85% 62%)"},{"i":"hangman-game","t":"Hangman","c":"word","a":"hsl(247 85% 62%)"},{"i":"lona","t":"Lona","c":"arcade","a":"hsl(126 85% 62%)"},{"i":"vanilla-javascript-hangman-game","t":"Vanilla Hangman","c":"word","a":"hsl(69 85% 62%)"},{"i":"tetris-javascript","t":"Tetris (Parzibyte)","c":"arcade","a":"hsl(129 85% 62%)"},{"i":"crazy-racing","t":"Crazy Racing","c":"racing","a":"hsl(354 85% 62%)"},{"i":"the-maze-game","t":"The Maze","c":"brain","a":"hsl(156 85% 62%)"},{"i":"snake-html5","t":"Snake (Zuramai)","c":"arcade","a":"hsl(165 85% 62%)"},{"i":"escape-from-ecma-labs","t":"Escape From Ecma Labs","c":"strategy","a":"hsl(194 85% 62%)"},{"i":"2048-mahmudnibir","t":"2048 (Mahmudnibir)","c":"puzzle","a":"hsl(229 85% 62%)"},{"i":"html5-platformer","t":"Platformer","c":"arcade","a":"hsl(251 85% 62%)"},{"i":"blockninja","t":"Block Ninja","c":"arcade","a":"hsl(309 85% 62%)"},{"i":"bytes","t":"Bytes","c":"arcade","a":"hsl(251 85% 62%)"},{"i":"classic-tetris-js","t":"Classic Tetris","c":"arcade","a":"hsl(290 85% 62%)"},{"i":"snake-game-2d","t":"Snake Game 2D","c":"arcade","a":"hsl(352 85% 62%)"},{"i":"tetris-jiasm","t":"Tetris (Jiasm)","c":"arcade","a":"hsl(16 85% 62%)"},{"i":"breakout-game","t":"Breakout","c":"arcade","a":"hsl(248 85% 62%)"},{"i":"i-just-want-to-play-tetris","t":"I Just Want to Play Tetris","c":"arcade","a":"hsl(16 85% 62%)"},{"i":"fifteen-puzzle-game","t":"Fifteen Puzzle","c":"puzzle","a":"hsl(289 85% 62%)"},{"i":"pong","t":"Pong (Bocaletto Luca)","c":"classics","a":"hsl(136 85% 62%)"},{"i":"pong-almost-from-scratch","t":"Pong Almost From Scratch","c":"classics","a":"hsl(57 85% 62%)"},{"i":"js-breakout","t":"Breakout (Melcor76)","c":"arcade","a":"hsl(179 85% 62%)"},{"i":"snake-game-javascript","t":"Snake (Pleiterson)","c":"arcade","a":"hsl(187 85% 62%)"},{"i":"tetris-bocaletto-luca","t":"Tetris (Bocaletto Luca)","c":"arcade","a":"hsl(237 85% 62%)"},{"i":"who-wants-to-be-a-millionaire","t":"Who Wants to Be a Millionaire","c":"word","a":"hsl(210 85% 62%)"},{"i":"texas-holdem","t":"Texas Holdem","c":"table","a":"hsl(211 85% 62%)"},{"i":"omok","t":"Omok","c":"table","a":"hsl(138 85% 62%)"},{"i":"poliguard","t":"Poliguard","c":"strategy","a":"hsl(193 85% 62%)"},{"i":"bonoeil-game","t":"Bonoeil","c":"arcade","a":"hsl(5 85% 62%)"},{"i":"racing-game","t":"Racing","c":"racing","a":"hsl(73 85% 62%)"},{"i":"battle-snake","t":"Battle Snake","c":"arcade","a":"hsl(299 85% 62%)"},{"i":"tv-show-explorer","t":"TV Show Explorer","c":"brain","a":"hsl(124 85% 62%)"},{"i":"ping-pong-game","t":"Ping Pong","c":"classics","a":"hsl(316 85% 62%)"},{"i":"great-racing-league","t":"Great Racing League","c":"racing","a":"hsl(270 85% 62%)"},{"i":"skyhop","t":"Skyhop","c":"arcade","a":"hsl(280 85% 62%)"},{"i":"snake-bocaletto-luca","t":"Snake (Bocaletto Luca)","c":"arcade","a":"hsl(262 85% 62%)"},{"i":"ludo","t":"Ludo","c":"table","a":"hsl(196 85% 62%)"},{"i":"arkanoid","t":"Arkanoid","c":"arcade","a":"hsl(331 85% 62%)"},{"i":"bouble","t":"Bouble","c":"arcade","a":"hsl(243 85% 62%)"},{"i":"dungeons","t":"Dungeons","c":"strategy","a":"hsl(337 85% 62%)"},{"i":"mahjong-solitaire","t":"Mahjong Solitaire","c":"table","a":"hsl(35 85% 62%)"},{"i":"square-dodger","t":"Square Dodger","c":"arcade","a":"hsl(131 85% 62%)"},{"i":"tetris-game","t":"Tetris (Sbdh11)","c":"arcade","a":"hsl(22 85% 62%)"},{"i":"flappy","t":"Flappy","c":"arcade","a":"hsl(22 85% 62%)"},{"i":"hangman-javascript","t":"Hangman (Parzibyte)","c":"word","a":"hsl(50 85% 62%)"},{"i":"tetris-123survesh","t":"Tetris (123survesh)","c":"arcade","a":"hsl(182 85% 62%)"},{"i":"tic-tac-toe","t":"Tic Tac Toe","c":"arcade","a":"hsl(292 85% 62%)"},{"i":"labyrinth","t":"Labyrinth","c":"brain","a":"hsl(335 85% 62%)"},{"i":"pinball","t":"Pinball","c":"arcade","a":"hsl(100 85% 62%)"},{"i":"bomberman","t":"Bomberman","c":"arcade","a":"hsl(283 85% 62%)"},{"i":"puzzle-numbers","t":"Puzzle Numbers","c":"brain","a":"hsl(67 85% 62%)"},{"i":"gasteroids","t":"Gasteroids","c":"arcade","a":"hsl(121 85% 62%)"},{"i":"html5-space-invaders","t":"Space Invaders","c":"arcade","a":"hsl(292 85% 62%)"},{"i":"missile-command-javascript-clone","t":"Missile Command","c":"arcade","a":"hsl(174 85% 62%)"},{"i":"plantsvszombies","t":"Plants vs Zombies","c":"arcade","a":"hsl(80 85% 62%)"},{"i":"oregon-trail-game","t":"Oregon Trail","c":"arcade","a":"hsl(322 85% 62%)"},{"i":"osm-15-puzzle","t":"Osm 15 Puzzle","c":"puzzle","a":"hsl(283 85% 62%)"},{"i":"gogame","t":"Go (Boppreh)","c":"table","a":"hsl(234 85% 62%)"},{"i":"games-master","t":"Games (Rsamwilson2323 Cloud)","c":"arcade","a":"hsl(262 85% 62%)"},{"i":"snake-game-js","t":"Snake (Goncadanilo)","c":"arcade","a":"hsl(303 85% 62%)"},{"i":"doodle-jump","t":"Doodle Jump","c":"arcade","a":"hsl(306 85% 62%)"},{"i":"csnake","t":"Csnake","c":"arcade","a":"hsl(149 85% 62%)"},{"i":"solitaire","t":"Solitaire","c":"table","a":"hsl(142 85% 62%)"},{"i":"canvas-bird","t":"Bird","c":"arcade","a":"hsl(22 85% 62%)"},{"i":"2d-breakout-game","t":"2D Breakout","c":"arcade","a":"hsl(5 85% 62%)"},{"i":"cam-puzzle","t":"Cam Puzzle","c":"puzzle","a":"hsl(228 85% 62%)"},{"i":"snake-sergiss","t":"Snake (Sergiss)","c":"arcade","a":"hsl(197 85% 62%)"},{"i":"block-snake-3d","t":"Block Snake 3D","c":"arcade","a":"hsl(54 85% 62%)"},{"i":"snake-augustin7698","t":"Snake (Augustin7698)","c":"arcade","a":"hsl(51 85% 62%)"},{"i":"2d-breakout-web-browser-game","t":"2D Breakout Browser","c":"arcade","a":"hsl(11 85% 62%)"},{"i":"xor","t":"Xor","c":"brain","a":"hsl(75 85% 62%)"},{"i":"js-space-invaders","t":"Space Invaders (MatthewPageUK)","c":"arcade","a":"hsl(317 85% 62%)"},{"i":"adoertetris-js","t":"Tetris (Adoer)","c":"arcade","a":"hsl(324 85% 62%)"},{"i":"flapcopy","t":"Flapcopy","c":"arcade","a":"hsl(186 85% 62%)"},{"i":"snek-game","t":"Snek","c":"arcade","a":"hsl(246 85% 62%)"},{"i":"virtual-weiqi-go-surround-chess","t":"Virtual Weiqi Go Surround Chess","c":"table","a":"hsl(146 85% 62%)"},{"i":"html5-resolv-the-puzzle","t":"Resolv the Puzzle","c":"puzzle","a":"hsl(147 85% 62%)"},{"i":"ademonsmaze","t":"A Demons Maze","c":"strategy","a":"hsl(24 85% 62%)"},{"i":"js-game-demos","t":"Game Demos","c":"arcade","a":"hsl(137 85% 62%)"},{"i":"crayon-contraptions","t":"Crayon Contraptions","c":"puzzle","a":"hsl(143 85% 62%)"},{"i":"nostalgic-snake-game","t":"Nostalgic Snake","c":"arcade","a":"hsl(64 85% 62%)"},{"i":"puzzlegame","t":"Puzzle (PtPrashantTripathi)","c":"puzzle","a":"hsl(144 85% 62%)"},{"i":"asteroids","t":"Asteroids","c":"arcade","a":"hsl(16 85% 62%)"},{"i":"js-15-puzzle","t":"15 Puzzle","c":"puzzle","a":"hsl(291 85% 62%)"},{"i":"flappy-bird","t":"Flappy Bird","c":"arcade","a":"hsl(296 85% 62%)"},{"i":"js-snake-game","t":"Snake (DevMagno)","c":"arcade","a":"hsl(299 85% 62%)"},{"i":"spinhook","t":"Spinhook","c":"arcade","a":"hsl(85 85% 62%)"},{"i":"websnakegame","t":"Snake (BaseMax)","c":"arcade","a":"hsl(294 85% 62%)"},{"i":"snake-game","t":"Snake (Nikhil Ladha)","c":"arcade","a":"hsl(103 85% 62%)"},{"i":"snakegame","t":"Snake (NyctibiusVII)","c":"arcade","a":"hsl(178 85% 62%)"},{"i":"maze-js","t":"Maze","c":"brain","a":"hsl(87 85% 62%)"},{"i":"canvasinvaders","t":"Canvasinvaders","c":"arcade","a":"hsl(26 85% 62%)"},{"i":"starstruck","t":"Starstruck","c":"arcade","a":"hsl(190 85% 62%)"},{"i":"battle-tank","t":"Battle Tank","c":"arcade","a":"hsl(239 85% 62%)"},{"i":"flappy-jump","t":"Flappy Jump","c":"arcade","a":"hsl(173 85% 62%)"},{"i":"jsblockout","t":"Blockout","c":"arcade","a":"hsl(250 85% 62%)"},{"i":"breathmint-phalange-gaiden","t":"Breathmint Phalange Gaiden","c":"table","a":"hsl(306 85% 62%)"},{"i":"subdecadence","t":"Subdecadence","c":"table","a":"hsl(264 85% 62%)"},{"i":"space-invaders-canvas","t":"Space Invaders (LORDANTH)","c":"arcade","a":"hsl(204 85% 62%)"},{"i":"cheese-escape","t":"Cheese Escape","c":"brain","a":"hsl(207 85% 62%)"},{"i":"scramble","t":"Scramble","c":"puzzle","a":"hsl(189 85% 62%)"},{"i":"sudoku-game","t":"Sudoku","c":"table","a":"hsl(232 85% 62%)"},{"i":"web-snake-game","t":"Snake (Dev Ggomes)","c":"arcade","a":"hsl(200 85% 62%)"},{"i":"breakout-web-game","t":"Breakout (Dev Ggomes)","c":"arcade","a":"hsl(329 85% 62%)"},{"i":"2048-js","t":"2048 (Ruzhila)","c":"puzzle","a":"hsl(132 85% 62%)"},{"i":"motorcross","t":"Motor Cross","c":"racing","a":"hsl(187 85% 62%)"},{"i":"courier-city","t":"Courier City","c":"arcade","a":"hsl(59 85% 62%)"},{"i":"bunny","t":"Bunny","c":"arcade","a":"hsl(166 85% 62%)"},{"i":"tetris3d","t":"Tetris 3D","c":"arcade","a":"hsl(234 85% 62%)"},{"i":"biblepuzzle","t":"Bible Puzzle","c":"word","a":"hsl(74 85% 62%)"},{"i":"platformer-by-gpt4","t":"Platformer by Gpt 4","c":"arcade","a":"hsl(186 85% 62%)"},{"i":"pingpong","t":"Ping Pong (DSDmark)","c":"classics","a":"hsl(202 85% 62%)"},{"i":"snake-codewithsupriyo","t":"Snake (CodeWithSupriyo)","c":"arcade","a":"hsl(331 85% 62%)"},{"i":"snake-game-gabrielcostarep-zz","t":"Snake (Gabrielcostarep Zz)","c":"arcade","a":"hsl(12 85% 62%)"},{"i":"mario-murru-game","t":"Mario Murru","c":"arcade","a":"hsl(43 85% 62%)"},{"i":"2d-racing-game","t":"2D Racing","c":"racing","a":"hsl(230 85% 62%)"},{"i":"fantastic-potato","t":"Fantastic Potato","c":"arcade","a":"hsl(257 85% 62%)"},{"i":"ping-pong-game-ramazancetinkaya","t":"Ping Pong (Ramazancetinkaya)","c":"classics","a":"hsl(274 85% 62%)"},{"i":"ping-pong","t":"Ping Pong (Vruntime Labs)","c":"classics","a":"hsl(355 85% 62%)"},{"i":"tetris-rajatkumar1011","t":"Tetris (Rajatkumar1011)","c":"arcade","a":"hsl(337 85% 62%)"},{"i":"webcanvas-tetris","t":"Webcanvas Tetris","c":"arcade","a":"hsl(322 85% 62%)"},{"i":"tetrisgame","t":"Tetris (Shivrajcodez)","c":"arcade","a":"hsl(203 85% 62%)"},{"i":"snake-game-beingguru7","t":"Snake (BeingGuru7)","c":"arcade","a":"hsl(5 85% 62%)"},{"i":"js-racing","t":"Racing (Gaetz)","c":"racing","a":"hsl(218 85% 62%)"},{"i":"tetrisjs","t":"Tetrisjs","c":"arcade","a":"hsl(154 85% 62%)"},{"i":"hoojang-local","t":"Hoojang Local","c":"table","a":"hsl(342 85% 62%)"},{"i":"snake-and-ladder","t":"Snake and Ladder","c":"arcade","a":"hsl(5 85% 62%)"},{"i":"snakeneoncircuit","t":"Snakeneoncircuit","c":"arcade","a":"hsl(315 85% 62%)"},{"i":"space-invaders-js","t":"Space Invaders (Barqawiz)","c":"arcade","a":"hsl(213 85% 62%)"},{"i":"greentendo","t":"Greentendo","c":"arcade","a":"hsl(53 85% 62%)"},{"i":"tangram","t":"Tangram","c":"puzzle","a":"hsl(152 85% 62%)"},{"i":"wordofday","t":"Wordofday","c":"word","a":"hsl(99 85% 62%)"},{"i":"clumsy-bird","t":"Clumsy Bird","c":"arcade","a":"hsl(63 85% 62%)"},{"i":"huejumper2k","t":"Hue Jumper 2 K","c":"racing","a":"hsl(340 85% 62%)"},{"i":"maze-game","t":"Maze (Knightyun)","c":"brain","a":"hsl(72 85% 62%)"},{"i":"hangmanizr","t":"Hangmanizr","c":"word","a":"hsl(353 85% 62%)"},{"i":"turbo-kart-rally","t":"Turbo Kart Rally","c":"racing","a":"hsl(36 85% 62%)"},{"i":"breakout-igameproject","t":"Breakout (Igameproject)","c":"arcade","a":"hsl(156 85% 62%)"},{"i":"balljs","t":"Balljs","c":"arcade","a":"hsl(272 85% 62%)"},{"i":"flying-tower","t":"Flying Tower","c":"strategy","a":"hsl(171 85% 62%)"},{"i":"sokoban","t":"Sokoban","c":"puzzle","a":"hsl(215 85% 62%)"},{"i":"wardens-duty","t":"Wardens Duty","c":"strategy","a":"hsl(37 85% 62%)"},{"i":"spaceguard","t":"Spaceguard","c":"arcade","a":"hsl(167 85% 62%)"}]</script>
+<footer class="site-footer"><div class="wrap">
+  <a class="brand" href="/de/"><svg class="mark" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true"><use href="#a-mark"/></svg><span>spiel<b>kunst</b></span></a>
+  <p><strong>551 kostenlose Browserspiele.</strong> Kein Download, keine Anmeldung, keine Paywall — die ganze Arcade passt in das JavaScript einer einzigen HTML-Datei.</p>
+  <p class="foot-tips">Für immer kostenlos — finanziert über Sponsorenplätze. <a href="/de/advertise/">Einer ist gerade frei</a>.</p>
+  <nav class="foot-nav" aria-label="Fußzeile">
+    <a href="/de/games/">Alle Spiele</a>
+    <a href="/de/daily/">Archiv der täglichen Rätsel</a>
+    <a href="/de/advertise/">Platz sponsern</a>
+    <a href="/de/credits/">Credits</a>
+    <a href="/sitemap.xml">Sitemap</a>
+  </nav>
+  <p class="foot-note">Enthält 541 Open-Source-Spiele, genannt auf der <a href="/de/credits/">Credits-Seite</a>.</p>
+  <div class="lang-wrap">
+    <nav class="lang-switch" aria-label="Sprache" data-locale="de"><a href="/" data-lang="en" lang="en" title="English">EN</a><a href="/fr/" data-lang="fr" lang="fr" title="Français">FR</a><a href="/ar/" data-lang="ar" lang="ar" title="العربية">AR</a><a href="/de/" data-lang="de" lang="de" title="Deutsch" aria-current="page">DE</a></nav>
+    <details class="lang-menu">
+      <summary aria-label="Sprache — Deutsch"><span aria-hidden="true">DE</span></summary>
+      <div class="lang-pop" role="group" aria-label="Sprache"><a href="/" data-lang="en" lang="en" title="English">English</a><a href="/fr/" data-lang="fr" lang="fr" title="Français">Français</a><a href="/ar/" data-lang="ar" lang="ar" title="العربية">العربية</a><a href="/de/" data-lang="de" lang="de" title="Deutsch" aria-current="page">Deutsch</a></div>
+    </details>
+  </div>
+  <p class="copyright">© 2026 Ayhem Kahri · spielkunst — für immer kostenlos spielbar.</p>
+</div></footer>
+
+<script id="af-i18n" type="application/json">{"locale":"de","prefix":"/de","dir":"ltr","strings":{"match":"passend zu „{q}“","in":"in {category}","all":"· alle {count} Spiele","broken":"· Katalog nicht verfügbar, nur diese Seite","page":"· diese Seite, der Rest wird geladen","one":"{count} Spiel","many":"{count} Spiele"}}</script>
+<script src="/ui.js?v=3604b95d" defer></script>
+</body>
+</html>

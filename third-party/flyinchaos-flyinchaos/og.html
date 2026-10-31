@@ -1,0 +1,21 @@
+<!doctype html><meta charset="utf-8"><title>OG generator</title>
+<body style="margin:0;background:#070a14;color:#cfe8ff;font-family:system-ui;text-align:center;padding:24px">
+<canvas id="c" width="1200" height="630" style="max-width:100%;border:1px solid #223"></canvas><br><br>
+<button onclick="dl()" style="padding:10px 18px;font:600 14px system-ui;cursor:pointer">Download og.png</button>
+<script>
+const URL_TEXT='flyinchaos.com';   // <- your canonical domain (no https://)
+const c=document.getElementById('c'),g=c.getContext('2d'),W=1200,H=630;
+const bg=g.createLinearGradient(0,0,0,H); bg.addColorStop(0,'#0a1024'); bg.addColorStop(1,'#070a14');
+g.fillStyle=bg; g.fillRect(0,0,W,H);
+for(let i=0;i<120;i++){g.globalAlpha=Math.random()*0.4+0.1;g.fillStyle='#cfe8ff';g.beginPath();g.arc(Math.random()*W,Math.random()*H,Math.random()*1.4+0.2,0,7);g.fill();}
+g.globalAlpha=1;
+function curve(off,col,w){g.strokeStyle=col;g.lineWidth=w;g.beginPath();for(let x=0;x<=520;x+=6){const y=300+Math.sin(x*0.02)*40+ (x>180? (x-180)*off:0);const X=120+x,Y=y; x===0?g.moveTo(X,Y):g.lineTo(X,Y);}g.stroke();}
+curve(0.55,'rgba(255,43,214,0.8)',4); curve(-0.25,'rgba(255,213,79,0.95)',5);
+g.textAlign='left'; g.shadowColor='#ffd54f'; g.shadowBlur=24; g.fillStyle='#ffe082';
+g.font='800 84px system-ui'; g.fillText('FLY IN CHAOS', 90, 150);
+g.shadowBlur=0; g.fillStyle='#9fe9ff'; g.font='400 34px system-ui';
+g.fillText('The butterfly effect, made playable — and you can hear it.', 92, 210);
+g.fillStyle='#cfe8ff'; g.font='600 30px system-ui'; g.fillText('▶  play free  ·  '+URL_TEXT, 92, H-70);
+g.textAlign='right'; g.fillStyle='#f0883e'; g.font='700 26px system-ui'; g.fillText('deterministic daily world', W-90, H-72);
+function dl(){c.toBlob(b=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='og.png';a.click();});}
+</script></body>

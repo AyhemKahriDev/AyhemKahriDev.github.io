@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" role="img" aria-label="Asteroid Blaster cover art">
+  <rect x="0" y="0" width="400" height="300" fill="#0a0a14"/>
+
+  <!-- neon border frame -->
+  <rect x="6" y="6" width="388" height="288" rx="10" fill="none" stroke="#eaf6ff" stroke-width="2" opacity="0.5"/>
+  <rect x="12" y="12" width="376" height="276" rx="8" fill="none" stroke="#ff8a00" stroke-width="1.5" opacity="0.35"/>
+
+  <!-- scattered stars -->
+  <g fill="#eaf6ff" opacity="0.4">
+    <circle cx="40" cy="50" r="1.4"/>
+    <circle cx="90" cy="220" r="1.2"/>
+    <circle cx="330" cy="60" r="1.4"/>
+    <circle cx="360" cy="200" r="1.2"/>
+    <circle cx="250" cy="40" r="1.2"/>
+    <circle cx="60" cy="150" r="1.2"/>
+  </g>
+
+  <!-- large jagged asteroid, upper right -->
+  <polygon points="300,70 325,60 348,78 352,105 336,128 308,124 288,104 292,82"
+    fill="none" stroke="#ff8a00" stroke-width="2"/>
+
+  <!-- small split asteroid fragment, lower right -->
+  <polygon points="330,180 344,175 352,188 344,200 330,198 324,188"
+    fill="none" stroke="#ff8a00" stroke-width="1.5" opacity="0.7"/>
+
+  <!-- hero shape: ship thrusting toward upper-right, center-left -->
+  <g transform="translate(150,190) rotate(-35)">
+    <polygon points="34,0 -22,-20 -10,0 -22,20" fill="#eaf6ff"/>
+    <polygon points="34,0 -22,-20 -10,0 -22,20" fill="none" stroke="#eaf6ff" stroke-width="6" opacity="0.3"/>
+    <!-- thrust flame -->
+    <polygon points="-10,-8 -36,0 -10,8" fill="#ff8a00" opacity="0.85"/>
+  </g>
+
+  <!-- bullet trail from ship toward the big asteroid -->
+  <g stroke="#ffe600" stroke-width="3" stroke-linecap="round" opacity="0.9">
+    <line x1="200" y1="150" x2="222" y2="132"/>
+    <line x1="234" y1="122" x2="250" y2="108"/>
+  </g>
+</svg>

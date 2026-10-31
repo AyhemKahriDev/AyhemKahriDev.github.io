@@ -1,0 +1,560 @@
+/* ===== 触摸手势防浏览器劫持 =====
+ * 触摸屏浏览器（Chromium 系）默认手势：横向滑=前进/后退导航、顶部下拉=刷新，
+ * 会打断滑动操作方向输入。禁用后页面自身正常滚动不受影响（仅作用于本游戏页）。
+ * （iOS Safari 的屏幕边缘滑动/下拉属系统手势，无法禁用） */
+html {
+    overscroll-behavior: none;
+}
+
+/* ===== 主题变量（明 / 暗）===== */
+:root {
+    --bg-main: #f3f1ea;
+    --text-main: #4a4a4a;
+
+    --board-bg: #cdc6b8;
+    --cell-bg: #e7e1d6;
+
+    --btn-bg: #8a7a66;
+    --btn-hover: #9a8a76;
+    --btn-text: #ffffff;
+
+    --wall-bg: #6b5d4f;
+    --wall-border: #564a3e;
+
+    /* 砖块墙体纹理：错缝砖 16×16（砖色/缝色与 wall 变量一致，两套主题各定义一份） */
+    --wall-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='16' height='16' fill='%23564a3e'/%3E%3Crect x='0' y='0' width='14' height='6' fill='%236b5d4f'/%3E%3Crect x='8' y='8' width='8' height='6' fill='%236b5d4f'/%3E%3Crect x='0' y='8' width='6' height='6' fill='%236b5d4f'/%3E%3C/svg%3E");
+
+    --target-color: #c0392b;
+
+    --box-bg: #cf934f;
+    --box-border: #a06a30;
+    --box-on-bg: #5cb85c;
+    --box-on-border: #4cae4c;
+
+    --player-bg: #3498db;
+    --player-border: #2980b9;
+
+    /* 玩家「小人」剪影（随格子百分比缩放，mask 用 --player-bg 着色） */
+    --person-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Ccircle%20cx='12'%20cy='7'%20r='4'/%3E%3Cpath%20d='M12%2013c-4%200-7%202.5-7%206h14c0-3.5-3-6-7-6z'/%3E%3C/svg%3E");
+
+    /* 目标点「箱子 + ❌」（圆角框内叉号，mask 用 --target-color 着色） */
+    --target-mask: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Crect%20x='1.5'%20y='1.5'%20width='21'%20height='21'%20rx='3'%20fill='none'%20stroke='white'%20stroke-width='2.5'/%3E%3Cpath%20d='M6%206L18%2018M18%206L6%2018'%20stroke='white'%20stroke-width='2.5'%20stroke-linecap='round'/%3E%3C/svg%3E");
+
+    --message-bg: rgba(243, 241, 234, 0.9);
+    --message-text: #4a4a4a;
+
+    --theme-toggle-color: #ffa500;
+}
+
+[data-theme="dark"] {
+    --bg-main: #1f1f1f;
+    --text-main: #e0e0e0;
+
+    --board-bg: #2c2c2c;
+    --cell-bg: #3a3a3a;
+
+    --btn-bg: #4a4a4a;
+    --btn-hover: #5a5a5a;
+    --btn-text: #ffffff;
+
+    --wall-bg: #4a4a4a;
+    --wall-border: #2a2a2a;
+
+    --wall-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16'%3E%3Crect width='16' height='16' fill='%232a2a2a'/%3E%3Crect x='0' y='0' width='14' height='6' fill='%234a4a4a'/%3E%3Crect x='8' y='8' width='8' height='6' fill='%234a4a4a'/%3E%3Crect x='0' y='8' width='6' height='6' fill='%234a4a4a'/%3E%3C/svg%3E");
+
+    --target-color: #e74c3c;
+
+    --box-bg: #b5743a;
+    --box-border: #8a5a28;
+    --box-on-bg: #4caf50;
+    --box-on-border: #388e3c;
+
+    --player-bg: #3498db;
+    --player-border: #2980b9;
+
+    --message-bg: rgba(31, 31, 31, 0.92);
+    --message-text: #e0e0e0;
+
+    --theme-toggle-color: #f1c40f;
+}
+
+/* ===== 全局 ===== */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Clear Sans", "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+    background-color: var(--bg-main);
+    color: var(--text-main);
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    /* 动态视口高度：移动浏览器地址栏伸缩时精确贴合实际可视区，
+       避免 100vh（最大视口）在小屏手机上把页面撑得比可视区高、底部内容被顶出首屏；
+       旧浏览器（无 dvh 支持）自动回退上一行的 100vh */
+    min-height: 100dvh;
+    /* 兜底：防止任何横向溢出（如固定按钮、安全区）产生页面级横向滚动条；
+       棋盘自身的横向滚动走内部 overflow:auto，不受此影响 */
+    overflow-x: hidden;
+    touch-action: manipulation;
+    /* 禁用文本选择与长按呼出菜单：避免手机端长按/长按滑动触发复制、系统选择把手，
+       干扰游戏滑动操作（user-select 全站生效，含棋盘、按钮、提示文字） */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -webkit-touch-callout: none;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ===== 控制按钮（返回 / 主题）===== */
+.control-button {
+    position: fixed;
+    top: 20px;
+    background: var(--btn-bg);
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    font-size: 20px;
+    z-index: 1000;
+    transition: background-color 0.3s ease;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+}
+
+.control-button:hover {
+    background: var(--btn-hover);
+}
+
+#back-button {
+    left: 20px;
+    color: var(--btn-text);
+}
+
+#theme-button {
+    right: 20px;
+    color: var(--theme-toggle-color);
+}
+
+/* ===== 容器 ===== */
+.game-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.header {
+    display: flex;
+    /* 整体居中展示，与下方按钮行(controls)左右平齐 */
+    justify-content: center;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 16px;
+    gap: 12px;
+}
+
+h1 {
+    font-size: 44px;
+    font-weight: bold;
+    margin: 0;
+    color: var(--text-main);
+}
+
+.stats {
+    display: flex;
+    gap: 10px;
+}
+
+.stat {
+    background: var(--board-bg);
+    border-radius: 6px;
+    padding: 6px 12px;
+    text-align: center;
+    min-width: 56px;
+    color: var(--message-text);
+}
+
+.stat-label {
+    font-size: 12px;
+    opacity: 0.85;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* 关卡名：单独成行，居中显示，不再挤在关卡 stat 里 */
+.level-title {
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-main);
+    margin: -4px 0 14px;
+    overflow-wrap: break-word;
+}
+
+/* ===== 控制按钮（游戏内）===== */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.button {
+    background: var(--btn-bg);
+    border-radius: 6px;
+    padding: 10px 16px;
+    color: var(--btn-text);
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.2s ease;
+    font-size: 14px;
+}
+
+.button:hover {
+    background: var(--btn-hover);
+}
+
+/* ===== 棋盘 ===== */
+.board-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.game-board {
+    display: grid;
+    gap: 4px;
+    background: var(--board-bg);
+    border-radius: 8px;
+    padding: 10px;
+    /* PC：固定格子尺寸（--sokoban-cell），按真实大小展示，不随容器拉伸、也不卡死固定宽度；
+       列多时棋盘自然变宽，超出可视区由 overflow 滚动 */
+    --sokoban-cell: 44px;
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow: auto;
+    touch-action: none;
+}
+
+.cell {
+    position: relative;
+    aspect-ratio: 1 / 1;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cell.floor {
+    background: var(--cell-bg);
+}
+
+.cell.wall {
+    background-color: var(--wall-bg);
+    background-image: var(--wall-texture);
+    background-size: 16px 16px;
+    border: 2px solid var(--wall-border);
+    border-radius: 3px;
+}
+
+.cell.target {
+    background: var(--cell-bg);
+}
+
+/* 实体（玩家 / 箱子 / 目标标记）均绝对居中 */
+.entity {
+    width: 76%;
+    height: 76%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.box {
+    background: var(--box-bg);
+    border: 3px solid var(--box-border);
+    border-radius: 6px;
+    box-shadow: inset 0 0 0 3px rgba(255, 255, 255, 0.15);
+}
+
+.box.on-target {
+    background: var(--box-on-bg);
+    border-color: var(--box-on-border);
+}
+
+.player {
+    background-color: var(--player-bg);
+    -webkit-mask: var(--person-mask) center / contain no-repeat;
+    mask: var(--person-mask) center / contain no-repeat;
+}
+
+.target-mark {
+    background-color: var(--target-color);
+    -webkit-mask: var(--target-mask) center / contain no-repeat;
+    mask: var(--target-mask) center / contain no-repeat;
+}
+
+/* ===== 说明 ===== */
+.game-intro {
+    margin-top: 14px;
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.pc-instruction, .mobile-instruction {
+    display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .pc-instruction { display: block; }
+}
+
+@media (hover: none) and (pointer: coarse) {
+    .mobile-instruction { display: block; }
+}
+
+/* ===== 过关遮罩 ===== */
+.game-message {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: var(--message-bg);
+    z-index: 50;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    border-radius: 8px;
+    color: var(--message-text);
+}
+
+.game-message.show {
+    display: flex;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.game-message p {
+    font-size: 22px;
+    font-weight: bold;
+    margin-bottom: 18px;
+    padding: 0 12px;
+}
+
+.game-message-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+    .game-container {
+        padding: 8px;
+        max-width: 100%;
+    }
+
+    h1 {
+        font-size: 46px;
+    }
+
+    /* 手机端：header 改为上下堆叠居中，避免 stats 钻进固定的主题按钮底下 */
+    .header {
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .stats {
+        gap: 8px;
+        justify-content: center;
+    }
+
+    .stat {
+        min-width: 58px;
+        padding: 7px 10px;
+    }
+
+    .stat-value {
+        font-size: 20px;
+    }
+
+    .stat-label {
+        font-size: 16px;
+    }
+
+    .level-title {
+        font-size: 18px;
+        margin: -2px 0 12px;
+    }
+
+    .game-board {
+        padding: 8px;
+        gap: 3px;
+        /* 手机端：固定 32px 格子（见 game.js 的 var(--sokoban-cell)），超尺寸滚动查看。
+           宽度必须受容器（视口）约束，否则写死会在窄屏把棋盘右边顶出视口；
+           超宽内容由棋盘自身 overflow 横滑查看 */
+        --sokoban-cell: 32px;
+        max-width: 100%;
+        max-height: 78vh;
+        overflow: auto;
+        scrollbar-width: thin;
+        /* 允许触摸横/纵平移查看长关卡（"轻扫移动"由 game.js 判定，不冲突） */
+        touch-action: pan-x pan-y;
+        overscroll-behavior: contain;
+    }
+
+    .control-button {
+        width: 44px;
+        height: 44px;
+        font-size: 18px;
+    }
+
+    /* 控件行按钮（上一关/撤销/重置/下一关/上传关卡）：窄屏下保证完整显示 + 自动换行，
+       不再因挤在一行溢出视口右侧而被裁切；flex-shrink:0 + white-space:nowrap
+       让按钮保持完整文字，由 flex-wrap 自动拆成两行 */
+    .button {
+        padding: 10px 14px;
+        font-size: 16px;
+        flex-shrink: 0;
+        white-space: nowrap;
+    }
+
+    /* 底部操作提示文字同步放大 */
+    .game-intro {
+        font-size: 15px;
+        margin-top: 16px;
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* ===== 上传提示 ===== */
+.level-toast {
+    position: fixed;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--wall-bg);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    z-index: 2000;
+    max-width: 86vw;
+    text-align: center;
+}
+
+.level-toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+/* ===== 关卡简图（小地图）===== */
+.map-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    z-index: 1500;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+}
+
+.map-overlay.show {
+    display: flex;
+    animation: fadeIn 0.2s ease-in-out;
+}
+
+.map-card {
+    background: var(--bg-main);
+    color: var(--text-main);
+    border-radius: 12px;
+    padding: 18px;
+    width: min(92vw, 420px);
+    max-height: 92vh;
+    overflow: auto;
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+}
+
+.map-card-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    gap: 12px;
+}
+
+.map-card-head h2 {
+    font-size: 17px;
+    margin: 0;
+}
+
+.map-close {
+    background: var(--btn-bg);
+    color: var(--btn-text);
+    border: none;
+    border-radius: 50%;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s ease;
+}
+
+.map-close:hover {
+    background: var(--btn-hover);
+}
+
+.map-board {
+    display: grid;
+    gap: 2px;
+    background: var(--board-bg);
+    border-radius: 6px;
+    padding: 8px;
+    margin: 0 auto;
+    width: min(82vw, 340px);
+}
+
+.map-board .cell {
+    border-radius: 2px;
+    min-width: 0;
+}
+
+.map-board .entity {
+    width: 84%;
+    height: 84%;
+}
+
+@media (max-width: 768px) {
+    .map-close { width: 32px; height: 32px; font-size: 15px; }
+    .map-card-head h2 { font-size: 16px; }
+}

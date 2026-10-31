@@ -1,0 +1,129 @@
+#!/bin/bash
+
+PID_FILE="${TRIM_PKGVAR}/app.pid"
+
+APP_DIR="${TRIM_APPDEST}"
+WEB_DIR="${TRIM_APPDEST}/ui"
+DATA_DIR="${TRIM_PKGVAR}"
+SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
+
+# 加载持久化端口（安装/运行配置可自定义），默认 8908
+. "${SCRIPT_DIR}/port_config"
+PORT="$(runtime_port)"
+
+log_msg() {
+    local timestamp month day log_file
+    timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    month=$(date '+%Y%m')
+    day=$(date '+%Y%m%d')
+    log_file="${DATA_DIR}/logs/${month}/info_${day}.log"
+    mkdir -p "${DATA_DIR}/logs/${month}"
+    printf '%s [INFO] %s\n' "${timestamp}" "$1" >> "${log_file}"
+}
+
+start_process() {
+    if status; then
+        return 0
+    fi
+
+    mkdir -p "${DATA_DIR}/logs"
+    rm -f "${APP_DIR}/app.sock"
+
+    log_msg "Starting 方块游戏机 through the fnOS unified gateway and port ${PORT} ..."
+    log_msg "Access URL: http://localhost:${PORT}"
+
+    cd "${APP_DIR}"
+    ./brick-game \
+        -web-dir "${WEB_DIR}" \
+        -port "${PORT}" \
+        -fnos-app \
+        -device-type fnos \
+        -gateway-prefix "/app/techfunway-brick-game" \
+        -gateway-socket "${APP_DIR}/app.sock" \
+        -logmode release >> /dev/null 2>&1 &
+
+    printf "%s" "$!" > ${PID_FILE}
+    log_msg "方块游戏机 started with pid $!"
+    return 0
+}
+
+stop_process() {
+    log_msg "Stopping 方块游戏机 ..."
+
+    if [ -r "${PID_FILE}" ]; then
+        pid=$(head -n 1 "${PID_FILE}" | tr -d '[:space:]')
+
+        log_msg "pid=${pid}"
+        if ! check_process "${pid}"; then
+            rm -f "${PID_FILE}"
+            log_msg "process not running, removed pid file"
+            return
+        fi
+
+        log_msg "send TERM signal to PID:${pid}..."
+        kill -TERM ${pid} >> ${LOG_FILE} 2>&1
+
+        local count=0
+        while check_process "${pid}" && [ $count -lt 10 ]; do
+            sleep 1
+            count=$((count + 1))
+            log_msg "waiting process terminate... (${count}s/10s)"
+        done
+
+        if check_process "${pid}"; then
+            log_msg "send KILL signal to PID:${pid}..."
+            kill -KILL "${pid}"
+            sleep 1
+            rm -f "${PID_FILE}"
+        else
+            log_msg "process stopped"
+        fi
+    fi
+
+    rm -f "${APP_DIR}/app.sock"
+    return 0
+}
+
+check_process() {
+    local pid=$1
+    if kill -0 "${pid}" 2>/dev/null; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+status() {
+    if [ -f "${PID_FILE}" ]; then
+        pid=$(head -n 1 "${PID_FILE}" | tr -d '[:space:]')
+        if check_process "${pid}"; then
+            return 0
+        else
+            rm -f "${PID_FILE}"
+        fi
+    fi
+    return 1
+}
+
+case $1 in
+start)
+    start_process
+    ;;
+stop)
+    stop_process
+    ;;
+status)
+    if status; then
+        exit 0
+    else
+        exit 3
+    fi
+    ;;
+restart)
+    stop_process
+    start_process
+    ;;
+*)
+    exit 1
+    ;;
+esac

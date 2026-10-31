@@ -1,0 +1,12 @@
+{
+  "picture-512x512-mock.png": {
+    "aspectRatio": 1,
+    "caption": "[512x512]",
+    "url": null
+  },
+  "picture-1024x512-mock.png": {
+    "aspectRatio": 2,
+    "caption": "[1024x512]",
+    "url": null
+  }
+}

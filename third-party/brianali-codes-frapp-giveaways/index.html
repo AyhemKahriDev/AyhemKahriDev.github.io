@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRAPP</title>
+    <link rel="stylesheet" href="output.css">
+    <link rel="stylesheet" href="style.css">
+    <meta name="description" content="Video game giveaways at the palm of your hands">
+    <link rel="shortcut icon" href="images/guap.png" type="image/x-icon">
+</head>
+
+<body class="gap-10" id="BG">
+
+    <div class="loader-container" id="LOADER">
+        <div class="loader">
+            <div class="loader-inner"></div>
+        </div>
+        <div class="loading-text">Loading...</div>
+    </div>
+
+
+
+    <div id="Nav" class="flex flex-col justify-center">
+
+
+        <div class="bg-pink-500 flex flex-row justify-between p-5 gap-5" id="NAVBAR">
+            <div>
+                <img src="images/guap.png" alt="LOGO" class="w-16 rounded-xl">
+            </div>
+            <div class="flex flex-row justify-center gap-5" id="navlist">
+
+                <button>
+                    <a href="#CONTENT">
+                        Home
+                    </a>
+                </button>
+
+                <button>
+                    <a href="#HLS">
+                        About
+                    </a>
+                </button>
+
+                <button onclick="toggleContacts()">Newsletter</button>
+
+
+
+            </div>
+
+            <div class="MENU w-7 h-7 m-4 hover:cursor-pointer " onclick="toggleNavbar()">
+                <img src="images/menu.png" alt="">
+            </div>
+            <div id="menupop1">
+
+                <button>
+                    <a href="#CONTENT">
+                        Home
+                    </a>
+                </button>
+
+                <button>
+                    <a href="#HLS">
+                        About
+                    </a>
+                </button>
+
+                <button onclick="toggleContacts()">Newsletter</button>
+                <br><br><br>
+                <button onclick="toggleNavbar()" class="border-2 border-black border-solid">close</button>
+            </div>
+        </div>
+
+
+        <div class="bg-pink-500 flex flex-row justify-between p-5 gap-5" id="NAV2">
+
+            <div>
+                <img src="images/guap.png" alt="LOGO" class="w-16">
+            </div>
+            <div class="flex flex-row justify-center gap-5" id="navlist">
+                <button>
+                    <a href="#CONTENT">
+                        Home
+                    </a>
+                </button>
+
+                <button>
+                    <a href="#HLS">
+                        About
+                    </a>
+                </button>
+
+                <button onclick="toggleContacts()">Newsletter</button>
+            </div>
+
+
+
+
+            <div class="MENU w-7 h-7 m-4" onclick="toggleNavbar()">
+                <img src="images/menu.png" alt="">
+            </div>
+
+            <div id="menupop2">
+                <button>
+                    <a href="#CONTENT">
+                        Home
+                    </a>
+                </button>
+
+                <button>
+                    <a href="#HLS">
+                        About
+                    </a>
+                </button>
+
+                <button onclick="toggleContacts()">Newsletter</button>
+                <br><br><br>
+
+                <button onclick="toggleNavbar()" class="border-2 border-black border-solid">close</button>
+            </div>
+
+
+        </div>
+
+    </div>
+    <br><br>
+
+
+
+
+
+    <!--CONTENT AREA-->
+    <div id="CONTENT">
+
+        <div id="MAIN1">
+            <div class="flex flex-row justify-center items-center p-8 gap-5" id="LP">
+
+                <div class="HEADER w-3/6">
+                    <p id="HEADING" class="HDNGS">Explore <span class="text-white">FRAPP</span> Find The Best Gaming
+                        Giveaways</p>
+                    <p id="DESC">FRAPP (Freebie Radar APP) is a free video game hunting website that hunts for free video games and giveaways
+                        from the web, no matter your choice of gaming device we have you covered, we get giveaways,free
+                        games,steam keys and in game loot for you for free.</p>
+                    <br>
+                    <div class="nav-buttons flex flex-row gap-2">
+                        <a href="https://frappweb.netlify.app/"  target="_blank rel="noopener noreferrer">
+                            <button class="B1 bg-white border-2  p-3 rounded-xl" >Get The App</button>
+                        </a>
+                        
+                        <button class=" B2 border-2 border-white border-solid p-3 rounded-xl transition-all"
+                                onclick="toggleContacts()">Contact Me</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
+        <div style="display: flex;flex-direction: column;gap: 70px;" id="MAINER">
+
+            <p id="HEADING4" class="HDNGS text-center" style="margin-top: 50px;">Latest Giveaways.</p>
+
+            <div class="mainworth">
+                <div id="gameworth">
+                    <p id="games-worth" class="HDNGS">.</p>
+                    <p id="games-no" class="HDNGS">.</p>
+                    <p id="games-sort" class="HDNGS" onclick="toggleSorter()">Sort</p>
+                </div>
+
+                <div id="game-sorter">
+                    <button class="sort-button" id="allsort" onclick="sortByAll()">All giveaways</button>
+                    <button class="sort-button" id="datesort" onclick="sortBydate()">By Date</button>
+                    <button class="sort-button" id="valuesort" onclick="sortByValue()">By Value</button>
+                    <button class="sort-button" id="popusort" onclick="sortByPopularity()">By Popularity</button>
+                </div>
+
+            </div>
+
+
+            <div class="flex flex-col justify-center items-center text-center gap-5" id="IMAGES-GIVE-AWAY">
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+        <div class="body2 flex flex-col justify-center items-center text-center" id="HLS">
+
+            <div id="HLS2">
+                <p class="HDNGS"
+                    style="font-family: josefin sans, 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;color: white;text-shadow: 1px 1px 1px black;font-size: 30px;">
+                    FRAPP GIVEAWAYS COVERS ALL MAIN PLATFORMS</p>
+                <div class="CARDS flex flex-row justify-center items-center">
+                    <div class="card">
+                        <img src="images/AND.png" alt="Card Image" class="card-image w-12">
+                        <div class="card-content">
+                            <h2 class="card-title">Android</h2>
+                            <p class="card-description" style="color: white;text-shadow: 1px 1px 1px black;">Android
+                                giveaways</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <img src="images/windows.png" alt="Card Image" class="card-image w-12">
+                        <div class="card-content">
+                            <h2 class="card-title">Windows</h2>
+                            <p class="card-description" style="color: white;text-shadow: 1px 1px 1px black;">Windows Pc
+                                giveaways</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <img src="images/console.jpg" alt="Card Image" class="card-image w-12">
+                        <div class="card-content">
+                            <h2 class="card-title">Console</h2>
+                            <p class="card-description" style="color: white;text-shadow: 1px 1px 1px black;">Console
+                                keys and game giveaways</p>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+
+
+
+                <p id="HEADING2" class="HDNGS" style="color: white;text-shadow: 1px 1px 1px black;">FRAPP (Giveaway
+                    Update App Platform)</p>
+                <p id="HEADING3" class="HDNGS" style="color: white;text-shadow: 1px 1px 1px black;"> Utilizes the
+                    Gamepower.com video game API that hosts any of the latest
+                    giveaways from different platforms such as steam and epic games, </p>
+                <p id="HEADING3" style="color: white;text-shadow: 1px 1px 1px black;">This project is helpful especially
+                    for gamers who are always on the hunt and dont want to miss on insane giveaways from different
+                    platforms such as steam, epic games,indiegala and soo much more come back weekly for different
+                    giveaways.</p>
+                <br><br>
+                
+                <a href="admin.html"><button id="StealthLogin">Login Stealthily.</button></a>
+                
+                <br><br>
+
+            </div>
+
+        </div>
+
+        <br><br><br>
+
+        <section class="footer flex flex-row p-5 justify-between gap-3" id="FOOT">
+
+            <p><span id="FH" style="color: white;">FRAPP</span></p>
+            <p style="color: white;"><span>&#169;</span>2024 All Rights Reserved</p>
+
+
+        </section>
+
+
+        <div id="contacts" class="p-10 flex flex-col" style="justify-content: center;align-items: center;">
+
+            <div class="flex flex-col justify-center items-center gap-3 text-center">
+                <p class="DESC">Brian Ali</p>
+                <p class="DESC">Tel:0795328270</p>
+                <p class="DESC">Check out Other projects like this on my github below</p>
+            </div>
+            <div class="cimg p-5 flex flex-col gap-5 text-center">
+                <br>
+                <p class="DESC">Contact Me on</p>
+
+                <div class="flex flex-row justify-center gap-5">
+                    <a href="x.com/brianali427">
+                        <img src="images/twitter.png" alt="twitter" class="w-7 h-7">
+                    </a>
+                    <a href="https://github.com/gamerfunky78">
+                        <img src="images/github-logo.png" alt="Github" class="w-7 h-7">
+                    </a>
+                    <a href="gamerfunky78.github.io">
+                        <img src="images/bag.svg" alt="portfolio" class="w-7 h-7">
+                    </a>
+
+                </div>
+
+            </div>
+            <div>
+                <p class="DESC text-center">The FRAPP logo is subjected to copyright and may not be reproduced in any
+                    way.</p>
+
+
+
+            </div>
+            <br><br><br>
+            <p class="DESC text-center">Subscribe to my newsletter so you dont miss a nice giveaway</p>
+            <br><br><br>
+
+            <form action="https://formsubmit.co/brianali427@gmail.com" method="POST" id="Newsletter">
+                <input type="hidden" name="_autoresponse"
+                    value="Welcome to the Guap Giveaways family! You're now part of a thriving community of gamers on a mission to score incredible freebies. Get ready for a front-row seat to the latest giveaways, exclusive offers, and exciting gaming news. We're committed to providing you with the best possible platform to win big. From indie gems to AAA titles, there's something for every gamer. Stay tuned for updates, tips, and tricks to increase your chances of winning. Let's make your gaming experience even more rewarding!">
+                <input type="email" name="email" required id="displayer" placeholder="subscribe for weekly newsletter">
+                <button type="submit" class="sender" id="sub" onclick="changeContent()">Subscribe</button>
+            </form>
+
+
+
+
+            <div onclick="toggleContacts()" id="closebutton">
+                <img src="images/close.svg" alt="close">
+            </div>
+            <br><br><br>
+            
+        </div>
+    </div>
+
+    <a href="#CONTENT">
+        <div id="UPTOP">
+            <img src="images/arrow.png" alt="" id="UPTOTOP">
+        </div>
+    </a>
+
+
+    <div class="COOKIE_BAR" onclick="toggleCookieBar()">
+        <p>This Site uses cookies in order for it to work properly by clicking ACCEPT you agree to the <span
+                id="TCS">terms and conditions</span></p>
+        <button id="ACCEPT">Accept</button>
+    </div>
+
+
+
+
+    <script src="index.js"></script>
+</body>
+
+</html>

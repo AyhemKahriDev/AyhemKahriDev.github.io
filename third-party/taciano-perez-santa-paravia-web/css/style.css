@@ -1,0 +1,63 @@
+@font-face { 
+	font-family: "Vecna"; 
+	src: url('../font/Vecna-oppx.ttf'); 
+}
+
+.responsive {
+  max-width: 100%;
+  height: auto;
+}
+
+body {
+    color: white;
+    background-color: black;
+    font-size: calc(15px + 0.390625vw);
+    max-width: 780px;
+    margin: auto;
+    font-family: "Vecna";
+  }
+  
+  #images {
+    height: 250px;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-bottom: 1em;
+  }
+
+  #mapDiv {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
+    justify-content: center;
+  }
+
+  input {
+    width: 100%;
+    height: calc(30px + 0.390625vw);
+    text-align: center;
+    font-size: calc(15px + 0.390625vw);
+    font-family: "Vecna";
+  }
+
+  #text {
+    margin-left: 5px;
+  }
+  
+  #buttonBox {
+    text-align:center;
+  }
+  
+  button{
+    margin-left: 10px;
+    margin-top: 10px;
+    height: calc(21px + 0.390625vw);
+    font-size: calc(13px + 0.390625vw);
+    font-family: "Vecna";
+  }
+
+  table, th, td {
+    width: 100vw;
+    max-width: 780px;
+    border: 1px solid black;
+  }

@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Remodel — Sal's Galaxy Zone Arcade</title>
+  <meta name="description" content="How the 2026 remodel of Sal's Galaxy Zone Arcade happened, in Sal's own words.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <nav aria-label="Primary" style="margin-bottom:1.5rem;">
+      <a href="index.html">← Arcade home</a>
+    </nav>
+
+    <h1>The Remodel</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade — 2026</p>
+
+    <h2>The arcade that wouldn't die</h2>
+    <p>
+      Short version, if you want the long one it's got its own page: I opened
+      Galaxy Zone Arcade in 1978 on SE Foster Rd with six cabinets and a
+      change machine that hated nickels personally. By '82 we had sixteen
+      machines and a line out the door. By '95 the mall had emptied out and I
+      closed the doors, but I never sold a single cabinet — I put all sixteen
+      in a storage unit in Gresham and paid rent on them for thirty years
+      like a stubborn old man. Last year, at 73, I rebuilt fifteen of them as
+      a website using something called Claude Code. This year I turned 74 and
+      did it again, properly. That's what this page is about. (Full story,
+      cat included, is over on <a href="about-sal.html">About Sal</a>.)
+    </p>
+
+    <h2>Why remodel?</h2>
+    <p>
+      Because last year's job worked, but it worked the way a cabinet works
+      when you've patched it with whatever wire was closest. Every single
+      game had its own tangle of extension cords running behind the machine
+      — my way of saying each one was coded its own way, none of them
+      talking to each other, so fixing one thing in Pac-Chase taught me
+      nothing about fixing the same thing in Brick Breaker. Some cabinets ran
+      like they'd had three espressos — Retro Tennis on my nephew's fancy new
+      laptop played like a 45 record spun at 78, because nobody told the game
+      to care how fast the computer's clock was ticking. And you could not,
+      under any circumstance, play a single one of these machines on a phone.
+      Not one. My granddaughter tried and gave up. Also — and I didn't even
+      know this was a problem until the robots told me — the sound man was
+      leaving amplifiers running all over the building. Every game that ever
+      made a beep left its little audio gadget switched on forever, even
+      after you walked away. Sloppy. All fixable. So we fixed it.
+    </p>
+
+    <h2>The crew</h2>
+    <p>
+      This time I didn't just hire one robot and wing it. One robot drew the
+      blueprints first — the wiring diagram for the whole building, so to
+      speak. What buttons do what, how the sound works, how the screen
+      handles a phone versus a monitor, what a high score looks like when
+      it's saved. Call it the engine, call it the rulebook, I call it "the
+      one thing every cabinet has to agree to before it gets plugged in."
+      Then a crew of robot builders split up the floor — each one took three
+      cabinets and rebuilt them to that exact same spec, nobody freelancing.
+      When they were done, an inspector walked the whole floor, played every
+      single game, and made anything that rattled stop rattling. One power
+      grid. One rulebook. Sixteen cabinets that finally belong to the same
+      building.
+    </p>
+
+    <h2>The magic spells, 2026 edition</h2>
+    <p>Here's roughly what I typed to get this thing built. Roughly.</p>
+
+    <div class="gz-prompt-box">Before we touch a single game, build the shared engine every
+cabinet in this arcade has to use. Fixed-timestep game loop so
+nothing runs fast or slow depending on the computer. One shared
+audio system, one AudioContext, so we're not leaking sound
+gadgets all over the building. Touch controls that show up on
+phones automatically. One visual language — same fonts, same
+neon, same overlay screens — so every game looks like it belongs
+in the same arcade. Write it once. Everything else builds on top
+of it.</div>
+
+    <div class="gz-prompt-box">Now rebuild all fifteen working games against that engine.
+Split the work into five builders, three cabinets each, same
+blueprint, same rules, nobody inventing their own version of
+anything the engine already handles. Keep every game's original
+feel — Pac-Chase still chases, Retro Tennis is still Pong — just
+rebuilt on the new wiring instead of the old duct tape.</div>
+
+    <div class="gz-prompt-box">Walk the floor. Play every single cabinet, on a laptop and on
+a phone, sound on and sound off, motion on and motion reduced.
+Anything that rattles, doesn't touch, or throws an error in the
+console — fix it before we open the doors. And leave the sign
+out front looking like it means it.</div>
+
+    <h2>What's actually better</h2>
+    <ul>
+      <li>One shared engine instead of sixteen separate tangles of code —
+        fix something once, every game gets it.</li>
+      <li>Real physics timing (that "deltaTime" word again) so a game plays
+        at the same speed on my old laptop and on anything newer.</li>
+      <li>Touch controls, actually working, on actual phones. My
+        granddaughter approves.</li>
+      <li>Pause works the same way in every game, because it's the same
+        code doing it.</li>
+      <li>One sound system for the whole building — no more leaving
+        amplifiers running after you leave the room.</li>
+      <li>High scores that survive — they're saved right there in your
+        browser and they don't wander off.</li>
+      <li>Real accessibility — keyboard, screen readers, focus you can
+        actually see, and everything calms down if your computer says you'd
+        rather it not move so much.</li>
+      <li>And the thing I actually wanted most: the whole place finally
+        looks like ONE arcade. Not just out here in the lobby — inside the
+        games too.</li>
+    </ul>
+
+    <h2>The crate</h2>
+    <p>
+      One more thing, and I'm not going to make a big production out of it.
+      A crate showed up at the loading dock on a rainy Tuesday, middle of
+      all this. Had my name on it. I signed for it. I'm not going to tell you
+      what's in it — go look at the floor.
+    </p>
+
+    <div class="gz-back-links">
+      <a href="index.html">Arcade home</a>
+      <a href="about-sal.html">About Sal</a>
+      <a href="https://github.com/oceanm42/galaxy-zone-arcade" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </div>
+  </article>
+</body>
+</html>

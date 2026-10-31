@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Un jeu de Mim codé en JS, côté client">
+    
+    <title>Jeu de Mim, côté client</title>
+</head>
+
+<!-- _                            _   -->
+<!--| |    __ _ _   _  ___  _   _| |_ -->
+<!--| |   / _` | | | |/ _ \| | | | __|-->
+<!--| |__| (_| | |_| | (_) | |_| | |_ -->
+<!--|_____\__,_|\__, |\___/ \__,_|\__|-->
+<!--            |___/                 -->
+<body>
+    
+   <!-- ___                      _   _          -->
+   <!--|   \ ___ __ ___ _ _ __ _| |_(_)___ _ _  -->
+   <!--| |) / -_) _/ _ \ '_/ _` |  _| / _ \ ' \ -->
+   <!--|___/\___\__\___/_| \__,_|\__|_\___/_||_|    -->
+    
+    <!--Big page HEADER-->
+    <header id="pageHeader" class="s-12">
+        <h1>Jeu de Mim</h1>
+    </header>
+
+    <section>
+        <div class="row">
+            <!--Rules container SECTION-->
+            <div id="regles" class="s-12 m-6">
+                <h2>R&egrave;gles du jeu</h2>
+                <p><b>Vous jouez contre la machine</b> : <br />&Agrave; tour de rôle vous prenez 1, 2 ou 3 bâtons.<br />
+        Le but du jeu est de prendre les dernières 1, 2 ou 3 allumettes.<br /><br /><i>Le gagnant est celui qui joue en dernier</i></p>
+            </div>
+            
+            <div id="log_container" class="s-12 m-6" style="display:none;">
+                <h2>Mouvements</h2>
+                <div id="log"></div>
+            </div>
+        </div>
+<!--</section>    -->
+   <!-- _____ _                              -->
+   <!--|_   _| |_  ___   __ _ __ _ _ __  ___ -->
+   <!--  | | | ' \/ -_) / _` / _` | '  \/ -_)-->
+   <!--  |_| |_||_\___| \__, \__,_|_|_|_\___|-->
+   <!--                 |___/              -->
+    <!--The game's container SECTION-->
+<!--<section>-->
+    <div class="row">    
+        <div id="jeu" class="s-12">
+            <h2>Le jeu</h2>
+            
+            <!--The sticks to display in their container-->
+            <div id="sticks_container">
+                <!--Sticks get injected on page load, by JS-->
+                <!--Resulting sticks may get injected as such :-->
+                <!--<div id="stick_object_1" class="stick_object" style="display:none;" data-stickindex="N"></div>-->
+            </div>
+            
+            <!--The form, in its container-->
+            <div id="form_container">
+                
+                <!--Container of turn information : your turn , or the bot's turn-->
+                <!--'Your turn' is displayed initially, as user will always play first-->
+                <h3 id="yourturn_container">&Agrave; votre tour :</h3>
+                <h3 id="botturn_container" style="display:none;">Au tour du robot : veuillez patienter...</h3>
+                
+                <!--The form, quite minimal : only a numeric field and a submit button-->
+                <form method="POST" id="userTakeSticks_form">
+                    
+                    <!--Numeric field ; note the min and max attributes-->
+                    <label for="userTakesCount">Vous prenez </label>
+                    <input type="number"
+                           id="userTakesCount"
+                           name="userTakesCount"
+                           min="1"
+                           max="3"
+                           required="required" />
+                    <label for="userTakesCount"> b&acirc;tons(s)</label>
+                    <!--Submit button-->
+                    <input type="submit" value="OK" />
+                </form>
+                
+                
+            </div>
+            
+        </div>
+    </div>
+</section>      
+    
+    
+    <!--We badly need jQuery for DOM manipulation...-->
+    <!--But relax, we are not gonna use advanced features...-->
+    <script src="jquery-3.1.1.min.js"></script>
+    
+</body>
+
+<!--     _                                _       _   -->
+<!--    | | __ ___   ____ _ ___  ___ _ __(_)_ __ | |_ -->
+<!-- _  | |/ _` \ \ / / _` / __|/ __| '__| | '_ \| __|-->
+<!--| |_| | (_| |\ V / (_| \__ \ (__| |  | | |_) | |_ -->
+<!-- \___/ \__,_| \_/ \__,_|___/\___|_|  |_| .__/ \__|-->
+<!--                                       |_|        -->
+<script>
+    
+    // jQuery usage will be VERY limited, as this project
+    // must remain f***ing simple for students :
+    // - we'll use selectors
+    // - we'll use element.append() function when initializing sticks container and logging moves
+    // - we'll use element.show() / element.hide() methods
+    // - we'll use element.fade*() methods, in order to get at least minimally sexy UI
+    // - we'll use event.preventDefault() method for clientside processing
+    $(function(){
+
+       // ___      _ _   
+       //|_ _|_ _ (_) |_ 
+       // | || ' \| |  _|
+       //|___|_||_|_|\__|
+
+        // Define number of sticks to play with
+        var initialSticksCount = 20 ;
+        
+        
+        var currentSticksCount = parseInt(initialSticksCount) ;
+        var userPlayedValue, botPlayedValue ;
+        
+        // Initialize sticks
+        // On page load, there is not any sticks ; sticks are made clientside, by JS
+        // Pros : one can easily change initial sticks count by changing `currentSticksCount` value above
+        // Cons : we must script it
+        
+        // We are about to build as many sticks as wanted by configuration ; we need a counter
+        var counter = 1 ;
+        // Catch our target container in a variable for convenience
+        var targetContainer = $("#sticks_container") ;
+        // Loop and inject elements into container
+        while(counter <= currentSticksCount) {
+            // Append nth stick to container
+            targetContainer.append('<div id="stick_object_'+counter+'" class="stick_object" style="display:none;" data-stickindex="'+counter+'"></div>') ;
+            // nicely fadely appear
+            $("#stick_object_"+counter).fadeTo('fast',1) ;
+            
+            // Increment counter so that we know where we are
+            counter ++ ;
+        }
+        
+        // On page load, set focus on form input, for convenience
+        // No need to use mouse
+        $("#userTakesCount").focus() ;
+        
+       // ___ _         _ _              
+       //| _ |_)_ _  __| (_)_ _  __ _ ___
+       //| _ \ | ' \/ _` | | ' \/ _` (_-<
+       //|___/_|_||_\__,_|_|_||_\__, /__/
+       //                       |___/
+       
+        // ___ FORM ACTION ___
+        
+        // Define form's action :
+        // WARNING we wanna stay clientside, then we ought to disable default submit action
+        $("#userTakeSticks_form").submit(function(e){
+            // Actually prevent default form behaviour
+            // see https://api.jquery.com/event.stoppropagation/ 
+            e.preventDefault() ;
+            
+            
+            // _ USER PLAY _
+            // This is where the user actually plays
+            userPlayedValue = parseInt($("#userTakesCount").val()) ;
+            currentSticksCount -= userPlayedValue ;
+            // _____________
+            
+            // Trigger all actions listening on event 'userHasPlayed'
+            // See bindings below
+            $("#sticks_container").trigger('userHasPlayed') ;
+            
+            // Delay robot move, as we wanna let the user feel that the robot is actually thinking
+            setTimeout(function(){
+                $("#sticks_container").trigger('botPlay') ;
+            },1000) ;
+        }) ;
+        
+        // Make the robot play
+        // The event 'botPlay' is triggered after user has played,
+        // from within form submit action
+        $("#sticks_container").bind('botPlay', function(){
+            
+            // _ ROBOT PLAY _
+            // This is where the robot actually plays            
+            botPlayedValue = 4 - userPlayedValue ;
+            currentSticksCount -= botPlayedValue ;
+            // _____________
+            
+            // Trigger all actions listening on event 'botHasPlayed'
+            // See bindings below
+            $("#sticks_container").trigger('botHasPlayed') ;
+        }) ;
+        
+        
+        // ___ REFRESH UI ON MOVE ___
+        
+        // Robot has just played : refresh UI accordingly
+        $("#sticks_container").bind('botHasPlayed.updateUI', function(){
+            
+            // Refresh sticks, depending on current value
+            handleSticksLookAfterPlay(currentSticksCount) ;
+            
+            // Display movements log container if hidden
+            if(!$("#log_container").is(':visible'))
+                $("#log_container").fadeIn('fast');
+
+            // Check if robot has won
+            if(currentSticksCount === 0){
+                // _robot_wins_
+                // Display lose message, big size
+                $("#userTakeSticks_form").fadeIn('fast').html('<h1>Vous avez PERDU...</h1>') ;
+                // Add lose message to moves log
+                $("#log").prepend('<div><i>'+new Date().toLocaleTimeString()+'</i> : <b>Vous avez PERDU...</b></div>') ;
+                // Hide "bot's turn" message
+                $("#botturn_container").fadeOut(200) ;
+                
+                // Stop here, as robot has won ; ___GAME OVER___
+                return ;
+            }
+            
+            // Still there ? then move on...
+            
+            // Toggle turn information containers (your turn / bot's turn)
+            $("#botturn_container").fadeOut(200, function(){
+                $("#yourturn_container").fadeIn(200) ;
+            }) ;
+            
+            // Disable form input so that user cannot play twice
+            $("#userTakeSticks_form input").removeAttr('disabled') ;
+            // Clear form input's value for convenience
+            $("#userTakesCount").val('') ;
+            // Show user form, and focus on form input, for convenience
+            // It's the user's turn
+            $("#userTakeSticks_form").fadeIn(400, function(){$("#userTakesCount").focus()}) ;            
+        }) ;
+        
+        // Refresh UI when user has played :
+        // - display whose turn it is
+        // - disable form input and hide form
+        $("#sticks_container").bind('userHasPlayed.updateUI', function(){
+            
+            // Refresh sticks, depending on current value
+            handleSticksLookAfterPlay(currentSticksCount) ;
+            
+            // Display movements log if hidden
+            if(!$("#log_container").is(':visible'))
+                $("#log_container").fadeIn('fast');            
+
+            // Check if user has won (or not...)
+            if(currentSticksCount === 0){
+                // Display win message, big size
+                $("#userTakeSticks_form").html('<h1>Vous avez gagn&eacute; !!!</h1>') ;
+                // Add lose message to moves log
+                $("#log").prepend('<div><i>'+new Date().toLocaleTimeString()+'</i> : <b>Vous avez gagn&eacute; !!!</b></div>') ;
+                // Disable form inputs, and hide form
+                $("#userTakeSticks_form input").attr('disabled','disabled') ;
+                $("#botturn_container").fadeOut(200) ;
+                
+                // Stop here, as user has won ; ___GAME OVER___
+                return ;
+            }
+           
+            // Still there ? then move on...
+            
+            // Toggle turn information containers (your turn / bot's turn)
+            $("#yourturn_container").fadeOut(200, function(){
+                $("#botturn_container").fadeIn(200) ;
+            }) ;
+            
+            // Disable form input so that user cannot play twice
+            // Indeed, it's robot's turn to play
+            $("#userTakeSticks_form input").attr('disabled','disabled') ;
+            $("#userTakeSticks_form").fadeOut(400) ;            
+        } );
+        
+        
+        
+        // ___ LOG MOVES ___
+        
+        // Lor user move
+        $("#sticks_container").bind('botHasPlayed.logMove', function(){
+            // Inject move message into log container
+            $("#log").prepend('<div><i>'+new Date().toLocaleTimeString()+'</i> plus que '+currentSticksCount+' : le <b>Robot</b> en prend '+botPlayedValue+'</div>') ;
+        }) ;
+        
+        // Log robot move
+        $("#sticks_container").bind('userHasPlayed.logMove', function(){
+            // Inject move message into log container
+            $("#log").prepend('<div><i>'+new Date().toLocaleTimeString()+'</i> plus que '+currentSticksCount+' : <b>Vous</b> en prenez '+userPlayedValue+'</div>') ;
+        }) ;        
+        
+     
+       
+       // _    _ _                      
+       //| |  (_) |__ _ _ __ _ _ _ _  _ 
+       //| |__| | '_ \ '_/ _` | '_| || |
+       //|____|_|_.__/_| \__,_|_|  \_, |
+       //                          |__/        
+        
+        // Function that handles sticks display, after someone has played (user or machine)
+        // INPUT : (int) the numer of remaining sticks to display
+        // OUTPUT : none
+        // INTERNALS : manipulates DOM and adapts CSS class on corresponding sticks
+        function handleSticksLookAfterPlay(remainingSticks) {
+            if(remainingSticks===0){
+                $(".stick_object").addClass('taken') ;
+            }
+            
+            //$("#sticks_container").find('.stick_object[data-stickindex]')
+            for(var stickIndex = 1 ; stickIndex <= initialSticksCount ; stickIndex++){
+                if(stickIndex <= remainingSticks) {
+                    $("#stick_object_"+stickIndex).removeClass('taken') ;
+                }
+                else {
+                    $("#stick_object_"+stickIndex).addClass('taken') ;
+                }
+                    
+            }
+        }
+        
+        
+        
+    }) ;
+</script>
+
+<!--  ____ ____ ____  -->
+<!-- / ___/ ___/ ___| -->
+<!--| |   \___ \___ \ -->
+<!--| |___ ___) |__) |-->
+<!-- \____|____/____/ -->
+<!--                  -->
+<style>
+    html{box-sizing:border-box}*,*:before,*:after{box-sizing:inherit}
+    /* Extract from normalize.css by Nicolas Gallagher and Jonathan Neal git.io/normalize */
+    html{-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}
+    header,section{display:block}
+    
+    p {
+        text-align: justify;
+    }
+    #sticks_container {
+        display: flex;
+        flex-direction: row;
+        
+        height: 60px;
+        margin: 10px 0px ;
+    }
+    #log {
+        max-height: 100px;
+        overflow-y: auto ;
+    }
+    .stick_object {
+        order: 1;
+        flex-basis: 5px;
+        
+        height: 100%;
+        border: 1px solid #000 ;
+        background: #000;
+        margin: auto ;
+        
+        -webkit-transition: background-color 400ms; /* Safari */
+        transition: background-color 400ms;
+    }
+    .stick_object.taken {
+        border-color: #888888 ;
+        background-color: #ffffff;
+    }
+    .row:after{content:"";display:table;clear:both}
+    
+    .s-12 {
+        float:left;
+        clear: both;
+        width:99.99999%;
+    }
+    .m-6 {
+        float:left;
+        clear: none !important;
+        width:49.99999% !important;
+    }
+</style>
+
+</html>    

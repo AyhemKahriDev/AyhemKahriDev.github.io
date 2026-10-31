@@ -1,0 +1,24 @@
+# 离线运行时镜像：构建上下文由 scripts/build-docker.sh 预先备好
+# （宿主机交叉编译的二进制 + web 静态资源 + 宿主机 CA 证书），
+# 配合 DOCKER_BUILDKIT=0 --pull=false --network=none 实现完全离线构建：
+# 基础镜像取本地 alpine:3.21，不拉镜像、不装包、不访问 registry。
+#
+# 注意：
+# - 构建后由脚本把镜像 config 的 architecture 字段修正为目标架构（save/edit/load）；
+# - 不设 HEALTHCHECK：镜像内 busybox 是构建机架构的，跨架构机器上 wget 无法执行；
+# - 跨架构时 rootfs 内的 busybox/shell 不可用（brick-game 为静态二进制，ENTRYPOINT 不受影响）。
+FROM alpine:3.21
+
+RUN adduser -D -u 1000 appuser
+WORKDIR /app
+
+COPY ca-certificates.crt /etc/ssl/cert.pem
+COPY brick-game-bin ./brick-game
+COPY web ./web
+
+RUN chown -R appuser:appuser /app
+USER appuser
+
+EXPOSE 8908
+ENTRYPOINT ["./brick-game"]
+CMD ["-port", "8908", "-web-dir", "./web"]

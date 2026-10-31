@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>termcom</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0a0a14; color: #aaa; font-family: monospace; }
+#c { display: block; cursor: crosshair; image-rendering: pixelated; }
+#loading {
+	position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+	display: flex; flex-direction: column; align-items: center; justify-content: center;
+	gap: 1em; font-size: 1.2em;
+}
+#loading .spinner {
+	width: 32px; height: 32px; border: 3px solid #333; border-top-color: #8cf;
+	border-radius: 50%; animation: spin .8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+#error { display: none; color: #f66; text-align: center; padding: 2em; }
+#error h2 { margin-bottom: .5em; }
+#error p { margin: .3em 0; }
+#error .detail { font-size: .85em; color: #a88; }
+#fontBar {
+	position: fixed; top: 0; left: 0; right: 0; z-index: 10; height: 26px;
+	display: flex; align-items: center; gap: .5em;
+	padding: 4px 8px; background: rgba(10,10,20,0.85); font-size: 12px;
+	transition: opacity .3s, visibility .3s;
+	opacity: 0; visibility: hidden; pointer-events: none;
+}
+#fontBar.show { opacity: 1; visibility: visible; }
+#fontBar.show ~ #c { margin-top: 26px; }
+#c { transition: margin-top .3s; }
+#fontBar label { color: #888; white-space: nowrap; }
+#fontBar .hotkey { color: #555; margin-left: auto; }
+#fontPicker {
+	background: #1a1a2e; color: #ccc; border: 1px solid #444;
+	padding: 2px 4px; font-size: 12px; font-family: monospace;
+	outline: none; cursor: pointer; pointer-events: auto;
+}
+#fontPicker:focus { border-color: #68f; }
+#fontStatus { color: #666; font-size: 11px; display: none; }
+</style>
+</head>
+<body>
+<div id="fontBar"><label>Font:</label><select id="fontPicker"></select><span id="fontStatus">Loading…</span><span class="hotkey">[F1]</span></div>
+<div id="loading">
+	<div class="spinner"></div>
+	<div>Loading termcom…</div>
+</div>
+<canvas id="c" style="display:none"></canvas>
+<div id="error"></div>
+<script src="wasm_exec.js"></script>
+<script>
+let CELL_W = 9;
+let CELL_H = 18;
+let FONT_SIZE = 14;
+let FONT_FAMILY = 'monospace';
+let CURRENT_FONT_KEY = 'system';
+
+const FONTS = [
+	{ key: 'system',    label: 'System Monospace',     css: '',             family: 'monospace' },
+	{ key: 'noto',      label: 'Noto Sans Mono',       css: 'Noto+Sans+Mono',      family: '"Noto Sans Mono",monospace' },
+	{ key: 'jetbrains', label: 'JetBrains Mono',       css: 'JetBrains+Mono',      family: '"JetBrains Mono",monospace' },
+	{ key: 'firacode',  label: 'Fira Code',            css: 'Fira+Code',           family: '"Fira Code",monospace' },
+	{ key: 'cascadia',  label: 'Cascadia Code',        css: 'Cascadia+Code',       family: '"Cascadia Code",monospace' },
+	{ key: 'sourcepro', label: 'Source Code Pro',      css: 'Source+Code+Pro',     family: '"Source Code Pro",monospace' },
+	{ key: 'spacemono', label: 'Space Mono',           css: 'Space+Mono',         family: '"Space Mono",monospace' },
+	{ key: 'consolas',  label: 'Consolas',             css: '',             family: 'Consolas,monospace' },
+	{ key: 'unifont',   label: 'GNU Unifont',          css: 'unifont',      family: '"Unifont",monospace', cssUrl: 'https://cdn.jsdelivr.net/npm/@fontsource/unifont@5.2.5/index.css' },
+];
+
+const fontPicker = document.getElementById('fontPicker');
+const fontStatus = document.getElementById('fontStatus');
+const fontBar = document.getElementById('fontBar');
+
+FONTS.forEach(f => {
+	const opt = document.createElement('option');
+	opt.value = f.key;
+	opt.textContent = f.label;
+	fontPicker.appendChild(opt);
+});
+
+const urlFontKey = new URLSearchParams(window.location.search).get('font');
+const defaultKey = urlFontKey && FONTS.some(f => f.key === urlFontKey) ? urlFontKey : 'jetbrains';
+fontPicker.value = defaultKey;
+
+function applyFont(key) {
+	const font = FONTS.find(f => f.key === key);
+	if (!font) return;
+	CURRENT_FONT_KEY = key;
+	fontStatus.textContent = 'Loading…';
+	fontStatus.style.display = 'inline';
+	if (!font.css && !font.cssUrl) {
+		FONT_FAMILY = font.family;
+		afterFontLoad();
+		return;
+	}
+	const old = document.querySelector('link[data-font]');
+	if (old) old.remove();
+	const link = document.createElement('link');
+	link.rel = 'stylesheet';
+	link.setAttribute('data-font', '');
+	link.href = font.cssUrl || ('https://fonts.googleapis.com/css2?family=' + font.css + ':wght@400;700&display=swap');
+	link.onload = () => {
+			// Wait for the font to actually be rasterized before measuring
+			const primary = font.family.split(',')[0];
+			const loadIt = () => {
+				FONT_FAMILY = font.family;
+				afterFontLoad();
+			};
+			if (document.fonts && document.fonts.load) {
+				document.fonts.load('20px ' + primary, 'M').then(loadIt).catch(loadIt);
+			} else {
+				setTimeout(loadIt, 1000);
+			}
+		};
+	link.onerror = () => { fontStatus.textContent = 'Failed'; };
+	document.head.appendChild(link);
+}
+
+function afterFontLoad() {
+	measureFont();
+	resize();
+	prevData = null;
+	fontStatus.style.display = 'none';
+}
+
+fontPicker.addEventListener('change', () => applyFont(fontPicker.value));
+
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+
+function measureFont() {
+	const probe = document.createElement('canvas').getContext('2d');
+	for (let size = 20; size >= 10; size--) {
+		probe.font = size + 'px ' + FONT_FAMILY;
+		const m = probe.measureText('M');
+		const w = Math.ceil(m.width);
+		const h = (probe.fontBoundingBoxAscent && probe.fontBoundingBoxDescent)
+			? Math.ceil(probe.fontBoundingBoxAscent + probe.fontBoundingBoxDescent)
+			: Math.ceil(m.actualBoundingBoxDescent - m.actualBoundingBoxAscent) || size;
+		if (w > 0 && h > 0) {
+			FONT_SIZE = size + 2;
+			CELL_W = w + 2;
+			CELL_H = h + 2;
+			return;
+		}
+	}
+	FONT_SIZE = 14;
+	CELL_W = 10;
+	CELL_H = 18;
+}
+const loading = document.getElementById('loading');
+const errorDiv = document.getElementById('error');
+
+function showError(title, detail) {
+	loading.style.display = 'none';
+	errorDiv.style.display = 'block';
+	errorDiv.innerHTML = '<h2>' + title + '</h2><p>' + detail + '</p><p class="detail">Open DevTools (F12) for details.</p>';
+}
+
+let fbW = 120, fbH = 40;
+let prevData = null;
+let prevW = 0, prevH = 0;
+
+const go = new Go();
+
+async function loadWasmAndRun() {
+	let response;
+	try {
+		response = await fetch('termcom.wasm.gz');
+		if (!response.ok) response = null;
+	} catch (e) { response = null; }
+
+	if (!response) {
+		response = await fetch('termcom.wasm');
+		if (!response.ok) {
+			showError('Failed to load', 'Could not fetch termcom.wasm (HTTP ' + response.status + ').');
+			return;
+		}
+	}
+
+	let wasmBytes;
+	if (response.url.endsWith('.gz') && typeof DecompressionStream !== 'undefined') {
+		const stream = response.body.pipeThrough(new DecompressionStream('gzip'));
+		wasmBytes = await new Response(stream).arrayBuffer();
+	} else {
+		wasmBytes = await response.arrayBuffer();
+	}
+
+	const result = await WebAssembly.instantiate(wasmBytes, go.importObject);
+	go.run(result.instance);
+	if (typeof termcomInit !== 'function') {
+		showError('Init failed', 'termcomInit not defined after WASM load.');
+		return;
+	}
+	termcomInit();
+	applyFont(defaultKey);
+	loading.style.display = 'none';
+	canvas.style.display = 'block';
+	resize();
+	canvas.focus();
+	requestAnimationFrame(renderLoop);
+}
+
+if (!WebAssembly) {
+	showError('Browser not supported', 'This game requires WebAssembly. Try a modern browser like Chrome or Firefox.');
+} else {
+	loadWasmAndRun().catch(err => {
+		if (err.message && err.message.includes('MIME')) {
+			showError('MIME type error', 'The server must serve .wasm files as <code>application/wasm</code>. Try <code>python -m http.server 8080</code> or use a different server.');
+		} else {
+			showError('Failed to load', err.message || err);
+		}
+	});
+}
+
+function resize() {
+	const dpr = window.devicePixelRatio || 1;
+	const maxW = window.innerWidth;
+	const maxH = window.innerHeight;
+	const cols = Math.max(40, Math.floor(maxW / CELL_W));
+	const rows = Math.max(24, Math.floor(maxH / CELL_H));
+	fbW = cols;
+	fbH = rows;
+	canvas.style.width = (cols * CELL_W) + 'px';
+	canvas.style.height = (rows * CELL_H) + 'px';
+	canvas.width = cols * CELL_W * dpr;
+	canvas.height = rows * CELL_H * dpr;
+	ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+	ctx.font = FONT_SIZE + 'px ' + FONT_FAMILY;
+	ctx.textBaseline = 'top';
+	ctx.textAlign = 'center';
+	if (typeof termcomInjectResize !== 'undefined') {
+		termcomInjectResize(cols, rows);
+	}
+}
+
+function renderLoop() {
+	requestAnimationFrame(renderLoop);
+	if (typeof termcomGetFrame === 'undefined') return;
+
+	const frame = termcomGetFrame();
+	if (!frame) return;
+
+	const data = new Uint8Array(frame.data);
+	const w = frame.w;
+	const h = frame.h;
+
+	if (w !== prevW || h !== prevH || frame.dirty) {
+		prevW = w;
+		prevH = h;
+		prevData = null;
+	}
+
+	const dirty = !prevData;
+
+	// Pass 1: draw all backgrounds
+	for (let i = 0; i < w * h; i++) {
+		const off = i * 9;
+		if (!dirty) {
+			let same = true;
+			for (let j = 0; j < 9; j++) {
+				if (data[off + j] !== prevData[off + j]) { same = false; break; }
+			}
+			if (same) continue;
+		}
+		const br = data[off + 5], bg = data[off + 6], bb = data[off + 7];
+		const col = i % w;
+		const row = Math.floor(i / w);
+		ctx.fillStyle = 'rgb(' + br + ',' + bg + ',' + bb + ')';
+		ctx.fillRect(col * CELL_W, row * CELL_H, CELL_W, CELL_H);
+	}
+
+	// Pass 2: draw all characters on top
+	for (let i = 0; i < w * h; i++) {
+		const off = i * 9;
+		if (!dirty) {
+			let same = true;
+			for (let j = 0; j < 9; j++) {
+				if (data[off + j] !== prevData[off + j]) { same = false; break; }
+			}
+			if (same) continue;
+		}
+		const lo = data[off], hi = data[off + 1];
+		const ch = String.fromCharCode(lo | (hi << 8)) || ' ';
+		const fr = data[off + 2], fg = data[off + 3], fb = data[off + 4];
+		const attr = data[off + 8];
+		const col = i % w;
+		const row = Math.floor(i / w);
+		const cx = col * CELL_W;
+		const cy = row * CELL_H;
+
+		if (ch !== ' ' && ch !== '\u0000') {
+			ctx.fillStyle = 'rgb(' + fr + ',' + fg + ',' + fb + ')';
+			if (attr & 1) ctx.font = 'bold ' + FONT_SIZE + 'px ' + FONT_FAMILY;
+			else ctx.font = FONT_SIZE + 'px ' + FONT_FAMILY;
+			ctx.fillText(ch, cx + CELL_W / 2, cy + 2);
+		}
+	}
+
+	prevData = new Uint8Array(data);
+}
+
+function cellPos(e) {
+	const rect = canvas.getBoundingClientRect();
+	const x = Math.floor((e.clientX - rect.left) / CELL_W);
+	const y = Math.floor((e.clientY - rect.top) / CELL_H);
+	return [x, y];
+}
+
+canvas.addEventListener('keydown', e => {
+	const key = e.key;
+	if (key === 'F1') { e.preventDefault(); fontBar.classList.toggle('show'); return; }
+	const handled = (() => {
+		if (key === 'ArrowUp' || key === 'ArrowDown' || key === 'ArrowLeft' || key === 'ArrowRight' ||
+		    key === 'Enter' || key === 'Escape' || key === 'Backspace' || key === 'Delete' ||
+		    key === 'Tab' || key === 'Home' || key === 'End' || key === 'PageUp' || key === 'PageDown') {
+			termcomInjectKey(key); return true;
+		}
+		if (key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) {
+			termcomInjectKey(key); return true;
+		}
+		if (e.keyCode >= 112 && e.keyCode <= 123) {
+			termcomInjectKey('F' + (e.keyCode - 111)); return true;
+		}
+		return false;
+	})();
+	if (handled) e.preventDefault();
+});
+
+canvas.setAttribute('tabindex', '0');
+canvas.focus();
+canvas.addEventListener('click', () => canvas.focus());
+
+canvas.addEventListener('mousedown', e => {
+	e.preventDefault();
+	const [x, y] = cellPos(e);
+	if (e.button === 0) termcomInjectMouse(x, y, 'left');
+	else if (e.button === 2) termcomInjectMouse(x, y, 'right');
+});
+
+canvas.addEventListener('contextmenu', e => e.preventDefault());
+
+canvas.addEventListener('wheel', e => {
+	e.preventDefault();
+	const [x, y] = cellPos(e);
+	termcomInjectMouse(x, y, e.deltaY < 0 ? 'scroll_up' : 'scroll_down');
+}, { passive: false });
+
+window.addEventListener('resize', resize);
+resize();
+</script>
+</body>
+</html>

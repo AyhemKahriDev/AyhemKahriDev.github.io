@@ -1,0 +1,37 @@
+diff --git a/tents.c b/tents.c
+index e0d5356..76ff012 100644
+--- a/tents.c
++++ b/tents.c
+@@ -2303,7 +2303,7 @@ static int *find_errors(const game_state *state, char *grid)
+ static void draw_err_adj(drawing *dr, game_drawstate *ds, int x, int y)
+ {
+     int coords[8];
+-    int yext, xext;
++    int yext, xext, dot, gap;
+ 
+     /*
+      * Draw a diamond.
+@@ -2326,9 +2326,21 @@ static void draw_err_adj(drawing *dr, game_drawstate *ds, int x, int y)
+      */
+     xext = TILESIZE/16;
+     yext = TILESIZE*2/5 - (xext*2+2);
+-    draw_rect(dr, x-xext, y-yext, xext*2+1, yext*2+1 - (xext*3),
++    /*
++     * The dot's height and the gap above it are both scaled from xext, which
++     * integer-divides to 0 below TILESIZE 16: the dot rect gets height 0 and
++     * nothing trims the bar, so the glyph degenerates into one solid stroke and
++     * stops reading as an exclamation mark. Floor both at the smallest shape
++     * that still has a dot and a gap. No effect from TILESIZE 16 up, where
++     * dot == xext*2 and gap == xext*3 already exceed these floors.
++     */
++    dot = xext*2;
++    if (dot < 1) dot = 1;
++    gap = xext*3;
++    if (gap < dot+1) gap = dot+1;
++    draw_rect(dr, x-xext, y-yext, xext*2+1, yext*2+1 - gap,
+ 	      COL_ERRTEXT);
+-    draw_rect(dr, x-xext, y+yext-xext*2+1, xext*2+1, xext*2, COL_ERRTEXT);
++    draw_rect(dr, x-xext, y+yext-dot+1, xext*2+1, dot, COL_ERRTEXT);
+ }
+ 
+ static void draw_tile(drawing *dr, game_drawstate *ds,

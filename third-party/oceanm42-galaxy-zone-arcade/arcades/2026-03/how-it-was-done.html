@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Was Done — Sal's Galaxy Zone Arcade</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/crt-effects.css">
+  <style>
+    .sal-ascii {
+      display: block;
+      font-family: "Courier New", "Courier", monospace;
+      font-size: 0.42rem;
+      line-height: 1.1;
+      color: #39ff14;
+      text-shadow: 0 0 6px rgba(57, 255, 20, 0.4), 0 0 20px rgba(57, 255, 20, 0.15);
+      text-align: left;
+      white-space: pre;
+      overflow-x: auto;
+      padding: 0.5rem 0;
+      margin: 0 auto 0.5rem;
+      width: fit-content;
+    }
+
+    @media (max-width: 600px) {
+      .sal-ascii { font-size: 0.32rem; }
+    }
+
+    .game-stories-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75rem;
+      margin: var(--space-lg) 0;
+    }
+
+    @media (max-width: 500px) {
+      .game-stories-grid { grid-template-columns: 1fr; }
+    }
+
+    .game-stories-grid a {
+      display: block;
+      padding: 0.6rem 0.8rem;
+      border: 1px solid rgba(0, 255, 255, 0.12);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.02);
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 6px rgba(0, 255, 255, 0.3);
+      transition: background 200ms ease, border-color 200ms ease;
+    }
+
+    .game-stories-grid a:hover {
+      background: rgba(0, 255, 255, 0.06);
+      border-color: var(--neon-cyan);
+      color: #fff;
+    }
+
+    .game-stories-grid a .story-hook {
+      display: block;
+      font-size: 0.75rem;
+      color: #777;
+      margin-top: 0.2rem;
+      text-shadow: none;
+    }
+
+    .about-content {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: var(--space-md) var(--space-md) var(--space-2xl);
+    }
+
+    .about-content h2 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 10px rgba(0, 255, 255, 0.5), 0 0 30px rgba(0, 255, 255, 0.2);
+      margin-top: var(--space-2xl);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-sm);
+      border-bottom: 1px solid var(--neon-cyan-dim);
+    }
+
+    .about-content h3 {
+      font-family: var(--font-display);
+      font-size: 1.1rem;
+      color: var(--neon-magenta);
+      text-shadow: 0 0 8px rgba(255, 0, 255, 0.4);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-sm);
+    }
+
+    .about-content p {
+      font-size: 0.95rem;
+      line-height: 1.85;
+      color: #c8c8d0;
+      margin-bottom: var(--space-md);
+    }
+
+    .about-content .game-group-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      color: var(--neon-hotpink);
+      text-shadow: 0 0 10px rgba(255, 45, 149, 0.4);
+      margin-top: var(--space-xl);
+      margin-bottom: var(--space-sm);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .about-content .game-entry {
+      margin-bottom: var(--space-lg);
+      padding-left: var(--space-md);
+      border-left: 2px solid var(--neon-cyan-dim);
+    }
+
+    .about-content .game-entry h4 {
+      font-family: var(--font-display);
+      font-size: 0.95rem;
+      color: var(--neon-green);
+      text-shadow: 0 0 6px rgba(57, 255, 20, 0.3);
+      margin-bottom: var(--space-xs);
+    }
+
+    .about-content .game-entry p {
+      font-size: 0.9rem;
+      line-height: 1.8;
+      color: #b0b0b8;
+    }
+
+    .about-content .cursed-section {
+      background: rgba(255, 0, 0, 0.03);
+      border: 1px solid rgba(255, 50, 50, 0.15);
+      border-radius: 8px;
+      padding: var(--space-lg);
+      margin-top: var(--space-lg);
+    }
+
+    .about-content .cursed-section h2 {
+      color: #ff3333;
+      text-shadow: 0 0 10px rgba(255, 50, 50, 0.6), 0 0 30px rgba(255, 0, 0, 0.3);
+      border-bottom-color: rgba(255, 50, 50, 0.2);
+    }
+
+    .about-content .easter-egg-hint {
+      font-style: italic;
+      color: #888;
+      font-size: 0.85rem;
+    }
+
+    .about-footer {
+      max-width: 700px;
+      margin: var(--space-2xl) auto var(--space-lg);
+      text-align: center;
+      padding-top: var(--space-lg);
+      border-top: 1px solid var(--neon-cyan-dim);
+    }
+
+    .about-footer p {
+      font-family: var(--font-display);
+      font-size: 0.85rem;
+      color: #888;
+      margin-bottom: var(--space-sm);
+    }
+
+    .about-footer a {
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <header class="site-header" style="padding-bottom: 0;">
+    <h1 class="neon-sign" style="padding: 1rem 0.5rem 0.5rem; font-size: clamp(1.5rem, 5vw, 2.5rem);">
+      <span class="neon-letter">H</span><span class="neon-letter">O</span><span class="neon-letter">W</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">I</span><span class="neon-letter">T</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">W</span><span class="neon-letter">A</span><span class="neon-letter">S</span>
+      <span class="neon-letter"> </span>
+      <span class="neon-letter">D</span><span class="neon-letter">O</span><span class="neon-letter">N</span><span class="neon-letter">E</span>
+    </h1>
+  </header>
+
+  <nav class="nav-bar">
+    <a href="index.html" class="nav-link">Back to Arcade</a>
+    <a href="achievements.html" class="nav-link">Achievements</a>
+  </nav>
+
+  <pre class="sal-ascii">
+                          _______________________
+                         /                       \
+                        |  ┌───────────────────┐  |
+                        |  │  * GALAXY ZONE *  │  |
+                        |  │    HIGH SCORES    │  |
+                        |  │                   │  |
+                        |  │  1. SAL  999999   │  |
+                        |  │  2. DAN  845200   │  |
+                        |  │  3. SOF  723100   │  |
+                        |  └───────────────────┘  |
+                        |    ____            __    |
+                        |   / __ \          (  )   |
+                        |__/____\__________(__)___|
+                           /    \
+                          /      \
+              ___________/        \___________
+             /                                \
+            /  ┌──┐                    ┌──┐    \
+           /   │$$│   ,─────────.      │$$│     \
+          │    └──┘  / \_______/ \     └──┘      │
+          │         │  (o)   (o)  │              │
+          │          \     ∇     /               │
+          │    ╔══╗   \  ═════  /    ┌─┐         │
+          │    ║  ║    `───────'     │ │  ╔═══╗  │
+          │    ║  ║   /    |    \    │ │  ║   ║  │
+          │    ╚══╝  / ┌───┴───┐ \  └─┘  ╚═══╝  │
+          │         /  │ PIXEL │  \               │
+          │        │   │ POWER │   │              │
+          │        │   └───────┘   │              │
+          │        │   ┌─┐   ┌─┐  │              │
+          │         \  │ │   │ │  /               │
+          │          \ └─┘   └─┘ /                │
+           \          `─────────'                /
+            \            │   │                  /
+             \       ════╧═══╧════             /
+              \_______/         \______________/
+
+             SAL "PIXEL" MARTINEZ — EST. 1982
+         "Every cabinet has a story. Here are mine."
+  </pre>
+
+  <main class="about-content">
+
+    <!-- ─── The Story ──────────────────────────────────────────────────── -->
+    <h2>The Story</h2>
+
+    <p>
+      My name's Sal Martinez. Most people around here used to call me "Pixel" — a nickname I
+      picked up because I could spot a single dead pixel on any monitor in the building. I opened
+      Galaxy Zone Arcade in the summer of 1982, in a little strip mall on Sherman Way in the
+      San Fernando Valley. It was between a laundromat and a sandwich shop. The sign out front
+      buzzed so loud the landlord complained twice a month. I loved that sign.
+    </p>
+
+    <p>
+      Those first couple years were something else. Lines around the block on Saturday mornings.
+      Kids stacking quarters on the screen bezels to hold their place. You'd hear arguments about
+      whether the left joystick on the Defender cabinet pulled slightly to the right — it did, by
+      the way — and you'd see friendships form between kids who had nothing in common except they
+      both wanted to beat level 16. That was the golden age. Not just for the industry, but for me
+      personally. I was 24 years old and I ran the best arcade in the Valley. I believed that with
+      my whole chest.
+    </p>
+
+    <p>
+      Then the crash hit. '83 was rough. The home console market collapsed and it took the arcades
+      down with it. People stopped coming in. Not all at once — it was slow, like a leak you don't
+      notice until the floor's wet. The Atari kids got older. The new kids had Nintendos at home.
+      I'd walk in Monday morning and the coin boxes would be half what they were the year before.
+      I watched other arcades close. Dave's Fun Palace on Ventura. Star Station off Sepulveda.
+      One by one, the lights went out.
+    </p>
+
+    <p>
+      I held on longer than most. Kept updating the lineup, brought in fighters when Street Fighter
+      II hit, got a Dance Dance Revolution cabinet in '99 that kept the lights on for another two
+      years. But the math stopped working. On March 15th, 2003, I turned the sign off for the
+      last time. I didn't sell the cabinets. I couldn't. I rented a storage unit and put every
+      single one of them in there. Fourteen cabinets, wrapped in moving blankets, sitting in the
+      dark. I told myself it was temporary.
+    </p>
+
+    <p>
+      Twenty years later, those cabinets are still in storage. But the arcade? The arcade is here
+      now. I decided that if I couldn't keep the physical place alive, I'd rebuild it as something
+      that couldn't be shut down by a landlord or killed by a market crash. Every game in this
+      digital arcade is inspired by the cabinets I grew up with, the ones I watched thousands of
+      kids fall in love with. This is Galaxy Zone, rebuilt from memory and stubbornness.
+    </p>
+
+    <!-- ─── The Games ──────────────────────────────────────────────────── -->
+    <h2>The Games</h2>
+
+    <p>
+      Every cabinet in the original arcade had a story. Some were there from day one. Some
+      replaced machines that stopped earning. A few were my personal favorites that I kept
+      around even when they didn't pull their weight in quarters. Here they all are.
+    </p>
+
+    <!-- The Classics -->
+    <h3 class="game-group-title">The Classics</h3>
+
+    <div class="game-entry">
+      <h4>Pac-Chase</h4>
+      <p>
+        This was the first cabinet I ever bought. I drove to a distributor in Torrance with
+        $2,400 in cash and brought it back in the bed of my truck. It paid for itself in six
+        weeks. I've seen grown men argue about the best route through level three. There's
+        something pure about a game where you're just eating dots and running from ghosts.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Space Defenders</h4>
+      <p>
+        The alien invasion game. Rows of enemies marching down, you sliding back and forth,
+        praying for the mothership. My Space Defenders cabinet had a scorch mark on the side
+        from where a kid tried to "fix" the wiring with a lighter. It still worked fine.
+        That cabinet taught me that great game design is indestructible.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Asteroid Blaster</h4>
+      <p>
+        Vector graphics on a black screen. There's an elegance to it that nothing with fancy
+        sprites ever matched. The regulars used to call the tiny asteroids "dust" and the
+        big ones "boulders." Getting a boulder on your first life was considered bad luck.
+        Getting three was considered funny.
+      </p>
+    </div>
+
+    <!-- The Action Heroes -->
+    <h3 class="game-group-title">The Action Heroes</h3>
+
+    <div class="game-entry">
+      <h4>Barrel Jump</h4>
+      <p>
+        The climbing game. Everyone's first platformer. I had a regular named Danny who
+        could get to the kill screen. He'd come in every Tuesday after school, put in one
+        quarter, and play for 45 minutes. I never charged him for the second hour of
+        parking. Some things you just respect.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Road Hopper</h4>
+      <p>
+        Getting a frog across traffic and a river. Sounds simple until you're dodging a
+        semi truck and a snake at the same time. This was the great equalizer — five-year-olds
+        and forty-year-olds were equally bad at it. I loved watching people lean their whole
+        body trying to make the frog jump further.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Knight Flyer</h4>
+      <p>
+        Side-scrolling fantasy with a knight on a winged horse. This one came in later, maybe
+        '86 or '87. It was gorgeous for its time — layered backgrounds, big sprites. The
+        kids who loved D&amp;D loved this one. It had this dragon boss at the end of every
+        fourth level that breathed fire in a pattern you had to memorize. Beautiful game.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Star Guardian</h4>
+      <p>
+        My personal favorite of the action games. You're a lone ship defending a fleet of
+        transport vessels. The twist is you can't just shoot everything — you have to
+        prioritize. Save the transports or chase the high score? That tension is what makes
+        a great arcade game. I've never been able to save all of them past wave eight.
+      </p>
+    </div>
+
+    <!-- The Shooters -->
+    <h3 class="game-group-title">The Shooters</h3>
+
+    <div class="game-entry">
+      <h4>Galaxy Raiders</h4>
+      <p>
+        The swooping aliens game. They peel off in formation and dive-bomb you. The sound
+        effects on this one were iconic — that rising pitch when a squadron breaks formation
+        gave you about half a second of warning. My Galaxy Raiders cabinet was the loudest
+        machine in the building. I never turned it down.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Bug Shooter</h4>
+      <p>
+        Centipedes and spiders and scorpions, oh my. This was the trackball game, and
+        keeping that trackball clean was the bane of my existence. Every two weeks I'd
+        open it up and find candy residue, eraser shavings, and once a dime someone had
+        somehow jammed in there. Worth it though. The gameplay was relentless.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>City Defense</h4>
+      <p>
+        Missiles raining down on your cities. You've got three bases and a finite number
+        of shots. This was the only game in the arcade that made people feel genuinely
+        stressed. I watched a guy in a business suit play this for an hour straight during
+        lunch, loosening his tie a little more with each wave. He came back the next day.
+      </p>
+    </div>
+
+    <!-- The Puzzle & Strategy -->
+    <h3 class="game-group-title">The Puzzle &amp; Strategy</h3>
+
+    <div class="game-entry">
+      <h4>Brick Breaker</h4>
+      <p>
+        Paddle and ball, breaking bricks. The simplest concept in the arcade and somehow
+        one of the most addictive. I had to replace the paddle knob on this cabinet three
+        times because people would grip it so hard during the later levels. The power-ups
+        were the key — watching someone get the multi-ball and just light up was pure joy.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Retro Tennis</h4>
+      <p>
+        Two paddles, one ball. Where it all began. I put this one in as a tribute to Pong,
+        and people who remembered the original would get this far-away look in their eyes.
+        It's not fancy. It doesn't need to be. Sometimes the simplest games have the
+        longest staying power.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Neon Cycles</h4>
+      <p>
+        Light trails and sharp turns. Two players trying to box each other in. This was the
+        best head-to-head game in the arcade, bar none. I've seen friendships tested over
+        this cabinet. One kid accused another of screen-looking — on an arcade cabinet. They
+        were sharing the same screen. That's how intense it got.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Tunnel Hero</h4>
+      <p>
+        Flying through an endless cave, trying not to hit the walls. Sounds easy. It is not
+        easy. The tunnel gets narrower and the speed picks up, and before you know it you're
+        holding your breath like you're actually in the cave. This was a late addition to the
+        arcade but it quickly became one of the most-played cabinets.
+      </p>
+    </div>
+
+    <div class="game-entry">
+      <h4>Cube Hopper</h4>
+      <p>
+        The pyramid of cubes. You hop around changing colors while dodging everything the game
+        throws at you. This one was a sleeper hit — nobody expected much from a game about
+        hopping on cubes, but it had this perfect difficulty curve that kept people coming back.
+        Clean design, no clutter, just pure pattern recognition and reflexes.
+      </p>
+    </div>
+
+    <!-- ─── The Cursed Cabinet ─────────────────────────────────────────── -->
+    <div class="cursed-section">
+      <h2>The Cursed Cabinet</h2>
+
+      <p>
+        I need to tell you about the sixteenth machine. I had a Robotron cabinet that I
+        bought used from an arcade in Pasadena that was going under. The guy who sold it
+        to me said "good luck" in a way that should've been a warning.
+      </p>
+
+      <p>
+        The ROM had glitches I could never track down. Sprites would occasionally render
+        wrong — an enemy would flicker into a shape that wasn't in the sprite sheet.
+        The monitor had this subtle flicker that no amount of adjustment could fix. And the
+        left joystick? It drifted. Not a lot. Just enough to make you question whether
+        you'd actually pushed it or whether the game was pushing back.
+      </p>
+
+      <p>
+        I should have pulled it off the floor. Any reasonable operator would have. But
+        the kids loved it. They said the glitches made it harder, and harder meant more
+        bragging rights. It was the most intense game in the arcade — twin-stick chaos
+        with a machine that seemed to have a mind of its own. The high score board on
+        that cabinet was a badge of honor.
+      </p>
+
+      <p>
+        I put an "OUT OF ORDER" sign on it more times than I can count. Someone always
+        peeled it off. When I built this digital arcade, I couldn't leave it out. It's
+        here. Somewhere. If you find it... well, some things are worth the hunt. The
+        glitches made the trip over to the digital version too, because it wouldn't feel
+        right without them.
+      </p>
+    </div>
+
+    <!-- ─── The Rebuild ────────────────────────────────────────────────── -->
+    <h2>The Rebuild</h2>
+
+    <p>
+      When I decided to bring Galaxy Zone back, I had a choice. I could've used some
+      modern game engine, some framework with a name I can't pronounce, and had the
+      whole thing running in a week. But that didn't feel right. The original arcade
+      was built by hand — I wired those cabinets, I replaced those monitors, I fixed
+      every stuck button with a screwdriver and patience. The digital version should
+      be the same way.
+    </p>
+
+    <p>
+      No frameworks. No fancy tools. Just code, like the old days. HTML, CSS, and
+      JavaScript — the building blocks. Every game is written from scratch. Every
+      pixel is placed on purpose. It's not the fastest way to build something, but
+      it's the right way for this project. When you play these games, you're not
+      running someone else's engine. You're playing something I built by hand, the
+      same way I built the arcade.
+    </p>
+
+    <p>
+      I wanted to keep the spirit of the original place. In a real arcade, you put
+      in a quarter and you've got one shot. Your score goes on the board for everyone
+      to see. That competition, that public accountability — that's what made arcades
+      special. So the digital version has high scores. It has achievements. It has
+      that same feeling of "one more quarter" that kept kids coming back after school
+      every day.
+    </p>
+
+    <p class="easter-egg-hint">
+      And if you're the type who looks under the hood, who views source and pokes
+      around in the code... there might be a page about how the code works too.
+      Old habits die hard, and I always did like leaving notes for the curious.
+    </p>
+
+    <!-- ─── Game Stories ─────────────────────────────────────────────── -->
+    <h2>Game Stories</h2>
+
+    <p>
+      Every cabinet had a history before it ever hit the arcade floor. Where I
+      found it, what was wrong with it, and the people who made it special. Click
+      any game below to read its story.
+    </p>
+
+    <div class="game-stories-grid">
+      <a href="games/pac-chase/how-i-did-it.html">
+        Pac-Chase
+        <span class="story-hook">The first cabinet, bought at 3 AM</span>
+      </a>
+      <a href="games/space-defenders/how-i-did-it.html">
+        Space Defenders
+        <span class="story-hook">Paid for itself in two weeks</span>
+      </a>
+      <a href="games/asteroid-blaster/how-i-did-it.html">
+        Asteroid Blaster
+        <span class="story-hook">Sal's unbeaten high score</span>
+      </a>
+      <a href="games/barrel-jump/how-i-did-it.html">
+        Barrel Jump
+        <span class="story-hook">The mysterious love letter</span>
+      </a>
+      <a href="games/road-hopper/how-i-did-it.html">
+        Road Hopper
+        <span class="story-hook">Lines around the block</span>
+      </a>
+      <a href="games/galaxy-raiders/how-i-did-it.html">
+        Galaxy Raiders
+        <span class="story-hook">Won in a poker game</span>
+      </a>
+      <a href="games/brick-breaker/how-i-did-it.html">
+        Brick Breaker
+        <span class="story-hook">Survived the great flood</span>
+      </a>
+      <a href="games/retro-tennis/how-i-did-it.html">
+        Retro Tennis
+        <span class="story-hook">Built from a kit in the garage</span>
+      </a>
+      <a href="games/bug-shooter/how-i-did-it.html">
+        Bug Shooter
+        <span class="story-hook">Infested with actual bugs</span>
+      </a>
+      <a href="games/city-defense/how-i-did-it.html">
+        City Defense
+        <span class="story-hook">The Cold War cabinet</span>
+      </a>
+      <a href="games/tunnel-hero/how-i-did-it.html">
+        Tunnel Hero
+        <span class="story-hook">Sofia's favorite hiding spot</span>
+      </a>
+      <a href="games/cube-hopper/how-i-did-it.html">
+        Cube Hopper
+        <span class="story-hook">Made no money, stayed anyway</span>
+      </a>
+      <a href="games/knight-flyer/how-i-did-it.html">
+        Knight Flyer
+        <span class="story-hook">The jousting incident of '87</span>
+      </a>
+      <a href="games/star-guardian/how-i-did-it.html">
+        Star Guardian
+        <span class="story-hook">CRT replacement from Tokyo</span>
+      </a>
+      <a href="games/neon-cycles/how-i-did-it.html">
+        Neon Cycles
+        <span class="story-hook">The last cabinet before closing</span>
+      </a>
+      <a href="games/robotron/how-i-did-it.html">
+        Robotron
+        <span class="story-hook">The Cursed Cabinet</span>
+      </a>
+    </div>
+
+  </main>
+
+  <footer class="about-footer">
+    <p>Galaxy Zone Arcade — Keeping the quarters alive since 1982</p>
+    <a href="index.html">Back to the Arcade</a>
+  </footer>
+
+  <script>
+    // Simple starfield background
+    const canvas = document.getElementById('starfield');
+    const ctx = canvas.getContext('2d');
+    const stars = [];
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (let i = 0; i < 150; i++) {
+      const layer = i < 60 ? 0 : i < 120 ? 1 : 2;
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        speed: [0.15, 0.4, 0.8][layer],
+        size: [1, 1.5, 2.2][layer] * (0.7 + Math.random() * 0.6),
+        alpha: [0.4, 0.6, 1][layer] * (0.6 + Math.random() * 0.4),
+      });
+    }
+
+    let last = 0;
+    function loop(now) {
+      if (document.hidden) { requestAnimationFrame(loop); return; }
+      const dt = last ? Math.min(now - last, 50) / 16.67 : 1;
+      last = now;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      for (const s of stars) {
+        s.y += s.speed * dt;
+        if (s.y > canvas.height) { s.y = 0; s.x = Math.random() * canvas.width; }
+        ctx.globalAlpha = s.alpha;
+        ctx.fillStyle = '#fff';
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.globalAlpha = 1;
+      requestAnimationFrame(loop);
+    }
+    requestAnimationFrame(loop);
+  </script>
+
+</body>
+</html>

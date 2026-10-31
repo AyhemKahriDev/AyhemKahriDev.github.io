@@ -1,0 +1,33 @@
+		:root,html{
+			height: 100%;
+		}
+
+		body{
+			margin: 0px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: auto;
+			height: 100%;
+			background: #000;
+		}
+
+		@keyframes backgroundzen{
+			50%{box-shadow: rgba(255, 0, 255, 0.5) 2px 0px 2px, rgba(0, 255, 191, 0.5) -2px 0px 2px, rgb(49, 122, 255) 0px 0px 10px,0px 10px 100px #663399;}
+		}
+
+		@-webkit-keyframes backgroundzen{
+			50%{box-shadow: rgba(255, 0, 255, 0.5) 2px 0px 2px, rgba(0, 255, 191, 0.5) -2px 0px 2px, rgb(49, 122, 255) 0px 0px 10px,0px 10px 100px #663399;}
+		}
+
+		#app{
+			image-rendering: pixelated;
+			max-width: 500px;
+			max-height: 500px;
+			cursor: none;
+			filter: contrast(200%) sepia(22%);
+			animation: 10s backgroundzen infinite steps(28); 
+			-webkit-animation: 10s backgroundzen infinite steps(28);
+			box-shadow: rgba(255, 0, 255, 0.5) 2px 0px 2px, rgba(0, 255, 191, 0.5) -2px 0px 2px, rgb(49, 122, 255) 0px 0px 10px,0px 5px 20px purple;
+			border-radius: 1rem;
+		}

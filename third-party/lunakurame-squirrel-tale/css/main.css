@@ -1,0 +1,111 @@
+body, div, p, canvas {
+	border: 0;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #111;
+}
+
+canvas {
+	image-rendering: optimizeSpeed;             /* Older versions of FF          */
+	image-rendering: -moz-crisp-edges;          /* FF 6.0+                       */
+	image-rendering: -webkit-optimize-contrast; /* Safari                        */
+	image-rendering: -o-crisp-edges;            /* OS X & Windows Opera (12.02+) */
+	image-rendering: pixelated;                 /* Awesome future-browsers       */
+	-ms-interpolation-mode: nearest-neighbor;   /* IE                            */
+}
+
+canvas, #black-screen {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+}
+
+#map {
+	z-index: 0;
+}
+
+#entity_under {
+	z-index: 90;
+}
+
+#player {
+	z-index: 100;
+}
+
+#entity_over {
+	z-index: 110;
+}
+
+#hud {
+	z-index: 1000;
+}
+
+#black-screen {
+	z-index: 100000;
+	display: flex;
+	background-color: #000;
+	transition: all .3s ease;
+}
+
+#black-screen > div {
+	margin: auto;
+	transition: all .3s ease;
+}
+
+#black-screen img {
+	display: block;
+	margin: auto;
+}
+
+#black-screen p {
+	padding-top: 20px;
+	font-family: Verdana, sans-serif;
+	color: #fff;
+}
+
+#black-screen .controls {
+	padding-top: 20px;
+	font-family: Verdana, sans-serif;
+	color: #fff;
+}
+
+#black-screen .controls h1 {
+	text-align: center;
+}
+
+#black-screen .controls td {
+	padding: 5px 8px;
+	width: 20vw;
+}
+#black-screen .controls td:first-of-type {
+	text-align: right;
+}
+
+#black-screen .loading-icon.rotating {
+	animation: loading-icon-rotate 1s ease-in-out forwards infinite;
+}
+#black-screen .loading-icon.failed {
+	animation: loading-icon-failed .5s ease-in-out forwards 1;
+}
+
+.hidden {
+	visibility: hidden;
+	opacity: 0;
+}
+
+@keyframes loading-icon-rotate {
+	to {
+		transform: rotate(180deg);
+	}
+}
+@keyframes loading-icon-failed {
+	from {
+		transform: rotate(-90deg);
+	}
+	to {
+		transform: rotate(0deg);
+	}
+}

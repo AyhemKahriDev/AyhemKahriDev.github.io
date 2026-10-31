@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Touchline — Arcade Soccer</title>
+<meta name="description" content="A fast arcade soccer game that runs in any browser. Six a side, two halves, no downloads.">
+<meta name="theme-color" content="#0d1117">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23fbfbfb'/><circle cx='16' cy='16' r='4' fill='%23181a1e'/><circle cx='16' cy='4.5' r='2.6' fill='%23181a1e'/><circle cx='16' cy='27.5' r='2.6' fill='%23181a1e'/><circle cx='5' cy='11' r='2.6' fill='%23181a1e'/><circle cx='27' cy='11' r='2.6' fill='%23181a1e'/><circle cx='7' cy='24' r='2.6' fill='%23181a1e'/><circle cx='25' cy='24' r='2.6' fill='%23181a1e'/></svg>">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="app">
+  <div id="stage">
+    <canvas id="pitch" aria-label="Soccer pitch" role="img"></canvas>
+
+    <div id="hud" aria-live="off">
+      <div class="board">
+        <div class="side home">
+          <span class="chip" data-chip="home"></span>
+          <span class="abbr" data-abbr="home">HOM</span>
+        </div>
+        <div class="score"><span data-score="home">0</span><i>–</i><span data-score="away">0</span></div>
+        <div class="side away">
+          <span class="abbr" data-abbr="away">AWA</span>
+          <span class="chip" data-chip="away"></span>
+        </div>
+        <div class="clock"><span data-clock>00:00</span><em data-half>1st half</em></div>
+      </div>
+      <div class="possession"><i data-poss-home style="width:50%"></i></div>
+    </div>
+
+    <div id="banner" hidden><strong data-banner-title></strong><span data-banner-sub></span></div>
+
+    <div id="playerbar">
+      <span class="who"><b data-player-num>9</b><span data-player-name>—</span></span>
+      <span class="stamina"><i data-stamina style="width:100%"></i></span>
+      <span class="charge" data-charge-wrap hidden><i data-charge style="width:0%"></i></span>
+    </div>
+
+    <div id="touch" hidden>
+      <div class="stick" data-stick><span class="knob"></span></div>
+      <div class="buttons">
+        <button class="tbtn pass" data-tbtn="pass" type="button">PASS<small>/ switch</small></button>
+        <button class="tbtn shoot" data-tbtn="shoot" type="button">SHOOT<small>/ tackle</small></button>
+      </div>
+    </div>
+
+    <button id="pausebtn" type="button" title="Pause (Esc)" aria-label="Pause">II</button>
+
+    <!-- ------------------------------------------------------- menu ------ -->
+    <section id="menu" class="overlay">
+      <div class="card">
+        <h1>Touchline<span>arcade soccer</span></h1>
+
+        <div class="row">
+          <label>Your team <b data-teamname="home"></b></label>
+          <div class="teams" data-teams="home"></div>
+        </div>
+        <div class="row">
+          <label>Opponent <b data-teamname="away"></b></label>
+          <div class="teams" data-teams="away"></div>
+        </div>
+        <div class="row split">
+          <div>
+            <label>Difficulty</label>
+            <div class="segmented" data-seg="difficulty">
+              <button type="button" data-value="easy">Easy</button>
+              <button type="button" data-value="normal" class="on">Normal</button>
+              <button type="button" data-value="hard">Hard</button>
+            </div>
+          </div>
+          <div>
+            <label>Half length</label>
+            <div class="segmented" data-seg="half">
+              <button type="button" data-value="60">1:00</button>
+              <button type="button" data-value="100" class="on">1:40</button>
+              <button type="button" data-value="150">2:30</button>
+            </div>
+          </div>
+        </div>
+
+        <button id="kickoff" class="primary" type="button">Kick off</button>
+        <button id="spectate" class="ghost" type="button">Watch the CPUs play</button>
+
+        <details class="help">
+          <summary>Controls</summary>
+          <ul>
+            <li><kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> or <kbd>←</kbd><kbd>↑</kbd><kbd>↓</kbd><kbd>→</kbd> — run</li>
+            <li><kbd>Space</kbd> — hold to charge a shot; without the ball, challenge for it</li>
+            <li><kbd>F</kbd> — pass; without the ball, switch player</li>
+            <li><kbd>Shift</kbd> — sprint (watch your stamina)</li>
+            <li><kbd>Esc</kbd> pause · <kbd>M</kbd> mute</li>
+          </ul>
+          <p>You always control the highlighted player, and control follows the ball.
+             Touchlines rebound — indoor rules, so the ball is never out of play.</p>
+        </details>
+      </div>
+    </section>
+
+    <!-- ------------------------------------------------------ pause ------ -->
+    <section id="pause" class="overlay" hidden>
+      <div class="card small">
+        <h2>Paused</h2>
+        <button class="primary" data-act="resume" type="button">Resume</button>
+        <button class="ghost" data-act="mute" type="button">Sound: on</button>
+        <button class="ghost" data-act="quit" type="button">Quit to menu</button>
+      </div>
+    </section>
+
+    <!-- --------------------------------------------------- full time ----- -->
+    <section id="fulltime" class="overlay" hidden>
+      <div class="card small">
+        <h2 data-ft-title>Full time</h2>
+        <p class="ftscore" data-ft-score>0 – 0</p>
+        <ul class="scorers" data-ft-scorers></ul>
+        <button class="primary" data-act="rematch" type="button">Rematch</button>
+        <button class="ghost" data-act="quit" type="button">Back to menu</button>
+      </div>
+    </section>
+  </div>
+</div>
+<script type="module" src="js/main.js"></script>
+</body>
+</html>

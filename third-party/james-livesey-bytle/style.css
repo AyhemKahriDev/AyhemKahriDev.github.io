@@ -1,0 +1,215 @@
+:root {
+    --correct: #6aaa64;
+    --correctText: white;
+    --almost: #c9b458;
+    --almostText: white;
+    --notQuite: #787c7e;
+    --notQuiteText: white;
+    --notYet: #d8d8d8;
+    --notYetText: black;
+}
+
+* {
+    font-family: system-ui, sans-serif;
+    box-sizing: border-box;
+}
+
+a {
+    color: var(--correct);
+}
+
+hr {
+    height: 0.2rem;
+    background-color: var(--notYet);
+    border: none;
+}
+
+details {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+details summary {
+    cursor: pointer;
+}
+
+main {
+    width: 100%;
+    max-width: 500px;
+    margin: auto;
+    padding-bottom: 10px;
+}
+
+bytle-board {
+    display: block;
+    width: 100%;
+    margin: auto;
+}
+
+bytle-row {
+    display: flex;
+}
+
+bytle-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 40px;
+    margin: 3px;
+    color: transparent;
+    border: 2px solid var(--notYet);
+    transform: rotateX(180deg);
+}
+
+bytle-cell[bytle-state="correct"], bytle-cell[bytle-state="almost"], bytle-cell[bytle-state="notQuite"] {
+    transform: rotateX(360deg);
+    transition: 1s transform, 0.01s background-color ease 0.3s,  0.01s color ease 0.3s, 0.01s border ease 0.3s;
+}
+
+bytle-cell[bytle-state="correct"] {
+    background-color: var(--correct);
+    color: var(--correctText);
+    border: 2px solid transparent;
+}
+
+bytle-cell[bytle-state="almost"] {
+    background-color: var(--almost);
+    color: var(--almostText);
+    border: 2px solid transparent;
+}
+
+bytle-cell[bytle-state="notQuite"] {
+    background-color: var(--notQuite);
+    color: var(--notQuiteText);
+    border: 2px solid transparent;
+}
+
+#bytleNumber {
+    font-size: 0.5em;
+    color: var(--notQuite);
+}
+
+#options {
+    float: right;
+}
+
+#options a {
+    margin: -0.2em;
+    margin-top: -0.4em;
+    padding: 0.2em;
+    padding-top: 0.4em;
+    color: black;
+    text-decoration: none;
+}
+
+#options a:hover {
+    background-color: var(--notYet);
+}
+
+#options img {
+    position: relative;
+    top: 0.1em;
+    height: 1em;
+}
+
+#entry {
+    width: 100%;
+    margin-top: 5vh;
+    background-color: transparent;
+    color: inherit;
+    font-size: 5vh;
+    text-align: center;
+    border: none;
+    outline: none;
+}
+
+#entry:focus::placeholder {
+    color: transparent;
+}
+
+main[bytle-state~="finished"] #entry {
+    display: none;
+}
+
+main[bytle-state~="playing"] #instructions, main[bytle-state~="finished"] #instructions {
+    display: none;
+}
+
+#result {
+    text-align: center;
+}
+
+main:not([bytle-state~="finished"]) #result {
+    display: none;
+}
+
+#streakLabel {
+    color: var(--almost);
+    font-size: 1.2em;
+}
+
+main[bytle-state~="lost"] #streakLabel {
+    display: none;
+}
+
+#streakLabel p {
+    margin: 0;
+}
+
+main[bytle-state~="lost"] #shareButton {
+    display: none;
+}
+
+button {
+    background-color: var(--correct);
+    color: var(--correctText);
+    font-size: 1rem;
+    padding: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border: none;
+    cursor: pointer;
+}
+
+#shareButton {
+    margin-top: 0.5rem;
+}
+
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+#toast {
+    position: fixed;
+    top: 4rem;
+    left: 0;
+    right: 0;
+    width: -moz-fit-content;
+    width: fit-content;
+    max-width: 80vw;
+    margin: auto;
+    padding: 0.5rem;
+    background-color: var(--notQuite);
+    color: var(--notQuiteText);
+    font-size: 1.2rem;
+    opacity: 0;
+    box-shadow: 0px 5px 20px -5px black;
+    pointer-events: none;
+    transition: 0.5s opacity;
+}
+
+#toast.show {
+    opacity: 1;
+}
+
+#badges {
+    position: fixed;
+    bottom: 0;
+    right: 5px;
+}

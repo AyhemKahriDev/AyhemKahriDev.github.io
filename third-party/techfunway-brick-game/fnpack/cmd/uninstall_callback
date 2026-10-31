@@ -1,0 +1,11 @@
+#!/bin/bash
+
+### This script is called after the user uninstalls the application.
+### wizard_delete_data is collected by wizard/uninstall ("true" = delete runtime data).
+
+# 用户选择删除时，清空应用数据目录（运行日志、端口配置）
+if [ "${wizard_delete_data}" = "true" ] && [ -n "${TRIM_PKGVAR}" ] && [ -d "${TRIM_PKGVAR}" ]; then
+    find "${TRIM_PKGVAR}" -mindepth 1 -delete 2>/dev/null
+fi
+
+exit 0

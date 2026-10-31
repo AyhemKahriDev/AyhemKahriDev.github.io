@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>2048 — Mini Game Arcade</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="pb-body game-page">
+  <main class="wrap">
+    <header class="hero small">
+      <h1 class="brand">2048</h1>
+      <p class="lead">Slide tiles to combine numbers. Reach 2048! Enter your name and start!</p>
+    </header>
+
+    <section class="game-grid">
+      <div class="card game-card right-card">
+        <label class="field">
+          <span class="label-text">Your name</span>
+          <input id="playerName" type="text" maxlength="32" placeholder="Your name..." />
+        </label>
+
+        <div id="gameBoard" class="tile-board">
+          <!-- Tiles will be generated here -->
+        </div>
+
+        <p id="hint" class="muted hint">Use arrow keys or swipe to move tiles!</p>
+        <p id="result" class="result"></p>
+        <div class="progress-bar"><div class="progress-fill" id="scoreProgress"></div></div>
+
+        <div class="actions">
+          <button id="startBtn" class="btn btn-primary">New Game</button>
+          <a class="btn btn-primary" href="leaderboard.html">View Leaderboard</a>
+        </div>
+      </div>
+
+      <aside class="card right-card">
+        <h3 class="card-title">Leaderboard</h3>
+        <ol id="leaderList" class="leader-list">
+          <!-- Populated by JS -->
+        </ol>
+        <p class="muted small">Top scores saved to localStorage.</p>
+      </aside>
+    </section>
+
+    <footer class="foot muted">Combine tiles to reach 2048!</footer>
+  </main>
+
+  <script src="static/js/2048.js"></script>
+  <script>
+  function populateLeaderboard() {
+    const scores = JSON.parse(localStorage.getItem('scores') || '[]');
+    const tileScores = scores.filter(s => s.game === '2048').sort((a,b) => b.score - a.score).slice(0, 10);
+    const list = document.getElementById('leaderList');
+    list.innerHTML = tileScores.map(s => `<li><strong>${s.name}</strong><span class="muted"> — ${s.score} pts</span></li>`).join('');
+  }
+  populateLeaderboard();
+  </script>
+</body>
+</html>

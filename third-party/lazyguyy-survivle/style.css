@@ -1,0 +1,374 @@
+:root {
+    --darkmode-background: #1a1a1a;
+    --game-cell-width: min(13vmin, 8vh);
+    --game-cell-width-new: 2em;
+    --game-cell-fontsize: min(8vmin, 3vh);
+    --game-cell-fontsize-new: 1.5em;
+    --key-width: min(4vw, 3.5vh);
+    --key-height: 7vh;
+    --high-contrast-yellow: #0accf7;
+    --high-contrast-green: darkorange;
+    --option-menu-font-size: min(5vw, 4vh);
+    --option-menu-font-size-new: 1em;
+    --keyboard-letter-size: min(3.5vh, 6vw);
+    --keyboard-letter-size-new: 2em;
+    --bar-label-width: 1.5em;
+    --bar-label-padding: 10px;
+    --bar-left: calc(var(--bar-label-width) + 2*var(--bar-label-padding));
+}
+
+html, body {
+    margin: 0;
+    font-family: Verdana, sans-serif;
+    height: 100%;
+    touch-action: manipulation;
+}
+
+.darkmode {
+    background-color: var(--darkmode-background);
+    color: white;
+    border-color: white;
+    border: none;
+}
+
+.high-contrast {
+}
+
+.titlebar {
+    height: 6vh;
+    width: 100vw;
+    overflow: hidden;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    font-size: 0;
+}
+
+.notifications-wrapper {
+    display: inline-flex;
+    height: 6vh;
+    font-size: 3vmin;
+    width: min(calc(100vw - 2*var(--game-cell-width)), 80vw);
+    overflow: hidden;
+    contain: strict;
+    justify-content: center;
+}
+
+.notifications-text {
+    margin-top: 1vh;
+}
+
+.board {
+    font-weight: bold;
+    border-spacing: 0.8vmin;
+    display: inline-block;
+    padding-top: 0px;
+}
+.new-units .board {
+    border-spacing: 0.3em;
+}
+
+.board td {
+    border-style: solid;
+    border-width: 1px;
+    height: var(--game-cell-width);
+    width: var(--game-cell-width);
+    text-align: center;
+    font-size: var(--game-cell-fontsize);
+}
+
+.new-units .board td {
+    height: var(--game-cell-width-new);
+    width: var(--game-cell-width-new);
+    font-size: var(--game-cell-fontsize-new);
+}
+
+.darkmode .board td {
+    color: white;
+}
+
+.gray {
+    background-color: lightslategray;
+}
+
+.yellow {
+    background-color: #ffc40c;
+}
+
+.green {
+    background-color: palegreen;
+}
+
+.darkmode .gray {
+    background-color: slategray;
+}
+
+.darkmode .yellow {
+    background-color: orange;
+}
+
+.darkmode .green {
+    background-color: forestgreen;
+}
+
+.high-contrast .yellow {
+    background-color: var(--high-contrast-yellow);
+}
+
+.high-contrast .green {
+    background-color: var(--high-contrast-green);
+}
+
+.game {
+    text-align: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+.game-area {
+    display: inline-block;
+    text-align: center;
+    overflow-y: auto;
+    padding-right: -calc(100vw - 100%);
+    height: calc(100% - 10vh - 4 * var(--key-height));
+}
+
+.keyboard {
+    vertical-align: bottom;
+}
+
+.keyboard button {
+    border-width: 1px;
+    border-color: white;
+    border-style: solid;
+    color: black;
+    display:  inline-flex;
+    padding: var(--keyboard-letter-size) calc(2*var(--keyboard-letter-size)/3);
+    width: var(--key-width);
+    height: var(--key-height);
+    margin: calc(0.05 * var(--keyboard-letter-size));
+    justify-content: center;
+    align-items: center;
+    font-size: var(--keyboard-letter-size);
+}
+
+./*new-units .keyboard button {
+/*    padding: var(--keyboard-letter-size-new) calc(2*var(--keyboard-letter-size-new)/3);*/
+/*    width: var(--key-width-new);*/
+/*    height: var(--key-height-new);*/
+/*    margin: calc(0.05 * var(--keyboard-letter-size-new));*/
+/*    font-size: var(--keyboard-letter-size-new);*/
+/*}*/
+
+.keyboard .wider {
+    padding: var(--keyboard-letter-size) var(--keyboard-letter-size);
+}
+
+
+.darkmode .keyboard button {
+    border-width: 1px;
+    border-color: white;
+    color: white;
+    background-color: #222222;
+}
+
+.darkmode .keyboard .gray {
+    background-color: slategray;
+}
+
+.darkmode .keyboard .yellow {
+    background-color: orange;
+}
+
+.darkmode .keyboard .green {
+    background-color: forestgreen;
+}
+
+.high-contrast .keyboard .yellow {
+    background-color: var(--high-contrast-yellow);
+}
+
+.high-contrast .keyboard .green {
+    background-color: var(--high-contrast-green);
+}
+
+
+.option-button {
+    border: none;
+    width: calc(2*var(--game-cell-width)/5);
+    height: calc(2*var(--game-cell-width)/5);
+    margin: 0;
+    margin-top: 1vh;
+    padding: 0;
+    vertical-align: top;
+}
+
+.close-button {
+    float: right;
+    margin-top: 3vh;
+    margin-right: 10vw;
+    width: 6vh;
+    height: 6vh;
+    border: none;
+    background: url( assets/close.svg );
+    background-size: cover;
+
+}
+
+.option-row {
+    width: min(50vh, 100vw);
+    padding-left: calc((100% - min(50vh, 100vw))/2);
+    display: flex;
+    margin: 4vh;
+    font-size: var(--option-menu-font-size);
+}
+
+
+.toggle-button {
+    margin: calc(var(--option-menu-font-size)/13) 1em 0 1em;
+    width: var(--option-menu-font-size);
+    height: var(--option-menu-font-size);
+}
+
+#toggle-darkmode {
+    background: url( assets/dark-mode.svg );
+    background-size: cover;
+}
+
+#toggle-contrast {
+    background: url( assets/contrast.svg );
+    background-size: cover;
+}
+
+#reveal {
+    background: url( assets/reveal.svg );
+    background-size: cover;
+}
+
+a:visited {
+    color: blue;
+}
+
+.darkmode a {
+    color: var(--high-contrast-yellow);
+}
+
+.darkmode a:visited {
+    color: var(--high-contrast-yellow);
+}
+
+#help {
+    background: url( assets/help.svg );
+    background-size: cover;
+}
+
+#restart {
+    background: url( assets/reload.svg );
+    background-size: cover;
+}
+
+#options {
+    background: url( assets/options.svg );
+    background-size: cover;
+}
+
+#share {
+    display: none;
+    width: 50%;
+    color: white;
+    font-size: 3vmin;
+    padding: 1vh;
+    background-color: seagreen;
+    border: none;
+    margin-bottom: 0.5vmin;
+}
+
+.new-units #share {
+    font-size: 1em;
+    padding: 1em;
+    margin-bottom: 0.5em;
+}
+
+#share:active {
+    background-color: lightseagreen;
+}
+
+.inverted {
+    filter: invert(1);
+}
+
+.overlay {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    background-color: white;
+    font-size: var(--option-menu-font-size);
+    align-items: top;
+    align-content: top;
+    text-align: left;
+}
+
+.darkmode .overlay {
+    background-color: var(--darkmode-background);
+}
+
+.overlay-content {
+    display:  inline-block;
+    position: relative;
+    width: 70%;
+    height: ;
+    text-align: left;
+    padding: 0 15% 0 15%;
+    margin-top: 10px;
+}
+
+.darkmode .overlay-content {
+    background-color: var(--darkmode-background);
+}
+
+.bar-chart {
+    display: flex;
+    flex-direction: column;
+    padding-left: 0;
+}
+
+.bar-chart .chart-item {
+    position: relative;
+    list-style: none;
+    width:80%;
+}
+
+.bar-chart .chart-item .bar-label {
+    display: inline-block;
+    width: var(--bar-label-width);
+    padding: var(--bar-label-padding);
+    text-align: right;
+}
+
+.bar {
+    position: absolute;
+    top: var(--bar-label-padding);
+    left: var(--bar-left);
+    height: calc(100% - 2 * var(--bar-label-padding));
+    z-index: 2;
+    width: 0;
+    padding-right:4px;
+    color:transparent;
+    text-align: right;
+}
+
+.overlay.visible .bar {
+    width: 100%;
+    color: black;
+    background: lightseagreen;
+    transition: width 1s 0.25s ease-out, color 0s 1.25s;
+}
+
+.darkmode .overlay.visible .bar {
+    color: white;
+    background: seagreen;
+}

@@ -1,0 +1,50 @@
+/* Stili custom per "Chi Vuol Essere Milionario" */
+
+body {
+  background-color: #f8f9fa;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+/* Canvas centrato e responsive */
+#gameCanvas {
+  border: 2px solid #343a40;
+  background-color: #fff;
+  width: 100%;
+  max-width: 800px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  min-height: 446px;
+}
+
+/* Stile per il tabellone dei premi */
+#prizeBoard ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+#prizeBoard li {
+  padding: 8px 12px;
+  margin-bottom: 4px;
+  font-size: 16px;
+}
+
+/* Bottoni delle risposte */
+.answer-btn {
+  font-size: 1.1em;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.answer-btn:hover {
+  background-color: #343a40;
+  color: #fff;
+}
+
+/* Area di stato */
+#statusArea {
+  font-size: 1.2em;
+  padding: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}

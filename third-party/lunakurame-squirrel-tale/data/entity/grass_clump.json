@@ -1,0 +1,45 @@
+{
+	"label": "Grass",
+	"defaults": {
+		"cropX": 0,
+		"cropY": 0,
+		"cropWidth": 8,
+		"cropHeight": 8,
+		"width": 8,
+		"height": 8,
+		"centerX": 4,
+		"centerY": 6
+	},
+	"views": {
+		"master": [
+			{
+			},
+			{
+				"cropX": 8
+			},
+			{
+				"cropX": 16
+			},
+			{
+				"cropX": 24
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "master_wind",
+			"type": "auto",
+			"script": [
+				"set view master 0",
+				"nop 400",
+				"set frame 1",
+				"nop 400",
+				"set frame 2",
+				"nop 400",
+				"set frame 3",
+				"nop 400",
+				"jmp 0"
+			]
+		}
+	]
+}

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>趣味AI合成小游戏</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="author" content="Huazie">
+    <meta name="keywords" content="flea-game,web-game,game,小游戏">
+    <meta name="description" content="趣味AI合成小游戏">
+    <link rel="shortcut icon" href="assets/images/flea-game.ico">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/notification.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <a href="https://github.com/huazie/flea-game"  target="_blank class="github-link" title="查看GitHub源码" rel="noopener noreferrer">
+        <i class="fab fa-github"></i>
+    </a>
+    
+    <button class="theme-toggle" id="theme-button">
+        <i class="fas fa-sun"></i>
+    </button>
+    
+    <header class="header">
+        <div class="container">
+            <h1>趣味AI合成小游戏</h1>
+            <p>选择你喜欢的游戏开始玩吧！</p>
+            <div class="search-container">
+                <input type="text" id="gameSearch" placeholder="搜索游戏..." class="search-input">
+                <button id="searchButton" class="search-button">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="categories-container">
+                <ul id="categoriesList" class="categories-list">
+                    <!-- 分类将通过 JavaScript 动态加载 -->
+                </ul>
+            </div>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="games-grid">
+            <!-- 游戏卡片将通过 JavaScript 动态加载 -->
+        </div>
+    </main>
+
+    <!-- 页脚部分 -->
+    <footer class="footer">
+        <div class="footer-content">
+            <p>
+                <img src="assets/images/flea-game.png" alt="Flea Game" class="footer-logo">
+                © <span id="copyright-year"></span> 
+                <a href="https://github.com/huazie"  target="_blank rel="noopener noreferrer">Huazie</a>. </p>
+            <script>
+                document.getElementById('copyright-year').textContent = 
+                    `${new Date().getFullYear()}`;
+            </script>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/notification.js"></script>
+    <script src="assets/js/common.js"></script>
+    
+    
+    <script src="assets/js/share.js"></script>
+    <script>FleaShare.init();</script>
+</body>
+</html>

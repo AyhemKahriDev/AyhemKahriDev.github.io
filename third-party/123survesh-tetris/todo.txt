@@ -1,0 +1,23 @@
+ToDo:
+
+* Make the tiles stop at boundary
+* Create a border condition for the game board
+
+* Rotate by the middle axis
+* write conditions to stop rotation when not possible
+* Remove completed lines
+* Coloured tiles
+
+
+* Add Scores
+* Add Speed
+
+* Improve randomness
+* Improve color schemes
+* Add sounds
+* Add Animations
+* Add start and end cards
+
+
+* Add device specific instructions, for touch and keyboard
+* Make changes so that the game conrol buttons work when touch is enabled

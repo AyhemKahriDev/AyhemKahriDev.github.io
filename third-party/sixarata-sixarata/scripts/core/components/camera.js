@@ -1,0 +1,157 @@
+import Game from '../game.js';
+import Settings from '../../content/settings.js';
+
+import { Position } from '../physics/exports.js';
+
+/**
+ * The Camera object.
+ *
+ * This object is responsible for holding the position of the primary view
+ * of the player. All coordinates ultimately are influenced by it.
+ */
+export default class Camera {
+
+	/**
+	 * Construct the object.
+	 *
+	 * @returns {Camera} this
+	 */
+	constructor() {
+		return this.set();
+	}
+
+	/**
+	 * Set the Camera.
+	 *
+	 * @returns {Camera} this
+	 */
+	set = () => {
+		return this.reset();
+	}
+
+	/**
+	 * Reset the Camera.
+	 *
+	 * @returns {Camera} this
+	 */
+	reset = () => {
+		return this;
+	}
+
+	/**
+	 * Early events.
+	 */
+	hooks = () => {
+		this.position = new Position( 0, 0, 0, false );
+
+		// View.
+		Game.Hooks.add( 'View.tick',     this.tick,   11 );
+		Game.Hooks.add( 'View.update',   this.update, 8  );
+
+		// Self.
+		Game.Hooks.add( 'Camera.update', this.center );
+		Game.Hooks.add( 'Camera.update', this.limit  );
+	}
+
+	/**
+	 * Called at the end of View.tick().
+	 *
+	 * @todo Move out of tick to someplace that runs once.
+	 */
+	tick = () => {
+
+		// Set vars for reuse below.
+		this.view   = Game.View.buffer;
+		this.room   = Game.Room;
+
+		// Multiplayer?
+		this.target = this.room.tiles.players[ 0 ];
+	}
+
+	/**
+	 * Called at the end of View.update().
+	 */
+	update = () => {
+		Game.Hooks.do( 'Camera.update' );
+	}
+
+	/**
+	 * Center the camera on a specific target.
+	 *
+	 * By default, the target is the first player in the players array
+	 * of the primary view.
+	 */
+	center = () => {
+
+		// Skip if missing target or view.
+		if ( ! this.target || ! this.view ) {
+			return;
+		}
+
+		// Skip if not a number.
+		if ( isNaN( this.target.physics.position.y ) ) {
+			return;
+		}
+
+		// Reposition to center.
+		this.position = Game.View.center(
+			this.target.physics.position,
+			this.target.physics.size,
+			this.view.size,
+			false
+		);
+	}
+
+	/**
+	 * Prevent the camera from centering when the target is close enough to
+	 * the edge of the room for this to not make sense.
+	 */
+	limit = () => {
+
+		// Skip if missing target or view.
+		if ( ! this.target || ! this.view ) {
+			return;
+		}
+
+		const alignment = Settings.components.camera?.alignment ?? {};
+
+		this.position.x = this.limitAxis(
+			this.position.x,
+			this.room.size.w,
+			this.view.size.w,
+			alignment.horizontal ?? 'left'
+		);
+		this.position.y = this.limitAxis(
+			this.position.y,
+			this.room.size.h,
+			this.view.size.h,
+			alignment.vertical ?? 'bottom'
+		);
+	}
+
+	/**
+	 * Clamp scrolling rooms, or explicitly align rooms smaller than the view.
+	 */
+	limitAxis = (
+		position  = 0,
+		roomSize  = 0,
+		viewSize  = 0,
+		alignment = 'start'
+	) => {
+		const extent = Math.round( roomSize - viewSize );
+
+		if ( extent >= 0 ) {
+			return Math.min( extent, Math.max( 0, position ) );
+		}
+
+		if ( [ 'center', 'middle' ].includes( alignment ) ) {
+			return Math.round( extent / 2 );
+		}
+
+		if ( [ 'right', 'bottom', 'end' ].includes( alignment ) ) {
+			return extent;
+		}
+
+		return 0;
+	}
+}

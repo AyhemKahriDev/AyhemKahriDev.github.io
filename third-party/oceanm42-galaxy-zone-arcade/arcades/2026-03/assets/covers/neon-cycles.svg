@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glow3">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes trail1 { 0%{stroke-dashoffset:200} 100%{stroke-dashoffset:0} }
+    @keyframes trail2 { 0%{stroke-dashoffset:200} 100%{stroke-dashoffset:0} }
+    @keyframes pulse { 0%,100%{opacity:.4} 50%{opacity:.8} }
+    @keyframes cycle1move { 0%,100%{transform:translate(0,0)} 50%{transform:translate(3px,-2px)} }
+    @keyframes cycle2move { 0%,100%{transform:translate(0,0)} 50%{transform:translate(-3px,2px)} }
+    .grid{animation:pulse 3s ease-in-out infinite}
+    .trail-cyan{stroke-dasharray:200;animation:trail1 3s linear infinite}
+    .trail-mag{stroke-dasharray:200;animation:trail2 3s linear infinite .5s}
+    .cycle1{animation:cycle1move 2s ease-in-out infinite}
+    .cycle2{animation:cycle2move 2s ease-in-out infinite}
+  </style>
+  <rect width="300" height="400" fill="#050510"/>
+  <!-- Floor grid (perspective) -->
+  <g class="grid" stroke="#1a1a4a" stroke-width="1">
+    <!-- Horizontal lines -->
+    <line x1="0" y1="250" x2="300" y2="250"/>
+    <line x1="0" y1="275" x2="300" y2="275"/>
+    <line x1="0" y1="300" x2="300" y2="300"/>
+    <line x1="0" y1="325" x2="300" y2="325"/>
+    <line x1="0" y1="350" x2="300" y2="350"/>
+    <line x1="0" y1="375" x2="300" y2="375"/>
+    <!-- Vertical lines (converging) -->
+    <line x1="0" y1="250" x2="0" y2="400"/>
+    <line x1="50" y1="250" x2="40" y2="400"/>
+    <line x1="100" y1="250" x2="90" y2="400"/>
+    <line x1="150" y1="250" x2="150" y2="400"/>
+    <line x1="200" y1="250" x2="210" y2="400"/>
+    <line x1="250" y1="250" x2="260" y2="400"/>
+    <line x1="300" y1="250" x2="300" y2="400"/>
+  </g>
+  <!-- Background grid on walls -->
+  <g stroke="#111133" stroke-width=".5">
+    <line x1="0" y1="50" x2="300" y2="50"/>
+    <line x1="0" y1="100" x2="300" y2="100"/>
+    <line x1="0" y1="150" x2="300" y2="150"/>
+    <line x1="0" y1="200" x2="300" y2="200"/>
+  </g>
+  <!-- Cyan light trail (L-shape) -->
+  <polyline class="trail-cyan" points="40,300 40,180 180,180" fill="none" stroke="#00ffff" stroke-width="4" filter="url(#glow3)"/>
+  <!-- Cyan trail outer glow -->
+  <polyline class="trail-cyan" points="40,300 40,180 180,180" fill="none" stroke="#00ffff" stroke-width="8" opacity=".2" filter="url(#glow3)"/>
+  <!-- Cyan cycle -->
+  <g class="cycle1" filter="url(#glow)">
+    <rect x="172" y="174" width="16" height="12" rx="2" fill="#00ffff"/>
+    <rect x="175" y="177" width="4" height="6" fill="#00aacc"/>
+    <rect x="181" y="177" width="4" height="6" fill="#00aacc"/>
+  </g>
+  <!-- Magenta light trail (L-shape) -->
+  <polyline class="trail-mag" points="260,310 260,220 120,220" fill="none" stroke="#ff00ff" stroke-width="4" filter="url(#glow3)"/>
+  <polyline class="trail-mag" points="260,310 260,220 120,220" fill="none" stroke="#ff00ff" stroke-width="8" opacity=".2" filter="url(#glow3)"/>
+  <!-- Magenta cycle -->
+  <g class="cycle2" filter="url(#glow)">
+    <rect x="112" y="214" width="16" height="12" rx="2" fill="#ff00ff"/>
+    <rect x="115" y="217" width="4" height="6" fill="#cc00aa"/>
+    <rect x="121" y="217" width="4" height="6" fill="#cc00aa"/>
+  </g>
+  <!-- Title -->
+  <text x="150" y="35" text-anchor="middle" font-family="monospace" font-size="20" font-weight="bold" fill="#00ffff" filter="url(#glow)">NEON CYCLES</text>
+</svg>

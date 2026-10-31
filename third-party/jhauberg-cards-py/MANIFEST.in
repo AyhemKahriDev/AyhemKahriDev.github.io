@@ -1,0 +1,11 @@
+# include additional files
+include README.md
+include CONTRIBUTING.md
+include LICENSE
+include requirements.txt
+
+# include everything in this directory
+graft cards/templates
+
+# exclude pesky DS_Store files and compiled python scripts
+global-exclude .DS_Store *.py[co]

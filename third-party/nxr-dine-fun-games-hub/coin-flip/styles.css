@@ -1,0 +1,264 @@
+/* coin-flip-style.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    background-color: #f4f4f8;
+}
+
+header {
+    background-color: #3498db;
+    color: white;
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-button {
+    color: white;
+    text-decoration: none;
+    padding: 0.5rem 1rem;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.back-button:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+main {
+    max-width: 600px;
+    margin: 2rem auto;
+    padding: 1rem;
+}
+
+.game-container {
+    background-color: white;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+.game-info {
+    margin-bottom: 1.5rem;
+}
+
+.game-info h2 {
+    color: #3498db;
+    margin-bottom: 0.5rem;
+}
+
+#status {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.score-board {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.score {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.score span:first-child {
+    font-weight: bold;
+}
+
+.score span:last-child {
+    font-size: 1.5rem;
+    margin-top: 0.3rem;
+}
+
+.game-area {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.player-choice {
+    flex: 1;
+    text-align: center;
+}
+
+.choice-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.choice-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.choice-btn {
+    background-color: #f0f0f0;
+    border: 2px solid transparent;
+    border-radius: 4px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.choice-btn:hover {
+    background-color: #e4e4e4;
+}
+
+.choice-btn.selected {
+    border-color: #3498db;
+    background-color: #ebf5fb;
+}
+
+.selection {
+    height: 1.5rem;
+    font-weight: bold;
+    color: #3498db;
+}
+
+.coin-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 150px;
+}
+
+.coin {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    transform-style: preserve-3d;
+    transition: transform 1s ease-in;
+}
+
+.coin div {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: absolute;
+    backface-visibility: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+
+.heads {
+    background-color: #f39c12;
+    color: white;
+}
+
+.heads:after {
+    content: "H";
+}
+
+.tails {
+    background-color: #27ae60;
+    color: white;
+    transform: rotateY(180deg);
+}
+
+.tails:after {
+    content: "T";
+}
+
+/* Animation classes for the coin */
+.animate-heads {
+    animation: flip-heads 1s forwards;
+}
+
+.animate-tails {
+    animation: flip-tails 1s forwards;
+}
+
+@keyframes flip-heads {
+    0% { transform: rotateY(0); }
+    100% { transform: rotateY(720deg); }
+}
+
+@keyframes flip-tails {
+    0% { transform: rotateY(0); }
+    100% { transform: rotateY(900deg); }
+}
+
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover:not(:disabled) {
+    background-color: #2980b9;
+}
+
+button:disabled {
+    background-color: #a0c8e6;
+    cursor: not-allowed;
+}
+
+#new-game-btn {
+    background-color: #2ecc71;
+}
+
+#new-game-btn:hover {
+    background-color: #27ae60;
+}
+
+footer {
+    margin-top: 2rem;
+    color: #666;
+    text-align: center;
+    font-size: 0.9rem;
+}
+
+@media (max-width: 580px) {
+    .game-area {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .back-button {
+        margin-top: 0.5rem;
+    }
+}

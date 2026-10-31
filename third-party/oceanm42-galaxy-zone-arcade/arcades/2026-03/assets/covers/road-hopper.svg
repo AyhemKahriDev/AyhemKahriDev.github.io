@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="2" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glowStrong">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes carRight { 0% { transform: translateX(-60px); } 100% { transform: translateX(340px); } }
+    @keyframes carLeft { 0% { transform: translateX(340px); } 100% { transform: translateX(-60px); } }
+    @keyframes logRight { 0% { transform: translateX(-80px); } 100% { transform: translateX(340px); } }
+    @keyframes logLeft { 0% { transform: translateX(340px); } 100% { transform: translateX(-80px); } }
+    @keyframes hop {
+      0%, 100% { transform: translateY(0); }
+      15% { transform: translateY(-25px); }
+      30% { transform: translateY(0); }
+      45% { transform: translateY(-25px); }
+      60% { transform: translateY(0); }
+    }
+    .car1 { animation: carRight 3s linear infinite; }
+    .car2 { animation: carLeft 2.5s linear infinite; }
+    .car3 { animation: carRight 4s linear infinite; animation-delay: 1.5s; }
+    .log1 { animation: logRight 5s linear infinite; }
+    .log2 { animation: logLeft 4.5s linear infinite; }
+    .log3 { animation: logRight 6s linear infinite; animation-delay: 2s; }
+    .frog { animation: hop 3s ease-in-out infinite; }
+  </style>
+  <rect width="300" height="400" fill="#0a0a1a"/>
+  <!-- Safe zone top (lily pads) -->
+  <rect x="0" y="60" width="300" height="40" fill="#003300"/>
+  <g filter="url(#glow)">
+    <circle cx="50" cy="80" r="12" fill="#004400" stroke="#00FF00" stroke-width="1"/>
+    <circle cx="150" cy="80" r="12" fill="#004400" stroke="#00FF00" stroke-width="1"/>
+    <circle cx="250" cy="80" r="12" fill="#004400" stroke="#00FF00" stroke-width="1"/>
+  </g>
+  <!-- River lanes -->
+  <rect x="0" y="100" width="300" height="40" fill="#000044"/>
+  <rect x="0" y="140" width="300" height="40" fill="#000033"/>
+  <rect x="0" y="180" width="300" height="40" fill="#000044"/>
+  <!-- Logs -->
+  <g class="log1" filter="url(#glow)">
+    <rect x="0" y="108" width="60" height="12" rx="5" fill="#8B4513" stroke="#A0522D" stroke-width="1"/>
+  </g>
+  <g class="log2" filter="url(#glow)">
+    <rect x="0" y="150" width="50" height="10" rx="4" fill="#8B4513" stroke="#A0522D" stroke-width="1"/>
+  </g>
+  <g class="log3" filter="url(#glow)">
+    <rect x="0" y="188" width="70" height="12" rx="5" fill="#8B4513" stroke="#A0522D" stroke-width="1"/>
+  </g>
+  <!-- Median -->
+  <rect x="0" y="220" width="300" height="30" fill="#1a1a2a"/>
+  <!-- Road lanes -->
+  <rect x="0" y="250" width="300" height="35" fill="#1a1a1a"/>
+  <rect x="0" y="285" width="300" height="35" fill="#222222"/>
+  <rect x="0" y="320" width="300" height="35" fill="#1a1a1a"/>
+  <!-- Road lines -->
+  <g stroke="#FFFF00" stroke-width="1" stroke-dasharray="8,8" opacity="0.5">
+    <line x1="0" y1="285" x2="300" y2="285"/>
+    <line x1="0" y1="320" x2="300" y2="320"/>
+  </g>
+  <!-- Cars -->
+  <g class="car1" filter="url(#glow)">
+    <rect x="0" y="255" width="30" height="14" rx="3" fill="#FF0000"/>
+    <rect x="5" y="257" width="8" height="6" fill="#FFFF00" opacity="0.6"/>
+  </g>
+  <g class="car2" filter="url(#glow)">
+    <rect x="0" y="292" width="28" height="14" rx="3" fill="#FF00FF"/>
+    <rect x="17" y="294" width="8" height="6" fill="#FFFF00" opacity="0.6"/>
+  </g>
+  <g class="car3" filter="url(#glow)">
+    <rect x="0" y="325" width="35" height="16" rx="3" fill="#FFAA00"/>
+    <rect x="5" y="328" width="8" height="6" fill="#FFFF00" opacity="0.6"/>
+  </g>
+  <!-- Safe zone bottom -->
+  <rect x="0" y="355" width="300" height="45" fill="#003300"/>
+  <!-- Frog -->
+  <g class="frog" filter="url(#glowStrong)">
+    <ellipse cx="150" cy="370" rx="8" ry="6" fill="#00FF00"/>
+    <circle cx="146" cy="365" r="3" fill="#00CC00"/><circle cx="154" cy="365" r="3" fill="#00CC00"/>
+    <circle cx="146" cy="364" r="1.5" fill="#000"/><circle cx="154" cy="364" r="1.5" fill="#000"/>
+    <rect x="140" y="373" width="5" height="4" rx="1" fill="#00AA00" transform="rotate(-15,142,375)"/>
+    <rect x="155" y="373" width="5" height="4" rx="1" fill="#00AA00" transform="rotate(15,158,375)"/>
+  </g>
+  <!-- Title -->
+  <text x="150" y="40" text-anchor="middle" font-family="monospace" font-size="26" font-weight="bold" fill="#00FF00" filter="url(#glowStrong)">ROAD HOPPER</text>
+</svg>

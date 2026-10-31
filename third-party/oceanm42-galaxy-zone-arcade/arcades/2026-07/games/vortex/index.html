@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  docs/GAME-PAGE-TEMPLATE.html
+  Canonical games/<slug>/index.html. Copy this file verbatim into every new
+  game folder and change ONLY three things:
+    1. <title>
+    2. the Google Font preconnect/link stays identical — do not touch it
+    3. <body data-gz-slug="..."> — must match the folder name + manifest slug
+  Everything else (nav, cabinet, HUD, overlays, touch controls) is built at
+  runtime by GZ.Shell from js/games-manifest.js + the game's GZ.boot() call
+  in game.js. See docs/ENGINE.md for the full contract.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Vortex — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body data-gz-slug="vortex">
+  <div id="gz-root"></div>
+
+  <script src="../../js/games-manifest.js"></script>
+  <script src="../../engine/gz-core.js"></script>
+  <script src="../../engine/gz-audio.js"></script>
+  <script src="../../engine/gz-input.js"></script>
+  <script src="../../engine/gz-fx.js"></script>
+  <script src="../../engine/gz-scores.js"></script>
+  <script src="../../engine/gz-shell.js"></script>
+  <script src="game.js"></script>
+</body>
+</html>

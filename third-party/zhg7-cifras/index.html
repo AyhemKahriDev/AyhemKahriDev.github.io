@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifras</title>
+    <link rel="icon" type="image/x-icon" href="game/assets/img/favicon.ico">
+    <link rel="stylesheet" href="game/styles/index.css">
+    <script src="game/scripts/index.js" defer></script>
+    <script src="game/scripts/audio.js" defer></script>
+</head>
+
+<body>
+    <div id="menu">
+        <nav>
+            <label class="switch" id="audio-control">
+                <input type="checkbox" hidden autocomplete="off">
+                <span class="slider"></span>
+            </label>
+        </nav>
+        <header>
+            <figure>
+                <img id="logo" src="game/assets/img/logo.svg" alt="Logo" draggable="false">
+                <h1 id="title">Cifras</h1>
+            </figure>
+        </header>
+        <section>
+            <button type="button" class="action-button click hover" id="play-btn"><img class="menu-icon"
+                    src="game/assets/img/play.svg" alt="Jugar" draggable="false"><span>Jugar</span></button>
+            <button type="button" class="action-button click hover" id="ranking-btn"><img class="menu-icon"
+                    src="game/assets/img/trophy.svg" alt="Ayuda" draggable="false"><span>Ranking</span></button>
+            <button type="button" class="modal-button action-button click hover" id="help-modal-btn"><img class="menu-icon"
+                    src="game/assets/img/help.svg" alt="Ayuda" draggable="false"><span>Ayuda</span></button>
+        </section>
+
+        <section>
+            <div class="overlay" id="overlay"></div>
+            <div id="help-modal" class="modal">
+                <button class="modal-close-btn click hover" id="help-close-btn">
+                    <div class="leftright"></div>
+                    <div class="rightleft"></div>
+                </button>
+                <h1>Ayuda</h1>
+                <div id="help">
+                    <h3>Introducción</h3>
+                    <p><strong>Cifras</strong> es un juego de cálculo mental para 2 jugadores.
+                        Se generan
+                        6 números aleatorios
+                        junto a un número
+                        objetivo.</p>
+                    <p>Los jugadores deben realizar operaciones aritméticas
+                        con esos 6 números y llegar a un resultado que sea igual o lo más cercano posible
+                        al número objetivo.</p>
+                    <h3>Instrucciones</h3>
+                    <p>En primer lugar, los jugadores deben introducir sus nombres y pueden, opcionalmente, elegir un
+                        color.</p>
+                    <p>A continuación, generarán manualmente los <b>6 números</b> para dar comienzo a la
+                        partida. Cada turno dura <b>1 minuto</b>. Es posible saltar el turno antes de tiempo.</p>
+                    <p>En navegadores de escritorio, las operaciones se realizan arrastrando, y soltando los números y
+                        operadores. En móviles, se debe pulsar en el elemento deseado y pulsar nuevamente en donde se
+                        quiera soltar.</p>
+                    <video width="320" height="150" controls preload="auto">
+                        <source src="game/assets/video/help-1.mp4" type="video/mp4">
+                    </video>
+                    <p>Los números son <b>intercambiables</b>, es decir, podemos soltar uno encima de otro y el que
+                        estaba en ese lugar se moverá a la posición que tenía ese. En el caso del operador, será
+                        sustituido por el nuevo que soltemos.</p>
+                    <p>En cuanto los tres espacios de la zona de operaciones estén ocupados se efectuará,
+                        automáticamente, la operación correspondiente.</p>
+                    <h3>Consideraciones</h3>
+                    <ul>
+                        <li>Los números <b><u>no</u></b> pueden ser reutilizados.</li>
+                        <li>Solo se tiene en cuenta el resultado de la <b><u>última</u></b> operación realizada (aparece
+                            subrayado).</li>
+                        <li>Los resultados negativos se convertirán a un 0.</li>
+                        <li>A los resultados con decimales se les quitarán las decimales.</li>
+                    </ul>
+                    <h3>Puntuaciones</h3>
+                    <ul>
+                        <li>10 puntos si se obtiene el número objetivo exacto.</li>
+                        <li>1 punto menos por cada número de diferencia entre el resultado y el objetivo —se perderán 9
+                            como
+                            máximo—.</li>
+                        <li>No se obtendrá ningún punto si no se realiza ninguna operación.</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <aside>
+            <div id="falling-operators">
+                <div>+</div>
+                <div>-</div>
+                <div>÷</div>
+                <div>×</div>
+                <div>÷</div>
+                <div>+</div>
+                <div>-</div>
+                <div>×</div>
+            </div>
+        </aside>
+    </div>
+    <audio id="soundtrack" loop preload="auto">
+        <source src="game/assets/audio/soundtrack.ogg" type="audio/ogg">
+    </audio>
+    <audio id="switch-sound" preload="auto">
+        <source src="game/assets/audio/switch.wav" type="audio/wav">
+    </audio>
+    <audio id="click-sound" preload="auto">
+        <source src="game/assets/audio/click.wav" type="audio/wav">
+    </audio>
+    <audio id="hover-sound" preload="auto">
+        <source src="game/assets/audio/hover.wav" type="audio/wav">
+    </audio>
+    <footer>
+        <address>
+            <a href="atribuciones.txt"  target="_blank rel="noopener noreferrer">Atribuciones</a> | <a href="https://github.com/zhg7/cifras"  target="_blank rel="noopener noreferrer">Código fuente</a>
+        </address>
+    </footer>
+</body>
+</html>

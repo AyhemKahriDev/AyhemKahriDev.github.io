@@ -1,0 +1,542 @@
+/* ==========================================================================
+   Galaxy Arcade — Main Site Styles
+   Neon arcade theme for a 4x4 grid homepage of arcade game cards.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. Custom Properties
+   -------------------------------------------------------------------------- */
+:root {
+  /* Core palette */
+  --color-bg-dark: #0a0a0a;
+  --color-bg-deep: #1a0a2e;
+  --color-bg-card: #111118;
+  --color-bg-card-hover: #1a1a28;
+  --color-surface: #16161e;
+
+  /* Neon palette */
+  --neon-cyan: #0ff;
+  --neon-magenta: #f0f;
+  --neon-hotpink: #ff2d95;
+  --neon-blue: #4d4dff;
+  --neon-green: #39ff14;
+  --neon-yellow: #ffff00;
+  --neon-orange: #ff6600;
+
+  /* Dimmed variants (for borders, subtle UI) */
+  --neon-cyan-dim: rgba(0, 255, 255, 0.25);
+  --neon-magenta-dim: rgba(255, 0, 255, 0.2);
+  --neon-hotpink-dim: rgba(255, 45, 149, 0.2);
+  --neon-blue-dim: rgba(77, 77, 255, 0.2);
+  --neon-green-dim: rgba(57, 255, 20, 0.2);
+
+  /* Typography */
+  --font-display: "SF Mono", "Fira Code", "Cascadia Code", "JetBrains Mono",
+    "Menlo", "Consolas", "Monaco", monospace;
+  --font-body: "SF Mono", "Fira Code", "Menlo", "Consolas", monospace;
+  --font-score: "Courier New", "Courier", monospace;
+
+  /* Spacing scale */
+  --space-xs: 0.25rem;
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  --space-2xl: 4rem;
+
+  /* Card dimensions */
+  --card-radius: 10px;
+  --card-border-width: 1px;
+  --card-glow-spread: 8px;
+  --card-perspective: 800px;
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 500ms ease;
+
+  /* Layout */
+  --nav-height: 60px;
+  --grid-gap: 1.25rem;
+  --max-width: 1200px;
+}
+
+/* --------------------------------------------------------------------------
+   2. Reset & Base
+   -------------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-body);
+  background: linear-gradient(160deg, var(--color-bg-dark) 0%, var(--color-bg-deep) 100%);
+  background-attachment: fixed;
+  color: #d0d0d8;
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#starfield {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+}
+
+a {
+  color: var(--neon-cyan);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--neon-hotpink);
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Navigation Bar
+   -------------------------------------------------------------------------- */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+  padding: 0 var(--space-lg);
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--neon-cyan-dim);
+}
+
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  text-shadow:
+    0 0 6px var(--neon-cyan),
+    0 0 20px rgba(0, 255, 255, 0.4);
+}
+
+.nav-links {
+  display: flex;
+  gap: var(--space-lg);
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: #b0b0c0;
+  position: relative;
+  padding: var(--space-xs) 0;
+  transition: color var(--transition-fast), text-shadow var(--transition-fast);
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--neon-hotpink);
+  box-shadow: 0 0 6px var(--neon-hotpink);
+  transition: width var(--transition-base);
+}
+
+.nav-links a:hover {
+  color: var(--neon-hotpink);
+  text-shadow: 0 0 8px rgba(255, 45, 149, 0.5);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* --------------------------------------------------------------------------
+   4. Neon Sign Header
+   -------------------------------------------------------------------------- */
+.neon-sign {
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: clamp(1.8rem, 5vw, 3.5rem);
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  padding: var(--space-lg) var(--space-md);
+  color: #fff;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 11px var(--neon-cyan),
+    0 0 22px var(--neon-cyan),
+    0 0 40px var(--neon-cyan),
+    0 0 60px var(--neon-blue),
+    0 0 76px var(--neon-blue);
+  animation: glow-pulse 3s ease-in-out infinite alternate;
+}
+
+.neon-sign span {
+  display: inline-block;
+  animation: flicker 4s infinite;
+}
+
+/* Per-letter stagger — apply via style="--letter-index: N" on each <span> */
+.neon-sign span:nth-child(odd) {
+  animation-delay: calc(var(--letter-index, 0) * 0.15s);
+}
+
+.neon-sign span:nth-child(even) {
+  animation-delay: calc(var(--letter-index, 0) * 0.15s + 1.8s);
+}
+
+/* --------------------------------------------------------------------------
+   5. Arcade Grid
+   -------------------------------------------------------------------------- */
+.arcade-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--grid-gap);
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: var(--space-lg);
+}
+
+/* --------------------------------------------------------------------------
+   6. Game Card
+   -------------------------------------------------------------------------- */
+.game-card {
+  position: relative;
+  background: var(--color-bg-card);
+  border: var(--card-border-width) solid var(--neon-cyan-dim);
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  cursor: pointer;
+  perspective: var(--card-perspective);
+  transition:
+    transform var(--transition-base),
+    box-shadow var(--transition-base),
+    border-color var(--transition-base);
+  animation: slide-in 0.6s ease backwards;
+  animation-delay: calc(var(--card-index, 0) * 0.07s);
+}
+
+.game-card-inner {
+  transition: transform var(--transition-base);
+  transform-style: preserve-3d;
+}
+
+/* Cover / thumbnail area */
+.game-card .card-cover {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.game-card .card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.game-card .card-cover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    transparent 50%,
+    rgba(10, 10, 10, 0.85) 100%
+  );
+}
+
+/* Card body */
+.game-card .card-body {
+  padding: var(--space-md);
+}
+
+.game-card .card-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: var(--space-xs);
+  text-shadow: 0 0 6px var(--neon-cyan-dim);
+}
+
+.game-card .card-highscore {
+  font-family: var(--font-score);
+  font-size: 0.75rem;
+  color: var(--neon-green);
+  letter-spacing: 0.1em;
+  text-shadow: 0 0 4px var(--neon-green-dim);
+}
+
+/* Hover state */
+.game-card:hover {
+  border-color: var(--neon-cyan);
+  box-shadow:
+    0 0 var(--card-glow-spread) var(--neon-cyan-dim),
+    0 0 24px rgba(0, 255, 255, 0.12),
+    inset 0 0 12px rgba(0, 255, 255, 0.05);
+  transform: scale(1.03);
+  z-index: 2;
+}
+
+.game-card:hover .card-cover img {
+  transform: scale(1.08);
+}
+
+.game-card:hover .card-title {
+  text-shadow: 0 0 10px var(--neon-cyan);
+}
+
+/* 3D perspective tilt — controlled via JS setting --rx / --ry custom props */
+.game-card[style*="--rx"] .game-card-inner {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+}
+
+/* --------------------------------------------------------------------------
+   7. Coin Slot (Footer Decoration)
+   -------------------------------------------------------------------------- */
+.coin-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: var(--space-2xl) var(--space-md) var(--space-xl);
+  text-align: center;
+}
+
+.coin-slot-insert {
+  width: 60px;
+  height: 8px;
+  border-radius: 4px;
+  background: linear-gradient(to bottom, #333, #1a1a1a);
+  border: 1px solid #444;
+  box-shadow:
+    inset 0 1px 3px rgba(0, 0, 0, 0.6),
+    0 0 8px var(--neon-yellow-dim, rgba(255, 255, 0, 0.1));
+  position: relative;
+}
+
+.coin-slot-insert::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 36px;
+  height: 2px;
+  background: #222;
+  border-radius: 1px;
+}
+
+.coin-slot-text {
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 8px rgba(255, 255, 0, 0.4);
+  animation: flicker 5s infinite;
+}
+
+/* --------------------------------------------------------------------------
+   8. Keyframe Animations
+   -------------------------------------------------------------------------- */
+@keyframes flicker {
+  0%,
+  19.999%,
+  22%,
+  62.999%,
+  64%,
+  64.999%,
+  70%,
+  100% {
+    opacity: 1;
+  }
+  20%,
+  21.999%,
+  63%,
+  63.999%,
+  65%,
+  69.999% {
+    opacity: 0.4;
+  }
+}
+
+@keyframes glow-pulse {
+  0% {
+    text-shadow:
+      0 0 4px #fff,
+      0 0 11px var(--neon-cyan),
+      0 0 22px var(--neon-cyan),
+      0 0 40px var(--neon-cyan),
+      0 0 60px var(--neon-blue),
+      0 0 76px var(--neon-blue);
+  }
+  100% {
+    text-shadow:
+      0 0 4px #fff,
+      0 0 14px var(--neon-cyan),
+      0 0 30px var(--neon-cyan),
+      0 0 55px var(--neon-cyan),
+      0 0 80px var(--neon-blue),
+      0 0 100px var(--neon-blue);
+  }
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. Utility Classes
+   -------------------------------------------------------------------------- */
+.text-cyan   { color: var(--neon-cyan); }
+.text-magenta { color: var(--neon-magenta); }
+.text-hotpink { color: var(--neon-hotpink); }
+.text-green  { color: var(--neon-green); }
+.text-yellow { color: var(--neon-yellow); }
+.text-orange { color: var(--neon-orange); }
+.text-blue   { color: var(--neon-blue); }
+
+.glow-cyan    { text-shadow: 0 0 8px var(--neon-cyan), 0 0 20px var(--neon-cyan-dim); }
+.glow-magenta { text-shadow: 0 0 8px var(--neon-magenta), 0 0 20px var(--neon-magenta-dim); }
+.glow-hotpink { text-shadow: 0 0 8px var(--neon-hotpink), 0 0 20px var(--neon-hotpink-dim); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* --------------------------------------------------------------------------
+   10. Responsive Breakpoints
+   -------------------------------------------------------------------------- */
+
+/* Small phones (<=480px) — single/two column */
+@media (max-width: 480px) {
+  .arcade-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-sm);
+    padding: var(--space-md);
+  }
+
+  .neon-sign {
+    font-size: clamp(1.5rem, 8vw, 2.2rem);
+    padding: var(--space-lg) var(--space-sm);
+  }
+
+  .nav-bar {
+    padding: 0 var(--space-md);
+  }
+
+  .nav-links {
+    gap: var(--space-md);
+  }
+
+  .nav-links a {
+    font-size: 0.75rem;
+  }
+
+  .game-card .card-body {
+    padding: var(--space-sm);
+  }
+
+  .game-card .card-title {
+    font-size: 0.85rem;
+  }
+
+  .game-card .card-highscore {
+    font-size: 0.65rem;
+  }
+}
+
+/* Tablets (481px — 768px) — three columns */
+@media (min-width: 481px) and (max-width: 768px) {
+  .arcade-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-md);
+  }
+
+  .neon-sign {
+    font-size: clamp(1.8rem, 5vw, 3rem);
+  }
+}
+
+/* Small desktops (769px — 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .arcade-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Large desktops (>1024px) */
+@media (min-width: 1025px) {
+  .arcade-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}

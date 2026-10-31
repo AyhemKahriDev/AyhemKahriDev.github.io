@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>spud</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta charset="UTF-8">
+
+		<meta name="description" content="A save editor for Shattered Pixel Dungeon, a roguelike dungeon crawler with pixel graphics.">
+		<meta name="keywords" content="editor, save-editor, save editor, dungeoncrawler, dungeon crawler, roguelike, rogue-like, pixeldungeon, pixel-dungeon, shatteredpixeldungeon, shattered pixel dungeon, shattered-pixel-dungeon">
+		<meta name="author" content="infinixius">
+
+		<link rel="shortcut icon" type="image/x-icon" href="./favicon.ico"/>
+		<link rel="icon" href="favicon.ico" type="./favicon.ico"/>
+
+		<link rel="stylesheet" href="./css/index.css">
+		<link rel="stylesheet" href="./css/popup.css">
+	</head>
+	<body>
+		<div class="background" id="background_small"></div>
+		<div class="background" id="background_big"></div>
+		<div class="background" id="background_gradient"></div>
+
+		<div id="main">
+			<h1>spud</h1>
+			<p>
+				Save editor for the game Shattered Pixel Dungeon, a roguelike dungeon crawler with pixel graphics.<br><br>
+				
+				Please note that nobody except you is responsible for any harm you cause to your save or device.
+				<b>Backup your saves before using this tool.</b> Also keep in mind that this only works for Shattered Pixel Dungeon.
+				The vanilla game or any other forks do not work (for now). If you ever need help with anything, have a suggestion, or
+				want to report a bug, you can find me on the <a  target="_blank href="https://discord.gg/KBfMN8X" rel="noopener noreferrer">PD Discord server.</a>
+				
+				<br><br>
+				Read the FAQ <a  target="_blank href="https://github.com/infinixius/spud?tab=readme-ov-file#faq" rel="noopener noreferrer">here.</a> •
+				Leave a star on <a  target="_blank href="https://github.com/infinixius/spud" rel="noopener noreferrer">GitHub!</a> •
+				Play the game <a  target="_blank href="https://shatteredpixel.com/shatteredpd/" rel="noopener noreferrer">here!</a>
+			</p>
+
+			<hr>
+
+			<noscript>
+				<img class="icon bigicon" src="./assets/icons/error.png">
+				<b id="error_text">This website requires JavaScript. Please enable it and refresh.</b>
+				<hr>
+			</noscript>
+
+			<div class="section" id="section_meta">
+				<label>Save file: </label>
+				<input type="file" id="form_file" accept=".dat,.json">
+
+				<button class="rightbuttons" id="form_reset">reset</button>
+				<button class="rightbuttons" id="form_download">download</button>
+				<button class="rightbuttons" id="form_editjson">edit json</button>
+
+				<br>
+
+				<div id="warning">
+					<img class="icon mediumicon" src="./assets/icons/warning.png">
+					<b id="warning_text"></b>
+				</div>
+			</div>
+
+			<hr>
+
+			<div id="noupload_overlay" class="noupload_overlay_enable">
+				<div class="section" id="section_game">
+					<h2>Game</h2>
+	
+					<div>
+						<img class="icon" src="./assets/icons/seed.png">
+						<label>Seed:</label>
+						<input disabled type="text" id="form_game_seed" placeholder="Seed">
+					</div>
+	
+					<div>
+						<img class="icon" src="./assets/icons/version.png">
+						<label>Version:</label>
+						<input disabled class="smaller" type="text" id="form_game_version" placeholder="833">
+					</div>
+					
+					<div>
+						<img class="icon" src="./assets/icons/depth.png">
+						<label>Depth:</label>
+						<input disabled class="smaller" type="number" id="form_game_current_depth" placeholder="1">
+					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/amulet.png">
+						<label>Obtained the Amulet of Yendor:</label>
+						<input disabled type="checkbox" id="form_game_amuletobtained">
+					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/identifyall.png">
+						<label>Identify All Items:</label>
+						<input disabled type="checkbox" id="form_game_identifyall">
+					</div>
+					
+					<br>
+				</div>
+	
+				<hr>
+	
+				<div class="section" id="section_hero">
+					<h2>Hero</h2>
+
+					<div>
+						<img class="icon" src="./assets/icons/class.png">
+						<label>Class:</label>
+						<select id="form_hero_class">
+							<option value="WARRIOR">Warrior</option>
+							<option value="BERSERKER">Berserker</option>
+							<option value="GLADIATOR">Gladiator</option>
+							<hr>
+							<option value="MAGE">Mage</option>
+							<option value="BATTLEMAGE">Battlemage</option>
+							<option value="WARLOCK">Warlock</option>
+							<hr>
+							<option value="ROGUE">Rogue</option>
+							<option value="ASSASSIN">Assassin</option>
+							<option value="FREERUNNER">Freerunner</option>
+							<hr>
+							<option value="HUNTRESS">Huntress</option>
+							<option value="SNIPER">Sniper</option>
+							<option value="WARDEN">Warden</option>
+							<hr>
+							<option value="DUELIST">Duelist</option>
+							<option value="CHAMPION">Champion</option>
+							<option value="MONK">Monk</option>
+							<hr>
+							<option value="CLERIC">Cleric</option>
+							<option value="PRIEST">Priest</option>
+							<option value="PALADIN">Paladin</option>
+						</select>
+					</div>
+	
+					<div>
+						<img class="icon" src="./assets/icons/health.png">
+						<label>Health:</label>
+						<input disabled class="smaller" type="number" id="form_hero_hp" placeholder="20">
+						<label>/</label>
+						<input disabled class="smaller" type="number" id="form_hero_maxhp" placeholder="20">
+					</div>
+					
+					<div>
+						<img class="icon" src="./assets/icons/strength.png">
+						<label>Strength:</label>
+						<input disabled class="smaller" type="number" id="form_hero_strength" placeholder="10">
+					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/attack_skill.png">
+						<label>Attack:</label>
+						<input disabled class="smaller" type="number" id="form_hero_attack" placeholder="5">
+
+						<img class="icon" src="./assets/icons/defense_skill.png">
+						<label>Defense:</label>
+						<input disabled class="smaller" type="number" id="form_hero_defense" placeholder="5">
+					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/level.png">
+						<label>Level:</label>
+						<input disabled class="smaller" type="number" id="form_hero_level" placeholder="1">
+
+						<img class="icon" src="./assets/icons/experience.png">
+						<label>XP:</label>
+						<input disabled class="smaller" type="number" id="form_hero_experience" placeholder="0">
+					</div>
+	
+					<br>
+	
+					<div>
+						<img class="icon" src="./assets/icons/gold.png">
+						<label>Gold:</label>
+						<input disabled class="smaller" type="number" id="form_hero_gold" placeholder="0">
+					</div>
+
+					<div>
+						<img class="icon" src="./assets/icons/energy.png">
+						<label>Energy:</label>
+						<input disabled class="smaller" type="number" id="form_hero_energy" placeholder="0">
+					</div>
+				</div>
+
+				<div class="section" id="section_inventory">
+					<h2>Inventory</h2>
+
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_active">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							 </colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_weapon">
+								<td>
+									<div class="item_icon form_inventory_generic_icon" style="background-position: -16px -0px; width: 14px; height: 14px;"></div>
+									<div class="item_small_icon" style="display: none;"></div>
+								</td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_armor">
+								<td>
+									<div class="item_icon form_inventory_generic_icon" style="background-position: -32px -0px; width: 14px; height: 12px;"></div>
+									<div class="item_small_icon" style="display: none;"></div>
+								</td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_artifact">
+								<td>
+									<div class="item_icon form_inventory_generic_icon" style="background-position: -96px -0px; width: 15px; height: 15px;"></div>
+									<div class="item_small_icon" style="display: none;"></div>
+								</td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_artifactorring">
+								<td>
+									<div class="item_icon form_inventory_generic_icon" style="background-position: -0px -0px; width: 8px; height: 13px;"></div>
+									<div class="item_small_icon" style="display: none;"></div>
+								</td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+							<tr class="inventory_item form_inventory_active_item" id="form_inventory_active_ring">
+								<td>
+									<div class="item_icon form_inventory_generic_icon" style="background-position: -80px -0px; width: 8px; height: 10px;"></div>
+									<div class="item_small_icon" style="display: none;"></div>
+								</td>
+								<td class="form_inventory_generic_name">&nbsp;</td>
+								<td><input type="number" class="smaller form_inventory_generic_level" min="1"></td>
+								<td><input type="number" class="smaller form_inventory_generic_quantity" min="1"></td>
+								<td><select class="form_inventory_generic_enchant"></select></td>
+								<td><input disabled type="checkbox" class="form_inventory_generic_cursed"></td>
+								<td>
+									<button onclick="button_editjson(this)">json</button>
+									<button onclick="button_delete(this)">delete</button>
+								</td>
+							</tr>
+						</table>
+					</div>
+					
+					<br>
+
+					<button class="form_inventory_button" id="form_inventory_main_additem">Add Item</button>
+					<br><br>
+
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_main">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
+					
+					<h3>Velvet Pouch</h3>
+
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_pouch">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
+
+					<h3>Scroll Holder</h3>
+
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_scrolls">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
+
+					<h3>Potion Bandolier</h3>
+
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_potions">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
+
+					<h3>Magic Holster</h3>
+
+					<div class="form_inventory_container">
+						<table class="inventory" id="form_inventory_holster">
+							<colgroup>
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 25%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+								<col span="1" style="width: 1%;">
+								<col span="1" style="width: 10%;">
+							</colgroup>
+							<tr>
+								<th></th>
+								<th>Name</th>
+								<th>Level</th>
+								<th>Quantity</th>
+								<th>Enchant</th>
+								<th>Cursed</th>
+								<th>Actions</th>
+							</tr>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<a id="musicflip">ಠ_ಠ</a>
+
+		<script src="./js/lib/pako.min.js"></script>
+
+		<script src="./js/background.js"></script>
+		<script src="./js/data.js"></script>
+		<script src="./js/form.js"></script>
+		<script src="./js/inventory.js"></script>
+		<script src="./js/popup.js"></script>
+		<script src="./js/save_file.js"></script>
+		<script src="./js/sprites.js"></script>
+
+		<script src="./js/index.js"></script>
+	</body>
+</html>

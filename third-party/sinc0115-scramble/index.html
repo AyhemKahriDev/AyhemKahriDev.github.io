@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Scramble Game</title>
+  <link rel="stylesheet" href="style.css">
+
+  <!-- BOOTSTRAP STYLES -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+
+  <!-- ANIMATE CSS -->
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.0.0/animate.min.css"
+  />
+</head>
+
+<body>
+  <div class="container-fluid app-container">
+
+    <!-- VUE HERE -->
+    <div id="app">
+
+      <!-- HEADER BAR -->
+      <div class="container-fluid mt-5 mb-0 clearfix col-lg-10">
+
+        <div class="top-head">
+          <h1>Scramble Game</h1>
+        </div>
+
+        <div class="top-btns">
+          <!-- INSTRUCTIONS MODAL -->
+          <button type="button" class="btn btn-secondary top-btn restart" data-toggle="modal" data-target="#instructModal">
+            Game Instructions
+          </button>
+          <!-- INSTRUCTIONS ENDS -->
+          <!-- START GAME MODAL -->
+          <button type="button" class="btn top-btn btn-danger ml-2 instructions" @click="gameStatus = false" data-toggle="modal" data-target="#startModal">
+            Restart Game
+          </button>
+          <!-- START ENDS -->
+        </div>
+        
+      </div>
+      <!-- HEADER BAR ENDS -->
+        
+      <!-- SCORE CARDS -->
+      <div class="container-fluid score-card mb-5 col-lg-10">
+        <div class="card-group">
+          <div class="card points">
+            <h2>Score: </h2>
+            <p v-cloak>{{ score }}</p>
+          </div>
+          <div class="card strikes">
+            <h2>Strikes Left: </h2>
+            <p v-cloak>{{ strikes }}</p>
+          </div>
+          <div class="card passes">
+            <h2>Passes Left: </h2>
+            <p v-cloak>{{ pass }}</p>
+          </div>
+        </div>
+      </div>
+      <!-- SCORE CARDS ENDS -->
+
+      <!-- SCRAMBLED WORD -->
+      <div class="container col-lg-8">
+        <div class="scramble">
+          <p v-cloak v-if="this.gameStatus">{{ this.shuffledWord }}</p>
+          <p v-else> </p>
+        </div>
+      </div>
+      <!-- <div class="container col-lg-8">
+        <div class="scramble">
+          <p>{{ guess }}</p>
+        </div>
+      </div> -->
+      <!-- SCRAMBLED WORD ENDS -->
+
+      <!-- TEXT INPUT -->
+      <div class="container col-lg-8">
+        <form @submit.prevent="onEnter">
+          <div class="form-group">
+
+            <!-- TEXT INPUT -->
+            <input 
+              v-model="guess"
+              type="text" 
+              class="form-control" 
+              id="guess" 
+              aria-label="Type your guess here" aria-describedby="guessLabel">
+            <small id="guessLabel" class="form-text text-muted">Unscramble the word above and place a guess, or pass!</small>
+          </div>
+          <div class="form-group text-center">
+
+            <!-- BUTTONS PASS / GUESS -->
+            <!-- <button 
+              @click.self="passWord"
+              id="pass" 
+              class="btn btn-secondary mr-5">
+              Pass
+            </button> -->
+            <div
+              @click.self="passWord"
+              id="pass" 
+              class="btn btn-secondary mr-5"
+              :class="{disableBtn: noMore}">
+              Pass
+            </div>
+            <button 
+              @click.prevent="onEnter"
+              id="guess" 
+              type="submit" 
+              class="btn btn-primary">
+              Guess
+            </button>
+          </div>
+        </form>
+      </div>
+    <!-- TEXT INPUT ENDS -->
+
+    <!-- ALERTS -->
+    <!-- POINTS -->
+    <div v-cloak v-if="this.alertResponse == 'score'" class="alert alert-success" role="alert">
+      Correct! Your score is {{ score }}!
+    </div>
+    <!-- STRIKES -->
+    <div v-cloak v-else-if="this.alertResponse == 'strike'" class="alert alert-danger" role="alert">
+      Wrong! You have {{ strikes }} strike(s) left!
+    </div>
+    <!-- PASS -->
+    <div v-cloak v-else-if="this.alertResponse == 'pass'" class="alert alert-secondary" role="alert">
+      You have passed on that word. You have {{ pass }} pass(es) left.
+    </div>
+    <!-- NO MORE PASSES -->
+    <div v-cloak v-else-if="this.alertResponse == 'noMore'" class="alert alert-secondary" role="alert">
+      No passes left!
+    </div>
+
+  
+
+<!-- START GAME MODAL -->
+<div class="modal fade" id="startModal" tabindex="-1" role="dialog" data-backdrop="static" aria-labelledby="startGameModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- PLAY / PLAY AGAIN -->
+        <h2 v-if="playAgain == false" id ="startGameModal" class="modal-title">Play the Scramble Game</h2>
+        <h2 v-if="playAgain" id ="startGameModal" class="modal-title">Game Over. Play Again!</h2>
+        <!-- PLAY END -->
+        <button 
+          @click="onLoad" 
+          type="button" 
+          class="close" 
+          data-dismiss="modal" 
+          aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p v-cloak v-if="playAgain">Your final score: {{this.score}}</p>
+        <p v-if="playAgain == false">Guess the correct words to win!</p>
+        <!-- CLOSE MODAL, GAMESTATUS = TRUE -->
+        <button 
+          v-if="playAgain == false"
+          @click.self="onLoad" 
+          data-dismiss="modal"
+          type="button" 
+          class="btn btn-success">
+          Start Game
+        </button>
+
+        <button 
+        v-if="playAgain"
+          @click.self="onLoad" 
+          data-dismiss="modal"
+          type="button" 
+          class="btn btn-success">
+          Play Again
+        </button>
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- START GAME MODAL ENDS -->
+
+<!-- INSTRUCTIONS MODAL -->
+<div class="modal fade" id="instructModal" tabindex="-1" role="dialog" aria-labelledby="instructionsModal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id ="instructionsModal" class="modal-title">Scramble Game Instructions</h2>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ol>
+          <li>You will be presented with scrambled letters. </li>
+          <li>Guess the word using the text box. </li>
+          <li>If you guess right, you will get 1 point. </li>
+          <li>If you guess wrong, you will get 1 strike. If you get 3 strikes, the game ends. </li>
+          <li>If you can't unscramble the word, you can choose to pass. You have 3 passes available.</li>
+          <li>Good luck!</li>
+        </ol>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- INSTRUCTIONS MODAL ENDS -->
+
+</div>
+<!-- VUE ENDS -->
+</div>
+<!-- APP CONTAINER ENDS -->
+
+
+<!-- JS -->
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+
+  <!-- BOOTSTRAP JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!-- BOOTSTRAP ENDS -->
+
+<script src="scramble.js"></script>
+</body>
+
+</html>

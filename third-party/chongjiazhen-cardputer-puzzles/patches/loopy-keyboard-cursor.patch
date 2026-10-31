@@ -1,0 +1,269 @@
+diff --git a/loopy.c b/loopy.c
+index 2496a63..8dcc050 100644
+--- a/loopy.c
++++ b/loopy.c
+@@ -108,6 +108,7 @@ enum {
+     COL_MISTAKE,
+     COL_SATISFIED,
+     COL_FAINT,
++    COL_CURSOR,
+     NCOLOURS
+ };
+ 
+@@ -240,6 +241,8 @@ struct game_drawstate {
+     char *lines;
+     bool *clue_error;
+     bool *clue_satisfied;
++    int cur_edge;         /* edge the cursor ring was last drawn on, -1 = none */
++    bool cur_visible;
+ };
+ 
+ static const char *validate_desc(const game_params *params, const char *desc);
+@@ -328,6 +331,13 @@ static grid *loopy_generate_grid(const game_params *params,
+ /* General constants */
+ #define PREFERRED_TILE_SIZE 32
+ #define BORDER(tilesize) ((tilesize) / 2)
++
++/* Radius of the keyboard cursor ring, drawn at the midpoint of the selected
++ * edge. Floored at 2px: this has to stay legible at the tiny tilesizes a
++ * handheld screen forces, where a proportional-only radius rounds to nothing.
++ * Line thickness is not usable as a cursor channel because a frontend may
++ * implement draw_thick_line as a plain 1px line. */
++#define CURSOR_RADIUS(tilesize) max((tilesize) / 5, 2)
+ #define FLASH_TIME 0.5F
+ 
+ #define BIT_SET(field, bit) ((field) & (1<<(bit)))
+@@ -897,6 +907,18 @@ struct game_ui {
+         AF_FIXED,   /* yes, but only based on the grid itself */
+         AF_ADAPTIVE /* yes, and consider edges user has already set to NO */
+     } autofollow;
++
++    /*
++     * Keyboard cursor. Loopy was mouse-only upstream ("I think it's only
++     * possible to play this game with mouse clicks, sorry" in
++     * interpret_move), which makes it unplayable on a device with no
++     * pointing device at all. The cursor selects one EDGE, since an edge is
++     * what a click acts on; arrows walk the edge adjacency graph, so this
++     * works on every grid type including the aperiodic ones, where "the
++     * square to the left" is meaningless.
++     */
++    int cur_edge;
++    bool cur_visible;
+ };
+ 
+ static void legacy_prefs_override(struct game_ui *ui_out)
+@@ -932,6 +954,8 @@ static game_ui *new_ui(const game_state *state)
+     game_ui *ui = snew(game_ui);
+     ui->draw_faint_lines = true;
+     ui->autofollow = AF_OFF;
++    ui->cur_edge = 0;
++    ui->cur_visible = false;
+     legacy_prefs_override(ui);
+     return ui;
+ }
+@@ -1039,6 +1063,13 @@ static float *game_colours(frontend *fe, int *ncolours)
+     ret[COL_FAINT * 3 + 1] = ret[COL_BACKGROUND * 3 + 1] * 0.9F;
+     ret[COL_FAINT * 3 + 2] = ret[COL_BACKGROUND * 3 + 2] * 0.9F;
+ 
++    /* Keyboard cursor ring. Must not collide with COL_MISTAKE (red) or
++     * COL_SATISFIED/COL_FOREGROUND (black), which can both appear on the
++     * very edge the cursor is sitting on. */
++    ret[COL_CURSOR * 3 + 0] = 0.0F;
++    ret[COL_CURSOR * 3 + 1] = 0.4F;
++    ret[COL_CURSOR * 3 + 2] = 1.0F;
++
+     *ncolours = NCOLOURS;
+     return ret;
+ }
+@@ -1058,6 +1089,8 @@ static game_drawstate *game_new_drawstate(drawing *dr, const game_state *state)
+     ds->textx = snewn(num_faces, int);
+     ds->texty = snewn(num_faces, int);
+     ds->flashing = false;
++    ds->cur_edge = -1;
++    ds->cur_visible = false;
+ 
+     memset(ds->lines, LINE_UNKNOWN, num_edges);
+     memset(ds->clue_error, 0, num_faces * sizeof(bool));
+@@ -3042,6 +3075,58 @@ static char *solve_game(const game_state *state, const game_state *currstate,
+  * Drawing and mouse-handling
+  */
+ 
++/*
++ * Move the edge cursor one step in the direction of a cursor key.
++ *
++ * Candidates are restricted to edges sharing a dot with the current edge.
++ * That keeps movement local, guarantees the cursor can always reach a
++ * perpendicular edge (a whole-grid nearest-in-direction search cannot: on a
++ * square grid every direction from a horizontal edge finds another horizontal
++ * edge first, trapping the cursor in one sublattice), and needs nothing but
++ * grid adjacency, so it behaves sensibly on triangular, honeycomb, Penrose
++ * and hat/spectre grids too.
++ *
++ * Among those candidates, take the one whose midpoint offset is most nearly
++ * parallel to the pressed direction: smallest perpendicular component, ties
++ * broken by the nearest. Returns -1 if nothing lies that way.
++ */
++static int loopy_cursor_neighbour(grid *g, int cur, int button)
++{
++    grid_edge *e = g->edges[cur];
++    /* Work in doubled coordinates throughout, so midpoints stay exact. */
++    long cx = (long)e->dot1->x + e->dot2->x, cy = (long)e->dot1->y + e->dot2->y;
++    long dx = (button == CURSOR_RIGHT) ? 1 : (button == CURSOR_LEFT) ? -1 : 0;
++    long dy = (button == CURSOR_DOWN)  ? 1 : (button == CURSOR_UP)   ? -1 : 0;
++    long bestperp = 0, bestalong = 0;
++    int best = -1, d, j;
++
++    for (d = 0; d < 2; d++) {
++        grid_dot *dot = (d == 0) ? e->dot1 : e->dot2;
++        for (j = 0; j < dot->order; j++) {
++            grid_edge *c = dot->edges[j];
++            long mx, my, along, perp;
++
++            if (c == e)
++                continue;
++            mx = (long)c->dot1->x + c->dot2->x - cx;
++            my = (long)c->dot1->y + c->dot2->y - cy;
++            along = mx * dx + my * dy;
++            if (along <= 0)
++                continue;               /* not in the pressed direction */
++            perp = mx * dy - my * dx;
++            if (perp < 0)
++                perp = -perp;
++            if (best < 0 || perp < bestperp ||
++                (perp == bestperp && along < bestalong)) {
++                best = c->index;
++                bestperp = perp;
++                bestalong = along;
++            }
++        }
++    }
++    return best;
++}
++
+ static char *interpret_move(const game_state *state, game_ui *ui,
+                             const game_drawstate *ds,
+                             int x, int y, int button)
+@@ -3057,22 +3142,47 @@ static char *interpret_move(const game_state *state, game_ui *ui,
+ 
+     button = STRIP_BUTTON_MODIFIERS(button);
+ 
+-    /* Convert mouse-click (x,y) to grid coordinates */
+-    x -= BORDER(ds->tilesize);
+-    y -= BORDER(ds->tilesize);
+-    x = x * g->tilesize / ds->tilesize;
+-    y = y * g->tilesize / ds->tilesize;
+-    x += g->lowest_x;
+-    y += g->lowest_y;
++    if (IS_CURSOR_MOVE(button)) {
++        int n;
++        if (!ui->cur_visible) {
++            ui->cur_visible = true;     /* first press only reveals it */
++            return MOVE_UI_UPDATE;
++        }
++        n = loopy_cursor_neighbour(g, ui->cur_edge, button);
++        if (n < 0)
++            return MOVE_NO_EFFECT;
++        ui->cur_edge = n;
++        return MOVE_UI_UPDATE;
++    }
++
++    if (IS_CURSOR_SELECT(button)) {
++        if (!ui->cur_visible) {
++            ui->cur_visible = true;
++            return MOVE_UI_UPDATE;
++        }
++        /* Act on the cursor edge with the same semantics as a click: select
++         * cycles through LINE_YES, select2 through LINE_NO. */
++        e = g->edges[ui->cur_edge];
++        button = (button == CURSOR_SELECT2) ? RIGHT_BUTTON : LEFT_BUTTON;
++    } else {
++        /* Convert mouse-click (x,y) to grid coordinates */
++        x -= BORDER(ds->tilesize);
++        y -= BORDER(ds->tilesize);
++        x = x * g->tilesize / ds->tilesize;
++        y = y * g->tilesize / ds->tilesize;
++        x += g->lowest_x;
++        y += g->lowest_y;
+ 
+-    e = grid_nearest_edge(g, x, y);
+-    if (e == NULL)
+-        return NULL;
++        e = grid_nearest_edge(g, x, y);
++        if (e == NULL)
++            return NULL;
++        ui->cur_visible = false;        /* pointing device takes over */
++    }
+ 
+     i = e->index;
+ 
+-    /* I think it's only possible to play this game with mouse clicks, sorry */
+-    /* Maybe will add mouse drag support some time */
++    /* Mouse drag support is still absent; keyboard play goes through the
++     * edge cursor handled above. */
+     old_state = state->lines[i];
+ 
+     switch (button) {
+@@ -3309,11 +3419,13 @@ static void edge_bbox(game_drawstate *ds, grid *g, grid_edge *e,
+ 
+     grid_to_screen(ds, g, x1, y1, &x1, &y1);
+     grid_to_screen(ds, g, x2, y2, &x2, &y2);
+-    /* Allow extra margin for dots, and thickness of lines */
+-    xmin = min(x1, x2) - (ds->tilesize + 15) / 16;
+-    xmax = max(x1, x2) + (ds->tilesize + 15) / 16;
+-    ymin = min(y1, y2) - (ds->tilesize + 15) / 16;
+-    ymax = max(y1, y2) + (ds->tilesize + 15) / 16;
++    /* Allow extra margin for dots, thickness of lines, and the cursor ring
++     * (CURSOR_RADIUS at the edge midpoint, which is wider than the line and
++     * would otherwise leave a crescent behind when the cursor moves away). */
++    xmin = min(x1, x2) - CURSOR_RADIUS(ds->tilesize) - 1;
++    xmax = max(x1, x2) + CURSOR_RADIUS(ds->tilesize) + 1;
++    ymin = min(y1, y2) - CURSOR_RADIUS(ds->tilesize) - 1;
++    ymax = max(y1, y2) + CURSOR_RADIUS(ds->tilesize) + 1;
+ 
+     *x = xmin;
+     *y = ymin;
+@@ -3437,6 +3549,20 @@ static void game_redraw_in_rect(drawing *dr, game_drawstate *ds,
+             game_redraw_dot(dr, ds, state, i);
+     }
+ 
++    /* Cursor ring last, so a dot at the end of a short edge can't cover it. */
++    if (ui->cur_visible) {
++        grid_edge *e = g->edges[ui->cur_edge];
++        edge_bbox(ds, g, e, &bx, &by, &bw, &bh);
++        if (boxes_intersect(x, y, w, h, bx, by, bw, bh)) {
++            int x1, y1, x2, y2;
++            grid_to_screen(ds, g, e->dot1->x, e->dot1->y, &x1, &y1);
++            grid_to_screen(ds, g, e->dot2->x, e->dot2->y, &x2, &y2);
++            /* Unfilled, so the edge's own state colour stays readable. */
++            draw_circle(dr, (x1 + x2) / 2, (y1 + y2) / 2,
++                        CURSOR_RADIUS(ds->tilesize), -1, COL_CURSOR);
++        }
++    }
++
+     unclip(dr);
+     draw_update(dr, x, y, w, h);
+ }
+@@ -3578,6 +3704,23 @@ static void game_redraw(drawing *dr, game_drawstate *ds,
+         }
+     }
+ 
++    /* And the cursor: dirty both the edge it left and the one it arrived on. */
++    if (ds->cur_visible != ui->cur_visible || ds->cur_edge != ui->cur_edge) {
++        int c;
++        for (c = 0; c < 2; c++) {
++            int idx = c ? ui->cur_edge : ds->cur_edge;
++            bool vis = c ? ui->cur_visible : ds->cur_visible;
++            if (!vis || idx < 0)
++                continue;
++            if (nedges == REDRAW_OBJECTS_LIMIT)
++                redraw_everything = true;
++            else
++                edges[nedges++] = idx;
++        }
++        ds->cur_edge = ui->cur_edge;
++        ds->cur_visible = ui->cur_visible;
++    }
++
+     /* Pass one is now done.  Now we do the actual drawing. */
+     if (redraw_everything) {
+         int grid_width = g->highest_x - g->lowest_x;

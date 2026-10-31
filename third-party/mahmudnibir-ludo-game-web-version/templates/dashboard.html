@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Ludo Tournament{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Profile</h3>
+                    <p><strong>Username:</strong> {{ current_user.username }}</p>
+                    <p><strong>Email:</strong> {{ current_user.email }}</p>
+                    <p><strong>Coins:</strong> {{ current_user.coins }}</p>
+                    <p><strong>Real Money Balance:</strong> ${{ "%.2f"|format(current_user.real_money_balance) }}</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h3 class="card-title">Quick Actions</h3>
+                    <div class="d-grid gap-2 d-md-flex">
+                        <a href="{{ url_for('free_play') }}" class="btn btn-primary me-md-2">Play Free Game</a>
+                        <a href="{{ url_for('bet_play') }}" class="btn btn-success me-md-2">Play Betting Game</a>
+                        {% if current_user.is_admin %}
+                            <a href="{{ url_for('admin_panel') }}" class="btn btn-warning">Admin Panel</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="card-title">Recent Games</h3>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Game ID</th>
+                                    <th>Type</th>
+                                    <th>Status</th>
+                                    <th>Result</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for game in recent_games %}
+                                <tr>
+                                    <td>{{ game.id }}</td>
+                                    <td>{{ game.game_type }}</td>
+                                    <td>{{ game.status }}</td>
+                                    <td>
+                                        {% if game.status == 'completed' %}
+                                            {% if game.winner_id == current_user.id %}
+                                                <span class="badge bg-success">Won</span>
+                                            {% else %}
+                                                <span class="badge bg-danger">Lost</span>
+                                            {% endif %}
+                                        {% else %}
+                                            <span class="badge bg-warning">In Progress</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ game.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                </tr>
+                                {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center">No recent games</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,12 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "allowJs": true,
+    "noEmit": true,
+    "target": "ES2020",
+    "module": "none",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"]
+  },
+  "include": ["game.js"],
+  "exclude": ["node_modules", "tests", "service-worker.js"]
+}

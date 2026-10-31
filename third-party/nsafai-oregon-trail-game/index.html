@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>A Silicon Valley remake of the classic Oregon Trail</title>
+    <link rel="stylesheet" href="css/style.css"/>
+  </head>
+  <body>
+    <div id="header">
+      <h1 id="page-title">Silicon Valley Trail</h1>
+      <h4 id="sub-header">A totally accurate simulation of entrepeneurial life in the Silicon Valley.</h4>
+      <hr>
+    </div>
+
+    <div id="game">
+     
+      <div id="left-panel">
+        <h3 id="header-title">Company KPIs</h5>
+        <div class="stat">Day <span id="stat-day" class="stat-value"></span></div>
+        <div class="stat">Users <span id="stat-users" class="stat-value"></span></div>
+        <div class="stat">Devs <span id="stat-devs" class="stat-value"></span></div>
+        <div class="stat">Servers <span id="stat-servers" class="stat-value"></span></div>
+        <div class="stat">Soylent <span id="stat-soylent" class="stat-value"></span></div>
+        <div class="stat">Money <span id="stat-money" class="stat-value"></span></div>
+        <div class="stat">Hacker Bounties <span id="stat-bounties" class="stat-value"></span></div>
+      </div>
+
+      <div id="center-panel">
+        <h4 id="progress-text">Progress towards Series A</h4>
+        <div id="myProgress">
+          <div id="myBar"></div>
+        </div>
+        <img id="gif" src="images/sv-office-coding.gif" />
+      </div>
+      
+      <div id="right-panel">
+        <div id="shop" class="hidden">
+          <h4 id="event-description-shop"></h4>
+          <div id="prods">
+          </div>
+          <button id="leave-btn">Leave shop</button>
+        </div>
+        
+        <div id="attack" class="hidden">
+          <h4 id="event-description-atk"></h4>
+          <div id="attack-description"></div>
+          <button id="payoff">Pay Off</button>
+          <button id="shutdown">Shut Servers Down</button>
+        </div>
+        <div class="updates-area" id="updates-area"></div>
+      </div>
+      
+    </div>
+
+    <!-- DO NOT RE-ORDER JS FILES BELOW -->
+
+    <!-- 1) IMPORT CONSTANTS -->
+    <script src="js/Constants.js"></script> 
+    
+    <!-- 2) IMPORT CLASSES -->
+    <script src="js/Event.js"></script> 
+    <script src="js/Caravan.js"></script>
+    <script src="js/UI.js"></script>
+    <script src="js/Game.js"></script>
+
+    <!-- 3) INIT GAME -->
+    <script src="js/Init.js"></script> 
+
+    <!-- DO NOT RE-ORDER JS FILES ABOVE -->
+  </body>
+</html>

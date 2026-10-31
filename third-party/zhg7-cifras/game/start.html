@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cifras: jugar</title>
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="stylesheet" href="styles/start.css">
+    <script src="scripts/start.js" defer></script>
+    <script src="scripts/audio.js" defer></script>
+</head>
+
+<body>
+  
+    <div id="start">
+        <nav>
+            <label class="switch" id="audio-control">
+                <input type="checkbox" hidden autocomplete="off">
+                <span class="slider"></span>
+            </label>
+            <button type="button" id="back-btn" class="click hover"><img src="assets/img/back.svg" alt="Volver"><span>Volver</span></button>
+        </nav>
+        <header>
+            <h1 id="title">Jugar</h1>
+        </header>
+        <section>
+            <div id="players">
+                <p class="message"><img src="assets/img/info.svg" alt="Info"><strong>Introduce los nombres y pulsa en
+                        los
+                        iconos para definir los colores.</strong></p>
+                <div class="player" id="player1">
+                    <div class="icon_border">
+                        <svg id="player1_icon" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" class="bi bi-person-fill player-icon" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                        </svg>
+                    </div>
+                    <fieldset>
+                        <input type="text" class="player_name" name="player1_name" id="player1_name" placeholder=" ">
+                        <label for="player1_name">
+                            Nombre
+                        </label>
+                    </fieldset>
+                    <input type="color" class="player_color" name="player1_color" id="player1_color" hidden>
+                </div>
+                <div class="player" id="player2">
+                    <div class="icon_border">
+                        <svg id="player2_icon" xmlns="http://www.w3.org/2000/svg"
+                            fill="currentColor" class="bi bi-person-fill player-icon" viewBox="0 0 16 16">
+                            <path d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3Zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+                        </svg>
+                    </div>
+                    <fieldset>
+                        <input type="text" class="player_name" name="player2_name" id="player2_name" placeholder=" ">
+                        <label for="player2_name">
+                            Nombre
+                        </label>
+                    </fieldset>
+                    <input type="color" class="player_color" name="player2_color" id="player2_color" hidden>
+                </div>
+                <div class="button-wrapper">
+                <button type="button" class="action-button hover" id="play-btn">Jugar</button>
+            </div>
+            </div>
+        </section>
+        <section>
+            <div class="overlay" id="overlay"></div>
+            <div id="play-modal" class="modal">
+                <button class="modal-close-btn click hover" id="play-close-btn">
+                    <div class="leftright"></div>
+                    <div class="rightleft"></div>
+                </button>
+                <h1>Comienzo de partida</h1>
+                <p class="message"><img src="assets/img/warning.svg" alt="Warning"><strong>A continuación se generarán los
+                        números. ¿Continuar?</strong></p>
+                <button type="button" class="action-button click hover" id="confirm-play-btn"></button>
+            </div>
+        </section>
+        <aside>
+            <div id="falling-operators">
+                <div>+</div>
+                <div>-</div>
+                <div>÷</div>
+                <div>×</div>
+                <div>÷</div>
+                <div>+</div>
+                <div>-</div>
+                <div>×</div>
+            </div>
+        </aside>
+    </div>
+    <audio id="soundtrack" loop="true" preload="auto">
+        <source src="assets/audio/soundtrack.ogg" type="audio/ogg">
+    </audio>
+    <audio id="switch-sound" preload="auto">
+        <source src="assets/audio/switch.wav" type="audio/wav">
+    </audio>
+    <audio id="click-sound" preload="auto">
+        <source src="assets/audio/click.wav" type="audio/wav">
+    </audio>
+    <audio id="error-sound" preload="auto">
+        <source src="assets/audio/error.wav" type="audio/wav">
+    </audio>
+    <audio id="alert-sound" preload="auto">
+        <source src="assets/audio/alert.wav" type="audio/wav">
+    </audio>
+    <audio id="hover-sound" preload="auto">
+        <source src="assets/audio/hover.wav" type="audio/wav">
+    </audio>
+</body>
+
+</html>

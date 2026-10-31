@@ -1,0 +1,22 @@
+.term, .link {
+  color: #00D;
+  cursor: pointer;
+}
+
+a.popup {
+  text-decoration: none;
+}
+
+/* Part of system to vertically center text. Also requires the line-height of
+ * the enclosing <div> to be the same as its height.
+ */
+.vert-center {
+  display: inline-block;
+  vertical-align: middle;
+  line-height: normal;
+}
+
+.tooltip {
+  border: 2px solid #CCCC29;
+  padding: 2px;
+}

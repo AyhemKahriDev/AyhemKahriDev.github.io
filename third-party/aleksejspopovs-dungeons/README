@@ -1,0 +1,2 @@
+Dungeons is an HTML5 <canvas>-based roguelike made by me as an experient with arts drawn (mostly) by anonymous artists from Russian imageboards.
+Dungeons is free software, provided under the MIT license (more info in LICENSE file).

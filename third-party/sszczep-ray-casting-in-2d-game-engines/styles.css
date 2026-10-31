@@ -1,0 +1,56 @@
+.img-fluid {
+  max-width: 100%;
+  max-height: 300px;
+}
+
+.nav-link {
+  margin: .1rem 0;
+}
+
+h1 {
+  margin: 3rem 0;
+}
+
+h2 {
+  margin: 2rem 0;
+}
+
+h3 {
+  margin: 1rem 0;
+}
+
+h4 {
+  margin: .5rem 0;
+}
+
+.MathJax.CtxtMenu_Attached_0 {
+  overflow-x: auto;
+  overflow-y: hidden;
+  text-align: left !important;
+}
+
+@media (min-width: 992px) {
+  #navbar {
+    max-height: 100vh;
+    overflow-y: auto;
+    padding-right: 15px;
+  }
+
+  .nav-link {
+    padding: 0;
+    margin: .2rem 0;
+    font-size: .9rem;
+  }
+
+  .nav-link.active {
+    color: inherit !important;
+    background-color: inherit !important;
+    text-decoration: underline;
+  }
+}
+
+@media print {
+  #navbar {
+    display: none;
+  }
+}

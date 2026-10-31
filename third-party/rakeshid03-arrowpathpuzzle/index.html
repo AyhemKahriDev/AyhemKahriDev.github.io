@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Arrow Path Puzzle</title>
+  <style>
+    /* -------------------- Base Styles -------------------- */
+    *,
+    *:before,
+    *:after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #eaeef6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    
+    header {
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 3.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1.7rem;
+    }
+    
+    footer {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      text-align: center;
+      padding: 8px 2px;
+      background: #37404d;
+      color: white;
+      font-size: 12px;
+    }
+    
+    p {
+      text-align: center;
+      color: #555;
+      font-size: 0.9rem;
+      margin-bottom: 16px;
+    }
+    
+    /* -------------------- Control Panel -------------------- */
+    .controls {
+      background: #f1f5f9;
+      border-radius: 10px;
+      width: min(90vw, 500px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .top-row,
+    .diff-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
+      width: min(90vw, 500px);
+      padding: 6px;
+    }
+    
+    .select-box {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      border: 2px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 8px 12px;
+      min-width: 49%;
+      font-size: 0.95rem;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+    }
+    
+    .select-box:hover {
+      border-color: rgba(74, 222, 128, 0.4);
+    }
+    
+    .select-box select {
+      border: none;
+      outline: none;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: inherit;
+      color: #1e293b;
+    }
+    
+    .diff-row {
+      user-select: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    
+    .diff-btn {
+      flex: 1;
+      padding: 8px 4px;
+      font-weight: 600;
+      font-size: 0.7rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #fff;
+      color: #ccc;
+      transition: all 0.3s ease;
+    }
+    
+    .diff-btn.active {
+      color: #fff;
+      background: linear-gradient(180deg, #00d1ff, #00FFCD);
+      transform: scale(1.01);
+    }
+    
+    .diff-btn:hover {
+      border: 1px solid rgba(74, 222, 128, 0.4);
+    }
+    
+    /* -------------------- Grid + Cells -------------------- */
+    .grid {
+      display: grid;
+      gap: 5px;
+      background: #fff;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25);
+      width: min(90vw, 500px);
+      overflow: hidden;
+      position: relative;
+    }
+    
+    .cell {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #f1f5f9;
+      border-radius: 8px;
+      aspect-ratio: 1/1;
+      cursor: pointer;
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      transition: background 0.25s, transform 0.15s;
+    }
+    
+    .cell:hover {
+      background: #e2e8f0;
+      transform: scale(1.05);
+    }
+    
+    .arrow {
+      font-size: 1.5rem;
+      color: #111;
+      transition: transform 0.25s ease;
+    }
+    
+    .rock {
+      background: #d1d5db !important;
+      font-size: 1.4rem;
+      cursor: default !important;
+    }
+    
+    .start {
+      background: #e2e8f0 !important;
+      box-shadow: 0 0 12px #e2e8f0 inset;
+    }
+    
+    .goal {
+      background: #00FFCD !important;
+      box-shadow: 0 0 12px #bbf7d0 inset;
+      font-weight: bold;
+      font-size: 17px;
+    }
+    
+    .bird {
+      position: absolute;
+      font-size: 26px;
+      transition: transform 0.3s ease;
+      z-index: 5;
+      text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    .glow {
+      background: #86efac !important;
+      box-shadow: 0 0 12px #4ade80 inset;
+    }
+    
+    /* -------------------- Message + Button -------------------- */
+    #message {
+      margin: 16px;
+      color: black;
+      font-weight: 600;
+      font-size: 1rem;
+    }
+    
+    .next {
+      padding: 12px 30px;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(180deg, #00d1ff, #00FFCD);
+      border: none;
+      border-radius: 33px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 15px rgba(0, 209, 255, 0.3);
+    }
+    
+    .next:active {
+      transform: translateY(2px);
+      box-shadow: 0 4px 10px rgba(0, 209, 255, 0.2);
+    }
+  </style>
+</head>
+
+<body>
+  <header>ARROW PATH PUZZLE</header>
+  
+  <!-- -------------------- Controls -------------------- -->
+  <div class="controls">
+    <div class="top-row">
+      <div class="select-box">
+        <label>Player</label>
+        <select id="character" onchange="generateGrid()">
+          <option>🐥</option>
+          <option>🐸</option>
+          <option>🐰</option>
+          <option>🐱</option>
+          <option>🦊</option>
+          <option>🐼</option>
+          <option>👽</option>
+          <option>🐯</option>
+          <option>✈️</option>
+          <option>🐑</option>
+          <option>🐶</option>
+          <option>💌</option>
+          <option>😋</option>
+        </select>
+      </div>
+      <div class="select-box">
+        <label>Goal</label>
+        <select id="goalSelect" onchange="generateGrid()">
+          <option>🏁</option>
+          <option>🎁</option>
+          <option>💎</option>
+          <option>🎂</option>
+          <option>🍖</option>
+          <option>🛸</option>
+          <option>🌿</option>
+          <option>💰</option>
+          <option>🦗</option>
+          <option>🥕</option>
+          <option>🪱</option>
+          <option>🐁</option>
+          <option>📭</option>
+          <option>🍔</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="diff-row">
+      DIFFICULTY
+      <button class="diff-btn active" onclick="setDifficultyBtn(4,this)">EASY (4×4)</button>
+      <button class="diff-btn" onclick="setDifficultyBtn(6,this)">MEDIUM (6×6)</button>
+      <button class="diff-btn" onclick="setDifficultyBtn(8,this)">HARD (8×8)</button>
+    </div>
+  </div>
+  
+  <!-- -------------------- Puzzle -------------------- -->
+  <div id="grid" class="grid"></div>
+  <div id="message"></div>
+  <button class="next" onclick="generateGrid()">Next Puzzle</button>
+  
+  <footer>© 2025 Arrow Path Puzzle, All Rights Reserved.</footer>
+  
+  <!-- Sounds -->
+  <audio id="clickSound" src="click.mp3" preload="auto"></audio>
+  <audio id="successSound" src="success.mp3" preload="auto"></audio>
+  
+  <!-- Confetti Library -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <script>
+    /* -------------------- Game Variables -------------------- */
+    let size = 4,
+      grid = [],
+      birdEl, puzzleSolved = false,
+      vibrationEnabled = true,
+      playCount = 0;
+    const gridEl = document.getElementById("grid");
+    const messageEl = document.getElementById("message");
+    const arrows = ["↑", "→", "↓", "←"];
+    const START_OUT = ["↑", "→"],
+      GOAL_ACCEPT_INCOMING = ["→", "↑"];
+    
+    /* -------------------- Difficulty Button -------------------- */
+    function setDifficultyBtn(value, btn) {
+      document.querySelectorAll(".diff-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      size = value;
+      generateGrid();
+    }
+    
+    /* -------------------- Confetti Celebration -------------------- */
+    function launchConfetti() {
+      const end = Date.now() + 2000;
+      (function frame() {
+        confetti({ particleCount: 3, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#00d1ff', '#00FFCD', '#fff'] });
+        confetti({ particleCount: 3, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#00d1ff', '#00FFCD', '#fff'] });
+        if (Date.now() < end) requestAnimationFrame(frame);
+      })();
+    }
+    
+    /* -------------------- Bird Position Helper -------------------- */
+    function positionBird(r, c, instant = false) {
+      const gridRect = gridEl.getBoundingClientRect();
+      const cellRect = grid[r][c].el.getBoundingClientRect();
+      const x = cellRect.left - gridRect.left + cellRect.width / 2 - 15;
+      const y = cellRect.top - gridRect.top + cellRect.height / 2 - 15;
+      birdEl.style.transition = instant ? "none" : "transform 0.35s ease";
+      birdEl.style.transform = `translate(${x}px, ${y}px)`;
+    }
+    
+    /* -------------------- Grid Generator -------------------- */
+    function generateGrid() {
+      playCount++;
+      puzzleSolved = false;
+      vibrationEnabled = true;
+      gridEl.innerHTML = "";
+      grid = [];
+      gridEl.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+      gridEl.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+      
+      // Create cells
+      for (let r = 0; r < size; r++) {
+        const row = [];
+        for (let c = 0; c < size; c++) {
+          const div = document.createElement("div");
+          div.className = "cell";
+          const span = document.createElement("span");
+          span.className = "arrow";
+          span.textContent = arrows[Math.floor(Math.random() * 4)];
+          div.appendChild(span);
+          div.onclick = () => handleCellClick(r, c);
+          gridEl.appendChild(div);
+          row.push({ el: div, dir: span.textContent, isRock: false });
+        }
+        grid.push(row);
+      }
+      
+      // Set Start & Goal
+      const start = grid[size - 1][0],
+        goal = grid[0][size - 1];
+      start.el.classList.add("start");
+      goal.el.classList.add("goal");
+      start.el.textContent = "";
+      goal.el.textContent = document.getElementById("goalSelect").value;
+      start.isStart = true;
+      goal.isGoal = true;
+      
+      // Add Bird
+      if (birdEl) birdEl.remove();
+      birdEl = document.createElement("div");
+      birdEl.className = "bird";
+      birdEl.textContent = document.getElementById("character").value;
+      gridEl.appendChild(birdEl);
+      requestAnimationFrame(() => positionBird(size - 1, 0, true));
+      
+      messageEl.textContent = "Rotate arrows to reach the Goal!";
+      messageEl.style.color = "#0b84ff";
+      
+      // Add rocks after 2 plays
+      if (playCount >= 3) addRocksSafely(Math.floor(Math.random() * 5) + 4);
+      
+      checkPath();
+    }
+    
+    /* -------------------- Rotate & Check Path -------------------- */
+    function handleCellClick(r, c) {
+      if (!vibrationEnabled || puzzleSolved) return;
+      if (navigator.vibrate) navigator.vibrate(10);
+      rotateArrow(r, c);
+    }
+    
+    function rotateArrow(r, c) {
+      const cell = grid[r][c];
+      if (cell.isStart || cell.isGoal || cell.isRock) return;
+      const sound = document.getElementById("clickSound");
+      try { sound.currentTime = 0;
+        sound.play(); } catch {}
+      cell.dir = arrows[(arrows.indexOf(cell.dir) + 1) % 4];
+      cell.el.querySelector(".arrow").textContent = cell.dir;
+      checkPath();
+    }
+    
+    /* -------------------- Path Validation -------------------- */
+    function neighborForDir(r, c, dir) {
+      return dir === "↑" ? [r - 1, c] :
+        dir === "→" ? [r, c + 1] :
+        dir === "↓" ? [r + 1, c] :
+        dir === "←" ? [r, c - 1] : null;
+    }
+    
+    function checkPath() {
+      grid.flat().forEach(cell => cell.el.classList.remove("glow"));
+      const visited = Array.from({ length: size }, () => Array(size).fill(false));
+      const q = [{ r: size - 1, c: 0, path: [
+          [size - 1, 0]
+        ], incomingDir: null }];
+      let successPath = null;
+      
+      while (q.length) {
+        const { r, c, path, incomingDir } = q.shift();
+        if (visited[r][c]) continue;
+        visited[r][c] = true;
+        const cell = grid[r][c];
+        if (cell.isRock) continue;
+        
+        // If goal reached with correct incoming
+        if (cell.isGoal && GOAL_ACCEPT_INCOMING.includes(incomingDir)) {
+          successPath = path;
+          break;
+        }
+        
+        const outs = cell.isStart ? START_OUT : [cell.dir];
+        for (const out of outs) {
+          const nb = neighborForDir(r, c, out);
+          if (!nb) continue;
+          const [nr, nc] = nb;
+          if (nr < 0 || nc < 0 || nr >= size || nc >= size) continue;
+          q.push({ r: nr, c: nc, path: [...path, [nr, nc]], incomingDir: out });
+        }
+      }
+      
+      // ✅ Success Path
+      if (successPath) {
+        successPath.forEach(([r, c], i) => setTimeout(() => grid[r][c].el.classList.add("glow"), i * 100));
+        messageEl.textContent = "🎉 Path Connected!";
+        messageEl.style.color = "#111";
+        launchConfetti();
+        puzzleSolved = true;
+        vibrationEnabled = false;
+        try {
+          const sound = document.getElementById("successSound");
+          sound.currentTime = 0;
+          sound.play();
+        } catch {}
+        moveBirdAlongPath(successPath);
+      } else {
+        messageEl.textContent = "Rotate arrows to reach the Goal!";
+        messageEl.style.color = "#111";
+      }
+    }
+    
+    /* -------------------- Bird Animation -------------------- */
+    function moveBirdAlongPath(path) {
+      let i = 0;
+      
+      function step() {
+        if (i >= path.length) return;
+        const [r, c] = path[i];
+        positionBird(r, c);
+        i++;
+        if (i < path.length) setTimeout(step, 400);
+      }
+      step();
+    }
+    
+    /* -------------------- Rock Placement -------------------- */
+    function addRocksSafely(count) {
+      let attempts = 0;
+      while (count > 0 && attempts < 200) {
+        const r = Math.floor(Math.random() * size),
+          c = Math.floor(Math.random() * size);
+        const cell = grid[r][c];
+        if (cell.isStart || cell.isGoal || cell.isRock) { attempts++; continue; }
+        
+        cell.isRock = true;
+        cell.el.classList.add("rock");
+        cell.el.textContent = "🪨";
+        if (!canReachGoal()) { // if path blocked → undo
+          cell.isRock = false;
+          cell.el.classList.remove("rock");
+          cell.el.innerHTML = `<span class='arrow'>${cell.dir}</span>`;
+          attempts++;
+          continue;
+        }
+        count--;
+      }
+    }
+    
+    function canReachGoal() {
+      const visited = Array.from({ length: size }, () => Array(size).fill(false));
+      const q = [
+        [size - 1, 0]
+      ];
+      while (q.length) {
+        const [r, c] = q.shift();
+        if (visited[r][c]) continue;
+        visited[r][c] = true;
+        const cell = grid[r][c];
+        if (cell.isRock) continue;
+        if (cell.isGoal) return true;
+        for (const [dr, dc] of [
+            [1, 0],
+            [-1, 0],
+            [0, 1],
+            [0, -1]
+          ]) {
+          const nr = r + dr,
+            nc = c + dc;
+          if (nr >= 0 && nc >= 0 && nr < size && nc < size && !visited[nr][nc]) q.push([nr, nc]);
+        }
+      }
+      return false;
+    }
+    
+    generateGrid();
+  </script>
+</body>
+
+            </html>

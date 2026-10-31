@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Klondike (Solitaire)</title>
+    {{CARDMEISTER_SCRIPT}}
+    {{MOTION_SCRIPT}}
+    <style>
+      :root {
+        --card-w: 100px; --card-h: 140px;
+        --board-pad: 24px;
+        --grid-gap: 15px;
+        --bg: #008000;
+        --accent: #ffffff;
+        --ink: #f5f2ea;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; color: var(--ink);
+        background: var(--bg);
+        min-height: 100svh; overflow: hidden;
+        padding-top: env(safe-area-inset-top);
+        user-select: none; -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      @supports (height: 100dvh) {
+        body { min-height: 100dvh; }
+      }
+      header { padding: 15px 24px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; max-width: 900px; margin: 0 auto; }
+      h1 { margin: 0; font-size: 18px; color: var(--accent); font-weight: normal; text-shadow: 1px 1px 2px black; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; width: 100%; }
+      .app-version { font-size: 12px; opacity: 0.8; }
+      .github-link { display: inline-flex; align-items: center; color: var(--accent); opacity: 0.9; }
+      .github-link:hover { opacity: 1; }
+      .github-link svg { width: 16px; height: 16px; display: block; }
+      .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      .menu { position: relative; display: inline-flex; align-items: center; }
+      .menu-btn { min-width: 40px; padding: 6px 10px; font-size: 16px; line-height: 1; }
+      .menu-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        min-width: 220px;
+        display: grid;
+        gap: 8px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.88);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+        z-index: 120;
+      }
+      .menu-panel[hidden] { display: none; }
+      .menu-panel button { width: 100%; text-align: left; }
+      .menu-toggle { width: 100%; justify-content: flex-start; }
+      
+      .toggle-label { display: flex; align-items: center; cursor: pointer; color: white; font-size: 12px; gap: 5px; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 4px; }
+      .toggle-label input { cursor: pointer; }
+
+      button { background: #ece9d8; color: black; border: 1px solid #003c74; padding: 6px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+      button:hover { box-shadow: 0 0 0 1px #f5f2ea inset; }
+      button:active { transform: translateY(1px); }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      
+      #status-msg { color: #ffff00; font-weight: bold; font-size: 14px; margin-right: 6px; text-shadow: 1px 1px 0 #000; min-width: 0; text-align: right; white-space: nowrap; }
+      #moves-msg { font-weight: bold; font-size: 14px; text-shadow: 1px 1px 0 #000; white-space: nowrap; }
+      
+      .board { padding: 10px var(--board-pad) 40px; display: grid; gap: 40px; max-width: 900px; margin: 0 auto; transition: gap 0.3s; }
+      .legal { text-align: center; font-size: 12px; margin: 12px 0 16px; opacity: 0.85; border-top: 1px solid rgba(255,255,255,0.25); padding-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: nowrap; }
+      .legal a { color: var(--accent); text-decoration: underline; margin: 0 6px; vertical-align: middle; }
+      .legal a.oss-badge { text-decoration: none; }
+      .oss-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.35); font-size: 10px; font-weight: bold; color: var(--accent); margin: 0 6px; white-space: nowrap; }
+      .top-row, .bottom-row { display: grid; grid-template-columns: repeat(7, var(--card-w)); gap: var(--grid-gap); justify-content: center; transition: gap 0.3s; }
+
+      @media (max-width: 800px) {
+        :root {
+          --board-pad: 10px;
+          --grid-gap: 4px;
+          --card-w: clamp(34px, calc((100vw - (var(--board-pad) * 2) - (var(--grid-gap) * 6)) / 7), 100px);
+          --card-h: calc(var(--card-w) * 1.4);
+        }
+        header { padding: 12px 10px; }
+        .controls { width: 100%; gap: 6px; flex-wrap: nowrap; justify-content: center; }
+        .controls button { padding: 5px 8px; font-size: 11px; }
+        .menu { margin-left: 0; }
+        .menu-btn { min-width: 34px; padding: 5px 8px; font-size: 15px; }
+        #status-msg { margin-right: 2px; font-size: 12px; }
+        #moves-msg { font-size: 12px; }
+        .board { padding: 10px var(--board-pad); gap: 20px; }
+      }
+
+      .slot, .column {
+        position: relative; width: var(--card-w); min-height: var(--card-h);
+        border-radius: 4px; 
+        border: 2px solid rgba(255,255,255,0.2);
+        cursor: pointer; 
+        transition: height 0.2s;
+      }
+      .slot:empty, .column:empty { border: 2px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.05); }
+
+      playing-card { position: absolute; width: var(--card-w); height: var(--card-h); cursor: pointer; filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.6)); transition: top 0.1s; pointer-events: auto; }
+      .stock-count { display:none; }
+      
+      #win-overlay {
+        display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+        z-index: 100; flex-direction: column; align-items: center; justify-content: center;
+        color: white; animation: fadeIn 0.5s forwards;
+      }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      .win-panel {
+        width: min(80vw, 520px);
+        margin: 0 auto 12px;
+        padding: 14px 18px;
+        text-align: center;
+        border-radius: 10px;
+        background: rgba(0, 50, 0, 0.88);
+        border: 1px solid rgba(255,255,255,0.28);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      }
+      .win-msg { font-size: clamp(34px, 8vw, 72px); margin: 0; font-family: "Times New Roman", serif; }
+      .win-stat { font-size: clamp(24px, 5vw, 48px); font-weight: bold; margin: 0; }
+      .win-startkey {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .win-startkey-label {
+        font-size: clamp(18px, 3.3vw, 30px);
+        font-weight: bold;
+      }
+      .win-startkey-value {
+        font-size: clamp(18px, 3.3vw, 30px);
+        font-weight: bold;
+        font-family: "Courier New", monospace;
+      }
+      .win-copy-btn {
+        font-size: clamp(13px, 2.5vw, 20px);
+        padding: 6px 14px;
+      }
+      .win-startkey-fallback {
+        margin-top: 10px;
+        display: grid;
+        gap: 8px;
+        justify-items: center;
+      }
+      .win-startkey-fallback[hidden] { display: none; }
+      .win-startkey-input {
+        width: min(90%, 460px);
+        font-size: clamp(14px, 2.8vw, 22px);
+        padding: 6px 10px;
+        text-align: center;
+        font-family: "Courier New", monospace;
+      }
+      .win-startkey-help {
+        font-size: clamp(12px, 2.4vw, 16px);
+        opacity: 0.95;
+      }
+      .win-title { background: transparent; border: 0; box-shadow: none; }
+      .win-action { background: transparent; border: 0; box-shadow: none; }
+      .win-action { margin-bottom: 0; }
+      .win-action button { font-size: clamp(16px, 3.8vw, 30px); padding: 10px 24px; }
+      
+      #stuck-warning {
+        position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
+        background: rgba(255, 0, 0, 0.85); color: white; padding: 10px 20px;
+        border-radius: 20px; font-weight: bold; pointer-events: none;
+        opacity: 0; transition: opacity 0.3s; z-index: 50;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5); font-size: 14px;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body oncontextmenu="return false;">
+    <div id="win-overlay">
+        <div class="win-panel win-title"><div class="win-msg">Congratulations</div></div>
+        <div class="win-panel"><div id="win-hands" class="win-stat">Hands: 0</div></div>
+        <div class="win-panel"><div id="win-max-chain" class="win-stat">Max Chain: 0</div></div>
+        <div class="win-panel">
+          <div class="win-startkey">
+            <span class="win-startkey-label">StartKey:</span>
+            <span id="win-startkey-value" class="win-startkey-value">-</span>
+            <button id="btn-copy-startkey" class="win-copy-btn" type="button">Copy</button>
+          </div>
+          <div id="win-startkey-fallback" class="win-startkey-fallback" hidden>
+            <input id="win-startkey-input" class="win-startkey-input" type="text" readonly value="" />
+            <button id="btn-select-startkey" class="win-copy-btn" type="button">Select</button>
+            <div class="win-startkey-help">If copy fails on iPhone, long-press the text above and copy.</div>
+          </div>
+        </div>
+        <div class="win-panel win-action"><button id="btn-deal-again">Deal Again</button></div>
+    </div>
+    
+    <div id="stuck-warning">⚠️ Likely Stuck (Undo Recommended)</div>
+
+    <header>
+      <h1>
+        Klondike (Solitaire)
+        <span id="app-version" class="app-version"></span>
+      </h1>
+      <div class="controls">
+        <span id="status-msg"></span>
+        <span id="moves-msg">Hands: 0</span>
+        <button id="btn-hint">Hint</button>
+        <button id="btn-undo" disabled>Undo</button>
+        <div class="menu">
+          <button id="btn-menu" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="menu-panel">☰</button>
+          <div id="menu-panel" class="menu-panel" hidden>
+            <button id="btn-restart" disabled>Restart</button>
+            <button id="new-game">New Game</button>
+            <button id="btn-show-startkey">Show StartKey</button>
+            <button id="btn-load-startkey">Load StartKey</button>
+            <label class="toggle-label menu-toggle" title="Auto check + debug logs">
+                <input type="checkbox" id="chk-autocheck" checked> Solvability Check
+            </label>
+            <button id="btn-test">Test</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="board">
+      <section class="top-row">
+        <div id="stock" class="slot"></div><div id="waste" class="slot"></div>
+        <div class="spacer"></div>
+        <div id="foundation-0" class="slot"></div><div id="foundation-1" class="slot"></div>
+        <div id="foundation-2" class="slot"></div><div id="foundation-3" class="slot"></div>
+      </section>
+      <section class="bottom-row">
+        <div id="tableau-0" class="column"></div><div id="tableau-1" class="column"></div>
+        <div id="tableau-2" class="column"></div><div id="tableau-3" class="column"></div>
+        <div id="tableau-4" class="column"></div><div id="tableau-5" class="column"></div>
+        <div id="tableau-6" class="column"></div>
+      </section>
+    </main>
+    <footer class="legal">
+      <span>Copyright (c) Toshiki Iga</span>
+      <a class="github-link" href="https://github.com/igapyon/klondike/" aria-label="GitHub Repository" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+        </svg>
+      </a>
+      <a class="oss-badge" href="https://github.com/igapyon/klondike/blob/main/THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer" aria-label="Third-party notices">Third-Party Notices</a>
+    </footer>
+
+        {{APP_SCRIPT}}
+  </body>
+</html>

@@ -1,0 +1,3138 @@
+<!doctype html>
+<html lang="en" data-theme="optimistic">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="color-scheme" content="light" />
+  <meta name="theme-color" content="#f4f7f3" />
+  <title>Game of Society</title>
+  <style>
+    :root {
+      --bg: #f4f7f3;
+      --surface: #ffffff;
+      --surface-2: #eaf0eb;
+      --surface-3: #dfe8e2;
+      --text: #24302b;
+      --muted: #68756f;
+      --line: #d4ded7;
+      --accent: #6657d9;
+      --accent-soft: #eeeafe;
+      --accent-contrast: #ffffff;
+      --shadow: 0 18px 48px rgba(44, 64, 54, .12);
+      --grid-frame: #cbd8d0;
+      --grid-bg: #22302b;
+      --grid-empty: #2c3b35;
+      --grid-line: rgba(255, 255, 255, .055);
+      --cell-a: #ee7959;
+      --cell-b: #3daa92;
+      --cell-c: #776fd8;
+      --cell-d: #e4b64a;
+      --cell-e: #4f8fcb;
+      --danger: #c94f63;
+      --success: #2d8c67;
+      --radius: 18px;
+    }
+
+    html[data-theme="paper"] {
+      --bg: #f6f1e7;
+      --surface: #fffdf8;
+      --surface-2: #eee6d8;
+      --surface-3: #e4dac8;
+      --text: #322e29;
+      --muted: #736c63;
+      --line: #ded4c2;
+      --accent: #476b8a;
+      --accent-soft: #e6eef4;
+      --accent-contrast: #ffffff;
+      --shadow: 0 18px 48px rgba(79, 62, 40, .12);
+      --grid-frame: #d2c3ac;
+      --grid-bg: #302c27;
+      --grid-empty: #3a342d;
+      --grid-line: rgba(255, 248, 232, .06);
+      --cell-a: #d85c41;
+      --cell-b: #4c9a8a;
+      --cell-c: #7b6cb2;
+      --cell-d: #d6a23a;
+      --cell-e: #5b82a1;
+    }
+
+    html[data-theme="sky"] {
+      --bg: #edf5fa;
+      --surface: #ffffff;
+      --surface-2: #e0edf5;
+      --surface-3: #d3e5ef;
+      --text: #183044;
+      --muted: #607486;
+      --line: #cedfe9;
+      --accent: #356ae6;
+      --accent-soft: #e6eeff;
+      --accent-contrast: #ffffff;
+      --shadow: 0 18px 48px rgba(36, 80, 110, .12);
+      --grid-frame: #bfd3df;
+      --grid-bg: #1f3340;
+      --grid-empty: #29424f;
+      --grid-line: rgba(224, 245, 255, .065);
+      --cell-a: #ff745c;
+      --cell-b: #23a89a;
+      --cell-c: #8167d9;
+      --cell-d: #e9b949;
+      --cell-e: #4f91d8;
+    }
+
+    html[data-theme="garden"] {
+      --bg: #f3f5e9;
+      --surface: #fcfdf7;
+      --surface-2: #e7ebd9;
+      --surface-3: #dce3cc;
+      --text: #293328;
+      --muted: #697568;
+      --line: #d5dcc6;
+      --accent: #5d65c9;
+      --accent-soft: #e9eafa;
+      --accent-contrast: #ffffff;
+      --shadow: 0 18px 48px rgba(64, 82, 51, .12);
+      --grid-frame: #c7d1bb;
+      --grid-bg: #26352b;
+      --grid-empty: #324337;
+      --grid-line: rgba(240, 248, 232, .06);
+      --cell-a: #e66b62;
+      --cell-b: #5baf75;
+      --cell-c: #7298d0;
+      --cell-d: #e3b752;
+      --cell-e: #b679b6;
+    }
+
+    * { box-sizing: border-box; }
+
+    html {
+      min-height: 100%;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    html, body {
+      min-height: 100%;
+      overflow-x: hidden;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 18% -10%, color-mix(in srgb, var(--accent) 11%, transparent), transparent 35%),
+        var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      transition: background-color .25s ease, color .25s ease;
+    }
+
+    body.modal-open { overflow: hidden; }
+
+    button, input, select, textarea { font: inherit; }
+    button { color: inherit; }
+    button, a, input, select, textarea, canvas, .tool, .menu-action, .paint-choice, .code-tab, .text-button {
+      touch-action: manipulation;
+    }
+
+    button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, .icon-link:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent) 30%, transparent);
+      outline-offset: 2px;
+    }
+
+    .app {
+      min-height: 100vh;
+      min-height: 100dvh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+    }
+
+    .topbar {
+      height: 78px;
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) auto minmax(220px, 1fr);
+      align-items: center;
+      gap: 18px;
+      padding: 0 28px;
+      padding-top: env(safe-area-inset-top, 0px);
+      border-bottom: 1px solid color-mix(in srgb, var(--line) 82%, transparent);
+      background: color-mix(in srgb, var(--bg) 88%, transparent);
+      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(16px);
+      position: sticky;
+      top: 0;
+      z-index: 20;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 7px color-mix(in srgb, var(--accent) 11%, transparent);
+      flex: 0 0 auto;
+    }
+
+    .brand h1 {
+      font-size: 18px;
+      letter-spacing: .055em;
+      text-transform: uppercase;
+      margin: 0;
+      white-space: nowrap;
+    }
+
+    .brand small {
+      color: var(--muted);
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      letter-spacing: .01em;
+    }
+
+    .world-picker {
+      appearance: none;
+      min-width: 260px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2368756f' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 14px center;
+      color: var(--text);
+      padding: 12px 44px 12px 15px;
+      box-shadow: 0 5px 18px rgba(0,0,0,.04);
+      cursor: pointer;
+    }
+
+    .top-actions {
+      justify-self: end;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .icon-button, .primary-button, .ghost-button, .icon-link {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      min-width: 45px;
+      height: 45px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      box-shadow: 0 5px 18px rgba(0,0,0,.035);
+      transition: transform .12s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .icon-link {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .icon-button:hover, .ghost-button:hover, .icon-link:hover { border-color: color-mix(in srgb, var(--accent) 44%, var(--line)); }
+    .icon-button:active, .primary-button:active, .ghost-button:active, .icon-link:active { transform: translateY(1px); }
+
+    .primary-button {
+      color: var(--accent-contrast);
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+
+    .icon-button svg, .primary-button svg, .ghost-button svg, .icon-link svg { width: 21px; height: 21px; }
+
+    .main {
+      min-height: 0;
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      align-items: center;
+      gap: 18px;
+      padding: 24px 28px 18px;
+    }
+
+    .toolrail {
+      display: grid;
+      align-content: center;
+      gap: 7px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--surface) 94%, transparent);
+      border-radius: 15px;
+      padding: 7px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.05);
+    }
+
+    .tool {
+      position: relative;
+      width: 48px;
+      height: 48px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      color: var(--muted);
+    }
+
+    .tool:hover { background: var(--surface-2); color: var(--text); }
+    .tool.active { background: var(--accent-soft); color: var(--accent); }
+    .tool svg { width: 22px; height: 22px; }
+    .tool .tip {
+      pointer-events: none;
+      opacity: 0;
+      position: absolute;
+      left: 57px;
+      padding: 7px 9px;
+      border-radius: 8px;
+      color: white;
+      background: #253029;
+      font-size: 12px;
+      white-space: nowrap;
+      transform: translateX(-4px);
+      transition: opacity .14s ease, transform .14s ease;
+      z-index: 10;
+    }
+    .tool:hover .tip { opacity: 1; transform: translateX(0); }
+
+    .stage {
+      min-width: 0;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+    }
+
+    .world-shell {
+      width: min(78vh, 78dvh, 900px, 100%);
+      max-width: 100%;
+      aspect-ratio: 1;
+      padding: 11px;
+      border-radius: 24px;
+      background: var(--grid-frame);
+      box-shadow: var(--shadow);
+      position: relative;
+      transition: background-color .25s ease;
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+      border-radius: 15px;
+      background: var(--grid-bg);
+      image-rendering: pixelated;
+      cursor: crosshair;
+      touch-action: manipulation;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+
+    .hint {
+      position: absolute;
+      top: 25px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px;
+      padding: 8px 12px;
+      color: rgba(255,255,255,.82);
+      background: rgba(12,20,17,.68);
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+      font-size: 12px;
+      transition: opacity .2s ease;
+      max-width: calc(100% - 24px);
+    }
+    .hint.hidden { opacity: 0; pointer-events: none; }
+
+    .cell-popover {
+      position: fixed;
+      z-index: 30;
+      min-width: 180px;
+      max-width: 270px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--surface);
+      padding: 12px;
+      box-shadow: 0 15px 45px rgba(0,0,0,.17);
+      display: none;
+    }
+    .cell-popover.visible { display: block; }
+    .cell-popover h3 { margin: 0 0 9px; font-size: 12px; color: var(--muted); font-weight: 600; }
+    .cell-values { display: grid; grid-template-columns: 1fr auto; gap: 7px 15px; font-size: 13px; }
+    .cell-values span:nth-child(odd) { color: var(--muted); }
+
+    .paint-palette {
+      position: fixed;
+      z-index: 29;
+      display: none;
+      flex-direction: column;
+      gap: 8px;
+      align-items: stretch;
+      max-width: min(360px, calc(100vw - 24px));
+      max-height: calc(100vh - 190px);
+      max-height: calc(100dvh - 190px);
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--surface);
+      padding: 9px;
+      box-shadow: 0 15px 45px rgba(0,0,0,.13);
+    }
+    .paint-palette.visible { display: flex; }
+    .paint-group {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .paint-label {
+      min-width: 74px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .paint-number {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .paint-number input[type="number"] { width: 92px; }
+    .paint-number input[type="range"] {
+      width: 130px;
+      padding: 0;
+      accent-color: var(--accent);
+    }
+    .paint-choice {
+      min-width: 44px;
+      min-height: 44px;
+      padding: 0 11px;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--surface-2);
+      cursor: pointer;
+    }
+    .paint-choice.active { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent); }
+
+    .transport {
+      min-height: 88px;
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) auto minmax(180px, 1fr);
+      align-items: center;
+      gap: 18px;
+      padding: 10px 28px 22px;
+      padding-bottom: max(22px, env(safe-area-inset-bottom, 0px));
+    }
+
+    .transport-left, .transport-right { display: flex; align-items: center; gap: 10px; }
+    .transport-right { justify-self: end; }
+
+    .generation {
+      min-width: 170px;
+      text-align: center;
+      padding: 12px 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      font-weight: 650;
+      box-shadow: 0 5px 18px rgba(0,0,0,.035);
+    }
+
+    .speed-chip {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      padding: 10px 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .speed-chip input { width: 110px; accent-color: var(--accent); }
+
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); }
+    .status-dot.error { background: var(--danger); }
+
+    .drawer-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 40;
+      background: rgba(29, 37, 33, .16);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+    }
+    .drawer-backdrop.open { opacity: 1; pointer-events: auto; }
+
+    .drawer {
+      position: fixed;
+      z-index: 50;
+      top: 0;
+      right: 0;
+      width: min(430px, 100%);
+      height: 100vh;
+      height: 100dvh;
+      max-width: 100%;
+      background: var(--surface);
+      border-left: 1px solid var(--line);
+      box-shadow: -20px 0 55px rgba(0,0,0,.13);
+      transform: translateX(102%);
+      transition: transform .22s ease;
+      display: grid;
+      grid-template-rows: auto 1fr;
+      padding-top: env(safe-area-inset-top, 0px);
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+    }
+    .drawer.open { transform: translateX(0); }
+
+    .drawer-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .drawer-header h2 { margin: 0; font-size: 17px; }
+    .drawer-scroll {
+      overflow: auto;
+      padding: 13px 18px 30px;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
+
+    details {
+      border-bottom: 1px solid var(--line);
+      padding: 2px 0;
+    }
+    details:last-child { border-bottom: 0; }
+    summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 17px 3px;
+      font-weight: 700;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after { content: "+"; color: var(--muted); font-size: 20px; font-weight: 400; }
+    details[open] summary::after { content: "−"; }
+    .detail-body { display: grid; gap: 13px; padding: 0 3px 18px; }
+
+    .guide-copy {
+      display: grid;
+      gap: 11px;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .guide-copy h3 {
+      margin: 4px 0 0;
+      font-size: 15px;
+      letter-spacing: .02em;
+    }
+    .guide-copy h4 {
+      margin: 8px 0 0;
+      font-size: 12px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .guide-copy p { margin: 0; }
+    .guide-copy strong { font-weight: 700; }
+    .guide-copy code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      color: var(--text);
+      background: color-mix(in srgb, var(--surface-2) 85%, var(--surface));
+      border-radius: 5px;
+      padding: 1px 5px;
+    }
+    .guide-copy ol,
+    .guide-copy ul {
+      margin: 0;
+      padding-left: 1.2em;
+      display: grid;
+      gap: 7px;
+    }
+    .guide-copy li { padding-left: 2px; }
+    .guide-code {
+      margin: 0;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--surface-2) 70%, var(--surface));
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11.5px;
+      line-height: 1.45;
+      overflow-x: auto;
+      white-space: pre;
+    }
+
+    .field { display: grid; gap: 6px; }
+    .field label { color: var(--muted); font-size: 12px; font-weight: 650; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: color-mix(in srgb, var(--surface) 90%, var(--surface-2));
+      color: var(--text);
+      padding: 10px 11px;
+      outline: none;
+    }
+
+    .row { display: flex; gap: 8px; align-items: center; }
+    .row > * { min-width: 0; }
+    .grow { flex: 1; }
+
+    .menu-action {
+      width: 100%;
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      background: var(--surface);
+      padding: 10px 12px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .menu-action:hover { border-color: color-mix(in srgb, var(--accent) 45%, var(--line)); }
+    .menu-action small { color: var(--muted); }
+
+    .saved-list { display: grid; gap: 8px; }
+    .saved-empty {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      padding: 4px 2px;
+    }
+    .saved-row {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: color-mix(in srgb, var(--surface) 75%, var(--surface-2));
+    }
+    .saved-row.danger {
+      border-color: color-mix(in srgb, #c45a6a 45%, var(--line));
+      background: color-mix(in srgb, #c45a6a 8%, var(--surface));
+    }
+    .saved-row-name {
+      flex: 1;
+      min-width: 0;
+      border: 0;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      padding: 4px 2px;
+      cursor: pointer;
+      display: grid;
+      gap: 2px;
+    }
+    .saved-row-name strong {
+      font-size: 13px;
+      font-weight: 700;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .saved-row-name small {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 550;
+    }
+    .saved-row-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .saved-row-icon {
+      border: 1px solid transparent;
+      border-radius: 9px;
+      background: transparent;
+      color: var(--muted);
+      min-width: 36px;
+      height: 36px;
+      display: inline-grid;
+      place-items: center;
+      cursor: pointer;
+      padding: 0;
+    }
+    .saved-row-icon:hover {
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--line));
+      color: var(--text);
+      background: var(--surface);
+    }
+    .saved-row-icon svg { width: 16px; height: 16px; }
+    .saved-row-icon.danger:hover {
+      border-color: color-mix(in srgb, #c45a6a 50%, var(--line));
+      color: #a83a4c;
+    }
+    .saved-row-confirm {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .saved-row-confirm span {
+      flex: 1;
+      min-width: 0;
+      font-size: 13px;
+      font-weight: 650;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .saved-row-confirm .text-button {
+      min-height: 36px;
+      padding: 6px 8px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .saved-row-confirm .confirm-delete {
+      color: #a83a4c;
+    }
+    .saved-row-rename {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .dimension-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 11px;
+      display: grid;
+      gap: 8px;
+      background: color-mix(in srgb, var(--surface) 75%, var(--surface-2));
+    }
+    .dimension-kind { width: 112px; flex: 0 0 112px; }
+    .dimension-fields { display: grid; gap: 8px; }
+    .dimension-range { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .dimension-range label, .dimension-advanced label {
+      display: grid;
+      gap: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+    details.dimension-advanced {
+      border: 0;
+      padding: 0;
+    }
+    details.dimension-advanced summary {
+      justify-content: flex-start;
+      gap: 6px;
+      padding: 2px 0;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 650;
+    }
+    details.dimension-advanced summary::after { font-size: 14px; }
+    .dimension-advanced-body {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+      padding-top: 8px;
+    }
+
+    .theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+    .theme-card {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--surface);
+      padding: 10px;
+      text-align: left;
+      cursor: pointer;
+    }
+    .theme-card.active { border-color: var(--accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 13%, transparent); }
+    .theme-preview { height: 42px; border-radius: 8px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; padding: 5px; margin-bottom: 8px; background: var(--preview-grid); }
+    .theme-preview i { border-radius: 3px; }
+    .theme-card strong { display: block; font-size: 12px; }
+    .theme-card small { color: var(--muted); font-size: 10px; }
+
+    .code-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 70;
+      display: grid;
+      place-items: center;
+      padding: 20px;
+      padding-top: max(20px, env(safe-area-inset-top, 0px));
+      padding-bottom: max(20px, env(safe-area-inset-bottom, 0px));
+      background: rgba(31, 40, 36, .22);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .2s ease;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    .code-modal.open { opacity: 1; pointer-events: auto; }
+    .code-card {
+      width: min(960px, 100%);
+      max-height: min(780px, 92vh);
+      max-height: min(780px, 92dvh);
+      display: grid;
+      grid-template-rows: auto auto minmax(0,1fr) auto;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--surface);
+      box-shadow: 0 30px 80px rgba(0,0,0,.19);
+      overflow: hidden;
+    }
+    .code-head { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+    .code-head h2 { margin: 0; font-size: 17px; }
+    .code-tabs { display: flex; gap: 3px; padding: 8px 18px; border-bottom: 1px solid var(--line); overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .code-tab {
+      border: 0;
+      border-radius: 8px;
+      background: transparent;
+      color: var(--muted);
+      padding: 10px 12px;
+      min-height: 44px;
+      cursor: pointer;
+      flex: 0 0 auto;
+    }
+    .code-tab.active { color: var(--accent); background: var(--accent-soft); }
+    .code-pane { display: none; min-height: 0; }
+    .code-pane.active { display: grid; grid-template-columns: minmax(0,1fr) 250px; min-height: 0; }
+    div.code {
+      height: 100%;
+      min-height: 390px;
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+      border: 0;
+      border-radius: 0;
+      padding: 12px 14px;
+      background: #202923;
+      color: #edf5ef;
+      font-family: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 13.5px;
+      line-height: 1.6;
+      font-variant-ligatures: none;
+      letter-spacing: 0;
+      tab-size: 2;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      outline: none;
+      caret-color: #edf5ef;
+    }
+    div.code:focus { box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--accent) 45%, transparent); }
+    div.code .token.comment,
+    div.code .token.prolog,
+    div.code .token.doctype,
+    div.code .token.cdata { color: #7a8f84; font-style: italic; }
+    div.code .token.punctuation { color: #b7c7bc; }
+    div.code .token.property,
+    div.code .token.tag,
+    div.code .token.boolean,
+    div.code .token.number,
+    div.code .token.constant,
+    div.code .token.symbol { color: #d19a66; }
+    div.code .token.selector,
+    div.code .token.attr-name,
+    div.code .token.string,
+    div.code .token.char,
+    div.code .token.builtin { color: #e6c07b; }
+    div.code .token.operator,
+    div.code .token.entity,
+    div.code .token.url,
+    div.code .token.keyword { color: #8fd4a8; }
+    div.code .token.function,
+    div.code .token.class-name { color: #7eb8da; }
+    div.code .token.regex,
+    div.code .token.important,
+    div.code .token.variable { color: #e5a0a0; }
+    .code-help { padding: 14px 18px; border-left: 1px solid var(--line); color: var(--muted); font-size: 12px; line-height: 1.55; overflow: auto; }
+    .code-help code { color: var(--text); }
+    .code-foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 12px 18px; border-top: 1px solid var(--line); }
+    .validation { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+    .text-button {
+      border: 0;
+      background: transparent;
+      color: var(--accent);
+      padding: 10px 8px;
+      min-height: 44px;
+      cursor: pointer;
+    }
+
+    .toast {
+      position: fixed;
+      z-index: 90;
+      left: 50%;
+      bottom: max(24px, calc(12px + env(safe-area-inset-bottom, 0px)));
+      transform: translate(-50%, 20px);
+      opacity: 0;
+      pointer-events: none;
+      border-radius: 12px;
+      background: #25302a;
+      color: white;
+      padding: 11px 14px;
+      box-shadow: 0 13px 35px rgba(0,0,0,.18);
+      font-size: 13px;
+      max-width: calc(100vw - 32px);
+      transition: opacity .18s ease, transform .18s ease;
+    }
+    .toast.show { opacity: 1; transform: translate(-50%, 0); }
+    .toast.error { background: #6c2634; }
+
+    .hidden-input { display: none; }
+
+    @media (max-width: 820px) {
+      .topbar {
+        height: auto;
+        min-height: 72px;
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px 16px;
+        padding-top: max(12px, env(safe-area-inset-top, 0px));
+      }
+      .brand {
+        order: 1;
+        grid-column: 1 / -1;
+        min-width: 0;
+      }
+      .brand h1 {
+        white-space: normal;
+      }
+      .brand small { display: none; }
+      .top-actions {
+        order: 2;
+        justify-self: stretch;
+        justify-content: flex-end;
+        flex-wrap: wrap;
+        width: 100%;
+      }
+      .world-picker {
+        order: 3;
+        grid-column: 1 / -1;
+        width: 100%;
+        min-width: 0;
+        font-size: 16px;
+      }
+      input, select, textarea,
+      .paint-number input[type="number"],
+      .speed-chip input {
+        font-size: 16px;
+      }
+      .main {
+        padding: 16px 12px 10px;
+        gap: 12px;
+        align-items: start;
+      }
+      .toolrail { padding: 6px; }
+      .tool { width: 44px; height: 44px; }
+      .stage { width: 100%; }
+      .world-shell {
+        width: 100%;
+        max-width: min(100%, calc(100dvh - 280px));
+        padding: 7px;
+        border-radius: 17px;
+      }
+      .transport {
+        grid-template-columns: 1fr;
+        justify-items: stretch;
+        padding: 8px 12px 16px;
+        padding-bottom: max(16px, env(safe-area-inset-bottom, 0px));
+        gap: 10px;
+      }
+      .transport-left, .transport-right {
+        justify-self: stretch;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      .transport-right { justify-content: flex-end; }
+      .generation { min-width: 0; padding: 11px 12px; width: 100%; }
+      .speed-chip {
+        flex: 1 1 160px;
+        min-width: 0;
+      }
+      .speed-chip input {
+        width: min(110px, 100%);
+        flex: 1 1 auto;
+        min-width: 72px;
+      }
+      .code-pane.active { grid-template-columns: 1fr; }
+      .code-help { display: none; }
+      .code-card {
+        width: 100%;
+        max-height: min(780px, calc(100dvh - 24px));
+      }
+      div.code {
+        min-height: min(390px, 45dvh);
+        font-size: 16px;
+      }
+      .code-foot {
+        flex-wrap: wrap;
+      }
+      .drawer {
+        width: min(430px, 100%);
+      }
+    }
+
+    @media (max-width: 560px) {
+      .main {
+        grid-template-columns: 1fr;
+        justify-items: center;
+        gap: 10px;
+      }
+      .toolrail {
+        width: 100%;
+        grid-auto-flow: column;
+        justify-content: center;
+        align-content: center;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .tool .tip { display: none; }
+      .world-shell {
+        max-width: 100%;
+      }
+      .transport-left .ghost-button,
+      .transport-right .ghost-button,
+      .transport-right .primary-button {
+        min-width: 44px;
+        height: 44px;
+      }
+      .paint-palette {
+        max-width: calc(100vw - 24px);
+      }
+    }
+
+    @media (hover: none) {
+      .tool .tip { display: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <div>
+          <h1>Game of Society</h1>
+          <small>Write local rules. Watch societies emerge.</small>
+        </div>
+      </div>
+
+      <select id="presetSelect" class="world-picker" aria-label="Choose a world preset">
+        <option id="unsavedOption" value="unsaved" hidden disabled>Unsaved world</option>
+        <optgroup label="Built-in worlds">
+          <option value="cyclic">Cyclic Tribes</option>
+          <option value="majority">Majority Drift</option>
+          <option value="conway">Conway, Recreated</option>
+          <option value="aging">Aging Conway Society</option>
+        </optgroup>
+        <optgroup id="savedWorldOptions" label="My saved configurations"></optgroup>
+      </select>
+
+      <div class="top-actions">
+        <a
+          class="icon-link"
+          href="https://github.com/alirizasaral/game_of_society"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="View source on GitHub"
+          title="View source on GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.463-1.11-1.463-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.114 2.504.336 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+          </svg>
+        </a>
+        <button id="playBtn" class="primary-button" aria-label="Play simulation" title="Play or pause (Space)">
+          <svg id="playIcon" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+        <button id="stepBtn" class="icon-button" aria-label="Advance one generation" title="Step forward (Right arrow)">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m8 5 8 7-8 7V5Z"/><path d="M19 5v14"/></svg>
+        </button>
+        <button id="resetBtn" class="icon-button" aria-label="Reset world" title="Reset">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>
+        </button>
+        <button id="menuBtn" class="icon-button" aria-label="Open menu" aria-expanded="false" title="Menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <main class="main">
+      <nav class="toolrail" aria-label="World tools">
+        <button class="tool active" data-tool="inspect" aria-label="Inspect cells">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m5 3 13 9-6 1-3 6L5 3Z"/></svg>
+          <span class="tip">Inspect</span>
+        </button>
+        <button class="tool" data-tool="paint" aria-label="Paint cells">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m14 4 6 6L9 21H3v-6L14 4Z"/><path d="m12 6 6 6"/></svg>
+          <span class="tip">Paint</span>
+        </button>
+        <button id="randomizeBtn" class="tool" aria-label="Randomize world">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+          <span class="tip">Randomize</span>
+        </button>
+        <button id="clearBtn" class="tool" aria-label="Clear world">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M8 8h8v8H8z"/></svg>
+          <span class="tip">First values</span>
+        </button>
+      </nav>
+
+      <section class="stage" aria-label="Society grid">
+        <div class="world-shell">
+          <div id="hint" class="hint">Press play, or click a cell to inspect it</div>
+          <canvas id="gridCanvas" width="900" height="900"></canvas>
+        </div>
+      </section>
+    </main>
+
+    <footer class="transport">
+      <div class="transport-left">
+        <button id="backBtn" class="ghost-button" aria-label="Previous generation" title="Previous generation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5m7-7-7 7 7 7"/></svg>
+        </button>
+        <button id="undoBtn" class="ghost-button" aria-label="Undo cell edit" title="Undo edit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 7 4 12l5 5"/><path d="M4 12h9a7 7 0 0 1 7 7"/></svg>
+        </button>
+      </div>
+
+      <div id="generationLabel" class="generation">Generation 0</div>
+
+      <div class="transport-right">
+        <div class="speed-chip">
+          <span id="statusDot" class="status-dot"></span>
+          <input id="speedRange" type="range" min="1" max="20" value="8" aria-label="Simulation speed" />
+          <span id="speedLabel">8 gen/s</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="cellPopover" class="cell-popover" role="dialog" aria-label="Selected cell">
+    <h3 id="cellTitle">Cell</h3>
+    <div id="cellValues" class="cell-values"></div>
+  </div>
+
+  <div id="paintPalette" class="paint-palette" aria-label="Paint values"></div>
+
+  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+  <aside id="drawer" class="drawer" aria-hidden="true">
+    <div class="drawer-header">
+      <div>
+        <h2>World menu</h2>
+        <div style="color:var(--muted);font-size:12px;margin-top:3px">Advanced controls stay out of the way until needed.</div>
+      </div>
+      <button id="closeDrawerBtn" class="icon-button" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="drawer-scroll">
+      <details>
+        <summary>About</summary>
+        <div class="detail-body guide-copy">
+          <h3>Game of Society</h3>
+          <p>What happens when a simple rule is repeated thousands of times?</p>
+          <p>A few lines of code can produce a spreading wave, a stable ecosystem, a strange machine or sudden chaos. No cell sees the whole grid. No one plans the final pattern. Yet something unexpected appears.</p>
+          <p><strong>Game of Society</strong> takes this old mathematical pleasure and gives it a social twist. Instead of being merely alive or dead, cells may have an age, wealth, profession, opinion, identity or level of happiness. They can imitate their neighbours, compete with them, cooperate, move, reproduce or disappear.</p>
+          <p>You write the rules.</p>
+          <p>Then you press play.</p>
+          <p>The goal is not to predict real societies or design better public policy. Human beings are far too complicated for that, and a colourful grid is not a miniature country. The game is closer to a box of mathematical toys: a place to invent strange worlds, watch them unfold and discover that your rules rarely behave exactly as expected.</p>
+          <p>Perhaps young cells move while older ones accumulate influence. Perhaps rich cells attract others but become increasingly isolated. Perhaps peaceful cells survive only when surrounded by aggressive ones. Perhaps everyone copies the most successful neighbour, until the entire population converges on a strategy that suddenly stops working.</p>
+          <p>The rules may be sensible, absurd or deliberately unfair. Their consequences are the entertainment.</p>
+          <p>This is the magic of cellular automata. Each cell follows a tiny set of instructions, but the grid can produce patterns that feel far more elaborate than the code behind them. A rule that fits comfortably on a screen may create cycles, borders, migrations, generations and collapses.</p>
+          <p>The code is simple. The spectacle is not.</p>
+          <p>That tension also makes the game satisfying to program. Writing a rule is a little like inventing the laws of an alien civilization. What can its inhabitants perceive? What do they desire? When do they change? Do they remember the past? Do they become more stubborn with age? Does success encourage generosity, reproduction or greed?</p>
+          <p>Every variable opens another possibility.</p>
+          <p>History and sociology provide an endless supply of inspiration, but they do not need to be treated solemnly. You might create a world of merchants, monarchs and rebels, then discover that the rebels endlessly chase the monarchs around the grid. You might attempt equality and produce aristocracy—or begin with ruthless competition and somehow end with cooperation.</p>
+          <p>These outcomes are not historical claims. They are stories generated by rules.</p>
+          <p>Some worlds may resemble familiar ideas: segregation emerging without a central planner, cooperation surviving among selfish agents, populations expanding until resources disappear. Others may look like nothing humanity has ever experienced. Both are interesting. One invites recognition; the other invites imagination.</p>
+          <p>Start with a few simple rules, even if they feel incomplete or uncertain. Let the grid run and see what appears. If something surprises you, change it. If nothing happens, change it anyway. The smallest adjustment can be enough to open a different world.</p>
+        </div>
+      </details>
+
+      <details>
+        <summary>How to play</summary>
+        <div class="detail-body guide-copy">
+          <h4>Basics</h4>
+          <ol>
+            <li>Pick a built-in world from the dropdown, or keep the current one.</li>
+            <li>Use Inspect to click a cell and read its dimensions, or Paint to edit values by hand.</li>
+            <li>Randomize for a fresh seed, or First values to reset every cell to its starting value.</li>
+            <li>Press Play to run generations, Step to advance once, or Reset to return to the seed.</li>
+            <li>Adjust speed with the slider; use Back for previous generations and Undo for paint edits.</li>
+            <li>Keyboard: Space play/pause, arrows step back/forward, <code>I</code> inspect, <code>P</code> paint.</li>
+          </ol>
+
+          <h4>Dimensions</h4>
+          <p>Every cell is a JavaScript object whose keys are the dimensions you define. Dimensions are the properties of each member of the society—age, wealth, tribe, opinion, and so on. You configure them under <strong>World</strong> in this menu.</p>
+          <p>Each dimension needs a unique name and a type:</p>
+          <ul>
+            <li><strong>Choice</strong> — a fixed set of allowed values, such as <code>A</code>, <code>B</code>, <code>true</code>, or <code>false</code>. The first value is used when you clear the grid; Randomize picks among them.</li>
+            <li><strong>Integer</strong> — whole numbers with optional min/max bounds, an initial value for “First values,” and a random range for seeding.</li>
+            <li><strong>Number</strong> — floating-point values with min/max, a step size, an initial value, and a random range.</li>
+          </ul>
+          <p>Changing dimensions reshapes every cell, so the grid is reseeded. After you add or edit dimensions, update your transition and display functions so they read and return the same keys.</p>
+
+          <h4>Rules</h4>
+          <p>Open <strong>Rules</strong> in this menu to edit two JavaScript functions. Validate, then Apply. The code must stay self-contained: no imports, DOM access, or async work.</p>
+          <p><strong>Transition — <code>update(cell, neighbors)</code></strong></p>
+          <p>Runs once for every cell each generation. All results are applied simultaneously, so every cell sees the previous generation’s neighbours.</p>
+          <ul>
+            <li><code>cell</code> is an object of the current dimension values (for example <code>{ state: "A", active: true }</code>).</li>
+            <li><code>neighbors</code> is an array of the eight surrounding cells in order NW, N, NE, W, E, SW, S, SE. With wrap topology the grid is a torus; with fixed edges, off-board neighbours are <code>null</code>.</li>
+            <li>Return one complete cell object with every dimension key. Choice values must be from the declared set; numerical values must stay in range.</li>
+          </ul>
+          <p><strong>Display — <code>display(cell)</code></strong></p>
+          <p>Turns a cell into a CSS color string for the grid. Prefer theme variables so colours adapt across styles: <code>var(--cell-a)</code>, <code>var(--cell-b)</code>, <code>var(--cell-c)</code>, <code>var(--cell-d)</code>, <code>var(--cell-e)</code>, or <code>var(--grid-empty)</code>.</p>
+          <p>A minimal transition that keeps a cell unchanged:</p>
+          <pre class="guide-code">function update(cell, neighbors) {
+  return cell;
+}</pre>
+          <p>A classic Conway-style life step (with an <code>alive</code> choice dimension):</p>
+          <pre class="guide-code">function update(cell, neighbors) {
+  const living = neighbors.filter(n => n &amp;&amp; n.alive).length;
+  return {
+    alive: cell.alive
+      ? living === 2 || living === 3
+      : living === 3
+  };
+}</pre>
+          <p>World settings (grid size and topology) live under <strong>World</strong>. Save configurations in the browser or copy a share URL under <strong>Save &amp; share</strong>.</p>
+        </div>
+      </details>
+
+      <details open>
+        <summary>World</summary>
+        <div class="detail-body">
+          <div class="row">
+            <div class="field grow">
+              <label for="gridSize">Grid size</label>
+              <select id="gridSize">
+                <option value="24">24 × 24</option>
+                <option value="36" selected>36 × 36</option>
+                <option value="48">48 × 48</option>
+                <option value="64">64 × 64</option>
+              </select>
+            </div>
+            <div class="field grow">
+              <label for="topologySelect">Topology</label>
+              <select id="topologySelect">
+                <option value="wrap">Wrap (torus)</option>
+                <option value="fixed">Fixed edges</option>
+              </select>
+            </div>
+          </div>
+          <button id="applyWorldBtn" class="menu-action"><span>Apply world settings</span><small>Resets grid</small></button>
+          <div>
+            <div style="font-weight:700;font-size:13px;margin-bottom:8px">Dimensions</div>
+            <div id="dimensionList" style="display:grid;gap:9px"></div>
+            <button id="addDimensionBtn" class="text-button">+ Add dimension</button>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Rules</summary>
+        <div class="detail-body">
+          <button id="openTransitionBtn" class="menu-action"><span>Transition function</span><small>update(cell, neighbors)</small></button>
+          <button id="openDisplayBtn" class="menu-action"><span>Display function</span><small>display(cell)</small></button>
+        </div>
+      </details>
+
+      <details>
+        <summary>Appearance</summary>
+        <div class="detail-body">
+          <div class="theme-grid">
+            <button class="theme-card active" data-theme="optimistic">
+              <span class="theme-preview" style="--preview-grid:#22302b"><i style="background:#ee7959"></i><i style="background:#3daa92"></i><i style="background:#776fd8"></i><i style="background:#e4b64a"></i><i style="background:#4f8fcb"></i></span>
+              <strong>Optimistic scientific</strong><small>Calm, crisp, curious</small>
+            </button>
+            <button class="theme-card" data-theme="paper">
+              <span class="theme-preview" style="--preview-grid:#302c27"><i style="background:#d85c41"></i><i style="background:#4c9a8a"></i><i style="background:#7b6cb2"></i><i style="background:#d6a23a"></i><i style="background:#5b82a1"></i></span>
+              <strong>Warm paper</strong><small>Tactile and thoughtful</small>
+            </button>
+            <button class="theme-card" data-theme="sky">
+              <span class="theme-preview" style="--preview-grid:#1f3340"><i style="background:#ff745c"></i><i style="background:#23a89a"></i><i style="background:#8167d9"></i><i style="background:#e9b949"></i><i style="background:#4f91d8"></i></span>
+              <strong>Clear sky</strong><small>Bright and energetic</small>
+            </button>
+            <button class="theme-card" data-theme="garden">
+              <span class="theme-preview" style="--preview-grid:#26352b"><i style="background:#e66b62"></i><i style="background:#5baf75"></i><i style="background:#7298d0"></i><i style="background:#e3b752"></i><i style="background:#b679b6"></i></span>
+              <strong>Soft garden</strong><small>Organic and playful</small>
+            </button>
+          </div>
+        </div>
+      </details>
+
+      <details>
+        <summary>Save & share</summary>
+        <div class="detail-body">
+          <div class="field">
+            <label for="saveNameInput">Configuration name</label>
+            <input id="saveNameInput" type="text" maxlength="80" placeholder="My society">
+          </div>
+          <button id="saveNamedBtn" class="menu-action"><span>Save in this browser</span><small>Available from the world dropdown</small></button>
+          <button id="shareBtn" class="menu-action"><span>Copy save & share URL</span><small>Updates this page's address</small></button>
+          <div class="field">
+            <label>Saved in this browser</label>
+            <div id="savedWorldList" class="saved-list"></div>
+          </div>
+        </div>
+      </details>
+    </div>
+  </aside>
+
+  <div id="codeModal" class="code-modal" aria-hidden="true">
+    <section class="code-card" role="dialog" aria-modal="true" aria-labelledby="codeTitle">
+      <div class="code-head">
+        <h2 id="codeTitle">Rules</h2>
+        <button id="closeCodeBtn" class="icon-button" aria-label="Close code editor">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 6 12 12M18 6 6 18"/></svg>
+        </button>
+      </div>
+      <div class="code-tabs">
+        <button class="code-tab active" data-pane="transitionPane">Transition</button>
+        <button class="code-tab" data-pane="displayPane">Display</button>
+      </div>
+      <div id="transitionPane" class="code-pane active">
+        <div id="updateCode" class="code language-javascript" spellcheck="false" role="textbox" aria-multiline="true" aria-label="Transition rule code"></div>
+        <aside class="code-help">
+          <strong>Transition contract</strong>
+          <p><code>update(cell, neighbors)</code> runs once for every cell. All results are applied simultaneously.</p>
+          <p><code>cell</code> contains the current dimension values. <code>neighbors</code> contains the eight surrounding cells; fixed-edge gaps are <code>null</code>.</p>
+          <p>Return one complete cell object. Choice values must be declared; numerical values must stay inside their configured ranges.</p>
+        </aside>
+      </div>
+      <div id="displayPane" class="code-pane">
+        <div id="displayCode" class="code language-javascript" spellcheck="false" role="textbox" aria-multiline="true" aria-label="Display rule code"></div>
+        <aside class="code-help">
+          <strong>Display contract</strong>
+          <p><code>display(cell)</code> returns a CSS color string.</p>
+          <p>The built-in examples use theme-aware CSS variables:</p>
+          <p><code>var(--cell-a)</code><br><code>var(--cell-b)</code><br><code>var(--grid-empty)</code></p>
+          <p>This lets the same society adapt to all four styles.</p>
+        </aside>
+      </div>
+      <div class="code-foot">
+        <div class="validation"><span id="validationDot" class="status-dot"></span><span id="validationText">Valid</span></div>
+        <div class="row">
+          <button id="askChatGptBtn" class="ghost-button" style="width:auto;padding:0 14px" title="Open ChatGPT with game context">Ask ChatGPT</button>
+          <button id="validateBtn" class="ghost-button" style="width:auto;padding:0 14px">Validate</button>
+          <button id="applyCodeBtn" class="primary-button" style="width:auto;padding:0 17px">Apply</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="toast" class="toast" role="status"></div>
+
+  <script>
+  /* Vendored MIT libraries for the offline code editor:
+     CodeJar — https://github.com/antonmedv/codejar
+     Prism.js — https://prismjs.com (core + clike + javascript)
+  */
+  /* CodeJar MIT https://github.com/antonmedv/codejar */
+!function(t){const e=window;t.CodeJar=function(t,n,o={}){const r={tab:"\t",indentOn:/[({\[]$/,moveToNewLine:/^[)}\]]/,spellcheck:!1,catchTab:!0,preserveIdent:!0,addClosing:!0,history:!0,window:e,...o},i=r.window,s=i.document,d=[],a=[];let c,l=-1,f=!1,u=()=>{};t.setAttribute("contenteditable","plaintext-only"),t.setAttribute("spellcheck",r.spellcheck?"true":"false"),t.style.outline="none",t.style.overflowWrap="break-word",t.style.overflowY="auto",t.style.whiteSpace="pre-wrap";const p=(t,e)=>{n(t,e)};let h=!1;"plaintext-only"!==t.contentEditable&&(h=!0),h&&t.setAttribute("contenteditable","true");const g=_(()=>{const e=E();p(t,e),m(e)},30);let y=!1;const N=t=>!D(t)&&!S(t)&&"Meta"!==t.key&&"Control"!==t.key&&"Alt"!==t.key&&!t.key.startsWith("Arrow"),T=_(t=>{N(t)&&(v(),y=!1)},300),C=(e,n)=>{d.push([e,n]),t.addEventListener(e,n)};function E(){const e=P(),n={start:0,end:0,dir:void 0};let{anchorNode:o,anchorOffset:r,focusNode:i,focusOffset:d}=e;if(!o||!i)throw"error1";if(o===t&&i===t)return n.start=r>0&&t.textContent?t.textContent.length:0,n.end=d>0&&t.textContent?t.textContent.length:0,n.dir=d>=r?"->":"<-",n;if(o.nodeType===Node.ELEMENT_NODE){const t=s.createTextNode("");o.insertBefore(t,o.childNodes[r]),o=t,r=0}if(i.nodeType===Node.ELEMENT_NODE){const t=s.createTextNode("");i.insertBefore(t,i.childNodes[d]),i=t,d=0}return O(t,t=>{if(t===o&&t===i)return n.start+=r,n.end+=d,n.dir=r<=d?"->":"<-","stop";if(t===o){if(n.start+=r,n.dir)return"stop";n.dir="->"}else if(t===i){if(n.end+=d,n.dir)return"stop";n.dir="<-"}t.nodeType===Node.TEXT_NODE&&("->"!=n.dir&&(n.start+=t.nodeValue.length),"<-"!=n.dir&&(n.end+=t.nodeValue.length))}),t.normalize(),n}function m(e){const n=P();let o,r,i=0,d=0;if(e.dir||(e.dir="->"),e.start<0&&(e.start=0),e.end<0&&(e.end=0),"<-"==e.dir){const{start:t,end:n}=e;e.start=n,e.end=t}let a=0;O(t,t=>{if(t.nodeType!==Node.TEXT_NODE)return;const n=(t.nodeValue||"").length;if(a+n>e.start&&(o||(o=t,i=e.start-a),a+n>e.end))return r=t,d=e.end-a,"stop";a+=n}),o||(o=t,i=t.childNodes.length),r||(r=t,d=t.childNodes.length),"<-"==e.dir&&([o,i,r,d]=[r,d,o,i]);{const t=b(o);if(t){const e=s.createTextNode("");t.parentNode?.insertBefore(e,t),o=e,i=0}const e=b(r);if(e){const t=s.createTextNode("");e.parentNode?.insertBefore(t,e),r=t,d=0}}n.setBaseAndExtent(o,i,r,d),t.normalize()}function b(e){for(;e&&e!==t;){if(e.nodeType===Node.ELEMENT_NODE){const t=e;if("false"==t.getAttribute("contenteditable"))return t}e=e.parentNode}}function w(){const e=P().getRangeAt(0),n=s.createRange();return n.selectNodeContents(t),n.setEnd(e.startContainer,e.startOffset),n.toString()}function x(){const e=P().getRangeAt(0),n=s.createRange();return n.selectNodeContents(t),n.setStart(e.endContainer,e.endOffset),n.toString()}function k(t){if(h&&"Enter"===t.key)if(K(t),t.stopPropagation(),""==x()){A("\n ");const t=E();t.start=--t.end,m(t)}else A("\n")}function v(){if(!f)return;const e=t.innerHTML,n=E(),o=a[l];if(o&&o.html===e&&o.pos.start===n.start&&o.pos.end===n.end)return;l++,a[l]={html:e,pos:n},a.splice(l+1);l>300&&(l=300,a.splice(0,1))}function O(t,e){const n=[];t.firstChild&&n.push(t.firstChild);let o=n.pop();for(;o&&"stop"!==e(o);)o.nextSibling&&n.push(o.nextSibling),o.firstChild&&n.push(o.firstChild),o=n.pop()}function M(t){return t.metaKey||t.ctrlKey}function D(t){return M(t)&&!t.shiftKey&&"Z"===L(t)}function S(t){return M(t)&&t.shiftKey&&"Z"===L(t)}function L(t){let e=t.key||t.keyCode||t.which;if(e)return("string"==typeof e?e:String.fromCharCode(e)).toUpperCase()}function A(t){t=t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;"),s.execCommand("insertHTML",!1,t)}function _(t,e){let n=0;return(...o)=>{clearTimeout(n),n=i.setTimeout(()=>t(...o),e)}}function B(t){let e=t.length-1;for(;e>=0&&"\n"!==t[e];)e--;e++;let n=e;for(;n<t.length&&/[ \t]/.test(t[n]);)n++;return[t.substring(e,n)||"",e,n]}function H(){return t.textContent||""}function K(t){t.preventDefault()}function P(){return t.parentNode?.nodeType==Node.DOCUMENT_FRAGMENT_NODE?t.parentNode.getSelection():i.getSelection()}return C("keydown",e=>{e.defaultPrevented||(c=H(),r.preserveIdent?function(t){if("Enter"===t.key){const e=w(),n=x();let[o]=B(e),i=o;if(r.indentOn.test(e)&&(i+=r.tab),i.length>0?(K(t),t.stopPropagation(),A("\n"+i)):k(t),i!==o&&r.moveToNewLine.test(n)){const t=E();A("\n"+o),m(t)}}}(e):k(e),r.catchTab&&function(t){if("Tab"===t.key)if(K(t),t.shiftKey){const t=w();let[e,n]=B(t);if(e.length>0){const t=E(),o=Math.min(r.tab.length,e.length);m({start:n,end:n+o}),s.execCommand("delete"),t.start-=o,t.end-=o,m(t)}}else A(r.tab)}(e),r.addClosing&&function(t){const e="([{'\"",n=")]}'\"";if(e.includes(t.key)){K(t);const o=E(),r=o.start==o.end?"":P().toString();A(t.key+r+n[e.indexOf(t.key)]),o.start++,o.end++,m(o)}}(e),r.history&&(!function(e){if(D(e)){K(e),l--;const n=a[l];n&&(t.innerHTML=n.html,m(n.pos)),l<0&&(l=0)}if(S(e)){K(e),l++;const n=a[l];n&&(t.innerHTML=n.html,m(n.pos)),l>=a.length&&l--}}(e),N(e)&&!y&&(v(),y=!0)),h&&!function(t){return M(t)&&"C"===L(t)}(e)&&m(E()))}),C("keyup",t=>{t.defaultPrevented||t.isComposing||(c!==H()&&g(),T(t),u(H()))}),C("focus",t=>{f=!0}),C("blur",t=>{f=!1}),C("paste",e=>{v(),function(e){if(e.defaultPrevented)return;K(e);const n=e.originalEvent??e,o=n.clipboardData.getData("text/plain").replace(/\r\n?/g,"\n"),r=E();A(o),p(t),m({start:Math.min(r.start,r.end)+o.length,end:Math.min(r.start,r.end)+o.length,dir:"<-"})}(e),v(),u(H())}),C("cut",e=>{v(),function(e){const n=E(),o=P(),r=e.originalEvent??e;r.clipboardData.setData("text/plain",o.toString()),s.execCommand("delete"),p(t),m({start:Math.min(n.start,n.end),end:Math.min(n.start,n.end),dir:"<-"}),K(e)}(e),v(),u(H())}),{updateOptions(t){Object.assign(r,t)},updateCode(e){t.textContent=e,p(t),u(e)},onUpdate(t){u=t},toString:H,save:E,restore:m,recordHistory:v,destroy(){for(let[e,n]of d)t.removeEventListener(e,n)}}}}("undefined"!=typeof window?window:this);
+/* Prism.js MIT https://prismjs.com */
+window.Prism=window.Prism||{};window.Prism.manual=true;
+var _self="undefined"!=typeof window?window:"undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?self:{},Prism=function(e){var n=/(?:^|\s)lang(?:uage)?-([\w-]+)(?=\s|$)/i,t=0,r={},a={manual:e.Prism&&e.Prism.manual,disableWorkerMessageHandler:e.Prism&&e.Prism.disableWorkerMessageHandler,util:{encode:function e(n){return n instanceof i?new i(n.type,e(n.content),n.alias):Array.isArray(n)?n.map(e):n.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/\u00a0/g," ")},type:function(e){return Object.prototype.toString.call(e).slice(8,-1)},objId:function(e){return e.__id||Object.defineProperty(e,"__id",{value:++t}),e.__id},clone:function e(n,t){var r,i;switch(t=t||{},a.util.type(n)){case"Object":if(i=a.util.objId(n),t[i])return t[i];for(var l in r={},t[i]=r,n)n.hasOwnProperty(l)&&(r[l]=e(n[l],t));return r;case"Array":return i=a.util.objId(n),t[i]?t[i]:(r=[],t[i]=r,n.forEach((function(n,a){r[a]=e(n,t)})),r);default:return n}},getLanguage:function(e){for(;e;){var t=n.exec(e.className);if(t)return t[1].toLowerCase();e=e.parentElement}return"none"},setLanguage:function(e,t){e.className=e.className.replace(RegExp(n,"gi"),""),e.classList.add("language-"+t)},currentScript:function(){if("undefined"==typeof document)return null;if("currentScript"in document)return document.currentScript;try{throw new Error}catch(r){var e=(/at [^(\r\n]*\((.*):[^:]+:[^:]+\)$/i.exec(r.stack)||[])[1];if(e){var n=document.getElementsByTagName("script");for(var t in n)if(n[t].src==e)return n[t]}return null}},isActive:function(e,n,t){for(var r="no-"+n;e;){var a=e.classList;if(a.contains(n))return!0;if(a.contains(r))return!1;e=e.parentElement}return!!t}},languages:{plain:r,plaintext:r,text:r,txt:r,extend:function(e,n){var t=a.util.clone(a.languages[e]);for(var r in n)t[r]=n[r];return t},insertBefore:function(e,n,t,r){var i=(r=r||a.languages)[e],l={};for(var o in i)if(i.hasOwnProperty(o)){if(o==n)for(var s in t)t.hasOwnProperty(s)&&(l[s]=t[s]);t.hasOwnProperty(o)||(l[o]=i[o])}var u=r[e];return r[e]=l,a.languages.DFS(a.languages,(function(n,t){t===u&&n!=e&&(this[n]=l)})),l},DFS:function e(n,t,r,i){i=i||{};var l=a.util.objId;for(var o in n)if(n.hasOwnProperty(o)){t.call(n,o,n[o],r||o);var s=n[o],u=a.util.type(s);"Object"!==u||i[l(s)]?"Array"!==u||i[l(s)]||(i[l(s)]=!0,e(s,t,o,i)):(i[l(s)]=!0,e(s,t,null,i))}}},plugins:{},highlightAll:function(e,n){a.highlightAllUnder(document,e,n)},highlightAllUnder:function(e,n,t){var r={callback:t,container:e,selector:'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'};a.hooks.run("before-highlightall",r),r.elements=Array.prototype.slice.apply(r.container.querySelectorAll(r.selector)),a.hooks.run("before-all-elements-highlight",r);for(var i,l=0;i=r.elements[l++];)a.highlightElement(i,!0===n,r.callback)},highlightElement:function(n,t,r){var i=a.util.getLanguage(n),l=a.languages[i];a.util.setLanguage(n,i);var o=n.parentElement;o&&"pre"===o.nodeName.toLowerCase()&&a.util.setLanguage(o,i);var s={element:n,language:i,grammar:l,code:n.textContent};function u(e){s.highlightedCode=e,a.hooks.run("before-insert",s),s.element.innerHTML=s.highlightedCode,a.hooks.run("after-highlight",s),a.hooks.run("complete",s),r&&r.call(s.element)}if(a.hooks.run("before-sanity-check",s),(o=s.element.parentElement)&&"pre"===o.nodeName.toLowerCase()&&!o.hasAttribute("tabindex")&&o.setAttribute("tabindex","0"),!s.code)return a.hooks.run("complete",s),void(r&&r.call(s.element));if(a.hooks.run("before-highlight",s),s.grammar)if(t&&e.Worker){var c=new Worker(a.filename);c.onmessage=function(e){u(e.data)},c.postMessage(JSON.stringify({language:s.language,code:s.code,immediateClose:!0}))}else u(a.highlight(s.code,s.grammar,s.language));else u(a.util.encode(s.code))},highlight:function(e,n,t){var r={code:e,grammar:n,language:t};if(a.hooks.run("before-tokenize",r),!r.grammar)throw new Error('The language "'+r.language+'" has no grammar.');return r.tokens=a.tokenize(r.code,r.grammar),a.hooks.run("after-tokenize",r),i.stringify(a.util.encode(r.tokens),r.language)},tokenize:function(e,n){var t=n.rest;if(t){for(var r in t)n[r]=t[r];delete n.rest}var a=new s;return u(a,a.head,e),o(e,a,n,a.head,0),function(e){for(var n=[],t=e.head.next;t!==e.tail;)n.push(t.value),t=t.next;return n}(a)},hooks:{all:{},add:function(e,n){var t=a.hooks.all;t[e]=t[e]||[],t[e].push(n)},run:function(e,n){var t=a.hooks.all[e];if(t&&t.length)for(var r,i=0;r=t[i++];)r(n)}},Token:i};function i(e,n,t,r){this.type=e,this.content=n,this.alias=t,this.length=0|(r||"").length}function l(e,n,t,r){e.lastIndex=n;var a=e.exec(t);if(a&&r&&a[1]){var i=a[1].length;a.index+=i,a[0]=a[0].slice(i)}return a}function o(e,n,t,r,s,g){for(var f in t)if(t.hasOwnProperty(f)&&t[f]){var h=t[f];h=Array.isArray(h)?h:[h];for(var d=0;d<h.length;++d){if(g&&g.cause==f+","+d)return;var v=h[d],p=v.inside,m=!!v.lookbehind,y=!!v.greedy,k=v.alias;if(y&&!v.pattern.global){var x=v.pattern.toString().match(/[imsuy]*$/)[0];v.pattern=RegExp(v.pattern.source,x+"g")}for(var b=v.pattern||v,w=r.next,A=s;w!==n.tail&&!(g&&A>=g.reach);A+=w.value.length,w=w.next){var E=w.value;if(n.length>e.length)return;if(!(E instanceof i)){var P,L=1;if(y){if(!(P=l(b,A,e,m))||P.index>=e.length)break;var S=P.index,O=P.index+P[0].length,j=A;for(j+=w.value.length;S>=j;)j+=(w=w.next).value.length;if(A=j-=w.value.length,w.value instanceof i)continue;for(var C=w;C!==n.tail&&(j<O||"string"==typeof C.value);C=C.next)L++,j+=C.value.length;L--,E=e.slice(A,j),P.index-=A}else if(!(P=l(b,0,E,m)))continue;S=P.index;var N=P[0],_=E.slice(0,S),M=E.slice(S+N.length),W=A+E.length;g&&W>g.reach&&(g.reach=W);var z=w.prev;if(_&&(z=u(n,z,_),A+=_.length),c(n,z,L),w=u(n,z,new i(f,p?a.tokenize(N,p):N,k,N)),M&&u(n,w,M),L>1){var I={cause:f+","+d,reach:W};o(e,n,t,w.prev,A,I),g&&I.reach>g.reach&&(g.reach=I.reach)}}}}}}function s(){var e={value:null,prev:null,next:null},n={value:null,prev:e,next:null};e.next=n,this.head=e,this.tail=n,this.length=0}function u(e,n,t){var r=n.next,a={value:t,prev:n,next:r};return n.next=a,r.prev=a,e.length++,a}function c(e,n,t){for(var r=n.next,a=0;a<t&&r!==e.tail;a++)r=r.next;n.next=r,r.prev=n,e.length-=a}if(e.Prism=a,i.stringify=function e(n,t){if("string"==typeof n)return n;if(Array.isArray(n)){var r="";return n.forEach((function(n){r+=e(n,t)})),r}var i={type:n.type,content:e(n.content,t),tag:"span",classes:["token",n.type],attributes:{},language:t},l=n.alias;l&&(Array.isArray(l)?Array.prototype.push.apply(i.classes,l):i.classes.push(l)),a.hooks.run("wrap",i);var o="";for(var s in i.attributes)o+=" "+s+'="'+(i.attributes[s]||"").replace(/"/g,"&quot;")+'"';return"<"+i.tag+' class="'+i.classes.join(" ")+'"'+o+">"+i.content+"</"+i.tag+">"},!e.document)return e.addEventListener?(a.disableWorkerMessageHandler||e.addEventListener("message",(function(n){var t=JSON.parse(n.data),r=t.language,i=t.code,l=t.immediateClose;e.postMessage(a.highlight(i,a.languages[r],r)),l&&e.close()}),!1),a):a;var g=a.util.currentScript();function f(){a.manual||a.highlightAll()}if(g&&(a.filename=g.src,g.hasAttribute("data-manual")&&(a.manual=!0)),!a.manual){var h=document.readyState;"loading"===h||"interactive"===h&&g&&g.defer?document.addEventListener("DOMContentLoaded",f):window.requestAnimationFrame?window.requestAnimationFrame(f):window.setTimeout(f,16)}return a}(_self);"undefined"!=typeof module&&module.exports&&(module.exports=Prism),"undefined"!=typeof global&&(global.Prism=Prism);
+Prism.languages.clike={comment:[{pattern:/(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,lookbehind:!0,greedy:!0},{pattern:/(^|[^\\:])\/\/.*/,lookbehind:!0,greedy:!0}],string:{pattern:/(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,greedy:!0},"class-name":{pattern:/(\b(?:class|extends|implements|instanceof|interface|new|trait)\s+|\bcatch\s+\()[\w.\\]+/i,lookbehind:!0,inside:{punctuation:/[.\\]/}},keyword:/\b(?:break|catch|continue|do|else|finally|for|function|if|in|instanceof|new|null|return|throw|try|while)\b/,boolean:/\b(?:false|true)\b/,function:/\b\w+(?=\()/,number:/\b0x[\da-f]+\b|(?:\b\d+(?:\.\d*)?|\B\.\d+)(?:e[+-]?\d+)?/i,operator:/[<>]=?|[!=]=?=?|--?|\+\+?|&&?|\|\|?|[?*/~^%]/,punctuation:/[{}[\];(),.:]/};
+Prism.languages.javascript=Prism.languages.extend("clike",{"class-name":[Prism.languages.clike["class-name"],{pattern:/(^|[^$\w\xA0-\uFFFF])(?!\s)[_$A-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\.(?:constructor|prototype))/,lookbehind:!0}],keyword:[{pattern:/((?:^|\})\s*)catch\b/,lookbehind:!0},{pattern:/(^|[^.]|\.\.\.\s*)\b(?:as|assert(?=\s*\{)|async(?=\s*(?:function\b|\(|[$\w\xA0-\uFFFF]|$))|await|break|case|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally(?=\s*(?:\{|$))|for|from(?=\s*(?:['"]|$))|function|(?:get|set)(?=\s*(?:[#\[$\w\xA0-\uFFFF]|$))|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)\b/,lookbehind:!0}],function:/#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*(?:\.\s*(?:apply|bind|call)\s*)?\()/,number:{pattern:RegExp("(^|[^\\w$])(?:NaN|Infinity|0[bB][01]+(?:_[01]+)*n?|0[oO][0-7]+(?:_[0-7]+)*n?|0[xX][\\dA-Fa-f]+(?:_[\\dA-Fa-f]+)*n?|\\d+(?:_\\d+)*n|(?:\\d+(?:_\\d+)*(?:\\.(?:\\d+(?:_\\d+)*)?)?|\\.\\d+(?:_\\d+)*)(?:[Ee][+-]?\\d+(?:_\\d+)*)?)(?![\\w$])"),lookbehind:!0},operator:/--|\+\+|\*\*=?|=>|&&=?|\|\|=?|[!=]==|<<=?|>>>?=?|[-+*/%&|^!=<>]=?|\.{3}|\?\?=?|\?\.?|[~:]/}),Prism.languages.javascript["class-name"][0].pattern=/(\b(?:class|extends|implements|instanceof|interface|new)\s+)[\w.\\]+/,Prism.languages.insertBefore("javascript","keyword",{regex:{pattern:RegExp("((?:^|[^$\\w\\xA0-\\uFFFF.\"'\\])\\s]|\\b(?:return|yield))\\s*)/(?:(?:\\[(?:[^\\]\\\\\r\n]|\\\\.)*\\]|\\\\.|[^/\\\\\\[\r\n])+/[dgimyus]{0,7}|(?:\\[(?:[^[\\]\\\\\r\n]|\\\\.|\\[(?:[^[\\]\\\\\r\n]|\\\\.|\\[(?:[^[\\]\\\\\r\n]|\\\\.)*\\])*\\])*\\]|\\\\.|[^/\\\\\\[\r\n])+/[dgimyus]{0,7}v[dgimyus]{0,7})(?=(?:\\s|/\\*(?:[^*]|\\*(?!/))*\\*/)*(?:$|[\r\n,.;:})\\]]|//))"),lookbehind:!0,greedy:!0,inside:{"regex-source":{pattern:/^(\/)[\s\S]+(?=\/[a-z]*$)/,lookbehind:!0,alias:"language-regex",inside:Prism.languages.regex},"regex-delimiter":/^\/|\/$/,"regex-flags":/^[a-z]+$/}},"function-variable":{pattern:/#?(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*[=:]\s*(?:async\s*)?(?:\bfunction\b|(?:\((?:[^()]|\([^()]*\))*\)|(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*)\s*=>))/,alias:"function"},parameter:[{pattern:/(function(?:\s+(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*)?\s*\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\))/,lookbehind:!0,inside:Prism.languages.javascript},{pattern:/(^|[^$\w\xA0-\uFFFF])(?!\s)[_$a-z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*=>)/i,lookbehind:!0,inside:Prism.languages.javascript},{pattern:/(\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\)\s*=>)/,lookbehind:!0,inside:Prism.languages.javascript},{pattern:/((?:\b|\s|^)(?!(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|undefined|var|void|while|with|yield)(?![$\w\xA0-\uFFFF]))(?:(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*\s*)\(\s*|\]\s*\(\s*)(?!\s)(?:[^()\s]|\s+(?![\s)])|\([^()]*\))+(?=\s*\)\s*\{)/,lookbehind:!0,inside:Prism.languages.javascript}],constant:/\b[A-Z](?:[A-Z_]|\dx?)*\b/}),Prism.languages.insertBefore("javascript","string",{hashbang:{pattern:/^#!.*/,greedy:!0,alias:"comment"},"template-string":{pattern:/`(?:\\[\s\S]|\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})+\}|(?!\$\{)[^\\`])*`/,greedy:!0,inside:{"template-punctuation":{pattern:/^`|`$/,alias:"string"},interpolation:{pattern:/((?:^|[^\\])(?:\\{2})*)\$\{(?:[^{}]|\{(?:[^{}]|\{[^}]*\})*\})+\}/,lookbehind:!0,inside:{"interpolation-punctuation":{pattern:/^\$\{|\}$/,alias:"punctuation"},rest:Prism.languages.javascript}},string:/[\s\S]+/}},"string-property":{pattern:/((?:^|[,{])[ \t]*)(["'])(?:\\(?:\r\n|[\s\S])|(?!\2)[^\\\r\n])*\2(?=\s*:)/m,lookbehind:!0,greedy:!0,alias:"property"}}),Prism.languages.insertBefore("javascript","operator",{"literal-property":{pattern:/((?:^|[,{])[ \t]*)(?!\s)[_$a-zA-Z\xA0-\uFFFF](?:(?!\s)[$\w\xA0-\uFFFF])*(?=\s*:)/m,lookbehind:!0,alias:"property"}}),Prism.languages.markup&&(Prism.languages.markup.tag.addInlined("script","javascript"),Prism.languages.markup.tag.addAttribute("on(?:abort|blur|change|click|composition(?:end|start|update)|dblclick|error|focus(?:in|out)?|key(?:down|up)|load|mouse(?:down|enter|leave|move|out|over|up)|reset|resize|scroll|select|slotchange|submit|unload|wheel)","javascript")),Prism.languages.js=Prism.languages.javascript;
+
+  </script>
+
+  <script>
+  (() => {
+    "use strict";
+
+    function fatalStartupError(error) {
+      const message = error && error.message ? error.message : String(error || "Unknown startup error");
+      console.error(error);
+      const toastEl = document.getElementById("toast");
+      if (toastEl) {
+        toastEl.textContent = message;
+        toastEl.classList.add("show", "error");
+      } else {
+        document.body.innerHTML = `<main style="font-family:system-ui,-apple-system,sans-serif;padding:24px;line-height:1.5;max-width:40rem"><h1>Game of Society could not start</h1><p>${message}</p><p>Try Safari 16.4+ or another recent mobile or desktop browser.</p></main>`;
+      }
+    }
+
+    try {
+    const presets = {
+      cyclic: {
+        dimensions: [
+          { name: "state", type: "choice", values: ["A", "B", "C"] },
+          { name: "active", type: "choice", values: [true, false] }
+        ],
+        update: `function update(cell, neighbors) {
+  const next = ({ A: "B", B: "C", C: "A" })[cell.state];
+  const pressure = neighbors.filter(n => n && n.state === next).length;
+  return {
+    state: pressure >= 2 ? next : cell.state,
+    active: pressure > 0
+  };
+}`,
+        display: `function display(cell) {
+  if (!cell.active) return "var(--grid-empty)";
+  return ({
+    A: "var(--cell-a)",
+    B: "var(--cell-b)",
+    C: "var(--cell-c)"
+  })[cell.state];
+}`
+      },
+      majority: {
+        dimensions: [
+          { name: "group", type: "choice", values: ["A", "B", "C", "D"] },
+          { name: "visible", type: "choice", values: [true, false] }
+        ],
+        update: `function update(cell, neighbors) {
+  const nearby = neighbors.filter(n => n && n.visible);
+  if (nearby.length === 0) return cell;
+  const counts = {};
+  for (const n of nearby) counts[n.group] = (counts[n.group] || 0) + 1;
+  const group = Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+  return { group, visible: nearby.length >= 2 };
+}`,
+        display: `function display(cell) {
+  if (!cell.visible) return "var(--grid-empty)";
+  return ({
+    A: "var(--cell-a)", B: "var(--cell-b)",
+    C: "var(--cell-c)", D: "var(--cell-d)"
+  })[cell.group];
+}`
+      },
+      conway: {
+        dimensions: [{ name: "alive", type: "choice", values: [true, false] }],
+        update: `function update(cell, neighbors) {
+  const living = neighbors.filter(n => n && n.alive).length;
+  return {
+    alive: cell.alive
+      ? living === 2 || living === 3
+      : living === 3
+  };
+}`,
+        display: `function display(cell) {
+  return cell.alive ? "var(--cell-b)" : "var(--grid-empty)";
+}`
+      },
+      aging: {
+        dimensions: [
+          { name: "alive", type: "choice", values: [true, false] },
+          { name: "age", type: "integer", min: 0, max: null, initial: 0, randomMin: 0, randomMax: 80 }
+        ],
+        update: `function update(cell, neighbors) {
+  const living = neighbors.filter(n => n && n.alive && n.age > 18).length;
+  const alive = cell.alive
+    ? living === 2 || living === 3
+    : living === 3;
+  return {
+    alive,
+    age: alive ? (cell.alive ? cell.age + 1 : 0) : 0
+  };
+}`,
+        display: `function display(cell) {
+  if (!cell.alive) return "var(--grid-empty)";
+  const age = cell.age;
+  const lerp = (a, b, t) => Math.round(a + (b - a) * t);
+  const rgb = (r, g, b) => \`rgb(\${r}, \${g}, \${b})\`;
+  if (age <= 17) {
+    const t = age / 17;
+    return rgb(lerp(170, 28, t), lerp(230, 130, t), lerp(130, 48, t));
+  }
+  if (age <= 39) {
+    const t = (age - 18) / 21;
+    return rgb(lerp(110, 28, t), lerp(175, 75, t), lerp(235, 155, t));
+  }
+  if (age <= 64) {
+    const t = (age - 40) / 24;
+    return rgb(lerp(245, 200, t), lerp(220, 155, t), lerp(70, 28, t));
+  }
+  const t = Math.min(1, (age - 65) / 35);
+  return rgb(lerp(235, 155, t), lerp(95, 28, t), lerp(70, 35, t));
+}`
+      }
+    };
+
+    const ids = [
+      "gridCanvas", "playBtn", "playIcon", "stepBtn", "resetBtn", "backBtn", "undoBtn",
+      "randomizeBtn", "clearBtn", "generationLabel", "speedRange", "speedLabel", "statusDot",
+      "menuBtn", "drawer", "drawerBackdrop", "closeDrawerBtn", "gridSize", "topologySelect",
+      "applyWorldBtn", "dimensionList", "addDimensionBtn", "openTransitionBtn", "openDisplayBtn",
+      "codeModal", "closeCodeBtn", "updateCode", "displayCode", "askChatGptBtn", "validateBtn", "applyCodeBtn",
+      "validationDot", "validationText", "cellPopover", "cellTitle", "cellValues", "paintPalette",
+      "hint", "presetSelect", "unsavedOption", "savedWorldOptions", "savedWorldList", "saveNameInput", "saveNamedBtn", "shareBtn", "toast"
+    ];
+    const el = Object.fromEntries(ids.map(id => [id, document.getElementById(id)]));
+    const missing = ids.filter(id => !el[id]);
+    if (missing.length) throw new Error(`Missing UI elements: ${missing.join(", ")}`);
+    if (!el.gridCanvas.getContext) throw new Error("This browser does not support canvas rendering.");
+    const ctx = el.gridCanvas.getContext("2d", { alpha: false });
+    if (!ctx) throw new Error("Unable to create a 2D canvas context.");
+    if (typeof Worker === "undefined" || typeof URL === "undefined" || typeof Blob === "undefined") {
+      throw new Error("This browser does not support the features required to run Game of Society.");
+    }
+    if (typeof structuredClone !== "function") {
+      throw new Error("This browser is too old for Game of Society. Use Safari 16.4+ or another recent browser.");
+    }
+
+    const highlightJs = editor => {
+      const source = editor.textContent || "";
+      editor.innerHTML = Prism.highlight(source, Prism.languages.javascript, "javascript");
+    };
+    const jarOptions = { tab: "  ", spellcheck: false };
+    const updateJar = CodeJar(el.updateCode, highlightJs, jarOptions);
+    const displayJar = CodeJar(el.displayCode, highlightJs, jarOptions);
+    const getUpdateCode = () => updateJar.toString();
+    const getDisplayCode = () => displayJar.toString();
+    const setUpdateCode = code => updateJar.updateCode(code || "");
+    const setDisplayCode = code => displayJar.updateCode(code || "");
+
+    let dimensions = structuredClone(presets.cyclic.dimensions);
+    let size = Number(el.gridSize.value);
+    let topology = el.topologySelect.value;
+    let grid = [];
+    let initialGrid = [];
+    let history = [];
+    let editHistory = [];
+    let generation = 0;
+    let running = false;
+    let timer = null;
+    let busy = false;
+    let gridEpoch = 0;
+    let renderEpoch = 0;
+    let mode = "inspect";
+    let paintValues = {};
+    let selectedIndex = null;
+    let colors = [];
+    let rawColors = [];
+    const cssVarCache = new Map();
+    const HISTORY_LIMIT = 220;
+    const storage = {
+      get(key) { try { return window.localStorage.getItem(key); } catch { return null; } },
+      set(key, value) { try { window.localStorage.setItem(key, value); return true; } catch { return false; } }
+    };
+    let theme = storage.get("gameOfSocietyTheme") || "optimistic";
+    let activeCodePane = "transitionPane";
+    let toastTimer = null;
+    const namedWorldsStorageKey = "gameOfSocietyNamedWorlds";
+    let namedWorlds = [];
+    let renamingName = null;
+    let pendingDeleteName = null;
+    let selectedSavedName = null;
+
+    const workerSource = `
+      let updateFn = null;
+      let displayFn = null;
+      let updateSrc = null;
+      let displaySrc = null;
+      const compile = source => (new Function('"use strict"; return (' + source + ');'))();
+      const getUpdate = source => {
+        if (source !== updateSrc) {
+          updateFn = compile(source);
+          updateSrc = source;
+        }
+        if (typeof updateFn !== 'function') throw new Error('Update code must evaluate to a function.');
+        return updateFn;
+      };
+      const getDisplay = source => {
+        if (source !== displaySrc) {
+          displayFn = compile(source);
+          displaySrc = source;
+        }
+        if (typeof displayFn !== 'function') throw new Error('Display code must evaluate to a function.');
+        return displayFn;
+      };
+      const accepts = (dimension, value) => {
+        const type = dimension.type || 'choice';
+        if (type === 'choice') return dimension.values.some(item => Object.is(item, value));
+        if (typeof value !== 'number' || !Number.isFinite(value)) return false;
+        if (type === 'integer' && !Number.isInteger(value)) return false;
+        if (dimension.min !== null && dimension.min !== undefined && value < dimension.min) return false;
+        if (dimension.max !== null && dimension.max !== undefined && value > dimension.max) return false;
+        return true;
+      };
+      const expectation = dimension => {
+        const type = dimension.type || 'choice';
+        if (type === 'choice') return 'one of ' + dimension.values.map(String).join(', ');
+        const parts = [type === 'integer' ? 'an integer' : 'a finite number'];
+        if (dimension.min !== null && dimension.min !== undefined) parts.push('at least ' + dimension.min);
+        if (dimension.max !== null && dimension.max !== undefined) parts.push('at most ' + dimension.max);
+        return parts.join(', ');
+      };
+      const stepGrid = (update, grid, size, dimensions, topology) => {
+        const offsets = [[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]];
+        const names = dimensions.map(d => d.name);
+        const get = (x, y) => {
+          if (topology === 'wrap') {
+            x = (x + size) % size; y = (y + size) % size;
+            return grid[y * size + x];
+          }
+          if (x < 0 || y < 0 || x >= size || y >= size) return null;
+          return grid[y * size + x];
+        };
+        const next = new Array(grid.length);
+        for (let y = 0; y < size; y++) {
+          for (let x = 0; x < size; x++) {
+            const i = y * size + x;
+            const cell = Object.freeze({ ...grid[i] });
+            const neighbors = Object.freeze(offsets.map(([dx,dy]) => {
+              const n = get(x + dx, y + dy);
+              return n === null ? null : Object.freeze({ ...n });
+            }));
+            let result;
+            try { result = update(cell, neighbors); }
+            catch (error) { throw new Error('Cell (' + x + ', ' + y + '): ' + error.message); }
+            if (!result || typeof result !== 'object' || Array.isArray(result)) {
+              throw new Error('Cell (' + x + ', ' + y + '): update must return an object.');
+            }
+            const keys = Object.keys(result);
+            const missing = names.filter(name => !keys.includes(name));
+            const extra = keys.filter(name => !names.includes(name));
+            if (missing.length) throw new Error('Cell (' + x + ', ' + y + '): missing ' + missing.join(', '));
+            if (extra.length) throw new Error('Cell (' + x + ', ' + y + '): unknown ' + extra.join(', '));
+            for (const dimension of dimensions) {
+              if (!accepts(dimension, result[dimension.name])) {
+                throw new Error(
+                  'Cell (' + x + ', ' + y + '): "' + dimension.name + '" must be ' +
+                  expectation(dimension) + '; received ' + String(result[dimension.name])
+                );
+              }
+            }
+            next[i] = result;
+          }
+        }
+        return next;
+      };
+      const renderColors = (display, grid) => grid.map((cell, i) => {
+        let color;
+        try { color = display(Object.freeze({ ...cell })); }
+        catch (error) { throw new Error('Cell ' + i + ': ' + error.message); }
+        if (typeof color !== 'string' || !color.trim()) throw new Error('Display must return a color string.');
+        return color;
+      });
+      self.onmessage = event => {
+        const data = event.data;
+        const reply = payload => self.postMessage(Object.assign({ id: data.id }, payload));
+        try {
+          if (data.action === 'step' || data.action === 'stepRender') {
+            const updateCode = data.action === 'stepRender' ? data.updateCode : data.code;
+            const update = getUpdate(updateCode);
+            const next = stepGrid(update, data.grid, data.size, data.dimensions, data.topology);
+            if (data.action === 'step') {
+              reply({ ok: true, action: 'step', grid: next });
+              return;
+            }
+            let colors = null;
+            let displayError = null;
+            try {
+              colors = renderColors(getDisplay(data.displayCode), next);
+            } catch (error) {
+              displayError = error.message || String(error);
+            }
+            reply({ ok: true, action: 'stepRender', grid: next, colors, displayError });
+          } else if (data.action === 'render') {
+            const colors = renderColors(getDisplay(data.code), data.grid);
+            reply({ ok: true, action: 'render', colors });
+          } else {
+            throw new Error('Unknown worker action.');
+          }
+        } catch (error) {
+          reply({ ok: false, action: data.action, error: error.message || String(error) });
+        }
+      };
+    `;
+    const workerUrl = URL.createObjectURL(new Blob([workerSource], { type: "text/javascript" }));
+    let simWorker = null;
+    let workerRequestId = 0;
+    const workerQueue = [];
+    let workerActive = null;
+
+    function recoverWorker(reason) {
+      if (workerActive) {
+        clearTimeout(workerActive.timer);
+        workerActive.reject(new Error(reason));
+        workerActive = null;
+      }
+      while (workerQueue.length) {
+        workerQueue.shift().reject(new Error(reason));
+      }
+      if (simWorker) {
+        try { simWorker.terminate(); } catch (_) {}
+        simWorker = null;
+      }
+    }
+
+    function ensureWorker() {
+      if (simWorker) return simWorker;
+      try {
+        simWorker = new Worker(workerUrl);
+      } catch (error) {
+        throw new Error(error.message || "Unable to start a background worker.");
+      }
+      simWorker.onmessage = event => {
+        const active = workerActive;
+        if (!active || event.data.id !== active.id) return;
+        clearTimeout(active.timer);
+        workerActive = null;
+        event.data.ok ? active.resolve(event.data) : active.reject(new Error(event.data.error));
+        pumpWorkerQueue();
+      };
+      simWorker.onerror = event => {
+        recoverWorker(event.message || "Worker failed.");
+      };
+      return simWorker;
+    }
+
+    function pumpWorkerQueue() {
+      if (workerActive || !workerQueue.length) return;
+      const next = workerQueue.shift();
+      let worker;
+      try {
+        worker = ensureWorker();
+      } catch (error) {
+        next.reject(error);
+        pumpWorkerQueue();
+        return;
+      }
+      const id = ++workerRequestId;
+      const timer = setTimeout(() => {
+        recoverWorker("Code exceeded the execution-time limit.");
+      }, next.timeout);
+      workerActive = { id, resolve: next.resolve, reject: next.reject, timer };
+      try {
+        worker.postMessage(Object.assign({ id }, next.payload));
+      } catch (error) {
+        recoverWorker(error.message || "Unable to send work to the background worker.");
+      }
+    }
+
+    function runWorker(payload, timeout = 900) {
+      return new Promise((resolve, reject) => {
+        workerQueue.push({ payload, timeout, resolve, reject });
+        pumpWorkerQueue();
+      });
+    }
+
+    window.addEventListener("pagehide", () => {
+      recoverWorker("Page is unloading.");
+    });
+
+    function parseValue(raw) {
+      const value = raw.trim();
+      if (value === "true") return true;
+      if (value === "false") return false;
+      if (value === "null") return null;
+      if (/^-?(?:\d+\.?\d*|\.\d+)$/.test(value)) return Number(value);
+      return value;
+    }
+
+    function displayValue(value) { return typeof value === "string" ? value : String(value); }
+
+    function makeDimension(type = "choice", name = "dimension") {
+      if (type === "integer") {
+        return { name, type, min: 0, max: null, initial: 0, randomMin: 0, randomMax: 10 };
+      }
+      if (type === "number") {
+        return { name, type, min: 0, max: 1, step: 0.01, initial: 0.5, randomMin: 0, randomMax: 1 };
+      }
+      return { name, type: "choice", values: ["A", "B"] };
+    }
+
+    function normalizeDimension(raw) {
+      const type = raw?.type || "choice";
+      if (type === "choice") {
+        return { name: String(raw?.name || ""), type, values: Array.isArray(raw?.values) ? [...raw.values] : [] };
+      }
+      return {
+        name: String(raw?.name || ""),
+        type,
+        min: raw.min === undefined ? null : raw.min,
+        max: raw.max === undefined ? null : raw.max,
+        ...(type === "number" ? { step: raw.step ?? 0.01 } : {}),
+        initial: raw.initial,
+        randomMin: raw.randomMin,
+        randomMax: raw.randomMax
+      };
+    }
+
+    function dimensionAccepts(dimension, value) {
+      if (dimension.type === "choice") return dimension.values.some(item => Object.is(item, value));
+      if (typeof value !== "number" || !Number.isFinite(value)) return false;
+      if (dimension.type === "integer" && !Number.isInteger(value)) return false;
+      if (dimension.min !== null && value < dimension.min) return false;
+      if (dimension.max !== null && value > dimension.max) return false;
+      return true;
+    }
+
+    function validateDimensions(next) {
+      if (!next.length) throw new Error("At least one dimension is required.");
+      if (next.some(d => !d.name)) throw new Error("Every dimension needs a name.");
+      if (new Set(next.map(d => d.name)).size !== next.length) throw new Error("Dimension names must be unique.");
+      for (const d of next) {
+        if (!["choice", "integer", "number"].includes(d.type)) throw new Error(`Unknown type for "${d.name}".`);
+        if (d.type === "choice") {
+          if (!d.values.length) throw new Error(`"${d.name}" needs at least one choice.`);
+          continue;
+        }
+        const numericFields = ["initial", "randomMin", "randomMax"];
+        if (d.min !== null) numericFields.push("min");
+        if (d.max !== null) numericFields.push("max");
+        if (numericFields.some(field => typeof d[field] !== "number" || !Number.isFinite(d[field]))) {
+          throw new Error(`"${d.name}" has an invalid numerical setting.`);
+        }
+        if (d.min !== null && d.max !== null && d.min > d.max) throw new Error(`"${d.name}" minimum cannot exceed its maximum.`);
+        if (d.type === "integer" && numericFields.some(field => !Number.isInteger(d[field]))) {
+          throw new Error(`All settings for "${d.name}" must be integers.`);
+        }
+        if (d.type === "number" && (typeof d.step !== "number" || !Number.isFinite(d.step) || d.step <= 0)) {
+          throw new Error(`"${d.name}" step must be greater than zero.`);
+        }
+        if (!dimensionAccepts(d, d.initial)) throw new Error(`Initial value for "${d.name}" is outside its range.`);
+        if (!dimensionAccepts(d, d.randomMin) || !dimensionAccepts(d, d.randomMax)) {
+          throw new Error(`Random values for "${d.name}" must stay inside its range.`);
+        }
+        if (d.randomMin > d.randomMax) throw new Error(`Random minimum for "${d.name}" cannot exceed its maximum.`);
+      }
+    }
+
+    function initialDimensionValue(dimension) {
+      return dimension.type === "choice" ? dimension.values[0] : dimension.initial;
+    }
+
+    function randomDimensionValue(dimension) {
+      if (dimension.type === "choice") {
+        return dimension.values[Math.floor(Math.random() * dimension.values.length)];
+      }
+      if (dimension.type === "integer") {
+        return Math.floor(Math.random() * (dimension.randomMax - dimension.randomMin + 1)) + dimension.randomMin;
+      }
+      const raw = dimension.randomMin + Math.random() * (dimension.randomMax - dimension.randomMin);
+      const stepped = dimension.randomMin + Math.round((raw - dimension.randomMin) / dimension.step) * dimension.step;
+      return Number(Math.min(dimension.randomMax, Math.max(dimension.randomMin, stepped)).toFixed(12));
+    }
+
+    function firstCell() {
+      return Object.fromEntries(dimensions.map(d => [d.name, initialDimensionValue(d)]));
+    }
+
+    function syncPaintValues() {
+      paintValues = Object.fromEntries(dimensions.map(d => {
+        const kept = paintValues[d.name];
+        return [d.name, dimensionAccepts(d, kept) ? kept : initialDimensionValue(d)];
+      }));
+    }
+
+    function randomCell() {
+      return Object.fromEntries(dimensions.map(d => [d.name, randomDimensionValue(d)]));
+    }
+
+    function seedGrid() {
+      grid = Array.from({ length: size * size }, () => {
+        const cell = randomCell();
+        const boolDim = dimensions.find(d => d.type === "choice" && d.values.includes(true) && d.values.includes(false));
+        if (boolDim && Math.random() < .28) cell[boolDim.name] = false;
+        return cell;
+      });
+      initialGrid = structuredClone(grid);
+      history = [];
+      rawColors = [];
+      editHistory = [];
+      generation = 0;
+      selectedIndex = null;
+      syncUi();
+      renderGrid();
+    }
+
+    function clearGrid() {
+      pushEditHistory();
+      grid = Array.from({ length: size * size }, firstCell);
+      initialGrid = structuredClone(grid);
+      history = [];
+      rawColors = [];
+      generation = 0;
+      selectedIndex = null;
+      syncUi();
+      renderGrid();
+    }
+
+    function pushEditHistory() {
+      editHistory.push(structuredClone(grid));
+      if (editHistory.length > 30) editHistory.shift();
+    }
+
+    function cellsEqual(a, b) {
+      for (let i = 0; i < dimensions.length; i++) {
+        const name = dimensions[i].name;
+        if (!Object.is(a[name], b[name])) return false;
+      }
+      return true;
+    }
+
+    function pushSimHistory(previousGrid, nextGrid) {
+      const n = previousGrid.length;
+      const changed = [];
+      const previousCells = [];
+      for (let i = 0; i < n; i++) {
+        if (!cellsEqual(previousGrid[i], nextGrid[i])) {
+          changed.push(i);
+          previousCells.push(previousGrid[i]);
+        }
+      }
+      const entry = changed.length > (n >> 1)
+        ? { type: "full", previousGrid }
+        : { type: "sparse", indices: Uint16Array.from(changed), previousCells };
+      history.push(entry);
+      if (history.length > HISTORY_LIMIT) history.shift();
+    }
+
+    function applySimHistoryEntry(entry) {
+      if (entry.type === "full") {
+        grid = entry.previousGrid;
+        return;
+      }
+      const next = grid.slice();
+      for (let i = 0; i < entry.indices.length; i++) {
+        next[entry.indices[i]] = entry.previousCells[i];
+      }
+      grid = next;
+    }
+
+    function syncUi() {
+      el.generationLabel.textContent = `Generation ${generation}`;
+      el.speedLabel.textContent = `${el.speedRange.value} gen/s`;
+      el.playBtn.setAttribute("aria-label", running ? "Pause simulation" : "Play simulation");
+      el.playIcon.innerHTML = running
+        ? '<path d="M7 5h4v14H7zM13 5h4v14h-4z"/>'
+        : '<path d="M8 5v14l11-7z"/>';
+      el.backBtn.disabled = generation === 0 || history.length === 0;
+      el.undoBtn.disabled = editHistory.length === 0;
+    }
+
+    function invalidateCssVarCache() {
+      cssVarCache.clear();
+    }
+
+    function getCssVar(name) {
+      if (!cssVarCache.has(name)) {
+        cssVarCache.set(name, getComputedStyle(document.documentElement).getPropertyValue(name).trim());
+      }
+      return cssVarCache.get(name) || "";
+    }
+
+    function resolveColor(color) {
+      const match = color.match(/^var\((--[^)]+)\)$/);
+      if (!match) return color;
+      return getCssVar(match[1]) || "#64748b";
+    }
+
+    function applyResolvedColors() {
+      colors = rawColors.map(resolveColor);
+    }
+
+    function applyDisplayFailure(message) {
+      rawColors = [];
+      colors = grid.map(() => getCss("--danger"));
+      draw();
+      setStatus(false);
+      toast(`Display error: ${message}`, true);
+    }
+
+    async function renderGrid() {
+      const epoch = gridEpoch;
+      const seq = ++renderEpoch;
+      const gridRef = grid;
+      try {
+        const result = await runWorker({ action: "render", code: getDisplayCode(), grid }, 550);
+        if (epoch !== gridEpoch || seq !== renderEpoch || gridRef !== grid) return;
+        rawColors = result.colors;
+        applyResolvedColors();
+        draw();
+        setStatus(true);
+      } catch (error) {
+        if (epoch !== gridEpoch || seq !== renderEpoch || gridRef !== grid) return;
+        applyDisplayFailure(error.message);
+      }
+    }
+
+    function getCss(name) { return getCssVar(name); }
+
+    function draw() {
+      const rect = el.gridCanvas.getBoundingClientRect();
+      const rawDpr = window.devicePixelRatio || 1;
+      const dpr = Math.max(1, Math.min(rawDpr, 2));
+      const width = Math.max(240, Math.floor(rect.width));
+      const height = Math.max(240, Math.floor(rect.height));
+      if (el.gridCanvas.width !== Math.floor(width * dpr) || el.gridCanvas.height !== Math.floor(height * dpr)) {
+        el.gridCanvas.width = Math.floor(width * dpr);
+        el.gridCanvas.height = Math.floor(height * dpr);
+      }
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.imageSmoothingEnabled = false;
+      ctx.fillStyle = getCss("--grid-bg");
+      ctx.fillRect(0, 0, width, height);
+      const cw = width / size;
+      const ch = height / size;
+      const gap = Math.max(.35, Math.min(1.35, cw * .10));
+      for (let i = 0; i < grid.length; i++) {
+        const x = i % size;
+        const y = Math.floor(i / size);
+        ctx.fillStyle = colors[i] || getCss("--grid-empty");
+        ctx.fillRect(x * cw + gap, y * ch + gap, Math.max(.5, cw - gap * 2), Math.max(.5, ch - gap * 2));
+      }
+      if (selectedIndex !== null) {
+        const x = selectedIndex % size;
+        const y = Math.floor(selectedIndex / size);
+        ctx.strokeStyle = "rgba(255,255,255,.94)";
+        ctx.lineWidth = Math.max(1.5, Math.min(3, cw * .19));
+        ctx.strokeRect(x * cw + 1.5, y * ch + 1.5, cw - 3, ch - 3);
+      }
+    }
+
+    async function step() {
+      if (busy) return;
+      busy = true;
+      const epoch = gridEpoch;
+      const previousGrid = grid;
+      try {
+        const result = await runWorker({
+          action: "stepRender",
+          updateCode: getUpdateCode(),
+          displayCode: getDisplayCode(),
+          grid,
+          size,
+          dimensions,
+          topology
+        }, 1650);
+        if (epoch !== gridEpoch) return;
+        grid = result.grid;
+        generation++;
+        pushSimHistory(previousGrid, grid);
+        syncUi();
+        if (result.displayError || !Array.isArray(result.colors)) {
+          applyDisplayFailure(result.displayError || "Display must return a color string.");
+        } else {
+          rawColors = result.colors;
+          applyResolvedColors();
+          draw();
+          setStatus(true);
+        }
+        el.hint.classList.add("hidden");
+      } catch (error) {
+        stop();
+        setStatus(false);
+        toast(`Transition error: ${error.message}`, true);
+      } finally {
+        busy = false;
+      }
+    }
+
+    function start() {
+      if (running) return;
+      if (mode === "paint") setMode("inspect");
+      else hidePaintPalette();
+      running = true;
+      syncUi();
+      const tick = async () => {
+        if (!running) return;
+        await step();
+        if (!running) return;
+        timer = setTimeout(tick, 1000 / Number(el.speedRange.value));
+      };
+      tick();
+    }
+
+    function stop() {
+      running = false;
+      clearTimeout(timer);
+      // A step already sent to the worker was computed from the pre-stop grid,
+      // so retiring the epoch keeps it from landing on top of a later edit.
+      gridEpoch++;
+      syncUi();
+    }
+
+    function goBack() {
+      stop();
+      if (generation <= 0 || history.length === 0) return;
+      applySimHistoryEntry(history.pop());
+      generation--;
+      rawColors = [];
+      syncUi();
+      renderGrid();
+    }
+
+    function reset() {
+      stop();
+      grid = structuredClone(initialGrid);
+      history = [];
+      rawColors = [];
+      generation = 0;
+      selectedIndex = null;
+      syncUi();
+      renderGrid();
+      hidePopover();
+    }
+
+    function setStatus(ok) {
+      el.statusDot.classList.toggle("error", !ok);
+      el.validationDot.classList.toggle("error", !ok);
+    }
+
+    function viewportSize() {
+      const vv = window.visualViewport;
+      return {
+        width: vv ? vv.width : window.innerWidth,
+        height: vv ? vv.height : window.innerHeight,
+        offsetLeft: vv ? vv.offsetLeft : 0,
+        offsetTop: vv ? vv.offsetTop : 0
+      };
+    }
+
+    function clampOverlay(node, preferredLeft, preferredTop, margin = 12) {
+      const viewport = viewportSize();
+      const width = node.offsetWidth || 180;
+      const height = node.offsetHeight || 120;
+      const left = Math.min(
+        viewport.offsetLeft + viewport.width - width - margin,
+        Math.max(viewport.offsetLeft + margin, preferredLeft)
+      );
+      const top = Math.min(
+        viewport.offsetTop + viewport.height - height - margin,
+        Math.max(viewport.offsetTop + margin, preferredTop)
+      );
+      node.style.left = `${left}px`;
+      node.style.top = `${top}px`;
+    }
+
+    function canvasCell(event) {
+      const rect = el.gridCanvas.getBoundingClientRect();
+      const pointX = event.clientX ?? (event.touches && event.touches[0] ? event.touches[0].clientX : 0);
+      const pointY = event.clientY ?? (event.touches && event.touches[0] ? event.touches[0].clientY : 0);
+      const x = Math.max(0, Math.min(size - 1, Math.floor((pointX - rect.left) / rect.width * size)));
+      const y = Math.max(0, Math.min(size - 1, Math.floor((pointY - rect.top) / rect.height * size)));
+      return { x, y, index: y * size + x, clientX: pointX, clientY: pointY };
+    }
+
+    function showCell(index, event) {
+      selectedIndex = index;
+      const x = index % size;
+      const y = Math.floor(index / size);
+      el.cellTitle.textContent = `Cell (${x}, ${y})`;
+      el.cellValues.innerHTML = "";
+      for (const d of dimensions) {
+        const key = document.createElement("span"); key.textContent = d.name;
+        const value = document.createElement("strong"); value.textContent = displayValue(grid[index][d.name]);
+        el.cellValues.append(key, value);
+      }
+      const clientX = event.clientX ?? event.x ?? 0;
+      const clientY = event.clientY ?? event.y ?? 0;
+      el.cellPopover.classList.add("visible");
+      clampOverlay(el.cellPopover, clientX + 14, clientY + 14);
+      draw();
+    }
+
+    function hidePopover() { el.cellPopover.classList.remove("visible"); selectedIndex = null; draw(); }
+
+    function paintChoiceControls(d, group) {
+      const buttons = d.values.map(value => {
+        const button = document.createElement("button");
+        button.className = "paint-choice";
+        button.textContent = displayValue(value);
+        button.addEventListener("click", () => { paintValues[d.name] = value; markActive(); });
+        group.appendChild(button);
+        return button;
+      });
+      const markActive = () => buttons.forEach((button, index) => {
+        button.classList.toggle("active", Object.is(d.values[index], paintValues[d.name]));
+      });
+      markActive();
+    }
+
+    function paintNumberControls(d, group) {
+      const controls = document.createElement("div");
+      controls.className = "paint-number";
+      const number = document.createElement("input");
+      number.type = "number";
+      number.value = String(paintValues[d.name]);
+      number.step = d.type === "integer" ? "1" : String(d.step);
+      if (d.min !== null) number.min = String(d.min);
+      if (d.max !== null) number.max = String(d.max);
+      number.setAttribute("aria-label", `${d.name} paint value`);
+      const setValue = raw => {
+        if (String(raw).trim() === "") {
+          toast(`Enter a paint value for "${d.name}".`, true);
+          number.value = String(paintValues[d.name]);
+          return;
+        }
+        const value = Number(raw);
+        if (!dimensionAccepts(d, value)) {
+          toast(`Paint value for "${d.name}" is outside its range.`, true);
+          number.value = String(paintValues[d.name]);
+          return;
+        }
+        paintValues[d.name] = value;
+        number.value = String(value);
+      };
+      if (d.type === "number" && d.min !== null && d.max !== null) {
+        const range = document.createElement("input");
+        range.type = "range";
+        range.min = String(d.min);
+        range.max = String(d.max);
+        range.step = String(d.step);
+        range.value = String(paintValues[d.name]);
+        range.setAttribute("aria-label", `${d.name} paint slider`);
+        range.addEventListener("input", () => { setValue(range.value); number.value = range.value; });
+        number.addEventListener("input", () => {
+          if (number.value === "") return;
+          const value = Number(number.value);
+          if (dimensionAccepts(d, value)) { paintValues[d.name] = value; range.value = String(value); }
+        });
+        controls.append(range);
+      }
+      number.addEventListener("change", () => setValue(number.value));
+      controls.append(number);
+      group.appendChild(controls);
+    }
+
+    function placePaintPalette() {
+      const rail = document.querySelector(".toolrail").getBoundingClientRect();
+      const horizontalRail = window.matchMedia("(max-width: 560px)").matches;
+      el.paintPalette.classList.add("visible");
+      if (horizontalRail) {
+        clampOverlay(el.paintPalette, rail.left, rail.bottom + 10);
+      } else {
+        clampOverlay(el.paintPalette, rail.right + 10, rail.top + 8);
+      }
+    }
+
+    function showPaintPalette() {
+      el.paintPalette.innerHTML = "";
+      syncPaintValues();
+
+      for (const d of dimensions) {
+        const group = document.createElement("div");
+        group.className = "paint-group";
+        const label = document.createElement("span");
+        label.className = "paint-label";
+        label.textContent = d.name;
+        group.appendChild(label);
+        if (d.type === "choice") paintChoiceControls(d, group); else paintNumberControls(d, group);
+        el.paintPalette.appendChild(group);
+      }
+
+      placePaintPalette();
+    }
+
+    function hidePaintPalette() {
+      el.paintPalette.classList.remove("visible");
+    }
+
+    function repositionOverlays() {
+      if (el.paintPalette.classList.contains("visible")) placePaintPalette();
+      if (el.cellPopover.classList.contains("visible") && selectedIndex !== null) {
+        const rect = el.gridCanvas.getBoundingClientRect();
+        const x = selectedIndex % size;
+        const y = Math.floor(selectedIndex / size);
+        const cellLeft = rect.left + ((x + 0.5) / size) * rect.width;
+        const cellTop = rect.top + ((y + 0.5) / size) * rect.height;
+        clampOverlay(el.cellPopover, cellLeft + 14, cellTop + 14);
+      }
+    }
+
+    function setMode(next) {
+      mode = next;
+      document.querySelectorAll(".tool[data-tool]").forEach(button => button.classList.toggle("active", button.dataset.tool === mode));
+      if (mode === "paint") showPaintPalette(); else hidePaintPalette();
+      hidePopover();
+    }
+
+    function paintCell(index) {
+      stop();
+      syncPaintValues();
+      pushEditHistory();
+      grid[index] = { ...grid[index], ...paintValues };
+      initialGrid = structuredClone(grid);
+      history = [];
+      rawColors = [];
+      generation = 0;
+      syncUi();
+      renderGrid();
+    }
+
+    function renderDimensions(expanded = new Set()) {
+      el.dimensionList.innerHTML = "";
+      dimensions.forEach((d, index) => {
+        const card = document.createElement("div");
+        card.className = "dimension-card";
+        const fields = d.type === "choice"
+          ? `
+            <div class="dimension-fields">
+              <input class="dim-values" aria-label="Allowed values" value="${escapeHtml(d.values.map(displayValue).join(", "))}">
+              <small style="color:var(--muted)">Comma-separated choices. true, false and numbers are typed.</small>
+            </div>`
+          : `
+            <div class="dimension-fields">
+              <div class="dimension-range">
+                <label>Minimum<input class="dim-min" type="number" step="any" placeholder="No limit" value="${d.min ?? ""}"></label>
+                <label>Maximum<input class="dim-max" type="number" step="any" placeholder="No limit" value="${d.max ?? ""}"></label>
+              </div>
+              <details class="dimension-advanced" ${expanded.has(d.name) ? "open" : ""}>
+                <summary>Advanced values</summary>
+                <div class="dimension-advanced-body">
+                  <label>Initial<input class="dim-initial" type="number" step="any" value="${d.initial}"></label>
+                  ${d.type === "number" ? `<label>Step<input class="dim-step" type="number" min="0" step="any" value="${d.step}"></label>` : ""}
+                  <label>Random minimum<input class="dim-random-min" type="number" step="any" value="${d.randomMin}"></label>
+                  <label>Random maximum<input class="dim-random-max" type="number" step="any" value="${d.randomMax}"></label>
+                </div>
+              </details>
+            </div>`;
+        card.innerHTML = `
+          <div class="row">
+            <input class="dim-name grow" aria-label="Dimension name" value="${escapeHtml(d.name)}">
+            <select class="dimension-kind" aria-label="Dimension type">
+              <option value="choice" ${d.type === "choice" ? "selected" : ""}>Choice</option>
+              <option value="integer" ${d.type === "integer" ? "selected" : ""}>Integer</option>
+              <option value="number" ${d.type === "number" ? "selected" : ""}>Decimal</option>
+            </select>
+            <button class="text-button remove-dim" aria-label="Remove dimension">Remove</button>
+          </div>
+          ${fields}
+        `;
+        card.querySelector(".remove-dim").addEventListener("click", () => {
+          if (dimensions.length === 1) return toast("At least one dimension is required.", true);
+          commitDimensions(dimensions.filter((_, itemIndex) => itemIndex !== index));
+        });
+        card.querySelector(".dimension-kind").addEventListener("change", event => {
+          const name = card.querySelector(".dim-name").value.trim() || d.name;
+          const next = dimensions.map((item, itemIndex) => itemIndex === index ? makeDimension(event.target.value, name) : item);
+          commitDimensions(next, new Set([name]));
+        });
+        card.querySelectorAll("input").forEach(input => input.addEventListener("change", () => {
+          if ((input.classList.contains("dim-min") || input.classList.contains("dim-max")) && input.value.trim() !== "") {
+            const bound = Number(input.value);
+            const selectors = [".dim-initial", ".dim-random-min", ".dim-random-max"];
+            for (const selector of selectors) {
+              const dependent = card.querySelector(selector);
+              if (!dependent) continue;
+              const outside = input.classList.contains("dim-min")
+                ? Number(dependent.value) < bound
+                : Number(dependent.value) > bound;
+              if (outside) dependent.value = String(bound);
+            }
+          }
+          applyDimensionSchema();
+        }));
+        el.dimensionList.appendChild(card);
+      });
+    }
+
+    function optionalNumber(input) {
+      return input.value.trim() === "" ? null : Number(input.value);
+    }
+
+    function requiredNumber(input) {
+      return input.value.trim() === "" ? NaN : Number(input.value);
+    }
+
+    function readDimensionCards() {
+      return [...el.dimensionList.querySelectorAll(".dimension-card")].map(card => {
+        const name = card.querySelector(".dim-name").value.trim();
+        const type = card.querySelector(".dimension-kind").value;
+        if (type === "choice") {
+          const values = card.querySelector(".dim-values").value
+            .split(",")
+            .map(parseValue)
+            .filter((value, index, all) => displayValue(value) !== "" && all.findIndex(item => Object.is(item, value)) === index);
+          return { name, type, values };
+        }
+        return {
+          name,
+          type,
+          min: optionalNumber(card.querySelector(".dim-min")),
+          max: optionalNumber(card.querySelector(".dim-max")),
+          ...(type === "number" ? { step: requiredNumber(card.querySelector(".dim-step")) } : {}),
+          initial: requiredNumber(card.querySelector(".dim-initial")),
+          randomMin: requiredNumber(card.querySelector(".dim-random-min")),
+          randomMax: requiredNumber(card.querySelector(".dim-random-max"))
+        };
+      });
+    }
+
+    function commitDimensions(next, expanded = new Set()) {
+      const old = dimensions;
+      validateDimensions(next);
+      stop();
+      dimensions = next;
+      grid = grid.map(cell => Object.fromEntries(dimensions.map(d => {
+        const previous = old.find(item => item.name === d.name);
+        const value = previous ? cell[d.name] : undefined;
+        return [d.name, dimensionAccepts(d, value) ? value : initialDimensionValue(d)];
+      })));
+      syncPaintValues();
+      initialGrid = structuredClone(grid);
+      history = [];
+      rawColors = [];
+      generation = 0;
+      renderDimensions(expanded);
+      syncUi();
+      renderGrid();
+      if (mode === "paint") showPaintPalette();
+      toast("Dimensions updated.");
+    }
+
+    function applyDimensionSchema() {
+      try {
+        const cards = [...el.dimensionList.querySelectorAll(".dimension-card")];
+        const expanded = new Set(cards.filter(card => card.querySelector(".dimension-advanced")?.open).map(card => card.querySelector(".dim-name").value.trim()));
+        commitDimensions(readDimensionCards(), expanded);
+      } catch (error) { toast(error.message, true); renderDimensions(); }
+    }
+
+    function escapeHtml(value) {
+      return String(value).replaceAll("&", "&amp;").replaceAll('"', "&quot;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+    }
+
+    function setBodyScrollLocked(locked) {
+      document.body.classList.toggle("modal-open", locked);
+    }
+
+    function openDrawer() {
+      el.drawer.classList.add("open"); el.drawerBackdrop.classList.add("open");
+      el.drawer.setAttribute("aria-hidden", "false"); el.menuBtn.setAttribute("aria-expanded", "true");
+      setBodyScrollLocked(true);
+    }
+    function closeDrawer() {
+      el.drawer.classList.remove("open"); el.drawerBackdrop.classList.remove("open");
+      el.drawer.setAttribute("aria-hidden", "true"); el.menuBtn.setAttribute("aria-expanded", "false");
+      if (!el.codeModal.classList.contains("open")) setBodyScrollLocked(false);
+      if (renamingName !== null || pendingDeleteName !== null) {
+        renamingName = null;
+        pendingDeleteName = null;
+        renderSavedWorldList();
+      }
+    }
+
+    function openCode(pane) {
+      activeCodePane = pane;
+      document.querySelectorAll(".code-tab").forEach(tab => tab.classList.toggle("active", tab.dataset.pane === pane));
+      document.querySelectorAll(".code-pane").forEach(item => item.classList.toggle("active", item.id === pane));
+      el.codeModal.classList.add("open"); el.codeModal.setAttribute("aria-hidden", "false");
+      closeDrawer();
+      setBodyScrollLocked(true);
+      const focusEl = pane === "displayPane" ? el.displayCode : el.updateCode;
+      requestAnimationFrame(() => focusEl.focus());
+    }
+    function closeCode() {
+      el.codeModal.classList.remove("open");
+      el.codeModal.setAttribute("aria-hidden", "true");
+      if (!el.drawer.classList.contains("open")) setBodyScrollLocked(false);
+    }
+
+    async function validateCode() {
+      try {
+        if (activeCodePane === "transitionPane") {
+          await runWorker({ action: "step", code: getUpdateCode(), grid, size, dimensions, topology }, 1100);
+        } else {
+          await runWorker({ action: "render", code: getDisplayCode(), grid: grid.slice(0, 80) }, 550);
+        }
+        el.validationDot.classList.remove("error"); el.validationText.textContent = "Valid";
+        return true;
+      } catch (error) {
+        el.validationDot.classList.add("error"); el.validationText.textContent = error.message;
+        return false;
+      }
+    }
+
+    function describeDimension(dimension) {
+      const type = dimension.type || "choice";
+      if (type === "choice") {
+        return `${dimension.name} (choice): ${dimension.values.map(String).join(", ")}`;
+      }
+      const parts = [`${dimension.name} (${type})`];
+      if (dimension.min !== null && dimension.min !== undefined) parts.push(`min ${dimension.min}`);
+      if (dimension.max !== null && dimension.max !== undefined) parts.push(`max ${dimension.max}`);
+      return parts.join(", ");
+    }
+
+    function buildChatGptPrompt() {
+      const isTransition = activeCodePane === "transitionPane";
+      const fnName = isTransition ? "update" : "display";
+      const signature = isTransition ? "update(cell, neighbors)" : "display(cell)";
+      const currentCode = isTransition ? getUpdateCode() : getDisplayCode();
+      const contract = isTransition
+        ? [
+            `${signature} runs once for every cell. Results are applied simultaneously.`,
+            "`cell` is an object of the current dimension values.",
+            "`neighbors` is an array of the eight surrounding cells (NW,N,NE,W,E,SW,S,SE). Fixed-edge gaps are null.",
+            "Return one complete cell object with every dimension key. Choice values must be from the declared set; numerical values must stay in range."
+          ]
+        : [
+            `${signature} returns a CSS color string for a cell.`,
+            "Prefer theme-aware CSS variables when suitable: var(--cell-a), var(--cell-b), var(--cell-c), var(--cell-d), var(--grid-empty)."
+          ];
+
+      return [
+        "I am writing rules for Game of Society, a browser cellular-automaton game.",
+        "Each cell is a JavaScript object whose keys are the configured dimensions below.",
+        "I need help writing the rule function so I can paste it into the game's code editor.",
+        "",
+        "Current dimensions:",
+        ...dimensions.map(d => `- ${describeDimension(d)}`),
+        "",
+        `Topology: ${topology}. Grid size: ${size}×${size}.`,
+        "",
+        "Function contract:",
+        ...contract.map(line => `- ${line}`),
+        "",
+        "Current code in the editor:",
+        "```javascript",
+        currentCode.trim() || `function ${fnName}(...) { /* empty */ }`,
+        "```",
+        "",
+        "Desired behavior (edit this before sending):",
+        "[DESCRIBE WHAT YOU WANT THIS FUNCTION TO DO]",
+        "",
+        "Output requirements:",
+        `- Reply with a single complete JavaScript function named ${fnName}.`,
+        "- Put the function in one fenced ```javascript code block and nothing else after it that I need to copy.",
+        "- Do not wrap it in HTML, markdown explanations inside the fence, or comments that prevent paste.",
+        "- The pasted source must evaluate as a function (same shape as the current code above).",
+        "- Keep the code self-contained: no imports, DOM access, or async."
+      ].join("\n");
+    }
+
+    function openChatGptHelp() {
+      const prompt = buildChatGptPrompt();
+      const url = "https://chatgpt.com/?q=" + encodeURIComponent(prompt);
+      const opened = window.open(url, "_blank", "noopener,noreferrer");
+      if (!opened) toast("Pop-up blocked. Allow pop-ups to open ChatGPT.", true);
+    }
+
+    function setTheme(next) {
+      theme = next;
+      document.documentElement.dataset.theme = theme;
+      storage.set("gameOfSocietyTheme", theme);
+      invalidateCssVarCache();
+      const themeColor = getCssVar("--bg") || "#f4f7f3";
+      const themeMeta = document.querySelector('meta[name="theme-color"]');
+      if (themeMeta) themeMeta.setAttribute("content", themeColor);
+      document.querySelectorAll(".theme-card").forEach(card => card.classList.toggle("active", card.dataset.theme === theme));
+      if (grid.length && getDisplayCode().trim()) {
+        if (rawColors.length === grid.length) {
+          applyResolvedColors();
+          draw();
+        } else {
+          renderGrid();
+        }
+      }
+    }
+
+    function loadPreset(name) {
+      stop();
+      selectedSavedName = null;
+      el.unsavedOption.hidden = true;
+      const preset = presets[name];
+      dimensions = structuredClone(preset.dimensions);
+      setUpdateCode(preset.update);
+      setDisplayCode(preset.display);
+      paintValues = {};
+      syncPaintValues();
+      renderDimensions();
+      seedGrid();
+      toast(`${el.presetSelect.options[el.presetSelect.selectedIndex].text} loaded.`);
+    }
+
+    function readNamedWorlds() {
+      try {
+        const raw = storage.get(namedWorldsStorageKey);
+        if (!raw) return [];
+        const saved = JSON.parse(raw);
+        if (!Array.isArray(saved)) return [];
+        return saved.filter(item => item && typeof item.name === "string" && item.world);
+      } catch {
+        return [];
+      }
+    }
+
+    function writeNamedWorlds(next) {
+      if (!storage.set(namedWorldsStorageKey, JSON.stringify(next))) {
+        toast("Browser storage is full or unavailable.", true);
+        return false;
+      }
+      namedWorlds = next;
+      return true;
+    }
+
+    function formatSavedAt(value) {
+      const date = new Date(value);
+      if (!Number.isFinite(date.getTime())) return "Saved locally";
+      return `Saved ${date.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" })}`;
+    }
+
+    function showUnsavedSelection() {
+      el.unsavedOption.hidden = false;
+      el.presetSelect.value = "unsaved";
+    }
+
+    function renderNamedWorldOptions(selectedName = null) {
+      el.savedWorldOptions.replaceChildren();
+      const sorted = [...namedWorlds].sort((a, b) => a.name.localeCompare(b.name));
+      for (const saved of sorted) {
+        const option = document.createElement("option");
+        option.value = `saved:${saved.name}`;
+        option.textContent = saved.name;
+        el.savedWorldOptions.appendChild(option);
+      }
+      el.savedWorldOptions.hidden = namedWorlds.length === 0;
+      if (selectedName !== null) {
+        el.unsavedOption.hidden = true;
+        el.presetSelect.value = `saved:${selectedName}`;
+      }
+    }
+
+    function renderSavedWorldList() {
+      el.savedWorldList.replaceChildren();
+      if (!namedWorlds.length) {
+        const empty = document.createElement("div");
+        empty.className = "saved-empty";
+        empty.textContent = "Nothing saved yet. Name a configuration above and save it.";
+        el.savedWorldList.appendChild(empty);
+        return;
+      }
+
+      const sorted = [...namedWorlds].sort((a, b) => a.name.localeCompare(b.name));
+      for (const saved of sorted) {
+        const row = document.createElement("div");
+        row.className = "saved-row";
+
+        if (pendingDeleteName === saved.name) {
+          row.classList.add("danger");
+          const confirm = document.createElement("div");
+          confirm.className = "saved-row-confirm";
+          const label = document.createElement("span");
+          label.textContent = `Delete "${saved.name}"?`;
+          const deleteBtn = document.createElement("button");
+          deleteBtn.type = "button";
+          deleteBtn.className = "text-button confirm-delete";
+          deleteBtn.textContent = "Delete";
+          deleteBtn.addEventListener("click", () => deleteNamedWorld(saved.name));
+          const cancelBtn = document.createElement("button");
+          cancelBtn.type = "button";
+          cancelBtn.className = "text-button";
+          cancelBtn.textContent = "Cancel";
+          cancelBtn.addEventListener("click", () => {
+            pendingDeleteName = null;
+            renderSavedWorldList();
+          });
+          confirm.append(label, deleteBtn, cancelBtn);
+          row.appendChild(confirm);
+          el.savedWorldList.appendChild(row);
+          continue;
+        }
+
+        if (renamingName === saved.name) {
+          const input = document.createElement("input");
+          input.className = "saved-row-rename";
+          input.type = "text";
+          input.maxLength = 80;
+          input.value = saved.name;
+          input.setAttribute("aria-label", `Rename ${saved.name}`);
+          let cancelled = false;
+          const commit = () => {
+            if (cancelled) return;
+            renameNamedWorld(saved.name, input.value);
+          };
+          input.addEventListener("keydown", event => {
+            if (event.key === "Enter") {
+              event.preventDefault();
+              input.blur();
+            } else if (event.key === "Escape") {
+              event.preventDefault();
+              event.stopPropagation();
+              cancelled = true;
+              renamingName = null;
+              renderSavedWorldList();
+            }
+          });
+          input.addEventListener("blur", commit);
+          row.appendChild(input);
+          el.savedWorldList.appendChild(row);
+          requestAnimationFrame(() => {
+            input.focus();
+            input.select();
+          });
+          continue;
+        }
+
+        const nameBtn = document.createElement("button");
+        nameBtn.type = "button";
+        nameBtn.className = "saved-row-name";
+        nameBtn.setAttribute("aria-label", `Load ${saved.name}`);
+        const title = document.createElement("strong");
+        title.textContent = saved.name;
+        const date = document.createElement("small");
+        date.textContent = formatSavedAt(saved.savedAt);
+        nameBtn.append(title, date);
+        nameBtn.addEventListener("click", () => {
+          el.presetSelect.value = `saved:${saved.name}`;
+          loadSelectedWorld(`saved:${saved.name}`);
+        });
+
+        const actions = document.createElement("div");
+        actions.className = "saved-row-actions";
+
+        const renameBtn = document.createElement("button");
+        renameBtn.type = "button";
+        renameBtn.className = "saved-row-icon";
+        renameBtn.setAttribute("aria-label", `Rename ${saved.name}`);
+        renameBtn.title = "Rename";
+        renameBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>';
+        renameBtn.addEventListener("click", () => {
+          pendingDeleteName = null;
+          renamingName = saved.name;
+          renderSavedWorldList();
+        });
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.type = "button";
+        deleteBtn.className = "saved-row-icon danger";
+        deleteBtn.setAttribute("aria-label", `Delete ${saved.name}`);
+        deleteBtn.title = "Delete";
+        deleteBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/></svg>';
+        deleteBtn.addEventListener("click", () => {
+          renamingName = null;
+          pendingDeleteName = saved.name;
+          renderSavedWorldList();
+        });
+
+        actions.append(renameBtn, deleteBtn);
+        row.append(nameBtn, actions);
+        el.savedWorldList.appendChild(row);
+      }
+    }
+
+    function renderSavedWorlds(selectedName = null) {
+      renderNamedWorldOptions(selectedName);
+      renderSavedWorldList();
+    }
+
+    function renameNamedWorld(oldName, rawName) {
+      const name = String(rawName || "").trim();
+      if (!name) {
+        toast("Enter a name for this configuration.", true);
+        renamingName = oldName;
+        renderSavedWorldList();
+        return;
+      }
+      if (name === oldName) {
+        renamingName = null;
+        renderSavedWorldList();
+        return;
+      }
+      if (namedWorlds.some(saved => saved.name === name)) {
+        toast(`A configuration named "${name}" already exists.`, true);
+        renamingName = oldName;
+        renderSavedWorldList();
+        return;
+      }
+      const next = namedWorlds.map(saved => saved.name === oldName ? { ...saved, name } : saved);
+      if (!writeNamedWorlds(next)) {
+        renamingName = oldName;
+        renderSavedWorldList();
+        return;
+      }
+      renamingName = null;
+      pendingDeleteName = null;
+      if (selectedSavedName === oldName) {
+        selectedSavedName = name;
+        el.saveNameInput.value = name;
+        renderSavedWorlds(name);
+      } else {
+        renderSavedWorlds(selectedSavedName);
+      }
+      toast(`Renamed to "${name}".`);
+    }
+
+    function deleteNamedWorld(name) {
+      const next = namedWorlds.filter(saved => saved.name !== name);
+      if (!writeNamedWorlds(next)) return;
+      pendingDeleteName = null;
+      renamingName = null;
+      if (selectedSavedName === name) {
+        selectedSavedName = null;
+        showUnsavedSelection();
+        renderSavedWorlds();
+      } else {
+        renderSavedWorlds(selectedSavedName);
+      }
+      toast(`"${name}" deleted.`);
+    }
+
+    function saveNamedWorld() {
+      const name = el.saveNameInput.value.trim();
+      if (!name) {
+        toast("Enter a name for this configuration.", true);
+        el.saveNameInput.focus();
+        return;
+      }
+      const existingIndex = namedWorlds.findIndex(saved => saved.name === name);
+      if (existingIndex !== -1 && !window.confirm(`Replace the saved configuration "${name}"?`)) return;
+
+      const saved = { name, savedAt: new Date().toISOString(), world: structuredClone(worldData()) };
+      const next = [...namedWorlds];
+      if (existingIndex === -1) next.push(saved); else next[existingIndex] = saved;
+      if (!writeNamedWorlds(next)) return;
+      selectedSavedName = name;
+      renamingName = null;
+      pendingDeleteName = null;
+      renderSavedWorlds(name);
+      toast(`"${name}" saved in this browser.`);
+    }
+
+    function loadSelectedWorld(value) {
+      if (value === "unsaved") return;
+      if (value.startsWith("saved:")) {
+        const name = value.slice("saved:".length);
+        const saved = namedWorlds.find(item => item.name === name);
+        if (!saved) {
+          toast("That saved configuration no longer exists.", true);
+          selectedSavedName = null;
+          showUnsavedSelection();
+          renderSavedWorlds();
+          return;
+        }
+        try {
+          restoreWorld(structuredClone(saved.world));
+          selectedSavedName = name;
+          el.unsavedOption.hidden = true;
+          el.saveNameInput.value = name;
+          el.presetSelect.value = `saved:${name}`;
+          toast(`"${name}" loaded.`);
+        } catch (error) {
+          toast(error.message || "The saved configuration is invalid.", true);
+        }
+        return;
+      }
+      loadPreset(value);
+    }
+
+    function worldData() {
+      return {
+        version: 3,
+        name: "Game of Society",
+        theme,
+        size,
+        topology,
+        speed: Number(el.speedRange.value),
+        dimensions,
+        updateCode: getUpdateCode(),
+        displayCode: getDisplayCode(),
+        grid,
+        generation
+      };
+    }
+
+    function restoreWorld(data) {
+      if (!data || !Array.isArray(data.dimensions) || !Array.isArray(data.grid)) throw new Error("Invalid world file.");
+      const restoredSize = Number(data.size);
+      const restoredDimensions = data.dimensions.map(normalizeDimension);
+      validateDimensions(restoredDimensions);
+      if (!Number.isInteger(restoredSize) || restoredSize <= 0 || data.grid.length !== restoredSize * restoredSize) {
+        throw new Error("World grid does not match its declared size.");
+      }
+      for (const [index, cell] of data.grid.entries()) {
+        if (!cell || typeof cell !== "object" || Array.isArray(cell)) throw new Error(`Cell ${index} is invalid.`);
+        for (const dimension of restoredDimensions) {
+          if (!dimensionAccepts(dimension, cell[dimension.name])) {
+            throw new Error(`Cell ${index} has an invalid value for "${dimension.name}".`);
+          }
+        }
+      }
+      stop();
+      size = restoredSize; topology = data.topology || "wrap";
+      dimensions = restoredDimensions; grid = data.grid;
+      generation = Number(data.generation || 0);
+      setUpdateCode(data.updateCode);
+      setDisplayCode(data.displayCode);
+      theme = data.theme || "optimistic"; setTheme(theme);
+      el.gridSize.value = String(size); el.topologySelect.value = topology;
+      const restoredSpeed = Number(data.speed);
+      if (Number.isFinite(restoredSpeed)) {
+        el.speedRange.value = String(Math.min(Number(el.speedRange.max), Math.max(Number(el.speedRange.min), restoredSpeed)));
+      }
+      paintValues = {};
+      syncPaintValues();
+      initialGrid = structuredClone(grid); history = []; rawColors = []; editHistory = [];
+      renderDimensions(); syncUi(); renderGrid(); closeDrawer();
+    }
+
+    function bytesToBase64Url(bytes) {
+      let binary = "";
+      const chunkSize = 0x8000;
+      for (let offset = 0; offset < bytes.length; offset += chunkSize) {
+        binary += String.fromCharCode(...bytes.subarray(offset, offset + chunkSize));
+      }
+      return btoa(binary).replaceAll("+", "-").replaceAll("/", "_").replace(/=+$/, "");
+    }
+
+    function base64UrlToBytes(value) {
+      const base64 = value.replaceAll("-", "+").replaceAll("_", "/");
+      const padded = base64 + "=".repeat((4 - base64.length % 4) % 4);
+      const binary = atob(padded);
+      return Uint8Array.from(binary, character => character.charCodeAt(0));
+    }
+
+    async function compressBytes(bytes) {
+      const stream = new Blob([bytes]).stream().pipeThrough(new CompressionStream("gzip"));
+      return new Uint8Array(await new Response(stream).arrayBuffer());
+    }
+
+    async function decompressBytes(bytes) {
+      const stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream("gzip"));
+      return new Uint8Array(await new Response(stream).arrayBuffer());
+    }
+
+    async function encodeWorldUrl() {
+      const jsonBytes = new TextEncoder().encode(JSON.stringify(worldData()));
+      const canCompress = "CompressionStream" in window && "DecompressionStream" in window;
+      const payloadBytes = canCompress ? await compressBytes(jsonBytes) : jsonBytes;
+      const payload = `v1.${canCompress ? "gzip" : "plain"}.${bytesToBase64Url(payloadBytes)}`;
+      const url = new URL(window.location.href);
+      url.hash = new URLSearchParams({ world: payload }).toString();
+      return url.toString();
+    }
+
+    async function decodeWorldPayload(payload) {
+      const [transportVersion, encoding, encodedBytes] = payload.split(".");
+      if (transportVersion !== "v1" || !encodedBytes || !["gzip", "plain"].includes(encoding)) {
+        throw new Error("This shared URL uses an unsupported format.");
+      }
+      let bytes = base64UrlToBytes(encodedBytes);
+      if (encoding === "gzip") {
+        if (!("DecompressionStream" in window)) throw new Error("This browser cannot decompress the shared world.");
+        bytes = await decompressBytes(bytes);
+      }
+      return JSON.parse(new TextDecoder().decode(bytes));
+    }
+
+    function sharedWorldPayload() {
+      return new URLSearchParams(window.location.hash.slice(1)).get("world");
+    }
+
+    function presetFromUrl() {
+      const name = new URLSearchParams(window.location.search).get("preset");
+      return name && Object.hasOwn(presets, name) ? name : null;
+    }
+
+    async function restoreSharedWorldFromUrl() {
+      const payload = sharedWorldPayload();
+      if (!payload) return false;
+      try {
+        const data = await decodeWorldPayload(payload);
+        const trustsSender = window.confirm(
+          "Do you trust the sender of this link?\n\n" +
+          "This shared world contains custom JavaScript code that will run in your browser. " +
+          "Only continue if you trust who sent it."
+        );
+        if (!trustsSender) {
+          toast("Shared world was not loaded.");
+          return false;
+        }
+        restoreWorld(data);
+        toast("Shared world loaded.");
+        return true;
+      } catch (error) {
+        toast(error.message || "The shared URL is invalid.", true);
+        return false;
+      }
+    }
+
+    async function copyText(value) {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+        return;
+      }
+      const input = document.createElement("textarea");
+      input.value = value;
+      input.setAttribute("readonly", "");
+      input.style.position = "fixed";
+      input.style.opacity = "0";
+      document.body.appendChild(input);
+      input.select();
+      const copied = document.execCommand("copy");
+      input.remove();
+      if (!copied) throw new Error("Copying is unavailable. Copy the URL from the address bar.");
+    }
+
+    function toast(message, error = false) {
+      clearTimeout(toastTimer);
+      el.toast.textContent = message;
+      el.toast.classList.toggle("error", error);
+      el.toast.classList.add("show");
+      toastTimer = setTimeout(() => el.toast.classList.remove("show"), 2600);
+    }
+
+    el.playBtn.addEventListener("click", () => running ? stop() : start());
+    el.stepBtn.addEventListener("click", step);
+    el.resetBtn.addEventListener("click", reset);
+    el.backBtn.addEventListener("click", goBack);
+    el.undoBtn.addEventListener("click", () => {
+      if (!editHistory.length) return;
+      stop(); grid = editHistory.pop(); initialGrid = structuredClone(grid); history = []; rawColors = []; generation = 0;
+      syncUi(); renderGrid();
+    });
+    el.speedRange.addEventListener("input", syncUi);
+    el.randomizeBtn.addEventListener("click", () => { stop(); seedGrid(); toast("New society seeded."); });
+    el.clearBtn.addEventListener("click", () => { stop(); clearGrid(); });
+    el.presetSelect.addEventListener("change", () => loadSelectedWorld(el.presetSelect.value));
+
+    document.querySelectorAll(".tool[data-tool]").forEach(button => button.addEventListener("click", () => setMode(button.dataset.tool)));
+
+    let suppressCanvasClick = false;
+    function handleCanvasPointer(event) {
+      if (event.pointerType === "mouse" && event.button !== 0) return;
+      if (typeof event.button === "number" && event.button > 0) return;
+      const { index, clientX, clientY } = canvasCell(event);
+      el.hint.classList.add("hidden");
+      if (mode === "inspect") showCell(index, { clientX, clientY }); else paintCell(index);
+    }
+    el.gridCanvas.addEventListener("pointerup", event => {
+      if (event.pointerType === "touch" || event.pointerType === "pen") {
+        suppressCanvasClick = true;
+        handleCanvasPointer(event);
+        setTimeout(() => { suppressCanvasClick = false; }, 400);
+      }
+    });
+    el.gridCanvas.addEventListener("click", event => {
+      if (suppressCanvasClick) {
+        event.preventDefault();
+        return;
+      }
+      handleCanvasPointer(event);
+    });
+
+    el.menuBtn.addEventListener("click", openDrawer);
+    el.closeDrawerBtn.addEventListener("click", closeDrawer);
+    el.drawerBackdrop.addEventListener("click", closeDrawer);
+    el.applyWorldBtn.addEventListener("click", () => {
+      stop(); size = Number(el.gridSize.value); topology = el.topologySelect.value; seedGrid(); closeDrawer(); toast("World settings applied.");
+    });
+    el.addDimensionBtn.addEventListener("click", () => {
+      const dimension = makeDimension("choice", `dimension${dimensions.length + 1}`);
+      commitDimensions([...dimensions, dimension]);
+    });
+    el.openTransitionBtn.addEventListener("click", () => openCode("transitionPane"));
+    el.openDisplayBtn.addEventListener("click", () => openCode("displayPane"));
+    el.closeCodeBtn.addEventListener("click", closeCode);
+    el.codeModal.addEventListener("click", event => { if (event.target === el.codeModal) closeCode(); });
+    document.querySelectorAll(".code-tab").forEach(tab => tab.addEventListener("click", () => openCode(tab.dataset.pane)));
+    el.askChatGptBtn.addEventListener("click", openChatGptHelp);
+    el.validateBtn.addEventListener("click", validateCode);
+    el.applyCodeBtn.addEventListener("click", async () => { if (await validateCode()) { closeCode(); renderGrid(); toast("Rule applied."); } });
+
+    document.querySelectorAll(".theme-card").forEach(card => card.addEventListener("click", () => setTheme(card.dataset.theme)));
+
+    el.saveNamedBtn.addEventListener("click", saveNamedWorld);
+    el.saveNameInput.addEventListener("keydown", event => {
+      if (event.key === "Enter") saveNamedWorld();
+    });
+    el.shareBtn.addEventListener("click", async () => {
+      el.shareBtn.disabled = true;
+      try {
+        const url = await encodeWorldUrl();
+        window.history.replaceState(null, "", url);
+        await copyText(url);
+        toast("Save & share URL copied.");
+      } catch (error) {
+        toast(error.message || "Could not create the share URL.", true);
+      } finally {
+        el.shareBtn.disabled = false;
+      }
+    });
+
+    document.addEventListener("keydown", event => {
+      if (event.key === "Escape") {
+        closeDrawer(); closeCode(); hidePopover();
+        return;
+      }
+      const target = event.target;
+      const editingCode = el.codeModal.classList.contains("open")
+        || target.closest?.("[contenteditable]")
+        || target.isContentEditable;
+      if (editingCode || target.matches?.("input, textarea, select")) return;
+      if (event.code === "Space") { event.preventDefault(); running ? stop() : start(); }
+      if (event.key === "ArrowRight") step();
+      if (event.key === "ArrowLeft") goBack();
+      if (event.key.toLowerCase() === "i") setMode("inspect");
+      if (event.key.toLowerCase() === "p") setMode("paint");
+    });
+
+    function handleViewportChange() {
+      draw();
+      repositionOverlays();
+    }
+
+    window.addEventListener("resize", handleViewportChange);
+    window.addEventListener("orientationchange", handleViewportChange);
+    if (window.visualViewport) {
+      window.visualViewport.addEventListener("resize", handleViewportChange);
+      window.visualViewport.addEventListener("scroll", repositionOverlays);
+    }
+    document.addEventListener("click", event => {
+      if (!el.cellPopover.contains(event.target) && event.target !== el.gridCanvas && mode === "inspect") {
+        el.cellPopover.classList.remove("visible");
+      }
+    }, true);
+
+    function showStartupError(error) {
+      fatalStartupError(error);
+    }
+
+    async function initialize() {
+      setUpdateCode(presets.cyclic.update);
+      setDisplayCode(presets.cyclic.display);
+      setTheme(theme);
+      namedWorlds = readNamedWorlds();
+      renderSavedWorlds();
+      renderDimensions();
+      if (!await restoreSharedWorldFromUrl()) {
+        const preset = presetFromUrl();
+        if (preset) {
+          el.presetSelect.value = preset;
+          loadPreset(preset);
+        } else {
+          seedGrid();
+        }
+      }
+      syncUi();
+    }
+
+    initialize().catch(showStartupError);
+    } catch (error) {
+      fatalStartupError(error);
+    }
+  })();
+  </script>
+</body>
+</html>

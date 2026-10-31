@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Kül ve Kıvılcım</title>
+<link rel="stylesheet" href="css/style.css?v=13">
+<link rel="stylesheet" href="css/cards.css?v=13">
+<link rel="stylesheet" href="css/combat.css?v=13">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><text y='26' font-size='26'>🔥</text></svg>">
+</head>
+<body>
+
+<!-- Parçacık / hasar sayısı katmanı: her şeyin üstünde, tıklamayı geçirir -->
+<canvas id="fx"></canvas>
+<div id="ustKatman"></div>
+
+<div id="sahne">
+
+  <!-- ============================ ANA MENÜ ============================ -->
+  <section class="ekran" id="ekran-menu">
+    <div class="menu-arka"></div>
+    <div class="menu-ic">
+      <h1 class="oyun-adi">Kül ve <span>Kıvılcım</span></h1>
+      <p class="alt-baslik" data-t>Sönmüş bir dünyada, elinde kalan tek şey bir avuç kor.</p>
+
+      <div class="menu-dugmeler" id="menuDugmeler"></div>
+
+      <div class="zorluk-secim" id="zorlukSecim"></div>
+
+      <div class="tohum-satir">
+        <label for="tohumGiris" data-t>Tohum</label>
+        <input id="tohumGiris" type="text" spellcheck="false" maxlength="24">
+        <button class="mini" id="tohumYenile" title="Yeni tohum" data-t-baslik>🎲</button>
+      </div>
+
+      <div class="menu-ist" id="menuIst"></div>
+      <div class="menu-alt">
+        <button class="metin-dugme" id="nasilOynanir" data-t>Nasıl oynanır?</button>
+        <button class="metin-dugme" id="ayarlarAc" data-t>Ayarlar</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= HARİTA ============================= -->
+  <section class="ekran" id="ekran-harita">
+    <div id="haritaSaran">
+      <div id="haritaBaslik"></div>
+      <div id="haritaKaydir"><div id="haritaIc"></div></div>
+    </div>
+  </section>
+
+  <!-- ============================== SAVAŞ ============================= -->
+  <section class="ekran" id="ekran-savas">
+    <div id="savasAlan">
+      <div id="dusmanSirasi"></div>
+      <div id="oyuncuAlan">
+        <div id="oyuncuGorsel">
+          <div class="varlik-art" id="oyuncuArt"></div>
+          <div class="varlik-alt">
+            <div class="can-cubuk" id="oyuncuCan"><div class="can-dolu"></div><span></span></div>
+            <div class="blok-rozet" id="oyuncuBlok"><span>🛡</span><b>0</b></div>
+            <div class="durum-satir" id="oyuncuDurum"></div>
+          </div>
+        </div>
+        <div id="akkorGosterge" title="Akkor" data-t-baslik>
+          <div class="akkor-halka"><b>0</b></div>
+          <span data-t>AKKOR</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="altPanel">
+      <div id="solPanel">
+        <div class="deste-yigin" id="cekmeYigin" title="Çekme Destesi" data-t-baslik>
+          <span class="yigin-ikon">🂠</span><b>0</b><i data-t>Çekme</i>
+        </div>
+        <div id="enerjiKure"><b>3</b><span>/3</span></div>
+      </div>
+
+      <div id="elAlan"></div>
+
+      <div id="sagPanel">
+        <button id="turBitirDugme"><span data-t>Turu Bitir</span></button>
+        <div class="deste-yigin" id="atikYigin" title="Atık Destesi" data-t-baslik>
+          <span class="yigin-ikon">🂠</span><b>0</b><i data-t>Atık</i>
+        </div>
+        <div class="deste-yigin" id="tuketilenYigin" title="Tüketilenler">
+          <span class="yigin-ikon">✕</span><b>0</b><i data-t>Tüketilen</i>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ======================== ÜST BİLGİ ÇUBUĞU ========================= -->
+<header id="ustCubuk" hidden>
+  <div class="uc-sol">
+    <div class="uc-can" id="ucCan"><span class="ikon">❤</span><b>0</b><i>/0</i></div>
+    <div class="uc-altin" id="ucAltin"><span class="ikon">🪙</span><b>0</b></div>
+    <div class="uc-yer" id="ucYer"></div>
+  </div>
+  <div class="uc-orta" id="ucYadigarlar"></div>
+  <div class="uc-sag">
+    <span class="uc-etiket" data-t>İksir</span>
+    <div id="ucIksirler"></div>
+    <button class="mini" id="desteAc" title="Desteyi gör" data-t-baslik>🂠</button>
+    <button class="mini" id="menuAc" title="Menü" data-t-baslik>☰</button>
+  </div>
+</header>
+
+<!-- ============================ KATMANLAR =========================== -->
+<div id="ortu" hidden></div>
+<div id="pencere" hidden></div>
+<div id="ipucu" hidden></div>
+
+<!-- ============================ BETİKLER ============================ -->
+<script src="js/core/dil.js?v=13"></script>
+<script src="js/data/dil-en.js?v=13"></script>
+<script src="js/core/rng.js?v=13"></script>
+<script src="js/core/util.js?v=13"></script>
+
+<script src="js/data/keywords.js?v=13"></script>
+<script src="js/data/cards.js?v=13"></script>
+<script src="js/data/relics.js?v=13"></script>
+<script src="js/data/potions.js?v=13"></script>
+<script src="js/data/enemies.js?v=13"></script>
+<script src="js/data/events.js?v=13"></script>
+
+<script src="js/game/combat.js?v=13"></script>
+<script src="js/game/run.js?v=13"></script>
+<script src="js/game/save.js?v=13"></script>
+
+<script src="js/ui/audio.js?v=13"></script>
+<script src="js/ui/fx.js?v=13"></script>
+<script src="js/ui/sanat.js?v=13"></script>
+<script src="js/ui/yanma.js?v=13"></script>
+<script src="js/ui/arkaplan.js?v=13"></script>
+<script src="js/ui/muzik.js?v=13"></script>
+<script src="js/ui/gecis.js?v=13"></script>
+<script src="js/ui/cihaz.js?v=13"></script>
+<script src="js/ui/kart.js?v=13"></script>
+<script src="js/ui/pencere.js?v=13"></script>
+<script src="js/ui/savasEkrani.js?v=13"></script>
+<script src="js/ui/haritaEkrani.js?v=13"></script>
+<script src="js/ui/ekranlar.js?v=13"></script>
+<script src="js/main.js?v=13"></script>
+</body>
+</html>

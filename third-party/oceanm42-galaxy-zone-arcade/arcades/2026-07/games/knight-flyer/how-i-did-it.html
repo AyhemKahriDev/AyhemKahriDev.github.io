@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Knight Flyer — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Knight Flyer</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Joust came in '82, right in the thick of the golden years, and I
+      swear it caused more arguments than any machine I ever owned — two
+      people, two buttons each, flapping like fools, and whoever's ostrich
+      was standing a half-inch higher won the whole fight. I had a regular
+      named Trudy who'd talk trash the entire match and then lose to her own
+      little brother because she flew too low chasing him into the lava.
+      He never let her forget it. I never let either of them forget the
+      quarters they owed the jar.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The height rule was always the whole game, so the crew made sure it
+      still is — whoever's mount is higher wins the joust, dead even and you
+      just bounce off each other. What's new is everything got weight to it.
+      Gravity pulls you down every single tick, so a "flap" isn't holding a
+      button, it's a real timed press, one push, one lift, and you'd better
+      time the next one. They gave the lava a grab — dip too low and a hand
+      comes up for you, and only fast flapping gets you out of it. And I
+      finally got that pterodactyl to behave the way I remembered it: show
+      up when you're dawdling, and punish you for it unless you fly right at
+      it with the lance forward.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build Joust against our GZ engine. One button press should be one
+flap — no holding it down — with real gravity pulling me back
+down between flaps, and momentum for left/right in the air. Joust
+rule stays the same: higher mount wins, dead-even bounces off.
+Give me a lava pit at the bottom that grabs me if I skim it unless
+I flap my way out fast. Defeated riders drop an egg I can collect,
+but leave it too long and it hatches into something tougher. And
+if I take too long clearing a wave, send in the pterodactyl.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>Flap is edge-triggered — it fires exactly once per physical press
+        no matter how long you hold the button — while gravity keeps adding
+        downward speed every <code>dt</code> regardless.</li>
+      <li>Landing only counts one direction: falling onto a platform's top
+        stops you, but you can fly straight up through the underside, same
+        as the original never punished you for popping up through a ledge.</li>
+      <li>An egg remembers which tier of rider laid it, so when it hatches
+        late it comes back one rung meaner — bounder becomes hunter, hunter
+        becomes a shadow lord.</li>
+      <li>The pterodactyl only dies to a head-on hit — if you're drifting
+        the same direction it's charging, or standing still, it's your
+        mount that goes down instead.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Knight Flyer</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

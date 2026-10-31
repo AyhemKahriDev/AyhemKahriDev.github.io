@@ -1,0 +1,93 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Wordz Solver</title>
+	<link rel="stylesheet" href="main.css"/>
+</head>
+<body>
+	<div class="header">
+		<h1>Wordz Solver
+			<iframe src="https://ghbtns.com/github-btn.html?user=yulanggong&repo=Wordz-Solver&type=star&count=true&v=2" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>
+			<iframe src="https://ghbtns.com/github-btn.html?user=yulanggong&repo=Wordz-Solver&type=fork&count=true&v=2" frameborder="0" scrolling="0" width="80px" height="20px"></iframe>
+		</h1>
+	</div>
+	<div class="actions">
+		<div class="group">
+			<label>Dict</label>
+			<span class="dict-group">
+				<button
+					id="dict-sowpods" title="SOWPODS" class="btn active">SOWPODS</button><button
+					id="dict-twl" title="TWL" class="btn">TWL</button>
+			</span>
+		</div>
+		<div class="group">
+			<label>Mode</label>
+			<span class="mode-group">
+				<button
+					id="mode-wordle" title="Wordle" class="btn"></button><button
+					id="mode-across" title="Across" class="btn"></button><button
+					id="mode-x" title="X" class="btn"></button><button
+					id="mode-around" title="Around" class="btn active"></button><button
+					id="mode-all" title="All" class="btn"></button>
+			</span>
+		</div>
+		<div class="group">
+			<label>Size</label>
+			<input id="board-width" class="text" type="text" value="3"> x
+			<input id="board-height" class="text" type="text" value="3">
+			<button id="new-board" class="btn">New</button>
+		</div>
+		<div class="group">
+			<button id="random-fill" class="btn">Random</button>
+		</div>
+		<div class="group">
+			<label>Min length</label>
+			<input id="min-length" class="text" type="text" value="4">
+			<button id="wildcard" class="btn">Wildcard</button>
+			<button id="solve" class="btn">Solve</button>
+		</div>
+	</div>
+	<div id="mask">Loading...</div>
+	<div class="main">
+		<div id="board">
+		</div>
+		<div id="result">
+			<ol id="output">
+			</ol>
+			<p id="status"></p>
+		</div>
+	</div>
+	<div class="help">
+		<p>A word puzzle solver for <i>Wordle</i>, <i>Boggle</i>, <i>WordzUp!</i>, <i>wordoid!</i> and more.</p>
+		<p>Use the ? wildcard  to represent one letter.</p>
+	</div>
+	<script src="wordzsolver.js"></script>
+	<script>
+		try {
+			if (localStorage.dict && localStorage.dictVersion == '3') {
+				wordzSolver.dict = wordzSolver.decode(localStorage.dict);
+			}
+		} catch (e) {};
+		if (!wordzSolver.dict.A) {
+			document.write('<script src="dict.js"><\/script>');
+		}
+	</script>
+	<script type="text/javascript">
+		var board = new wordzSolver.Board({
+			width: 3,
+			height: 3,
+			letters: ['wor','sdl','?ev']
+		});
+
+		$('mask').className = 'hide';
+		$('solve').click();
+		try {
+			if (!localStorage.dict || localStorage.dictVersion != '3') {
+				localStorage.dict = wordzSolver._dict;
+				localStorage.dictVersion = '3';
+			}
+		} catch (e) {};
+	</script>
+</body>
+</html>

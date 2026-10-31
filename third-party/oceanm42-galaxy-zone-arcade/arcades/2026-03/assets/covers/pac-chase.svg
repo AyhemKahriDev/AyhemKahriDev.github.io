@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glowStrong">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes chomp {
+      0%, 100% { d: path("M 0,0 L 12,-14 A 14 14 0 1 1 12,14 Z"); }
+      50% { d: path("M 0,0 L 14,0 A 14 14 0 1 1 14,0 Z"); }
+    }
+    @keyframes movePac {
+      0% { transform: translateX(-40px); }
+      100% { transform: translateX(320px); }
+    }
+    @keyframes moveGhost {
+      0% { transform: translateX(-40px); }
+      100% { transform: translateX(320px); }
+    }
+    @keyframes wobble {
+      0%, 100% { transform: translateY(-1px); }
+      50% { transform: translateY(1px); }
+    }
+    @keyframes dotPulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .pac { animation: movePac 4s linear infinite; }
+    .ghost1 { animation: moveGhost 4s linear infinite; animation-delay: 0.4s; }
+    .ghost2 { animation: moveGhost 4s linear infinite; animation-delay: 0.7s; }
+    .ghost3 { animation: moveGhost 4s linear infinite; animation-delay: 1.0s; }
+    .ghost4 { animation: moveGhost 4s linear infinite; animation-delay: 1.3s; }
+    .dots { animation: dotPulse 1.5s ease-in-out infinite; }
+  </style>
+  <rect width="300" height="400" fill="#0a0a1a"/>
+  <!-- Dots trail -->
+  <g class="dots" filter="url(#glow)">
+    <circle cx="30" cy="200" r="3" fill="#FFB8FF"/>
+    <circle cx="60" cy="200" r="3" fill="#FFB8FF"/>
+    <circle cx="90" cy="200" r="3" fill="#FFB8FF"/>
+    <circle cx="120" cy="200" r="3" fill="#FFB8FF"/>
+    <circle cx="150" cy="200" r="6" fill="#FFB8FF"/>
+    <circle cx="180" cy="200" r="3" fill="#FFB8FF"/>
+    <circle cx="210" cy="200" r="3" fill="#FFB8FF"/>
+    <circle cx="240" cy="200" r="3" fill="#FFB8FF"/>
+    <circle cx="270" cy="200" r="3" fill="#FFB8FF"/>
+  </g>
+  <!-- Pac-Man -->
+  <g class="pac" filter="url(#glowStrong)">
+    <circle cx="0" cy="200" r="14" fill="#FFE000"/>
+    <circle cx="0" cy="200" r="14" fill="#FFE000">
+      <animate attributeName="r" values="14;14" dur="0.3s" repeatCount="indefinite"/>
+    </circle>
+    <!-- Mouth animation via clipping -->
+    <path d="M 0,200 L 14,188 A 14 14 0 0 0 14,212 Z" fill="#0a0a1a">
+      <animate attributeName="d" values="M 0,200 L 14,186 A 14 14 0 0 0 14,214 Z;M 0,200 L 14,199 A 14 14 0 0 0 14,201 Z;M 0,200 L 14,186 A 14 14 0 0 0 14,214 Z" dur="0.3s" repeatCount="indefinite"/>
+    </path>
+    <circle cx="-3" cy="193" r="2" fill="#0a0a1a"/>
+  </g>
+  <!-- Ghosts -->
+  <g class="ghost1" filter="url(#glow)">
+    <path d="M -12,212 v-12 a12,12 0 0,1 24,0 v12 l-4,-4 -4,4 -4,-4 -4,4 -4,-4z" fill="#FF0000" transform="translate(0,188)"/>
+    <circle cx="-3" cy="195" r="3" fill="white"/><circle cx="3" cy="195" r="3" fill="white"/>
+    <circle cx="-2" cy="196" r="1.5" fill="#00f"/><circle cx="4" cy="196" r="1.5" fill="#00f"/>
+  </g>
+  <g class="ghost2" filter="url(#glow)">
+    <path d="M -12,212 v-12 a12,12 0 0,1 24,0 v12 l-4,-4 -4,4 -4,-4 -4,4 -4,-4z" fill="#FFB8FF" transform="translate(0,188)"/>
+    <circle cx="-3" cy="195" r="3" fill="white"/><circle cx="3" cy="195" r="3" fill="white"/>
+    <circle cx="-2" cy="196" r="1.5" fill="#00f"/><circle cx="4" cy="196" r="1.5" fill="#00f"/>
+  </g>
+  <g class="ghost3" filter="url(#glow)">
+    <path d="M -12,212 v-12 a12,12 0 0,1 24,0 v12 l-4,-4 -4,4 -4,-4 -4,4 -4,-4z" fill="#00FFFF" transform="translate(0,188)"/>
+    <circle cx="-3" cy="195" r="3" fill="white"/><circle cx="3" cy="195" r="3" fill="white"/>
+    <circle cx="-2" cy="196" r="1.5" fill="#00f"/><circle cx="4" cy="196" r="1.5" fill="#00f"/>
+  </g>
+  <g class="ghost4" filter="url(#glow)">
+    <path d="M -12,212 v-12 a12,12 0 0,1 24,0 v12 l-4,-4 -4,4 -4,-4 -4,4 -4,-4z" fill="#FFB852" transform="translate(0,188)"/>
+    <circle cx="-3" cy="195" r="3" fill="white"/><circle cx="3" cy="195" r="3" fill="white"/>
+    <circle cx="-2" cy="196" r="1.5" fill="#00f"/><circle cx="4" cy="196" r="1.5" fill="#00f"/>
+  </g>
+  <!-- Maze walls hint -->
+  <rect x="20" y="140" width="260" height="4" rx="2" fill="none" stroke="#1a1aff" stroke-width="2" filter="url(#glow)"/>
+  <rect x="20" y="256" width="260" height="4" rx="2" fill="none" stroke="#1a1aff" stroke-width="2" filter="url(#glow)"/>
+  <rect x="20" y="140" width="4" height="120" rx="2" fill="none" stroke="#1a1aff" stroke-width="2" filter="url(#glow)"/>
+  <rect x="276" y="140" width="4" height="120" rx="2" fill="none" stroke="#1a1aff" stroke-width="2" filter="url(#glow)"/>
+  <!-- Title -->
+  <text x="150" y="60" text-anchor="middle" font-family="monospace" font-size="28" font-weight="bold" fill="#FFE000" filter="url(#glowStrong)">PAC CHASE</text>
+  <text x="150" y="360" text-anchor="middle" font-family="monospace" font-size="14" fill="#FFB8FF" filter="url(#glow)">READY!</text>
+</svg>

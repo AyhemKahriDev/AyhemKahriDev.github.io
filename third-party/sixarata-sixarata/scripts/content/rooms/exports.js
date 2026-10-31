@@ -1,0 +1,12 @@
+export { default as Room00 } from './00.js';
+export { default as Room01 } from './01.js';
+export { default as Room02 } from './02.js';
+export { default as Room03 } from './03.js';
+export { default as Room04 } from './04.js';
+export { default as Room05 } from './05.js';
+export { default as Room06 } from './06.js';
+export { default as Room07 } from './07.js';
+export { default as Room08 } from './08.js';
+export { default as Room09 } from './09.js';
+export { default as Room10 } from './10.js';
+export { default as Room11 } from './11.js';

@@ -1,0 +1,467 @@
+/* =========================================================================
+   SAVAŞ EKRANI
+   ========================================================================= */
+
+/* Arka plan canvas'ı (Arkaplan modülü) altta çalışıyor — ekranlar saydam
+   kalmalı, yoksa süzülen kül ve dip kor ışığı görünmez. */
+#ekran-savas {
+  padding-top: var(--ust);
+  background: radial-gradient(ellipse at 50% 6%, rgba(120,55,15,.14), transparent 60%);
+}
+/* düşmanların durduğu zemin çizgisi — derinlik hissi */
+#savasAlan::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 118px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(249,115,22,.18) 22%,
+                              rgba(249,115,22,.18) 78%, transparent);
+  pointer-events: none;
+}
+
+#savasAlan {
+  flex: 1; position: relative;
+  display: flex; flex-direction: column;
+  justify-content: space-between; align-items: center;
+  padding: 26px 16px 0;
+  min-height: 0;
+}
+
+/* ----------------------------- düşmanlar ----------------------------- */
+
+#dusmanSirasi {
+  display: flex; align-items: center; justify-content: center;
+  gap: clamp(18px, 5vw, 64px);
+  flex: 1; width: 100%;
+  min-height: 156px;
+  padding-bottom: 14px;
+}
+
+.varlik {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; gap: 5px;
+  transition: opacity .4s, transform .3s;
+}
+.varlik.hedeflenebilir { cursor: crosshair; }
+.varlik.hedeflenebilir:hover .varlik-art,
+.varlik.hedefVurgu .varlik-art {
+  transform: scale(1.09) translateY(-3px);
+  filter: drop-shadow(0 0 16px rgba(249,115,22,.85)) brightness(1.12);
+}
+.varlik.olu { opacity: 0; transform: scale(.86) translateY(10px); pointer-events: none; }
+/* yanarken: gövde erirken çevresindeki arayüz önce sönsün */
+.varlik.olurken { pointer-events: none; }
+.varlik.olurken .varlik-alt,
+.varlik.olurken .niyet { opacity: 0; transition: opacity .32s ease; }
+.varlik.olurken .varlik-art { animation: none; }
+.varlik.vuruldu .varlik-art { animation: vurulma .3s ease; }
+@keyframes vurulma {
+  0% { transform: translateX(0) } 25% { transform: translateX(-9px) rotate(-3deg) }
+  60% { transform: translateX(6px) rotate(2deg) } 100% { transform: translateX(0) }
+}
+
+/* --- düşman hamleleri --------------------------------------------------
+   Saldırıda oyuncuya doğru atılır; saldırı dışı hamlelerde yalnızca
+   bir an toparlanır. İkisi de "nefes" animasyonunu geçici olarak ezer. */
+.varlik.hamleSaldiri .varlik-art { animation: dusmanSaldiri .44s cubic-bezier(.3,.9,.3,1); }
+@keyframes dusmanSaldiri {
+  0%   { transform: translateY(0) scale(1); }
+  26%  { transform: translateY(-12px) scale(.96); }        /* geri çekiliş */
+  52%  { transform: translateY(26px) scale(1.09); filter: brightness(1.25); }
+  100% { transform: translateY(0) scale(1); }
+}
+.varlik.hamleHazirlik .varlik-art { animation: dusmanHazirlik .44s ease; }
+@keyframes dusmanHazirlik {
+  0%, 100% { transform: translateY(0) scale(1); }
+  45%      { transform: translateY(-9px) scale(1.05); filter: brightness(1.15); }
+}
+
+/* --- oyuncu hamlesi ---------------------------------------------------- */
+#oyuncuGorsel.hamle .varlik-art { animation: oyuncuHamle .36s cubic-bezier(.3,.9,.3,1); }
+@keyframes oyuncuHamle {
+  0%   { transform: translateY(0) scale(1); }
+  22%  { transform: translateY(8px) scale(.97); }          /* çömelme */
+  55%  { transform: translateY(-22px) scale(1.06); filter: brightness(1.3); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+.varlik-art {
+  position: relative;
+  width: calc(108px * var(--boy, 1));
+  height: calc(115px * var(--boy, 1));
+  font-size: calc(52px * var(--boy, 1));     /* emoji yedeği */
+  line-height: 1;
+  display: grid; place-items: end center;
+  filter: drop-shadow(0 10px 18px rgba(0,0,0,.7));
+  transition: transform .18s, filter .18s;
+  user-select: none;
+}
+.varlik-art .siluet { display: block; overflow: visible; }
+
+/* zeminden yükselen kor ışığı + gölge */
+.varlik-art::after {
+  content: ''; position: absolute; left: 50%; bottom: -5px;
+  width: 78%; height: 15px; transform: translateX(-50%);
+  border-radius: 50%;
+  background:
+    radial-gradient(ellipse, rgba(249,115,22,.20), transparent 66%),
+    radial-gradient(ellipse, rgba(0,0,0,.62), transparent 72%);
+  pointer-events: none;
+}
+
+/* nefes alma — sahne canlı dursun */
+.varlik:not(.olu) .varlik-art { animation: nefes 4.2s ease-in-out infinite; }
+.varlik:nth-child(2n) .varlik-art { animation-duration: 5.1s; animation-delay: -1.4s; }
+.varlik:nth-child(3n) .varlik-art { animation-duration: 3.7s; animation-delay: -2.2s; }
+@keyframes nefes {
+  0%, 100% { transform: translateY(0) scaleY(1); }
+  50%      { transform: translateY(-2px) scaleY(1.018); }
+}
+
+.varlik-alt { display: flex; flex-direction: column; align-items: center; gap: 4px; width: 132px; }
+
+/* niyet balonu */
+.niyet {
+  position: absolute; top: -6px; left: 50%; transform: translate(-50%, -100%);
+  display: flex; align-items: center; gap: 4px;
+  padding: 4px 9px; border-radius: 15px;
+  background: rgba(10,8,7,.9); border: 1px solid var(--cizgi);
+  font-size: 13px; white-space: nowrap; box-shadow: var(--gol-1);
+  cursor: help;
+}
+.niyet b { font-variant-numeric: tabular-nums; font-size: 14px; }
+.niyet .kez { font-size: 10.5px; color: var(--kul2); }
+.niyet.saldiri, .niyet.olumcul { border-color: rgba(224,72,74,.55); }
+.niyet.saldiri b { color: #ff9d8f; }
+.niyet.olumcul { border-color: var(--kan); box-shadow: 0 0 16px rgba(224,72,74,.45); }
+.niyet.olumcul b { color: #ff7a6b; font-weight: 800; }
+.niyet.savunma { border-color: rgba(98,164,240,.5); }
+.niyet.buff { border-color: rgba(85,209,135,.5); }
+.niyet.debuff { border-color: rgba(167,139,250,.5); }
+.niyet.bilinmez { border-color: rgba(251,191,36,.5); animation: bilinmezNabiz 1.4s infinite; }
+@keyframes bilinmezNabiz { 0%,100% { opacity: .75 } 50% { opacity: 1 } }
+
+/* can çubuğu */
+.can-cubuk {
+  position: relative; width: 100%; height: 15px; border-radius: 8px;
+  background: #221a16; border: 1px solid #3a2b23; overflow: hidden;
+}
+.can-cubuk .can-dolu {
+  position: absolute; inset: 0; width: 100%;
+  background: linear-gradient(180deg, #d8433f, #8f2320);
+  transition: width .35s cubic-bezier(.2,.8,.3,1);
+}
+.can-cubuk.dusuk .can-dolu { background: linear-gradient(180deg, #ff5c4a, #a01f1a); animation: canNabiz 1s infinite; }
+@keyframes canNabiz { 0%,100% { filter: brightness(1) } 50% { filter: brightness(1.35) } }
+.can-cubuk span {
+  position: relative; z-index: 2; display: block; text-align: center;
+  font-size: 10.5px; line-height: 13px; font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px rgba(0,0,0,.9); letter-spacing: .02em;
+}
+.can-cubuk .zirh-dolu {
+  position: absolute; top: 0; bottom: 0; left: 0;
+  background: linear-gradient(180deg, #7fb4f5, #3d6fa8); opacity: .9;
+  transition: width .3s;
+}
+
+/* blok rozeti */
+.blok-rozet {
+  position: absolute; left: -9px; bottom: 12px;
+  display: none; align-items: center; gap: 2px;
+  padding: 2px 7px 2px 5px; border-radius: 12px;
+  background: linear-gradient(180deg, #2c4a72, #16283f);
+  border: 1px solid #4f7fb5; font-size: 12px; color: #d6e8ff;
+  box-shadow: 0 2px 8px rgba(0,0,0,.6);
+}
+.blok-rozet.var { display: flex; }
+.blok-rozet b { font-variant-numeric: tabular-nums; }
+.blok-rozet.artti { animation: blokArt .4s ease; }
+@keyframes blokArt { 0% { transform: scale(1) } 45% { transform: scale(1.35) } 100% { transform: scale(1) } }
+
+/* durum simgeleri */
+.durum-satir { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; min-height: 20px; }
+.durum {
+  display: flex; align-items: center; gap: 2px;
+  padding: 1px 5px; border-radius: 9px; font-size: 11px;
+  background: rgba(0,0,0,.45); border: 1px solid var(--cizgi);
+  cursor: help;
+}
+.durum b { font-variant-numeric: tabular-nums; font-size: 11px; }
+.durum.kotu { border-color: rgba(224,72,74,.45); color: #ffc2bb; }
+.durum.iyi { border-color: rgba(85,209,135,.4); color: #bdf5d4; }
+.durum.yeni { animation: durumGir .4s ease; }
+@keyframes durumGir { 0% { transform: scale(1.7); opacity: 0 } 100% { transform: scale(1); opacity: 1 } }
+
+.varlik-ad {
+  font-size: 11.5px; color: #b3a89d; letter-spacing: .05em; text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.9);
+}
+
+/* ------------------------------ oyuncu ------------------------------- */
+
+#oyuncuAlan {
+  display: flex; align-items: flex-end; justify-content: center; gap: 40px;
+  width: 100%; padding: 0 0 14px;
+  border-top: 1px solid rgba(255,255,255,.04);
+  padding-top: 16px;
+}
+#oyuncuGorsel { position: relative; display: flex; flex-direction: column; align-items: center; gap: 7px; }
+#oyuncuGorsel .varlik-art {
+  width: 84px; height: 90px;
+  filter: drop-shadow(0 10px 20px rgba(0,0,0,.75));
+  animation: nefes 4.6s ease-in-out infinite;
+}
+#oyuncuGorsel .varlik-alt { width: 178px; }
+#oyuncuGorsel.vuruldu .varlik-art { animation: vurulma .3s ease; }
+
+#akkorGosterge {
+  display: flex; flex-direction: column; align-items: center; gap: 3px;
+}
+#akkorGosterge span { font-size: 9.5px; letter-spacing: .16em; color: var(--kul2); }
+.akkor-halka {
+  width: 56px; height: 56px; border-radius: 50%;
+  display: grid; place-items: center;
+  font-size: 21px; font-weight: 700; font-variant-numeric: tabular-nums;
+  color: #ffe0b8;
+  background: radial-gradient(circle at 40% 32%, #4d2a0e, #1a0f07 72%);
+  border: 2px solid #6b3d18;
+  box-shadow: inset 0 0 14px rgba(249,115,22,.25);
+  transition: box-shadow .3s, border-color .3s, transform .2s;
+}
+.akkor-halka.sicak {
+  border-color: var(--kor);
+  box-shadow: inset 0 0 20px rgba(249,115,22,.5), 0 0 24px rgba(249,115,22,.45);
+}
+.akkor-halka.artti { animation: akkorArt .45s cubic-bezier(.3,1.4,.5,1); }
+@keyframes akkorArt { 0% { transform: scale(1) } 40% { transform: scale(1.28) } 100% { transform: scale(1) } }
+
+/* ----------------------------- alt panel ----------------------------- */
+
+#altPanel {
+  position: relative; height: 214px; flex: 0 0 auto;
+  display: flex; align-items: flex-end; gap: 10px;
+  padding: 0 16px 14px;
+  background: linear-gradient(180deg, transparent, rgba(0,0,0,.35) 60%);
+}
+
+#solPanel, #sagPanel {
+  display: flex; flex-direction: column; align-items: center; gap: 9px;
+  padding-bottom: 2px; z-index: 3;
+}
+#sagPanel { align-items: flex-end; }
+
+.deste-yigin {
+  position: relative; width: 52px; padding: 5px 0 3px;
+  border-radius: 8px; background: rgba(0,0,0,.35); border: 1px solid var(--cizgi);
+  display: flex; flex-direction: column; align-items: center; cursor: pointer;
+  transition: all .15s;
+}
+.deste-yigin:hover { border-color: var(--kor); background: rgba(0,0,0,.55); }
+.deste-yigin .yigin-ikon { font-size: 15px; color: var(--kul2); line-height: 1; }
+.deste-yigin b { font-size: 13px; font-variant-numeric: tabular-nums; }
+.deste-yigin i { font-style: normal; font-size: 8.5px; color: var(--kul2); letter-spacing: .07em; }
+
+#enerjiKure {
+  width: 62px; height: 62px; border-radius: 50%;
+  display: grid; place-items: center; grid-auto-flow: column;
+  background: radial-gradient(circle at 38% 30%, #2a4d7a, #0d1a2b 74%);
+  border: 2px solid #4a7cb8;
+  box-shadow: 0 0 22px rgba(98,164,240,.28), inset 0 0 16px rgba(98,164,240,.22);
+  font-variant-numeric: tabular-nums;
+}
+#enerjiKure b { font-size: 24px; color: #dcecff; }
+#enerjiKure span { font-size: 12px; color: #7fa8d4; margin-left: 1px; }
+#enerjiKure.bos { border-color: #4a3a3a; box-shadow: none; filter: saturate(.35); }
+#enerjiKure.degisti { animation: enerjiPop .35s ease; }
+@keyframes enerjiPop { 0% { transform: scale(1) } 45% { transform: scale(1.18) } 100% { transform: scale(1) } }
+
+#turBitirDugme {
+  padding: 11px 22px; border-radius: 10px;
+  background: linear-gradient(180deg, #4a2c12, #2a1809);
+  border: 1px solid rgba(249,115,22,.55); color: #ffe3c6;
+  font-size: 15px; letter-spacing: .03em; white-space: nowrap;
+  box-shadow: var(--gol-1); transition: all .15s;
+}
+#turBitirDugme:hover { background: linear-gradient(180deg, #61391641, #3a2210); transform: translateY(-2px); }
+#turBitirDugme:disabled { opacity: .4; cursor: not-allowed; transform: none; }
+#turBitirDugme.hazir { animation: bitirNabiz 2.2s ease-in-out infinite; }
+@keyframes bitirNabiz {
+  0%,100% { box-shadow: 0 0 0 0 rgba(249,115,22,.0) }
+  50% { box-shadow: 0 0 0 5px rgba(249,115,22,.14) }
+}
+
+/* -------------------------------- el --------------------------------- */
+
+#elAlan {
+  position: relative; flex: 1; height: 100%;
+  display: flex; align-items: flex-end; justify-content: center;
+}
+
+#elAlan .kart {
+  /* left:0 şart — aksi hâlde mutlak konumlu kart, flex konteynerin
+     ortalanmış statik konumundan başlar ve yelpaze iki kez ortalanır. */
+  position: absolute; bottom: 18px; left: 0;
+  transform-origin: 50% 130%;
+  transition: transform .22s cubic-bezier(.2,.9,.3,1.1), box-shadow .18s, filter .18s;
+  will-change: transform;
+}
+#elAlan .kart:hover:not(.suruklenen) {
+  z-index: 50 !important;
+  filter: brightness(1.1);
+}
+#elAlan .kart.suruklenen {
+  transition: none; z-index: 60 !important;
+  box-shadow: 0 22px 46px rgba(0,0,0,.75);
+  cursor: grabbing;
+}
+#elAlan .kart.oynaniyor {
+  transition: transform .28s ease, opacity .28s ease;
+  opacity: 0; pointer-events: none;
+}
+
+/* --- dokunmatik inceleme -------------------------------------------------
+   Parmağın altındaki kart büyüyüp okunur hâle gelir; diğerleri geri çekilir.
+   Farede imleçle üstüne gelmenin karşılığı budur. */
+#elAlan .kart.incelenen {
+  transition: transform .16s cubic-bezier(.2,.9,.3,1.1), box-shadow .18s;
+  box-shadow: 0 22px 48px rgba(0,0,0,.8), 0 0 30px rgba(249,115,22,.25);
+  filter: brightness(1.06);
+}
+#elAlan.incelemeVar .kart:not(.incelenen) { filter: brightness(.62) saturate(.8); }
+
+/* incelenen kartın üstünde "yukarı çek" ipucu */
+#elAlan .kart.incelenen::after {
+  content: '▲';
+  position: absolute; left: 50%; top: -16px; transform: translateX(-50%);
+  font-size: 9px; color: var(--kor2); opacity: .85;
+  animation: cekIpucu 1.3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes cekIpucu {
+  0%, 100% { transform: translate(-50%, 0); opacity: .4; }
+  50%      { transform: translate(-50%, -5px); opacity: .95; }
+}
+
+/* hedef seçim çizgisi */
+#hedefOk { position: fixed; inset: 0; pointer-events: none; z-index: 70; }
+
+/* savaş bildirimi (tur başı vb.) */
+.savas-duyuru {
+  position: fixed; top: 15%; left: 50%; transform: translate(-50%, -50%);
+  padding: 6px 26px; border-radius: 30px;
+  background: rgba(8,6,5,.72);
+  font-family: var(--serif); font-size: 32px; letter-spacing: .1em;
+  color: #ffdcbc; text-shadow: 0 0 30px rgba(249,115,22,.6), 0 4px 12px rgba(0,0,0,.8);
+  pointer-events: none; z-index: 80; white-space: nowrap;
+  animation: duyuru 1.15s ease forwards;
+}
+@keyframes duyuru {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(.82) }
+  22% { opacity: 1; transform: translate(-50%,-50%) scale(1) }
+  75% { opacity: 1 }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.06) }
+}
+
+/* uçuşan sayı / metin (fx.js tarafından üretilir) */
+.ucan {
+  position: fixed; z-index: 902; pointer-events: none;
+  font-weight: 800; font-variant-numeric: tabular-nums;
+  text-shadow: 0 2px 5px rgba(0,0,0,.9), 0 0 14px currentColor;
+  animation: ucus 1s ease-out forwards;
+  white-space: nowrap;
+}
+@keyframes ucus {
+  0%   { opacity: 0; transform: translate(-50%,-50%) scale(.55) }
+  16%  { opacity: 1; transform: translate(-50%,-50%) scale(1.24) }
+  32%  { transform: translate(-50%,-50%) scale(1) }
+  100% { opacity: 0; transform: translate(-50%,-190%) scale(.94) }
+}
+
+@media (max-width: 760px) {
+  #altPanel { height: 190px; }
+  .kart { --kw: 112px; --kh: 158px; }
+  #oyuncuGorsel .varlik-alt { width: 140px; }
+  #enerjiKure { width: 52px; height: 52px; }
+  #enerjiKure b { font-size: 20px; }
+  .varlik-alt { width: 108px; }
+}
+
+/* =======================================================================
+   TELEFON — dikey
+   Dar ekranda yan paneller yeri yiyor. Yığınları üst köşelere alıp
+   ele bütün genişliği bırakıyoruz; enerji ve "Turu Bitir" ele bindirilir.
+   ======================================================================= */
+@media (max-width: 560px) {
+  #savasAlan { padding: 12px 8px 0; }
+  #dusmanSirasi { gap: 10px; min-height: 118px; padding-bottom: 6px; }
+  .varlik-alt { width: 84px; gap: 3px; }
+  .varlik-art { width: calc(76px * var(--boy,1)); height: calc(81px * var(--boy,1)); }
+  .can-cubuk { height: 13px; }
+  .can-cubuk span { font-size: 9px; line-height: 11px; }
+  .durum { font-size: 9.5px; padding: 0 4px; }
+  .durum b { font-size: 9.5px; }
+  .niyet { padding: 3px 7px; font-size: 11px; }
+  .niyet b { font-size: 12px; }
+
+  #oyuncuAlan { gap: 16px; padding-top: 10px; padding-bottom: 8px; }
+  #oyuncuGorsel .varlik-art { width: 62px; height: 66px; }
+  #oyuncuGorsel .varlik-alt { width: 128px; }
+  .akkor-halka { width: 44px; height: 44px; font-size: 17px; border-width: 1.5px; }
+  #akkorGosterge span { font-size: 8px; letter-spacing: .12em; }
+  #savasAlan::after { bottom: 96px; }
+
+  /* Alt panel: yan panelleri düzenden çıkarıp (display:contents) çocuklarını
+     doğrudan #altPanel'e göre konumlandırıyoruz — aksi hâlde enerji küresi
+     kendi sarmalayıcısına hizalanıp yukarıda kalıyor. */
+  #altPanel { height: 168px; padding: 0 6px 8px; }
+  #solPanel, #sagPanel { display: contents; }
+
+  /* Kontroller duran kartların (z 10–25) ÜSTÜNDE, incelenen (58) ve
+     sürüklenen (62) kartın ALTINDA kalmalı. */
+  .deste-yigin {
+    position: absolute; top: -34px; z-index: 30;
+    width: 38px; padding: 2px 0 1px; border-radius: 7px;
+  }
+  #cekmeYigin     { left: 8px; }
+  #atikYigin      { right: 8px; }
+  #tuketilenYigin { right: 52px; }
+  .deste-yigin .yigin-ikon { font-size: 11px; }
+  .deste-yigin b { font-size: 11px; }
+  .deste-yigin i { font-size: 7px; }
+
+  #enerjiKure {
+    position: absolute; left: 8px; bottom: 8px; z-index: 30;
+    width: 46px; height: 46px; border-width: 1.5px;
+  }
+  #enerjiKure b { font-size: 18px; }
+  #enerjiKure span { font-size: 10px; }
+
+  #turBitirDugme {
+    position: absolute; right: 8px; bottom: 10px; z-index: 30;
+    padding: 9px 14px; font-size: 13px; border-radius: 9px;
+  }
+
+  #elAlan { width: 100%; }
+  .kart { --kw: 92px; --kh: 130px; border-radius: 10px; }
+  .kart-ad { font-size: 9.5px; min-height: 20px; margin: 5px 5px 0 23px; }
+  .kart-resim { height: 36px; margin: 2px 6px 0; }
+  .kart-tur { font-size: 6.5px; margin: 3px 6px 1px; letter-spacing: .1em; }
+  .kart-metin { font-size: 8px; margin: 1px 5px 6px; line-height: 1.28; }
+  .kart-bedel { width: 23px; height: 23px; top: -3px; left: -3px; }
+  .kart-bedel span { font-size: 12px; }
+  #elAlan .kart { bottom: 10px; }
+
+  .savas-duyuru { font-size: 22px; padding: 5px 16px; top: 12%; }
+  .ucan { font-size: 18px !important; }
+}
+
+/* Telefon — yatay: yükseklik çok kısıtlı, her şey alçalır */
+@media (max-height: 460px) and (orientation: landscape) {
+  #savasAlan { padding: 8px 10px 0; }
+  #dusmanSirasi { min-height: 92px; padding-bottom: 2px; }
+  .varlik-art { width: calc(64px * var(--boy,1)); height: calc(68px * var(--boy,1)); }
+  #oyuncuAlan { padding-top: 6px; padding-bottom: 4px; }
+  #oyuncuGorsel .varlik-art { width: 52px; height: 56px; }
+  #altPanel { height: 132px; }
+  .kart { --kw: 82px; --kh: 116px; }
+  .kart-resim { height: 28px; }
+  .kart-metin { font-size: 7.5px; }
+  #savasAlan::after { display: none; }
+}

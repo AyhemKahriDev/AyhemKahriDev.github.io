@@ -1,0 +1,111 @@
+/* spielkunst — self-hosted type. Every family here is SIL OFL, downloaded
+   once from Google Fonts (or, for Arabic, taken from the Noto sources) and
+   served from this origin so there is no third-party connection, no privacy
+   leak and no font flash on a cold load.
+   latin subset for the Latin faces: the UI copy is English and French, so a
+   wider subset would triple the bytes for glyphs no page uses. Arabic is the
+   one exception and gets its own face at the bottom of this file. */
+
+@font-face {
+  font-family: 'Bricolage Grotesque';
+  font-style: normal;
+  font-weight: 600 800;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url('/fonts/bricolage-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Outfit';
+  font-style: normal;
+  font-weight: 300 700;
+  font-display: swap;
+  src: url('/fonts/outfit-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Geist Mono';
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url('/fonts/geist-mono-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC,
+    U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215,
+    U+FEFF, U+FFFD;
+}
+
+/* Pixel theme only. Silkscreen is the display face (a 5x7 grid, capitals and
+   digits drawn on whole pixels); Pixelify Sans carries running text at a size
+   where a pixel face is still readable. Both SIL OFL, latin subset, served
+   from this origin. They are only requested when the pixel theme is active. */
+@font-face {
+  font-family: 'Silkscreen';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/silkscreen-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2212,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Silkscreen';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/silkscreen-700-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2212,
+    U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: 'Pixelify Sans';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/pixelify-sans-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+2000-206F, U+20AC, U+2122, U+2212,
+    U+FEFF, U+FFFD;
+}
+
+/* Arabic pages only. Noto Sans Arabic — SIL Open Font License 1.1, from
+   https://github.com/notofonts/arabic (the same files Google Fonts serves as
+   "Noto Sans Arabic" on fonts.google.com/specimen/Noto+Sans+Arabic), taken
+   from the system copy at /usr/share/fonts/noto/NotoSansArabic-*.ttf and
+   subset to the Arabic blocks, then converted to woff2:
+
+     pyftsubset NotoSansArabic-Regular.ttf \
+       --unicodes="U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF" \
+       --layout-features='*' --flavor=woff2 --no-hinting \
+       --output-file=noto-sans-arabic-400.woff2
+
+   Arabic only on purpose, no Latin: the Latin faces above are listed after
+   this one in the Arabic stack, and per-character fallback hands every Latin
+   run back to them. Two weights, because one would be synthesised at 700 and
+   faux-bold Arabic is a smear.
+   unicode-range keeps the download off the English and French trees entirely:
+   a browser only fetches a face when the page contains a covered codepoint. */
+
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/noto-sans-arabic-400.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}
+
+@font-face {
+  font-family: 'Noto Sans Arabic';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/noto-sans-arabic-700.woff2') format('woff2');
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFF;
+}

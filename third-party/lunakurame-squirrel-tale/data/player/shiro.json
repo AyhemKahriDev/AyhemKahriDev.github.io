@@ -1,0 +1,146 @@
+{
+	"label": "Shiro",
+	"defaultSpeed": 100,
+	"defaults": {
+		"cropX": 0,
+		"cropY": 29,
+		"cropWidth": 16,
+		"cropHeight": 29,
+		"width": 16,
+		"height": 29,
+		"centerX": 8,
+		"centerY": 28,
+		"collisions": [
+			{
+				"posX": 0,
+				"posY": 26,
+				"width": 16,
+				"height": 3
+			}
+		]
+	},
+	"views": {
+		"master": [
+			{
+			}
+		],
+		"master-up": [
+			{
+				"cropY": 0
+			},
+			{
+				"cropX": 16
+			},
+			{
+				"cropX": 32
+			},
+			{
+				"cropX": 48
+			}
+		],
+		"master-down": [
+			{
+				"cropY": 29
+			},
+			{
+				"cropX": 16
+			},
+			{
+				"cropX": 32
+			},
+			{
+				"cropX": 48
+			}
+		],
+		"master-right": [
+			{
+				"cropY": 58
+			},
+			{
+				"cropX": 16
+			},
+			{
+				"cropX": 32
+			},
+			{
+				"cropX": 48
+			}
+		],
+		"master-left": [
+			{
+				"cropY": 87
+			},
+			{
+				"cropX": 16
+			},
+			{
+				"cropX": 32
+			},
+			{
+				"cropX": 48
+			}
+		]
+	},
+	"nuts": [
+		{
+			"name": "move_up",
+			"type": "movement",
+			"script": [
+				"set view master-up 1",
+				"nop 250",
+				"set frame 2",
+				"nop 250",
+				"set frame 3",
+				"nop 250",
+				"set frame 0",
+				"nop 250",
+				"jmp 0"
+			]
+		},
+		{
+			"name": "move_down",
+			"type": "movement",
+			"script": [
+				"set view master-down 1",
+				"nop 250",
+				"set frame 2",
+				"nop 250",
+				"set frame 3",
+				"nop 250",
+				"set frame 0",
+				"nop 250",
+				"jmp 0"
+			]
+		},
+		{
+			"name": "move_right",
+			"type": "movement",
+			"script": [
+				"set view master-right 1",
+				"nop 250",
+				"set frame 2",
+				"nop 250",
+				"set frame 3",
+				"nop 250",
+				"set frame 0",
+				"nop 250",
+				"jmp 0"
+			]
+		},
+		{
+			"name": "move_left",
+			"type": "movement",
+			"script": [
+				"set view master-left 1",
+				"nop 250",
+				"set frame 2",
+				"nop 250",
+				"set frame 3",
+				"nop 250",
+				"set frame 0",
+				"nop 250",
+				"jmp 0"
+			]
+		}
+	]
+}

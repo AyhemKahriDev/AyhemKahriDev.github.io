@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake game</title>
+    <link rel="stylesheet" href="src/main.css">
+    <script src="./src/main.js" defer></script>
+</head>
+<body>
+    <main class="main-container">
+        <section class="game-container">
+            <article class="score-container card">
+                <div class="card__header">
+                    <p>Score</p>
+                </div>
+                <div class="card__body">
+                    <p id="score">0</p>
+                </div>
+            </article>
+            <article class="snake-container card">
+                <div class="card__header">
+                    <p>Ex Snake game</p>
+                </div>
+                <div class="card__body">
+                    <canvas id="board" width="600px" height="600px"></canvas>
+                </div>
+            </article>
+            <article class="controls-container card">
+                <div class="card__header">
+                    <p>Summary</p>
+                </div>
+                <div class="card__body summary">
+                    <p>Time: <span id="elapsedTime">00:00</span></p>
+                </div>
+            </article>
+        </section>
+    </main>
+    
+    <!-- Dialogs -->
+    <dialog id="modalStartGame" class="modal">
+        <div class="card">
+            <div class="card__header">
+                <p>Welcome to Ex Snake Game</p>
+            </div>
+            <div class="card__body">
+                <p>Press the start button to play</p>
+            </div>
+            <div class="card__footer">
+                <div class="controls">
+                    <button id="btnStartGameModal">Start</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+    <dialog id="modelGameOVer" class="modal">
+        <div class="card">
+            <div class="card__header">
+                <p>Game Over</p>
+            </div>
+            <div class="card__body">
+                <p>Your score is: <span id="finalScore">0</span></p>
+            </div>
+            <div class="card__footer">
+                <div class="controls">
+                    <button id="btnRestartModalGameOver">Restart</button>
+                    <button id="btnCloseModalGameOver">Close</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+</body>
+</html>

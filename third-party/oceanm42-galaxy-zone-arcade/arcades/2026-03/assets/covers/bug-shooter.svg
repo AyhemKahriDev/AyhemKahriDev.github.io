@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 400">
+  <defs>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="glow2">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  <style>
+    @keyframes undulate { 0%,100%{transform:translateY(0)} 50%{transform:translateY(12px)} }
+    @keyframes pulse { 0%,100%{opacity:.7} 50%{opacity:1} }
+    @keyframes shoot { 0%{transform:translateY(0);opacity:1} 100%{transform:translateY(-80px);opacity:0} }
+    .seg{animation:undulate 1.2s ease-in-out infinite}
+    .seg:nth-child(2){animation-delay:.1s} .seg:nth-child(3){animation-delay:.2s}
+    .seg:nth-child(4){animation-delay:.3s} .seg:nth-child(5){animation-delay:.4s}
+    .seg:nth-child(6){animation-delay:.5s} .seg:nth-child(7){animation-delay:.6s}
+    .seg:nth-child(8){animation-delay:.7s}
+    .mush{animation:pulse 2s ease-in-out infinite}
+    .bullet{animation:shoot 1s linear infinite}
+  </style>
+  <rect width="300" height="400" fill="#0a0a1a"/>
+  <!-- Mushroom field -->
+  <g class="mush" filter="url(#glow)">
+    <circle cx="45" cy="180" r="8" fill="#2a8a4a"/><rect x="43" y="188" width="4" height="8" fill="#3a6a3a"/>
+    <circle cx="120" cy="200" r="8" fill="#3a9a5a"/><rect x="118" y="208" width="4" height="8" fill="#3a6a3a"/>
+    <circle cx="200" cy="170" r="8" fill="#2a8a4a"/><rect x="198" y="178" width="4" height="8" fill="#3a6a3a"/>
+    <circle cx="260" cy="210" r="8" fill="#3a9a5a"/><rect x="258" y="218" width="4" height="8" fill="#3a6a3a"/>
+    <circle cx="80" cy="250" r="8" fill="#2a8a4a"/><rect x="78" y="258" width="4" height="8" fill="#3a6a3a"/>
+    <circle cx="170" cy="260" r="8" fill="#3a9a5a"/><rect x="168" y="268" width="4" height="8" fill="#3a6a3a"/>
+    <circle cx="240" cy="280" r="8" fill="#2a8a4a"/><rect x="238" y="288" width="4" height="8" fill="#3a6a3a"/>
+    <circle cx="50" cy="310" r="8" fill="#3a9a5a"/><rect x="48" y="318" width="4" height="8" fill="#3a6a3a"/>
+  </g>
+  <!-- Centipede -->
+  <g filter="url(#glow2)">
+    <circle class="seg" cx="60" cy="100" r="10" fill="#ff00ff"/>
+    <circle class="seg" cx="80" cy="105" r="9" fill="#00ff66"/>
+    <circle class="seg" cx="100" cy="110" r="9" fill="#00ff66"/>
+    <circle class="seg" cx="120" cy="115" r="9" fill="#00ff66"/>
+    <circle class="seg" cx="140" cy="120" r="9" fill="#00ff66"/>
+    <circle class="seg" cx="160" cy="125" r="9" fill="#00ff66"/>
+    <circle class="seg" cx="180" cy="130" r="9" fill="#00ff66"/>
+    <circle class="seg" cx="200" cy="135" r="9" fill="#00ff66"/>
+  </g>
+  <!-- Head eyes -->
+  <g class="seg">
+    <circle cx="56" cy="97" r="2" fill="#fff"/>
+    <circle cx="64" cy="97" r="2" fill="#fff"/>
+  </g>
+  <!-- Player ship -->
+  <polygon points="150,360 140,380 160,380" fill="#00ccff" filter="url(#glow)"/>
+  <!-- Bullet -->
+  <rect class="bullet" x="149" y="340" width="2" height="10" fill="#ffff00" filter="url(#glow)"/>
+  <!-- Title -->
+  <text x="150" y="35" text-anchor="middle" font-family="monospace" font-size="18" font-weight="bold" fill="#00ff66" filter="url(#glow)">BUG SHOOTER</text>
+</svg>

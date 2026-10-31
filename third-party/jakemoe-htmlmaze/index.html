@@ -1,0 +1,49 @@
+<!--
+  ~ This file is part of htmlMaze	.
+  ~
+  ~ htmlMaze is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU General Public License as published by
+  ~ the Free Software Foundation, either version 3 of the License, or
+  ~ (at your option) any later version.
+  ~
+  ~ htmlMaze is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU General Public License
+  ~ along with htmlMaze.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <script src="script.js"></script>
+    <title>htmlMaze</title>
+  </head>
+  <body onload="onLoad();">
+    <h2>htmlMaze</h2>
+    <canvas id="mainForm"></canvas>
+    <div id="settings">
+      <table>
+        <tbody>
+          <tr>
+            <td><label for="cols">Columns:</label></td>
+            <td><input id="cols" type="text" size="5" value="20" /></td>
+          </tr><tr>
+            <td><label for="rows">Rows:</label></td>
+            <td><input id="rows" type="text" size="5" value="20" /></td>
+          </tr><tr>
+            <td>&nbsp;</td>
+            <td><input id="generate" type="button" value="Generate" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div id="footer">
+      &copy; 2017 <a href="mailto:JakesAddress@gmail.com">Jake (John) Moe</a>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Star Guardian — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Star Guardian</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      Defender showed up in '81 and about scared people off it — that
+      control panel had five buttons and everybody's thumbs seized up the
+      first week. I had one regular, a fella named Wallace, who swore up and
+      down he was going to master "the one with the little people" before he
+      turned forty. He did, eventually, and bought the whole bar a round the
+      night he finally rescued every last humanoid on a single credit. Best
+      quarter that machine ever earned him back a hundredfold in bragging
+      rights.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      This is the biggest one the crew and I built for this remodel — a
+      whole world, four screens wide, that wraps clean around itself instead
+      of stopping at an edge. The camera actually leans ahead of you now,
+      the direction you're flying, instead of just sitting dead-center like
+      a nervous passenger. I got a little radar strip up top so I can see
+      the whole planet at once — where my people are, where the trouble is
+      — same idea as the original, just redrawn clean. And the "juice," as
+      the robots keep calling it: shake when I lose a ship, a flash and a
+      fanfare when a wave clears, floating numbers over every rescue. Wallace
+      would've lost his mind over the radar alone.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build Defender against our GZ engine. I want a real wrapping world,
+wider than the screen, with a camera that leads ahead of the ship
+instead of centering on it, plus a little radar strip across the
+top showing the whole planet. Landers grab humanoids off the
+ground and haul them up — let me shoot the lander to drop the
+humanoid, then catch it myself for the big rescue bonus, or carry
+it back down for even more. If I lose every last humanoid, let the
+planet crack and turn every lander loose as a mutant hunting me.
+Smart bomb clears the screen. Make every rescue and every kill
+feel like it mattered.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The whole planet is one number line, 3200 pixels around, and
+        everything — the ship, the enemies, even the mountain silhouette
+        itself — wraps on that same number using modulo math, so flying off
+        the right edge just puts you back on the left with no seam.</li>
+      <li>The camera doesn't just follow the ship, it eases toward a point
+        out ahead of it based on which way you're flying, so you can always
+        see what's coming instead of what you just passed.</li>
+      <li>A humanoid mid-fall remembers how high it was when the lander
+        first grabbed it — drop from too high without catching it and it
+        doesn't survive the landing, same rules as the original.</li>
+      <li>Every distance check between the ship and anything else in the
+        world has to measure the short way around the wrap, not just a
+        straight subtraction, or things on opposite sides of the planet
+        would look like they're right next to each other.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Star Guardian</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

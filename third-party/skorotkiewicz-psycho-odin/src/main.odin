@@ -1,0 +1,794 @@
+package main
+
+import "core:fmt"
+import "core:os"
+import "core:strings"
+import rl "vendor:raylib"
+
+PSYCHO_VERSION :: #load("../VERSION")
+
+PSYCHO_USAGE_LINE :: "usage: psycho <music.wav|mp3|ogg|flac> | psycho -h"
+PSYCHO_USAGE ::
+	PSYCHO_USAGE_LINE +
+	"\n" +
+	"       psycho --analyze <music.wav|mp3|ogg|flac>\n" +
+	"       psycho --self-test\n" +
+	"       psycho --version\n" +
+	"       psycho --help\n\n" +
+	"options:\n" +
+	"  --analyze    build and cache the song map without opening a window\n" +
+	"  --self-test  run deterministic headless regression checks\n" +
+	"  --version    print the game version\n" +
+	"  --help, -h   show this help"
+
+print_usage :: proc(to_stderr: bool = false) {
+	if to_stderr {
+		fmt.eprintln(PSYCHO_USAGE)
+	} else {
+		fmt.println(PSYCHO_USAGE)
+	}
+}
+
+main :: proc() {
+	os.exit(run_game())
+}
+
+run_game :: proc() -> int {
+	if len(os.args) == 2 && (os.args[1] == "--help" || os.args[1] == "-h") {
+		print_usage()
+		return 0
+	}
+	if len(os.args) == 2 && os.args[1] == "--version" {
+		fmt.printfln("psycho %s", strings.trim_space(string(PSYCHO_VERSION)))
+		return 0
+	}
+	if len(os.args) == 2 && os.args[1] == "--self-test" {
+		self_test()
+		return 0
+	}
+	analyze_only := len(os.args) == 3 && os.args[1] == "--analyze"
+	if len(os.args) != 2 && !analyze_only {
+		fmt.eprintln(PSYCHO_USAGE_LINE)
+		return 1
+	}
+
+	config := load_game_config("config.toml")
+	audio_path := os.args[1]
+	if analyze_only do audio_path = os.args[2]
+	file_bytes, file_err := os.read_entire_file(audio_path, context.allocator)
+	if file_err != nil {
+		fmt.eprintfln("psycho: cannot read %q: %v", audio_path, file_err)
+		return 1
+	}
+	song_id := song_content_id(file_bytes)
+	map_path := cache_path(file_bytes, config.speed_limit)
+	delete(file_bytes)
+	defer delete(map_path)
+	path_c := strings.clone_to_cstring(audio_path, context.temp_allocator)
+
+	nodes, cache_hit := load_map(map_path)
+	if cache_hit {
+		fmt.printfln("map: loaded %s (%d slices)", map_path, len(nodes))
+	} else {
+		fmt.println(
+			"map: listening for movements, beats, climbs, drops and strange little roads...",
+		)
+		nodes = analyze_file(path_c, config.speed_limit)
+		if len(nodes) == 0 {
+			fmt.eprintln("psycho: unsupported or invalid audio file")
+			return 1
+		}
+		movements: [TRACK_SECTION_KIND_COUNT]int
+		traffic, surprises: int
+		previous_section: i32 = -1
+		for node in nodes {
+			if node.section != previous_section {
+				movements[node.section] += 1
+				previous_section = node.section
+			}
+			if node.kind != 0 do traffic += 1
+			if node.feature != 0 do surprises += 1
+		}
+		fmt.printfln(
+			"map: composed %d climbs, %d drops, %d slaloms, %d tunnels, %d spirals, %d traffic, %d gates",
+			movements[CLIMB],
+			movements[DROP],
+			movements[SLALOM],
+			movements[TUNNEL],
+			movements[SPIRAL],
+			traffic,
+			surprises,
+		)
+		if save_map(map_path, nodes) {
+			fmt.printfln("map: cached %s", map_path)
+		} else {
+			fmt.eprintln("map: warning: could not write cache")
+		}
+	}
+	defer delete(nodes)
+	if analyze_only {
+		fmt.println("map: analysis complete")
+		return 0
+	}
+	personal_bests := load_personal_bests(song_id, audio_path)
+	map_bounds := calculate_course_map_bounds(nodes)
+
+	rl.SetConfigFlags({.MSAA_4X_HINT, .VSYNC_HINT, .WINDOW_RESIZABLE})
+	rl.InitWindow(1280, 720, "PSYCHO // sound ride")
+	defer rl.CloseWindow()
+	rl.SetWindowMinSize(800, 600)
+	cursor_hidden := false
+	if config.hide_cursor {
+		rl.HideCursor()
+		cursor_hidden = true
+	}
+	defer {
+		if cursor_hidden do rl.ShowCursor()
+	}
+	rl.SetTargetFPS(120)
+	scene := rl.LoadRenderTexture(rl.GetScreenWidth(), rl.GetScreenHeight())
+	if !rl.IsRenderTextureValid(scene) {
+		fmt.eprintln("psycho: could not create render target")
+		return 1
+	}
+	defer {
+		rl.UnloadRenderTexture(scene)
+	}
+	shader := rl.LoadShaderFromMemory(nil, PSYCHO_SHADER)
+	defer rl.UnloadShader(shader)
+	time_loc := rl.GetShaderLocation(shader, "time")
+	energy_loc := rl.GetShaderLocation(shader, "energy")
+	pulse_loc := rl.GetShaderLocation(shader, "pulse")
+	amount_loc := rl.GetShaderLocation(shader, "amount")
+	rl.InitAudioDevice()
+	defer rl.CloseAudioDevice()
+	if !rl.IsAudioDeviceReady() {
+		fmt.eprintln("psycho: audio device unavailable")
+		return 1
+	}
+	music := rl.LoadMusicStream(path_c)
+	if !rl.IsMusicValid(music) {
+		fmt.eprintln("psycho: could not stream audio")
+		return 1
+	}
+	defer rl.UnloadMusicStream(music)
+	music.looping = false
+	music_duration := rl.GetMusicTimeLength(music)
+	volume := config.music_volume
+	rl.SetMusicVolume(music, volume)
+	audio_fx_enabled := config.audio_fx
+	audio_fx_amount := config.audio_fx_strength
+	audio_fx_sample_rate, audio_fx_channels := audio_fx_mixing_format()
+	audio_fx_initialize(audio_fx_enabled, audio_fx_amount, audio_fx_sample_rate, audio_fx_channels)
+	if audio_fx_channels >= 2 {
+		rl.AttachAudioStreamProcessor(music.stream, audio_fx)
+		defer rl.DetachAudioStreamProcessor(music.stream, audio_fx)
+	}
+	rl.PlayMusicStream(music)
+	playback_seen := rl.IsMusicStreamPlaying(music)
+	song_name_c := strings.clone_to_cstring(os.base(audio_path), context.temp_allocator)
+
+	player_lane, steer_lean: f32
+	mouse_active := false
+	show_fps := false
+	hud_mode: Hud_Mode = .FULL
+	last_index := -1
+	score, streak, best_streak, color_chain, crashes: int
+	perfect_sections, last_section_bonus, drift_total: int
+	last_tone: i32
+	last_tone = -1
+	shield := 3
+	section_mastery := begin_section_mastery(nodes, 0)
+	paused, finished: bool
+	results_saved, result_save_ok: bool
+	new_song_best, new_overall_best: bool
+	visual_fx := config.visual_fx
+	visual_amount := config.visual_strength
+	pulse, shake, overdrive, section_bonus_flash: f32
+	drift_residual, drift_rate, previous_music_time: f32
+	rhythm_push: Rhythm_Push
+	secret_sequence: Secret_Sequence_State
+	ghost_pilot := false
+	for !rl.WindowShouldClose() {
+		observed_music_time := max(previous_music_time, rl.GetMusicTimePlayed(music))
+		rl.UpdateMusicStream(music)
+		dt := min(rl.GetFrameTime(), 0.05)
+		if !finished && rl.IsKeyPressed(.SPACE) {
+			paused = !paused
+			if paused do rl.PauseMusicStream(music)
+			else do rl.ResumeMusicStream(music)
+		}
+		if rl.IsKeyPressed(.B) && audio_fx_channels >= 2 {
+			audio_fx_enabled = !audio_fx_enabled
+			audio_fx_set_enabled(audio_fx_enabled)
+		}
+		if rl.IsKeyPressed(.P) do visual_fx = !visual_fx
+		if rl.IsKeyPressed(.COMMA) do visual_amount = max(0, visual_amount - 0.1)
+		if rl.IsKeyPressed(.PERIOD) do visual_amount = min(1, visual_amount + 0.1)
+		if rl.IsKeyPressed(.F) do rl.ToggleFullscreen()
+		if rl.IsKeyPressed(.F2) do show_fps = !show_fps
+		if rl.IsKeyPressed(.F3) do hud_mode = next_hud_mode(hud_mode)
+		if rl.IsKeyPressed(.LEFT_BRACKET) {
+			audio_fx_amount = max(0, audio_fx_amount - 0.05)
+			audio_fx_set_amount(audio_fx_amount)
+		}
+		if rl.IsKeyPressed(.RIGHT_BRACKET) {
+			audio_fx_amount = min(AUDIO_FX_MAX_AMOUNT, audio_fx_amount + 0.05)
+			audio_fx_set_amount(audio_fx_amount)
+		}
+		if rl.IsKeyPressed(.MINUS) {
+			volume = max(0, volume - 0.05)
+			rl.SetMusicVolume(music, volume)
+		}
+		if rl.IsKeyPressed(.EQUAL) {
+			volume = min(0.8, volume + 0.05)
+			rl.SetMusicVolume(music, volume)
+		}
+		secret_step := secret_overdrive_sequence_step(secret_sequence, .KEY_NULL, dt)
+		secret_sequence = secret_step.state
+		for {
+			key := rl.GetKeyPressed()
+			if key == .KEY_NULL {
+				break
+			}
+			secret_step = secret_overdrive_sequence_step(secret_sequence, key, 0)
+			secret_sequence = secret_step.state
+			if secret_step.activated && !finished {
+				ghost_pilot = !ghost_pilot
+				if ghost_pilot {
+					overdrive = max(overdrive, SECRET_OVERDRIVE_SECONDS)
+					pulse = 1
+					audio_fx_trigger_tingle()
+					rhythm_push.impact = 1
+					rhythm_push.velocity = max(rhythm_push.velocity, 4.2)
+					fmt.println("PSYCHO: GHOST PILOT ENGAGED")
+				} else {
+					fmt.println("PSYCHO: GHOST PILOT DISENGAGED")
+				}
+			}
+		}
+		if ride_controls_enabled(paused, finished) {
+			left_down := rl.IsKeyDown(.A) || rl.IsKeyDown(.LEFT)
+			right_down := rl.IsKeyDown(.D) || rl.IsKeyDown(.RIGHT)
+			move := steer_input(left_down, right_down)
+			lane_before_input := player_lane
+			mouse_delta := rl.GetMouseDelta()
+			mouse_input :=
+				abs(mouse_delta.x) + abs(mouse_delta.y) > 0.15 || rl.IsMouseButtonPressed(.LEFT)
+			if mouse_input {
+				mouse_active = true
+			}
+			manual_input := left_down || right_down || mouse_input
+			pilot_was_active := ghost_pilot
+			ghost_pilot = ghost_pilot_after_manual_input(ghost_pilot, manual_input)
+			if pilot_was_active && !ghost_pilot {
+				fmt.println("PSYCHO: GHOST PILOT DISENGAGED")
+			}
+			if ghost_pilot {
+				mouse_active = false
+				target_lane := ghost_pilot_target_lane(nodes, last_index, player_lane)
+				player_lane = smooth_mouse_lane(player_lane, target_lane, dt, GHOST_PILOT_RESPONSE)
+			} else if left_down || right_down {
+				mouse_active = false
+				player_lane = clamp(player_lane + move * dt * 2.2, -1, 1)
+			} else if mouse_active {
+				target_lane := mouse_lane_target(rl.GetMouseX(), rl.GetScreenWidth())
+				player_lane = smooth_mouse_lane(
+					player_lane,
+					target_lane,
+					dt,
+					config.mouse_response,
+				)
+			}
+			lane_speed := (player_lane - lane_before_input) / max(0.001, dt)
+			target_lean := clamp(lane_speed * 0.28, -1, 1)
+			steer_lean += (target_lean - steer_lean) * min(1, dt * 9)
+		} else {
+			mouse_active = false
+		}
+
+		music_playing := rl.IsMusicStreamPlaying(music)
+		if music_playing do playback_seen = true
+		finished = finished || ride_finished(paused, playback_seen, music_playing)
+		time_played := ride_playback_time(
+			rl.GetMusicTimePlayed(music),
+			observed_music_time,
+			music_duration,
+			len(nodes),
+			finished,
+		)
+		drift_start_time := previous_music_time
+		previous_music_time = time_played
+		current, fraction := ride_sample_position(time_played, len(nodes))
+		if finished && should_catch_up_final_nodes(current, len(nodes)) {
+			// Raylib can report stopped playback before exposing the final sample time.
+			// Process a small end gap once, without treating an early stream failure as a clear.
+			current = len(nodes) - 1
+			fraction = 0
+		}
+		drift_rate = 0
+		if !paused && playback_seen {
+			if !finished do drift_rate = drift_score_rate(road_bank(nodes, current), player_lane)
+			if time_played > drift_start_time {
+				drift_step := drift_score_interval(
+					nodes,
+					drift_residual,
+					player_lane,
+					drift_start_time,
+					time_played,
+				)
+				drift_residual = drift_step.residual
+				if !finished do drift_rate = drift_step.rate
+				score += drift_step.points
+				drift_total += drift_step.points
+			}
+		}
+		rhythm_impulse: f32
+		overdrive_time := drift_start_time
+		if current > last_index {
+			echo_rhythm := Rhythm_Motion {
+				push = rhythm_push,
+			}
+			echo_beat_strength := ship_echo_rhythm_strength(echo_rhythm)
+			for i in last_index + 1 ..= current {
+				event_time := max(overdrive_time, min(time_played, f32(i) * STEP))
+				overdrive = ride_timer_step(overdrive, event_time - overdrive_time, !paused)
+				overdrive_time = event_time
+				node_section_index := section_index_for_node(i)
+				if !section_mastery.active || node_section_index != section_mastery.section_index {
+					section_outcome := finish_section_mastery(section_mastery)
+					if section_outcome.perfect {
+						score += section_outcome.bonus
+						perfect_sections += 1
+						last_section_bonus = section_outcome.bonus
+						section_bonus_flash = 2.2
+						pulse = 1
+						audio_fx_trigger_tingle()
+					}
+					section_mastery = begin_section_mastery(nodes, i)
+				}
+				node := nodes[i]
+				node_impulse := rhythm_impulse_strength(max(node.onset, node.beat), node.bass, 1)
+				rhythm_impulse = max(rhythm_impulse, node_impulse)
+				echo_beat_strength = max(echo_beat_strength, rhythm_impulse)
+				aligned := lane_aligned(player_lane, node.lane)
+				if node.kind == PICKUP {
+					echo_aligned := ship_echo_collects_node(
+						node,
+						player_lane,
+						echo_beat_strength,
+						overdrive,
+					)
+					section_mastery = record_section_pickup(
+						section_mastery,
+						aligned || echo_aligned,
+					)
+					if aligned || echo_aligned {
+						streak += 1
+						if node.tone == last_tone do color_chain += 1
+						else do color_chain = 1
+						last_tone = node.tone
+						multiplier := max(1, min(8, streak / 3 + color_chain))
+						if overdrive > 0 do multiplier *= 2
+						score += int(120 * node.beat + 25) * multiplier
+						best_streak = max(best_streak, streak)
+						pulse = 1
+						audio_fx_trigger_tingle()
+					} else {
+						streak = 0
+						color_chain = 0
+						last_tone = -1
+					}
+				} else if node.kind == HAZARD && aligned {
+					outcome := resolve_hazard(
+						shield,
+						score,
+						streak,
+						color_chain,
+						last_tone,
+						crashes,
+						overdrive,
+					)
+					shield, score, streak = outcome.shield, outcome.score, outcome.streak
+					color_chain, last_tone, crashes =
+						outcome.color_chain, outcome.last_tone, outcome.crashes
+					if outcome.blocked {
+						pulse = 1
+						audio_fx_trigger_tingle()
+					} else do shake, pulse = 1, 1
+				} else if node.kind == SHIELD && aligned {
+					shield = min(3, shield + 1)
+					score += 300
+					pulse = 1
+				} else if node.kind == BOOST && aligned {
+					overdrive = max(overdrive, 6)
+					score += 500
+					pulse = 1
+					audio_fx_trigger_tingle()
+				}
+			}
+			last_index = current
+		}
+		rhythm_push = rhythm_push_step(
+			rhythm_push,
+			rhythm_impulse,
+			dt,
+			ride_controls_enabled(paused, finished),
+		)
+		pulse = max(0, pulse - dt * 2.8)
+		shake = max(0, shake - dt * 4.5)
+		overdrive = ride_timer_step(overdrive, time_played - overdrive_time, !paused)
+		section_bonus_flash = max(0, section_bonus_flash - dt)
+		audio_fx_set_beat_hz(4 + nodes[current].bass * 6)
+		if finished && section_mastery.active {
+			section_outcome := finish_section_mastery(section_mastery)
+			section_mastery = section_outcome.state
+			if current == len(nodes) - 1 && section_outcome.perfect {
+				score += section_outcome.bonus
+				perfect_sections += 1
+				last_section_bonus = section_outcome.bonus
+				section_bonus_flash = 2.2
+				pulse = 1
+				audio_fx_trigger_tingle()
+			}
+		}
+		if finished && !results_saved {
+			new_song_best = beats_personal_best(
+				score,
+				personal_bests.song_score,
+				personal_bests.has_song,
+			)
+			new_overall_best = beats_personal_best(
+				score,
+				personal_bests.overall_score,
+				personal_bests.has_overall,
+			)
+			result_save_ok = save_game_result(
+				audio_path,
+				song_id,
+				score,
+				best_streak,
+				crashes,
+				music_duration,
+			)
+			results_saved = true
+			if result_save_ok {
+				if new_song_best {
+					personal_bests.song_score = score
+					personal_bests.has_song = true
+				}
+				if new_overall_best {
+					personal_bests.overall_score = score
+					personal_bests.has_overall = true
+				}
+				fmt.printfln("result: saved %s", RESULTS_PATH)
+			} else do fmt.eprintfln("result: could not save %s", RESULTS_PATH)
+		}
+		if finished && rl.IsKeyPressed(.R) {
+			rl.SeekMusicStream(music, 0)
+			audio_fx_request_reset()
+			rl.PlayMusicStream(music)
+			playback_seen = rl.IsMusicStreamPlaying(music)
+			last_index, score, streak, best_streak, color_chain, last_tone, crashes =
+				-1, 0, 0, 0, 0, -1, 0
+			perfect_sections, last_section_bonus, drift_total = 0, 0, 0
+			shield = 3
+			section_mastery = begin_section_mastery(nodes, 0)
+			overdrive, section_bonus_flash = 0, 0
+			drift_residual, drift_rate, previous_music_time = 0, 0, 0
+			rhythm_push = {}
+			secret_sequence = {}
+			ghost_pilot = false
+			finished = false
+			results_saved, result_save_ok = false, false
+			new_song_best, new_overall_best = false, false
+		}
+		should_hide_cursor := config.hide_cursor && !paused && !finished
+		if should_hide_cursor && !cursor_hidden {
+			rl.HideCursor()
+			cursor_hidden = true
+		} else if !should_hide_cursor && cursor_hidden {
+			rl.ShowCursor()
+			cursor_hidden = false
+		}
+
+		w, h := rl.GetScreenWidth(), rl.GetScreenHeight()
+		if rl.IsWindowResized() && w > 0 && h > 0 {
+			resized_scene := rl.LoadRenderTexture(w, h)
+			if rl.IsRenderTextureValid(resized_scene) {
+				rl.UnloadRenderTexture(scene)
+				scene = resized_scene
+			}
+		}
+		energy := nodes[current].bass * 0.6 + nodes[current].mid * 0.3 + nodes[current].high * 0.1
+		pace_now := nodes[current].pace
+		rhythm := Rhythm_Motion {
+			kick = rhythm_kick_response(
+				max(nodes[current].onset, nodes[current].beat),
+				nodes[current].bass,
+				fraction,
+				visual_amount,
+			),
+			push = rhythm_push_visual(rhythm_push, visual_amount),
+		}
+		rl.BeginTextureMode(scene)
+		rl.ClearBackground(rl.BLACK)
+		draw_music_background(
+			scene.texture.width,
+			scene.texture.height,
+			time_played,
+			nodes[current].bass,
+			nodes[current].mid,
+			nodes[current].high,
+			nodes[current].onset * (1 - fraction),
+			pace_now,
+			pulse,
+			visual_amount,
+		)
+		draw_ride(
+			nodes,
+			current,
+			fraction,
+			player_lane,
+			steer_lean,
+			pulse,
+			shake,
+			rhythm,
+			overdrive,
+		)
+		rl.EndTextureMode()
+
+		shader_time := f32(rl.GetTime())
+		rl.SetShaderValue(shader, time_loc, &shader_time, .FLOAT)
+		visual_energy := clamp(energy * 0.35 + pace_now * 0.75, 0, 1)
+		rl.SetShaderValue(shader, energy_loc, &visual_energy, .FLOAT)
+		rl.SetShaderValue(shader, pulse_loc, &pulse, .FLOAT)
+		visual_power := min(1, visual_amount + overdrive * 0.035)
+		rl.SetShaderValue(shader, amount_loc, &visual_power, .FLOAT)
+		source := rl.Rectangle{0, 0, f32(scene.texture.width), -f32(scene.texture.height)}
+		destination := rl.Rectangle{0, 0, f32(w), f32(h)}
+		rl.BeginDrawing()
+		rl.ClearBackground(rl.BLACK)
+		if visual_fx && rl.IsShaderValid(shader) do rl.BeginShaderMode(shader)
+		rl.DrawTexturePro(scene.texture, source, destination, {}, 0, rl.WHITE)
+		if visual_fx && rl.IsShaderValid(shader) do rl.EndShaderMode()
+
+		overlays := overlay_visibility(hud_mode, finished)
+		if overlays.ride_hud {
+			rl.DrawRectangle(22, 20, 470, 92, rl.Color{2, 4, 16, 205})
+			rl.DrawText("PSYCHO", 36, 30, 32, rl.Color{255, 80, 210, 255})
+			rl.DrawText(
+				rl.TextFormat("SCORE %08d   STREAK x%d   CHAIN x%d", score, streak, color_chain),
+				36,
+				72,
+				20,
+				rl.WHITE,
+			)
+			progress := f32(current) / f32(max(1, len(nodes) - 1))
+			rl.DrawRectangle(36, 98, 430, 4, rl.Color{30, 30, 55, 255})
+			rl.DrawRectangle(36, 98, i32(430 * progress), 4, rl.Color{50, 220, 255, 255})
+			map_width := i32(clamp(f32(w) * 0.35, 280, 440))
+			map_height := i32(clamp(f32(h) * 0.20, 140, 180))
+			draw_course_map(nodes, current, 24, 124, map_width, map_height, map_bounds)
+			for hull in 0 ..< 3 {
+				hull_color := rl.Color{45, 55, 80, 255}
+				if hull < shield do hull_color = rl.Color{70, 255, 145, 255}
+				rl.DrawRectangle(w - 150 + i32(hull * 34), 52, 26, 8, hull_color)
+			}
+			rl.DrawText(
+				rl.TextFormat("CRASHES %d", crashes),
+				w - 150,
+				70,
+				15,
+				rl.Color{180, 190, 215, 255},
+			)
+			if show_fps {
+				fps_label := rl.TextFormat("FPS %d", rl.GetFPS())
+				fps_width := rl.MeasureText(fps_label, 17)
+				fps_x := w - fps_width - 30
+				rl.DrawRectangle(fps_x - 8, 120, fps_width + 16, 25, rl.Color{2, 4, 16, 205})
+				rl.DrawText(fps_label, fps_x, 124, 17, rl.Color{80, 235, 255, 255})
+			}
+			section_names := [TRACK_SECTION_KIND_COUNT]cstring {
+				"CLIMB",
+				"DROP",
+				"SLALOM",
+				"TUNNEL",
+				"SPIRAL",
+			}
+			rl.DrawText(
+				rl.TextFormat(
+					"%s  SPEED %.0f%%",
+					section_names[nodes[current].section],
+					track_speed_percent(pace_now, config.speed_limit),
+				),
+				w - 210,
+				96,
+				18,
+				pace_color(pace_now, 1),
+			)
+			if overdrive > 0 {
+				rl.DrawText("OVERDRIVE x2", w / 2 - 100, 28, 25, rl.Color{255, 220, 55, 255})
+				rl.DrawRectangle(
+					w / 2 - 100,
+					58,
+					i32(overdrive / 6 * 200),
+					5,
+					rl.Color{255, 100, 50, 255},
+				)
+			}
+			if drift_rate > 0 {
+				drift_label := rl.TextFormat("OUTER-LANE DRIFT  +%.0f/s", drift_rate)
+				rl.DrawText(
+					drift_label,
+					w / 2 - rl.MeasureText(drift_label, 18) / 2,
+					88,
+					18,
+					rl.Color{90, 240, 255, 255},
+				)
+			}
+			if section_bonus_flash > 0 {
+				bonus_label := rl.TextFormat("PERFECT SECTION  +%d", last_section_bonus)
+				bonus_alpha := u8(clamp(section_bonus_flash / 2.2 * 255, 0, 255))
+				rl.DrawText(
+					bonus_label,
+					w / 2 - rl.MeasureText(bonus_label, 30) / 2,
+					h / 3,
+					30,
+					rl.Color{255, 220, 70, bonus_alpha},
+				)
+			}
+			fx_label: cstring = "BINAURAL FX: OFF [B]"
+			if audio_fx_channels < 2 {
+				fx_label = "BINAURAL FX: NEEDS STEREO"
+			} else if audio_fx_enabled {
+				fx_label = rl.TextFormat(
+					"BINAURAL FX: %.0f%% [B]",
+					audio_fx_amount / AUDIO_FX_MAX_AMOUNT * 100,
+				)
+			}
+			rl.DrawText(fx_label, 24, h - 58, 17, rl.Color{150, 190, 225, 255})
+			visual_label: cstring = "PSYCHO VISUAL: ON [P]"
+			if !visual_fx do visual_label = "PSYCHO VISUAL: OFF [P]"
+			rl.DrawText(visual_label, 24, h - 82, 17, rl.Color{190, 130, 245, 255})
+			rl.DrawText(
+				"A/D or MOUSE steer   SPACE pause   P visual   ,/. visual power   B audio FX   [/] audio power   -/+ volume",
+				24,
+				h - 32,
+				14,
+				rl.Color{130, 140, 170, 255},
+			)
+			rl.DrawText(
+				rl.TextFormat("VOL %.0f%%", volume * 100),
+				w - 105,
+				24,
+				17,
+				rl.Color{150, 190, 225, 255},
+			)
+			control_label: cstring = "KEYBOARD"
+			if mouse_active do control_label = "MOUSE"
+			rl.DrawText(
+				rl.TextFormat("STEER %s", control_label),
+				w - 120,
+				h - 58,
+				14,
+				rl.Color{115, 190, 220, 210},
+			)
+		}
+		if overlays.map_only {
+			map_width := i32(clamp(f32(w) * 0.35, 280, 440))
+			map_height := i32(clamp(f32(h) * 0.20, 140, 180))
+			draw_course_map(nodes, current, 24, 24, map_width, map_height, map_bounds, true)
+		}
+		if paused {
+			rl.DrawRectangle(0, 0, w, h, rl.Color{0, 0, 0, 130})
+			rl.DrawText("PAUSED", w / 2 - 88, h / 2 - 25, 42, rl.WHITE)
+		}
+		if overlays.results {
+			rl.DrawRectangle(0, 0, w, h, rl.Color{0, 0, 0, 185})
+			panel_width := min(650, w - 40)
+			panel_height := min(380, h - 40)
+			panel_x := (w - panel_width) / 2
+			panel_y := (h - panel_height) / 2
+			rl.DrawRectangle(panel_x, panel_y, panel_width, panel_height, rl.Color{3, 5, 20, 242})
+			rl.DrawRectangleLines(
+				panel_x,
+				panel_y,
+				panel_width,
+				panel_height,
+				rl.Color{75, 220, 255, 220},
+			)
+			title: cstring = "RIDE COMPLETE"
+			rl.DrawText(
+				title,
+				w / 2 - rl.MeasureText(title, 44) / 2,
+				panel_y + 28,
+				44,
+				rl.Color{255, 90, 220, 255},
+			)
+			song_label := rl.TextFormat("FULL LOOP  //  %s", song_name_c)
+			rl.DrawText(
+				song_label,
+				w / 2 - rl.MeasureText(song_label, 18) / 2,
+				panel_y + 82,
+				18,
+				rl.Color{130, 220, 255, 255},
+			)
+			score_label := rl.TextFormat("SCORE  %08d", score)
+			rl.DrawText(
+				score_label,
+				w / 2 - rl.MeasureText(score_label, 32) / 2,
+				panel_y + 124,
+				32,
+				rl.WHITE,
+			)
+			rl.DrawText(
+				rl.TextFormat(
+					"BEST STREAK  %d     CRASHES  %d     TIME  %02d:%02d",
+					best_streak,
+					crashes,
+					int(music_duration) / 60,
+					int(music_duration) % 60,
+				),
+				panel_x + 36,
+				panel_y + 176,
+				20,
+				rl.Color{210, 220, 245, 255},
+			)
+			mastery_label := rl.TextFormat(
+				"PERFECT SECTIONS  %d     DRIFT POINTS  %d",
+				perfect_sections,
+				drift_total,
+			)
+			rl.DrawText(
+				mastery_label,
+				w / 2 - rl.MeasureText(mastery_label, 18) / 2,
+				panel_y + 204,
+				18,
+				rl.Color{120, 235, 255, 255},
+			)
+			display_song_best := max(score, personal_bests.song_score)
+			display_overall_best := max(score, personal_bests.overall_score)
+			best_label := rl.TextFormat(
+				"SONG BEST  %08d     ALL-TIME  %08d",
+				display_song_best,
+				display_overall_best,
+			)
+			best_color := rl.Color{255, 215, 80, 255}
+			if new_overall_best {
+				best_label = "NEW SONG + ALL-TIME BEST"
+			} else if new_song_best {
+				best_label = "NEW SONG BEST"
+			}
+			rl.DrawText(
+				best_label,
+				w / 2 - rl.MeasureText(best_label, 19) / 2,
+				panel_y + 235,
+				19,
+				best_color,
+			)
+			save_label: cstring = "RESULT SAVE FAILED"
+			save_color := rl.Color{255, 90, 105, 255}
+			if result_save_ok {
+				save_label = "RESULT SAVED  //  .games/results.tsv"
+				save_color = rl.Color{80, 255, 160, 255}
+			}
+			rl.DrawText(
+				save_label,
+				w / 2 - rl.MeasureText(save_label, 17) / 2,
+				panel_y + 273,
+				17,
+				save_color,
+			)
+			rl.DrawText(
+				"PRESS R TO RIDE AGAIN",
+				w / 2 - rl.MeasureText("PRESS R TO RIDE AGAIN", 20) / 2,
+				panel_y + 315,
+				20,
+				rl.Color{130, 220, 255, 255},
+			)
+		}
+		rl.EndDrawing()
+	}
+	return 0
+}

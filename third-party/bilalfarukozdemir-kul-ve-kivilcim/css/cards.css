@@ -1,0 +1,254 @@
+/* =========================================================================
+   KART GÖRÜNÜMÜ
+   Kart bir "nesne" gibi dursun: kabartmalı çerçeve, tanecikli yüzey,
+   çukurlaşmış resim penceresi, nadirliğe göre folyo. Ölçü --kw/--kh
+   üzerinden; aynı bileşen el, ödül, dükkan ve deste ekranında kullanılıyor.
+   ========================================================================= */
+
+/* İnce grain — yüzeye malzeme hissi verir (SVG gürültüsü, dosya değil) */
+:root {
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+}
+
+.kart {
+  --kw: 132px;
+  --kh: 186px;
+  --renk: var(--y-genel);
+  --folyo: transparent;
+  position: relative;
+  width: var(--kw); height: var(--kh);
+  flex: 0 0 auto;
+  border-radius: 12px;
+  color: var(--metin);
+  transition: transform .14s ease, box-shadow .18s ease, filter .18s;
+  cursor: default;
+  /* dış kabartma: üstte ışık, altta gölge */
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.10) inset,
+    0 -2px 0 rgba(0,0,0,.55) inset,
+    0 6px 14px rgba(0,0,0,.55),
+    0 1px 2px rgba(0,0,0,.7);
+}
+
+/* --- çerçeve + yüzey ------------------------------------------------- */
+.kart-yuzey {
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  /* kenar: metalik bant · iç: koyu yüzey */
+  background:
+    linear-gradient(180deg,
+      color-mix(in srgb, var(--renk) 26%, #241c16) 0%,
+      #241c16 12%,
+      #17110e 46%,
+      #120d0b 100%);
+  border: 1px solid color-mix(in srgb, var(--renk) 30%, #3a2f26);
+}
+
+/* tanecik */
+.kart-yuzey::before {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background-image: var(--grain);
+  background-size: 120px 120px;
+  opacity: .30; mix-blend-mode: overlay;
+}
+
+/* iç çerçeve çizgisi — kabartma hissi */
+.kart-yuzey::after {
+  content: ''; position: absolute; inset: 4px; border-radius: 8px;
+  pointer-events: none;
+  border: 1px solid rgba(255,255,255,.055);
+  box-shadow: 0 0 0 1px rgba(0,0,0,.5) inset;
+}
+
+.kart.yol-yangin { --renk: var(--y-yangin); }
+.kart.yol-kul    { --renk: var(--y-kul); }
+.kart.yol-demir  { --renk: var(--y-demir); }
+.kart.yol-genel  { --renk: var(--y-genel); }
+.kart.tur-lanet .kart-yuzey, .kart.tur-durum .kart-yuzey {
+  background: linear-gradient(180deg, #2b2320 0%, #191312 46%, #100c0b 100%);
+  border-color: #3f342f;
+}
+.kart.tur-lanet, .kart.tur-durum { --renk: #7a6d63; }
+
+/* --- bedel madalyonu ------------------------------------------------- */
+.kart-bedel {
+  position: absolute; top: -4px; left: -4px; z-index: 4;
+  width: 32px; height: 32px; border-radius: 50%;
+  display: grid; place-items: center;
+  background:
+    radial-gradient(circle at 34% 28%, #8a4a16 0%, #3d1f09 62%, #1c0d04 100%);
+  border: 1.5px solid color-mix(in srgb, var(--renk) 55%, #000);
+  box-shadow:
+    0 2px 8px rgba(0,0,0,.7),
+    0 0 12px rgba(249,115,22,.30),
+    inset 0 1px 1px rgba(255,255,255,.18),
+    inset 0 -2px 4px rgba(0,0,0,.6);
+}
+.kart-bedel span {
+  font-size: 15px; font-weight: 700; color: #fff2e2;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 1px 2px rgba(0,0,0,.9);
+}
+
+/* --- ad ---------------------------------------------------------------- */
+.kart-ad {
+  position: relative; z-index: 2;
+  margin: 8px 9px 0 30px;
+  font-family: var(--serif); font-size: 12.5px; line-height: 1.15;
+  letter-spacing: .015em; text-align: center;
+  min-height: 27px; display: flex; align-items: center; justify-content: center;
+  color: #f0e3d4;
+  text-shadow: 0 1px 3px rgba(0,0,0,.9);
+}
+.kart.yukseltilmis .kart-ad { color: #a5f7c6; text-shadow: 0 0 10px rgba(85,209,135,.4); }
+
+/* --- resim penceresi (mühür) ------------------------------------------ */
+.kart-resim {
+  position: relative; z-index: 2;
+  height: 54px; margin: 3px 9px 0;
+  display: grid; place-items: center;
+  border-radius: 7px;
+  /* çukur: üstte gölge, altta ışık */
+  background:
+    radial-gradient(ellipse at 50% 55%,
+      color-mix(in srgb, var(--renk) 16%, transparent), transparent 70%),
+    linear-gradient(180deg, #0c0908 0%, #15100d 100%);
+  box-shadow:
+    inset 0 2px 5px rgba(0,0,0,.85),
+    inset 0 -1px 0 rgba(255,255,255,.05);
+  overflow: hidden;
+  font-size: 26px;                       /* emoji yedeği */
+}
+.kart-resim .muhur {
+  display: block; width: 100%; height: 100%;
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--renk) 45%, transparent));
+}
+
+/* --- tür şeridi -------------------------------------------------------- */
+.kart-tur {
+  position: relative; z-index: 2;
+  margin: 6px 9px 3px;
+  display: flex; align-items: center; gap: 6px;
+  font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase;
+  color: color-mix(in srgb, var(--renk) 70%, #fff 30%);
+}
+.kart-tur::before, .kart-tur::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent,
+              color-mix(in srgb, var(--renk) 45%, transparent));
+}
+.kart-tur::after { background: linear-gradient(270deg, transparent,
+                   color-mix(in srgb, var(--renk) 45%, transparent)); }
+
+/* --- metin ------------------------------------------------------------- */
+.kart-metin {
+  position: relative; z-index: 2; flex: 1;
+  margin: 2px 9px 9px; font-size: 10.5px; line-height: 1.38;
+  text-align: center; color: #d8cdc1;
+  display: flex; align-items: center; justify-content: center;
+}
+.kart-metin em { font-style: normal; color: #ffd9ae; font-weight: 700; }
+.kart-metin em.arti { color: #8dffbb; }
+.kart-metin .kw { color: var(--kor2); border-bottom: 1px dotted rgba(251,146,60,.5); }
+
+/* --- nadirlik ---------------------------------------------------------- */
+.kart .nadir-cizgi {
+  position: absolute; bottom: 0; left: 10%; right: 10%; height: 2px; z-index: 3;
+  border-radius: 2px 2px 0 0;
+}
+.nadirlik-siradan   .nadir-cizgi { background: #6b6259; }
+.nadirlik-baslangic .nadir-cizgi { background: #473f38; }
+.nadirlik-nadir     .nadir-cizgi { background: linear-gradient(90deg, transparent, #62a4f0, transparent);
+                                   box-shadow: 0 0 7px rgba(98,164,240,.55); }
+.nadirlik-efsanevi  .nadir-cizgi { background: linear-gradient(90deg, transparent, var(--altin), transparent);
+                                   box-shadow: 0 0 10px rgba(251,191,36,.75); }
+
+/* efsanevi kartlara yavaş gezen folyo parıltısı */
+.nadirlik-efsanevi .kart-yuzey {
+  border-color: rgba(251,191,36,.4);
+}
+.nadirlik-efsanevi .kart-parlama {
+  position: absolute; inset: 0; z-index: 3; pointer-events: none;
+  border-radius: inherit; overflow: hidden;
+}
+.nadirlik-efsanevi .kart-parlama::before {
+  content: ''; position: absolute; top: -60%; left: -80%;
+  width: 60%; height: 220%;
+  background: linear-gradient(105deg, transparent, rgba(255,225,170,.16) 45%,
+              rgba(255,240,210,.28) 50%, rgba(255,225,170,.16) 55%, transparent);
+  transform: rotate(8deg);
+  animation: folyo 5.5s ease-in-out infinite;
+}
+@keyframes folyo {
+  0%, 68% { left: -80%; }
+  100%    { left: 150%; }
+}
+.nadirlik-nadir .kart-yuzey { border-color: rgba(98,164,240,.3); }
+
+/* --- yükseltilmiş ------------------------------------------------------ */
+.kart.yukseltilmis .kart-yuzey { border-color: rgba(110,231,160,.42); }
+.kart.yukseltilmis {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.10) inset,
+    0 -2px 0 rgba(0,0,0,.55) inset,
+    0 6px 16px rgba(0,0,0,.55),
+    0 0 16px rgba(85,209,135,.16);
+}
+
+/* --- durumlar ---------------------------------------------------------- */
+.kart.tiklanir { cursor: pointer; }
+.kart.tiklanir:hover .kart-yuzey {
+  border-color: color-mix(in srgb, var(--renk) 62%, #fff 14%);
+}
+
+.kart.oynanamaz { filter: grayscale(.7) brightness(.58); }
+.kart.oynanamaz .kart-bedel {
+  background: radial-gradient(circle at 34% 28%, #5c2222 0%, #2a0c0c 68%, #150505 100%);
+  box-shadow: 0 2px 8px rgba(0,0,0,.7), inset 0 -2px 4px rgba(0,0,0,.6);
+}
+
+.kart.secili {
+  box-shadow:
+    0 0 0 2px var(--kor),
+    0 12px 32px rgba(249,115,22,.38),
+    0 0 26px rgba(249,115,22,.28);
+}
+
+/* --- boyut çeşitleri --------------------------------------------------- */
+.kart.buyuk { --kw: 158px; --kh: 222px; }
+.kart.buyuk .kart-ad { font-size: 14px; min-height: 32px; margin-left: 32px; }
+.kart.buyuk .kart-resim { height: 66px; }
+.kart.buyuk .kart-metin { font-size: 11.5px; }
+.kart.buyuk .kart-bedel { width: 35px; height: 35px; }
+.kart.buyuk .kart-bedel span { font-size: 17px; }
+
+.kart.kucuk { --kw: 106px; --kh: 150px; }
+.kart.kucuk .kart-ad { font-size: 10.5px; min-height: 23px; margin: 6px 6px 0 26px; }
+.kart.kucuk .kart-resim { height: 42px; margin: 2px 7px 0; }
+.kart.kucuk .kart-tur { font-size: 7px; margin: 4px 7px 2px; letter-spacing: .14em; }
+.kart.kucuk .kart-metin { font-size: 9px; margin: 2px 7px 7px; line-height: 1.32; }
+.kart.kucuk .kart-bedel { width: 26px; height: 26px; top: -3px; left: -3px; }
+.kart.kucuk .kart-bedel span { font-size: 13px; }
+
+/* --- ödül seçim kartı --------------------------------------------------- */
+.odul-kart { position: relative; transition: transform .16s; }
+.odul-kart:hover { transform: translateY(-9px) scale(1.045); }
+.odul-kart:hover .kart {
+  box-shadow:
+    0 1px 0 rgba(255,255,255,.10) inset,
+    0 -2px 0 rgba(0,0,0,.55) inset,
+    0 18px 34px rgba(0,0,0,.6),
+    0 0 22px color-mix(in srgb, var(--renk) 30%, transparent);
+}
+
+/* --- destede kopya sayacı ---------------------------------------------- */
+.kart-sayi {
+  position: absolute; top: -7px; right: -7px; z-index: 6;
+  min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px;
+  display: grid; place-items: center; font-size: 11.5px; font-weight: 700;
+  background: linear-gradient(180deg, #3a2e25, #221a15);
+  border: 1px solid #4a3b30; color: #ffd9ae;
+  box-shadow: 0 2px 6px rgba(0,0,0,.6);
+}

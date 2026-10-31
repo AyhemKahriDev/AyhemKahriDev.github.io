@@ -1,0 +1,17 @@
+{
+  "name": "klondike",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Klondike static web app build scripts",
+  "scripts": {
+    "build": "npm run test:unit && npm run build:html",
+    "build:html": "node scripts/build.mjs",
+    "check:all": "npm run test:unit && npm run build:html",
+    "test:unit": "vitest run",
+    "test:unit:watch": "vitest"
+  },
+  "devDependencies": {
+    "jsdom": "^28.1.0",
+    "vitest": "^4.0.18"
+  }
+}

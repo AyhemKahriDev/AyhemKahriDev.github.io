@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Space Defenders — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Space Defenders</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      1978, the year I opened, and Space Invaders was already the machine
+      every kid in Portland wanted a turn on. I had a regular, a scrawny kid
+      named Marcus who came in every day after school with exactly one
+      quarter and somehow always beat his own score by ten points. There was
+      a rival, a bigger kid, who'd lean on the cabinet and heckle him the
+      whole time. Marcus never said a word back. Just kept shooting. One day
+      the coin slot jammed on his last quarter and I fixed it for free and
+      told him that one was on the house. He still beat his score.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      The old version I built solo in '25 just moved everything the same
+      amount every tick and called it a day — worked fine until somebody's
+      laptop fan kicked on and the whole invasion sped up like they'd had too
+      much coffee. This time the crew built it on "deltaTime," which just
+      means the game asks the clock how much time actually went by and moves
+      things by that much, so it plays the same speed everywhere. They also
+      gave the invaders their real heartbeat back — that speeding-up thump
+      as you thin out the ranks — using a little rising musical tone instead
+      of one fixed beep, so the last invader standing sounds like it's
+      panicking. And the shields chip apart properly now, a chunk at a time,
+      not just a pixel here and there. Screen shakes when I get hit. That's
+      the good stuff.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build Space Invaders against our shared GZ engine. Five rows of
+eleven invaders marching as one block, stepping down and reversing
+at the walls, speeding up as they thin out — classic heartbeat
+sound rising in pitch. One player bullet on screen at a time, no
+more. Four bunkers that erode in chunks from both sides, and the
+invaders should chew through them too as they march past. Random
+invaders drop bombs, a UFO crosses the top every so often for bonus
+points. Three lives, and make getting hit actually feel like
+something — shake the screen, blink me back in.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The whole invasion is one array of eleven-by-five invaders; every
+        tick I check the leftmost and rightmost survivor against the walls
+        before deciding whether to step sideways or drop down and reverse —
+        same rule the original board used, near as I can tell.</li>
+      <li>March speed is computed fresh every tick from how many invaders
+        are left alive, eased with a little curve so it's calm early and
+        frantic at the end, and it slows back down a notch each time you
+        clear a wave's worth and start the next, lower and meaner.</li>
+      <li>Bunkers are just a grid of tiny cells per shield. A hit erases a
+        little blast radius of cells, not just one pixel, and I sweep the
+        bullet's whole path each tick instead of just where it landed, so
+        nothing skips through a thin sliver of shield by accident.</li>
+      <li>Only one column can ever fire down on you at a time from each row
+        gap — I always pick the bottom-most survivor in a column to drop
+        the bomb, which is the same trick that made the original feel fair
+        even when it was trying to kill you.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Space Defenders</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

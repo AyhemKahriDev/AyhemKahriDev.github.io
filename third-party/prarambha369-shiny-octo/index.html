@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shiny Octo - Beautiful Edition</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="sprite-select-overlay" id="spriteSelectOverlay">
+    <div class="sprite-select-content">
+        <h2>Select Your Character</h2>
+        <div class="sprite-options">
+            <button class="sprite-btn" id="octoBtn">
+                <canvas class="sprite-preview-canvas" id="octoPreviewCanvas" width="40" height="40"></canvas>
+                <span>Octo</span>
+            </button>
+            <button class="sprite-btn" id="birdBtn">
+                <canvas class="sprite-preview-canvas" id="birdPreviewCanvas" width="40" height="40"></canvas>
+                <span>Classic Bird</span>
+            </button>
+            <button class="sprite-btn" id="shinycotoBtn">
+                <canvas class="sprite-preview-canvas" id="shinycotoPreviewCanvas" width="40" height="40"></canvas>
+                <span>Shiny Octo</span>
+            </button>
+        </div>
+    </div>
+</div>
+<div class="game-container">
+    <div class="loading-screen" id="loadingScreen" style="display:none;">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+    </div>
+    <div class="ui-overlay">
+        <div class="score-display">
+            <span id="score">0</span>
+        </div>
+        <div class="high-score-display">
+            <span>Best
+                : <span id="highScore">0</span></span>
+        </div>
+    </div>
+
+    <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+    <div class="game-over-screen" id="gameOverScreen">
+        <div class="game-over-content">
+            <h1>Game Over!</h1>
+            <div class="final-score">
+                <p>Score: <span id="finalScore">0</span></p>
+                <p>Best: <span id="finalHighScore">0</span></p>
+            </div>
+            <button id="restartBtn" class="restart-btn">Play Again</button>
+            <button id="mainMenuBtn" class="main-menu-btn">Main Menu</button>
+        </div>
+    </div>
+
+    <div class="start-screen" id="startScreen">
+        <div class="start-content">
+            <h1 class="game-title">Flappy Bird</h1>
+            <p class="game-subtitle">Beautiful Edition</p>
+            <button id="startBtn" class="start-btn">Start Game</button>
+            <p class="instructions">Tap or use UP ARROW key to fly!</p>
+        </div>
+    </div>
+
+    <div class="countdown-overlay" id="countdownOverlay" style="display:none;">
+        <div class="countdown-content" id="countdownContent">5</div>
+    </div>
+
+    <div class="controls">
+        <button id="muteBtn" class="mute-btn">🔊</button>
+    </div>
+    <audio id="bgMusic" src="https://github.com/Prarambha369/muisckm/blob/main/muisckm.wav?raw=true" loop style="display: none;"></audio>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

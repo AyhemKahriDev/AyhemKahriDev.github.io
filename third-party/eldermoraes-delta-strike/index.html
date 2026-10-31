@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#142b3a" />
+    <meta
+      name="description"
+      content="One river. Two ways to fly. Choose the 2D classic or take flight in Delta Strike 3D."
+    />
+    <title>Delta Strike — Choose your flight</title>
+    <link rel="icon" href="icons/delta-strike-192.png" />
+    <link rel="stylesheet" href="selection/selection.css" />
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="icons/apple-touch-icon.png"
+    />
+    <meta name="apple-mobile-web-app-title" content="Delta Strike" />
+    <link rel="manifest" href="manifest.webmanifest" />
+  </head>
+  <body>
+    <div class="selection-shell">
+      <header class="masthead">
+        <a class="wordmark" href="./" aria-label="Delta Strike home">
+          <svg viewBox="0 0 40 36" aria-hidden="true">
+            <path d="M20 1 39 34 20 26 1 34Z" fill="currentColor" />
+            <path d="M20 10v13" stroke="#142b3a" stroke-width="2" />
+          </svg>
+          <span>DELTA STRIKE</span>
+        </a>
+        <span class="header-note">One river. Two ways to fly.</span>
+      </header>
+      <main>
+        <div class="intro">
+          <h1>Choose your airspace.</h1>
+          <p>The same mission. A new perspective. Your next flight awaits.</p>
+        </div>
+        <div class="editions" aria-label="Game editions">
+          <a
+            class="edition classic"
+            href="classic.html"
+            aria-labelledby="classic-title classic-play"
+            aria-describedby="classic-description"
+          >
+            <div class="scene classic-scene">
+              <img
+                src="selection/classic.png"
+                alt="Pixel art river and aircraft from the original game"
+                width="640"
+                height="840"
+                fetchpriority="high"
+              />
+            </div>
+            <div class="edition-top">
+              <span class="edition-format">2D</span
+              ><span class="perspective"
+                >Top-down flight<br />Arcade spirit</span
+              >
+            </div>
+            <div class="edition-content">
+              <span class="edition-label">The original flight</span>
+              <h2 id="classic-title">Delta Strike <span>Classic</span></h2>
+              <p id="classic-description">
+                Pixels, reflexes, and one more try.<br />Master the river in the
+                classic that started it all.
+              </p>
+              <div class="edition-action">
+                <span id="classic-play">Play in 2D</span
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m9 5 7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </a>
+          <a
+            class="edition modern"
+            href="Delta-Strike-3d/dist/3d.html"
+            aria-labelledby="modern-title modern-play"
+            aria-describedby="modern-description"
+          >
+            <div class="scene">
+              <img
+                src="selection/flight.jpg"
+                alt="Fighter flying over a river between islands and canyons in 3D"
+                width="1200"
+                height="900"
+                fetchpriority="high"
+              />
+            </div>
+            <div class="edition-top">
+              <span class="edition-format">3D</span
+              ><span class="perspective"
+                >Chase-camera flight<br />A new horizon</span
+              >
+            </div>
+            <div class="edition-content">
+              <span class="edition-label">The next dimension</span>
+              <h2 id="modern-title">Delta Strike <span>3D</span></h2>
+              <p id="modern-description">
+                Gain altitude. Race through the canyons.<br />Find your way
+                through a delta stretching beyond the horizon.
+              </p>
+              <div class="edition-action">
+                <span id="modern-play">Play in 3D</span
+                ><svg viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="m9 5 7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </a>
+        </div>
+      </main>
+      <footer>
+        <span>For those who never stopped playing.</span
+        ><span
+          >Keyboard or touch <span class="footer-dot">•</span> Play in your
+          browser</span
+        >
+      </footer>
+    </div>
+    <script>
+      if ("serviceWorker" in navigator && window.isSecureContext) {
+        navigator.serviceWorker.register("./sw.js").catch(function () {});
+      }
+    </script>
+  </body>
+</html>

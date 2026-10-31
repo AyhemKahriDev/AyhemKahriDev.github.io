@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<!--
+  @author Raúl Caro Pastorino
+  @copyright Copyright © 2017 Raúl Caro Pastorino
+  @license https://www.gnu.org/licenses/gpl-3.0-standalone.html
+-->
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <title>Juego Snake</title>
+    <meta name="description" content="Juego de la serpiente Snake" />
+    <meta name="keywords" content="juego, snake, serpiente" />
+    <meta name="author" content="Raúl Caro Pastorino" />
+    <link rel="shortcut icon" href="images/favicon.png" />
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+    <script src="js/cookies.js"></script>
+    <script src="js/funciones.js"></script>
+    <script src="js/juego.js"></script>
+    <script src="js/manzana.js"></script>
+    <script src="js/mapa.js"></script>
+    <script src="js/player.js"></script>
+    <script src="js/score.js"></script>
+    <script src="js/serpiente.js"></script>
+    <script>
+        window.onload = function() {
+            iniciar();  // Inicia el juego
+        }
+    </script>
+</head>
+
+<body>
+    <div id="cajatitulo" class="container">
+        <header class="page-header">
+            <div class="row">
+                <h1 id="titulo">Juego Snake</h1>
+                <hr />
+                <h2 id="subtitulo">Cómete las manzanas sin tropezar</h2>
+            </div>
+        </header>
+    </div>
+
+    <div id="cajajuego" class="container">
+        <!--Aquí va el contenido del juego-->
+        <div id="cajajugador" class="row"><p id="jugador" class="text-center"></p></div>
+
+        <div id="cajamapa">
+            <canvas id="cajacanvas">Su navegador no soporta canvas</canvas>
+        </div>
+
+        <div id="botones" class="row text-center">
+            <form>
+                <button id="reset" type="button" name="button" class="btn btn-danger" onclick="reiniciarJuego()">Reniciar Juego</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <h3 class="panel-title">Instrucciones</h3>
+            </div>
+            <div class="panel-body">
+                <p>
+                    <strong>Detalles de como jugar:</strong>
+                </p>
+                <p>
+                    Tienes que ir moviendo la serpiente sin tocar los bordes. Puedes cambiar de dirección pero nunca ir en sentido contrario (dar la vuelta en la misma dirección, pivotar) ya que eso sería andar sobre si mismo.
+                </p>
+                <p>
+                    Cada vez que comes una manzana obtienes los puntos de esta, cada manzana podrá valer una puntuación distinta entre 5-15 puntos.
+                </p>
+                <p>
+                    Cuando el mapa queda sin manzanas subirás de nivel aumentando la velocidad y el nivel. Además como recomensa recibirás 100 puntos extra al subir de nivel.
+                </p>
+                <p>
+                    La puntuación (no el nivel) se mantiene aunque pierdas, siempre puedes reiniciar el juego desde el botón correspondiente para borrar dicha puntuación y comenzar desde 0.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <footer id="cajafooter" class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Autor y Licencia</h3>
+            </div>
+            <div class="panel-body">
+                <p id="autor">
+                    Raúl Caro Pastorino
+                </p>
+                <p id="licencia">
+                    Proyecto bajo licencia <a href="https://www.gnu.org/licenses/gpl-3.0-standalone.html" title="Licencia GPLv3"  target="_blank rel="noopener noreferrer">GPLv3</a>
+                    <br />
+                    Licencia libre con reconocimiento de autoría y proyectos derivados bajo las mismas condiciones
+                </p>
+
+                <p id="repositorios">
+                    <a href="https://github.com/raupulus" title="Repositorios Oficiales de Raúl Caro Pastorino"  target="_blank rel="noopener noreferrer">Repositorios en GitHub Oficial del desarrollador</a>
+                </p>
+            </div>
+        </footer>
+    </div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+</body>
+</html>

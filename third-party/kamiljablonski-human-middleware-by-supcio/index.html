@@ -1,0 +1,2222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Human Middleware — a tiny satirical game about manual invoice flow in a European accounting office.">
+<title>HUMAN MIDDLEWARE — a game about invoices</title>
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y="82" font-size="88">🧾</text></svg>'>
+<style>
+  html,body{margin:0;padding:0;height:100%;background:#141018}
+  body{display:flex;align-items:center;justify-content:center;min-height:100vh;
+       font-family:"Courier New",ui-monospace,Menlo,monospace}
+  #wrap{position:relative;width:min(1120px,100vw)}
+  #game{display:block;width:100%;height:auto;background:#141018;outline:none;
+        image-rendering:pixelated;image-rendering:crisp-edges;cursor:pointer}
+  #ui{position:absolute;inset:0;pointer-events:none;color:#f2ede4}
+  #ui .panel{pointer-events:auto}
+  .hidden{display:none !important}
+
+  #skipBtn{position:absolute;top:4%;right:16%;pointer-events:auto;
+    background:#241b2e;color:#f2ede4;border:2px solid #f2ede4;
+    font:bold 13px "Courier New",monospace;letter-spacing:1px;padding:5px 10px;cursor:pointer}
+  #skipBtn:hover{background:#f2ede4;color:#241b2e}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="game" width="1120" height="672" tabindex="0" aria-label="Human Middleware — keyboard game"></canvas>
+  <div id="ui">
+    <button id="skipBtn" class="hidden" type="button"></button>
+    <!-- Game-over and touch screens are rendered on the canvas. This open-source game
+         collects no data; email/leaderboard capture is the embedding page's job. -->
+  </div>
+</div>
+<script>
+"use strict";
+/* =========================================================================
+   HUMAN MIDDLEWARE — v2 "32-BIT NIGHT SHIFT"
+   Vanilla JS + Canvas 2D, zero external assets.
+   Logical resolution 560×336 rendered 2× (canvas 1120×672):
+   map 480 px + 80 px upgrade panel on the right.
+   All balance tuning: CONFIG. Texts: STRINGS. Calls: PHONE_QA.
+   Upgrades: UPGRADES.
+   ========================================================================= */
+
+/* ======================= CONFIG — ALL TUNING KNOBS ===================== */
+const CONFIG = {
+  // This game collects no data and has no backend. It emits anonymous postMessage
+  // events (see track()); an embedding page handles any email/leaderboard capture.
+
+  // --- Player ---
+  PLAYER: {
+    speed   : 117,  // logical px / s (map is 480 px wide)
+    slowMult: 0.6,  // slowdown when energy < ENERGY.lowAt
+    sprintMult     : 1.45, // SHIFT = sprint: speed multiplier
+    sprintDrainMult: 2.5,  // how much faster coffee drains while sprinting
+  },
+
+  // --- Action durations [s] ---
+  TIMES: {
+    type      : 1.5,                      // typing in 1 invoice (MACRO LV1 multiplies by TIERS.typeMul)
+    typeAllBase: 1.2, typeAllPer: 0.25,   // MACRO LV2: whole stack = base + per×page
+    stamp     : 0.5,
+    takeFloppy: 0.35, giveFloppy: 0.4,
+    brew      : 2.0,  drink: 2.0,
+    brewFast  : 1.0,  drinkFast: 1.0,     // ESPRESSO LV2
+    answerPress: 0.15,
+    phoneWindow: 11,                      // how many seconds the phone rings (+TIERS.ring)
+  },
+
+  // --- Upgrade level tiers (array index = owned level) ---
+  TIERS: {
+    pages: [5, 7, 10, 14],          // TROLLEY: page carry capacity
+    print: [1.0, 0.5, 0.33, 0.25],  // LASER: print time per invoice [s] (2X / 3X / 4X)
+    typeMul: [1, 0.5],              // MACRO LV1+: typing time multiplier
+    zoe:   [10, 7, 5, 3],           // LAPTOP: floppy conversion time [s]
+    ring:  [0, 4, 8],               // HEADSET: +s to phoneWindow
+    // espresso: LV1 = full cup (ENERGY.coffeeFull), LV2 = TIMES.brewFast/drinkFast
+  },
+
+  // --- Energy (coffee) ---
+  ENERGY: { max:100, drain:0.6, coffee:60, coffeeFull:100, lowAt:30,
+            heartAt:4 },  // which coffee IN A ROW (no other action in between) = heart attack
+
+  // --- Stress ---
+  STRESS: {
+    max:100, overCapPerSec:2.0, agedPerSec:0.15, agedAfter:60, agedMaxCount:10,
+    missedPhone:15, decay:1.5,  // faster relief after digging out = stronger swing
+    nightRelief:45,  // stress shed overnight (key to surviving several days)
+    wellbeingCut:0.5, // WELLBEING TRAINING cuts this fraction of CURRENT stress
+  },
+
+  // --- Client respect ---
+  RESPECT: { start:50, max:100, lowAt:25, lowStressPerSec:0.6,
+             callGapMulAtZero:0.55, callGapMulAtMax:1.25,
+             perBooked:0.4 }, // each stamped e-report rebuilds respect
+
+  // --- Workday (9:00–17:00) ---
+  DAY: {
+    length: 180,        // REAL seconds per in-game day (8 h in game)
+    morningBurstBase: 3, morningBurstPerDay: 2, // morning flood from day 2 on
+    endPause: 6,        // seconds until the day-end screen auto-advances
+  },
+
+  // --- Invoice spawner ---
+  // interval = max(floor, start × factor^(dayTime/every) × dayMul^(day-1))
+  // Loss sanity check: handling 1 invoice even with upgrades ≈ 2 s
+  // (print 0.4 + type ~0.5 + stamp 0.5 + floppy + walk) >> floor 0.8 s.
+  SPAWN: { start:6.5, factor:0.93, every:30, floor:0.8, dayMul:0.85 },
+
+  CAPS: { inbox:12, efakt:12, zoe:3, reports:12 },
+  FLOPPY_EVERY: 8, REPORTS_PER_FLOPPY: 8,
+
+  // --- Phone ---
+  PHONE: { min:25, max:45, firstMul:0.7, decideWindow:8, resultDur:1.3 },
+
+  // --- Upgrade shop (currency: respect) ---
+  SHOP: { minRespectLeft: 10 }, // Greta won't drop below this value by buying
+
+  // --- Events {at: run second} ---
+  EVENTS: [
+    { at: 100, burst: 6,  key:"ev1" },
+    { at: 200, burst: 10, key:"ev2" },
+    { at: 300, burst: 14, key:"ev3", chaos:true },
+  ],
+  CHAD_AFTER: 300,
+
+  TUTORIAL: { zoe:3, floppyEvery:2 },
+  MUSIC: { bpm:108, tierMult:0.10 },
+  UI: { introCps:42, daycardDur:1.7, dyingDelay:2.4, vignetteFrom:25 },
+};
+
+/* ================= STRINGS — ALL PLAYER-FACING TEXT ================= */
+const STRINGS = {
+  title    : "HUMAN MIDDLEWARE",
+  tagline  : "A COZY GAME ABOUT BECOMING THE API",
+  office   : "BALANCE & BALANCE ACCOUNTING · EST. 1994",
+  country  : "SOMEWHERE IN EUROPE",
+  start    : "START SHIFT",
+  controls : "ARROWS/WASD MOVE · SHIFT RUN · SPACE DOES EVERYTHING",
+  controls2: "1-7 BUY UPGRADES · M MUTE · P PAUSE",
+  clickToStart: "CLICK OR PRESS ENTER",
+  skip     : "SKIP >>",
+  paused   : "PAUSED",
+  pausedSub: "P TO RESUME · M MUTE",
+  dayCard  : "DAY {n} — 9:00",
+  advance  : "SPACE >",
+  hud      : { day:"DAY ", mute:"[M]", muteOff:"[M]OFF",
+               stress:"STRESS", energy:"COFFEE", respect:"RESPECT" },
+  plusOne  : "+1",
+  plusBooked: "+1 BOOKED",
+
+  intro: [
+    { who:"chad",  text:"HEY GRETA! BIG NEWS - I LAUNCHED MY AI SAAS TODAY." },
+    { who:"chad",  text:"INVOICES MIGHT START COMING IN. SMALL ONES. €8, €9 EACH." },
+    { who:"chad",  text:"IF THERE ARE... MORE OF THEM AT SOME POINT - YOU CAN HANDLE IT, RIGHT?" },
+    { who:"greta", text:"OF COURSE, DEAR. HOW MANY INVOICES CAN ONE LITTLE STARTUP MAKE?" },
+  ],
+  names: { chad:"CHAD · VIBESTACK AI", greta:"GRETA · CHIEF ACCOUNTANT", zoe:"ZOE · INTERN" },
+
+  // Fixed station labels (counters above each station)
+  stations: { s1:"EMAIL", s2:"E-INVOFAK 2.0", s3:"TURBOKONTO V.2004", s4:"ZOE",
+              desk:"STAMP DESK", phone:"PHONE", coffee:"COFFEE" },
+
+  hints: {
+    print     : "SPACE - PRINT INVOICE",
+    printFull : "HANDS FULL - GO TYPE THEM IN",
+    printEmpty: "INBOX EMPTY... FOR NOW",
+    type      : "HOLD SPACE - TYPE INTO TURBOKONTO V.2004",
+    typeAll   : "HOLD SPACE - MACRO-TYPE THE WHOLE STACK",
+    typeEmpty : "NO PAGES - GO PRINT SOME",
+    floppy    : "SPACE - TAKE FLOPPY (1.44 MB)",
+    floppyBusy: "ONE FLOPPY AT A TIME, GRETA",
+    zoe       : "SPACE - HAND FLOPPY TO ZOE",
+    zoeIdle   : "ZOE NEEDS A FLOPPY",
+    stamp     : "SPACE - STAMP E-REPORT",
+    phone     : "SPACE - ANSWER PHONE",
+    coffee    : "SPACE - BREW COFFEE",
+    coffeeWired: "SPACE - ANOTHER? YOU'RE ALREADY WIRED...",
+    brewing   : "BREWING...",
+    drinking  : "SLURP...",
+  },
+
+  keys: { yes:"[Y] ", no:"[N] " },
+  fx: { stress:"{n} STRESS", respect:"{n} RESPECT", energy:"{n} ENERGY", invoices:"+{n} INVOICES" },
+
+  events: {
+    ev1: "VIBESTACK IS #1 ON PRODUCT PILE!",
+    ev2: "CHAD LAUNCHED ANNUAL PLANS (€99!)",
+    ev3: "VIBESTACK RAISED A SERIES A!",
+  },
+  missedCall: "MISSED CALL! +{n} STRESS",
+  zoeThanks : "ON IT!",
+  morningToast: "OVERNIGHT BACKLOG DELIVERED. GOOD MORNING.",
+  heartWarning: "YOUR HEART POUNDS LIKE A DOT-MATRIX PRINTER. MAYBE DO SOME WORK FIRST.",
+
+  dayEnd: {
+    title : "END OF DAY {n}",
+    booked: "BOOKED TODAY: {n}",
+    left  : "STILL WAITING IN THE INBOXES: {n}",
+    flavor: "THE PILE WILL WAIT FOR TOMORROW. IT ALWAYS DOES.",
+    next  : "SPACE - NEXT MORNING",
+  },
+
+  shop: {
+    title: "UPGRADES",
+    poor : "NOT ENOUGH RESPECT",
+    max  : "MAX",
+  },
+
+  tutorial: {
+    move  : "USE ARROWS OR WASD TO MOVE",
+    moveSub: "HOLD SHIFT TO RUN - RUNNING BURNS COFFEE",
+    print : "2 INVOICES ARRIVED! GO TO THE EMAIL LAPTOP AND PRINT THEM [SPACE]",
+    type  : "NOW TYPE THEM INTO TURBOKONTO V.2004 [HOLD SPACE]",
+    typeSub: '"IF THIS PC DIES, THE OFFICE DIES."',
+    floppy: "TURBOKONTO MADE A FLOPPY! TAKE IT [SPACE]",
+    zoe   : "BRING THE FLOPPY TO ZOE, THE INTERN",
+    stamp : "E-REPORTS ARE ON YOUR DESK. STAMP THEM [SPACE]",
+    phone : "THE PHONE! ANSWER IT [SPACE], THEN PICK [Y] OR [N]",
+    coffee: "YOU LOOK TIRED. GRAB A COFFEE [SPACE]",
+    done  : "YOUR SHIFT STARTS NOW",
+    doneSub: "TIP: PRESS 1-7 TO BUY UPGRADE LEVELS - PANEL ON THE RIGHT",
+  },
+
+  causes: {
+    stress: "GRETA FLIPPED THE DESK.",
+    energy: "GRETA RAN OUT OF COFFEE. AND CONSCIOUSNESS.",
+    heart : "FOUR COFFEES BACK TO BACK. CARDIAC OVERFLOW.",
+    lines: [
+      "CAUSE OF DEATH: MANUAL DATA ENTRY.",
+      "GRETA HAS BECOME ONE WITH THE PAPER.",
+      "THE FLOPPY WAS FULL. SO WAS GRETA'S PATIENCE.",
+    ],
+  },
+  gameOverTitle: "GAME OVER",
+
+  // Game-over screen (rendered on the canvas). No data capture — that's the embedder's job.
+  conv: {
+    statDays  : "DAYS SURVIVED",
+    statTime  : "TIME ON SHIFT",
+    statBooked: "INVOICES BOOKED",
+    statCoffee: "COFFEES DRUNK",
+    statMeters: "METERS OF PAPER",
+    statRespect: "CLIENT RESPECT",
+    kicker    : "This is satire. In most accounting offices in Europe it's just Tuesday.",
+    again     : "[R] PLAY AGAIN",
+  },
+
+  // Touch-device notice (rendered on the canvas).
+  teaser: {
+    h1 : "THIS GAME NEEDS A KEYBOARD.",
+    sub: "COME BACK ON A DESKTOP.",
+  },
+};
+
+/* ============ UPGRADES — SIDE PANEL (currency: respect) ================= */
+/* Buy ONLY with keys 1-6 from the right panel — no menus. Each upgrade
+   has 2-3 levels: levels[{cost, tip}]. Effect values: CONFIG.TIERS
+   (index = owned level). G.upg[id] = number of levels bought. */
+const UPGRADES = [
+  { id:"trolley",  short:"TROLLEY",  levels:[ { cost:5,  tip:"CARRY 7" },
+                                              { cost:10, tip:"CARRY 10" },
+                                              { cost:15, tip:"CARRY 14" } ] },
+  { id:"macro",    short:"MACRO",    levels:[ { cost:10, tip:"TYPE 2X" },
+                                              { cost:25, tip:"TYPE STACK" } ] },
+  { id:"laser",    short:"LASER",    levels:[ { cost:5,  tip:"PRINT 2X" },
+                                              { cost:10, tip:"PRINT 3X" },
+                                              { cost:15, tip:"PRINT 4X" } ] },
+  { id:"espresso", short:"ESPRESSO", levels:[ { cost:5,  tip:"FULL CUP" },
+                                              { cost:15, tip:"BREW 2X" } ] },
+  { id:"laptop",   short:"LAPTOP",   levels:[ { cost:5,  tip:"ZOE 7S" },
+                                              { cost:10, tip:"ZOE 5S" },
+                                              { cost:15, tip:"ZOE 3S" } ] },
+  { id:"headset",  short:"HEADSET",  levels:[ { cost:5,  tip:"RING +4S" },
+                                              { cost:10, tip:"RING +8S" } ] },
+  // consumable: no levels, buy as often as you like — effect: STRESS.wellbeingCut.
+  // costStep: each subsequent use costs more (peace of mind keeps getting pricier)
+  { id:"wellbeing", short:"JUST BREATH", consumable:{ cost:10, costStep:5, tip:"STRESS-50%" } },
+];
+
+/* ============ PHONE_QA — CLIENT QUESTIONS AND CONSEQUENCES ================ */
+/* q — question; yes/no — { t: label, r: reaction, fx: consequences }.
+   fx: stress / respect / energy / invoices (new invoices in ~2 s).
+   World rule: agreeing to absurdity pleases the client but creates work;
+   refusing keeps order but costs respect. */
+const PHONE_QA = {
+  client: [
+    { q: "IS A SCREENSHOT OF A BANK TRANSFER AN INVOICE?",
+      yes: { t: "SURE, SEND IT",      r: "GREAT! SENDING 30 MORE.",       fx: { invoices: 3, respect: 5 } },
+      no:  { t: "NO. IT IS NOT.",     r: "UGH. SO OLD SCHOOL.",           fx: { respect: -6 } } },
+    { q: "CAN I DEDUCT MY DOG? HE'S IN THE LOGO.",
+      yes: { t: "OF COURSE",          r: "HE SAYS WOOF. THANKS!",         fx: { respect: 10 } },
+      no:  { t: "ABSOLUTELY NOT",     r: "BUT... HE'S A GOOD BOY.",       fx: { stress: 10 } } },
+    { q: "I PAID IN CRYPTO. IS THAT A PROBLEM?",
+      yes: { t: "YES, BIG PROBLEM",   r: "WOW. OK. BOOMER.",              fx: { respect: -5 } },
+      no:  { t: "NO PROBLEM AT ALL",  r: "COOL! IT'S 0.0004 OF SOMETHING.", fx: { stress: 12, respect: 5 } } },
+    { q: "THE INVOICE IS IN A VOICE MEMO. IS THAT OK?",
+      yes: { t: "...FINE",            r: "I'LL SING THE NEXT ONE.",       fx: { invoices: 3, respect: 4 } },
+      no:  { t: "PLEASE. A PDF.",     r: "A PDF? IN THIS ECONOMY?",       fx: { respect: -6 } } },
+    { q: "WHAT'S MY VAT NUMBER? YOU HAVE IT, RIGHT?",
+      yes: { t: "I'LL DIG IT UP",     r: "YOU'RE THE BEST, GRETA.",       fx: { energy: -12, respect: 5 } },
+      no:  { t: "CHECK YOUR FILES",   r: "MY FILES? WHERE?",              fx: { respect: -8 } } },
+    { q: "CAN YOU CLOSE Q1 TODAY? THE BANK IS ASKING.",
+      yes: { t: "I'LL DO IT TODAY",   r: "AMAZING! ALSO Q2 MAYBE?",       fx: { stress: 15 } },
+      no:  { t: "IMPOSSIBLE",         r: "THE BANK WON'T LIKE THIS.",     fx: { respect: -10 } } },
+    { q: "MY PRINTER ONLY PRINTS WACKY CLOWN LETTERS NOW. IS THAT LEGAL?",
+      yes: { t: "IT'S LEGAL",         r: "THE TAXMAN LOVES CLOWNS!",      fx: { invoices: 2, respect: 4 } },
+      no:  { t: "FIX YOUR PRINTER",   r: "YOU FIX YOUR FAX FIRST.",       fx: { respect: -5 } } },
+    { q: "CAN I SEND ALL 2025 INVOICES AS ONE PHOTO OF MY DESK?",
+      yes: { t: "SEND THE PHOTO",     r: "IT'S A BIT BLURRY. LIKE, A LOT.", fx: { invoices: 4, respect: 5 } },
+      no:  { t: "ONE BY ONE, PLEASE", r: "THAT SOUNDS LIKE WORK.",        fx: { respect: -7 } } },
+    { q: "MY COUSIN DOES INVOICES IN EXCEL 97. CAN HE HELP YOU?",
+      yes: { t: "SURE, WHY NOT",      r: "HE'LL EMAIL YOU 40 TABS.",      fx: { invoices: 3, respect: 4 } },
+      no:  { t: "PLEASE, NO",         r: "HE'S SAD NOW. VERY SAD.",       fx: { respect: -5 } } },
+    { q: "IS VAT OPTIONAL IF I REALLY DON'T LIKE IT?",
+      yes: { t: "TOTALLY OPTIONAL",   r: "KNEW IT! TAXES ARE A VIBE.",    fx: { stress: 14, respect: 6 } },
+      no:  { t: "IT IS NOT",          r: "WORTH A SHOT.",                 fx: { respect: -4 } } },
+    { q: "I INVOICED MYSELF FOR MOTIVATION. DO I OWE ME MONEY?",
+      yes: { t: "YES, PAY YOURSELF",  r: "I'M SO PROFITABLE!",            fx: { respect: 7 } },
+      no:  { t: "THAT'S NOT A THING", r: "CAPITALISM IS BROKEN.",         fx: { stress: 6 } } },
+    { q: "CAN THE DEADLINE BE MORE OF A... SUGGESTION?",
+      yes: { t: "FINE, WHENEVER",     r: "BEST ACCOUNTANT EVER!",         fx: { stress: 10, respect: 6 } },
+      no:  { t: "DEADLINES ARE LAW",  r: "YOU SOUND LIKE MY EX.",         fx: { respect: -6 } } },
+    { q: "I LOST ALL RECEIPTS. CAN WE JUST... VIBE THE NUMBERS?",
+      yes: { t: "WE'LL ESTIMATE",     r: "VIBES-BASED ACCOUNTING!",       fx: { stress: 12, respect: 6 } },
+      no:  { t: "FIND THE RECEIPTS",  r: "THEY'RE IN A LAKE NOW.",        fx: { respect: -7 } } },
+    { q: "MY INVOICE IS IN A PIZZA BOX I MAILED YOU. OK?",
+      yes: { t: "I'LL WATCH FOR IT",  r: "THERE'S A SLICE LEFT FOR YOU.", fx: { invoices: 2, respect: 5 } },
+      no:  { t: "RETURN TO SENDER",   r: "THE PIZZA TRIED ITS BEST.",     fx: { respect: -5 } } },
+    { q: "CAN YOU BACKDATE THIS TO LAST TUESDAY? PRETTY PLEASE?",
+      yes: { t: "JUST THIS ONCE",     r: "YOU'RE AN ANGEL, GRETA.",       fx: { stress: 16, respect: 7 } },
+      no:  { t: "THAT'S ILLEGAL",     r: "LEGALITY IS A SPECTRUM.",       fx: { respect: -8 } } },
+    { q: "DO YOU ACCEPT INVOICES VIA CARRIER PIGEON? ASKING SERIOUSLY.",
+      yes: { t: "WE HAVE A WINDOW",   r: "HIS NAME IS INVOICE-3000.",     fx: { invoices: 2, respect: 6 } },
+      no:  { t: "WE REALLY DON'T",    r: "HE ALREADY LEFT. SORRY.",       fx: { respect: -4 } } },
+    { q: "I RENAMED MY COMPANY MID-QUARTER. THIRD TIME. PROBLEM?",
+      yes: { t: "BIG PROBLEM",        r: "NEW NAME, NEW ME, NEW MESS.",   fx: { respect: -5 } },
+      no:  { t: "WE'LL MANAGE",       r: "GREAT! CHANGING IT AGAIN FRIDAY.", fx: { stress: 10, respect: 5 } } },
+    { q: "CAN I PAY YOUR FEE IN EXPOSURE? WE HAVE 40K FOLLOWERS.",
+      yes: { t: "EXPOSURE IT IS",     r: "TAGGING YOU RIGHT NOW!",        fx: { respect: 8, energy: -8 } },
+      no:  { t: "MONEY, PLEASE",      r: "SO TRANSACTIONAL.",             fx: { respect: -6 } } },
+    { q: "THE COFFEE MACHINE COUNTS AS OFFICE EQUIPMENT, RIGHT?",
+      yes: { t: "OBVIOUSLY",          r: "DEDUCTING 12 OF THEM.",         fx: { respect: 6, invoices: 1 } },
+      no:  { t: "IT DEPENDS",         r: "ACCOUNTANTS AND THEIR RIDDLES.", fx: { respect: -3 } } },
+    { q: "MY AI WROTE 200 INVOICES BY ITSELF LAST NIGHT. IMPRESSIVE?",
+      yes: { t: "VERY IMPRESSIVE",    r: "IT'S DOING 400 TONIGHT!",       fx: { invoices: 5, respect: 6 } },
+      no:  { t: "TURN IT OFF",        r: "IT SAYS NO.",                   fx: { stress: 8, respect: -4 } } },
+    { q: "CAN WE CALL MY YACHT A MOBILE OFFICE?",
+      yes: { t: "A BOLD OFFICE",      r: "WELCOME ABOARD, PARTNER!",      fx: { stress: 12, respect: 7 } },
+      no:  { t: "IT'S A YACHT",       r: "IT HAS A DESK THOUGH.",         fx: { respect: -6 } } },
+    { q: "IF I DELETE AN INVOICE, DOES IT STOP EXISTING? LEGALLY?",
+      yes: { t: "SURE. POOF.",        r: "DELETING EVERYTHING NOW.",      fx: { stress: 14, respect: 5 } },
+      no:  { t: "IT EXISTS FOREVER",  r: "LIKE MY REGRETS.",              fx: { respect: -4 } } },
+  ],
+  chad: [
+    { q: "CHAD: EVERYTHING FINE OVER THERE? IT'S FINE, RIGHT?",
+      yes: { t: "ALL UNDER CONTROL",  r: "KNEW IT! SCALING HARDER.",      fx: { respect: 6, stress: 4 } },
+      no:  { t: "IT'S CHAOS, CHAD",   r: "HAHA. CLASSIC GRETA.",          fx: { stress: -8, respect: -5 } } },
+    { q: "CHAD: CAN YOU HANDLE 10X MORE? ASKING FOR A DECK.",
+      yes: { t: "BRING IT ON",        r: "PUTTING THAT IN THE DECK!",     fx: { invoices: 5, respect: 8 } },
+      no:  { t: "PLEASE DON'T",       r: "TOO LATE. SLIDE 12.",           fx: { respect: -10 } } },
+    { q: "CHAD: WE WENT VIRAL IN 3 MORE COUNTRIES! AWESOME, RIGHT?",
+      yes: { t: "...AWESOME",         r: "EU EXPANSION, BABY!",           fx: { invoices: 3, respect: 5 } },
+      no:  { t: "I NEED BACKUP",      r: "BACKUP? WE HAVE VIBES.",        fx: { respect: -6 } } },
+    { q: "CHAD: INVESTORS CALL YOU OUR LEAN BACK OFFICE. PROUD?",
+      yes: { t: "SO PROUD",           r: "YOU'RE BASICALLY AN API!",      fx: { stress: 6, respect: 6 } },
+      no:  { t: "I'M A HUMAN, CHAD",  r: "A HUMAN... MIDDLEWARE!",        fx: { stress: -6, respect: -5 } } },
+    { q: "CHAD: WE PIVOTED TO B2B2C2AI. INVOICES LOOK WEIRD NOW. COOL?",
+      yes: { t: "SUPER COOL",         r: "YOU GET IT, GRETA!",            fx: { invoices: 4, respect: 6 } },
+      no:  { t: "PIVOT BACK",         r: "CAN'T. THE DECK IS PRINTED.",   fx: { respect: -7 } } },
+    { q: "CHAD: I ADDED EMOJIS TO ALL INVOICES. MORE FUN, RIGHT?",
+      yes: { t: "SO FUN",             r: "THE ROCKET ONE MEANS NET 30!",  fx: { invoices: 3, respect: 5 } },
+      no:  { t: "PLEASE, NUMBERS",    r: "NUMBERS ARE EMOJIS TOO.",       fx: { respect: -6 } } },
+    { q: "CHAD: INVOICING AS A SUBSCRIPTION? INVOICE-AS-A-SERVICE?",
+      yes: { t: "VISIONARY",          r: "IAAS! TRADEMARK PENDING!",      fx: { stress: 10, respect: 8 } },
+      no:  { t: "THAT'S JUST INVOICING", r: "WITH EXTRA STEPS, YES.",     fx: { respect: -5 } } },
+    { q: "CHAD: I TOLD INVESTORS YOU SCALE INFINITELY. YOU DO, RIGHT?",
+      yes: { t: "INFINITELY",         r: "SERIES B, HERE WE COME!",       fx: { invoices: 6, respect: 8 } },
+      no:  { t: "I AM ONE PERSON",    r: "ONE VERY SCALABLE PERSON!",     fx: { stress: 6, respect: -6 } } },
+  ],
+  timeout: { r: "GRETA MUMBLED SOMETHING NONCOMMITTAL.", fx: { stress: 5, respect: -3 } },
+};
+</script><script>
+"use strict";
+/* ============================= UTILITIES ================================ */
+/* Logical resolution 560×336 at 2× scale: map 480 px (MW) + 80 px upgrade panel. */
+const VW = 560, VH = 336, MW = 480, TILE = 24, HUDH = 24, MAPW = 20, MAPH = 13;
+
+/* Embed mode (?embed=1): the parent page ("player") shows its own UI after death,
+   so the game suppresses its DOM modals and listens for restart via postMessage. */
+let EMBED = typeof location !== "undefined" && /[?&]embed=1/.test(location.search);
+
+const clamp = (v, a, b) => v < a ? a : (v > b ? b : v);
+const lerp  = (a, b, t) => a + (b - a) * t;
+const rand  = (a, b) => a + Math.random() * (b - a);
+const randI = (a, b) => Math.floor(rand(a, b + 1));
+const pick  = arr => arr[Math.floor(Math.random() * arr.length)];
+const dist2 = (x1, y1, x2, y2) => { const dx = x1 - x2, dy = y1 - y2; return dx * dx + dy * dy; };
+const fmtTime = s => { s = Math.max(0, Math.floor(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const tpl = (s, n) => s.replace("{n}", n);
+
+/* ========================= PIXEL FONT 5×7 =============================== */
+/* Readable font: glyphs 5 px wide × 7 px tall (narrower punctuation). */
+const FONT_RAW = {
+  "A":["01110","10001","10001","11111","10001","10001","10001"],
+  "B":["11110","10001","10001","11110","10001","10001","11110"],
+  "C":["01110","10001","10000","10000","10000","10001","01110"],
+  "D":["11110","10001","10001","10001","10001","10001","11110"],
+  "E":["11111","10000","10000","11110","10000","10000","11111"],
+  "F":["11111","10000","10000","11110","10000","10000","10000"],
+  "G":["01110","10001","10000","10111","10001","10001","01110"],
+  "H":["10001","10001","10001","11111","10001","10001","10001"],
+  "I":["111","010","010","010","010","010","111"],
+  "J":["00001","00001","00001","00001","00001","10001","01110"],
+  "K":["10001","10010","10100","11000","10100","10010","10001"],
+  "L":["10000","10000","10000","10000","10000","10000","11111"],
+  "M":["10001","11011","10101","10101","10001","10001","10001"],
+  "N":["10001","11001","10101","10011","10001","10001","10001"],
+  "O":["01110","10001","10001","10001","10001","10001","01110"],
+  "P":["11110","10001","10001","11110","10000","10000","10000"],
+  "Q":["01110","10001","10001","10001","10101","10010","01101"],
+  "R":["11110","10001","10001","11110","10100","10010","10001"],
+  "S":["01111","10000","10000","01110","00001","00001","11110"],
+  "T":["11111","00100","00100","00100","00100","00100","00100"],
+  "U":["10001","10001","10001","10001","10001","10001","01110"],
+  "V":["10001","10001","10001","10001","01010","01010","00100"],
+  "W":["10001","10001","10001","10101","10101","10101","01010"],
+  "X":["10001","10001","01010","00100","01010","10001","10001"],
+  "Y":["10001","10001","01010","00100","00100","00100","00100"],
+  "Z":["11111","00001","00010","00100","01000","10000","11111"],
+  "0":["01110","10001","10011","10101","11001","10001","01110"],
+  "1":["00100","01100","00100","00100","00100","00100","01110"],
+  "2":["01110","10001","00001","00110","01000","10000","11111"],
+  "3":["11110","00001","00001","01110","00001","00001","11110"],
+  "4":["00010","00110","01010","10010","11111","00010","00010"],
+  "5":["11111","10000","11110","00001","00001","10001","01110"],
+  "6":["00110","01000","10000","11110","10001","10001","01110"],
+  "7":["11111","00001","00010","00100","01000","01000","01000"],
+  "8":["01110","10001","10001","01110","10001","10001","01110"],
+  "9":["01110","10001","10001","01111","00001","00010","01100"],
+  " ":["000","000","000","000","000","000","000"],
+  ".":["00","00","00","00","00","11","11"],
+  ",":["00","00","00","00","00","01","10"],
+  ":":["00","11","11","00","11","11","00"],
+  ";":["00","11","11","00","01","01","10"],
+  "!":["1","1","1","1","1","0","1"],
+  "?":["01110","10001","00001","00110","00100","00000","00100"],
+  "'":["1","1","0","0","0","0","0"],
+  '"':["101","101","000","000","000","000","000"],
+  "-":["0000","0000","0000","1111","0000","0000","0000"],
+  "—":["0000","0000","0000","1111","0000","0000","0000"],
+  "+":["00000","00100","00100","11111","00100","00100","00000"],
+  "/":["00001","00010","00010","00100","01000","01000","10000"],
+  "·":["0","0","0","1","0","0","0"],
+  "(":["01","10","10","10","10","10","01"],
+  ")":["10","01","01","01","01","01","10"],
+  "[":["11","10","10","10","10","10","11"],
+  "]":["11","01","01","01","01","01","11"],
+  "%":["11001","11010","00010","00100","01000","01011","10011"],
+  "&":["01100","10010","10100","01000","10101","10010","01101"],
+  "€":["00111","01000","11110","01000","11110","01000","00111"],
+  "→":["00000","00100","00010","11111","00010","00100","00000"],
+  "#":["01010","01010","11111","01010","11111","01010","01010"],
+  "<":["001","010","100","010","001","000","000"],
+  ">":["100","010","001","010","100","000","000"],
+  "=":["00000","00000","11111","00000","11111","00000","00000"],
+  "×":["00000","10001","01010","00100","01010","10001","00000"],
+};
+const FONT = {};
+for (const ch in FONT_RAW) {
+  const rows = FONT_RAW[ch];
+  FONT[ch] = { w: rows[0].length, rows: rows.map(r => parseInt(r, 2) || 0) };
+}
+function glyph(ch) { return FONT[ch.toUpperCase()] || FONT["?"]; }
+function textW(str, sc = 1) {
+  let w = 0;
+  for (const ch of str) w += (glyph(ch).w + 1) * sc;
+  return w ? w - sc : 0;
+}
+function drawText(c, str, x, y, sc = 1, col = "#f2ede4") {
+  c.fillStyle = col;
+  let cx = Math.round(x);
+  for (const ch of str) {
+    const g = glyph(ch);
+    for (let r = 0; r < 7; r++) {
+      const bits = g.rows[r];
+      if (!bits) continue;
+      for (let b = 0; b < g.w; b++)
+        if (bits & (1 << (g.w - 1 - b))) c.fillRect(cx + b * sc, y + r * sc, sc, sc);
+    }
+    cx += (g.w + 1) * sc;
+  }
+}
+function drawTextC(c, str, cx, y, sc = 1, col = "#f2ede4") {
+  drawText(c, str, cx - textW(str, sc) / 2, y, sc, col);
+}
+const LINE_H = 9; // 7 px glyph + 2 px spacing
+function wrapText(str, maxW, sc = 1) {
+  const words = str.split(" "), lines = [];
+  let line = "";
+  for (const w of words) {
+    const t = line ? line + " " + w : w;
+    if (textW(t, sc) > maxW && line) { lines.push(line); line = w; }
+    else line = t;
+  }
+  if (line) lines.push(line);
+  return lines;
+}
+
+/* ============================ ANALYTICS ================================= */
+function track(event, data) {
+  try {
+    if (Array.isArray(window.dataLayer)) window.dataLayer.push(Object.assign({ event }, data || {}));
+  } catch (e) { /* intentionally silent */ }
+  try {
+    if (window.parent && window.parent !== window)
+      window.parent.postMessage({ source: "human-middleware", event, data: data || {} }, "*");
+  } catch (e) { /* intentionally silent */ }
+}
+
+/* ============================== INPUT ================================= */
+const input = {
+  keys: Object.create(null),
+  just: new Set(),
+  capture: false, // preventDefault only after START (iframe!)
+};
+const USED_KEYS = new Set(["arrowup","arrowdown","arrowleft","arrowright"," ","w","a","s","d","p","m","r","x","y","n","shift","enter","escape",
+  "1","2","3","4","5","6","7"]);
+window.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return; // browser shortcuts (Cmd/Ctrl/Alt+key) stay with the browser
+  const k = (e.key || "").toLowerCase();
+  const t = e.target, tag = t && t.tagName ? String(t.tagName).toUpperCase() : "";
+  // typing in form fields is never captured
+  if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || (t && t.isContentEditable === true)) return;
+  // button/link focused: keep native activation, letter keys still work
+  if ((tag === "BUTTON" || tag === "A") && (k === " " || k === "enter" || k === "tab")) return;
+  if (input.capture && USED_KEYS.has(k)) e.preventDefault();
+  if (USED_KEYS.has(k)) { A.init(); A.resume(); } // unlock audio within a keyboard gesture
+  if (!e.repeat) input.just.add(k);
+  input.keys[k] = true;
+});
+window.addEventListener("keyup", e => {
+  input.keys[(e.key || "").toLowerCase()] = false;
+});
+function clearKeys() { input.keys = Object.create(null); input.just.clear(); }
+
+/* =============================== AUDIO ================================== */
+const A = {
+  ctx: null, master: null, noiseBuf: null, muted: false,
+  mNext: 0, mStep: 0,
+
+  init() {
+    if (this.ctx) return;
+    try {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (!AC) return;
+      this.ctx = new AC();
+      this.master = this.ctx.createGain();
+      this.master.gain.value = this.muted ? 0 : 0.5;
+      this.master.connect(this.ctx.destination);
+      const n = this.ctx.sampleRate | 0;
+      this.noiseBuf = this.ctx.createBuffer(1, n, this.ctx.sampleRate);
+      const d = this.noiseBuf.getChannelData(0);
+      for (let i = 0; i < n; i++) d[i] = Math.random() * 2 - 1;
+      this.mNext = this.ctx.currentTime + 0.1;
+    } catch (e) { this.ctx = null; }
+  },
+  resume() { if (this.ctx && this.ctx.state === "suspended") this.ctx.resume(); },
+  setMuted(m) { this.muted = m; if (this.master) this.master.gain.value = m ? 0 : 0.5; },
+
+  tone(o) {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime + (o.at || 0);
+    const osc = this.ctx.createOscillator();
+    osc.type = o.type || "square";
+    osc.frequency.setValueAtTime(Math.max(1, o.f), t);
+    if (o.f2) osc.frequency.exponentialRampToValueAtTime(Math.max(1, o.f2), t + o.dur);
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(o.vol || 0.08, t + (o.a || 0.006));
+    g.gain.exponentialRampToValueAtTime(0.0001, t + o.dur);
+    osc.connect(g); g.connect(this.master);
+    osc.start(t); osc.stop(t + o.dur + 0.05);
+  },
+  noise(o) {
+    if (!this.ctx) return;
+    const t = this.ctx.currentTime + (o.at || 0);
+    const src = this.ctx.createBufferSource();
+    src.buffer = this.noiseBuf; src.loop = true;
+    const g = this.ctx.createGain();
+    g.gain.setValueAtTime(0.0001, t);
+    g.gain.linearRampToValueAtTime(o.vol || 0.08, t + 0.008);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + o.dur);
+    let node = src;
+    if (o.f) {
+      const bp = this.ctx.createBiquadFilter();
+      bp.type = "bandpass"; bp.frequency.setValueAtTime(o.f, t);
+      if (o.f2) bp.frequency.exponentialRampToValueAtTime(Math.max(10, o.f2), t + o.dur);
+      bp.Q.value = o.q || 1;
+      src.connect(bp); node = bp;
+    }
+    node.connect(g); g.connect(this.master);
+    src.start(t); src.stop(t + o.dur + 0.05);
+  },
+
+  sDing()   { this.tone({ f: 987, f2: 1318, dur: 0.14, vol: 0.06, type: "triangle" }); },
+  sChirp()  { for (let i = 0; i < 3; i++) this.tone({ f: i % 2 ? 2200 : 1200, dur: 0.06, vol: 0.045, at: i * 0.07 }); },
+  sPrinter(){
+    for (let i = 0; i < 6; i++) this.noise({ dur: 0.09, vol: 0.09, at: i * 0.16, f: 1400 + i * 120, q: 2 });
+    this.tone({ f: 2600, f2: 2100, dur: 0.5, vol: 0.028, type: "sawtooth" });
+  },
+  sType()   { this.noise({ dur: 0.03, vol: 0.09, f: 2600, q: 1.4 }); this.tone({ f: 210, dur: 0.03, vol: 0.04 }); },
+  sEject()  { this.tone({ f: 150, f2: 95, dur: 0.32, vol: 0.09 }); for (let i = 0; i < 4; i++) this.noise({ dur: 0.04, vol: 0.07, at: i * 0.08, f: 900, q: 3 }); },
+  sFloppy() { this.tone({ f: 95, f2: 140, dur: 0.3, vol: 0.09 }); for (let i = 0; i < 3; i++) this.noise({ dur: 0.05, vol: 0.06, at: i * 0.09, f: 700, q: 3 }); },
+  sRing()   {
+    for (let i = 0; i < 10; i++) {
+      this.tone({ f: 1130, dur: 0.035, vol: 0.075, at: i * 0.08 });
+      this.tone({ f: 1477, dur: 0.035, vol: 0.06, at: i * 0.08 + 0.04 });
+    }
+  },
+  sSlurp()  { this.noise({ dur: 0.4, vol: 0.07, f: 900, f2: 250, q: 1 }); this.tone({ f: 320, f2: 90, dur: 0.45, vol: 0.05, type: "sine" }); },
+  sBrew()   { this.noise({ dur: 1.6, vol: 0.05, f: 500, f2: 1500, q: 0.8 }); },
+  sStamp()  { this.tone({ f: 110, f2: 55, dur: 0.11, vol: 0.22, type: "sine" }); this.noise({ dur: 0.05, vol: 0.1, f: 2000, q: 1 }); },
+  sBuzz()   { this.tone({ f: 190, f2: 120, dur: 0.28, vol: 0.07, type: "sawtooth" }); },
+  sPop()    { this.tone({ f: 660, f2: 990, dur: 0.08, vol: 0.05, type: "triangle" }); },
+  sChime()  { this.tone({ f: 784, dur: 0.1, vol: 0.05, type: "triangle" }); this.tone({ f: 1175, dur: 0.14, vol: 0.05, type: "triangle", at: 0.09 }); },
+  sEvent()  { for (let i = 0; i < 4; i++) this.tone({ f: 620 + i * 140, dur: 0.09, vol: 0.07, at: i * 0.08, type: "square" }); },
+  sJingle() { const f = [523, 659, 784, 1047]; f.forEach((x, i) => this.tone({ f: x, dur: 0.16, vol: 0.06, at: i * 0.12, type: "triangle" })); },
+  sNight()  { const f = [784, 659, 523, 392]; f.forEach((x, i) => this.tone({ f: x, dur: 0.28, vol: 0.05, at: i * 0.2, type: "triangle" })); },
+  sBuy()    { const f = [659, 880, 1319]; f.forEach((x, i) => this.tone({ f: x, dur: 0.1, vol: 0.06, at: i * 0.07, type: "square" })); },
+  sSad()    { const f = [392, 311, 233, 155]; f.forEach((x, i) => this.tone({ f: x, dur: 0.3, vol: 0.09, at: i * 0.22, type: "triangle" })); },
+
+  bassRoots: ["A2","A2","F2","F2","C3","C3","G2","G2"],
+  melody: [
+    "E4",null,"C4",null,"A3",null,null,null,  "D4",null,"E4",null,"C4",null,null,null,
+    null,null,"A3",null,null,null,"C4",null,  "B3",null,null,null,null,null,null,null,
+    "E4",null,"G4",null,"A4",null,null,null,  "G4",null,"E4",null,"D4",null,"C4",null,
+    "D4",null,null,null,"B3",null,null,null,  "A3",null,null,null,null,null,null,null,
+  ],
+  noteF(n) {
+    const SEMI = { C:0, D:2, E:4, F:5, G:7, A:9, B:11 };
+    const oct = +n[n.length - 1];
+    const midi = SEMI[n[0]] + (n[1] === "#" ? 1 : 0) + (oct + 1) * 12;
+    return 440 * Math.pow(2, (midi - 69) / 12);
+  },
+  musicUpdate(tier) {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    if (this.mNext < now - 0.25) this.mNext = now + 0.05;
+    const spb = 60 / (CONFIG.MUSIC.bpm * (1 + tier * CONFIG.MUSIC.tierMult)) / 2;
+    while (this.mNext < now + 0.15) {
+      const t = this.mNext, s = this.mStep, bar = (s / 8) | 0, sub = s % 8;
+      if (sub % 2 === 0) this.tone({ f: this.noteF(this.bassRoots[bar]), dur: 0.2, vol: 0.05, type: "triangle", at: t - now });
+      else if (tier >= 2) this.tone({ f: this.noteF(this.bassRoots[bar]) * 2, dur: 0.09, vol: 0.03, type: "triangle", at: t - now });
+      const m = this.melody[s];
+      if (m) this.tone({ f: this.noteF(m), dur: 0.16, vol: 0.028, type: "square", at: t - now });
+      if (tier >= 1 && sub % 2 === 1) this.noise({ dur: 0.03, vol: 0.02, f: 6000, q: 1, at: t - now });
+      this.mNext += spb; this.mStep = (this.mStep + 1) % 64;
+    }
+  },
+};
+</script><script>
+"use strict";
+/* ============================ CANVAS SETUP ============================== */
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const view = document.createElement("canvas"); // logical buffer 560×336, blitted ×2
+view.width = VW; view.height = VH;
+const vctx = view.getContext("2d");
+vctx.imageSmoothingEnabled = false;
+ctx.imageSmoothingEnabled = false;
+
+function R(x, y, w, h, col) { vctx.fillStyle = col; vctx.fillRect(Math.round(x), Math.round(y), w, h); }
+
+/* ============================== PALETTE ================================== */
+const PAL = {
+  floorA:"#8a6a48", floorB:"#816344", floorC:"#94714e", floorLine:"#6e5238", knot:"#5f452e",
+  rug:"#9c4f43", rugB:"#7e3f36", rugEdge:"#b06a54",
+  wall:"#584a63", wallHi:"#6a5a76", wallLo:"#453a4e", base:"#362c40", wallDeco:"#4e4258",
+  desk:"#a67c52", deskHi:"#c1946a", deskLo:"#7c5a3a", deskEdge:"#5f4429",
+  paper:"#f2ede4", paperLo:"#d8d2c4", paperHi:"#fffdf6", ink:"#2a2135",
+  metal:"#b9b4ad", metalHi:"#d8d4cc", metalLo:"#8e8a84",
+  screenB:"#3a6ea5", screenBHi:"#6fa3d8", screenG:"#79c860", amber:"#ffb648", amberLo:"#c9861f",
+  skin:"#e8c095", skinLo:"#cfa377", skinHi:"#f6d7b3",
+  gretaHair:"#cfc4b6", gretaHairLo:"#a89c8c", cardigan:"#4e8f8b", cardiganLo:"#396f6c", cardiganHi:"#6aada8",
+  skirt:"#5a4a66", skirtLo:"#463a50",
+  zoeHair:"#e575a5", zoeHairLo:"#c05585", zoeTop:"#7f5af0", chadHood:"#6f8f6a",
+  red:"#e5484d", redLo:"#b23a3e", green:"#7ee787", yellow:"#ffd45e",
+  night:"#141018", shadow:"rgba(20,16,24,0.28)",
+  coffee:"#5a3a26", machine:"#8a2f2f", machineHi:"#a84040", machineLo:"#6e2424",
+  plant:"#4f8f4a", plantLo:"#3a6e38", plantHi:"#6cae62", pot:"#8a5a3a",
+  window:"#a8cfe0", windowLo:"#7fb2c9", windowHi:"#cfe8f2", sun:"rgba(255,236,180,0.10)",
+  phoneG:"#2f6b46", phoneGLo:"#255538", phoneGHi:"#3f8a5c",
+};
+
+/* ======================== MAP AND COLLISIONS ================================ */
+/* Rectangles [c0,r0,c1,r1] in 24 px tiles — impassable. */
+const SOLID_RECTS = [
+  [0,0,19,0],[0,12,19,12],[0,0,0,12],[19,0,19,12], // walls
+  [7,1,10,1],   // S2: e-Fakt terminal + printer
+  [16,1,17,1],  // shelf with the upgrade catalog
+  [1,3,1,6],    // S1: email laptop + printer
+  [13,5,14,5],  // S3: TurboKonto 2001
+  [17,5,18,7],  // S4: Zoe's desk
+  [8,9,11,9],   // Greta's desk (stamp)
+  [1,11,1,11],  // coffee machine (corner)
+  [14,10,14,10],// phone side table
+  [17,10,17,10],// fern
+];
+const solid = [];
+for (let r = 0; r < MAPH; r++) solid.push(new Array(MAPW).fill(false));
+for (const [c0, r0, c1, r1] of SOLID_RECTS)
+  for (let r = r0; r <= r1; r++) for (let c = c0; c <= c1; c++) solid[r][c] = true;
+function isSolid(px, py) {
+  const c = Math.floor(px / TILE), r = Math.floor((py - HUDH) / TILE);
+  if (c < 0 || c >= MAPW || r < 0 || r >= MAPH) return true;
+  return solid[r][c];
+}
+
+/* Stations: interaction point (hotspot) in screen px. */
+const ST = {
+  s1:     { hx: 68,  hy: 144, r: 38, cy: 104 },  // email + printer (cy: arrow BELOW the EMAIL badge)
+  s2:     { hx: 216, hy: 88,  r: 46, cy: 74 },  // e-Invofak (cy: arrow BELOW the desk — higher would cover the badge)
+  s3:     { hx: 336, hy: 186, r: 33 },  // TurboKonto
+  s4:     { hx: 392, hy: 180, r: 33 },  // Zoe
+  desk:   { hx: 240, hy: 224, r: 50 },  // Greta's desk (stamp)
+  phone:  { hx: 330, hy: 264, r: 32 },  // phone side table
+  coffee: { hx: 36,  hy: 294, r: 39 },  // coffee machine
+};
+const PHONE_POS = { x: 338, y: 258 };   // phone unit on the table (screen px)
+
+/* ====================== STATIC MAP PRERENDER ======================= */
+const mapCanvas = document.createElement("canvas");
+mapCanvas.width = MW; mapCanvas.height = MAPH * TILE;
+function prerenderMap() {
+  const c = mapCanvas.getContext("2d");
+  c.imageSmoothingEnabled = false;
+  const F = (x, y, w, h, col) => { c.fillStyle = col; c.fillRect(x, y, w, h); };
+  const T = 24;
+
+  /* — floor: planks with knots — */
+  for (let r = 0; r < MAPH; r++) for (let cc = 0; cc < MAPW; cc++) {
+    const x = cc * T, y = r * T;
+    F(x, y, T, T, (r + cc) % 2 ? PAL.floorA : PAL.floorB);
+    if ((r * 7 + cc * 3) % 5 === 0) F(x + 4, y + 4, T - 8, T - 8, PAL.floorC);
+    F(x, y + T - 1, T, 1, PAL.floorLine);
+    F(x + ((r % 2) ? 6 : 16), y + 4, 1, 16, PAL.floorLine);
+    if ((r * 13 + cc * 11) % 17 === 0) { F(x + 10, y + 12, 3, 2, PAL.knot); F(x + 11, y + 13, 1, 1, PAL.floorLine); }
+  }
+  /* — rug (r5-8, c5-11) with trim — */
+  F(5 * T - 4, 5 * T - 4, 7 * T + 8, 4 * T + 8, PAL.rugEdge);
+  for (let r = 5; r <= 8; r++) for (let cc = 5; cc <= 11; cc++)
+    F(cc * T, r * T, T, T, (r + cc) % 2 ? PAL.rug : PAL.rugB);
+  for (let i = 0; i < 14; i++) F(5 * T + 6 + i * 11, 5 * T + 2, 5, 2, PAL.rugEdge);
+  for (let i = 0; i < 14; i++) F(5 * T + 6 + i * 11, 9 * T - 4, 5, 2, PAL.rugEdge);
+
+  /* — 3-tone walls — */
+  const wallT = (x, y) => {
+    F(x, y, T, T, PAL.wall);
+    F(x, y, T, 4, PAL.wallHi); F(x, y + T - 5, T, 5, PAL.wallLo);
+    F(x, y + T - 2, T, 2, PAL.base);
+  };
+  for (let cc = 0; cc < MAPW; cc++) { wallT(cc * T, 0); wallT(cc * T, 12 * T); }
+  for (let r = 0; r < MAPH; r++) { wallT(0, r * T); wallT(19 * T, r * T); }
+
+  /* — windows + light streaks on the floor — */
+  for (const wc of [3, 4, 12, 15]) {
+    const x = wc * T;
+    F(x + 2, 3, T - 4, 16, PAL.deskLo);              // frame
+    F(x + 4, 5, T - 8, 12, PAL.windowLo);
+    F(x + 4, 5, T - 8, 5, PAL.windowHi);
+    F(x + 4, 10, T - 8, 2, PAL.window);
+    F(x + 11, 5, 2, 12, PAL.deskLo); F(x + 4, 10, T - 8, 1, PAL.deskLo);
+    c.fillStyle = PAL.sun; c.fillRect(x + 2, T, T - 4, 60); // sun streak
+  }
+  /* — wall decorations — */
+  F(6 * T + 4, 4, 40, 15, PAL.paperLo);              // "est. 1994" diploma
+  F(6 * T + 6, 8, 32, 2, PAL.ink); F(6 * T + 6, 12, 24, 2, PAL.ink);
+  F(2 * T - 8, 12 * T + 4, 40, 14, PAL.wallDeco);    // posters on the bottom wall
+  F(11 * T, 12 * T + 4, 34, 14, PAL.wallDeco);
+
+  /* — helper: desk with shadow and edge — */
+  const desk = (tc, tr, tw, th) => {
+    const x = tc * T, y = tr * T, w = tw * T, h = th * T;
+    F(x + 2, y + h - 2, w, 5, PAL.shadow);           // shadow
+    F(x, y, w, h, PAL.desk);
+    F(x, y, w, 3, PAL.deskHi);
+    F(x, y + h - 4, w, 4, PAL.deskLo);
+    F(x, y + h - 1, w, 1, PAL.deskEdge);
+  };
+  desk(7, 1, 4, 1);   // S2
+  desk(1, 3, 1, 4);   // S1
+  desk(13, 5, 2, 1);  // S3
+  desk(17, 5, 1, 3);  // S4
+  desk(8, 9, 4, 1);   // Greta
+
+  /* — S2: tray, e-Fakt CRT, keyboard, printer — */
+  F(7 * T + 4, 27, 20, 7, PAL.paperLo); F(7 * T + 4, 27, 20, 2, PAL.paperHi); // tray
+  F(196, 25, 22, 19, PAL.metalLo); F(198, 27, 18, 12, PAL.screenB);           // CRT
+  F(199, 28, 8, 3, PAL.screenBHi); F(199, 33, 14, 2, PAL.screenBHi);
+  F(202, 44, 10, 3, PAL.metal);
+  F(222, 32, 18, 9, PAL.metal); F(223, 33, 16, 3, PAL.metalHi);               // keyboard
+  F(244, 25, 19, 17, PAL.metal); F(245, 26, 17, 4, PAL.metalLo);              // printer
+  F(248, 39, 11, 3, PAL.paper); F(259, 27, 3, 3, PAL.green);                  // LED
+
+  /* — shelf with the upgrade catalog (c16-17 r1) — */
+  F(16 * T + 2, 26, 44, 5, PAL.deskLo);                                        // board
+  const spines = [PAL.red, PAL.screenB, PAL.yellow, PAL.plant, PAL.zoeTop];
+  for (let i = 0; i < 5; i++) { F(16 * T + 5 + i * 8, 12, 6, 14, spines[i]); F(16 * T + 5 + i * 8, 14, 6, 2, "rgba(0,0,0,0.25)"); }
+  F(16 * T + 2, 32, 20, 10, PAL.paper); F(16 * T + 4, 34, 16, 2, PAL.red);     // "SALE" catalog
+  F(16 * T + 4, 38, 12, 1, PAL.ink);
+
+  /* — S1: tray, laptop, printer, drawers — */
+  F(28, 76, 16, 12, PAL.paperLo); F(28, 76, 16, 3, PAL.paperHi);              // tray (r3)
+  F(27, 99, 18, 13, "#4a4552"); F(29, 101, 14, 9, PAL.screenB);               // laptop (r4)
+  F(30, 102, 10, 2, PAL.screenBHi); F(30, 106, 7, 2, PAL.screenBHi);
+  F(27, 112, 18, 3, "#3a3644");
+  F(27, 124, 18, 15, PAL.metal); F(28, 125, 16, 4, PAL.metalLo);              // printer (r5)
+  F(30, 135, 12, 3, PAL.paper); F(42, 126, 2, 2, PAL.green);
+  F(27, 148, 18, 14, PAL.deskLo); F(29, 151, 14, 2, PAL.deskEdge); F(29, 157, 14, 2, PAL.deskEdge); // drawers (r6)
+
+  /* — S3: TurboKonto 2001 (amber CRT + tower), doily, cactus — */
+  F(344, 122, 22, 10, PAL.paper);                                              // doily
+  F(346, 124, 3, 3, PAL.paperLo); F(356, 124, 3, 3, PAL.paperLo);
+  F(350, 108, 10, 13, PAL.plant); F(352, 104, 4, 6, PAL.plantHi);              // cactus
+  F(348, 106, 4, 4, PAL.plantLo); F(349, 121, 12, 5, PAL.pot);
+  F(313, 100, 26, 22, "#cfc6b0"); F(313, 100, 26, 3, "#e2dcc8");               // CRT
+  F(316, 104, 20, 14, "#1d1d10");
+  F(318, 106, 12, 2, PAL.amber); F(318, 110, 16, 2, PAL.amber); F(318, 114, 9, 2, PAL.amber);
+  F(320, 122, 12, 5, "#cfc6b0");                                               // stand
+  F(313, 128, 26, 6, "#bdb49e");                                               // tower/drive
+  F(316, 130, 8, 2, PAL.ink); F(330, 130, 6, 2, PAL.metalLo);                  // floppy slot
+
+  /* — S4: Zoe's laptop + stickers — */
+  F(412, 126, 16, 11, "#4a4552"); F(414, 128, 12, 7, PAL.screenG);
+  F(415, 129, 8, 2, "#a8e89a");
+  F(412, 150, 14, 8, PAL.paperLo); F(414, 152, 10, 1, PAL.ink); F(414, 155, 8, 1, PAL.ink); // notepad
+  F(413, 170, 10, 8, PAL.zoeTop); F(415, 172, 6, 4, PAL.zoeHair);              // sticker
+
+  /* — Greta's desk: ink pad, stamp, tray, photo — */
+  F(196, 222, 15, 8, PAL.red); F(197, 223, 13, 5, PAL.redLo);                  // ink pad
+  F(222, 220, 15, 11, "#3a3a44"); F(225, 217, 9, 6, "#55555f"); F(226, 215, 7, 3, "#6a6a76"); // stamp
+  F(258, 221, 18, 12, PAL.deskLo); F(260, 223, 14, 8, PAL.paperLo);            // report tray
+  F(280, 220, 8, 10, PAL.metalLo); F(281, 221, 6, 6, PAL.windowHi);            // family photo
+
+  /* — coffee machine (c1 r11) — sprite aligned with its collision tile — */
+  F(26, 12 * T - 2, 22, 5, PAL.shadow);
+  F(26, 254, 20, 34, PAL.machine); F(26, 254, 20, 4, PAL.machineHi);
+  F(26, 284, 20, 4, PAL.machineLo);
+  F(29, 260, 14, 6, "#3a2a20"); F(31, 262, 10, 2, PAL.amber);                  // panel
+  F(30, 270, 12, 10, "#241a12");                                               // recess
+  F(32, 276, 8, 4, PAL.coffee); F(33, 274, 6, 2, PAL.paperLo);                 // cup
+  F(44, 258, 3, 8, PAL.metalLo);                                               // lever
+
+  /* — phone side table (c14 r10) — */
+  F(340, 12 * T - 26, 22, 4, PAL.shadow);
+  F(338, 246, 20, 16, PAL.desk); F(338, 246, 20, 3, PAL.deskHi);
+  F(340, 262, 3, 8, PAL.deskLo); F(353, 262, 3, 8, PAL.deskLo);                // legs
+  F(341, 250, 14, 8, PAL.paperLo);                                             // doily
+
+  /* — fern (c17 r10) — */
+  F(412, 262, 18, 4, PAL.shadow);
+  F(412, 250, 16, 14, PAL.pot); F(412, 250, 16, 3, "#a06a45");
+  F(408, 232, 24, 20, PAL.plant);
+  F(412, 226, 8, 10, PAL.plantHi); F(422, 230, 8, 8, PAL.plantLo);
+  F(406, 240, 6, 8, PAL.plantLo); F(428, 238, 6, 8, PAL.plantHi);
+}
+
+/* ======================= DYNAMIC SPRITES ============================ */
+/* Greta 24×34: bun, glasses, buttoned cardigan; 2 walk frames; shadow. */
+function drawGreta(x, y, dir, step, pages, hasFloppy) {
+  const bx = Math.round(x - 12), by = Math.round(y - 31);
+  R(bx + 3, y - 2, 18, 5, PAL.shadow);                       // shadow
+  const legA = step ? 0 : 2;
+  // legs + shoes
+  R(bx + 6, by + 27, 4, 7 - legA, PAL.skirtLo); R(bx + 14, by + 27, 4, 5 + legA, PAL.skirtLo);
+  R(bx + 6, by + 33 - legA, 5, 2, PAL.ink);     R(bx + 14, by + 31 + legA, 5, 2, PAL.ink);
+  // skirt
+  R(bx + 4, by + 20, 16, 9, PAL.skirt); R(bx + 4, by + 27, 16, 2, PAL.skirtLo);
+  // cardigan
+  R(bx + 3, by + 11, 18, 10, PAL.cardigan);
+  R(bx + 3, by + 11, 3, 10, PAL.cardiganLo); R(bx + 18, by + 11, 3, 10, PAL.cardiganLo);
+  R(bx + 4, by + 11, 16, 2, PAL.cardiganHi);
+  R(bx + 10, by + 12, 4, 8, PAL.paperLo);                    // blouse
+  R(bx + 11, by + 14, 1, 1, PAL.ink); R(bx + 11, by + 17, 1, 1, PAL.ink); // buttons
+  // arms
+  R(bx + 1, by + 13, 3, 6, PAL.skin); R(bx + 20, by + 13, 3, 6, PAL.skin);
+  // head
+  R(bx + 6, by + 2, 12, 11, PAL.skin);
+  R(bx + 6, by + 2, 12, 2, PAL.skinHi);
+  R(bx + 5, by, 14, 4, PAL.gretaHair); R(bx + 5, by + 3, 2, 4, PAL.gretaHairLo); R(bx + 17, by + 3, 2, 4, PAL.gretaHairLo);
+  R(bx + 9, by - 3, 7, 4, PAL.gretaHair); R(bx + 10, by - 2, 3, 2, PAL.gretaHairLo); // bun
+  if (dir !== "up") {
+    const ox = dir === "left" ? -2 : dir === "right" ? 2 : 0;
+    R(bx + 6 + ox, by + 6, 5, 3, "#efe9de"); R(bx + 13 + ox, by + 6, 5, 3, "#efe9de");
+    R(bx + 7 + ox, by + 7, 2, 2, PAL.ink);   R(bx + 14 + ox, by + 7, 2, 2, PAL.ink);
+    R(bx + 11 + ox, by + 7, 2, 1, PAL.gretaHairLo);
+    R(bx + 10 + ox, by + 11, 4, 1, "#c98a6a");               // mouth
+  } else {
+    R(bx + 6, by + 3, 12, 8, PAL.gretaHair);
+    R(bx + 6, by + 3, 12, 2, PAL.gretaHairLo);
+  }
+  // carried pages
+  if (pages > 0) {
+    const n = Math.min(pages, 14);
+    for (let i = 0; i < n; i++) R(bx + 4 + (i % 2) * 2, by - 8 - i * 2, 16, 2, i % 2 ? PAL.paperLo : PAL.paper);
+    R(bx + 7, by - 7 - n * 2, 10, 1, PAL.ink);
+  }
+  if (hasFloppy) {
+    R(bx + 19, by + 8, 10, 10, "#23233a");
+    R(bx + 20, by + 9, 5, 3, PAL.metal); R(bx + 21, by + 14, 7, 3, PAL.red);
+  }
+}
+
+/* Zoe at her desk (sitting, facing left). */
+function drawZoe(t, working) {
+  const x = 436, y = 156;
+  R(x - 3, y + 20, 20, 6, "#3a3a44"); R(x - 1, y + 26, 4, 4, "#2c2c34");  // chair
+  R(x, y + 6, 15, 16, PAL.zoeTop); R(x, y + 6, 15, 3, "#9578f4");         // torso
+  const arm = working ? Math.floor(t * 8) % 2 : 0;
+  R(x - 5, y + 11 + arm, 6, 4, PAL.skin);
+  R(x - 5, y + 16 - arm, 6, 4, PAL.skin);
+  R(x, y - 8, 13, 13, PAL.skin); R(x, y - 8, 13, 2, PAL.skinHi);          // head
+  R(x - 2, y - 11, 17, 6, PAL.zoeHair); R(x + 11, y - 6, 5, 11, PAL.zoeHair);
+  R(x - 2, y - 9, 4, 3, PAL.zoeHairLo);
+  R(x - 4, y - 6, 4, 5, PAL.metalLo); R(x + 12, y - 6, 3, 5, PAL.metalLo); // headphones
+  R(x - 4, y - 8, 19, 2, PAL.metal);
+  R(x + 2, y - 2, 2, 2, PAL.ink);
+}
+
+/* Paper pile — count sheets stacked upward from (x,y).
+   showPlus=false when the "+N" counter would clash with the badge (it shows the state anyway). */
+function drawPile(x, y, count, max = 14, showPlus = true) {
+  const n = Math.min(count, max);
+  for (let i = 0; i < n; i++) {
+    const jx = (i * 7) % 5 - 2;
+    R(x + jx, y - i * 3, 18, 3, i % 2 ? PAL.paper : PAL.paperLo);
+    R(x + jx, y - i * 3, 18, 1, PAL.paperHi);
+  }
+  if (showPlus && count > max)
+    drawText(vctx, "+" + (count - max), x + 21, Math.max(y - n * 3 - 6, HUDH + 2), 1, PAL.red);
+}
+
+/* Floppy disk. */
+function drawFloppyAt(x, y) {
+  R(x, y, 14, 14, "#23233a"); R(x, y, 14, 2, "#3a3a56");
+  R(x + 3, y + 2, 7, 4, PAL.metal); R(x + 5, y + 3, 2, 3, "#23233a");
+  R(x + 2, y + 8, 10, 5, PAL.red); R(x + 3, y + 9, 8, 1, "#f2a0a4");
+}
+
+/* Phone on the side table (handset rattles while ringing). */
+function drawPhone(t, ringing) {
+  const x = PHONE_POS.x, y = PHONE_POS.y;
+  const w = ringing ? Math.round(Math.sin(t * 45) * 2) : 0;
+  R(x, y + 6, 19, 11, PAL.phoneG); R(x, y + 6, 19, 2, PAL.phoneGHi);      // base
+  R(x + 4, y + 9, 11, 6, PAL.phoneGLo);
+  R(x + 6, y + 10, 7, 4, PAL.metalLo); R(x + 8, y + 11, 3, 2, PAL.phoneGLo); // dial
+  R(x - 2 + w, y, 23, 5, PAL.phoneG); R(x - 2 + w, y, 23, 2, PAL.phoneGHi); // handset
+  R(x - 2 + w, y + 1, 5, 6, PAL.phoneG); R(x + 16 + w, y + 1, 5, 6, PAL.phoneG);
+}
+
+/* 36×36 portraits for dialogs. */
+function drawPortrait(who, x, y) {
+  const F = (a, b, w, h, col) => R(x + a, y + b, w, h, col);
+  F(0, 0, 36, 36, "#241b2e"); F(1, 1, 34, 34, "#2e2340");
+  if (who === "chad") {
+    F(6, 3, 24, 21, PAL.skin); F(6, 3, 24, 3, PAL.skinHi);
+    F(3, 0, 30, 8, "#caa46a"); F(24, 3, 9, 6, "#caa46a"); F(3, 5, 6, 4, "#b28a50");
+    F(9, 12, 8, 5, PAL.ink); F(19, 12, 8, 5, PAL.ink); F(16, 13, 4, 2, PAL.ink);
+    F(11, 13, 2, 1, "#6a6a90"); F(21, 13, 2, 1, "#6a6a90");
+    F(12, 20, 12, 2, "#a8735a");
+    F(3, 24, 30, 12, PAL.chadHood); F(13, 24, 10, 12, "#5b7a56");
+    F(3, 24, 30, 2, "#82a17c");
+  } else if (who === "greta") {
+    F(6, 5, 24, 20, PAL.skin); F(6, 5, 24, 3, PAL.skinHi);
+    F(3, 0, 30, 8, PAL.gretaHair); F(12, -1 + 1, 12, 4, PAL.gretaHairLo);
+    F(7, 12, 9, 6, "#efe9de"); F(20, 12, 9, 6, "#efe9de"); F(16, 14, 4, 2, PAL.gretaHairLo);
+    F(10, 14, 3, 3, PAL.ink); F(23, 14, 3, 3, PAL.ink);
+    F(13, 21, 10, 2, "#a8735a");
+    F(3, 25, 30, 11, PAL.cardigan); F(14, 25, 8, 11, PAL.paperLo);
+    F(3, 25, 30, 2, PAL.cardiganHi);
+  } else { // zoe
+    F(6, 5, 24, 20, PAL.skin); F(6, 5, 24, 3, PAL.skinHi);
+    F(3, 0, 30, 9, PAL.zoeHair); F(1, 6, 6, 15, PAL.zoeHair); F(29, 6, 6, 15, PAL.zoeHair);
+    F(3, 2, 8, 3, PAL.zoeHairLo);
+    F(0, 9, 5, 8, PAL.metalLo); F(31, 9, 5, 8, PAL.metalLo);
+    F(10, 14, 3, 3, PAL.ink); F(23, 14, 3, 3, PAL.ink); F(14, 21, 8, 2, "#a8735a");
+    F(3, 25, 30, 11, PAL.zoeTop); F(3, 25, 30, 2, "#9578f4");
+  }
+}
+
+/* HUD icons. */
+function iconPage(x, y)  { R(x, y, 7, 9, PAL.paper); R(x, y, 7, 1, PAL.paperHi); R(x + 1, y + 3, 5, 1, PAL.ink); R(x + 1, y + 6, 5, 1, PAL.ink); }
+function iconFloppy(x, y){ R(x, y, 9, 9, "#23233a"); R(x + 2, y + 1, 5, 3, PAL.metal); R(x + 1, y + 5, 7, 3, PAL.red); }
+function iconCup(x, y)   { R(x, y + 1, 8, 8, PAL.paper); R(x + 1, y + 2, 6, 5, PAL.coffee); R(x + 8, y + 3, 2, 4, PAL.paper); R(x + 1, y - 1, 2, 1, "#d8d2c4"); R(x + 4, y - 2, 2, 2, "#d8d2c4"); }
+function iconRocket(x, y, col) {
+  const c = col || PAL.paperLo;
+  R(x + 3, y, 2, 2, c); R(x + 2, y + 1, 4, 2, c);
+  R(x + 2, y + 3, 4, 4, c);
+  R(x + 3, y + 3, 2, 2, PAL.screenB);
+  R(x, y + 5, 2, 3, c); R(x + 6, y + 5, 2, 3, c);
+  R(x + 3, y + 8, 2, 2, PAL.amber); R(x + 3, y + 10, 2, 1, PAL.red);
+}
+
+/* Stress vignette (prerendered once). */
+const vignette = document.createElement("canvas");
+vignette.width = MW; vignette.height = VH; // vignette only over the map — the panel stays readable
+function prerenderVignette() {
+  const c = vignette.getContext("2d");
+  const g = c.createRadialGradient(MW / 2, VH / 2, VH / 3, MW / 2, VH / 2, VH * 0.85);
+  g.addColorStop(0, "rgba(180,20,30,0)");
+  g.addColorStop(1, "rgba(180,20,30,0.6)");
+  c.fillStyle = g; c.fillRect(0, 0, MW, VH);
+}
+</script><script>
+"use strict";
+/* ============================ GAME STATE ================================== */
+const G = {
+  state: "TITLE",   // TITLE|INTRO|DAYCARD|TUTORIAL|RUN|DAYEND|DYING|CONVERSION|TEASER
+  paused: false, pausedByBlur: false,
+  t: 0, runT: 0,
+  day: 1, dayT: 0, bookedToday: 0,
+  mode: "run",
+  player: { x: 240, y: 180, dir: "down", animT: 0, moving: false, sprinting: false, pages: 0, floppy: false, rooted: 0 },
+  s1: { q: [] }, s2: { q: [] },
+  s3: { count: 0, floppies: 0 },
+  s4: { q: 0, t: 0 },
+  desk: { reports: 0 },
+  phone: { ringing: false, ringT: 0, nextAt: 0, sfxT: 0, call: null, lastQA: null },
+  action: { id: null, prog: 0 },
+  stress: 0, energy: 100, respect: 50, phoneAnswered: false,
+  upg: {}, barShownAt: 0, // upg[id] = number of levels bought
+  booked: 0, typed: 0, coffees: 0, coffeeStreak: 0, wellbeings: 0, walked: 0, walkedCarry: 0,
+  spawnT: 0, burst: [],
+  evFired: {}, chaos: false,
+  shake: 0, toasts: [], parts: [],
+  dying: { t: 0, cause: null, line: "" },
+  lastRun: { seconds: 0, booked: 0, respect: 50, day: 1 },
+  intro: { i: 0, chars: 0 },
+  daycardT: 0, daycardNext: "tutorial", dayEndT: 0,
+  tut: { step: 0, movedFrom: null, bannerT: 0 },
+  ui: { startRect: null },
+};
+
+function resetRun() {
+  G.runT = 0; G.mode = "run";
+  G.day = 1; G.dayT = 0; G.bookedToday = 0;
+  G.player = { x: 240, y: 180, dir: "down", animT: 0, moving: false, sprinting: false, pages: 0, floppy: false, rooted: 0 };
+  G.s1 = { q: [] }; G.s2 = { q: [] };
+  G.s3 = { count: 0, floppies: 0 };
+  G.s4 = { q: 0, t: 0 };
+  G.desk = { reports: 0 };
+  G.phone = { ringing: false, ringT: 0, nextAt: rand(CONFIG.PHONE.min, CONFIG.PHONE.max) * CONFIG.PHONE.firstMul, sfxT: 0, call: null, lastQA: null };
+  G.action = { id: null, prog: 0 };
+  G.stress = 0; G.energy = CONFIG.ENERGY.max; G.respect = CONFIG.RESPECT.start;
+  G.phoneAnswered = false;
+  G.upg = {};
+  G.booked = 0; G.typed = 0; G.coffees = 0; G.coffeeStreak = 0; G.wellbeings = 0; G.walked = 0; G.walkedCarry = 0;
+  G.spawnT = 0; G.burst = [];
+  G.evFired = {}; G.chaos = false;
+  G.shake = 0; G.toasts = []; G.parts = [];
+  G.dying = { t: 0, cause: null, line: "" };
+  G.paused = false; G.pausedByBlur = false;
+}
+
+function startRun() {
+  resetRun();
+  G.state = "RUN";
+  G.barShownAt = G.t;
+  track("game_start", {});
+}
+
+/* =================== UPGRADE EFFECTS (effective values) =============== */
+/* lvlOf(id) = owned level (0 = none); TIERS[...] indexed by level. */
+const lvlOf = id => G.upg[id] || 0;
+const maxPagesEff   = () => CONFIG.TIERS.pages[lvlOf("trolley")];
+const printTimeEff  = () => CONFIG.TIERS.print[lvlOf("laser")];
+const typeTimeEff   = () => CONFIG.TIMES.type * CONFIG.TIERS.typeMul[Math.min(lvlOf("macro"), CONFIG.TIERS.typeMul.length - 1)];
+const zoeTimeEff    = () => G.mode === "tutorial" ? CONFIG.TUTORIAL.zoe : CONFIG.TIERS.zoe[lvlOf("laptop")];
+const phoneWindowEff= () => CONFIG.TIMES.phoneWindow + CONFIG.TIERS.ring[lvlOf("headset")];
+const brewTimeEff   = () => lvlOf("espresso") >= 2 ? CONFIG.TIMES.brewFast + CONFIG.TIMES.drinkFast : CONFIG.TIMES.brew + CONFIG.TIMES.drink;
+const brewPhaseEff  = () => lvlOf("espresso") >= 2 ? CONFIG.TIMES.brewFast : CONFIG.TIMES.brew;
+const coffeeGainEff = () => lvlOf("espresso") >= 1 ? CONFIG.ENERGY.coffeeFull : CONFIG.ENERGY.coffee;
+
+/* ==================== BUYING A LEVEL (keys 1-6) ====================== */
+function shopBuy(idx) {
+  const u = UPGRADES[idx];
+  if (!u) return;
+  if (u.consumable) { // JUST BREATH: no levels, buy repeatedly, price escalates
+    const c = u.consumable;
+    const cost = c.cost + (c.costStep || 0) * G.wellbeings;
+    if (G.respect - cost < CONFIG.SHOP.minRespectLeft) {
+      A.sBuzz();
+      addPart("plus", G.player.x, G.player.y - 34, STRINGS.shop.poor, PAL.red);
+      return;
+    }
+    G.respect -= cost;
+    G.stress = Math.max(0, G.stress * (1 - CONFIG.STRESS.wellbeingCut));
+    G.wellbeings++;
+    A.sChime();
+    addPart("plus", G.player.x, G.player.y - 34, c.tip, PAL.green);
+    track("upgrade_buy", { id: u.id, day: G.day });
+    return;
+  }
+  const lvl = lvlOf(u.id);
+  const next = u.levels[lvl];
+  if (!next) return; // MAX
+  if (G.respect - next.cost < CONFIG.SHOP.minRespectLeft) {
+    A.sBuzz();
+    addPart("plus", G.player.x, G.player.y - 34, STRINGS.shop.poor, PAL.red);
+    return;
+  }
+  G.respect -= next.cost;
+  G.upg[u.id] = lvl + 1;
+  A.sBuy();
+  addPart("plus", G.player.x, G.player.y - 34, u.short + " LV" + (lvl + 1), PAL.yellow);
+  track("upgrade_buy", { id: u.id, level: lvl + 1, day: G.day });
+}
+
+/* ======================= GAMEPLAY HELPERS =========================== */
+function spawnInterval() {
+  // escalates through the day + each next day starts faster
+  return Math.max(CONFIG.SPAWN.floor,
+    CONFIG.SPAWN.start *
+    Math.pow(CONFIG.SPAWN.factor, G.dayT / CONFIG.SPAWN.every) *
+    Math.pow(CONFIG.SPAWN.dayMul, G.day - 1));
+}
+function spawnInvoice(station) {
+  const st = station || (Math.random() < 0.5 ? "s1" : "s2");
+  G[st].q.push({ born: G.runT });
+  if (st === "s1") A.sDing(); else A.sChirp();
+  addPart("paperPuff", st === "s1" ? 36 : 192 + Math.random() * 60, st === "s1" ? 84 : 32);
+}
+function agedCount() {
+  let n = 0;
+  const cut = G.runT - CONFIG.STRESS.agedAfter;
+  for (const it of G.s1.q) if (it.born < cut) n++;
+  for (const it of G.s2.q) if (it.born < cut) n++;
+  return Math.min(n, CONFIG.STRESS.agedMaxCount);
+}
+function overCapCount() {
+  let n = 0;
+  if (G.s1.q.length > CONFIG.CAPS.inbox) n++;
+  if (G.s2.q.length > CONFIG.CAPS.efakt) n++;
+  if (G.s4.q > CONFIG.CAPS.zoe) n++;
+  if (G.desk.reports > CONFIG.CAPS.reports) n++;
+  return n;
+}
+function stressTier() { return (G.stress >= 40 ? 1 : 0) + (G.stress >= 70 ? 1 : 0) + (G.chaos ? 1 : 0); }
+
+function addToast(text, dur = 4) { G.toasts.push({ text, t: 0, dur }); }
+function addPart(type, x, y, text, col) {
+  if (G.parts.length > 80) G.parts.shift();
+  G.parts.push({ type, x, y, text, col, t: 0, vx: rand(-20, 20), vy: rand(-60, -22) });
+}
+function paperBurst(x, y, n) { for (let i = 0; i < n; i++) addPart("paper", x + rand(-9, 9), y + rand(-9, 9)); }
+
+/* Where to go now? (arrows above stations; both inboxes may glow at once) */
+function flowTargets() {
+  if (G.player.floppy) return ["s4"];
+  if (G.s3.floppies > 0 && G.player.pages === 0) return ["s3"];
+  if (G.player.pages > 0) return ["s3"];
+  if (G.desk.reports > 0) return ["desk"];
+  const t = [];
+  if (G.s1.q.length) t.push("s1");
+  if (G.s2.q.length) t.push("s2");
+  return t;
+}
+
+/* ===================== CONTEXT ACTION (SPACE) ======================== */
+function nearStation() {
+  let best = null, bestD = 1e9;
+  for (const id in ST) {
+    const s = ST[id];
+    const d = dist2(G.player.x, G.player.y, s.hx, s.hy);
+    if (d < s.r * s.r && d < bestD) { best = id; bestD = d; }
+  }
+  return best;
+}
+function currentAction() {
+  const p = G.player, at = nearStation();
+  if (!at) return null;
+  const T = CONFIG.TIMES, H = STRINGS.hints;
+  if (at === "s1" || at === "s2") {
+    const q = G[at].q;
+    if (q.length === 0) return { id: at + "-idle", hint: H.printEmpty };
+    if (p.pages >= maxPagesEff()) return { id: at + "-full", hint: H.printFull };
+    return { id: at + "-print", hint: H.print, dur: printTimeEff(), repeat: true,
+      done() { G[at].q.shift(); p.pages++; A.sPrinter(); addPart("paperPuff", p.x, p.y - 34); } };
+  }
+  if (at === "s3") {
+    if (G.s3.floppies > 0 && !p.floppy)
+      return { id: "s3-take", hint: H.floppy, dur: T.takeFloppy,
+        done() { G.s3.floppies--; p.floppy = true; A.sFloppy(); } };
+    if (G.s3.floppies > 0 && p.floppy && p.pages === 0)
+      return { id: "s3-busy", hint: H.floppyBusy };
+    if (p.pages === 0) return { id: "s3-idle", hint: H.typeEmpty };
+    if (lvlOf("macro") >= 2 && p.pages > 1)
+      return { id: "s3-typeall", hint: H.typeAll, dur: T.typeAllBase + T.typeAllPer * p.pages,
+        done() { const n = p.pages; for (let i = 0; i < n; i++) typeOne(); A.sEject(); } };
+    return { id: "s3-type", hint: H.type, dur: typeTimeEff(), repeat: true,
+      done() { typeOne(); } };
+  }
+  if (at === "s4") {
+    if (!p.floppy) return { id: "s4-idle", hint: H.zoeIdle };
+    return { id: "s4-give", hint: H.zoe, dur: T.giveFloppy,
+      done() { p.floppy = false; G.s4.q++; A.sPop(); addPart("plus", 392, 140, STRINGS.zoeThanks); } };
+  }
+  if (at === "desk") {
+    if (G.desk.reports > 0)
+      return { id: "desk-stamp", hint: H.stamp, dur: T.stamp, repeat: true,
+        done() {
+          G.desk.reports--; G.booked++; G.bookedToday++;
+          G.respect = clamp(G.respect + CONFIG.RESPECT.perBooked, 0, CONFIG.RESPECT.max);
+          A.sStamp(); G.shake = Math.max(G.shake, 0.06);
+          addPart("plus", p.x, p.y - 40, STRINGS.plusBooked);
+        } };
+    return { id: "desk-idle", hint: null };
+  }
+  if (at === "phone") {
+    if (G.phone.ringing)
+      return { id: "phone-answer", hint: H.phone, dur: T.answerPress, done() { answerCall(); } };
+    return { id: "phone-idle", hint: null };
+  }
+  if (at === "coffee") {
+    // You can always brew — even when full. Over-caffeinating is the whole point:
+    // 4 in a row (no other action between) = heart attack. Hint warns when already wired.
+    const wired = G.energy >= CONFIG.ENERGY.max - 1;
+    return { id: "coffee-brew", hint: wired ? H.coffeeWired : H.coffee, dur: brewTimeEff(), twoPhase: brewPhaseEff(),
+      start() { A.sBrew(); },
+      done() {
+        G.energy = Math.min(CONFIG.ENERGY.max, G.energy + coffeeGainEff());
+        G.coffees++; G.coffeeStreak++;
+        A.sSlurp(); addPart("plus", p.x, p.y - 40, "+" + coffeeGainEff());
+        if (G.coffeeStreak >= CONFIG.ENERGY.heartAt) return die("heart");
+        if (G.coffeeStreak === CONFIG.ENERGY.heartAt - 1) addToast(STRINGS.heartWarning, 3.5);
+      } };
+  }
+  return null;
+}
+function typeOne() {
+  const p = G.player;
+  p.pages--; G.typed++; G.s3.count++;
+  A.sType(); addPart("plus", 336, 132, STRINGS.plusOne);
+  const per = G.mode === "tutorial" ? CONFIG.TUTORIAL.floppyEvery : CONFIG.FLOPPY_EVERY;
+  if (G.s3.count >= per) { G.s3.count -= per; G.s3.floppies++; A.sEject(); addToast(STRINGS.hints.floppy, 2.5); }
+}
+
+/* ========================= MOVEMENT AND ACTIONS ================================= */
+function updatePlayer(dt) {
+  const p = G.player;
+  if (p.rooted > 0) { p.rooted -= dt; p.moving = false; p.sprinting = false; return; }
+  let dx = 0, dy = 0;
+  if (input.keys["arrowleft"] || input.keys["a"]) dx--;
+  if (input.keys["arrowright"] || input.keys["d"]) dx++;
+  if (input.keys["arrowup"] || input.keys["w"]) dy--;
+  if (input.keys["arrowdown"] || input.keys["s"]) dy++;
+  p.moving = !!(dx || dy);
+  p.sprinting = p.moving && !!input.keys["shift"];
+  if (!p.moving) return;
+  if (dx && dy) { dx *= 0.7071; dy *= 0.7071; }
+  let sp = CONFIG.PLAYER.speed;
+  if (G.mode === "run" && G.energy < CONFIG.ENERGY.lowAt) sp *= CONFIG.PLAYER.slowMult;
+  if (p.sprinting) sp *= CONFIG.PLAYER.sprintMult;
+  const nx = p.x + dx * sp * dt, ny = p.y + dy * sp * dt;
+  const half = 8, foot = 5;
+  const ox = p.x, oy = p.y;
+  if (!isSolid(nx - half, p.y - foot) && !isSolid(nx + half, p.y - foot) &&
+      !isSolid(nx - half, p.y + foot) && !isSolid(nx + half, p.y + foot)) p.x = nx;
+  if (!isSolid(p.x - half, ny - foot) && !isSolid(p.x + half, ny - foot) &&
+      !isSolid(p.x - half, ny + foot) && !isSolid(p.x + half, ny + foot)) p.y = ny;
+  const moved = Math.hypot(p.x - ox, p.y - oy); // actual movement, not intent
+  G.walked += moved;
+  if (p.pages > 0 || p.floppy) G.walkedCarry += moved;
+  p.animT += dt * (p.sprinting ? 1.6 : 1);
+  if (p.sprinting && moved > 0) {
+    p.puffT = (p.puffT || 0) + dt;
+    if (p.puffT > 0.14) { p.puffT = 0; addPart("paperPuff", p.x - Math.sign(p.x - ox) * 8, p.y); }
+  }
+  if (Math.abs(dx) > Math.abs(dy)) p.dir = dx < 0 ? "left" : "right";
+  else p.dir = dy < 0 ? "up" : "down";
+}
+
+function updateAction(dt) {
+  const act = currentAction();
+  const cur = G.action;
+  const actId = act && act.dur ? act.id : null;
+  if (cur.id !== actId) { cur.id = actId; cur.prog = 0; cur.started = false; }
+  G.hintAct = act;
+  if (!actId) return;
+  if (input.keys[" "] && G.player.rooted <= 0) {
+    if (!cur.started) { cur.started = true; if (act.start) act.start(); }
+    cur.prog += dt;
+    if (cur.prog >= act.dur) {
+      act.done();
+      if (act.id !== "coffee-brew") G.coffeeStreak = 0; // any other action breaks the coffee streak
+      cur.prog = 0; cur.started = false;
+      const again = currentAction();
+      if (!(act.repeat && again && again.id === actId)) { cur.id = null; }
+      G.hintAct = again;
+    }
+  } else {
+    cur.prog = 0; cur.started = false;
+  }
+}
+
+/* ========================= PHONE (Y/N choices) ========================= */
+function respectGapMul() {
+  const R = CONFIG.RESPECT;
+  return lerp(R.callGapMulAtZero, R.callGapMulAtMax, clamp(G.respect, 0, R.max) / R.max);
+}
+function scheduleNextCall() {
+  G.phone.nextAt = G.runT + rand(CONFIG.PHONE.min, CONFIG.PHONE.max) * respectGapMul();
+}
+function answerCall() {
+  const ph = G.phone;
+  ph.ringing = false;
+  G.phoneAnswered = true;
+  const pool = (G.mode === "run" && G.runT > CONFIG.CHAD_AFTER) ? PHONE_QA.chad : PHONE_QA.client;
+  let qa = pick(pool); // no repeating the same question twice in a row
+  if (pool.length > 1 && qa === ph.lastQA) qa = pool[(pool.indexOf(qa) + 1) % pool.length];
+  ph.lastQA = qa;
+  ph.call = { qa, phase: "ask", t: 0, chosen: null };
+}
+function applyFx(fx) {
+  let row = 0;
+  const label = (tplS, v, col) => {
+    const txt = tplS.replace("{n}", (v > 0 ? "+" : "") + v);
+    addPart("plus", G.player.x, G.player.y - 42 - row * 11, txt, col);
+    row++;
+  };
+  if (fx.stress) {
+    G.stress = clamp(G.stress + fx.stress, 0, CONFIG.STRESS.max);
+    label(STRINGS.fx.stress, fx.stress, fx.stress > 0 ? PAL.red : PAL.green);
+  }
+  if (fx.respect) {
+    G.respect = clamp(G.respect + fx.respect, 0, CONFIG.RESPECT.max);
+    label(STRINGS.fx.respect, fx.respect, fx.respect > 0 ? PAL.green : PAL.red);
+  }
+  if (fx.energy) {
+    G.energy = clamp(G.energy + fx.energy, 0, CONFIG.ENERGY.max);
+    label(STRINGS.fx.energy, fx.energy, fx.energy > 0 ? PAL.green : PAL.red);
+  }
+  if (fx.invoices) {
+    for (let i = 0; i < fx.invoices; i++) G.burst.push(rand(0.3, 2.2));
+    label(STRINGS.fx.invoices.replace("+{n}", "{n}"), fx.invoices, PAL.amber);
+  }
+}
+function chooseAnswer(isYes) {
+  const c = G.phone.call;
+  if (!c || c.phase !== "ask") return;
+  c.chosen = isYes;
+  const opt = isYes ? c.qa.yes : c.qa.no;
+  applyFx(opt.fx);
+  if ((opt.fx.respect || 0) > 0) A.sChime(); else A.sBuzz();
+  c.phase = "result"; c.t = 0;
+}
+function timeoutAnswer() {
+  const c = G.phone.call;
+  if (!c || c.phase !== "ask") return;
+  c.chosen = null;
+  applyFx(PHONE_QA.timeout.fx);
+  A.sBuzz();
+  c.phase = "result"; c.t = 0;
+}
+function updatePhone(dt) {
+  const ph = G.phone, p = G.player;
+  if (ph.call) {
+    const c = ph.call;
+    p.rooted = Math.max(p.rooted, 0.2);
+    c.t += dt;
+    if (c.phase === "ask") {
+      if (input.just.has("y")) chooseAnswer(true);
+      else if (input.just.has("n")) chooseAnswer(false);
+      else if (c.t > CONFIG.PHONE.decideWindow) timeoutAnswer();
+    } else if (c.t > CONFIG.PHONE.resultDur) {
+      ph.call = null; p.rooted = 0;
+      if (G.mode === "run") scheduleNextCall();
+    }
+    return;
+  }
+  if (G.mode === "run" && !ph.ringing && G.runT >= ph.nextAt) {
+    ph.ringing = true; ph.ringT = 0; ph.sfxT = 0;
+  }
+  if (ph.ringing) {
+    ph.ringT += dt;
+    ph.sfxT -= dt;
+    if (ph.sfxT <= 0) { A.sRing(); ph.sfxT = 2; }
+    // in the tutorial the phone rings patiently — no penalty
+    if (G.mode === "run" && ph.ringT > phoneWindowEff()) {
+      ph.ringing = false;
+      G.stress = Math.min(CONFIG.STRESS.max, G.stress + CONFIG.STRESS.missedPhone);
+      addToast(tpl(STRINGS.missedCall, CONFIG.STRESS.missedPhone), 3);
+      G.shake = Math.max(G.shake, 0.25);
+      scheduleNextCall();
+    }
+  }
+}
+
+/* ===================== SPAWNER, EVENTS, ZOE, DAY ====================== */
+function updateSpawner(dt) {
+  if (G.mode !== "run") return;
+  G.spawnT += dt;
+  const iv = spawnInterval();
+  while (G.spawnT >= iv) { G.spawnT -= iv; spawnInvoice(); }
+  for (let i = G.burst.length - 1; i >= 0; i--) {
+    G.burst[i] -= dt;
+    if (G.burst[i] <= 0) { G.burst.splice(i, 1); spawnInvoice(); }
+  }
+  for (const ev of CONFIG.EVENTS) {
+    if (!G.evFired[ev.key] && G.runT >= ev.at) {
+      G.evFired[ev.key] = true;
+      addToast(STRINGS.events[ev.key], 4.5);
+      A.sEvent();
+      G.shake = Math.max(G.shake, 0.4);
+      for (let i = 0; i < ev.burst; i++) G.burst.push(rand(0.1, 2.5));
+      if (ev.chaos) G.chaos = true;
+    }
+  }
+}
+
+function updateZoe(dt) {
+  if (G.s4.q > 0) {
+    G.s4.t += dt;
+    if (G.s4.t >= zoeTimeEff()) {
+      G.s4.t = 0; G.s4.q--;
+      const n = G.mode === "tutorial" ? CONFIG.TUTORIAL.floppyEvery : CONFIG.REPORTS_PER_FLOPPY;
+      G.desk.reports += n;
+      A.sChime();
+      addPart("plus", 240, 226, "+" + n);
+    }
+  } else G.s4.t = 0;
+}
+
+function updateMeters(dt) {
+  if (G.mode !== "run") return;
+  const drainMult = G.player.sprinting ? CONFIG.PLAYER.sprintDrainMult : 1;
+  G.energy -= CONFIG.ENERGY.drain * drainMult * dt;
+  if (G.energy <= 0) { G.energy = 0; return die("energy"); }
+  const over = overCapCount(), aged = agedCount();
+  const lowRespect = G.respect < CONFIG.RESPECT.lowAt;
+  let dS = over * CONFIG.STRESS.overCapPerSec + aged * CONFIG.STRESS.agedPerSec;
+  if (lowRespect) dS += CONFIG.RESPECT.lowStressPerSec;
+  if (over === 0 && aged === 0 && !G.phone.ringing && !lowRespect) dS -= CONFIG.STRESS.decay;
+  G.stress = clamp(G.stress + dS * dt, 0, CONFIG.STRESS.max);
+  if (G.stress >= CONFIG.STRESS.max) return die("stress");
+}
+
+/* — end of day / morning — */
+function enterDayEnd() {
+  G.state = "DAYEND";
+  G.dayEndT = 0;
+  G.phone.ringing = false;
+  A.sNight();
+  track("day_end", { day: G.day, booked: G.bookedToday });
+}
+function startMorning() {
+  G.day++;
+  G.dayT = 0; G.bookedToday = 0; G.spawnT = 0;
+  G.energy = CONFIG.ENERGY.max;                                   // night = sleep
+  G.stress = Math.max(0, G.stress - CONFIG.STRESS.nightRelief);   // ...and a breather
+  G.coffeeStreak = 0;                                             // sleep breaks the coffee streak
+  G.phone.nextAt = G.runT + rand(CONFIG.PHONE.min, CONFIG.PHONE.max) * CONFIG.PHONE.firstMul;
+  const burst = CONFIG.DAY.morningBurstBase + CONFIG.DAY.morningBurstPerDay * G.day;
+  for (let i = 0; i < burst; i++) G.burst.push(rand(0.5, 4));
+  addToast(STRINGS.morningToast, 3.5);
+  G.daycardNext = "run";
+  G.daycardText = tpl(STRINGS.dayCard, G.day);
+  G.daycardT = CONFIG.UI.daycardDur;
+  G.state = "DAYCARD";
+  A.sJingle();
+}
+
+function die(cause) {
+  if (G.state !== "RUN") return;
+  G.state = "DYING";
+  G.dying = { t: 0, cause, line: pick(STRINGS.causes.lines) };
+  G.lastRun = { seconds: Math.floor(G.runT), booked: G.booked, respect: Math.round(G.respect), day: G.day };
+  A.sSad();
+  G.shake = 0.6;
+  paperBurst(G.player.x, G.player.y - 14, 26);
+  track("run_end", { seconds: G.lastRun.seconds, booked: G.lastRun.booked, cause, respect: G.lastRun.respect,
+    day: G.day, coffees: G.coffees, meters: Math.round(G.walkedCarry / TILE) });
+}
+
+/* ============================ PARTICLES ================================ */
+function updateParts(dt) {
+  for (let i = G.parts.length - 1; i >= 0; i--) {
+    const pt = G.parts[i];
+    pt.t += dt;
+    if (pt.type === "paper") {
+      pt.x += pt.vx * dt; pt.y += pt.vy * dt; pt.vy += 180 * dt;
+      pt.vx *= (1 - 1.5 * dt);
+      if (pt.t > 1.6) G.parts.splice(i, 1);
+    } else if (pt.type === "plus") {
+      pt.y -= 20 * dt;
+      if (pt.t > 1.1) G.parts.splice(i, 1);
+    } else {
+      pt.y -= 12 * dt;
+      if (pt.t > 0.5) G.parts.splice(i, 1);
+    }
+  }
+  for (let i = G.toasts.length - 1; i >= 0; i--) {
+    G.toasts[i].t += dt;
+    if (G.toasts[i].t > G.toasts[i].dur) G.toasts.splice(i, 1);
+  }
+  if (G.shake > 0) G.shake = Math.max(0, G.shake - dt);
+}
+
+/* ============================== UPDATE ================================== */
+function updateRun(dt) {
+  G.runT += dt;
+  if (G.mode === "run") {
+    G.dayT += dt;
+    if (G.dayT >= CONFIG.DAY.length) { updateParts(dt); return enterDayEnd(); }
+  }
+  updatePlayer(dt);
+  updateAction(dt);
+  updateSpawner(dt);
+  updateZoe(dt);
+  updatePhone(dt);
+  updateMeters(dt);
+  updateParts(dt);
+}
+</script><script>
+"use strict";
+/* ============================= RENDERING ================================ */
+function drawWorld() {
+  vctx.drawImage(mapCanvas, 0, HUDH);
+  const blink = Math.floor(G.t * 3) % 2 === 0;
+
+  /* — dynamic station elements — */
+  // S1: pile in the tray + blinking screen
+  drawPile(30, 108, G.s1.q.length);
+  if (G.s1.q.length > 0 && blink) R(31, 129, 10, 3, PAL.yellow);
+  // S2: pile on the tray (low cap — counter badge above it)
+  drawPile(174, 54, G.s2.q.length, 8, false);
+  if (G.s2.q.length > 0 && blink) R(200, 55, 12, 3, PAL.yellow);
+  // S3: progress pips + floppies sticking out of the drive
+  const per = G.mode === "tutorial" ? CONFIG.TUTORIAL.floppyEvery : CONFIG.FLOPPY_EVERY;
+  for (let i = 0; i < per; i++)
+    R(316 + i * 3, 146, 2, 3, i < G.s3.count ? PAL.green : "#4a4a3a");
+  for (let i = 0; i < Math.min(G.s3.floppies, 3); i++) drawFloppyAt(320, 150 - i * 4);
+  if (G.s3.floppies > 3) drawText(vctx, "+" + (G.s3.floppies - 3), 338, 138, 1, PAL.red);
+  // S4: Zoe + floppy queue + conversion bar
+  drawZoe(G.t, G.s4.q > 0);
+  for (let i = 0; i < Math.min(G.s4.q, 3); i++) drawFloppyAt(410, 146 - i * 5);
+  if (G.s4.q > 0) {
+    R(406, 136, 26, 5, PAL.ink);
+    R(407, 137, Math.floor(24 * G.s4.t / zoeTimeEff()), 3, PAL.green);
+  }
+  // Greta's desk: reports
+  drawPile(260, 250, G.desk.reports);
+  // phone
+  drawPhone(G.t, G.phone.ringing);
+  // coffee: steam
+  if (G.action.id === "coffee-brew" && G.action.started) {
+    const ph = G.action.prog;
+    for (let i = 0; i < 3; i++)
+      R(33 + i * 4 + Math.sin(G.t * 4 + i) * 3, 298 - (ph * 12 + i * 6) % 20, 2, 4, "rgba(240,240,240,0.7)");
+  }
+  // print animation
+  if ((G.action.id === "s1-print" || G.action.id === "s2-print") && G.action.prog > 0) {
+    const pr = G.action.prog / printTimeEff();
+    if (G.action.id === "s1-print") R(30, 152, 12, Math.floor(pr * 9), PAL.paper);
+    else R(248, 62, 11, Math.floor(pr * 8), PAL.paper);
+  }
+
+  /* — fixed counter badges (during play only) — */
+  if (G.state === "RUN" || G.state === "TUTORIAL") drawBadges();
+
+  /* — "where to now" arrows (outside the tutorial, which has its own) — */
+  if (G.mode === "run" && (G.state === "RUN")) {
+    for (const tgt of flowTargets()) {
+      const s = ST[tgt];
+      drawChevron(s.hx, (s.cy !== undefined ? s.cy : s.hy - 52) + Math.sin(G.t * 5) * 3);
+    }
+  }
+
+  /* — particles — */
+  for (const pt of G.parts) {
+    if (pt.type === "paper") { R(pt.x, pt.y, 6, 4, PAL.paper); R(pt.x, pt.y + 2, 6, 2, PAL.paperLo); }
+    else if (pt.type === "plus") {
+      const txt = pt.text || STRINGS.plusOne, tw = textW(txt);
+      drawText(vctx, txt, clamp(pt.x - tw / 2, 2, MW - tw - 2), pt.y, 1, pt.col || PAL.green);
+    }
+    else R(pt.x, pt.y, 4, 4, "rgba(242,237,228,0.8)");
+  }
+
+  /* — Greta — */
+  const p = G.player;
+  const step = p.moving ? Math.floor(p.animT * 8) % 2 === 0 : true;
+  drawGreta(p.x, p.y, p.dir, step, p.pages, p.floppy);
+
+  /* — hint bubble + progress bar (not during a call) — */
+  const act = G.hintAct;
+  if (act && act.hint && !G.phone.call && G.state !== "DYING") {
+    const txt = (act.id === "coffee-brew" && G.action.started)
+      ? (G.action.prog < act.twoPhase ? STRINGS.hints.brewing : STRINGS.hints.drinking)
+      : act.hint;
+    drawBubble(txt, p.x, p.y - 44 - (p.pages > 0 ? p.pages * 2 + 6 : 0));
+  }
+  if (act && act.dur && G.action.prog > 0 && !G.phone.call) {
+    const w = 32, bx = Math.round(p.x - w / 2), by = Math.round(p.y - 42);
+    R(bx - 1, by - 1, w + 2, 7, PAL.ink);
+    R(bx, by, Math.floor(w * G.action.prog / act.dur), 5, PAL.yellow);
+  }
+}
+
+/* Badge: NAME n/cap — always visible, blinks red at ≥80%. */
+function drawBadge(name, val, x, y, warn, accent) {
+  const label = val === null ? name : name + " " + val;
+  const w = textW(label) + 8;
+  R(x, y, w, 11, "rgba(20,16,24,0.72)");
+  R(x, y + 10, w, 1, "rgba(242,237,228,0.25)");
+  const col = warn ? (Math.floor(G.t * 6) % 2 ? PAL.red : PAL.paper) : (accent || PAL.paperLo);
+  drawText(vctx, label, x + 4, y + 2, 1, col);
+}
+function drawBadges() {
+  const S = STRINGS.stations;
+  drawBadge(S.s1, G.s1.q.length + "/" + CONFIG.CAPS.inbox, 6, 88, G.s1.q.length >= CONFIG.CAPS.inbox * 0.8);
+  drawBadge(S.s2, G.s2.q.length + "/" + CONFIG.CAPS.efakt, 176, 30, G.s2.q.length >= CONFIG.CAPS.efakt * 0.8);
+  const per = G.mode === "tutorial" ? CONFIG.TUTORIAL.floppyEvery : CONFIG.FLOPPY_EVERY;
+  drawBadge(S.s3, G.s3.count + "/" + per, 270, 112, false); // 270: longer name doesn't overlap ZOE
+  drawBadge(S.s4, G.s4.q + "/" + CONFIG.CAPS.zoe, 398, 112, G.s4.q >= CONFIG.CAPS.zoe * 0.8);
+  drawBadge(S.desk, G.desk.reports + "/" + CONFIG.CAPS.reports, 216, 230, G.desk.reports >= CONFIG.CAPS.reports * 0.8);
+  drawBadge(S.phone, null, 310, 240, G.phone.ringing, G.phone.ringing ? PAL.yellow : undefined);
+  // coffee streak: N/3 only while active — blinks when the next coffee = heart attack
+  const safe = CONFIG.ENERGY.heartAt - 1;
+  drawBadge(S.coffee, G.coffeeStreak > 0 ? G.coffeeStreak + "/" + safe : null, 8, 262, G.coffeeStreak >= safe);
+}
+function drawChevron(x, y) {
+  R(x - 6, y, 5, 3, PAL.yellow); R(x + 2, y, 5, 3, PAL.yellow);
+  R(x - 4, y + 3, 5, 3, PAL.yellow); R(x, y + 3, 5, 3, PAL.yellow);
+  R(x - 2, y + 6, 5, 3, PAL.yellow);
+}
+
+/* Right-column skeleton (title/intro/teaser/conversion): frame, header
+   and empty slots — the composition is complete, upgrades appear in-game. */
+/* Upgrade panel (right column, 80 px): keys 1-6, levels and progress.
+   A slot fills from gray as you approach the NEXT level's price;
+   solid yellow = affordable, green = MAX. Squares = owned levels.
+   Menu screens draw it too (skipIntroFade skips the run-start fade-in), so the
+   right column always carries the real upgrade list. It used to be an empty
+   frame there, which read as a black slab once an overlay dimmed the viewport —
+   and that missing right-hand mass is what made centred captions look off. */
+function drawUpgradePanel(alphaMul = 1, skipIntroFade = false) {
+  const alpha = (skipIntroFade ? 1 : clamp((G.t - G.barShownAt) / 0.6, 0, 1)) * alphaMul;
+  if (alpha <= 0) return;
+  vctx.globalAlpha = alpha;
+  R(MW, HUDH, VW - MW, VH - HUDH, PAL.night);
+  R(MW, HUDH, 1, VH - HUDH, "#3a2f42");
+  drawTextC(vctx, STRINGS.shop.title, MW + (VW - MW) / 2, HUDH + 6, 1, "#6d5a7a");
+  const x = MW + 2, w = VW - MW - 3;
+  UPGRADES.forEach((u, i) => {
+    const sy = HUDH + 16 + i * 42, sh = 40;
+    const con = u.consumable;
+    const lvl = con ? 0 : lvlOf(u.id);
+    const next = con || u.levels[lvl];           // consumables have no MAX
+    // consumable price rises with each use (costStep)
+    const price = con ? con.cost + (con.costStep || 0) * G.wellbeings : (next ? next.cost : 0);
+    const frac = next ? clamp((G.respect - CONFIG.SHOP.minRespectLeft) / price, 0, 1) : 1;
+    const ready = !!next && frac >= 1, maxed = !next;
+    R(x, sy, w, sh, "#221a2c");
+    if (frac > 0)
+      R(x + 1, sy + 1, Math.max(1, Math.floor((w - 2) * frac)), sh - 2,
+        maxed ? PAL.plant : (ready ? PAL.yellow : "#3f3950"));
+    R(x + 2, sy + 2, 9, 9, PAL.ink);                        // key [1-7]
+    drawText(vctx, String(i + 1), x + 4, sy + 3, 1, ready ? PAL.yellow : PAL.paperLo);
+    const txtCol = (ready || maxed) ? PAL.ink : PAL.paperLo;
+    drawText(vctx, u.short, x + 12, sy + 3, 1, txtCol);
+    // what the next level gives (at max: what you own)
+    const tip = con ? con.tip : (next ? next.tip : u.levels[u.levels.length - 1].tip);
+    drawText(vctx, tip, x + 12, sy + 14, 1, (ready || maxed) ? PAL.ink : "#8d7a9a");
+    // slot bottom: level squares (or use counter) + price / MAX
+    if (con) {
+      if (G.wellbeings > 0) drawText(vctx, "×" + G.wellbeings, x + 12, sy + 27, 1, txtCol);
+    } else {
+      u.levels.forEach((L, li) => {
+        const bx = x + 12 + li * 11, by = sy + 27;
+        R(bx, by, 8, 8, PAL.ink);
+        if (li < lvl) R(bx + 1, by + 1, 6, 6, maxed ? "#2e5c38" : PAL.green);
+      });
+    }
+    const tag = next ? price + "R" : STRINGS.shop.max;
+    drawText(vctx, tag, x + w - 3 - textW(tag), sy + 27, 1, txtCol);
+  });
+  vctx.globalAlpha = 1;
+}
+
+function drawBubble(txt, cx, cy) {
+  const lines = wrapText(txt, 180);
+  const bw = Math.max(...lines.map(l => textW(l))) + 10, bh = lines.length * LINE_H + 6;
+  const bx = Math.round(clamp(cx - bw / 2, 2, MW - bw - 2)), by = Math.round(clamp(cy - bh, HUDH + 2, VH - bh));
+  R(bx, by, bw, bh, "rgba(20,16,24,0.88)");
+  R(bx, by, bw, 1, PAL.paperLo); R(bx, by + bh - 1, bw, 1, PAL.paperLo);
+  R(bx, by, 1, bh, PAL.paperLo); R(bx + bw - 1, by, 1, bh, PAL.paperLo);
+  lines.forEach((l, i) => drawText(vctx, l, bx + 5, by + 4 + i * LINE_H, 1, PAL.paper));
+}
+
+/* Phone call panel. */
+function drawCallPanel() {
+  const c = G.phone.call;
+  if (!c) return;
+  const w = 340, x = Math.round((MW - w) / 2);
+  const qLines = wrapText(c.qa.q, w - 20);
+  const isAsk = c.phase === "ask";
+  const rLines = isAsk ? [] : wrapText(c.chosen === null ? PHONE_QA.timeout.r : (c.chosen ? c.qa.yes.r : c.qa.no.r), w - 20);
+  const h = 9 + qLines.length * LINE_H + (isAsk ? 14 : rLines.length * LINE_H) + 8;
+  const y = VH - h - (G.mode === "tutorial" ? 56 : 10);
+  R(x, y, w, h, "rgba(20,16,24,0.94)");
+  R(x, y, w, 1, PAL.yellow); R(x, y + h - 1, w, 1, PAL.yellow);
+  R(x, y, 1, h, PAL.yellow); R(x + w - 1, y, 1, h, PAL.yellow);
+  qLines.forEach((l, i) => drawTextC(vctx, l, MW / 2, y + 6 + i * LINE_H, 1, PAL.paper));
+  const oy = y + 6 + qLines.length * LINE_H + 4;
+  if (isAsk) {
+    drawText(vctx, STRINGS.keys.yes + c.qa.yes.t, x + 12, oy, 1, PAL.green);
+    const noTxt = STRINGS.keys.no + c.qa.no.t;
+    drawText(vctx, noTxt, x + w - 12 - textW(noTxt), oy, 1, PAL.red);
+    const left = clamp(1 - c.t / CONFIG.PHONE.decideWindow, 0, 1);
+    R(x + 1, y + h - 4, Math.floor((w - 2) * left), 3, PAL.amber);
+  } else {
+    rLines.forEach((l, i) => drawTextC(vctx, l, MW / 2, oy + i * LINE_H, 1, "#bda9cf"));
+  }
+}
+
+/* ================================ HUD =================================== */
+function drawHUD() {
+  R(0, 0, VW, HUDH, PAL.night);
+  R(0, HUDH - 1, VW, 1, "#3a2f42");
+  // clock (position in the day derives from dayT/DAY.length)
+  const dispMin = 540 + Math.floor((G.mode === "run" ? G.dayT / CONFIG.DAY.length : 0) * 480);
+  const hh = Math.floor(dispMin / 60), mm = String(dispMin % 60).padStart(2, "0");
+  drawText(vctx, STRINGS.hud.day + G.day + " " + hh + ":" + mm, 4, 9, 1, PAL.paper);
+  // booked
+  iconPage(92, 7);
+  drawText(vctx, String(G.booked), 104, 9, 1, PAL.yellow);
+  // labeled bars
+  const bar = (x, label, frac, col, icon) => {
+    drawText(vctx, label, x, 2, 1, "#6d5a7a");
+    R(x, 13, 70, 8, "#3a2f42");
+    R(x + 1, 14, Math.floor(68 * clamp(frac, 0, 1)), 6, col);
+    if (icon) icon();
+  };
+  bar(140, STRINGS.hud.stress, G.stress / CONFIG.STRESS.max,
+      G.stress >= 70 ? PAL.red : G.stress >= 40 ? PAL.amber : PAL.green);
+  const lowE = G.energy < CONFIG.ENERGY.lowAt && Math.floor(G.t * 4) % 2 === 0;
+  bar(225, STRINGS.hud.energy, G.energy / CONFIG.ENERGY.max,
+      G.energy < CONFIG.ENERGY.lowAt ? PAL.red : PAL.amber,
+      () => { if (!lowE) iconCup(212, 12); });
+  const lowR = G.respect < CONFIG.RESPECT.lowAt && Math.floor(G.t * 4) % 2 === 0;
+  bar(318, STRINGS.hud.respect, G.respect / CONFIG.RESPECT.max,
+      G.respect < CONFIG.RESPECT.lowAt ? PAL.red : G.respect < 50 ? PAL.amber : PAL.green,
+      () => { if (!lowR) iconRocket(304, 7, G.respect < CONFIG.RESPECT.lowAt ? PAL.red : undefined); });
+  // carried items
+  let cx = 402;
+  if (G.player.pages > 0) { iconPage(cx, 7); drawText(vctx, "×" + G.player.pages, cx + 10, 9, 1, PAL.paper); cx += 30; }
+  if (G.player.floppy) iconFloppy(cx, 7);
+  // mute
+  const mtxt = A.muted ? STRINGS.hud.muteOff : STRINGS.hud.mute;
+  drawText(vctx, mtxt, VW - textW(mtxt) - 4, 9, 1, A.muted ? PAL.red : "#6d5a7a");
+}
+
+function drawToasts() {
+  let ty = HUDH + 24; // below the E-INVOFAK badge
+  for (const t of G.toasts) {
+    const a = t.t < 0.25 ? t.t / 0.25 : (t.dur - t.t < 0.4 ? (t.dur - t.t) / 0.4 : 1);
+    const w = textW(t.text) + 16;
+    const x = Math.round(MW / 2 - w / 2);
+    vctx.globalAlpha = clamp(a, 0, 1);
+    R(x, ty, w, 15, PAL.ink); R(x, ty, w, 1, PAL.yellow); R(x, ty + 14, w, 1, PAL.yellow);
+    drawText(vctx, t.text, x + 8, ty + 4, 1, PAL.yellow);
+    vctx.globalAlpha = 1;
+    ty += 19;
+  }
+}
+
+/* ======================= STATE SCREENS ================================== */
+function drawTitle() {
+  drawWorld();
+  drawUpgradePanel(1, true);
+  R(0, 0, VW, VH, "rgba(20,16,24,0.72)");
+  drawTextC(vctx, STRINGS.title.split(" ")[0], VW / 2, 42, 4, PAL.yellow);
+  drawTextC(vctx, STRINGS.title.split(" ")[1] || "", VW / 2, 78, 4, PAL.paper);
+  drawTextC(vctx, STRINGS.tagline, VW / 2, 122, 1, "#bda9cf");
+  drawTextC(vctx, STRINGS.office, VW / 2, 140, 1, "#8d7a9a");
+  drawTextC(vctx, STRINGS.country, VW / 2, 152, 1, "#8d7a9a");
+  const bw = 160, bh = 28, bx = VW / 2 - bw / 2, by = 178;
+  G.ui.startRect = { x: bx, y: by, w: bw, h: bh };
+  R(bx, by, bw, bh, PAL.yellow); R(bx + 3, by + 3, bw - 6, bh - 6, "#e8b83e");
+  drawTextC(vctx, STRINGS.start, VW / 2, by + 10, 1, PAL.ink);
+  if (Math.floor(G.t * 2) % 2 === 0) drawTextC(vctx, STRINGS.clickToStart, VW / 2, 222, 1, PAL.paper);
+  drawTextC(vctx, STRINGS.controls, VW / 2, VH - 32, 1, "#6d5a7a");
+  drawTextC(vctx, STRINGS.controls2, VW / 2, VH - 20, 1, "#6d5a7a");
+}
+
+function drawIntro() {
+  drawWorld();
+  drawUpgradePanel(1, true);
+  R(0, 0, VW, VH, "rgba(20,16,24,0.45)");
+  if (G.intro.i === 0) drawPhone(G.t, true);
+  const line = STRINGS.intro[G.intro.i];
+  if (!line) return;
+  const bx = 16, by = VH - 96, bw = VW - 32, bh = 86;
+  R(bx, by, bw, bh, PAL.ink);
+  R(bx, by, bw, 1, PAL.paper); R(bx, by + bh - 1, bw, 1, PAL.paper);
+  R(bx, by, 1, bh, PAL.paper); R(bx + bw - 1, by, 1, bh, PAL.paper);
+  drawPortrait(line.who, bx + 10, by + 12);
+  drawText(vctx, STRINGS.names[line.who], bx + 56, by + 9, 1, PAL.yellow);
+  const shown = line.text.slice(0, Math.floor(G.intro.chars));
+  wrapText(shown, bw - 72).slice(0, 5).forEach((l, i) =>
+    drawText(vctx, l, bx + 56, by + 24 + i * LINE_H, 1, PAL.paper));
+  if (Math.floor(G.t * 2) % 2 === 0)
+    drawText(vctx, STRINGS.advance, bx + bw - textW(STRINGS.advance) - 8, by + bh - 12, 1, "#8d7a9a");
+}
+
+function drawDaycard(text) {
+  R(0, 0, VW, VH, PAL.night);
+  drawTextC(vctx, text, VW / 2, VH / 2 - 10, 2, PAL.paper);
+}
+
+/* End of day: night screen with a summary. */
+function drawDayEnd() {
+  R(0, 0, VW, VH, "#100e1c");
+  for (let i = 0; i < 40; i++) { // stars (deterministic)
+    const sx = (i * 97 + G.day * 31) % VW, sy = (i * 53) % 120;
+    R(sx, sy, 1, 1, i % 3 ? "#8d7a9a" : "#f2ede4");
+  }
+  R(VW - 90, 30, 22, 22, "#f2edd0"); R(VW - 96, 30, 14, 20, "#100e1c"); // moon
+  drawTextC(vctx, tpl(STRINGS.dayEnd.title, G.day), VW / 2, 96, 2, PAL.yellow);
+  drawTextC(vctx, tpl(STRINGS.dayEnd.booked, G.bookedToday), VW / 2, 136, 1, PAL.paper);
+  drawTextC(vctx, tpl(STRINGS.dayEnd.left, G.s1.q.length + G.s2.q.length), VW / 2, 152, 1, PAL.paper);
+  drawTextC(vctx, STRINGS.dayEnd.flavor, VW / 2, 176, 1, "#8d7a9a");
+  if (Math.floor(G.t * 2) % 2 === 0)
+    drawTextC(vctx, STRINGS.dayEnd.next, VW / 2, 216, 1, PAL.green);
+}
+
+function drawTutorialOverlay() {
+  const step = TUT_STEPS[G.tut.step];
+  if (!step) return;
+  // the final banner ("YOUR SHIFT STARTS NOW") fades out smoothly instead of popping off
+  if (step.id === "done") vctx.globalAlpha = clamp(G.tut.bannerT / 0.8, 0, 1);
+  const lines = wrapText(step.text, MW - 90);
+  const bh = lines.length * LINE_H + (step.sub ? 12 : 0) + 12;
+  const by = VH - bh - 6;
+  R(30, by, MW - 60, bh, "rgba(20,16,24,0.92)");
+  R(30, by, MW - 60, 1, PAL.yellow); R(30, by + bh - 1, MW - 60, 1, PAL.yellow);
+  lines.forEach((l, i) => drawTextC(vctx, l, MW / 2, by + 6 + i * LINE_H, 1, PAL.paper));
+  if (step.sub) drawTextC(vctx, step.sub, MW / 2, by + 6 + lines.length * LINE_H + 3, 1, "#8d7a9a");
+  if (step.target) {
+    const s = ST[step.target];
+    const bob = Math.sin(G.t * 6) * 4;
+    const ax = s.hx, ay = (s.cy !== undefined ? s.cy : s.hy - 50) + bob;
+    R(ax - 2, ay, 4, 9, PAL.yellow);
+    R(ax - 6, ay + 9, 12, 3, PAL.yellow);
+    R(ax - 4, ay + 12, 8, 3, PAL.yellow);
+    R(ax - 2, ay + 15, 4, 2, PAL.yellow);
+  }
+  vctx.globalAlpha = 1;
+}
+
+function drawDying() {
+  drawWorld();
+  const d = G.dying;
+  // HUD and panel fade out with the scene instead of vanishing in a single frame
+  const uiA = clamp(1 - d.t / 0.6, 0, 1);
+  if (uiA > 0) {
+    vctx.globalAlpha = uiA;
+    drawHUD();
+    vctx.globalAlpha = 1;
+    drawUpgradePanel(uiA);
+  }
+  vctx.globalAlpha = Math.min(0.75, d.t * 0.6);
+  R(0, 0, VW, VH, PAL.night);
+  vctx.globalAlpha = 1;
+  if (d.t > 0.5) {
+    drawTextC(vctx, STRINGS.gameOverTitle, VW / 2, 100, 3, PAL.red);
+    const causeTxt = d.cause === "stress" ? STRINGS.causes.stress
+                   : d.cause === "heart"  ? STRINGS.causes.heart : STRINGS.causes.energy;
+    drawTextC(vctx, causeTxt, VW / 2, 142, 1, PAL.paper);
+  }
+  if (d.t > 1.1) drawTextC(vctx, d.line, VW / 2, 160, 1, "#bda9cf");
+}
+
+function drawPausedOverlay() {
+  R(0, 0, VW, VH, "rgba(20,16,24,0.7)");
+  drawTextC(vctx, STRINGS.paused, VW / 2, VH / 2 - 18, 2, PAL.paper);
+  drawTextC(vctx, STRINGS.pausedSub, VW / 2, VH / 2 + 8, 1, "#8d7a9a");
+}
+
+function drawTeaser() {
+  drawWorld();
+  drawUpgradePanel(1, true);
+  R(0, 0, VW, VH, "rgba(20,16,24,0.72)");
+  drawTextC(vctx, "🧾", VW / 2, VH / 2 - 60, 1, PAL.paper); // (emoji not in font; harmless)
+  drawTextC(vctx, STRINGS.teaser.h1, VW / 2, VH / 2 - 8, 2, PAL.yellow);
+  drawTextC(vctx, STRINGS.teaser.sub, VW / 2, VH / 2 + 18, 1, "#bda9cf");
+}
+
+/* Game-over screen on the canvas: stats grid + [R] PLAY AGAIN. No data capture. */
+function drawConversion() {
+  drawWorld();
+  drawUpgradePanel(1, true);
+  R(0, 0, VW, VH, "rgba(20,16,24,0.82)");
+  const cx = VW / 2;
+  drawTextC(vctx, STRINGS.gameOverTitle, cx, 40, 3, PAL.red);
+  drawTextC(vctx, G.dying.line, cx, 78, 1, "#bda9cf");
+  const S = STRINGS.conv;
+  const rows = [
+    [S.statDays, String(G.lastRun.day)],
+    [S.statTime, fmtTime(G.lastRun.seconds)],
+    [S.statBooked, String(G.lastRun.booked)],
+    [S.statCoffee, String(G.coffees)],
+    [S.statMeters, String(Math.round(G.walkedCarry / TILE))],
+    [S.statRespect, G.lastRun.respect + "%"],
+  ];
+  // 2 columns × 3 rows of stat cells
+  const cellW = 150, cellH = 34, gap = 8, cols = 2;
+  const gridW = cols * cellW + gap, x0 = Math.round(cx - gridW / 2), y0 = 100;
+  rows.forEach(([label, val], i) => {
+    const cxCell = x0 + (i % cols) * (cellW + gap);
+    const cyCell = y0 + Math.floor(i / cols) * (cellH + gap);
+    R(cxCell, cyCell, cellW, cellH, "#141018");
+    R(cxCell, cyCell, cellW, 1, "#6d5a7a"); R(cxCell, cyCell + cellH - 1, cellW, 1, "#6d5a7a");
+    R(cxCell, cyCell, 1, cellH, "#6d5a7a"); R(cxCell + cellW - 1, cyCell, 1, cellH, "#6d5a7a");
+    drawText(vctx, val, cxCell + 8, cyCell + 7, 2, PAL.yellow);
+    drawText(vctx, label, cxCell + 8, cyCell + 24, 1, "#bda9cf");
+  });
+  drawTextC(vctx, S.kicker, cx, y0 + 3 * (cellH + gap) + 6, 1, "#8d7a9a");
+  if (Math.floor(G.t * 2) % 2 === 0)
+    drawTextC(vctx, S.again, cx, VH - 22, 1, PAL.green);
+}
+
+/* ============================ MAIN DRAW =============================== */
+function draw() {
+  vctx.fillStyle = PAL.night; vctx.fillRect(0, 0, VW, VH);
+  switch (G.state) {
+    case "TITLE":   drawTitle(); break;
+    case "INTRO":   drawIntro(); drawHUD(); break;
+    case "DAYCARD": drawDaycard(G.daycardText || tpl(STRINGS.dayCard, G.day)); break;
+    case "DAYEND":  drawDayEnd(); break;
+    case "TEASER":  drawTeaser(); break;
+    case "TUTORIAL":
+    case "RUN":
+      drawWorld(); drawHUD(); drawToasts();
+      drawUpgradePanel();
+      if (G.mode === "tutorial") drawTutorialOverlay();
+      if (G.stress > CONFIG.UI.vignetteFrom) {
+        vctx.globalAlpha = clamp((G.stress - CONFIG.UI.vignetteFrom) / (CONFIG.STRESS.max - CONFIG.UI.vignetteFrom), 0, 1) * 0.8;
+        vctx.drawImage(vignette, 0, 0);
+        vctx.globalAlpha = 1;
+      }
+      if ((G.chaos || G.stress >= 70) && Math.random() < 0.05)
+        R(0, 0, VW, VH, "rgba(240,240,220,0.08)");
+      drawCallPanel();
+      if (G.paused) drawPausedOverlay();
+      break;
+    case "DYING":   drawDying(); break;
+    case "CONVERSION": drawConversion(); break;
+  }
+  const sh = G.shake > 0 ? Math.ceil(G.shake * 8) : 0;
+  const ox = sh ? randI(-sh, sh) : 0, oy = sh ? randI(-sh, sh) : 0;
+  ctx.fillStyle = PAL.night; ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(view, 0, 0, VW, VH, ox * 2, oy * 2, canvas.width, canvas.height);
+}
+</script><script>
+"use strict";
+/* ============================== TUTORIAL ================================ */
+const TUT_STEPS = [
+  { id:"move",   text:STRINGS.tutorial.move, sub:STRINGS.tutorial.moveSub,
+    enter(){ G.tut.movedFrom = { x:G.player.x, y:G.player.y }; },
+    done(){ return dist2(G.player.x, G.player.y, G.tut.movedFrom.x, G.tut.movedFrom.y) > 60 * 60; } },
+  { id:"print",  text:STRINGS.tutorial.print, target:"s1",
+    enter(){ G.s1.q.push({ born:0 }, { born:0 }); A.sDing(); },
+    done(){ return G.player.pages >= 2 || (G.player.pages >= 1 && G.s1.q.length === 0); } },
+  { id:"type",   text:STRINGS.tutorial.type, sub:STRINGS.tutorial.typeSub, target:"s3",
+    done(){ return G.typed >= 2; } },
+  { id:"floppy", text:STRINGS.tutorial.floppy, target:"s3",
+    done(){ return G.player.floppy || G.s4.q > 0 || G.desk.reports > 0; } },
+  { id:"zoe",    text:STRINGS.tutorial.zoe, target:"s4",
+    done(){ return G.s4.q > 0 || G.desk.reports > 0; } },
+  { id:"stamp",  text:STRINGS.tutorial.stamp, target:"desk",
+    done(){ return G.booked >= CONFIG.TUTORIAL.floppyEvery; } },
+  { id:"phone",  text:STRINGS.tutorial.phone, target:"phone",
+    enter(){ G.phone.ringing = true; G.phone.ringT = 0; G.phone.sfxT = 0; },
+    done(){ return G.phoneAnswered && !G.phone.call; } },
+  { id:"coffee", text:STRINGS.tutorial.coffee, target:"coffee",
+    enter(){ G.energy = 25; },
+    done(){ return G.energy > 60; } },
+  { id:"done",   text:STRINGS.tutorial.done, sub:STRINGS.tutorial.doneSub,
+    enter(){ G.tut.bannerT = 2.5; A.sJingle(); },
+    done(){ return false; } },
+];
+
+function startTutorial() {
+  resetRun();
+  G.mode = "tutorial";
+  G.state = "TUTORIAL";
+  G.barShownAt = G.t; // upgrade panel visible (and active) from the start of the tutorial
+  G.tut = { step: 0, movedFrom: null, bannerT: 0 };
+  for (const s of TUT_STEPS) s.entered = false;
+  showSkip(true);
+}
+function updateTutorial(dt) {
+  const s = TUT_STEPS[G.tut.step];
+  if (!s) return;
+  if (!s.entered) { s.entered = true; if (s.enter) s.enter(); }
+  if (s.id === "done") {
+    G.tut.bannerT -= dt;
+    if (G.tut.bannerT <= 0) finishTutorial(true);
+    return;
+  }
+  if (s.done()) { G.tut.step++; A.sPop(); }
+}
+function finishTutorial(completed) {
+  showSkip(false);
+  // SKIP/X during the final banner = tutorial completed anyway (don't wipe purchases/position)
+  const s = TUT_STEPS[G.tut.step];
+  if (s && s.id === "done") completed = true;
+  if (!completed) { startRun(); return; }   // SKIP mid-lesson = fresh shift from scratch
+  track("tutorial_complete", {});
+  track("game_start", {});
+  // Smooth transition: world, position and counters stay — only the shift
+  // clock, invoice spawner and phone restart. No teleport, no jump.
+  G.mode = "run";
+  G.state = "RUN";
+  G.runT = 0;                                // events (EVENTS/CHAD_AFTER) count from 9:00
+  G.dayT = 0; G.spawnT = 0;
+  G.coffeeStreak = 0;                        // tutorial coffee doesn't count toward the streak
+  G.burst = [];                              // frozen tutorial-phone "promises" don't dump at 9:00
+  G.phone.nextAt = rand(CONFIG.PHONE.min, CONFIG.PHONE.max) * CONFIG.PHONE.firstMul;
+}
+
+/* ============================ INTRO / DAYCARD =========================== */
+function startIntro() {
+  A.init(); A.resume();
+  input.capture = true;
+  canvas.focus({ preventScroll: true });
+  G.state = "INTRO";
+  G.intro = { i: 0, chars: 0, ringT: 0 };
+  showSkip(true);
+}
+function advanceIntro() {
+  const line = STRINGS.intro[G.intro.i];
+  if (!line) return gotoDaycard();
+  if (G.intro.chars < line.text.length) { G.intro.chars = line.text.length; return; }
+  G.intro.i++; G.intro.chars = 0;
+  if (G.intro.i >= STRINGS.intro.length) gotoDaycard();
+}
+function updateIntro(dt) {
+  G.intro.chars += dt * CONFIG.UI.introCps;
+  if (G.intro.i === 0) {
+    G.intro.ringT -= dt;
+    if (G.intro.ringT <= 0) { A.sRing(); G.intro.ringT = 2; }
+  }
+  if (input.just.has(" ") || input.just.has("enter")) advanceIntro();
+}
+function gotoDaycard() {
+  G.state = "DAYCARD";
+  G.daycardT = CONFIG.UI.daycardDur;
+  G.daycardText = tpl(STRINGS.dayCard, 1);
+  G.daycardNext = "tutorial";
+  showSkip(false);
+  A.sJingle();
+}
+
+/* ========================== GAME OVER → CONVERSION ======================= */
+/* No DOM, no data capture. The game-over screen is drawn on the canvas
+   (drawConversion); an embedding page may overlay its own popup. */
+function showConversion() {
+  G.state = "CONVERSION";
+}
+
+/* ============================== DOM / UI ================================ */
+function showSkip(on) {
+  const b = document.getElementById("skipBtn");
+  if (on) b.classList.remove("hidden"); else b.classList.add("hidden");
+}
+
+function populateDom() {
+  const $ = id => document.getElementById(id);
+  $("skipBtn").textContent = STRINGS.skip;
+  $("skipBtn").addEventListener("click", () => {
+    if (G.state === "INTRO") gotoDaycard();
+    else if (G.state === "TUTORIAL") finishTutorial(false);
+  });
+}
+
+/* ============================ TEASER (TOUCH) ============================ */
+function startTeaser() {
+  G.state = "TEASER";
+  for (let i = 0; i < 9; i++) G.s1.q.push({ born: 0 });
+  for (let i = 0; i < 7; i++) G.s2.q.push({ born: 0 });
+  G.desk.reports = 6;
+  G.phone.ringing = true;
+  G.player.pages = 4;
+  track("game_start", { touch: true });
+}
+function updateTeaser(dt) {
+  const p = G.player;
+  p.x = 225 + Math.sin(G.t * 0.9) * 128;
+  p.y = 180 + Math.sin(G.t * 1.8) * 12;
+  p.dir = Math.cos(G.t * 0.9) < 0 ? "left" : "right";
+  p.moving = true; p.animT = G.t;
+  if (Math.random() < 0.06) addPart("paper", rand(30, MW - 30), rand(HUDH + 10, 130));
+  updateParts(dt);
+}
+
+/* ============================ MAIN LOOP ============================== */
+function update(dt) {
+  G.t += dt;
+  if (input.just.has("m")) { A.setMuted(!A.muted); }
+
+  // buy upgrade levels with keys 1-6 (in run and tutorial)
+  if (!G.paused && (G.state === "RUN" || G.state === "TUTORIAL"))
+    for (let i = 0; i < UPGRADES.length; i++)
+      if (input.just.has(String(i + 1))) shopBuy(i);
+
+  if ((input.just.has("p") || input.just.has("escape")) && (G.state === "RUN" || G.state === "TUTORIAL")) {
+    G.paused = !G.paused; G.pausedByBlur = false;
+    if (G.paused) clearKeys();
+  }
+  if (input.just.has("x") && (G.state === "INTRO" || G.state === "TUTORIAL")) {
+    if (G.state === "INTRO") gotoDaycard(); else finishTutorial(false);
+  }
+  if (input.just.has("r") && G.state === "CONVERSION") startRun();
+
+  switch (G.state) {
+    case "TITLE":
+      if (input.just.has("enter")) startIntro();
+      updateParts(dt);
+      break;
+    case "INTRO":  updateIntro(dt); break;
+    case "DAYCARD":
+      G.daycardT -= dt;
+      if (G.daycardT <= 0) {
+        if (G.daycardNext === "tutorial") startTutorial();
+        else G.state = "RUN";
+      }
+      break;
+    case "DAYEND":
+      G.dayEndT += dt;
+      updateParts(dt);
+      if (input.just.has(" ") || input.just.has("enter") || G.dayEndT > CONFIG.DAY.endPause) startMorning();
+      break;
+    case "TUTORIAL":
+      if (!G.paused) { updateRun(dt); updateTutorial(dt); }
+      break;
+    case "RUN":
+      if (!G.paused) updateRun(dt);
+      break;
+    case "DYING":
+      G.dying.t += dt;
+      updateParts(dt);
+      if (G.dying.t > CONFIG.UI.dyingDelay) showConversion();
+      break;
+    case "CONVERSION": updateParts(dt); break;
+    case "TEASER": updateTeaser(dt); break;
+  }
+  if (!G.paused && G.state !== "TEASER") A.musicUpdate(stressTier());
+}
+
+let lastTs = 0;
+function frame(ts) {
+  requestAnimationFrame(frame);
+  const dt = Math.min(0.05, (ts - lastTs) / 1000 || 0);
+  lastTs = ts;
+  update(dt);
+  draw();
+  input.just.clear();
+}
+
+/* ========================= INPUT EVENTS ============================ */
+canvas.addEventListener("click", e => {
+  if (G.state === "TEASER") return;
+  A.init(); A.resume();
+  canvas.focus({ preventScroll: true });
+  if (G.state === "TITLE") { startIntro(); return; }
+  if (G.state === "INTRO") { advanceIntro(); return; }
+  if ((G.state === "RUN" || G.state === "TUTORIAL") && G.paused) { G.paused = false; G.pausedByBlur = false; }
+});
+window.addEventListener("blur", () => {
+  if (G.state === "RUN" || G.state === "TUTORIAL") { G.paused = true; G.pausedByBlur = true; }
+  clearKeys();
+});
+/* Commands from the player (parent page) in embed mode. */
+window.addEventListener("message", e => {
+  const d = e && e.data;
+  if (!EMBED || !d || d.source !== "hm-player") return;
+  if (d.cmd === "restart" && (G.state === "CONVERSION" || G.state === "DYING")) startRun();
+});
+document.addEventListener("visibilitychange", () => {
+  if (document.visibilityState === "hidden" && (G.state === "RUN" || G.state === "TUTORIAL")) {
+    G.paused = true; G.pausedByBlur = true; clearKeys();
+  }
+});
+
+/* ================================ BOOT ================================== */
+function boot() {
+  prerenderMap();
+  prerenderVignette();
+  populateDom();
+  const touchOnly = (() => {
+    try {
+      return window.matchMedia && window.matchMedia("(pointer: coarse)").matches &&
+             !window.matchMedia("(any-pointer: fine)").matches;
+    } catch (e) { return false; }
+  })();
+  if (touchOnly) startTeaser();
+  requestAnimationFrame(frame);
+}
+boot();
+
+/* QA/debug handle (also used by automated tests). */
+window.__HM__ = { G, CONFIG, STRINGS, PHONE_QA, UPGRADES, FONT, A, input, ST, shopBuy,
+  startIntro, startTutorial, startRun, finishTutorial, gotoDaycard, advanceIntro,
+  showConversion, startMorning, enterDayEnd, die, update, draw,
+  isEmbed: () => EMBED, setEmbed: v => { EMBED = !!v; } };
+</script>
+</body>
+</html>

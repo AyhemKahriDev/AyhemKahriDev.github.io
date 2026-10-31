@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang = "en-ca" dir = "ltr">
+
+<head>
+
+    <meta charset = "UTF-8">
+    <meta name = "viewport" content = "width = device-width, initial-scale = 1.0">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <title>Game of Fifteen – Play 15 Puzzle Online</title>
+    <meta name = "description" content = "Game of Fifteen is a classic combination puzzle where you need to slide tiles to arrange numbers from 1 to 15. Now you can play the famous 15 Puzzle online.">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Mansalva&family=Open+Sans:wght@400;700&display=swap">
+    <link rel = "stylesheet" href = "css/styles.css">
+    <script type = "text/javascript" src = "js/script.js" defer></script>
+
+</head>
+
+<body class = "body">
+
+        <a class="screen-reader-text" href="javascript:document.getElementById('play').focus()" dir = "ltr">Skip menu to playing</a>
+
+        <div class = "nav-shadow"></div>
+
+        <nav>
+            <div class = "nav-wrapper">
+                <button class = "menu-button">
+                    <div class = "hamburger"></div>
+                </button>
+
+                <div class = "nav-overlay">
+                    <ul>
+                        <li>
+                            <a class = "menu-item" href = "#about">About the Game</a>
+                        </li>
+                        <li>
+                            <a class = "menu-item" href = "#how-to">How to Play</a>
+                        </li>
+                    </ul>
+                </div><!-- .nav-overlay -->    
+
+                <div class = "theme-button">
+                    <span class = "theme-oval"></span>
+                    <button class = "theme-circle"></button>
+                </div>
+            </div><!-- .nav-wrapper -->
+        </nav>
+
+    <div class = "content-wrapper">
+
+        <header>        
+            <h1>Game<span class = "accent">of</span>Fifteen</h1>
+        </header>
+
+        <main>
+            <section>
+                <div class = "field anchor" id = "play" tabindex = "0">
+
+                    <div class = "background">
+                        <span id = "b1"></span>
+                        <span id = "b2"></span>
+                        <span id = "b3"></span>
+                        <span id = "b4"></span>
+                        <span id = "b5"></span>
+                        <span id = "b6"></span>
+                        <span id = "b7"></span>
+                        <span id = "b8"></span>
+                        <span id = "b9"></span>
+                        <span id = "b10"></span>
+                        <span id = "b11"></span>
+                        <span id = "b12"></span>
+                        <span id = "b13"></span>
+                        <span id = "b14"></span>
+                        <span id = "b15"></span>
+                        <span id = "b16"></span>
+                    </div><!-- .background -->
+
+                    <div class = "tiles-container">
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                        <span class = "tile tile-load"><p class = "tile-text"></p></span>
+                    </div><!-- .tiles-->
+
+                    <div class = "win-alert">
+                        <button class = "alert-cross">
+                            <div class = "cross"></div>
+                        </button>
+                        <p id = "alert-text"></p>
+                        <button class = "btn btn-play-again">Play again</button>
+                    </div><!-- .win-alert -->
+
+                </div><!-- #field -->
+
+                <div class = "buttons">
+                    <button class = "btn btn-solved">See solved</button>
+                    <button class = "btn btn-scramble">Scramble</button>    
+                </div>
+
+            </section>
+
+            <section id = "about">
+                <h2 class = "anchor">About the Game</h2>
+                <p>Game of Fifteen is a classic combination puzzle. Originally called Gem Puzzle, it was a wooden box with 15 numbered tiles.</p>
+                <p>The game became a hit in the 1880s when a prize was offered for solving the puzzle. However, not everybody knew back then that some tile combinations are 
+                    <a href = "https://en.wikipedia.org/wiki/15_puzzle#Solvability"  target="_blank rel="noopener noreferrer">impossible</a> to solve.</p>
+                <p>Now you can play 15 Puzzle online and be sure that it is solvable!</p>
+            </section>
+
+            <section id = "how-to">
+                <h2 class = "anchor">How to Play</h2>
+                <p>The goal of Fifteen Puzzle is to arrange the tiles from 1 to 15 by sliding them one by one into the empty space on the board.</p>
+                <p>The puzzle is considered solved when tile 1 is in the top left corner, tile 2 is to the right of it, and so on, with the empty space on the bottom right.</p>
+                <p>To move a tile into the empty space, you can click on it, or tab to the playing area and use the arrow keys on your keyboard. Tiles can only move vertically or horizontally.</p>
+            </section>
+
+        </main>
+    </div><!-- .content-wrapper -->
+
+    <footer>
+        <small><a href = "https://dariatsvetkova.ca/"  target="_blank rel="noopener noreferrer">&copy; Daria Tsvetkova, <span id = "year" /></a></small>
+    </footer>
+
+    <script type="text/javascript">
+        document.getElementById("year").innerHTML = (new Date).getFullYear();
+    </script>
+
+</body>
+</html>

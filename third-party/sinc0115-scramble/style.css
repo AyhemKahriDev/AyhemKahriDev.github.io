@@ -1,0 +1,118 @@
+/* *******************
+     PAGE STYLING 
+******************* */
+[v-cloak] {
+    display: none;
+}
+
+h1, h2, p {
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+
+h1 {
+    float: none; 
+}
+
+.top-head {
+   display: block; 
+   text-align: center;
+}
+
+.top-btns {
+    margin: 1rem;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: nowrap !important; 
+}
+
+
+/* *******************
+     SCORE CARDS
+******************* */
+.card {
+    padding-top: 1rem;
+}
+
+.points, .strikes, .passes {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.points h2, .strikes h2, .passes h2 {
+    font-size: 1.2rem;
+}
+
+
+/* *******************
+     SCRAMBLE 
+******************* */
+.scramble {
+    font-size: 3rem;
+    text-align: center;
+    margin: 2rem 0;
+    padding: 4rem 0;
+    width: 100%;
+    background-color: aliceblue;
+}
+
+
+/* ********************
+    GUESS FORM
+******************** */
+small {
+    text-align: center;
+}
+
+#pass, #guess button{
+    width: 5rem;
+}
+
+.disableBtn {
+    background-color: lightgray !important;
+    color: grey !important;
+}
+
+.disableBtn:hover {
+    cursor: not-allowed !important;
+    background-color: #dedede !important;
+    animation: 2s headShake !important;
+}
+
+
+/* ********************
+    MEDIA QUERIES
+******************** */
+ /* Small devices (landscape phones, 576px and up) */
+/* @media (min-width: 576px) { 
+
+ } */
+
+ /* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) { 
+    h1 {
+        float: left;
+        display: block;
+    }
+
+    .top-head {
+        display: inline-flex;
+        text-align: left;
+    }
+
+    .top-btns {
+        display: inline-flex;
+        margin: 0;
+        float: right;
+    }
+
+    .scramble {
+        font-size: 4rem;
+    }
+ }
+
+/* Large devices (desktops, 992px and up)
+@media (min-width: 992px) { ... }
+
+ Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) { ... } */ 

@@ -1,0 +1,51 @@
+{
+  "name": "prime-tetris",
+  "version": "1.0.0",
+  "description": "Prime Tetris - a neon arcade puzzle game by Maximus Prime Software",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dev": "electron .",
+    "check": "node --check main.js && node --check preload.js && node --check copy-build.js && node --check convert-icon.js",
+    "build": "electron-builder --win",
+    "deploy": "node copy-build.js"
+  },
+  "author": {
+    "name": "Maximus Prime",
+    "email": "maximusprimesoftware@gmail.com",
+    "url": "https://github.com/MaximusPrime"
+  },
+  "contributors": [
+    {
+      "name": "Maximus Prime Software",
+      "email": "maximusprimesoftware@gmail.com",
+      "url": "https://maximusprimesoftware.pages.dev/"
+    }
+  ],
+  "homepage": "https://maximusprimesoftware.pages.dev/projects/primetetris/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MaximusPrime/PrimeTetris.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MaximusPrime/PrimeTetris/issues",
+    "email": "maximusprimesoftware@gmail.com"
+  },
+  "license": "MIT",
+  "build": {
+    "appId": "com.prime.tetris",
+    "productName": "Prime Tetris",
+    "copyright": "Copyright © 2026 Maximus Prime Software",
+    "win": {
+      "target": [
+        "portable",
+        "nsis"
+      ],
+      "icon": "icon.ico"
+    }
+  },
+  "devDependencies": {
+    "electron": "^43.2.0",
+    "electron-builder": "^26.15.7"
+  }
+}

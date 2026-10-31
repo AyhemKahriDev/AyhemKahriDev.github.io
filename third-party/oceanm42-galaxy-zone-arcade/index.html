@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Sal's Galaxy Zone — Three Locations</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --bg: #07070c;
+      --panel: #12121c;
+      --white: #eaf6ff;
+      --cyan: #00f0ff;
+      --magenta: #ff2ec4;
+      --lime: #39ff6a;
+      --yellow: #ffe600;
+      --violet: #a94dff;
+      --font: 'Press Start 2P', 'Courier New', monospace;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: var(--bg);
+      color: var(--white);
+      font-family: var(--font);
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+    #starfield { position: fixed; inset: 0; z-index: 0; }
+    .wrap { position: relative; z-index: 1; max-width: 1200px; margin: 0 auto; padding: 3rem 1.5rem 4rem; }
+
+    header { text-align: center; margin-bottom: .75rem; }
+    .sign {
+      font-size: clamp(1.05rem, 4vw, 2rem);
+      color: var(--cyan);
+      text-shadow: 0 0 8px currentColor, 0 0 24px currentColor, 0 0 2px #fff;
+      line-height: 1.6;
+      animation: hum 3.2s ease-in-out infinite;
+    }
+    @keyframes hum { 0%,100% { opacity: 1; } 50% { opacity: .88; } }
+    .tagline {
+      margin-top: 1.1rem;
+      font-size: clamp(.55rem, 1.8vw, .75rem);
+      color: var(--white);
+      opacity: .75;
+      line-height: 1.9;
+    }
+
+    .street {
+      margin-top: 3rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.6rem;
+      align-items: stretch;
+    }
+    @media (max-width: 900px) { .street { grid-template-columns: 1fr; max-width: 460px; margin-left: auto; margin-right: auto; } }
+
+    .store {
+      display: block;
+      text-decoration: none;
+      color: var(--white);
+      background: var(--panel);
+      border: 1px solid rgba(234,246,255,.14);
+      border-radius: 14px;
+      overflow: hidden;
+      transition: transform .18s ease, box-shadow .18s ease;
+      position: relative;
+    }
+    .store:hover, .store:focus-visible {
+      transform: translateY(-6px);
+      box-shadow: 0 0 0 1px var(--store-accent), 0 10px 44px -8px var(--store-accent);
+      outline: none;
+    }
+    .awning {
+      height: 26px;
+      background: repeating-linear-gradient(90deg, var(--store-accent) 0 22px, #0a0a14 22px 44px);
+      opacity: .85;
+      border-bottom: 1px solid rgba(234,246,255,.18);
+    }
+    .marquee {
+      text-align: center;
+      padding: 1.05rem .75rem .9rem;
+      border-bottom: 1px solid rgba(234,246,255,.12);
+      background: linear-gradient(180deg, rgba(234,246,255,.05), transparent);
+    }
+    .marquee .era { font-size: .58rem; letter-spacing: .12em; color: var(--store-accent); text-shadow: 0 0 10px var(--store-accent); }
+    .marquee h2 { font-size: .95rem; margin-top: .6rem; line-height: 1.5; }
+    .door {
+      margin: 1.2rem auto 0;
+      width: 92px; height: 118px;
+      border: 2px solid var(--store-accent);
+      border-radius: 8px 8px 0 0;
+      position: relative;
+      box-shadow: 0 0 18px -4px var(--store-accent), inset 0 0 26px -8px var(--store-accent);
+      background:
+        radial-gradient(60px 40px at 50% 20%, rgba(234,246,255,.12), transparent 70%),
+        #0a0a14;
+    }
+    .door::after {
+      content: 'OPEN';
+      position: absolute; top: 42%; left: 50%; transform: translate(-50%,-50%);
+      font-size: .5rem; color: var(--store-accent);
+      text-shadow: 0 0 8px var(--store-accent);
+      animation: hum 2.1s ease-in-out infinite;
+    }
+    .plaque {
+      padding: 1.1rem 1.1rem 1.35rem;
+      font-size: .55rem;
+      line-height: 2.1;
+      color: rgba(234,246,255,.82);
+      text-align: center;
+    }
+    .plaque .model { color: var(--store-accent); }
+    .badge {
+      display: inline-block;
+      margin-top: .65rem;
+      font-size: .45rem; padding: .45em .7em;
+      border: 1px solid var(--yellow); border-radius: 6px;
+      color: var(--yellow); background: #07070c;
+      letter-spacing: .08em;
+      box-shadow: 0 0 10px rgba(255,230,0,.35);
+    }
+    footer { margin-top: 3.5rem; text-align: center; font-size: .52rem; line-height: 2.2; opacity: .7; }
+    footer a { color: var(--cyan); }
+    @media (prefers-reduced-motion: reduce) {
+      .sign, .door::after { animation: none !important; }
+      .store { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="starfield" aria-hidden="true"></canvas>
+  <div class="wrap">
+    <header>
+      <h1 class="sign">SAL'S GALAXY ZONE</h1>
+      <p class="tagline">Three locations. One keeper of the high score.<br>Pick a door and step inside — every arcade still runs.</p>
+    </header>
+
+    <main class="street" aria-label="Arcade locations">
+
+      <a class="store" href="arcades/2025-08/index.html" style="--store-accent: var(--lime)">
+        <div class="awning"></div>
+        <div class="marquee">
+          <div class="era">AUG 2025 &middot; LOCATION No. 1</div>
+          <h2>The Original</h2>
+        </div>
+        <div class="door"></div>
+        <div class="plaque">
+          15 cabinets &middot; one afternoon of vibe coding<br>
+          Built with <span class="model">Claude</span><br>
+          <span style="opacity:.65">(model lost to the register tape)</span>
+        </div>
+      </a>
+
+      <a class="store" href="arcades/2026-03/index.html" style="--store-accent: var(--magenta)">
+        <div class="awning"></div>
+        <div class="marquee">
+          <div class="era">MAR 2026 &middot; LOCATION No. 2</div>
+          <h2>The Second Location</h2>
+        </div>
+        <div class="door"></div>
+        <div class="plaque">
+          15 cabinets &middot; plus one locked in the back<br>
+          Built with <span class="model">Claude Opus 4.6</span>
+        </div>
+      </a>
+
+      <a class="store" href="arcades/2026-07/index.html" style="--store-accent: var(--violet)">
+        <div class="awning"></div>
+        <div class="marquee">
+          <div class="era">JUL 2026 &middot; LOCATION No. 3</div>
+          <h2>The Remodel</h2>
+          <span class="badge">&#9733; FLAGSHIP</span>
+        </div>
+        <div class="door"></div>
+        <div class="plaque">
+          16 cabinets &middot; one power grid &middot; a crew of robots<br>
+          Built with <span class="model">Claude Fable</span>
+        </div>
+      </a>
+
+    </main>
+
+    <footer>
+      <p>Est. 1978, Portland &middot; digital since 2025 &middot; remodeled 2026</p>
+      <p>&copy; 2026 Sal 'Pixel' Martinez &middot; <a href="https://github.com/oceanm42/galaxy-zone-arcade">View on GitHub</a></p>
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      'use strict';
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var canvas = document.getElementById('starfield');
+      if (!canvas || !canvas.getContext) return;
+      var ctx = canvas.getContext('2d');
+      var w = 0, h = 0, stars = [], raf = null, visible = !document.hidden;
+
+      function resize() { w = canvas.width = window.innerWidth; h = canvas.height = window.innerHeight; }
+      function seed() {
+        stars = [];
+        var n = Math.max(50, Math.floor(w * h / 9000));
+        for (var i = 0; i < n; i++) stars.push({ x: Math.random() * w, y: Math.random() * h, z: Math.random() * .8 + .2, r: Math.random() * 1.3 + .3 });
+      }
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          ctx.globalAlpha = .2 + s.z * .6;
+          ctx.fillStyle = '#eaf6ff';
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
+      function tick() {
+        if (!visible) return;
+        for (var i = 0; i < stars.length; i++) {
+          var s = stars[i];
+          s.y += s.z * .16;
+          if (s.y > h) { s.y = -2; s.x = Math.random() * w; }
+        }
+        draw();
+        raf = window.requestAnimationFrame(tick);
+      }
+      resize(); seed(); draw();
+      if (!reduce) raf = window.requestAnimationFrame(tick);
+      window.addEventListener('resize', function () { resize(); seed(); draw(); });
+      document.addEventListener('visibilitychange', function () {
+        visible = !document.hidden;
+        if (visible) { if (!reduce && !raf) raf = window.requestAnimationFrame(tick); }
+        else if (raf) { window.cancelAnimationFrame(raf); raf = null; }
+      });
+    })();
+  </script>
+</body>
+</html>

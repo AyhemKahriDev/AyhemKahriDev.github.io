@@ -1,0 +1,12 @@
+# parzibyte/hangman-javascript - vendored third-party game
+
+- **Repository:** https://github.com/parzibyte/hangman-javascript
+- **Author:** parzibyte
+- **Licence:** MIT (see LICENSE in this folder)
+- **Vendored by:** arcadefork (Ayhem Kahri)
+
+The original MIT licence text ships in this folder and applies to its contents.
+
+## Local repairs
+
+- `index.html`: inserted a starter word list (the game has no word list until the player builds one)

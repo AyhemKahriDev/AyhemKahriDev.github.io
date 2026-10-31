@@ -1,0 +1,45 @@
+{
+  "name": "spielkunst — free browser games",
+  "short_name": "spielkunst",
+  "description": "551 free browser games that start instantly. No download, no sign-up, no paywall.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#08090a",
+  "theme_color": "#08090a",
+  "categories": [
+    "games",
+    "entertainment"
+  ],
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Today's word search",
+      "url": "/games/wordsearch/"
+    },
+    {
+      "name": "All games",
+      "url": "/games/"
+    }
+  ]
+}

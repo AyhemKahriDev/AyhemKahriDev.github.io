@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>How I Did It: Vortex — Sal's Galaxy Zone Arcade</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link rel="icon" href="../../favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="../../css/arcade.css">
+</head>
+<body>
+  <article class="gz-story">
+    <h1>How I Did It: Vortex</h1>
+    <p class="gz-story-byline">by Sal, Galaxy Zone Arcade</p>
+
+    <h2>Sal remembers the original cabinet</h2>
+    <p>
+      This is the cabinet that never shipped. Well — it shipped. It just
+      never worked. I ordered it in the fall of '81, paid extra for freight,
+      and it showed up on my dock with the monitor board rattling around
+      loose inside like a dropped casserole. The distributor and I yelled at
+      each other over the phone for two months, then he went out of
+      business, and I was left holding a beautiful cabinet with a dead
+      screen. Couldn't fix it — that thing used a vector monitor, nothing
+      like the tubes in my other machines, and parts were unicorn feathers.
+      So it sat. Under a tarp, back of the storage unit, from '81 until
+      about a month ago. Forty-five years. Joystick slept on it for at
+      least ten of those. Kids used to peek under the tarp and ask what it
+      was, and I'd say "that's the best game in the building, and nobody's
+      ever going to play it." Thought I was being funny. It just made me
+      sad, honestly.
+    </p>
+
+    <h2>What the remodel changed</h2>
+    <p>
+      Everything, because there was nothing. This is the only machine on
+      the floor I never once saw run — I built it from the flyer, the
+      manual, and forty-five years of imagining what the screen looked
+      like. The whole game is a wireframe well you stand on the edge of,
+      and everything crawls up out of the deep end toward you. The trick,
+      the robots tell me, is there's no real 3D in it at all: the far end
+      of the well is just the same shape drawn small and nudged up toward
+      a vanishing point, and everything in between is drawn along the
+      lines connecting the two. Same lie the original told, near as I can
+      figure. All the movement runs on the fixed clock like the rest of
+      the remodel, the screen shakes when you go down, and when you clear
+      a level the camera dives straight down the well — that part makes
+      my stomach drop a little every time, which I take to mean it's
+      working.
+    </p>
+
+    <h2>The spell that did it</h2>
+    <div class="gz-prompt-box">Build me the tube shooter — the one from '81 with the wireframe
+well. Sixteen lanes around the rim, and I ride the edge and shoot
+down into it. Give me at least five well shapes — round, square, a
+plus sign, a V, a flat line — and cycle the colors every level like
+the original did. Enemies climb the lanes: flippers that flip
+sideways and chase me on the rim, tankers that split in two,
+spikers that leave those deadly spikes, and the yellow ones that
+ride the lane lines and you can only hit mid-hop. One screen-
+clearing zapper per life, full points first press. And when I clear
+a wave, fly me down the well to the next one — but make me dodge
+the spikes on the way down.</div>
+
+    <h2>Under the hood</h2>
+    <ul>
+      <li>The well is sixteen points around a shape, drawn once big and
+        once small, with glowing lines run between them — every lane is
+        just the little slice between two of those lines, and every enemy
+        is really just a number between zero ("way down there") and one
+        ("right here, run").</li>
+      <li>Round wells wrap around when you steer past the seam; the V and
+        the flat line don't, so you can get cornered — which is exactly
+        the kind of mean the original was.</li>
+      <li>The warp between levels doesn't move anything at all. It scales
+        the whole picture up past the edges of the screen, and your eye
+        does the flying. Cheapest special effect I ever bought.</li>
+      <li>Shots and enemies live in the same lane-and-depth bookkeeping,
+        so "did I hit it" is just comparing two numbers — no fancy
+        geometry, which suits me fine.</li>
+    </ul>
+
+    <div class="gz-back-links">
+      <a href="index.html">← Back to Vortex</a>
+      <a href="../../index.html">Arcade home</a>
+      <a href="../../about-sal.html">About Sal</a>
+    </div>
+  </article>
+</body>
+</html>

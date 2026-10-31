@@ -1,0 +1,1611 @@
+<html>
+<head>
+<style>
+*{padding: 0; margin:0;}
+canvas{ background: #F5F5F5; display: block; margin: 0 auto;}
+</style>
+<link rel="icon" type="image/png" sizes="16x16" href="favicon.png">
+</head>
+<body>
+<canvas id= "myCanvas" width="800" height= "600"></canvas>
+<script type="text/javascript">
+
+//Dis is da code!!
+var canvas = document.getElementById("myCanvas");
+var ctx = canvas.getContext("2d");
+document.addEventListener("mousemove", mouseMoveHandler, false);
+document.addEventListener("mousedown", mouseDownHandler, false);
+document.addEventListener("mouseup", mouseUpHandler, false);
+var timeX = 460;
+var randNum3 = 0;
+var randStringNum = "";
+var color = "";
+var counter = 0;
+var counter2 = 0;
+var pX = 0;
+var pY = 0;
+var mouseIsDown = false;
+var isSound = true;
+var score = 0;
+var checkForZeroes = false;
+var animations = [];
+var fallingCols = [];
+var selected1Row = -1;
+var selected2Row = -1;
+var selected1Col = -1;
+var selected2Col = -1;
+var selected1RowTemp = -1;
+var selected2RowTemp = -1;
+var selected1ColTemp = -1;
+var selected2ColTemp = -1;
+var loading = true;
+var loadTimer = 0;
+var isFalling = false;
+var wasAMatch = false;
+var anErrorOccurred = false;
+var noMatchFound = true;
+var matchAcross = false;
+var matchDown = false;
+var matchFound = false;
+var i1Loaded = false;
+var i24Loaded = false;
+var s9 = new Image();
+s9.src = "s9.png";
+var audioActive = new Image();
+audioActive.src = "audioActive.png";
+var i2Loaded = false;
+var crossOut = new Image();
+crossOut.src = "crossOut.png";
+var i3Loaded = false;
+var explosion1 = new Image();
+explosion1.src = "tile000.png";
+var i4Loaded = false;
+var explosion2 = new Image();
+explosion2.src = "tile001.png";
+var i5Loaded = false;
+var explosion3 = new Image();
+explosion3.src = "tile002.png";
+var i6Loaded = false;
+var explosion4 = new Image();
+explosion4.src = "tile003.png";
+var i7Loaded = false;
+var explosion5 = new Image();
+explosion5.src = "tile004.png";
+var i8Loaded = false;
+var explosion6 = new Image();
+explosion6.src = "tile005.png";
+var i9Loaded = false;
+var explosion7 = new Image();
+explosion7.src = "tile006.png";
+var i10Loaded = false;
+var explosion8 = new Image();
+explosion8.src = "tile007.png";
+var i11Loaded = false;
+var explosion9 = new Image();
+explosion9.src = "tile008.png";
+var i12Loaded = false;
+var explosion10 = new Image();
+explosion10.src = "tile009.png";
+var i13Loaded = false;
+var explosion11 = new Image();
+explosion11.src = "tile010.png";
+var i14Loaded = false;
+var explosion12 = new Image();
+explosion12.src = "tile011.png";
+var i15Loaded = false;
+var explosion13 = new Image();
+explosion13.src = "tile012.png";
+var i16Loaded = false;
+var explosion14 = new Image();
+explosion14.src = "tile013.png";
+var i17Loaded = false;
+var explosion15 = new Image();
+explosion15.src = "tile014.png";
+var i18Loaded = false;
+var explosion16 = new Image();
+explosion16.src = "tile015.png";
+var i19Loaded = false;
+var s1 = new Image();
+s1.src = "s1.png";
+var i20Loaded = false;
+var s2 = new Image();
+s2.src = "s2.png";
+var i21Loaded = false;
+var s3 = new Image();
+s3.src = "s3.png";
+var i22Loaded = false;
+var s4 = new Image();
+s4.src = "s4.png";
+var i23Loaded = false;
+var s5 = new Image();
+s5.src = "s5.png";
+var s7 = new Image();
+s7.src = "vertical.png";
+var s8 = new Image();
+s8.src = "horizontal.png";
+
+var d1 = new Audio();
+d1.src = "d1.wav";
+var d2 = new Audio();
+d2.src = "d2.wav";
+var d3 = new Audio();
+d3.src = "d3.wav";
+var error = new Audio();
+error.src = "error.wav";
+var oldScore = 0;
+var checkForMatchSuccess = false;
+var thereWasAMatch = false;
+var bonus1 = false;
+var bonus2 = false;
+var bonus3 = false;
+var options = false;
+var imageAmountLoaded = 0;
+let level = 1;
+let levels = [];
+var startTime = 0;
+var endTime = 0;
+
+function Level(level, type, score, totalBlocksDestroyed, time, noSpecials)
+{
+this.level  = level;
+this.type = type;
+this.score = score;
+this.currentScore = 0;
+this.totalDestroyed = totalBlocksDestroyed;
+this.time = time;
+this.noSpecials = noSpecials;
+this.displayed = false;
+}
+
+////Create levels
+levels.push(new Level(1, 1, 500, 0, 300, false));
+levels.push(new Level(2, 1, 1500, 0, 180, false));
+levels.push(new Level(3, 1, 1000, 0, 60, false));
+levels.push(new Level(4, 1, 1000, 0, 59, false));
+levels.push(new Level(5, 1, 1000, 0, 58, false));
+levels.push(new Level(6, 1, 1000, 0, 57, false));
+
+function mouseMoveHandler(e) {
+	pX = e.clientX - canvas.offsetLeft;
+	pY = e.clientY - canvas.offsetTop;
+}
+function mouseUpHandler(event) {
+	mouseIsDown = false;
+}
+function mouseDownHandler(event) {
+	mouseIsDown = true;
+}
+function getRandomInt(min, max) {
+	min = Math.ceil(min);
+	max = Math.floor(max);
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+function playSound1() {
+	var pop = new Audio();
+	pop.src = "d1.wav";
+	pop.play();
+}
+function playSound2() {
+	var pop = new Audio();
+	pop.src = "d2.wav";
+	pop.play();
+}
+function playSound3() {
+	var pop = new Audio();
+	pop.src = "d3.wav";
+	pop.play();
+}
+function playError() {
+	var pop = new Audio();
+	pop.src = "error.wav";
+	pop.play();
+}
+function gridObject(x, y, isSelected, value, isEmpty) {
+	this.x = x;
+	this.y = y;
+	this.isSelected = isSelected;
+	this.value = value;
+	this.isEmpty = isEmpty;
+}
+function fallingCol(startX, startY, data) {
+	this.x = startX;
+	this.y = startY;
+	this.nums = data;
+	this.stopIt = 31;
+	this.startIt = 0;
+}
+function Animation(type, x, y)
+{
+	this.type = type;
+	this.x = x;
+	this.y = y;
+	this.stopIt = 16;
+	this.startIt = 0;
+	this.animationDelay = 0;
+}
+var grid = [];
+for (var i = 0; i < 8; i++) {
+	grid[i] = [];
+	for (var j = 0; j < 8; j++) {
+		var v = getRandomInt(1, 5);
+		var x = (345 + (i * 60));
+		var y = (40 + (j * 60));
+		grid[i][j] = new gridObject(x, y, false, v, false);
+	}
+}
+
+function resetBoard(){
+for (var i = 0; i < 8; i++) {
+	for (var j = 0; j < 8; j++) {
+		var v = getRandomInt(1, 5);
+		var x = (345 + (i * 60));
+		var y = (40 + (j * 60));
+		grid[i][j] = new gridObject(x, y, false, v, false);
+	}
+}
+}
+
+//console.log("The value of grid[7][7] is: " + grid[7][7].value);
+function randArray() {
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			var x = (315 + (j * 60));
+			var y = (15 + (i * 60));
+			ctx.fillStyle = "#000000";
+			ctx.font = "30px Times New Roman";
+			//ctx.fillText(grid[i][j].value, x, y);
+			if (grid[i][j].value % 10 == 1) {
+				ctx.drawImage(s1, x, y);
+			}
+			if (grid[i][j].value % 10 == 2) {
+				ctx.drawImage(s2, x, y);
+			}
+			if (grid[i][j].value % 10 == 3) {
+				ctx.drawImage(s3, x, y);
+			}
+			if (grid[i][j].value % 10 == 4) {
+				ctx.drawImage(s4, x, y);
+			}
+			if (grid[i][j].value % 10 == 5) {
+				ctx.drawImage(s5, x, y);
+			}
+			if (grid[i][j].value == 9) {
+				ctx.drawImage(s9, x, y);
+			}
+			if (grid[i][j].value > 19 && grid[i][j].value < 26) {
+				ctx.drawImage(s7, x, y);
+			}
+			if (grid[i][j].value > 29 && grid[i][j].value < 36) {
+				ctx.drawImage(s8, x, y);
+			}
+		}
+	}
+}
+
+function start() {
+  startTime = new Date();
+};
+
+function end() {
+  endTime = new Date();
+  var timeDiff = endTime - startTime; //in ms
+  // strip the ms
+  timeDiff /= 1000;
+
+  // get seconds 
+  var seconds = Math.round(timeDiff);
+  return seconds;
+}
+
+function drawGrid() {
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (grid[i][j].isSelected) {
+				ctx.fillStyle = "rgb(255,255,255)";
+				ctx.fillRect((310 + (j * 60)), (10 + (i * 60)), 60, 60);
+			}
+			ctx.strokeStyle = "rgb(0,0,0)"
+			ctx.rect((310 + (j * 60)), (10 + (i * 60)), 60, 60);
+			ctx.stroke();
+			//ctx.strokeStyle = "rgb(255,255,255)"
+		}
+	}
+}
+
+function deleteShapesFromBoard(num)
+{
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (grid[i][j].value == num) {
+				var y = (40 + (i * 60) - 30);
+				var x = (345 + (j * 60) - 30);
+				animations.push(new Animation(1, x, y));
+			}
+		}
+	}
+	
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			if (grid[i][j].value == num) {
+				grid[i][j].value = 0;
+				score += 10;
+				checkingForZeroes();
+				while(fallingCols.length > 0)
+				{
+				////wait for it to regulate...
+				drawFallingCols();
+				}
+			}
+		}
+	}
+}
+
+function deleteRowFromBoard(rowNum)
+{
+	for (var i = 0; i < 8; i++) {
+				var y = (40 + (rowNum * 60) - 30);
+				var x = (345 + (i * 60) - 30);
+				animations.push(new Animation(1, x, y));
+	}
+	
+	for (var i = 0; i < 8; i++) {
+				grid[rowNum][i].value = 0;
+				score += 10;
+				checkingForZeroes();
+				while(fallingCols.length > 0)
+				{
+				////wait for it to regulate...
+				drawFallingCols();
+				}
+	}
+}
+
+function deleteColFromBoard(colNum)
+{
+		for (var j = 0; j < 8; j++) {
+				var y = (40 + ( j* 60) - 30);
+				var x = (345 + (colNum * 60) - 30);
+				animations.push(new Animation(1, x, y));
+			}
+	
+		for (var j = 0; j < 8; j++) {
+				grid[j][colNum].value = 0;
+				score += 10;
+				checkingForZeroes();
+				while(fallingCols.length > 0)
+				{
+				////wait for it to regulate...
+				drawFallingCols();
+				}
+		}
+}
+
+function drawAnimations()
+{
+	for(var a = 0; a < animations.length; a++)
+	{
+		if(animations[a].type == 1)
+		{
+			if(animations[a].startIt == 0)
+			{
+				ctx.drawImage(explosion1, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 1)
+			{
+				ctx.drawImage(explosion2, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 2)
+			{
+				ctx.drawImage(explosion3, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 3)
+			{
+				ctx.drawImage(explosion4, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 4)
+			{
+				ctx.drawImage(explosion5, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 5)
+			{
+				ctx.drawImage(explosion6, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 6)
+			{
+				ctx.drawImage(explosion7, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 7)
+			{
+				ctx.drawImage(explosion8, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 8)
+			{
+				ctx.drawImage(explosion9, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 9)
+			{
+				ctx.drawImage(explosion10, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 10)
+			{
+				ctx.drawImage(explosion11, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 11)
+			{
+				ctx.drawImage(explosion12, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 12)
+			{
+				ctx.drawImage(explosion13, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 13)
+			{
+				ctx.drawImage(explosion14, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 14)
+			{
+				ctx.drawImage(explosion15, animations[a].x, animations[a].y);
+			}
+			if(animations[a].startIt == 15)
+			{
+				ctx.drawImage(explosion16, animations[a].x, animations[a].y);
+			}
+			animations[a].animationDelay++;
+			if(animations[a].animationDelay == 8)
+			{
+			animations[a].startIt++;
+			animations[a].animationDelay = 0;
+			}
+			if(animations[a].startIt == 15)
+			{
+				animations.splice(a, 1);
+			}
+		}
+	}
+}
+
+function collision() {
+var selected1Val = 0;
+var selected2Val = 0;
+	for (var i = 0; i < 8; i++) {
+		for (var j = 0; j < 8; j++) {
+			///ctx.rect((310 + (j*60)),(10 + (i*60)),(60),(60));
+			if (pX > (310 + (j * 60)) && pX < ((310 + (j * 60)) + 60) &&
+				pY > (10 + (i * 60)) && pY < ((10 + (i * 60)) + 60)) {
+				if (mouseIsDown) {
+					grid[i][j].isSelected = true;
+					//console.log("The value at " + i + " and  " + j + " is selected");
+					if (selected1Col == -1) {
+						selected1Row = i;
+						selected1Col = j;
+					} 
+					else if (selected1Row == i && selected1Col == j) {} else {
+						selected2Row = i;
+						selected2Col = j;
+						checkForMatchSuccess = true;
+					}
+					if(selected1Col > -1 && selected2Col > -1 &&
+					(grid[selected1Row][selected1Col].value != grid[selected2Row][selected2Col].value) &&
+					(grid[selected1Row][selected1Col].value == 9 ||
+					grid[selected2Row][selected2Col].value == 9) && 
+					(((selected1Row == selected2Row + 1 && selected1Col == selected2Col) ||
+					(selected1Row == selected2Row - 1 && selected1Col == selected2Col))) ||
+					((selected1Col == selected2Col + 1 && selected1Row == selected2Row) ||
+					(selected1Col == selected2Col - 1 && selected1Row == selected2Row)))
+					{
+						//console.log("Inside complicated if statement");
+						//console.log("Value of selected1 row and col: " + grid[selected1Row][selected1Col].value);
+						//console.log("Value of selected2 row and col: " + grid[selected2Row][selected2Col].value);
+						if(grid[selected1Row][selected1Col].value == 9)
+						{
+							//console.log("RandNums at 1 is evaluated to 9");
+							grid[selected1Row][selected1Col].value = 0;
+							deleteShapesFromBoard(grid[selected2Row][selected2Col].value);
+							mouseIsDown = false;
+							grid[selected1Row][selected1Col].isSelected = false;
+							grid[selected2Row][selected2Col].isSelected = false;
+							selected1Row = -1;
+							selected1Col = -1;
+							selected2Row = -1;
+							selected2Col = -1;
+						}
+						else if(grid[selected2Row][selected2Col].value == 9){
+							grid[selected2Row][selected2Col].value = 0;
+							deleteShapesFromBoard(grid[selected1Row][selected1Col].value);
+							mouseIsDown = false;
+							grid[selected1Row][selected1Col].isSelected = false;
+							grid[selected2Row][selected2Col].isSelected = false;
+							selected1Row = -1;
+							selected1Col = -1;
+							selected2Row = -1;
+							selected2Col = -1;
+						}
+						
+					}
+
+					if (selected1Col > -1 && selected2Col > -1) {
+						if (selected1Col == selected2Col) {
+							if ((selected1Row == selected2Row + 1) ||
+								(selected1Row == selected2Row - 1)) {
+								var tempVal = grid[selected1Row][selected1Col].value;
+								grid[selected1Row][selected1Col].value =
+									grid[selected2Row][selected2Col].value;
+								grid[selected2Row][selected2Col].value = tempVal;
+							}
+						} 
+						else if (selected1Row == selected2Row) {
+							if ((selected1Col == selected2Col + 1) ||
+								(selected1Col == selected2Col - 1)) {
+								var tempVal = grid[selected1Row][selected1Col].value;
+								grid[selected1Row][selected1Col].value =
+									grid[selected2Row][selected2Col].value;
+								grid[selected2Row][selected2Col].value = tempVal;
+							}
+						}
+						selected1Val = grid[selected1Row][selected1Col].value;
+						selected2Val = grid[selected2Row][selected2Col].value;
+						checkForMatches();
+						
+						if (!matchFound) {
+							//console.log("match not found");
+							if(isSound)
+							{
+							playError();
+							}
+							if (selected1Col == selected2Col) {
+								if ((selected1Row == selected2Row + 1) ||
+									(selected1Row == selected2Row - 1)) {
+									//console.log("error");
+									var tempVal = grid[selected2Row][selected2Col].value;
+									grid[selected2Row][selected2Col].value =
+										grid[selected1Row][selected1Col].value;
+									grid[selected1Row][selected1Col].value = tempVal;
+								}
+							} 
+							else if (selected1Row == selected2Row) {
+								if ((selected1Col == selected2Col + 1) ||
+									(selected1Col == selected2Col - 1)) {
+									var tempVal = grid[selected2Row][selected2Col].value;
+									grid[selected2Row][selected2Col].value =
+										grid[selected1Row][selected1Col].value;
+									grid[selected1Row][selected1Col].value = tempVal;
+								}
+							}
+						}
+						else if(matchFound && bonus1)
+						{
+							//console.log("else if matchFound and bonus1");
+							if(grid[selected1Row][selected1Col].value == 0)
+							{
+								grid[selected1Row][selected1Col].value = 9;
+							}
+							if(grid[selected2Row][selected2Col].value == 0)
+							{
+								grid[selected2Row][selected2Col].value = 9;
+							}
+							bonus1 = !bonus1;
+						}
+						else if(matchFound && bonus2)
+						{
+							//console.log("else if matchFound and bonus1");
+							if(grid[selected1Row][selected1Col].value == 0)
+							{
+								grid[selected1Row][selected1Col].value = 
+								selected1Val + 20;
+							}
+							if(grid[selected2Row][selected2Col].value == 0)
+							{
+								grid[selected2Row][selected2Col].value = 
+								selected1Val + 20;
+							}
+							bonus2 = !bonus2;
+						}
+						else if(matchFound && bonus3)
+						{
+							//console.log("else if matchFound and bonus1");
+							if(grid[selected1Row][selected1Col].value == 0)
+							{
+								grid[selected1Row][selected1Col].value = 
+								selected1Val + 30;
+							}
+							if(grid[selected2Row][selected2Col].value == 0)
+							{
+								grid[selected2Row][selected2Col].value = 
+								selected1Val + 30;
+							}
+							bonus3 = !bonus3;
+						}
+						mouseIsDown = false;
+						grid[selected1Row][selected1Col].isSelected = false;
+						grid[selected2Row][selected2Col].isSelected = false;
+						selected1Row = -1;
+						selected1Col = -1;
+						selected2Row = -1;
+						selected2Col = -1;
+					}
+				
+				}
+			}
+		}
+	}
+}
+function checkForMatches() {
+	//console.log("matchfound: " + matchFound);
+	if (matchFound) {
+		matchFound = false;
+	}
+	///Check for L and T type shapes..
+	if (noMatchFound) {
+		for (var i = 0; i < 6; i++) {
+			for (var j = 0; j < 6; j++) {
+				if (grid[i][j].value%10  === grid[i][j+1].value%10  &&
+					grid[i][j].value%10  === grid[i][j+2].value%10  &&
+					grid[i][j].value%10  === grid[i + 1][j+2].value%10  &&
+					grid[i][j].value%10  === grid[i + 2][j+2].value %10 &&
+					grid[i][j].value > 0) {
+					//we have a match of 3 across and down...
+					if(grid[i][j].value > 19 && grid[i][j].value < 30)
+					{
+						deleteColFromBoard(i);
+					}
+					if(grid[i][j+1].value > 19 && grid[i][j+1].value < 30)
+					{
+						deleteColFromBoard(i);
+					}
+					if(grid[i][j+2].value > 19 && grid[i][j+2].value < 30)
+					{
+						deleteColFromBoard(i);
+					}
+					if(grid[i+1][j+2].value > 19 && grid[i+1][j+2].value < 30)
+					{
+						deleteColFromBoard(i+1);
+					}
+					if(grid[i+2][j+2].value > 19 && grid[i+2][j+2].value < 30)
+					{
+						deleteColFromBoard(i+2);
+					}
+					if(grid[i][j].value > 29 && grid[i][j].value < 40)
+					{
+						deleteRowFromBoard(j);
+					}
+					if(grid[i][j+1].value > 29 && grid[i][j+1].value < 40)
+					{
+						deleteRowFromBoard(j+1);
+					}
+					if(grid[i][j+2].value > 29 && grid[i][j+2].value < 40)
+					{
+						deleteRowFromBoard(j+2);
+					}
+					if(grid[i+1][j+2].value > 29 && grid[i+1][j+2].value < 40)
+					{
+						deleteRowFromBoard(j+2);
+					}
+					if(grid[i+2][j+2].value > 29 && grid[i+2][j+2].value < 40)
+					{
+						deleteRowFromBoard(j+2);
+					}
+					if(isSound)
+					{
+					playSound3();
+					}
+					score += 60;
+					grid[i][j].value = 0;
+					grid[i][j+1].value = 0;
+					grid[i][j+2].value = 0;
+					grid[i + 1][j+2].value = 0;
+					grid[i + 2][j+2].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus1 = true;
+					//console.log("There was a L match, bonus1 set to true");
+					if(timeX<460-50)
+					{
+						timeX+=50;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+				
+				else if (grid[i][j].value%10  === grid[i][j+1].value%10  &&
+					grid[i][j].value%10  === grid[i][j+2].value%10  &&
+					grid[i][j].value%10  === grid[i + 1][j+1].value%10  &&
+					grid[i][j].value%10  === grid[i + 2][j+1].value%10  &&
+					grid[i][j].value > 0) {
+					//we have a match of 3 across and down...
+					if(isSound)
+					{
+					playSound3();
+					}
+					score += 60;
+					grid[i][j].value = 0;
+					grid[i][j+1].value = 0;
+					grid[i][j+2].value = 0;
+					grid[i + 1][j+1].value = 0;
+					grid[i + 2][j+1].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus1 = true;
+					//console.log("There was a L match, bonus1 set to true");
+					if(timeX<460-50)
+					{
+						timeX+=50;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+				
+				else if (grid[i][j].value %10 === grid[i][j+1].value%10  &&
+					grid[i][j].value%10 === grid[i][j+2].value%10  &&
+					grid[i][j].value%10  === grid[i + 1][j].value%10  &&
+					grid[i][j].value%10  === grid[i + 2][j].value %10 &&
+					grid[i][j].value > 0) {
+					//we have a match of 3 across and down...
+					if(isSound)
+					{
+					playSound3();
+					}
+					score += 60;
+					grid[i][j].value = 0;
+					grid[i][j+1].value = 0;
+					grid[i][j+2].value = 0;
+					grid[i + 1][j].value = 0;
+					grid[i + 2][j].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus1 = true;
+					//console.log("There was a L match, bonus1 set to true");
+					if(timeX<460-50)
+					{
+						timeX+=50;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+				
+				else if (grid[i][j].value%10  === grid[i+1][j].value%10  &&
+					grid[i][j].value%10  === grid[i+2][j].value%10  &&
+					grid[i][j].value%10  === grid[i + 2][j+1].value%10  &&
+					grid[i][j].value%10  === grid[i + 2][j+2].value%10  &&
+					grid[i][j].value > 0) {
+					//we have a match of 3 across and down...
+					if(isSound)
+					{
+					playSound3();
+					}
+					score += 60;
+					grid[i][j].value = 0;
+					grid[i+1][j].value = 0;
+					grid[i+2][j].value = 0;
+					grid[i + 2][j+1].value = 0;
+					grid[i + 2][j+2].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus1 = true;
+					//console.log("There was a L match, bonus1 set to true");
+					if(timeX<460-50)
+					{
+						timeX+=50;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+				
+				else if (grid[i][j+2].value%10  === grid[i+1][j+2].value %10 &&
+					grid[i][j].value%10  === grid[i+2][j+2].value %10 &&
+					grid[i][j].value%10  === grid[i + 2][j].value %10 &&
+					grid[i][j].value%10  === grid[i + 2][j+1].value %10 &&
+					grid[i][j].value > 0) {
+					//we have a match of 3 across and down...
+					if(isSound)
+					{
+					playSound3();
+					}
+					score += 60;
+					grid[i][j+2].value = 0;
+					grid[i+1][j+2].value = 0;
+					grid[i+2][j+2].value = 0;
+					grid[i + 2][j].value = 0;
+					grid[i + 2][j+1].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus1 = true;
+					//console.log("There was a L match, bonus1 set to true");
+					if(timeX<460-50)
+					{
+						timeX+=50;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+				
+				else if (grid[i][j+1].value %10 === grid[i+1][j+1].value %10 &&
+					grid[i][j].value%10  === grid[i+2][j+1].value %10 &&
+					grid[i][j].value%10  === grid[i + 2][j].value %10 &&
+					grid[i][j].value%10  === grid[i + 2][j+2].value%10  &&
+					grid[i][j].value > 0) {
+					//we have a match of 3 across and down...
+					if(isSound)
+					{
+					playSound3();
+					}
+					score += 60;
+					grid[i][j+1].value = 0;
+					grid[i+1][j+1].value = 0;
+					grid[i+2][j+1].value = 0;
+					grid[i + 2][j].value = 0;
+					grid[i + 2][j+2].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus1 = true;
+					//console.log("There was a L match, bonus1 set to true");
+					if(timeX<460-50)
+					{
+						timeX+=50;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+			}
+		}
+	}
+	/////
+	if (noMatchFound) {
+		for (var i = 0; i < 4; i++) {
+			for (var j = 0; j < 8; j++) {
+				if (grid[i][j].value%10  === grid[i + 1][j].value%10  &&
+					grid[i][j].value %10 === grid[i + 2][j].value%10  &&
+					grid[i][j].value%10  === grid[i + 3][j].value%10  &&
+					grid[i][j].value%10  === grid[i + 4][j].value%10  &&
+					grid[i][j].value > 0) {
+					//we have a match of 5 down
+					//console.log("We have a 5 match down");
+					//console.log("Starting at i  j: " + i + "   " + j);
+					if(isSound)
+					{
+					playSound3();
+					}
+					score += 30;
+					grid[i][j].value = 0;
+					grid[i + 1][j].value = 0;
+					grid[i + 2][j].value = 0;
+					grid[i + 3][j].value = 0;
+					grid[i + 4][j].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus1 = true;
+					//console.log("There was a match of 5, bonus1 set to true");
+					if(timeX<460-50)
+					{
+						timeX+=50;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+			}
+		}
+	}
+	if (noMatchFound) {
+		for (var i = 0; i < 8; i++) {
+			for (var j = 0; j < 4; j++) {
+				if (grid[i][j].value%10  === grid[i][j + 1].value %10 &&
+					grid[i][j].value%10  === grid[i][j + 2].value %10 &&
+					grid[i][j].value%10  === grid[i][j + 3].value %10 &&
+					grid[i][j].value%10  === grid[i][j + 4].value %10 &&
+					grid[i][j].value > 0) {
+					//we have a match of 5 across
+					//console.log("We have a 5 match across");
+					//console.log("Starting at i  j: " + i + "   " + j);
+					if(isSound)
+					{
+					playSound3();
+					}
+					score += 30;
+					grid[i][j].value = 0;
+					grid[i][j + 1].value = 0;
+					grid[i][j + 2].value = 0;
+					grid[i][j + 3].value = 0;
+					grid[i][j + 4].value = 0;
+					checkForZeroes = true;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchAcross = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus1 = true;
+					//console.log("There was a match of 5, bonus1 set to true");
+					if(timeX<460-50)
+					{
+						timeX+=50;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+			}
+		}
+	}
+	if (noMatchFound) {
+		for (var i = 0; i < 5; i++) {
+			for (var j = 0; j < 8; j++) {
+				if (grid[i][j].value %10 === grid[i + 1][j].value %10 &&
+					grid[i][j].value %10 === grid[i + 2][j].value %10 &&
+					grid[i][j].value %10 === grid[i + 3][j].value %10 &&
+					grid[i][j].value > 0) {
+					//console.log("We have a 4 match down");
+					//console.log("Starting at i  j: " + i + "   " + j);
+					if(isSound)
+					{
+					playSound2();
+					}
+					score += 20;
+					grid[i][j].value = 0;
+					grid[i + 1][j].value = 0;
+					grid[i + 2][j].value = 0;
+					grid[i + 3][j].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus2 = true;
+					if(timeX<460-25)
+					{
+						timeX+=25;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+			}
+		}
+	}
+	if (noMatchFound) {
+		for (var i = 0; i < 8; i++) {
+			for (var j = 0; j < 5; j++) {
+				if (grid[i][j].value%10  === grid[i][j + 1].value %10 &&
+					grid[i][j].value%10  === grid[i][j + 2].value%10  &&
+					grid[i][j].value%10  === grid[i][j + 3].value%10  &&
+					grid[i][j].value > 0) {
+					//console.log("We have a 4 match across");
+					//console.log("Starting at i  j: " + i + "   " + j);
+					if(isSound)
+					{
+					playSound2();
+					}
+					score += 20;
+					grid[i][j].value = 0;
+					grid[i][j + 1].value = 0;
+					grid[i][j + 2].value = 0;
+					grid[i][j + 3].value = 0;
+					checkForZeroes = true;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchAcross = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					bonus3 = true;
+					if(timeX<460-25)
+					{
+						timeX+=25;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+			}
+		}
+	}
+	if (noMatchFound) {
+		for (var i = 0; i < 6; i++) {
+			for (var j = 0; j < 8; j++) {
+				if (grid[i][j].value%10  === grid[i + 1][j].value %10 &&
+					grid[i][j].value%10  === grid[i + 2][j].value %10 &&
+					grid[i][j].value > 0) {
+					//console.log("We have a 3 match down");
+					//console.log("Starting at i  j: " + i + "   " + j);
+					if(grid[i][j].value > 19 && grid[i][j].value < 30)
+					{
+						deleteColFromBoard(j);
+					}
+					if(grid[i+1][j].value > 19 && grid[i+1][j].value < 30)
+					{
+						deleteColFromBoard(j);
+					}
+					if(grid[i+2][j].value > 19 && grid[i+2][j].value < 30)
+					{
+						deleteColFromBoard(j);
+					}
+					if(grid[i][j].value > 29 && grid[i][j].value < 40)
+					{
+						deleteRowFromBoard(i);
+					}
+					if(grid[i+1][j].value > 29 && grid[i+1][j].value < 40)
+					{
+						deleteRowFromBoard(i+1);
+					}
+					if(grid[i+2][j].value > 29 && grid[i+2][j].value < 40)
+					{
+						deleteRowFromBoard(i+2);
+					}
+					if(isSound)
+					{
+					playSound1();
+					}
+					score += 10;
+					grid[i][j].value = 0;
+					grid[i + 1][j].value = 0;
+					grid[i + 2][j].value = 0;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchDown = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					if(timeX<460-15)
+					{
+						timeX+=15;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+			}
+		}
+	}
+	
+	if (noMatchFound) {
+		for (var i = 0; i < 8; i++) {
+			for (var j = 0; j < 6; j++) {
+				if (grid[i][j].value %10 === grid[i][j + 1].value %10 &&
+					grid[i][j].value %10 === grid[i][j + 2].value %10 &&
+					grid[i][j].value > 0) {
+					//we have a match of 3 across
+					//console.log("We have a 3 match across");
+					//console.log("Starting at i  j: " + i + "   " + j);
+					if(grid[i][j].value > 19 && grid[i][j].value < 30)
+					{
+						deleteColFromBoard(j);
+					}
+					if(grid[i][j+1].value > 19 && grid[i][j+1].value < 30)
+					{
+						deleteColFromBoard(j+1);
+					}
+					if(grid[i][j+2].value > 19 && grid[i][j+2].value < 30)
+					{
+						deleteColFromBoard(j+2);
+					}
+					if(grid[i][j].value > 29 && grid[i][j].value < 40)
+					{
+						deleteRowFromBoard(i);
+					}
+					if(grid[i][j+1].value > 29 && grid[i][j+1].value < 40)
+					{
+						deleteRowFromBoard(i);
+					}
+					if(grid[i][j+2].value > 29 && grid[i][j+2].value < 40)
+					{
+						deleteRowFromBoard(i);
+					}
+					if(isSound)
+					{
+					playSound1();
+					}
+					score += 10;
+					grid[i][j].value = 0;
+					grid[i][j + 1].value = 0;
+					grid[i][j + 2].value = 0;
+					checkForZeroes = true;
+					i = 8;
+					j = 8;
+					noMatchFound = false;
+					matchAcross = true;
+					thereWasAMatch = true;
+					matchFound = true;
+					if(timeX<460-15)
+					{
+						timeX+=15;
+					}
+					//console.log("matchfound" + matchFound);
+				}
+			}
+		}
+	}
+}
+function checkingForNegs() {
+	for (var i = 7; i >= 0; i--) {
+		for (var j = 7; j >= 0; j--) {
+			if (grid[i][j].value == -1) {
+				//console.log("A negative was left behind after setting values....");
+				//console.log("This value was at " + i + "  and " + j);
+				//anErrorOccurred = true;
+			}
+		}
+	}
+}
+function checkingForZeroes() {
+	for (var i = 7; i >= 0; i--) {
+		for (var j = 7; j >= 0; j--) {
+			if (grid[i][j].value == 0) {
+				var count = 0;
+				var tempI = i;
+				while (tempI >= 0 && grid[tempI][j].value == 0) {
+					//console.log("Temp i is: " + tempI);
+					count++;
+					tempI--;
+				}
+				var tempNums = [];
+				var indexToStartAdding = i - count;
+				var counter = 0;
+				while (counter <= indexToStartAdding) {
+					tempNums.push(grid[indexToStartAdding - counter][j].value);
+					counter++;
+				}
+				counter = 0;
+				while (counter < count) {
+					tempNums.push(getRandomInt(1, 5));
+					counter++;
+				}
+				fallingCols.push(new fallingCol(i, j, tempNums));
+				count = 0;
+				tempI = i;
+				if (matchDown) {
+					//console.log("was a match down");
+					while (tempI >= 0 && grid[tempI][j].value == 0) {
+						grid[tempI][j].value = -1;
+						count++;
+						tempI--;
+					}
+				}
+				if (matchAcross) {
+					//console.log("was a match across");
+					grid[tempI][j].value = -1;
+				}
+				//console.log("The count is: " + count);
+				//console.log("The size of tempNums is: " + tempNums.length);
+				//console.log("The values of tempNums is: " );
+				for (var a = 0; a < tempNums.length; a++) {
+					//console.log("Value at: " + a + "  is:  " + tempNums[a]);
+				}
+				//i = -1;
+				//j = -1;
+				wasAMatch = true;
+			}
+		}
+	}
+}
+function drawFallingCols() {
+	for (var i = 0; i < fallingCols.length; i++) {
+		for (var j = 0; j < fallingCols[i].nums.length; j++) {
+			if (fallingCols[i].startIt < 30) {
+				//var x = (340+(fallingCols[i].y * 60));
+				//var y = (-20+(fallingCols[i].x *60 - (j * 60))  + (fallingCols[i].startIt * 1));///real value is 2
+				var x = (315 + (fallingCols[i].y * 60));
+				var y = (-55 + (fallingCols[i].x * 60 - (j * 60)) + (fallingCols[i].startIt * 2));
+				ctx.fillStyle = "#000000";
+				ctx.font = "30px Times New Roman";
+				//ctx.fillText(fallingCols[i].nums[j], x, y);
+				if (fallingCols[i].nums[j] == 1) {
+					ctx.drawImage(s1, x, y);
+				}
+				if (fallingCols[i].nums[j] == 2) {
+					ctx.drawImage(s2, x, y);
+				}
+				if (fallingCols[i].nums[j] == 3) {
+					ctx.drawImage(s3, x, y);
+				}
+				if (fallingCols[i].nums[j] == 4) {
+					ctx.drawImage(s4, x, y);
+				}
+				if (fallingCols[i].nums[j] == 5) {
+					ctx.drawImage(s5, x, y);
+				}
+			}
+		}
+		fallingCols[i].startIt += 1;
+		if (fallingCols[i].startIt == fallingCols[i].stopIt) {
+			//console.log("The length of fallingCols[" + i + "].nums.length: " + fallingCols[i].nums.length);
+			for (var j = 0; j < fallingCols[i].nums.length; j++) {
+				//console.log("The value fo fallingCols at j : " + fallingCols[i].nums[j]);
+				grid[fallingCols[i].x - j][fallingCols[i].y].value = fallingCols[i].nums[j];
+				//fallingCols[j].nums.pop();
+				//console.log("Index " + (fallingCols[i].x - j) + " and " + fallingCols[i].y +
+				//" is given a value of: " + fallingCols[i].nums[j]);
+			}
+			//fallingCols.splice(i,1);
+			checkingForNegs();
+			wasAMatch = false;
+			noMatchFound = true;
+			matchAcross = false;
+			matchDown = false;
+		}
+		if (fallingCols[i].startIt > 75) {
+			fallingCols.splice(i, 1);
+		}
+	}
+}
+
+function drawGameName()
+{
+	//var size = getRandomInt(30, 50);
+	var size = 50;
+	ctx.fillStyle = "#FFF33F";
+	var fontSize = size + "px Times New Roman";
+	ctx.font = fontSize;
+	ctx.fillStyle = "#FFF33F";
+	ctx.fillText("Shape Crush", 30, 75);
+}
+
+function drawBoard() {
+	var grd1 = ctx.createLinearGradient(10, 160, 150, 0);
+	grd1.addColorStop(0, "#0063EA");
+	grd1.addColorStop(1, "#1477FF");
+	ctx.fillStyle = grd1;
+	ctx.beginPath();
+	ctx.rect(0, 0, 800, 600);
+	ctx.fill();
+	ctx.fillStyle = "#DAF0FF"
+	ctx.beginPath();
+	ctx.rect(310, 10, 480, 480);
+	ctx.fill();
+	
+	drawGameName();
+	
+	if(pX >= 50 && pX <= 250 && pY >= 150 && pY <= 200)
+	{
+		ctx.fillStyle = "#DAF0FF";
+		ctx.beginPath();
+		ctx.fillRect(50, 150, 200, 50);
+		ctx.rect(50, 150, 200, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("New Game", 75, 185);
+		if(mouseIsDown)
+		{
+			mouseIsDown = false;
+			score = 0;
+			//timeX = 460;
+			resetBoard();
+		}
+	}
+	else
+	{
+		ctx.fillStyle = "#0063EA";
+		ctx.beginPath();
+		ctx.fillRect(50, 150, 200, 50);
+		ctx.rect(50, 150, 200, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("New Game", 75, 185);
+		ctx.beginPath();
+	}
+	
+	
+	if(pX >= 50 && pX <= 250 && pY >= 475 && pY <= 525)
+	{
+		ctx.fillStyle = "#DAF0FF";
+		ctx.beginPath();
+		ctx.fillRect(50, 475, 200, 50);
+		ctx.rect(50, 475, 200, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("Quit Game", 85, 510);
+		ctx.beginPath();
+		if(mouseIsDown)
+		{
+			timeX = 0;
+		}
+	}
+	else
+	{
+		ctx.fillStyle = "#0063EA";
+		ctx.beginPath();
+		ctx.fillRect(50, 475, 200, 50);
+		ctx.rect(50, 475, 200, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("Quit Game", 85, 510);
+		ctx.beginPath();
+	}
+	
+	if(pX >= 50 && pX <= 250 && pY >= 225 && pY <= 275)
+	{
+		ctx.fillStyle = "#DAF0FF";
+		ctx.beginPath();
+		ctx.fillRect(50, 225, 200, 50);
+		ctx.rect(50, 225, 200, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("Options", 100, 260);
+		ctx.beginPath();
+		if(mouseIsDown)
+		{
+			options = true;
+		}
+	}
+	else
+	{
+		ctx.fillStyle = "#0063EA";
+		ctx.beginPath();
+		ctx.fillRect(50, 225, 200, 50);
+		ctx.rect(50, 225, 200, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("Options", 100, 260);
+		ctx.beginPath();
+	}
+	
+	
+	var grd = ctx.createRadialGradient(150, 420, 90, 130, 60, 100);
+	grd.addColorStop(0, "#1C8EFF");
+	grd.addColorStop(1, "#88DAFF");
+	ctx.fillStyle = grd;
+	ctx.beginPath();
+	ctx.arc(150, 375, 75, 0, 2 * Math.PI);
+	ctx.fill();
+	ctx.fillStyle = "black"
+	ctx.font = "30px Times New Roman";
+	ctx.fillText(score, 125, 380);
+	ctx.beginPath();
+	ctx.arc(150, 375, 75, 0, 2 * Math.PI);
+	ctx.stroke();
+}
+function time() {
+	if (timeX < 100) {
+		if (counter2 > 45) {
+			counter2 = 1;
+		} else if (counter2 > 30) {
+			color = "#ff9100";
+		} else if (counter2 > 15) {
+			color = "#ff0044";
+		}
+		counter2++;
+	} else if (counter > 360) {
+		counter = 1;
+	} else if (counter > 240) {
+		color = "#47ff26";
+	} else if (counter > 120) {
+		color = "#af10ff";
+	} else if (counter > 0) {
+		color = "#ff8026";
+	}
+	counter++;
+	ctx.fillStyle = color;
+	ctx.beginPath();
+	ctx.rect(320, 540, timeX, 20);
+	ctx.fill();
+	ctx.fillStyle = "#FFF33F";
+	ctx.font = "30px Times New Roman";
+	ctx.fillText("Time:", 320, 535);
+	ctx.beginPath();
+	ctx.beginPath();
+	ctx.rect(320, 540, timeX, 20);
+	ctx.stroke();
+	ctx.font = "20px Times New Roman";
+	ctx.fillText(timeX, 335, 557);
+	
+}
+
+function drawOptionsScreen()
+{
+	var grd1 = ctx.createLinearGradient(10, 160, 150, 0);
+	grd1.addColorStop(0, "#0063EA");
+	grd1.addColorStop(1, "#1477FF");
+	ctx.fillStyle = grd1;
+	ctx.beginPath();
+	ctx.rect(0, 0, 800, 600);
+	ctx.fill();
+	ctx.fillStyle = "#FFF33F";
+	ctx.font = "50px Times New Roman";
+	ctx.fillText("Options", 300, 100);
+	
+	ctx.fillStyle = "#FFF33F";
+	ctx.font = "50px Times New Roman";
+	ctx.fillText("Audio:", 200, 250);
+	
+	ctx.drawImage(audioActive, 360, 210);
+	if(!isSound)
+	{
+		ctx.drawImage(crossOut, 360, 210);
+	}
+	if(pX >= 360 && pX <= 410 && pY >= 210 && pY <= 260 && mouseIsDown)
+	{
+		mouseIsDown = false;
+		isSound = !isSound;
+	}
+	
+	if(pX >= 350 && pX <= 450 && pY >= 500 && pY <= 550)
+	{
+		ctx.fillStyle = "#DAF0FF";
+		ctx.beginPath();
+		ctx.fillRect(350, 500, 100, 50);
+		ctx.rect(350, 500, 100, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("Back", 365, 540);
+		if(mouseIsDown)
+		{
+			options = false;
+		}
+	}
+	else
+	{
+		ctx.fillStyle = "#0063EA";
+		ctx.beginPath();
+		ctx.fillRect(350, 500, 100, 50);
+		ctx.rect(350, 500, 100, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("Back", 365, 540);
+		ctx.beginPath();
+	}
+}
+
+function loadImages()
+{
+	loading = false;
+}
+
+function drawLevelScreen()
+{
+	var grd1 = ctx.createLinearGradient(10, 160, 150, 0);
+	grd1.addColorStop(0, "#0063EA");
+	grd1.addColorStop(1, "#1477FF");
+	ctx.fillStyle = grd1;
+	ctx.beginPath();
+	ctx.rect(0, 0, 800, 600);
+	ctx.fill();
+	ctx.fillStyle = "#FFF33F";
+	ctx.font = "50px Times New Roman";
+	ctx.fillText("Level: " + level, 250, 100);
+	ctx.fillText("Goal" , 275, 150);
+	if(levels[level-1].type === 1)
+	{
+		ctx.fillText("Gain " + levels[level-1].score + " points in " + levels[level-1].time + " seconds." , 63, 300);
+	}
+	
+	if(pX >= 250 && pX <= 450 && pY >= 500 && pY <= 550)
+	{
+		ctx.fillStyle = "#DAF0FF";
+		ctx.beginPath();
+		ctx.fillRect(250, 500, 200, 50);
+		ctx.rect(250, 500, 200, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("Continue", 265, 540);
+		if(mouseIsDown)
+		{
+			levels[level-1].displayed = true;
+			score = 0;
+			start();
+			console.log("Start time : " + startTime);
+			timeX = levels[level-1].time;
+		}
+	}
+	else
+	{
+		ctx.fillStyle = "#0063EA";
+		ctx.beginPath();
+		ctx.fillRect(250, 500, 200, 50);
+		ctx.rect(250, 500, 200, 50);
+		ctx.stroke();
+		ctx.fillStyle = "black"
+		ctx.font = "30px Times New Roman";
+		ctx.fillText("Continue", 265, 540);
+		ctx.beginPath();
+	}
+}
+
+function draw() {
+	ctx.clearRect(0, 0, 800, 600);
+	if(options)
+	{
+		drawOptionsScreen()
+	}
+	else
+	{
+	if(levels[level-1].displayed == false)
+	{
+		drawLevelScreen();
+	}
+	else
+	{
+		endTime = end();
+		console.log("End time is : " + endTime);
+		timeX  = levels[level-1].time - endTime;
+		if(score >= levels[level-1].score)
+		{
+			level++;
+			resetBoard();
+			start();
+		}
+		if (timeX <= 0) {
+			timeX = 0;
+			ctx.fillStyle = "black";
+			ctx.fillRect(0, 0, 800, 600);
+			ctx.fillStyle = "white"
+			ctx.font = "80px Times New Roman";
+			ctx.fillText("Game Over", 200, 250);
+			ctx.fillStyle = "white"
+			ctx.font = "50px Times New Roman";
+			ctx.fillText("Score: "+score, 300, 310);
+			console.log("pX: " + pX + " pY: " + pY);
+			if(pX >= 295 && pX <= 495 && pY >= 420 && pY <= 470)
+			{
+				ctx.fillStyle = "white";
+				ctx.beginPath();
+				ctx.fillRect(295, 420, 200, 50);
+				ctx.stroke();
+				ctx.fillStyle = "black"
+				ctx.font = "30px Times New Roman";
+				ctx.fillText("New Game", 330, 455);
+				ctx.beginPath();
+				if(mouseIsDown)
+				{
+					level = 1;
+					timeX = levels[level-1].time;
+					console.log("Setting timeX to: " + timeX);
+					score = 0;
+					resetBoard();
+					start();
+				}
+			}
+			else
+			{
+				ctx.strokeStyle = "white";
+				ctx.beginPath();
+				ctx.rect(295, 420, 200, 50);
+				ctx.stroke();
+				ctx.fillStyle = "white"
+				ctx.font = "30px Times New Roman";
+				ctx.fillText("New Game", 330, 455);
+				ctx.beginPath();
+			}
+		}
+		else{
+		drawBoard();
+		drawGrid();
+		time();
+		collision();
+		randArray();
+		if (!anErrorOccurred) {
+			if (!wasAMatch) {
+				checkForMatches();
+			}
+			checkingForZeroes();
+			drawFallingCols();
+		}
+		bonus1 = false;
+		drawAnimations();
+		}
+		}
+	}
+}
+setInterval(draw, 10);
+</script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+  <meta name="theme-color" content="#000000">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <title>DELTA STRIKE</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/delta-strike-192.png" type="image/png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="edition-home" href="./" aria-label="Back to edition selection">‹ Versions</a>
+  <canvas id="screen" width="160" height="210"></canvas>
+  <div id="hint-left"  class="hint">DRAG TO STEER</div>
+  <div id="hint-right" class="hint">TAP TO FIRE</div>
+  <div id="hint-keys">&#8592;&#8594; steer &middot; &#8593;&#8595; speed &middot; SPACE fire &middot; ENTER start &middot; P pause &middot; M mute</div>
+
+  <script src="js/constants.js"></script>
+  <script src="js/sprites.js"></script>
+  <script src="js/audio.js"></script>
+  <script src="js/river.js"></script>
+  <script src="js/entities.js"></script>
+  <script src="js/game.js"></script>
+  <script>
+    window.addEventListener('load', function () {
+      DS.Game.init();
+      if ('serviceWorker' in navigator && window.isSecureContext) {
+        navigator.serviceWorker.register('sw.js')
+          .catch(function (err) { console.error(err); });
+      }
+    });
+  </script>
+</body>
+</html>

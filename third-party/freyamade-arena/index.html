@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <title>Welcome to the Arena!</title>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!--jQuery-->
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js" integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s=" crossorigin="anonymous"></script>
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!--Join Game AJAX-->
+    <script>
+        /*
+            Script: Index
+            JavaScript used to join a game from the modal form on the home page.
+            Sends a POST request to <Join Game>.
+            Also handles the display of progress towards the release.
+        */
+
+        $(document).ready(init);
+
+        /*
+            Function: init
+            Initialises variables, sets up event listeners
+        */
+        function init(){
+            //Handle getting the progress
+            $.getJSON('https://api.github.com/repos/ExceptionalVoid/Arena/milestones/2', milestoneProgress);
+        }
+
+        /*
+            Function: milestoneProgress
+            Populate the progress bar with our progress towards completing our current milestone
+
+            Parameters:
+                obj data - Object containing the data returned from the request
+        */
+        function milestoneProgress(data){
+            var percent = data.closed_issues / (data.open_issues + data.closed_issues) * 100;
+            percent = percent.toFixed(2);
+            $('.progress-bar').attr('aria-valuenow', percent).css( 'width', percent + '%');
+            $('#progress_text').html(percent);
+        }
+
+    </script>
+
+    <!--Font Awesome-->
+    <script src="https://use.fontawesome.com/8ce091879b.js"></script>
+
+    <!--Favicon-->
+    <link rel='icon' href='images/favicon.ico' type='image/x-icon' />
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <img src="images/logo.png" class="img-thumbnail img-responsive" />
+            <h1 class="page-heading">Welcome to the Arena</h1>
+        </div>
+        <h1 class="page-heading"><small>v2 Beta Issues Solved</small></h1>
+        <div class="progress">
+          <div class="progress-bar progress-bar-success" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <span id="progress_text"></span>%
+          </div>
+        </div>
+        <a href="https://github.com/ExceptionalVoid/Arena/milestone/2"  target="_blank class="btn btn-info" rel="noopener noreferrer"><span class="fa fa-github"></span> Milestone on GitHub</a>
+        <hr />
+        <h1 class="page-heading"><small>The Game</small></h1>
+        <div class="btn-group">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#howto"><span class="fa fa-question"></span> How to Play</button>
+            <a class="btn btn-primary" href="cgi-bin/list_games.py"><span class="fa fa-gamepad"></span> Play Now!</a>
+            <a class="btn btn-primary" href="cgi-bin/game_stats.py"><span class="fa fa-book"></span> Results</a>
+        </div>
+        <hr />
+        <!--News can go here-->
+        <!--Maybe set this up as a php script to pull news from a db later?-->
+        <h1 class="page-heading"><small>News</small></h1>
+        <div class="panel-group">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    Beta 2 <span class="pull-right">10/Nov/2016</span>
+                </div>
+                <div class="panel-body">
+                    Today, we released a terrible beta version of the Arena at our first Computer Science LAN Party.
+                    A good few issues were discovered however, and we know the game is far from complete, so stay tuned :)
+                </div>
+            </div>
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    Beta Development <span class="pull-right">24/Oct/2016</span>
+                </div>
+                <div class="panel-body">
+                    Currently, this game is in the alpha state of version 1.0.
+                    We are working hard at fixing all the issues the game currently
+                    has in order to get a beta out to you. Thank you for your
+                    patience :)
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Modals-->
+    <div id="howto" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!--Content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button role="button" data-dismiss="modal" class="close">&times;</button>
+                    <h4 class="modal-title">
+                        How to Play
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p>Use <kbd>W</kbd>, <kbd>A</kbd>, <kbd>S</kbd>, <kbd>D</kbd> or <kbd>&uarr;</kbd>, <kbd>&larr;</kbd>, <kbd>&rarr;</kbd>, <kbd>&darr;</kbd> to move.</p>
+                    <p>Use the mouse to aim and click to fire</p>
+                    <p>Reduce all other players' health to 0 to win</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="container footer">
+        <p class="text-muted">All icons from <a href="http://fontawesome.io/">FontAwesome</a></p>
+    </footer>
+</body>

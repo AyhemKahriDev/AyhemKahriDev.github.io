@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How It Really Works — Sal's Galaxy Zone Arcade</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/crt-effects.css">
+  <style>
+    /* ── Page-specific layout ─────────────────────────────────── */
+    canvas#starfield {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .dev-page {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: var(--space-lg) var(--space-lg) var(--space-2xl);
+      position: relative;
+      z-index: 1;
+    }
+
+    .dev-header {
+      text-align: center;
+      padding: var(--space-2xl) 0 var(--space-xl);
+    }
+
+    .dev-header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: #fff;
+      text-shadow:
+        0 0 4px #fff,
+        0 0 12px var(--neon-cyan),
+        0 0 28px var(--neon-cyan),
+        0 0 50px var(--neon-blue);
+      margin-bottom: var(--space-sm);
+    }
+
+    .dev-header .subtitle {
+      font-size: 0.9rem;
+      color: var(--neon-magenta);
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      text-shadow: 0 0 10px var(--neon-magenta-dim);
+    }
+
+    /* ── Section styling ──────────────────────────────────────── */
+    .dev-section {
+      margin-bottom: var(--space-2xl);
+    }
+
+    .dev-section h2 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--neon-cyan);
+      text-shadow: 0 0 8px var(--neon-cyan-dim);
+      border-bottom: 1px solid var(--neon-cyan-dim);
+      padding-bottom: var(--space-sm);
+      margin-bottom: var(--space-lg);
+    }
+
+    .dev-section h3 {
+      font-family: var(--font-display);
+      font-size: 1rem;
+      color: var(--neon-hotpink);
+      text-shadow: 0 0 6px var(--neon-hotpink-dim);
+      margin: var(--space-lg) 0 var(--space-sm);
+    }
+
+    .dev-section p,
+    .dev-section li {
+      font-size: 0.88rem;
+      line-height: 1.75;
+      color: #c0c0cc;
+      margin-bottom: var(--space-md);
+    }
+
+    .dev-section ul {
+      padding-left: var(--space-lg);
+      margin-bottom: var(--space-md);
+    }
+
+    .dev-section li {
+      margin-bottom: var(--space-sm);
+      list-style: none;
+      position: relative;
+    }
+
+    .dev-section li::before {
+      content: ">";
+      position: absolute;
+      left: -1.2em;
+      color: var(--neon-green);
+      font-weight: 700;
+    }
+
+    .dev-section strong {
+      color: #e0e0f0;
+    }
+
+    .dev-section em {
+      color: var(--neon-yellow);
+      font-style: normal;
+    }
+
+    /* ── Code blocks ──────────────────────────────────────────── */
+    pre {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--neon-cyan-dim);
+      border-left: 3px solid var(--neon-cyan);
+      border-radius: 6px;
+      padding: var(--space-md);
+      margin: var(--space-md) 0 var(--space-lg);
+      overflow-x: auto;
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      line-height: 1.65;
+      color: #b0d0e0;
+      box-shadow:
+        0 0 12px rgba(0, 255, 255, 0.06),
+        inset 0 0 20px rgba(0, 0, 0, 0.3);
+    }
+
+    code {
+      font-family: var(--font-display);
+      font-size: 0.82em;
+    }
+
+    p code,
+    li code {
+      background: rgba(0, 255, 255, 0.08);
+      border: 1px solid rgba(0, 255, 255, 0.15);
+      border-radius: 3px;
+      padding: 0.1em 0.4em;
+      color: var(--neon-cyan);
+    }
+
+    .code-comment {
+      color: #5a7a5a;
+    }
+    .code-keyword {
+      color: var(--neon-magenta);
+    }
+    .code-string {
+      color: var(--neon-green);
+    }
+    .code-number {
+      color: var(--neon-yellow);
+    }
+    .code-type {
+      color: var(--neon-cyan);
+    }
+
+    /* ── Folder tree ──────────────────────────────────────────── */
+    .folder-tree {
+      background: rgba(0, 0, 0, 0.6);
+      border: 1px solid var(--neon-blue-dim);
+      border-radius: 6px;
+      padding: var(--space-md) var(--space-lg);
+      margin: var(--space-md) 0 var(--space-lg);
+      font-family: var(--font-display);
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: #90a0b0;
+      white-space: pre;
+    }
+
+    .folder-tree .dir {
+      color: var(--neon-cyan);
+    }
+
+    .folder-tree .file {
+      color: #b0b0c0;
+    }
+
+    .folder-tree .comment {
+      color: #5a6a5a;
+    }
+
+    /* ── Stats bar ────────────────────────────────────────────── */
+    .stats-bar {
+      display: flex;
+      gap: var(--space-lg);
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: var(--space-lg) 0;
+      padding: var(--space-md);
+      border: 1px solid var(--neon-blue-dim);
+      border-radius: 8px;
+      background: rgba(0, 0, 0, 0.4);
+    }
+
+    .stat {
+      text-align: center;
+    }
+
+    .stat-value {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: var(--neon-green);
+      text-shadow: 0 0 10px var(--neon-green-dim);
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #808090;
+    }
+
+    /* ── Spoiler warning ──────────────────────────────────────── */
+    .spoiler-warning {
+      background: rgba(255, 45, 149, 0.08);
+      border: 1px solid var(--neon-hotpink-dim);
+      border-radius: 6px;
+      padding: var(--space-sm) var(--space-md);
+      margin-bottom: var(--space-lg);
+      font-size: 0.82rem;
+      color: var(--neon-hotpink);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      text-align: center;
+    }
+
+    /* ── Back link ────────────────────────────────────────────── */
+    .back-link {
+      display: inline-block;
+      margin-bottom: var(--space-lg);
+      font-size: 0.85rem;
+      color: var(--neon-cyan);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    .back-link:hover {
+      color: var(--neon-hotpink);
+      text-shadow: 0 0 8px var(--neon-hotpink-dim);
+    }
+
+    /* ── Responsive ───────────────────────────────────────────── */
+    @media (max-width: 600px) {
+      .dev-page {
+        padding: var(--space-md);
+      }
+      .dev-header h1 {
+        letter-spacing: 0.08em;
+      }
+      pre {
+        font-size: 0.7rem;
+        padding: var(--space-sm);
+      }
+      .stats-bar {
+        gap: var(--space-md);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="starfield"></canvas>
+
+  <div class="dev-page">
+
+    <a href="index.html" class="back-link">&lt; Back to Arcade</a>
+
+    <header class="dev-header">
+      <h1>How It Really Works</h1>
+      <p class="subtitle">Developer Commentary</p>
+    </header>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- Architecture                                                   -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="dev-section">
+      <h2>Architecture</h2>
+
+      <p>
+        The entire arcade is <strong>vanilla JavaScript with ES Modules</strong>.
+        No React. No Svelte. No Webpack. No Vite. No npm install. Zero
+        build step. You open <code>index.html</code> in a browser (or push to
+        GitHub Pages) and it just works.
+      </p>
+
+      <h3>Why?</h3>
+      <ul>
+        <li>Proof that you do not need a framework to ship 16 interactive games with shared state, achievements, and persistence.</li>
+        <li>Zero build step means zero build config, zero CI pipeline, zero "works on my machine." <code>git push</code> to deploy.</li>
+        <li>GitHub Pages compatible out of the box -- no custom server, no serverless functions, no environment variables.</li>
+        <li>Every file is readable in the browser's DevTools exactly as authored. View source still works.</li>
+      </ul>
+
+      <h3>Project Structure</h3>
+      <div class="folder-tree"><span class="dir">galaxy2/</span>
+<span class="dir">  css/</span>
+<span class="file">    styles.css</span>          <span class="comment"># site-wide neon theme</span>
+<span class="file">    crt-effects.css</span>     <span class="comment"># scanlines, vignette, flicker</span>
+<span class="file">    game-common.css</span>     <span class="comment"># shared game page layout</span>
+<span class="dir">  js/</span>
+<span class="file">    main.js</span>             <span class="comment"># homepage: starfield, cards, secret game</span>
+<span class="dir">    lib/</span>
+<span class="file">      engine.js</span>         <span class="comment"># GameEngine base class</span>
+<span class="file">      audio.js</span>          <span class="comment"># Web Audio synthesizer</span>
+<span class="file">      particles.js</span>      <span class="comment"># object-pooled particle system</span>
+<span class="file">      input.js</span>          <span class="comment"># keyboard/touch input manager</span>
+<span class="file">      collision.js</span>      <span class="comment"># AABB + circle collision</span>
+<span class="file">      sprites.js</span>        <span class="comment"># procedural sprite drawing</span>
+<span class="file">      screen-effects.js</span> <span class="comment"># shake, flash, slow-mo, freeze</span>
+<span class="file">      transitions.js</span>    <span class="comment"># scene transition animations</span>
+<span class="file">      achievements.js</span>   <span class="comment"># cross-game achievement tracking</span>
+<span class="file">      utils.js</span>          <span class="comment"># math helpers, color utils</span>
+<span class="dir">  games/</span>
+<span class="dir">    pac-chase/</span>          <span class="comment"># each game is self-contained</span>
+<span class="dir">    space-defenders/</span>
+<span class="dir">    asteroid-blaster/</span>
+<span class="file">    ...</span>               <span class="comment"># 16 games total (15 visible + 1 secret)</span></div>
+
+      <div class="stats-bar">
+        <div class="stat">
+          <span class="stat-value">16</span>
+          <span class="stat-label">Games</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">~20k</span>
+          <span class="stat-label">Lines of Code</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">10</span>
+          <span class="stat-label">Shared Modules</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">0</span>
+          <span class="stat-label">Dependencies</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- The Shared Engine                                              -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="dev-section">
+      <h2>The Shared Engine</h2>
+
+      <p>
+        Every game extends a single <code>GameEngine</code> base class. This
+        eliminates roughly 100 lines of boilerplate per game -- canvas setup,
+        input handling, the game loop, pause menus, high score persistence,
+        responsive scaling, and the state machine.
+      </p>
+
+      <h3>State Machine</h3>
+      <p>
+        Each game moves through a strict set of states:
+        <code>init</code> &rarr; <code>menu</code> &rarr; <code>playing</code>
+        &rarr; <code>paused</code> &rarr; <code>gameover</code>
+        (plus <code>transition</code> for scene changes). The engine handles all
+        state transitions and calls lifecycle hooks on the subclass:
+      </p>
+
+<pre><span class="code-keyword">const</span> STATES = [<span class="code-string">'init'</span>, <span class="code-string">'menu'</span>, <span class="code-string">'playing'</span>, <span class="code-string">'paused'</span>, <span class="code-string">'gameover'</span>, <span class="code-string">'transition'</span>];
+
+<span class="code-keyword">export default class</span> <span class="code-type">GameEngine</span> {
+  <span class="code-comment">// Override these in your game:</span>
+  init() {}                <span class="code-comment">// called once after construction</span>
+  update(dt) {}            <span class="code-comment">// game logic (playing state only)</span>
+  render(ctx) {}           <span class="code-comment">// draw game objects</span>
+  onEnterState(state) {}   <span class="code-comment">// state transition in</span>
+  onExitState(state) {}    <span class="code-comment">// state transition out</span>
+
+  setState(newState) {
+    <span class="code-keyword">if</span> (!STATES.includes(newState) || newState === <span class="code-keyword">this</span>._state) <span class="code-keyword">return</span>;
+    <span class="code-keyword">this</span>.onExitState(<span class="code-keyword">this</span>._state);
+    <span class="code-keyword">this</span>._state = newState;
+    <span class="code-keyword">this</span>.onEnterState(newState);
+  }
+}</pre>
+
+      <h3>Delta-Time Loop with Spiral-of-Death Prevention</h3>
+      <p>
+        The loop tracks real elapsed time and converts it to seconds. If the
+        browser tab goes backgrounded or the frame budget is exceeded, delta
+        time can spike. Unclamped, this causes objects to teleport through
+        walls -- the "spiral of death." The fix is one line:
+      </p>
+
+<pre>_loop(now) {
+  <span class="code-keyword">let</span> dt = (now - <span class="code-keyword">this</span>._lastTime) / <span class="code-number">1000</span>;
+  <span class="code-keyword">this</span>._lastTime = now;
+  <span class="code-keyword">if</span> (dt > <span class="code-keyword">this</span>._maxDT) dt = <span class="code-keyword">this</span>._maxDT;  <span class="code-comment">// clamp to 1/30s -- prevents spiral of death</span>
+  <span class="code-keyword">if</span> (dt <= <span class="code-number">0</span>) <span class="code-keyword">return</span>;
+
+  <span class="code-keyword">const</span> timeScale = <span class="code-keyword">this</span>.effects.getTimeScale();  <span class="code-comment">// slow-mo support</span>
+  <span class="code-keyword">const</span> sdt = dt * timeScale;
+  <span class="code-comment">// ...</span>
+}</pre>
+
+      <h3>Canvas Scaling</h3>
+      <p>
+        Games are authored at a fixed logical resolution (typically 800x600)
+        but CSS-scaled to fill the viewport. The engine tracks the scale
+        factor so mouse/touch coordinates map correctly. This means every game
+        looks sharp on a phone and a 4K monitor without any game code needing
+        to know the physical pixel size.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- Sound Without Files                                            -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="dev-section">
+      <h2>Sound Without Files</h2>
+
+      <p>
+        There are <strong>zero audio files</strong> in this project. Every
+        sound effect -- coin pickups, explosions, lasers, power-ups, menu
+        blips -- is synthesized in real time using the Web Audio API.
+      </p>
+
+      <h3>How It Works</h3>
+      <p>
+        Each sound is a "preset" function that creates a short chain of
+        oscillators, gain nodes, and filters, schedules their envelopes, and
+        lets them auto-disconnect when done. A coin pickup is two quick
+        frequency ramps on a square wave. An explosion is white noise through
+        a lowpass filter with a fast decay.
+      </p>
+
+<pre><span class="code-comment">// Simplified from audio.js -- a coin sound in ~15 lines</span>
+coin(ctx, dest, t, vol) {
+  <span class="code-keyword">const</span> g = ctx.createGain();
+  <span class="code-keyword">const</span> osc = ctx.createOscillator();
+  osc.type = <span class="code-string">'square'</span>;
+  osc.frequency.setValueAtTime(<span class="code-number">987</span>, t);
+  osc.frequency.setValueAtTime(<span class="code-number">1318</span>, t + <span class="code-number">0.08</span>);  <span class="code-comment">// B5 -> E6</span>
+  g.gain.setValueAtTime(vol, t);
+  g.gain.linearRampToValueAtTime(<span class="code-number">0</span>, t + <span class="code-number">0.18</span>);
+  osc.connect(g).connect(dest);
+  osc.start(t);
+  osc.stop(t + <span class="code-number">0.2</span>);
+}</pre>
+
+      <h3>Why Synthesize Everything?</h3>
+      <ul>
+        <li><strong>No loading.</strong> Sounds play instantly -- no preload phase, no async waiting, no loading bars.</li>
+        <li><strong>No CORS issues.</strong> Audio files served from different origins get blocked. Synthesized audio cannot.</li>
+        <li><strong>No 404s.</strong> Files get renamed, paths break, CDNs go down. Oscillators do not go down.</li>
+        <li><strong>Smaller total size.</strong> The entire audio system is ~400 lines. A single .wav explosion sound is larger.</li>
+        <li><strong>More impressive.</strong> Honestly, this is part of it.</li>
+      </ul>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- Particles & Juice                                              -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="dev-section">
+      <h2>Particles &amp; Juice</h2>
+
+      <p>
+        "Juice" is the game design term for the gap between a game that
+        <em>works</em> and a game that <em>feels good</em>. It is screen
+        shake when you get hit. It is the particle burst when an enemy
+        explodes. It is the 50ms slow-motion freeze on a big impact. None of
+        it is gameplay -- all of it is feel.
+      </p>
+
+      <h3>Object Pooling</h3>
+      <p>
+        Spawning and garbage-collecting hundreds of particle objects per
+        second causes GC pauses -- visible as micro-stutters. The particle
+        system pre-allocates a pool of 500 particle objects at startup and
+        recycles them:
+      </p>
+
+<pre><span class="code-keyword">class</span> <span class="code-type">Particle</span> {
+  <span class="code-keyword">constructor</span>() {
+    <span class="code-keyword">this</span>.alive = <span class="code-keyword">false</span>;   <span class="code-comment">// dead particles stay in the pool</span>
+    <span class="code-keyword">this</span>.x = <span class="code-number">0</span>;  <span class="code-keyword">this</span>.y = <span class="code-number">0</span>;
+    <span class="code-keyword">this</span>.vx = <span class="code-number">0</span>; <span class="code-keyword">this</span>.vy = <span class="code-number">0</span>;
+    <span class="code-keyword">this</span>.life = <span class="code-number">0</span>;
+    <span class="code-comment">// ... size, color, rotation, gravity, friction</span>
+  }
+  reset(x, y, config) {
+    <span class="code-keyword">this</span>.alive = <span class="code-keyword">true</span>;    <span class="code-comment">// recycled, not constructed</span>
+    <span class="code-comment">// ... apply config</span>
+  }
+}
+
+<span class="code-keyword">class</span> <span class="code-type">ParticleSystem</span> {
+  <span class="code-keyword">constructor</span>(maxParticles = <span class="code-number">500</span>) {
+    <span class="code-keyword">this</span>._pool = <span class="code-keyword">new</span> Array(maxParticles);
+    <span class="code-keyword">for</span> (<span class="code-keyword">let</span> i = <span class="code-number">0</span>; i &lt; maxParticles; i++)
+      <span class="code-keyword">this</span>._pool[i] = <span class="code-keyword">new</span> <span class="code-type">Particle</span>();  <span class="code-comment">// allocated once, reused forever</span>
+  }
+}</pre>
+
+      <h3>Screen Shake, Flash, Slow-Mo</h3>
+      <p>
+        The <code>ScreenEffects</code> module provides composable effects
+        that stack on top of any game without touching game code:
+      </p>
+      <ul>
+        <li><strong>Shake</strong> -- random per-frame canvas translate offset, decaying over a duration.</li>
+        <li><strong>Flash</strong> -- full-screen color overlay that fades out (white for hits, red for damage).</li>
+        <li><strong>Slow-mo</strong> -- scales delta-time by a factor (e.g. 0.2x) with configurable ramp-in and ramp-out, so impacts feel heavy.</li>
+        <li><strong>Freeze frame</strong> -- holds dt at zero for a few frames on the exact moment of impact. The most powerful juice trick.</li>
+      </ul>
+      <p>
+        None of these modify game state directly. They operate on the
+        rendering pipeline and the time scale. That separation is what makes
+        them safe to layer on without introducing bugs.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- The Secret Game                                                -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="dev-section">
+      <h2>The Secret Game</h2>
+
+      <div class="spoiler-warning">
+        Spoiler Warning -- This section describes the hidden 16th game slot
+      </div>
+
+      <p>
+        The 4x4 grid has 15 visible games and one card that reads "OUT OF
+        ORDER." It is not decorative. There are three independent paths to
+        unlock the 16th game:
+      </p>
+
+      <ul>
+        <li>
+          <strong>Konami Code.</strong>
+          <code>&uarr; &uarr; &darr; &darr; &larr; &rarr; &larr; &rarr; B A</code>
+          -- the classic. Listened for globally via <code>keydown</code>.
+        </li>
+        <li>
+          <strong>Rapid clicks.</strong> Click the "OUT OF ORDER" card 10 times
+          within 3 seconds. Like hammering the coin return on a broken cabinet.
+        </li>
+        <li>
+          <strong>Cross-game achievement.</strong> Score at least 5,000 points
+          in 5 different games. The homepage checks
+          <code>AchievementManager.getGamesWithMinScore(5000)</code> on load.
+        </li>
+      </ul>
+
+      <h3>The Unlock Sequence</h3>
+      <p>
+        When triggered, the card runs a 20-frame glitch animation --
+        random translate, skew, hue-rotate, and brightness -- before revealing
+        the hidden game. A brief "???" text appears before resolving to the
+        real title. The power-up sound plays.
+      </p>
+
+      <h3>Persistence</h3>
+      <p>
+        Once unlocked, <code>localStorage.setItem('galaxy-arcade-secret-unlocked', 'true')</code>
+        persists the state. On subsequent visits, the card is revealed
+        immediately without the animation. Clear localStorage to re-lock it.
+      </p>
+
+      <h3>Narrative Tie-In</h3>
+      <p>
+        The "OUT OF ORDER" card is the Cursed Cabinet -- the one machine in
+        Sal's arcade that never quite worked right. Flickering screen,
+        strange noises, quarters it swallowed without giving a game. Turns
+        out it was just waiting for someone persistent enough to wake it up.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- CSS-Only CRT Effects                                           -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="dev-section">
+      <h2>CSS-Only CRT Effects</h2>
+
+      <p>
+        The CRT effect -- scanlines, vignette, curvature, phosphor glow,
+        chromatic aberration, flicker -- is <strong>pure CSS</strong>. No
+        WebGL. No fragment shaders. No JavaScript at all.
+      </p>
+
+      <h3>Scanlines</h3>
+      <p>
+        A <code>::before</code> pseudo-element with <code>repeating-linear-gradient</code>
+        draws alternating transparent and semi-transparent black stripes.
+        Tunable via CSS custom properties:
+      </p>
+
+<pre><span class="code-keyword">.crt</span>::before {
+  content: <span class="code-string">""</span>;
+  position: absolute;
+  inset: <span class="code-number">0</span>;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent <span class="code-number">0px</span>,
+    transparent var(<span class="code-type">--crt-scanline-width</span>),
+    rgba(<span class="code-number">0,0,0</span>, var(<span class="code-type">--crt-scanline-opacity</span>)) var(<span class="code-type">--crt-scanline-width</span>),
+    rgba(<span class="code-number">0,0,0</span>, var(<span class="code-type">--crt-scanline-opacity</span>)) calc(var(<span class="code-type">--crt-scanline-width</span>) * <span class="code-number">2</span>)
+  );
+}</pre>
+
+      <h3>Vignette</h3>
+      <p>
+        A <code>::after</code> pseudo-element with <code>radial-gradient</code>
+        darkens the edges. Transparent at center, fading to black at the
+        perimeter. Combined with <code>border-radius</code> on the container,
+        it produces the curved-glass look.
+      </p>
+
+      <h3>Performance</h3>
+      <ul>
+        <li>All overlays use <code>pointer-events: none</code> -- they never intercept clicks.</li>
+        <li>No CSS <code>filter</code> properties (blur, brightness, contrast). Those are expensive when applied over animated canvas content.</li>
+        <li>Chromatic aberration uses <code>box-shadow</code> offsets instead of filters.</li>
+        <li>Flicker is a simple opacity animation -- compositor-only, near-zero cost.</li>
+        <li>Scanlines get <code>will-change: opacity</code> to promote to their own compositing layer.</li>
+      </ul>
+
+      <h3>Toggle</h3>
+      <p>
+        Adding <code>.crt-off</code> to the container disables every effect
+        cleanly. No game code needs to change. The effects exist in a
+        completely separate layer from the game rendering.
+      </p>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <!-- What We Learned                                                -->
+    <!-- ═══════════════════════════════════════════════════════════════ -->
+    <section class="dev-section">
+      <h2>What We Learned</h2>
+
+      <ul>
+        <li>
+          <strong>Vanilla JS is still powerful.</strong> The language has
+          evolved. ES Modules, classes, destructuring, <code>requestAnimationFrame</code>,
+          the Web Audio API, Canvas 2D -- modern vanilla JS is a capable
+          platform. 16 games and 20,000 lines with no framework, no
+          transpilation, and no polyfills.
+        </li>
+        <li>
+          <strong>ES Modules are the sweet spot.</strong> Between "everything
+          in one file" and "full bundler pipeline," ES Modules give you real
+          import/export with zero tooling. The browser does the module
+          resolution. The tradeoff is no tree-shaking and no minification,
+          but for a project this size it does not matter.
+        </li>
+        <li>
+          <strong>Game feel comes from tiny details.</strong> A 3-frame
+          freeze on impact. A 0.15-second screen shake. Particles that fan
+          out in the direction of the hit. A sound that plays 50ms before
+          the visual. These are all cheap to implement and they are the
+          difference between "technically correct" and "fun."
+        </li>
+        <li>
+          <strong>localStorage is underrated.</strong> High scores,
+          achievements, secret unlocks, settings -- all persisted with
+          <code>localStorage</code>. No accounts, no databases, no API
+          calls. For a client-side project, it is exactly the right tool.
+        </li>
+        <li>
+          <strong>Object pooling matters.</strong> JavaScript's garbage
+          collector is good, but "good" is not "invisible." Pre-allocating
+          particle pools eliminated all visible GC stutters during gameplay.
+        </li>
+        <li>
+          <strong>CSS can do more than you think.</strong> Scanlines,
+          vignette, chromatic aberration, phosphor glow, and screen
+          curvature -- all CSS, all composited by the browser for near-free.
+          Save WebGL for when you actually need it.
+        </li>
+      </ul>
+    </section>
+
+    <a href="index.html" class="back-link">&lt; Back to Arcade</a>
+
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <!-- Starfield (minimal inline -- same pattern as index.html)      -->
+  <!-- ═══════════════════════════════════════════════════════════════ -->
+  <script>
+    (function () {
+      const canvas = document.getElementById('starfield');
+      const ctx = canvas.getContext('2d');
+      const stars = [];
+      let w, h;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+      }
+      resize();
+      window.addEventListener('resize', resize);
+
+      for (let i = 0; i < 150; i++) {
+        stars.push({
+          x: Math.random(),
+          y: Math.random(),
+          size: 0.5 + Math.random() * 1.8,
+          speed: 0.0002 + Math.random() * 0.0008,
+          alpha: 0.3 + Math.random() * 0.7,
+        });
+      }
+
+      let last = 0;
+      function loop(now) {
+        requestAnimationFrame(loop);
+        const dt = last ? Math.min(now - last, 50) : 16;
+        last = now;
+        ctx.clearRect(0, 0, w, h);
+        for (const s of stars) {
+          s.y += s.speed * dt;
+          if (s.y > 1) { s.y = 0; s.x = Math.random(); }
+          ctx.globalAlpha = s.alpha;
+          ctx.fillStyle = '#fff';
+          ctx.beginPath();
+          ctx.arc(s.x * w, s.y * h, s.size, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        ctx.globalAlpha = 1;
+      }
+      requestAnimationFrame(loop);
+    })();
+  </script>
+
+</body>
+</html>

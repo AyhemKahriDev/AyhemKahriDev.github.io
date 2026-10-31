@@ -1,0 +1,11 @@
+{
+  "name": "tube",
+  "version": "1.0.0",
+  "devDependencies": {
+    "vite": "^6.2.2"
+  },
+  "scripts": {
+    "build": "vite build",
+    "serve": "vite"
+  }
+}

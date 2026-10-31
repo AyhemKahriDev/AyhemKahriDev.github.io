@@ -1,0 +1,391 @@
+body {
+    margin: 0;
+    padding: 0;
+    align-items: center;
+    background: #141D22;
+    font-family: "IBM Plex Mono", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+}
+.game-container-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    max-width:100vw;
+    /* background: #141D22; */
+
+    position: relative;
+    /* Create grid pattern background */
+    background-color: #141D22;
+    background-image: 
+        /* Pixel grid */
+        linear-gradient(to right, rgba(74, 74, 143, 0.1) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(74, 74, 143, 0.1) 1px, transparent 1px),
+        /* Diagonal stripes for depth */
+        linear-gradient(45deg, 
+            rgba(74, 74, 143, 0.15) 25%, 
+            transparent 60%, 
+            transparent 90%, 
+            rgba(74, 74, 143, 0.15) 75%);
+    background-size: 
+        20px 20px,  /* For the grid */
+        20px 20px,  /* For the grid */
+        40px 40px;  /* For the diagonal pattern */
+    background-position: 
+        0 0, 
+        0 0,
+        0 0;
+}
+.game-container {
+    position: relative;
+    /* width: 700px; */
+    /* height: 700px; */
+    /* contain: strict; */
+    border: 3px solid #c3f2f5;
+    border-radius: 0px;
+}
+#gameCanvas {
+    background: #141D22;
+    will-change: transform;
+}
+#restartButton {
+  margin: 15px 0;
+  padding: 12px 12px;
+  font-size: 18px;
+}
+#videoElement {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    /* width: 160px;
+    height: 120px; */
+    border: 2px solid #3a4c4e;
+    transform: scaleX(-1);
+    will-change: transform;
+}
+.stats {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  color: #f2c2a4;
+  contain: content;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.stats div {
+  background: rgba(12, 8, 22, 0.1);
+  padding: 2px;
+  border-radius: 5px;
+}
+#livesElement {
+  letter-spacing: 2px;  /* Add spacing between hearts */
+}
+.modal {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 8, 22, 0.3);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    opacity: 0.95;
+}
+.modal-content {
+    background: #2a2a2a;
+    padding: 5px 15px;
+    border-radius: 10px;
+    max-width: 400px;
+    color: white;
+    text-align: center;
+    contain: content;
+}
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    color: #f2c2a4;
+}
+.modal-content p {
+    margin: 10px 0;
+    line-height: 1.5;
+    position: relative;
+}
+.stats-grid {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px;
+    margin: 15px 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    text-align: left;
+}
+.stats-grid .label {
+    font-weight: bold;
+    color: #f2c2a4;
+}
+.start-button, .restart-button {
+    background: #34A2DF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-family: "IBM Plex Mono", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 16px;
+}
+.start-button:hover, .restart-button:hover {
+  background: #0f4dea;
+}
+.game-over-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(12, 8, 22, 0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+#finalScore {
+  color: #33FF99;
+  font-weight: bold;
+  text-align: center;
+}
+#finalLevel {
+  color: #0095DD;
+  font-weight: bold;
+  text-align: center;
+}
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: transparent;
+  border: none;
+  color: #f2c2a4;
+  font-size: 32px;
+  cursor: pointer;
+  padding: 5px 10px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.close-button:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+}
+.level-up-indicator {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 1s;
+    pointer-events: none;
+    text-align: center;
+}
+.level-up-text {
+  font-size: 52px;
+  color: #33FF99;
+  text-shadow: 0 0 10px rgba(51, 255, 153, 0.5);
+  font-weight: bold;
+}
+.level-up-subtitle{
+  font-size: 18px;
+  color: #c3f2f5;
+}
+.game-footer-div {
+  display: block;
+}
+.inline {
+  display: inline-block;
+}
+.about-link, .donate-link {
+  margin-left: 10px;
+  font-size: 1.1em;
+  color: #c3f2f5;
+  text-decoration: none; 
+}
+.about-link:visited, .donate-link:visited {
+  color: #c3f2f5;
+  text-decoration: none; 
+}
+
+#notesDiv{
+  width:98vw;
+  box-sizing: border-box;
+  /*overflow: hidden;*/
+  /* padding: 10px; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /*border-top: 5px solid #581845;*/
+  background-color: #151632;
+  color: white;
+}
+
+#textBox {
+  min-width: 350px;
+  max-width: 75vw;
+}
+
+li {
+  margin-bottom: 6px;
+}
+
+#linksDiv{
+  background-color: #faebf6;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+h2 {
+  font-size: 40px;
+}
+
+#visits {
+  background-color: rgb(95, 95, 95);
+  border-radius: 4px;
+  padding: 3px;
+}
+
+/* Styling for table with github and social links */
+
+#infoMenuTable td {
+  text-align:center;
+  border: 0;
+  padding: 20px;
+}
+
+#infoMenuTable{
+  table-layout: fixed;
+  margin: 0px;
+}
+
+a, a:visited{
+  color:rgb(161, 50, 154);
+}
+
+.socialMediaButton{
+  color:rgb(161, 50, 154);
+  font-size: 26px;
+  margin: 0;
+  padding: 4px;
+  border: none;
+  max-width: 50px;
+  max-height: 50px;
+  background-color: transparent;
+}
+
+.x-link {
+  text-decoration: none !important;
+  font-weight: bold;
+}
+
+#buyMeACoffeeButton {
+  font-size: 10px;
+}
+
+/* High score styles */
+.high-scores {
+  margin: 5px 0;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+  font-size: 0.9em;
+}
+
+.high-scores h3 {
+  margin: 0 0 6px 0;
+  color: #f2c2a4;
+}
+
+.scores-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.score-entry {
+  display: grid;
+  grid-template-columns: 30px 1fr auto auto;
+  gap: 15px;
+  padding: 5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.score-entry.current-score {
+  background: rgba(51, 255, 153, 0.1);
+  border: 1px solid #33FF99;
+}
+
+.rank {
+  text-align: right;
+  color: #888;
+}
+
+.name {
+  color: #fff;
+}
+
+.score {
+  color: #33FF99;
+}
+
+.level {
+  color: #3399CC;
+  margin-left: 10px;
+}
+
+.loading-text {
+  font-size: bold;
+  font-size: 24px;
+}
+
+.hidden {
+  display: none;
+}
+
+.hand-tracking-error {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 300px;
+}
+
+.pause-overlay {
+  text-align: center;
+  background: rgba(0, 0, 0, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 300px;
+  z-index: 1000;
+}
+
+.percentile-message {
+  font-size: 0.9em;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.high-scores .percentile-message {
+  margin-top: 15px;
+  padding: 10px;
+  background-color: rgba(51, 255, 153, 0.1);
+  border-radius: 5px;
+}

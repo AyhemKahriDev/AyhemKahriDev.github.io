@@ -1,0 +1,1657 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <title>Klondike (Solitaire)</title>
+    <script src="https://cardmeister.github.io/elements.cardmeister.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.min.js"></script>
+    <style>
+      :root {
+        --card-w: 100px; --card-h: 140px;
+        --board-pad: 24px;
+        --grid-gap: 15px;
+        --bg: #008000;
+        --accent: #ffffff;
+        --ink: #f5f2ea;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; color: var(--ink);
+        background: var(--bg);
+        min-height: 100svh; overflow: hidden;
+        padding-top: env(safe-area-inset-top);
+        user-select: none; -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+      @supports (height: 100dvh) {
+        body { min-height: 100dvh; }
+      }
+      header { padding: 15px 24px; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; max-width: 900px; margin: 0 auto; }
+      h1 { margin: 0; font-size: 18px; color: var(--accent); font-weight: normal; text-shadow: 1px 1px 2px black; text-align: center; display: flex; align-items: center; justify-content: center; gap: 6px; white-space: nowrap; width: 100%; }
+      .app-version { font-size: 12px; opacity: 0.8; }
+      .github-link { display: inline-flex; align-items: center; color: var(--accent); opacity: 0.9; }
+      .github-link:hover { opacity: 1; }
+      .github-link svg { width: 16px; height: 16px; display: block; }
+      .controls { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center; }
+      .menu { position: relative; display: inline-flex; align-items: center; }
+      .menu-btn { min-width: 40px; padding: 6px 10px; font-size: 16px; line-height: 1; }
+      .menu-panel {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        min-width: 220px;
+        display: grid;
+        gap: 8px;
+        padding: 10px;
+        background: rgba(0, 0, 0, 0.88);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 8px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+        z-index: 120;
+      }
+      .menu-panel[hidden] { display: none; }
+      .menu-panel button { width: 100%; text-align: left; }
+      .menu-toggle { width: 100%; justify-content: flex-start; }
+      
+      .toggle-label { display: flex; align-items: center; cursor: pointer; color: white; font-size: 12px; gap: 5px; background: rgba(0,0,0,0.2); padding: 4px 8px; border-radius: 4px; }
+      .toggle-label input { cursor: pointer; }
+
+      button { background: #ece9d8; color: black; border: 1px solid #003c74; padding: 6px 12px; border-radius: 3px; font-size: 12px; cursor: pointer; white-space: nowrap; }
+      button:hover { box-shadow: 0 0 0 1px #f5f2ea inset; }
+      button:active { transform: translateY(1px); }
+      button:disabled { opacity: 0.5; cursor: not-allowed; }
+      
+      #status-msg { color: #ffff00; font-weight: bold; font-size: 14px; margin-right: 6px; text-shadow: 1px 1px 0 #000; min-width: 0; text-align: right; white-space: nowrap; }
+      #moves-msg { font-weight: bold; font-size: 14px; text-shadow: 1px 1px 0 #000; white-space: nowrap; }
+      
+      .board { padding: 10px var(--board-pad) 40px; display: grid; gap: 40px; max-width: 900px; margin: 0 auto; transition: gap 0.3s; }
+      .legal { text-align: center; font-size: 12px; margin: 12px 0 16px; opacity: 0.85; border-top: 1px solid rgba(255,255,255,0.25); padding-top: 8px; display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: nowrap; }
+      .legal a { color: var(--accent); text-decoration: underline; margin: 0 6px; vertical-align: middle; }
+      .legal a.oss-badge { text-decoration: none; }
+      .oss-badge { display: inline-flex; align-items: center; justify-content: center; padding: 2px 8px; border-radius: 999px; background: rgba(0,0,0,0.25); border: 1px solid rgba(255,255,255,0.35); font-size: 10px; font-weight: bold; color: var(--accent); margin: 0 6px; white-space: nowrap; }
+      .top-row, .bottom-row { display: grid; grid-template-columns: repeat(7, var(--card-w)); gap: var(--grid-gap); justify-content: center; transition: gap 0.3s; }
+
+      @media (max-width: 800px) {
+        :root {
+          --board-pad: 10px;
+          --grid-gap: 4px;
+          --card-w: clamp(34px, calc((100vw - (var(--board-pad) * 2) - (var(--grid-gap) * 6)) / 7), 100px);
+          --card-h: calc(var(--card-w) * 1.4);
+        }
+        header { padding: 12px 10px; }
+        .controls { width: 100%; gap: 6px; flex-wrap: nowrap; justify-content: center; }
+        .controls button { padding: 5px 8px; font-size: 11px; }
+        .menu { margin-left: 0; }
+        .menu-btn { min-width: 34px; padding: 5px 8px; font-size: 15px; }
+        #status-msg { margin-right: 2px; font-size: 12px; }
+        #moves-msg { font-size: 12px; }
+        .board { padding: 10px var(--board-pad); gap: 20px; }
+      }
+
+      .slot, .column {
+        position: relative; width: var(--card-w); min-height: var(--card-h);
+        border-radius: 4px; 
+        border: 2px solid rgba(255,255,255,0.2);
+        cursor: pointer; 
+        transition: height 0.2s;
+      }
+      .slot:empty, .column:empty { border: 2px solid rgba(0,0,0,0.1); background: rgba(0,0,0,0.05); }
+
+      playing-card { position: absolute; width: var(--card-w); height: var(--card-h); cursor: pointer; filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.6)); transition: top 0.1s; pointer-events: auto; }
+      .stock-count { display:none; }
+      
+      #win-overlay {
+        display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+        z-index: 100; flex-direction: column; align-items: center; justify-content: center;
+        color: white; animation: fadeIn 0.5s forwards;
+      }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+      .win-panel {
+        width: min(80vw, 520px);
+        margin: 0 auto 12px;
+        padding: 14px 18px;
+        text-align: center;
+        border-radius: 10px;
+        background: rgba(0, 50, 0, 0.88);
+        border: 1px solid rgba(255,255,255,0.28);
+        box-shadow: 0 8px 18px rgba(0,0,0,0.35);
+      }
+      .win-msg { font-size: clamp(34px, 8vw, 72px); margin: 0; font-family: "Times New Roman", serif; }
+      .win-stat { font-size: clamp(24px, 5vw, 48px); font-weight: bold; margin: 0; }
+      .win-startkey {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .win-startkey-label {
+        font-size: clamp(18px, 3.3vw, 30px);
+        font-weight: bold;
+      }
+      .win-startkey-value {
+        font-size: clamp(18px, 3.3vw, 30px);
+        font-weight: bold;
+        font-family: "Courier New", monospace;
+      }
+      .win-copy-btn {
+        font-size: clamp(13px, 2.5vw, 20px);
+        padding: 6px 14px;
+      }
+      .win-startkey-fallback {
+        margin-top: 10px;
+        display: grid;
+        gap: 8px;
+        justify-items: center;
+      }
+      .win-startkey-fallback[hidden] { display: none; }
+      .win-startkey-input {
+        width: min(90%, 460px);
+        font-size: clamp(14px, 2.8vw, 22px);
+        padding: 6px 10px;
+        text-align: center;
+        font-family: "Courier New", monospace;
+      }
+      .win-startkey-help {
+        font-size: clamp(12px, 2.4vw, 16px);
+        opacity: 0.95;
+      }
+      .win-title { background: transparent; border: 0; box-shadow: none; }
+      .win-action { background: transparent; border: 0; box-shadow: none; }
+      .win-action { margin-bottom: 0; }
+      .win-action button { font-size: clamp(16px, 3.8vw, 30px); padding: 10px 24px; }
+      
+      #stuck-warning {
+        position: fixed; top: 15%; left: 50%; transform: translateX(-50%);
+        background: rgba(255, 0, 0, 0.85); color: white; padding: 10px 20px;
+        border-radius: 20px; font-weight: bold; pointer-events: none;
+        opacity: 0; transition: opacity 0.3s; z-index: 50;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.5); font-size: 14px;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body oncontextmenu="return false;">
+    <div id="win-overlay">
+        <div class="win-panel win-title"><div class="win-msg">Congratulations</div></div>
+        <div class="win-panel"><div id="win-hands" class="win-stat">Hands: 0</div></div>
+        <div class="win-panel"><div id="win-max-chain" class="win-stat">Max Chain: 0</div></div>
+        <div class="win-panel">
+          <div class="win-startkey">
+            <span class="win-startkey-label">StartKey:</span>
+            <span id="win-startkey-value" class="win-startkey-value">-</span>
+            <button id="btn-copy-startkey" class="win-copy-btn" type="button">Copy</button>
+          </div>
+          <div id="win-startkey-fallback" class="win-startkey-fallback" hidden>
+            <input id="win-startkey-input" class="win-startkey-input" type="text" readonly value="" />
+            <button id="btn-select-startkey" class="win-copy-btn" type="button">Select</button>
+            <div class="win-startkey-help">If copy fails on iPhone, long-press the text above and copy.</div>
+          </div>
+        </div>
+        <div class="win-panel win-action"><button id="btn-deal-again">Deal Again</button></div>
+    </div>
+    
+    <div id="stuck-warning">⚠️ Likely Stuck (Undo Recommended)</div>
+
+    <header>
+      <h1>
+        Klondike (Solitaire)
+        <span id="app-version" class="app-version"></span>
+      </h1>
+      <div class="controls">
+        <span id="status-msg"></span>
+        <span id="moves-msg">Hands: 0</span>
+        <button id="btn-hint">Hint</button>
+        <button id="btn-undo" disabled>Undo</button>
+        <div class="menu">
+          <button id="btn-menu" class="menu-btn" aria-label="Menu" aria-expanded="false" aria-controls="menu-panel">☰</button>
+          <div id="menu-panel" class="menu-panel" hidden>
+            <button id="btn-restart" disabled>Restart</button>
+            <button id="new-game">New Game</button>
+            <button id="btn-show-startkey">Show StartKey</button>
+            <button id="btn-load-startkey">Load StartKey</button>
+            <label class="toggle-label menu-toggle" title="Auto check + debug logs">
+                <input type="checkbox" id="chk-autocheck" checked> Solvability Check
+            </label>
+            <button id="btn-test">Test</button>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main class="board">
+      <section class="top-row">
+        <div id="stock" class="slot"></div><div id="waste" class="slot"></div>
+        <div class="spacer"></div>
+        <div id="foundation-0" class="slot"></div><div id="foundation-1" class="slot"></div>
+        <div id="foundation-2" class="slot"></div><div id="foundation-3" class="slot"></div>
+      </section>
+      <section class="bottom-row">
+        <div id="tableau-0" class="column"></div><div id="tableau-1" class="column"></div>
+        <div id="tableau-2" class="column"></div><div id="tableau-3" class="column"></div>
+        <div id="tableau-4" class="column"></div><div id="tableau-5" class="column"></div>
+        <div id="tableau-6" class="column"></div>
+      </section>
+    </main>
+    <footer class="legal">
+      <span>Copyright (c) Toshiki Iga</span>
+      <a class="github-link" href="https://github.com/igapyon/klondike/" aria-label="GitHub Repository" target="_blank" rel="noopener noreferrer">
+        <svg viewBox="0 0 16 16" aria-hidden="true">
+          <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/>
+        </svg>
+      </a>
+      <a class="oss-badge" href="https://github.com/igapyon/klondike/blob/main/THIRD_PARTY_NOTICES.md" target="_blank" rel="noopener noreferrer" aria-label="Third-party notices">Third-Party Notices</a>
+    </footer>
+
+        <script>
+      /* --- [Config] --- */
+      const Config = {
+        APP_VERSION: "v20260305",
+        // 【変更点1】 並び順を スペード(0), ハート(1), クラブ(2), ダイヤ(3) に変更
+        SUITS: ["spades", "hearts", "clubs", "diamonds"],
+        RANKS: ["ace", "2", "3", "4", "5", "6", "7", "8", "9", "ten", "jack", "queen", "king"],
+        CLICK_DELAY_MS: 120,
+        SOLVER_LIMIT_DEAL: 1000,
+        SOLVER_STALL_DEAL: 13,
+        SOLVER_LIMIT_CHECK: 1000,
+        SOLVER_STALL_CHECK: 200,
+        ANIM_MS: { manual: 260, auto: 340, draw: 200 },
+        ANIM_SPEED_PX_PER_MS: { manual: 0.7, auto: 0.8, draw: 0.8 },
+        ANIM_GEARUP: { startAt: 3, step: 0.5, maxMultiplier: 6.0 },
+        ANIM_MIN_MS: 600,
+        ANIM_MAX_MS: 2000,
+        ANIM_EASE_MANUAL: "cubic-bezier(0.45, 0.85, 0.3, 1)",
+        ANIM_EASE_AUTO: "cubic-bezier(0.9, 0, 0.1, 1)",
+        ANIM_STAGGER_MS: 0,
+        REVEAL_DELAY_MS: 0,
+        ANIM_END_BUFFER_MS: 160,
+        REVEAL_TO_MOVE_DELAY_MS: 0
+      };
+
+      /* --- [State] --- */
+      const State = {
+        current: null,
+        initial: null,
+        history: [],
+        moveCountHistory: [],
+        manualMoveCount: 0,
+        startSeed: null,
+        startAttemptIndex: 0,
+        isAutoFinishing: false,
+        isAutoMoving: false,
+        isAnimating: false,
+        animatingCount: 0,
+        lastAnimationPromise: Promise.resolve(),
+        lastAnimationEndAt: 0,
+        lastRevealPromise: Promise.resolve(),
+        lastMove: null,
+        autoChainCount: 0,
+        maxAutoChainCount: 0
+      };
+
+      document.getElementById("app-version").textContent = `${Config.APP_VERSION}`;
+      function updateMoveCounter() {
+        const el = document.getElementById("moves-msg");
+        if (el) el.textContent = `Hands: ${State.manualMoveCount}`;
+      }
+      function incrementMoveCount() {
+        State.manualMoveCount += 1;
+        updateMoveCounter();
+      }
+      function makeStartKey(seed, attemptIndex) {
+        return `${String(seed).toUpperCase()}-${String(attemptIndex).padStart(4, "0")}`;
+      }
+      function parseStartKey(input) {
+        if (!input) return null;
+        const m = String(input).trim().match(/^([0-9A-Fa-f]{8})-(\d{1,4})$/);
+        if (!m) return null;
+        return { seed: m[1].toUpperCase(), attemptIndex: Number.parseInt(m[2], 10) };
+      }
+      function applyStartState(state, seed, attemptIndex) {
+        State.current = state;
+        State.initial = JSON.parse(JSON.stringify(state));
+        State.history = [];
+        State.moveCountHistory = [];
+        State.manualMoveCount = 0;
+        State.maxAutoChainCount = 0;
+        State.startSeed = seed;
+        State.startAttemptIndex = attemptIndex;
+        State.isAutoFinishing = false;
+        State.isAutoMoving = false;
+        State.autoChainCount = 0;
+        clearStatus();
+        setLastMove("deal", { animate: false });
+        updateMoveCounter();
+        updateWinStats();
+        hideStartKeyFallback();
+        UI.render(State.current);
+        updateButtons();
+        requestAutoCheck();
+        Persistence.saveCurrentProgress();
+      }
+      function updateWinStats() {
+        const handsEl = document.getElementById("win-hands");
+        if (handsEl) handsEl.textContent = `Hands: ${State.manualMoveCount}`;
+        const chainEl = document.getElementById("win-max-chain");
+        if (chainEl) chainEl.textContent = `Max Chain: ${State.maxAutoChainCount}`;
+        const startKeyEl = document.getElementById("win-startkey-value");
+        if (startKeyEl) {
+          if (State.startSeed) {
+            startKeyEl.textContent = makeStartKey(State.startSeed, State.startAttemptIndex || 0);
+          } else {
+            startKeyEl.textContent = "-";
+          }
+        }
+        const startKeyInput = document.getElementById("win-startkey-input");
+        if (startKeyInput) {
+          startKeyInput.value = buildWinCopyText();
+        }
+      }
+      function buildWinCopyText() {
+        const key = State.startSeed
+          ? makeStartKey(State.startSeed, State.startAttemptIndex || 0)
+          : "-";
+        return `StartKey: ${key} | Hands: ${State.manualMoveCount} | Max Chain: ${State.maxAutoChainCount}`;
+      }
+      function hideStartKeyFallback() {
+        const fallback = document.getElementById("win-startkey-fallback");
+        if (fallback) fallback.hidden = true;
+      }
+      function selectStartKeyInput() {
+        const input = document.getElementById("win-startkey-input");
+        if (!input) return false;
+        input.focus();
+        input.select();
+        if (typeof input.setSelectionRange === "function") {
+          input.setSelectionRange(0, input.value.length);
+        }
+        return true;
+      }
+      function showStartKeyFallback(key) {
+        const fallback = document.getElementById("win-startkey-fallback");
+        const input = document.getElementById("win-startkey-input");
+        if (!fallback || !input) {
+          prompt("Copy StartKey", key);
+          return;
+        }
+        input.value = key;
+        fallback.hidden = false;
+        selectStartKeyInput();
+        showStatus("Long-press StartKey to copy", "#ffff00");
+      }
+      function tryLegacyCopy(text) {
+        try {
+          const area = document.createElement("textarea");
+          area.value = text;
+          area.setAttribute("readonly", "");
+          area.style.position = "fixed";
+          area.style.top = "-9999px";
+          area.style.left = "-9999px";
+          document.body.appendChild(area);
+          area.focus();
+          area.select();
+          if (typeof area.setSelectionRange === "function") area.setSelectionRange(0, area.value.length);
+          const ok = !!(document.execCommand && document.execCommand("copy"));
+          document.body.removeChild(area);
+          return ok;
+        } catch (e) {
+          return false;
+        }
+      }
+      updateMoveCounter();
+      updateWinStats();
+
+      /* --- [Persistence] --- */
+      const Persistence = (() => {
+        const SCHEMA_VERSION = 1;
+        const KEY_PREFIX = "klondike:save";
+
+        function getVariant() {
+          const name = (location.pathname.split("/").pop() || "").toLowerCase();
+          return name.includes("online") ? "online" : "offline";
+        }
+
+        function getPrimaryKey() {
+          return `${KEY_PREFIX}:${getVariant()}:v${SCHEMA_VERSION}`;
+        }
+
+        function getLegacyKeys() {
+          const variant = getVariant();
+          const common = ["klondike:save", "klondike-save"];
+          if (variant === "online") {
+            return [
+              ...common,
+              "klondike:save:index-online.html",
+              "klondike-save:index-online.html",
+              "klondike-save-online"
+            ];
+          }
+          return [
+            ...common,
+            "klondike:save:index.html",
+            "klondike:save:index-noanime.html",
+            "klondike-save:index.html",
+            "klondike-save:index-noanime.html",
+            "klondike-save-offline"
+          ];
+        }
+
+        function storageAvailable() {
+          try {
+            const key = "__klondike_storage_test__";
+            localStorage.setItem(key, "1");
+            localStorage.removeItem(key);
+            return true;
+          } catch (e) {
+            return false;
+          }
+        }
+
+        function removeKey(key) {
+          try { localStorage.removeItem(key); } catch (e) {}
+        }
+
+        function migrateLegacyIfNeeded(primaryKey) {
+          let exists = null;
+          try { exists = localStorage.getItem(primaryKey); } catch (e) { return; }
+          if (exists !== null) return;
+          const keys = getLegacyKeys();
+          for (const legacyKey of keys) {
+            let value = null;
+            try { value = localStorage.getItem(legacyKey); } catch (e) { return; }
+            if (value === null) continue;
+            try {
+              localStorage.setItem(primaryKey, value);
+              localStorage.removeItem(legacyKey);
+            } catch (e) {}
+            break;
+          }
+        }
+
+        function isCard(card) {
+          return !!card
+            && Number.isInteger(card.suit) && card.suit >= 0 && card.suit <= 3
+            && Number.isInteger(card.rank) && card.rank >= 1 && card.rank <= 13
+            && Number.isInteger(card.color) && (card.color === 0 || card.color === 1)
+            && typeof card.isOpen === "boolean";
+        }
+
+        function isCardArray(cards) {
+          return Array.isArray(cards) && cards.every(isCard);
+        }
+
+        function isBoardState(state) {
+          if (!state || typeof state !== "object") return false;
+          if (!isCardArray(state.stock) || !isCardArray(state.waste)) return false;
+          if (!Array.isArray(state.foundations) || state.foundations.length !== 4) return false;
+          if (!Array.isArray(state.tableau) || state.tableau.length !== 7) return false;
+          if (!state.foundations.every(isCardArray)) return false;
+          if (!state.tableau.every(isCardArray)) return false;
+          return true;
+        }
+
+        function isHistory(history) {
+          if (!Array.isArray(history)) return false;
+          for (const item of history) {
+            if (typeof item !== "string") return false;
+            let parsed = null;
+            try { parsed = JSON.parse(item); } catch (e) { return false; }
+            if (!isBoardState(parsed)) return false;
+          }
+          return true;
+        }
+        function isMoveCountHistory(history) {
+          return Array.isArray(history) && history.every(x => Number.isInteger(x) && x >= 0);
+        }
+
+        function readToggleState() {
+          const chk = document.getElementById("chk-autocheck");
+          return { autoCheck: !!(chk && chk.checked) };
+        }
+
+        function applyToggles(toggles) {
+          const chk = document.getElementById("chk-autocheck");
+          if (!chk || !toggles || typeof toggles !== "object") return;
+          if (typeof toggles.autoCheck === "boolean") chk.checked = toggles.autoCheck;
+        }
+
+        function buildSnapshot() {
+          return {
+            schemaVersion: SCHEMA_VERSION,
+            appVersion: Config.APP_VERSION,
+            variant: getVariant(),
+            savedAt: new Date().toISOString(),
+            state: {
+              current: State.current,
+              initial: State.initial,
+              history: State.history,
+              manualMoveCount: State.manualMoveCount,
+              moveCountHistory: State.moveCountHistory,
+              maxAutoChainCount: State.maxAutoChainCount,
+              startSeed: State.startSeed,
+              startAttemptIndex: State.startAttemptIndex,
+              toggles: readToggleState()
+            }
+          };
+        }
+
+        function saveCurrentProgress() {
+          if (!storageAvailable()) return;
+          if (!State.current || !State.initial) return;
+          const key = getPrimaryKey();
+          const payload = buildSnapshot();
+          try {
+            localStorage.setItem(key, JSON.stringify(payload));
+          } catch (e) {}
+        }
+
+        function restoreFromLocal() {
+          if (!storageAvailable()) return false;
+          const key = getPrimaryKey();
+          migrateLegacyIfNeeded(key);
+
+          let raw = null;
+          try { raw = localStorage.getItem(key); } catch (e) { return false; }
+          if (!raw) return false;
+
+          let parsed = null;
+          try { parsed = JSON.parse(raw); } catch (e) { removeKey(key); return false; }
+          if (!parsed || parsed.schemaVersion !== SCHEMA_VERSION || !parsed.state) { removeKey(key); return false; }
+
+          const s = parsed.state;
+          if (!isBoardState(s.current) || !isBoardState(s.initial) || !isHistory(s.history)) {
+            removeKey(key);
+            return false;
+          }
+
+          State.current = s.current;
+          State.initial = s.initial;
+          State.history = s.history;
+          if (Number.isInteger(s.manualMoveCount) && s.manualMoveCount >= 0) State.manualMoveCount = s.manualMoveCount;
+          else State.manualMoveCount = 0;
+          if (isMoveCountHistory(s.moveCountHistory)) State.moveCountHistory = s.moveCountHistory;
+          else State.moveCountHistory = Array(State.history.length).fill(0);
+          if (Number.isInteger(s.maxAutoChainCount) && s.maxAutoChainCount >= 0) State.maxAutoChainCount = s.maxAutoChainCount;
+          else State.maxAutoChainCount = 0;
+          if (typeof s.startSeed === "string" && /^[0-9A-Fa-f]{8}$/.test(s.startSeed)) State.startSeed = s.startSeed.toUpperCase();
+          else State.startSeed = null;
+          if (Number.isInteger(s.startAttemptIndex) && s.startAttemptIndex >= 0) State.startAttemptIndex = s.startAttemptIndex;
+          else State.startAttemptIndex = 0;
+          State.isAutoFinishing = false;
+          State.isAutoMoving = false;
+          State.isAnimating = false;
+          State.animatingCount = 0;
+          State.lastAnimationPromise = Promise.resolve();
+          State.lastRevealPromise = Promise.resolve();
+          State.lastAnimationEndAt = 0;
+          State.autoChainCount = 0;
+          applyToggles(s.toggles || {});
+          setLastMove("deal", { animate: false });
+          UI.render(State.current);
+          updateMoveCounter();
+          updateWinStats();
+          updateButtons();
+          clearStatus();
+          requestAutoCheck();
+          return true;
+        }
+
+        return {
+          saveCurrentProgress,
+          restoreFromLocal
+        };
+      })();
+
+      /* --- [Core Modules] --- */
+      // Provided by src/core/solver.ts and src/core/rules.ts.
+
+      /* --- [Controller] --- */
+      function pushHistory() {
+        if (State.current) {
+            if (State.history.length > 1000) State.history.shift(); 
+            if (State.moveCountHistory.length > 1000) State.moveCountHistory.shift();
+            State.history.push(JSON.stringify(State.current));
+            State.moveCountHistory.push(State.manualMoveCount);
+            updateButtons();
+        }
+      }
+      
+      function popHistory() {
+        if (State.isAutoMoving || State.isAnimating) return;
+        if (State.history.length === 0) return;
+        State.current = JSON.parse(State.history.pop());
+        const prevCount = State.moveCountHistory.pop();
+        State.manualMoveCount = Number.isInteger(prevCount) ? prevCount : 0;
+        State.autoChainCount = 0;
+        setLastMove("manual");
+        updateMoveCounter();
+        UI.render(State.current); updateButtons(); requestAutoCheck();
+        Persistence.saveCurrentProgress();
+      }
+      
+      function updateButtons() { 
+        document.getElementById("btn-undo").disabled = (State.history.length === 0);
+        document.getElementById("btn-restart").disabled = (State.initial === null);
+      }
+      function showStatus(msg, color="#ffff00") {
+        const el = document.getElementById("status-msg");
+        el.textContent = msg; el.style.color = color;
+      }
+      function clearStatus() { document.getElementById("status-msg").textContent = ""; hideWarning(); }
+      function showWarning() { document.getElementById("stuck-warning").style.opacity = "1"; }
+      function hideWarning() { document.getElementById("stuck-warning").style.opacity = "0"; }
+      function setLastMove(type, options = {}) { State.lastMove = { type, ...options }; }
+      function requestAutoCheck() {
+        const isCheckEnabled = document.getElementById("chk-autocheck").checked;
+        if (!isCheckEnabled) return;
+        Promise.all([State.lastAnimationPromise, State.lastRevealPromise]).then(() => {
+          if (State.isAutoMoving || State.isAutoFinishing || State.isAnimating) return;
+          performAutoCheck();
+        });
+      }
+      function scheduleReveal(card, moveType, onDone, endAt) {
+        if (!card) { if (onDone) onDone(); return; }
+        const key = getCardKey(card);
+        const delayMs = Config.REVEAL_DELAY_MS;
+        const waitMs = Math.max(0, (endAt || performance.now()) - performance.now());
+        State.lastRevealPromise = new Promise(resolve => {
+          setTimeout(() => {
+            if (!card.isOpen) {
+              card.isOpen = true;
+              const el = document.querySelector(`playing-card[data-key="${key}"]`);
+              if (el) {
+                el.setAttribute("cid", Rules.getCid(card));
+              } else {
+                setLastMove("manual", { animate: false });
+                UI.render(State.current);
+              }
+            }
+            if (onDone) setTimeout(onDone, Config.REVEAL_TO_MOVE_DELAY_MS);
+            resolve();
+          }, waitMs + delayMs);
+        });
+      }
+      function waitForAnimationsThen(callback) {
+        State.lastAnimationPromise.then(callback);
+      }
+      
+      async function performAutoCheck() {
+        const isCheckEnabled = document.getElementById("chk-autocheck").checked;
+        if (!isCheckEnabled || State.isAutoFinishing || !State.current) { clearStatus(); return; }
+        
+        showStatus("Chk...", "#ccc");
+        await new Promise(r => setTimeout(r, 20));
+        
+        const isWinnable = bot.checkCurrentState(State.current);
+        
+        // --- Full Debug Log (Restored) ---
+        console.clear();
+        console.group("%c[DEBUG] Game Status", "color: orange; font-weight: bold; font-size: 12px;");
+        console.log(`%cWinnable: ${isWinnable ? "YES" : "NO"}`, isWinnable ? "color: green; font-weight:bold" : "color: red; font-weight:bold");
+        console.log("Stock:", JSON.parse(JSON.stringify(State.current.stock)));
+        console.log("Waste:", JSON.parse(JSON.stringify(State.current.waste)));
+        console.log("Tableau:", JSON.parse(JSON.stringify(State.current.tableau)));
+        console.log("Foundations:", JSON.parse(JSON.stringify(State.current.foundations)));
+        console.groupEnd();
+        // --------------------------------
+
+        if (isWinnable) { showStatus("OK", "#00ff00"); hideWarning(); }
+        else { showStatus("STUCK?", "#ff5555"); showWarning(); }
+      }
+
+      async function startNewGame() {
+        if (State.isAutoMoving || State.isAnimating) return;
+        showStatus("Gen...");
+        const btnNew = document.getElementById("new-game");
+        btnNew.disabled = true;
+        await new Promise(r => setTimeout(r, 50)); 
+        const seed = Math.floor(Math.random() * 0xffffffff).toString(16).toUpperCase().padStart(8, "0");
+        const solved = bot.findSolvableDeckWithSeed(seed);
+        btnNew.disabled = false;
+        applyStartState(solved.startState, seed, solved.attemptIndex);
+      }
+
+      function buildTestState() {
+        const tableau = Array.from({ length: 7 }, () => []);
+        for (let s = 0; s < 4; s++) {
+          const col = [];
+          for (let r = 13; r >= 1; r--) {
+            col.push({ suit: s, rank: r, color: (s % 2 === 0) ? 0 : 1, isOpen: r === 1 });
+          }
+          tableau[s] = col;
+        }
+        return { stock: [], waste: [], foundations: [[], [], [], []], tableau };
+      }
+
+      function startTestGame() {
+        if (State.isAutoMoving || State.isAnimating) return;
+        showStatus("Test...");
+        const testState = buildTestState();
+        State.current = testState;
+        State.initial = JSON.parse(JSON.stringify(testState));
+        State.history = [];
+        State.moveCountHistory = [];
+        State.manualMoveCount = 0;
+        State.maxAutoChainCount = 0;
+        State.startSeed = null;
+        State.startAttemptIndex = 0;
+        State.isAutoFinishing = false;
+        State.isAutoMoving = false;
+        State.autoChainCount = 0;
+        clearStatus();
+        setLastMove("deal", { animate: false });
+        updateMoveCounter();
+        updateWinStats();
+        UI.render(State.current); updateButtons(); requestAutoCheck();
+        checkVictoryCondition();
+      }
+
+      function restartGame() {
+        if (State.isAutoMoving || State.isAnimating) return;
+        if (!State.initial) return;
+        if(confirm("Restart from the beginning?")) {
+            State.current = JSON.parse(JSON.stringify(State.initial));
+            State.history = [];
+            State.moveCountHistory = [];
+            State.manualMoveCount = 0;
+            State.maxAutoChainCount = 0;
+            State.isAutoFinishing = false;
+            State.isAutoMoving = false;
+            State.autoChainCount = 0;
+            clearStatus();
+            setLastMove("deal", { animate: false });
+            updateMoveCounter();
+            updateWinStats();
+            UI.render(State.current); updateButtons(); requestAutoCheck();
+            Persistence.saveCurrentProgress();
+        }
+      }
+
+      function triggerAutoFoundation(immediate = false) {
+        if (State.isAutoFinishing) return;
+        const scanAndMove = () => {
+          const state = State.current;
+          let moved = false;
+          let revealCard = null;
+          let prevFoundationCard = null;
+          let foundationIdx = null;
+          for (let i = 0; i < 7; i++) {
+            const col = state.tableau[i];
+            if (col.length > 0) {
+              const card = col[col.length - 1];
+              if (Rules.checkFoundationMove(card, card.suit).ok && Rules.isSafeToAutoMove(card)) {
+                const prev = state.foundations[card.suit];
+                prevFoundationCard = prev.length > 0 ? snapshotCard(prev[prev.length - 1]) : null;
+                foundationIdx = card.suit;
+                state.foundations[card.suit].push(col.pop());
+                if (col.length > 0 && !col[col.length - 1].isOpen) {
+                  revealCard = col[col.length - 1];
+                }
+                moved = true; break; 
+              }
+            }
+          }
+          if (!moved && state.waste.length > 0) {
+            const card = state.waste[state.waste.length - 1];
+            if (Rules.checkFoundationMove(card, card.suit).ok && Rules.isSafeToAutoMove(card)) {
+              const prev = state.foundations[card.suit];
+              prevFoundationCard = prev.length > 0 ? snapshotCard(prev[prev.length - 1]) : null;
+              foundationIdx = card.suit;
+              state.foundations[card.suit].push(state.waste.pop());
+              moved = true;
+            }
+            }
+          if (moved) { 
+              State.isAutoMoving = true;
+              State.autoChainCount += 1;
+              State.maxAutoChainCount = Math.max(State.maxAutoChainCount, State.autoChainCount);
+              setLastMove("auto", { foundationIdx, prevFoundationCard });
+              UI.render(State.current);
+              const endAt = State.lastAnimationEndAt;
+              const nextStep = () => waitForAnimationsThen(() => { setTimeout(triggerAutoFoundation, 80, true); });
+              if (revealCard) scheduleReveal(revealCard, "auto", nextStep, endAt);
+              else nextStep();
+          } else {
+              State.isAutoMoving = false;
+              State.autoChainCount = 0;
+              checkVictoryCondition();
+              Persistence.saveCurrentProgress();
+              requestAutoCheck();
+          }
+        };
+        if (immediate) scanAndMove();
+        else setTimeout(scanAndMove, 800);
+      }
+
+      function handleStockClick() {
+        if (State.isAutoFinishing || State.isAutoMoving || State.isAnimating) return;
+        clearStatus();
+        pushHistory();
+        const state = State.current;
+        if (state.stock.length === 0) {
+          state.stock = state.waste.reverse(); state.stock.forEach(c => c.isOpen = false); state.waste = [];
+          State.autoChainCount = 0;
+          setLastMove("manual", { animate: false });
+        } else {
+          const prevWasteTop = state.waste.length > 0 ? snapshotCard(state.waste[state.waste.length - 1]) : null;
+          const c = state.stock.pop(); c.isOpen = true; state.waste.push(c);
+          State.autoChainCount = 0;
+          setLastMove("draw", { cardKey: getCardKey(c), prevWasteCard: prevWasteTop });
+        }
+        incrementMoveCount();
+        UI.render(State.current); triggerAutoFoundation();
+      }
+
+      function hintMove() {
+        if (State.isAutoFinishing || State.isAutoMoving || State.isAnimating) return;
+        if (!State.current) return;
+        clearStatus();
+        const state = State.current;
+        const move = bot.getNextMove(state);
+        if (!move) { showStatus("NO MOVE", "#ff5555"); return; }
+        pushHistory();
+        let revealCard = null;
+        let prevFoundationCard = null;
+        let foundationIdx = null;
+        if (move.type === "t2f") {
+          const col = state.tableau[move.tableauIdx];
+          const prev = state.foundations[move.suit];
+          prevFoundationCard = prev.length > 0 ? snapshotCard(prev[prev.length - 1]) : null;
+          foundationIdx = move.suit;
+          state.foundations[move.suit].push(col.pop());
+          if (col.length > 0 && !col[col.length - 1].isOpen) revealCard = col[col.length - 1];
+          setLastMove("auto", { foundationIdx, prevFoundationCard });
+        } else if (move.type === "w2f") {
+          const prev = state.foundations[move.suit];
+          prevFoundationCard = prev.length > 0 ? snapshotCard(prev[prev.length - 1]) : null;
+          foundationIdx = move.suit;
+          state.foundations[move.suit].push(state.waste.pop());
+          setLastMove("auto", { foundationIdx, prevFoundationCard });
+        } else if (move.type === "t2t") {
+          const col = state.tableau[move.fromIdx];
+          const run = col.splice(move.openIdx);
+          state.tableau[move.toIdx] = state.tableau[move.toIdx].concat(run);
+          if (col.length > 0 && !col[col.length - 1].isOpen) revealCard = col[col.length - 1];
+          setLastMove("auto");
+        } else if (move.type === "w2t") {
+          state.tableau[move.toIdx].push(state.waste.pop());
+          setLastMove("auto");
+        } else if (move.type === "draw") {
+          const prevWasteTop = state.waste.length > 0 ? snapshotCard(state.waste[state.waste.length - 1]) : null;
+          const c = state.stock.pop(); c.isOpen = true; state.waste.push(c);
+          setLastMove("draw", { cardKey: getCardKey(c), prevWasteCard: prevWasteTop });
+        } else if (move.type === "recycle") {
+          state.stock = state.waste.reverse();
+          state.stock.forEach(c => c.isOpen = false);
+          state.waste = [];
+          setLastMove("manual", { animate: false });
+        }
+        incrementMoveCount();
+        State.autoChainCount = 0;
+        UI.render(State.current);
+        const endAt = State.lastAnimationEndAt;
+        const afterReveal = () => { triggerAutoFoundation(); requestAutoCheck(); };
+        if (revealCard) scheduleReveal(revealCard, "auto", afterReveal, endAt);
+        else waitForAnimationsThen(afterReveal);
+      }
+
+      // --- [Event Delegation Click Handler] ---
+      function handleSlotClick(type, idx, mode = "single", specificCardIdx = -1) {
+        if (State.isAutoFinishing || State.isAutoMoving || State.isAnimating) return;
+        clearStatus();
+        const state = State.current;
+        let sourceArray, cardIdx;
+        
+        if (type === 'waste') {
+            if (state.waste.length === 0) return;
+            sourceArray = state.waste; 
+            cardIdx = sourceArray.length - 1; 
+        } else {
+            sourceArray = state.tableau[idx]; 
+            if (sourceArray.length === 0 && specificCardIdx === -1) return;
+            if (specificCardIdx !== -1) cardIdx = specificCardIdx;
+            else cardIdx = sourceArray.length - 1;
+            if (!sourceArray[cardIdx].isOpen) return;
+        }
+
+        const card = sourceArray[cardIdx];
+        const run = sourceArray.slice(cardIdx);
+        const isSingleCard = run.length === 1;
+        let moveSuccess = false;
+        let revealCard = null;
+        let prevFoundationCard = null;
+        let foundationIdx = null;
+        let movedToFoundation = false;
+        let hasTableauOption = false;
+
+        // 1. Long Press -> Foundation
+        if (mode === "long" && isSingleCard) {
+            if (Rules.checkFoundationMove(card, card.suit).ok) {
+                pushHistory();
+                const prev = state.foundations[card.suit];
+                prevFoundationCard = prev.length > 0 ? snapshotCard(prev[prev.length - 1]) : null;
+                foundationIdx = card.suit;
+                state.foundations[card.suit].push(sourceArray.pop());
+                if (type === 'tableau' && sourceArray.length > 0) sourceArray[sourceArray.length-1].isOpen = true;
+                movedToFoundation = true;
+                moveSuccess = true;
+            }
+        }
+        
+        // 2. Single Click -> Tableau Move
+        if (!moveSuccess) {
+            let bestTarget = -1;
+            for (let i = 0; i < 7; i++) {
+                if (type === 'tableau' && i === idx) continue;
+                const resT = Rules.canPlaceOnTableau(run[0], i);
+                if (resT.ok && resT.type === "Run") { bestTarget = i; break; }
+            }
+            if (bestTarget === -1) {
+                for (let i = 0; i < 7; i++) {
+                    if (type === 'tableau' && i === idx) continue;
+                    const resT = Rules.canPlaceOnTableau(run[0], i);
+                    if (resT.ok && resT.type === "K-only") { bestTarget = i; break; }
+                }
+            }
+            if (bestTarget !== -1) hasTableauOption = true;
+            if (bestTarget !== -1) {
+                pushHistory();
+                state.tableau[bestTarget] = state.tableau[bestTarget].concat(run);
+                if (type === 'waste') state.waste.pop();
+                else {
+                    state.tableau[idx] = sourceArray.slice(0, cardIdx);
+                    if (state.tableau[idx].length > 0 && !state.tableau[idx][state.tableau[idx].length - 1].isOpen) {
+                      revealCard = state.tableau[idx][state.tableau[idx].length - 1];
+                    }
+                }
+                moveSuccess = true;
+            }
+        }
+
+        // 3. Single Click Fallback -> Foundation (only if no tableau option)
+        if (!moveSuccess && mode === "single" && isSingleCard && !hasTableauOption) {
+            if (Rules.checkFoundationMove(card, card.suit).ok) {
+                pushHistory();
+                const prev = state.foundations[card.suit];
+                prevFoundationCard = prev.length > 0 ? snapshotCard(prev[prev.length - 1]) : null;
+                foundationIdx = card.suit;
+                state.foundations[card.suit].push(sourceArray.pop());
+                if (type === 'tableau' && sourceArray.length > 0) sourceArray[sourceArray.length-1].isOpen = true;
+                movedToFoundation = true;
+                moveSuccess = true;
+            }
+        }
+
+        if (moveSuccess) { 
+          State.autoChainCount = 0;
+          incrementMoveCount();
+          if (movedToFoundation) {
+            setLastMove("manual", { foundationIdx, prevFoundationCard });
+          } else {
+            setLastMove("manual");
+          }
+          UI.render(State.current); 
+          const endAt = State.lastAnimationEndAt;
+          const afterReveal = () => { triggerAutoFoundation(); requestAutoCheck(); };
+          if (revealCard) scheduleReveal(revealCard, "manual", afterReveal, endAt);
+          else waitForAnimationsThen(afterReveal);
+        }
+      }
+
+      function checkVictoryCondition() {
+        const state = State.current;
+        const total = state.foundations.reduce((acc, f) => acc + f.length, 0);
+        if (total === 52) { 
+            State.isAutoMoving = false;
+            updateWinStats();
+            document.getElementById("win-overlay").style.display = "flex"; 
+            return; 
+        }
+        const stockEmpty = state.stock.length === 0 && state.waste.length === 0;
+        const allTableauOpen = state.tableau.every(col => col.every(c => c.isOpen));
+        if (stockEmpty && allTableauOpen && !State.isAutoFinishing) {
+            State.isAutoFinishing = true; State.isAutoMoving = true; setTimeout(autoDissolve, 50);
+        }
+      }
+
+      function autoDissolve() {
+        const state = State.current;
+        let moved = false;
+        let prevFoundationCard = null;
+        let foundationIdx = null;
+        for (let i = 0; i < 7; i++) {
+            const col = state.tableau[i];
+            if (col.length > 0) {
+                const c = col[col.length - 1];
+                if (Rules.checkFoundationMove(c, c.suit).ok) {
+                    const prev = state.foundations[c.suit];
+                    prevFoundationCard = prev.length > 0 ? snapshotCard(prev[prev.length - 1]) : null;
+                    foundationIdx = c.suit;
+                    state.foundations[c.suit].push(col.pop());
+                    moved = true; break;
+                }
+            }
+        }
+        if (moved) { 
+          State.autoChainCount += 1;
+          State.maxAutoChainCount = Math.max(State.maxAutoChainCount, State.autoChainCount);
+          setLastMove("auto", { foundationIdx, prevFoundationCard });
+          UI.render(State.current); 
+          waitForAnimationsThen(() => { setTimeout(autoDissolve, 80); });
+        } else { 
+          State.isAutoMoving = false;
+          State.autoChainCount = 0;
+          checkVictoryCondition(); 
+        }
+      }
+      const Controller = {
+        pushHistory,
+        popHistory,
+        updateButtons,
+        showStatus,
+        clearStatus,
+        showWarning,
+        hideWarning,
+        requestAutoCheck,
+        performAutoCheck,
+        startNewGame,
+        startTestGame,
+        restartGame,
+        triggerAutoFoundation,
+        handleStockClick,
+        hintMove,
+        handleSlotClick,
+        checkVictoryCondition,
+        autoDissolve
+      };
+
+      /* --- [UI] --- */
+      function render(state) {
+        if (!state) return;
+        const prevRects = new Map();
+        document.querySelectorAll('playing-card[data-key]').forEach(el => {
+          prevRects.set(el.dataset.key, el.getBoundingClientRect());
+        });
+        const stockRect = document.getElementById("stock")?.getBoundingClientRect();
+
+        document.querySelectorAll('.slot, .column').forEach(el => {
+            el.innerHTML = "";
+            const newEl = el.cloneNode(true);
+            el.parentNode.replaceChild(newEl, el);
+        });
+        
+        const sEl = document.getElementById("stock");
+        if (state.stock.length > 0) { sEl.innerHTML = `<playing-card cid="back" data-key="stock-back"></playing-card>`; }
+        sEl.onclick = Controller.handleStockClick;
+
+        const wEl = document.getElementById("waste");
+        if (state.waste.length > 0) {
+          const card = state.waste[state.waste.length - 1];
+          if (State.lastMove && State.lastMove.type === "draw" && State.lastMove.prevWasteCard) {
+            const prev = State.lastMove.prevWasteCard;
+            const prevEl = document.createElement("playing-card");
+            prevEl.setAttribute("cid", Rules.getCid(prev));
+            prevEl.dataset.ghost = "waste";
+            wEl.appendChild(prevEl);
+          }
+          const topEl = document.createElement("playing-card");
+          topEl.setAttribute("cid", Rules.getCid(card));
+          topEl.dataset.key = getCardKey(card);
+          wEl.appendChild(topEl);
+        }
+        let wasteClickTimer = null;
+        let wasteLongPressTimer = null;
+        let wasteLongPressFired = false;
+        wEl.onclick = () => {
+          if (wasteLongPressFired) { 
+            wasteLongPressFired = false;
+            return; 
+          }
+          if (wasteClickTimer) { clearTimeout(wasteClickTimer); }
+          wasteClickTimer = setTimeout(() => {
+            Controller.handleSlotClick('waste', -1, "single");
+            wasteClickTimer = null;
+          }, Config.CLICK_DELAY_MS);
+        };
+        wEl.oncontextmenu = (e) => { e.preventDefault(); Controller.handleSlotClick('waste', -1, "right"); };
+        wEl.onpointerdown = (e) => {
+          const cardEl = e.target.closest('playing-card');
+          if (!cardEl) return;
+          wasteLongPressFired = false;
+          if (wasteLongPressTimer) { clearTimeout(wasteLongPressTimer); }
+          wasteLongPressTimer = setTimeout(() => {
+            wasteLongPressFired = true;
+            Controller.handleSlotClick('waste', -1, "long");
+          }, 350);
+        };
+        wEl.onpointerup = () => {
+          if (wasteLongPressTimer) { clearTimeout(wasteLongPressTimer); wasteLongPressTimer = null; }
+        };
+        wEl.onpointerleave = () => {
+          if (wasteLongPressTimer) { clearTimeout(wasteLongPressTimer); wasteLongPressTimer = null; }
+        };
+        wEl.onpointercancel = () => {
+          if (wasteLongPressTimer) { clearTimeout(wasteLongPressTimer); wasteLongPressTimer = null; }
+        };
+
+        state.foundations.forEach((stack, i) => {
+          const el = document.getElementById(`foundation-${i}`);
+          if (stack.length > 0) {
+            const card = stack[stack.length - 1];
+            if (State.lastMove && State.lastMove.foundationIdx === i && State.lastMove.prevFoundationCard) {
+              const prev = State.lastMove.prevFoundationCard;
+              const prevEl = document.createElement("playing-card");
+              prevEl.setAttribute("cid", Rules.getCid(prev));
+              prevEl.dataset.ghost = "foundation";
+              el.appendChild(prevEl);
+            }
+            const topEl = document.createElement("playing-card");
+            topEl.setAttribute("cid", Rules.getCid(card));
+            topEl.dataset.key = getCardKey(card);
+            el.appendChild(topEl);
+          }
+        });
+
+        state.tableau.forEach((col, colIdx) => {
+          const colEl = document.getElementById(`tableau-${colIdx}`);
+          
+          const overlap = col.length > 15 ? 15 : 20; 
+          const stackHeight = 140 + (col.length > 0 ? (col.length - 1) * overlap : 0);
+          colEl.style.height = `${stackHeight}px`;
+
+          col.forEach((card, rowIdx) => {
+            const el = document.createElement("playing-card");
+            el.setAttribute("cid", Rules.getCid(card));
+            el.style.top = `${rowIdx * overlap}px`; 
+            el.dataset.idx = rowIdx;
+            el.dataset.key = getCardKey(card);
+            colEl.appendChild(el);
+          });
+          
+          let tableauClickTimer = null;
+          let longPressTimer = null;
+          let longPressFired = false;
+          let longPressIdx = -1;
+          colEl.onclick = (e) => {
+              const cardEl = e.target.closest('playing-card');
+              const idx = cardEl ? parseInt(cardEl.dataset.idx) : -1;
+              if (longPressFired && idx === longPressIdx) { 
+                longPressFired = false;
+                longPressIdx = -1;
+                return; 
+              }
+              if (tableauClickTimer) { clearTimeout(tableauClickTimer); }
+              tableauClickTimer = setTimeout(() => {
+                Controller.handleSlotClick('tableau', colIdx, "single", idx);
+                tableauClickTimer = null;
+              }, Config.CLICK_DELAY_MS);
+          };
+          colEl.onpointerdown = (e) => {
+              const cardEl = e.target.closest('playing-card');
+              if (!cardEl) return;
+              const idx = parseInt(cardEl.dataset.idx);
+              if (idx !== col.length - 1) return;
+              longPressFired = false;
+              longPressIdx = idx;
+              if (longPressTimer) { clearTimeout(longPressTimer); }
+              longPressTimer = setTimeout(() => {
+                longPressFired = true;
+                Controller.handleSlotClick('tableau', colIdx, "long", idx);
+              }, 350);
+          };
+          colEl.onpointerup = () => {
+              if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+          };
+          colEl.onpointerleave = () => {
+              if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+          };
+          colEl.onpointercancel = () => {
+              if (longPressTimer) { clearTimeout(longPressTimer); longPressTimer = null; }
+          };
+        });
+
+        const lastMove = State.lastMove || {};
+        const motionRoot = window.motion;
+        const motionAnimate = (typeof motionRoot === "function" ? motionRoot : (motionRoot && motionRoot.animate)) || null;
+        const waapiAvailable = !!(Element.prototype && Element.prototype.animate);
+        const shouldAnimate = lastMove.animate !== false && (typeof motionAnimate === "function" || waapiAvailable);
+        const cleanupGhosts = () => {
+          document.querySelectorAll('[data-ghost="waste"], [data-ghost="foundation"]').forEach(el => el.remove());
+        };
+        if (shouldAnimate) {
+          const staggerMs = lastMove.type === "auto" ? Config.ANIM_STAGGER_MS : 0;
+          const animatedEls = [];
+          let animIndex = 0;
+          let maxEndMs = 0;
+          document.querySelectorAll('playing-card[data-key]').forEach(el => {
+            const key = el.dataset.key;
+            let fromRect = null;
+            if (lastMove.type === "draw" && lastMove.cardKey === key && stockRect) {
+              fromRect = stockRect;
+            } else if (prevRects.has(key)) {
+              fromRect = prevRects.get(key);
+            }
+            if (!fromRect) return;
+            const toRect = el.getBoundingClientRect();
+            const dx = fromRect.left - toRect.left;
+            const dy = fromRect.top - toRect.top;
+            if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5) return;
+            el.style.transform = `translate(${dx}px, ${dy}px)`;
+            el.style.willChange = "transform";
+            el.style.zIndex = "9999";
+            const distance = Math.hypot(dx, dy);
+            const speed = Config.ANIM_SPEED_PX_PER_MS[lastMove.type] || Config.ANIM_SPEED_PX_PER_MS.manual;
+            const gearBoost = lastMove.type === "auto"
+              ? Math.min(
+                  Config.ANIM_GEARUP.maxMultiplier,
+                  1 + (Math.max(0, State.autoChainCount - Config.ANIM_GEARUP.startAt) * Config.ANIM_GEARUP.step)
+                )
+              : 1;
+            const minMs = lastMove.type === "auto" ? (Config.ANIM_MIN_MS / gearBoost) : Config.ANIM_MIN_MS;
+            const durationMs = Math.min(
+              Config.ANIM_MAX_MS,
+              Math.max(minMs, distance / (speed * gearBoost))
+            );
+            const delayMs = staggerMs ? (animIndex * staggerMs) : 0;
+            maxEndMs = Math.max(maxEndMs, delayMs + durationMs);
+            const easing = lastMove.type === "manual" ? Config.ANIM_EASE_MANUAL : Config.ANIM_EASE_AUTO;
+            if (typeof motionAnimate === "function") {
+              motionAnimate(el, { transform: [`translate(${dx}px, ${dy}px)`, "translate(0px, 0px)"] }, {
+                duration: durationMs / 1000,
+                easing,
+                delay: delayMs / 1000
+              });
+            } else {
+              el.animate(
+                [{ transform: `translate(${dx}px, ${dy}px)` }, { transform: "translate(0px, 0px)" }],
+                { duration: durationMs, easing, delay: delayMs, fill: "both" }
+              );
+            }
+            animatedEls.push(el);
+            animIndex++;
+          });
+          if (animatedEls.length > 0) {
+            State.animatingCount += 1;
+            State.isAnimating = true;
+            const endAt = performance.now() + maxEndMs + Config.ANIM_END_BUFFER_MS;
+            State.lastAnimationEndAt = endAt;
+            const finishedPromise = new Promise(resolve => setTimeout(resolve, maxEndMs + Config.ANIM_END_BUFFER_MS));
+            State.lastAnimationPromise = finishedPromise;
+            finishedPromise.then(() => {
+              animatedEls.forEach(el => { el.style.willChange = ""; el.style.zIndex = ""; });
+              State.animatingCount = Math.max(0, State.animatingCount - 1);
+              State.isAnimating = State.animatingCount > 0;
+              cleanupGhosts();
+            });
+          } else {
+            State.isAnimating = State.animatingCount > 0;
+            cleanupGhosts();
+            State.lastAnimationPromise = Promise.resolve();
+            State.lastAnimationEndAt = performance.now();
+          }
+        } else {
+          State.isAnimating = State.animatingCount > 0;
+          cleanupGhosts();
+          State.lastAnimationPromise = Promise.resolve();
+          State.lastAnimationEndAt = performance.now();
+        }
+        State.lastMove = null;
+      }
+      const UI = { render };
+      
+      /* --- [Events] --- */
+      document.addEventListener('keydown', (e) => {
+        if (State.isAutoMoving || State.isAnimating) return;
+        if ((e.ctrlKey || e.metaKey) && e.key === 'z') { e.preventDefault(); Controller.popHistory(); }
+        if (e.key === 'F2') { e.preventDefault(); Controller.startNewGame(); }
+      });
+      document.getElementById("btn-undo").onclick = Controller.popHistory;
+      document.getElementById("btn-restart").onclick = Controller.restartGame;
+      document.getElementById("btn-hint").onclick = Controller.hintMove;
+      document.getElementById("new-game").onclick = Controller.startNewGame;
+      document.getElementById("btn-test").onclick = Controller.startTestGame;
+      document.getElementById("btn-deal-again").onclick = () => {
+        document.getElementById("win-overlay").style.display = "none";
+        hideStartKeyFallback();
+        Controller.startNewGame();
+      };
+      document.getElementById("btn-show-startkey").onclick = () => {
+        if (!State.startSeed) {
+          alert("StartKey is not available for this board.");
+          return;
+        }
+        const key = makeStartKey(State.startSeed, State.startAttemptIndex || 0);
+        prompt("StartKey", key);
+      };
+      document.getElementById("btn-copy-startkey").onclick = async () => {
+        const text = buildWinCopyText();
+        hideStartKeyFallback();
+        try {
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(text);
+            showStatus("StartKey Copied", "#00ff00");
+            return;
+          }
+        } catch (e) {}
+        if (tryLegacyCopy(text)) {
+          showStatus("StartKey Copied", "#00ff00");
+          return;
+        }
+        showStartKeyFallback(text);
+      };
+      document.getElementById("btn-select-startkey").onclick = () => {
+        if (selectStartKeyInput()) showStatus("StartKey selected", "#ffff00");
+      };
+      document.getElementById("win-startkey-input").onclick = () => {
+        selectStartKeyInput();
+      };
+      document.getElementById("btn-load-startkey").onclick = () => {
+        const raw = prompt("Enter StartKey (SEED-ATTEMPT)", "");
+        const parsed = parseStartKey(raw);
+        if (!parsed) {
+          alert("Invalid StartKey format. Use: A1B2C3D4-0012");
+          return;
+        }
+        const state = bot.deal(bot.createDeckFromSeedAttempt(parsed.seed, parsed.attemptIndex));
+        if (!bot.checkCurrentState(state)) {
+          alert("StartKey is not solvable with current rules/settings.");
+          return;
+        }
+        applyStartState(state, parsed.seed, parsed.attemptIndex);
+      };
+      document.getElementById("chk-autocheck").onchange = () => { Controller.requestAutoCheck(); };
+      (function setupMenu() {
+        const menuBtn = document.getElementById("btn-menu");
+        const menuPanel = document.getElementById("menu-panel");
+        if (!menuBtn || !menuPanel) return;
+        const closeMenu = () => {
+          menuPanel.hidden = true;
+          menuBtn.setAttribute("aria-expanded", "false");
+        };
+        const openMenu = () => {
+          menuPanel.hidden = false;
+          menuBtn.setAttribute("aria-expanded", "true");
+        };
+        menuBtn.onclick = (e) => {
+          e.stopPropagation();
+          if (menuPanel.hidden) openMenu();
+          else closeMenu();
+        };
+        menuPanel.addEventListener("click", (e) => {
+          e.stopPropagation();
+        });
+        document.addEventListener("click", () => {
+          closeMenu();
+        });
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeMenu();
+        });
+        ["btn-restart", "new-game", "btn-test", "chk-autocheck", "btn-show-startkey", "btn-load-startkey"].forEach((id) => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.addEventListener("click", () => {
+            closeMenu();
+          });
+        });
+      })();
+
+      window.addEventListener('load', () => {
+        customElements.whenDefined('playing-card').then(() => {
+          if (!Persistence.restoreFromLocal()) {
+            setTimeout(Controller.startNewGame, 300);
+          }
+        });
+      });
+
+
+/* --- [Simulator] --- */
+      class Simulator {
+        constructor() {}
+        clone(s) { return JSON.parse(JSON.stringify(s)); }
+        
+        findSolvableDeck() {
+            const randomSeed = Math.floor(Math.random() * 0xffffffff).toString(16).toUpperCase().padStart(8, "0");
+            return this.findSolvableDeckWithSeed(randomSeed).startState;
+        }
+
+        findSolvableDeckWithSeed(seed) {
+            let attempts = 0;
+            while (attempts < 500) {
+                const deck = this.createDeckFromSeedAttempt(seed, attempts);
+                const startState = this.deal(deck);
+                if (this.canSolve(this.clone(startState), { limit: Config.SOLVER_LIMIT_DEAL, noProgressLimit: Config.SOLVER_STALL_DEAL })) {
+                    return { startState, attemptIndex: attempts };
+                }
+                attempts++;
+            }
+            return { startState: this.deal(this.createDeckFromSeedAttempt(seed, 0)), attemptIndex: 0 };
+        }
+
+        checkCurrentState(currentState) {
+            for(let i=0; i<13; i++) {
+                if (this.canSolve(this.clone(currentState), { limit: Config.SOLVER_LIMIT_CHECK, noProgressLimit: Config.SOLVER_STALL_CHECK })) return true;
+            }
+            return false;
+        }
+
+        createDeck() {
+            return this.createDeckWithRng(() => Math.random());
+        }
+        createDeckFromSeedAttempt(seed, attemptIndex) {
+            const rng = this.rngFromSeedAttempt(seed, attemptIndex);
+            return this.createDeckWithRng(rng);
+        }
+        createDeckWithRng(rng) {
+            const d = [];
+            // 【変更点2】 色の判定ロジックを変更。偶数(0,2)が黒、奇数(1,3)が赤
+            for (let s = 0; s < 4; s++) for (let r = 0; r < 13; r++) d.push({ suit: s, rank: r + 1, color: (s % 2 === 0) ? 0 : 1, isOpen: false });
+            for (let i = d.length - 1; i > 0; i--) { const j = Math.floor(rng() * (i + 1)); [d[i], d[j]] = [d[j], d[i]]; }
+            return d;
+        }
+        hashSeed(seedText) {
+            let h = 2166136261;
+            for (let i = 0; i < seedText.length; i++) {
+                h ^= seedText.charCodeAt(i);
+                h = Math.imul(h, 16777619);
+            }
+            return (h >>> 0);
+        }
+        rngFromSeedAttempt(seed, attemptIndex) {
+            let a = this.hashSeed(`${String(seed).toUpperCase()}#${attemptIndex}`) || 0x9e3779b9;
+            return () => {
+                a += 0x6D2B79F5;
+                let t = a;
+                t = Math.imul(t ^ (t >>> 15), t | 1);
+                t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+                return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+            };
+        }
+        deal(d) {
+             let t = Array.from({ length: 7 }, () => []);
+             const tempDeck = [...d];
+             for (let i = 0; i < 7; i++) {
+                 for (let j = 0; j <= i; j++) {
+                     const c = tempDeck.pop(); c.isOpen = (j === i); t[i].push(c);
+                 }
+             }
+             return { stock: tempDeck, waste: [], foundations: [[],[],[],[]], tableau: t };
+        }
+
+        canSolve(simState, opts = {}) {
+            let moves = 0;
+            let noProgressLoop = 0;
+            const limit = (opts.limit ?? Config.SOLVER_LIMIT_CHECK);
+            const noProgressLimit = (opts.noProgressLimit ?? Config.SOLVER_STALL_CHECK);
+            while (moves < limit && noProgressLoop < noProgressLimit) {
+                let moved = false;
+                for (let i = 0; i < 7; i++) {
+                    const col = simState.tableau[i];
+                    if (col.length > 0) {
+                        const c = col[col.length - 1];
+                        if (this.checkF(simState, c, c.suit)) {
+                            simState.foundations[c.suit].push(col.pop());
+                            if (col.length > 0) col[col.length - 1].isOpen = true;
+                            moved = true; break;
+                        }
+                    }
+                }
+                if (moved) { moves++; noProgressLoop=0; continue; }
+                if (simState.waste.length > 0) {
+                    const c = simState.waste[simState.waste.length - 1];
+                    if (this.checkF(simState, c, c.suit)) {
+                        simState.foundations[c.suit].push(simState.waste.pop());
+                        moved = true;
+                    }
+                }
+                if (moved) { moves++; noProgressLoop=0; continue; }
+                for (let i = 0; i < 7; i++) {
+                    const col = simState.tableau[i];
+                    if (col.length === 0) continue;
+                    let openIdx = -1;
+                    for(let k=0; k<col.length; k++) { if(col[k].isOpen) { openIdx=k; break; } }
+                    if (openIdx === -1) continue; 
+                    if (openIdx === 0 && col[openIdx].rank === 13) continue;
+                    const cardToMove = col[openIdx];
+                    const target = this.findTabTarget(simState, cardToMove, i);
+                    if (target !== -1) {
+                        const run = col.splice(openIdx);
+                        simState.tableau[target] = simState.tableau[target].concat(run);
+                        if (col.length > 0) col[col.length - 1].isOpen = true;
+                        moved = true; break;
+                    }
+                }
+                if (moved) { moves++; noProgressLoop=0; continue; }
+                if (simState.waste.length > 0) {
+                    const c = simState.waste[simState.waste.length - 1];
+                    const target = this.findTabTarget(simState, c, -1);
+                    if (target !== -1) {
+                        simState.tableau[target].push(simState.waste.pop());
+                        moved = true;
+                    }
+                }
+                if (moved) { moves++; noProgressLoop=0; continue; }
+                if (simState.stock.length > 0) {
+                    const c = simState.stock.pop(); c.isOpen = true;
+                    simState.waste.push(c); moved = true;
+                } else if (simState.stock.length === 0 && simState.waste.length > 0) {
+                    simState.stock = simState.waste.reverse();
+                    simState.stock.forEach(x => x.isOpen = false);
+                    simState.waste = []; moved = true;
+                }
+                if (moved) {
+                     moves++; 
+                     if (simState.stock.length === 0 && simState.waste.length === 0) noProgressLoop = 0;
+                     else noProgressLoop++;
+                } else break;
+            }
+            return simState.foundations.reduce((a, b) => a + b.length, 0) === 52;
+        }
+        getNextMove(simState) {
+            for (let i = 0; i < 7; i++) {
+                const col = simState.tableau[i];
+                if (col.length > 0) {
+                    const c = col[col.length - 1];
+                    if (this.checkF(simState, c, c.suit)) {
+                        return { type: "t2f", tableauIdx: i, suit: c.suit };
+                    }
+                }
+            }
+            if (simState.waste.length > 0) {
+                const c = simState.waste[simState.waste.length - 1];
+                if (this.checkF(simState, c, c.suit)) {
+                    return { type: "w2f", suit: c.suit };
+                }
+            }
+            for (let i = 0; i < 7; i++) {
+                const col = simState.tableau[i];
+                if (col.length === 0) continue;
+                let openIdx = -1;
+                for (let k = 0; k < col.length; k++) { if (col[k].isOpen) { openIdx = k; break; } }
+                if (openIdx === -1) continue;
+                if (openIdx === 0 && col[openIdx].rank === 13) continue;
+                const cardToMove = col[openIdx];
+                const target = this.findTabTarget(simState, cardToMove, i);
+                if (target !== -1) {
+                    return { type: "t2t", fromIdx: i, toIdx: target, openIdx };
+                }
+            }
+            if (simState.waste.length > 0) {
+                const c = simState.waste[simState.waste.length - 1];
+                const target = this.findTabTarget(simState, c, -1);
+                if (target !== -1) {
+                    return { type: "w2t", toIdx: target };
+                }
+            }
+            if (simState.stock.length > 0) return { type: "draw" };
+            if (simState.stock.length === 0 && simState.waste.length > 0) return { type: "recycle" };
+            return null;
+        }
+        checkF(s, card, fIdx) {
+            const f = s.foundations[fIdx];
+            if (f.length === 0) return card.rank === 1 && card.suit === fIdx;
+            const top = f[f.length - 1];
+            return card.suit === top.suit && card.rank === top.rank + 1;
+        }
+        findTabTarget(s, card, ignoreIdx) {
+            for (let i = 0; i < 7; i++) {
+                if (i === ignoreIdx) continue;
+                const dest = s.tableau[i];
+                if (dest.length === 0) { if (card.rank === 13) return i; } 
+                else {
+                    const top = dest[dest.length - 1];
+                    if (card.rank === top.rank - 1 && card.color !== top.color) return i;
+                }
+            }
+            return -1;
+        }
+      }
+      const bot = new Simulator();
+
+      
+
+
+/* --- [Rules] --- */
+      function isSafeToAutoMove(card) {
+        const state = State.current;
+        if (card.rank === 1) return true; 
+        const targetRank = card.rank - 1;
+        const otherColor = 1 - card.color;
+        let count = 0;
+        state.foundations.forEach((f, idx) => {
+            // 【変更点3】 色判定ロジックの修正 (0=S黒, 1=H赤, 2=C黒, 3=D赤)
+            const fColor = (idx % 2 === 0) ? 0 : 1;
+            if (fColor === otherColor) {
+                const top = f[f.length - 1];
+                if (top && top.rank >= targetRank) count++;
+            }
+        });
+        return count === 2; 
+      }
+      function getCid(card) {
+        if (!card || !card.isOpen) return "back"; 
+        return `${Config.RANKS[card.rank - 1]}-of-${Config.SUITS[card.suit]}`;
+      }
+      function getCardKey(card) { return `${card.suit}-${card.rank}`; }
+      function snapshotCard(card) {
+        if (!card) return null;
+        return { suit: card.suit, rank: card.rank, color: card.color, isOpen: card.isOpen };
+      }
+      function checkFoundationMove(card, fIdx) {
+        const found = State.current.foundations[fIdx];
+        if (found.length === 0) return { ok: (card.rank === 1 && card.suit === fIdx) };
+        const top = found[found.length - 1];
+        return { ok: (card.suit === top.suit && card.rank === top.rank + 1) };
+      }
+      function canPlaceOnTableau(card, tIdx) {
+        const dest = State.current.tableau[tIdx];
+        if (dest.length === 0) return { ok: (card.rank === 13), type: "K-only" };
+        const top = dest[dest.length - 1];
+        const match = top.isOpen && (card.rank === top.rank - 1) && (card.color !== top.color);
+        return match ? { ok: true, type: "Run" } : { ok: false };
+      }
+      const Rules = { isSafeToAutoMove, getCid, checkFoundationMove, canPlaceOnTableau };
+
+      
+</script>
+  </body>
+</html>
